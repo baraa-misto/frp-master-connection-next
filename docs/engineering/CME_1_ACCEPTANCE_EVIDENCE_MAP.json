@@ -1,0 +1,888 @@
+{
+  "contract": "CME-1-RC1",
+  "purpose": "Requirement-to-executable-test/direct-evidence map. This mapping is not a claim that pending publication gates have passed.",
+  "requirements": [
+    {
+      "id": "CME1-A001",
+      "requirement": "All primary beams, columns, braces and FRP support members reject connector-material overrides, in both domain and exposed planning API.",
+      "reference_fixture_ids": [
+        "F01",
+        "F02",
+        "F03"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A002",
+      "requirement": "A structural angle/tee/plate member is classified by physical role, not by cross-section name.",
+      "reference_fixture_ids": [
+        "F02",
+        "F03"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A003",
+      "requirement": "Connector-body assignments do not change bolt/nut/washer/anchor or concrete foundation material.",
+      "reference_fixture_ids": [
+        "F06",
+        "F07"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A004",
+      "requirement": "Direct member-to-member connections without a connector have explicit NO_CONNECTOR_BODY coverage and no fictitious material option.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A005",
+      "requirement": "Pultruded-only reinforcement is separately classified and not swept into ordinary connector conversion.",
+      "reference_fixture_ids": [
+        "F08"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A006",
+      "requirement": "Missing or ambiguous roles and fabricated component identifiers fail validation.",
+      "reference_fixture_ids": [
+        "F09"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A007",
+      "requirement": "Each shared physical connector has one material assignment; contradictory aliases are rejected atomically.",
+      "reference_fixture_ids": [
+        "F10"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A008",
+      "requirement": "CME-1 represents SS316 as a target but enables no production stainless numerical resistance.",
+      "reference_fixture_ids": [
+        "F04",
+        "F12"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_connector_material_adverse.py"
+      ]
+    },
+    {
+      "id": "CME1-A009",
+      "requirement": "Discover every current shear/moment product and mode from actual backend dispatch, frontend selector and freeze registries; reconcile all differences.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A010",
+      "requirement": "Map each product/mode to its actual connector instances, roles, body forms and native demand/resistance entry points.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A011",
+      "requirement": "Record primary-member roles and FRP property/axis authority for every member attached to each connector.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A012",
+      "requirement": "Record monolithic versus fabricated components, paired/shared connector identities and mixed-material restrictions.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A013",
+      "requirement": "Record source, response, resistance and family-adapter coverage separately; AVAILABLE is never inferred from shape alone.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A014",
+      "requirement": "A machine-checked bijection covers all registered products and all registered modes, with reasoned NOT_APPLICABLE entries for direct cases.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A015",
+      "requirement": "Adding an unregistered future product/mode makes the coverage test fail without changing historical file hashes.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A016",
+      "requirement": "Deliver an implementation-ready family-by-provider migration ledger; discovery identifiers are derived rather than invented in ChatGPT.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_inventory.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "docs/engineering/CME_1_FAMILY_PROVIDER_MIGRATION_INVENTORY.json"
+      ]
+    },
+    {
+      "id": "CME1-A017",
+      "requirement": "Use immutable separate role, connector material, stock form, fabrication route, grade, condition and source descriptors.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A018",
+      "requirement": "316, 316L and dual-certified stock remain distinct; no automatic upgrade to higher strength.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A019",
+      "requirement": "ASTM F593 fastener evidence cannot satisfy connector plate/angle/tee material-property requirements.",
+      "reference_fixture_ids": [
+        "F06"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A020",
+      "requirement": "No production Fy, Fu, E, G, nu, resistance factor or fatigue value is inferred from the label 316SS.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A021",
+      "requirement": "Source records bind edition, clause/table, physical units basis, stock/fabrication/condition/thickness/domain and approval scope.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A022",
+      "requirement": "Publication metadata, normative text verified, implemented method, verified material and applicable assembly qualification are different states.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A023",
+      "requirement": "User-typed references, sample certificates and synthetic tests cannot authorize a production strength value.",
+      "reference_fixture_ids": [
+        "F12"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A024",
+      "requirement": "Missing full stainless code/property sources are documented CME-2 gaps, not a reason to abandon completed CME-1 foundations.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A025",
+      "requirement": "A shared material-provider protocol avoids per-family stainless resistance copies.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A026",
+      "requirement": "Native FRP delegation preserves numeric values, warnings, statuses, references and legacy fingerprints exactly.",
+      "reference_fixture_ids": [
+        "F05"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A027",
+      "requirement": "Requested stainless never invokes the FRP connector resistance provider as a fallback.",
+      "reference_fixture_ids": [
+        "F12"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A028",
+      "requirement": "A provider key includes method/version, form/fabrication, material and applicability, not material label alone.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A029",
+      "requirement": "A provider registration does not imply application to all load paths or all check scopes.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A030",
+      "requirement": "Missing method returns structured unavailability and null capacity/utilization, never zero resistance disguised as evaluated failure.",
+      "reference_fixture_ids": [
+        "F04",
+        "F12"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A031",
+      "requirement": "A fake test provider exercises dispatch only through test injection, and cannot be imported/registered in runtime production.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A032",
+      "requirement": "FRP interface checks and fastener checks remain independent from connector-body provider selection.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A033",
+      "requirement": "Given the same resolved wrench and geometry, rigid-reference transport remains native/material neutral.",
+      "reference_fixture_ids": [
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17",
+        "F18"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A034",
+      "requirement": "Do not reuse stiffness/contact/prying/load-sharing response merely because transport is material neutral.",
+      "reference_fixture_ids": [
+        "F19",
+        "F20"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A035",
+      "requirement": "Material-signature change invalidates material-bound assembly-response authority.",
+      "reference_fixture_ids": [
+        "F11"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A036",
+      "requirement": "Preserve exact inherited FRP_FRP and FRP_STEEL row branches, including row order and applicability.",
+      "reference_fixture_ids": [
+        "F21",
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A037",
+      "requirement": "The FRP_STEEL branch is not automatically applied to arbitrary stainless/FRP stacks or multi-plane moment demand.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A038",
+      "requirement": "A material change revalidates canonical layers, local FRP load directions, single/double-lap applicability and shared bolt paths.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A039",
+      "requirement": "Complete unknown bolt tension/contact/prying remains unavailable, not zero.",
+      "reference_fixture_ids": [
+        "F11",
+        "F12"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A040",
+      "requirement": "Assembly-source and connector-body-source blockers retain separate provenance and cannot be blanket-cleared by SS316 selection.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A041",
+      "requirement": "Use native deterministic quantities; do not impose a new universal Decimal precision or floating-point reserialization.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A042",
+      "requirement": "Verify the six independent resolved-wrench fixtures and equal/opposite reactions exactly.",
+      "reference_fixture_ids": [
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17",
+        "F18"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A043",
+      "requirement": "Two compatibility counterexamples remain test-only and are never exposed as a moment-base solver.",
+      "reference_fixture_ids": [
+        "F19",
+        "F20"
+      ],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A044",
+      "requirement": "Display units, camera and ordering do not change physical plan identity; source-native unit basis remains recorded.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A045",
+      "requirement": "New material-plan fingerprint changes with actual material/source/method/fabrication identity, without rewriting old core fingerprints.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A046",
+      "requirement": "Changing units does not replace an ASTM inch-pound property with a separately tabulated metric property.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A047",
+      "requirement": "Numeric contract validation rejects NaN, infinities, booleans as numbers, nonphysical domains and ambiguous overlapping source records.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A048",
+      "requirement": "Plan/source mismatch invalidates response, including sign-domain, geometry, thickness, temperature or provider-version changes.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_adverse.py",
+        "backend/tests/api/test_connector_material_native_compatibility.py"
+      ]
+    },
+    {
+      "id": "CME1-A049",
+      "requirement": "Expose read-only capability information in one additive versioned endpoint; it executes no resistance or material mutation.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A050",
+      "requirement": "Expose a separate stateless material-assignment planning endpoint that enforces role/identity guards before dispatch.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A051",
+      "requirement": "Leave all existing product endpoints, FRP request contracts, geometry defaults, units, layouts and normal production selectors unchanged.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A052",
+      "requirement": "No operative stainless design dropdown or automatic conversion is inserted into existing family editors in CME-1.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A053",
+      "requirement": "Provide an optional read-only Connector Material Readiness diagnostic with no new primary design category.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A054",
+      "requirement": "Diagnostic clearly states FRP-only members and stainless rollout pending; cannot imply complete design or certification.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A055",
+      "requirement": "No source documents, local paths, credentials or nonpublic supplier records leak through diagnostic/planning responses.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A056",
+      "requirement": "Browser smoke tests verify existing shear/moment paths plus both new endpoints/diagnostic states and no unintended design calls.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_materials.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "frontend/tests/connectorMaterialReadiness.test.tsx",
+        "frontend/tests/cme1TeeHistoricalLimitation.test.tsx",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A057",
+      "requirement": "Verify all thirteen pre-existing annotated tag object identities and peeled targets before/after; Stage 4.5 target is exact.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A058",
+      "requirement": "FRP compatibility uses real native fixtures per discovered product/mode, including source-present and source-absent paths where available.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A059",
+      "requirement": "Legacy omission/default handling preserves accepted behavior and never silently converts legacy FRP connectors to stainless.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A060",
+      "requirement": "New all-family inventory additions do not rewrite historical manifests, goldens, source prefixes or frozen decision records.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A061",
+      "requirement": "Known successor-hostile tests can be maintained in one tests-only batch while preserving immutable historical evidence and negative tamper tests.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A062",
+      "requirement": "Future evolution tests distinguish historical identity from current approved change scope; no permanent whole-current-tree hash lock is introduced.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A063",
+      "requirement": "Shallow no-tags verification uses existing offline manifest/snapshot authority with truthful evidence limits, no silent fetch or skip.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A064",
+      "requirement": "Existing Stage 4.5 2x1/1x1 centered defaults, action signs, LAST VALID and recovery stay unchanged.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "backend/tests/api/test_connector_material_native_compatibility.py",
+        "backend/tests/api/test_connector_material_mode_compatibility.py",
+        "backend/tests/calculation/test_scope_boundaries.py",
+        "backend/tests/calculation/test_stage_4_5_scope_authority.py",
+        "backend/tests/api/test_cme1_tee_historical_limitation.py",
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A065",
+      "requirement": "Full current npm/runtime audits and pip consistency pass before publication; no suppression or audit bypass.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A066",
+      "requirement": "Preserve dependency/lockfile/workflow scope except the order explicitly permits a compatible dev-only security successor.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A067",
+      "requirement": "Retain obsolete drafts in other worktrees unmodified; use explicit-path staging and no destructive reset/cleanup.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A068",
+      "requirement": "Archive the two approved package artifacts byte-exact with matching input/index/blob hashes, without self-hash recursion.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A069",
+      "requirement": "Consolidate safely discoverable blockers before mutation; implement missing-source states without waiting for irrelevant numerical sources.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A070",
+      "requirement": "Run complete backend/frontend tests and configured coverage/static/build gates after the final code mutation.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A071",
+      "requirement": "Verify the exact committed object in a fresh depth-one/no-tags/no-alternates clone before push.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A072",
+      "requirement": "Push normally only after local/isolated gates; direct four-job CI afterward; no force, no tags, no automatic freeze.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A073",
+      "requirement": "Completion distinguishes implemented foundation from stainless numerical provider coverage and from migrated family coverage.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A074",
+      "requirement": "Publish exact branch/ref/count and native evidence rather than inferring GitHub success or reading Windows reports unavailable to ChatGPT.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md"
+      ]
+    },
+    {
+      "id": "CME1-A075",
+      "requirement": "List every required stainless rule/property/source gap for plates, angles, tees and special connecting bodies in one ledger.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md",
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_inventory.py"
+      ]
+    },
+    {
+      "id": "CME1-A076",
+      "requirement": "Map applicability-restricted reinforcements separately so blanket any-plate substitution cannot bypass a code restriction.",
+      "reference_fixture_ids": [
+        "F08"
+      ],
+      "evidence": [
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md",
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_inventory.py"
+      ]
+    },
+    {
+      "id": "CME1-A077",
+      "requirement": "Plan staged shared provider implementation followed by all-family migration; no family can be silently left out.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md",
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_inventory.py"
+      ]
+    },
+    {
+      "id": "CME1-A078",
+      "requirement": "Do not claim a stainless material choice by itself resolves existing moment-base/FRP support qualification gaps.",
+      "reference_fixture_ids": [
+        "F11"
+      ],
+      "evidence": [
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md",
+        "backend/tests/calculation/test_connector_material_foundation.py",
+        "backend/tests/api/test_connector_material_inventory.py"
+      ]
+    },
+    {
+      "id": "CME1-A079",
+      "requirement": "Leave an approved verified local application/browser running for owner inspection, with actual ports/PIDs reported.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    },
+    {
+      "id": "CME1-A080",
+      "requirement": "Do not implement CME-2 numerical stainless rules or activate family conversions under this order.",
+      "reference_fixture_ids": [],
+      "evidence": [
+        "docs/engineering/CME_1_VERIFICATION_AND_HANDOFF.md",
+        "docs/engineering/CME_1_SOURCE_METHOD_AND_MIGRATION_LEDGER.md"
+      ]
+    }
+  ]
+}

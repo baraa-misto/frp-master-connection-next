@@ -1,0 +1,268 @@
+{
+  "schema": "frp-master-connection-stage-3.3-clip-angle-family-freeze-manifest-v1",
+  "schema_version": "1.0.0",
+  "stage": "3.3",
+  "name": "Clip-Angle Family Accepted Baseline",
+  "freeze_scope": "accepted-single-and-symmetric-paired-clip-angle-family-governance-and-reproducibility",
+  "controlling_order": {
+    "name": "FRP_MASTER_CONNECTION_STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_CODEX_ORDER.md",
+    "sha256": "829F7413F1F63F5E35740F4C5E941C5307A1A7300C59B91BA60383F135A57CF8"
+  },
+  "accepted_product_baseline": {
+    "commit": "a15f6f9bc820bc7e2d466db8519bcb9582b96e55",
+    "subject": "fix: restore material axes across clip-angle scenes",
+    "commit_count": 74,
+    "tracked_file_count": 430,
+    "branch": "main"
+  },
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "resolution": "the commit containing this manifest and targeted by stage-3.3-clip-angle-family-freeze",
+    "expected_commit_count": 75,
+    "expected_subject": "chore: freeze Stage 3.3 clip-angle family baseline",
+    "tag": "stage-3.3-clip-angle-family-freeze",
+    "tag_type": "annotated"
+  },
+  "repository_identities": {
+    "accepted_backend_tree": "6f727b3b1ed71992cee652ec6a688d23e0031ba9",
+    "accepted_frontend_tree": "3a03a88baa84c2208e6249c70bb89e29ca6ed476",
+    "accepted_backend_src_tree": "35f8d93f48cc340c75cf26860d297bc920ddfd49",
+    "accepted_frontend_src_tree": "ea62799a02b41c30dbc25c9ad250a318aba953ae",
+    "accepted_workflow_tree": "20edd491455e6329c4565bc72cd7b88e29d3f7b1",
+    "accepted_engineering_tree": "51d046f0cdc720c6ed9fb9ad5b27e6d36512462c",
+    "accepted_golden_tree": "d62e968dbacc50cc95d351c0bba101e4ce23bdb4",
+    "frontend_package_json": {
+      "path": "frontend/package.json",
+      "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    },
+    "frontend_package_lock": {
+      "path": "frontend/package-lock.json",
+      "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+      "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+    }
+  },
+  "existing_immutable_freezes": [
+    {
+      "stage": "2.3",
+      "tag": "stage-2.3-interface-geometry-freeze",
+      "tag_type": "annotated",
+      "tag_object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd",
+      "peeled_target": "5bc545ab8251f9bd49dedc776962937ed5e822a2"
+    },
+    {
+      "stage": "3.2",
+      "tag": "stage-3.2-tee-connection-freeze",
+      "tag_type": "annotated",
+      "tag_object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0",
+      "peeled_target": "d16b354732c90bf3bf7847c62be652c230a9f91e"
+    }
+  ],
+  "accepted_ci_evidence": {
+    "provider": "GitHub Actions",
+    "run_number": 69,
+    "baseline_commit": "a15f6f9bc820bc7e2d466db8519bcb9582b96e55",
+    "status": "accepted",
+    "duration": "4m35s",
+    "jobs": [
+      "Backend Ubuntu 24.04: PASS",
+      "Backend Windows 2025: PASS",
+      "Frontend Ubuntu 24.04: PASS",
+      "Frontend Windows 2025: PASS"
+    ],
+    "jobs_green": 4,
+    "jobs_total": 4,
+    "backend_tests_passed": 2342,
+    "backend_configured_coverage_percent": 100,
+    "frontend_tests_passed": 408,
+    "frontend_test_files": 26,
+    "frontend_configured_coverage_percent": 100,
+    "dependency_vulnerabilities": 0
+  },
+  "accepted_visual_evidence": {
+    "status": "accepted",
+    "authority": "direct user approval in the controlling Codex task",
+    "acceptance_date": "2026-08-27",
+    "single_clip_angle": [
+      "actual Flat Plate, Angle, Channel, W/I, RHS, and SRS connected geometry",
+      "actual seven-target support geometry",
+      "physical trim and contact-side placement",
+      "inclination and roll",
+      "RHS and SRS full-through bolts with endpoint hardware",
+      "current-preview versus design-limitation separation",
+      "region-embedded axes on connected member, connector, and support"
+    ],
+    "symmetric_paired_clip_angles": [
+      "two real mirrored clip angles",
+      "one common connected-member bolt group",
+      "two distinct support groups",
+      "six connected profiles and seven support targets",
+      "Angle selected-leg topology",
+      "RHS and SRS common and support full-through hardware",
+      "region-embedded axes on connected members, both connectors, and support"
+    ],
+    "rectangular_architecture": [
+      "RHS visibly hollow",
+      "SRS visibly solid",
+      "continuous endpoint-authored bolt hardware",
+      "external-only heads, nuts, and washers"
+    ]
+  },
+  "acceptance_chain": [
+    {"commit": "926ee1a3a68a930a01b9d82e9c02ba3bd161fc7e", "subject": "feat: add single clip-angle connector"},
+    {"commit": "afc214513b9f4359f83ec859775fad968a982eca", "subject": "fix: bind clip-angle preview to selected profile"},
+    {"commit": "cea217dda6d48fb1c5603a8d315b96f63a2af0f5", "subject": "fix: place clip angle outside connected member"},
+    {"commit": "e925b13084828f78a37742e84b86aac2ce1b3ef1", "subject": "fix: separate clip-angle preview from design limits"},
+    {"commit": "f4ae7d308644024ed31bcf0114b550426f4e45ef", "subject": "fix: render clip-angle member end trim"},
+    {"commit": "cb87761bf4298cd78f6b538e5fe2c84a385fd780", "subject": "feat: add symmetric paired clip-angle connector"},
+    {"commit": "657ebb00ec48fbfb9869ba7ced193f967daf0ded", "subject": "feat: add full-through rectangular bolt architecture"},
+    {"commit": "eda492fa6ebab89bd8ef4f54ed595ebd787b6b1c", "subject": "feat: expand tee and single-angle support profiles"},
+    {"commit": "8ead20714ff18cfc383d0bcd8fa422eeaf3c90bf", "subject": "fix: restore c2 tee rhs and single-angle previews"},
+    {"commit": "cd854d3e8375ed7552cadfa157ae5e8771bda53a", "subject": "fix: orient connected rhs through bolts"},
+    {"commit": "3ab4d2c81c264ad698c9f13d78d8be8bbb86a626", "subject": "feat: expand paired clip-angle profiles and supports"},
+    {"commit": "a15f6f9bc820bc7e2d466db8519bcb9582b96e55", "subject": "fix: restore material axes across clip-angle scenes"}
+  ],
+  "controlled_stage_3_3_artifacts": [
+    {"artifact_id": "ART-219", "revision": "Stage 3.3A", "kind": "engineering-specification", "path": "docs/engineering/STAGE_3_3A_SINGLE_CLIP_ANGLE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "275D9E83F0C9E171723C274876835EE7D8DD279809429CCEC40FDDC7CD1A7F21"},
+    {"artifact_id": "ART-220", "revision": "Stage 3.3A", "kind": "golden-benchmark", "path": "backend/tests/golden/stage_3_3a_single_clip_angle_golden_benchmarks_rc1.json", "sha256": "C2FFE88CF80C474C39099D8C74682B116DAA8CACFCF29F42C54862C7AC577159"},
+    {"artifact_id": "ART-221", "revision": "Stage 3.3A", "kind": "authority-ledger", "path": "docs/qa/STAGE_3_3A_SINGLE_CLIP_ANGLE_AUTHORITY_LEDGER_RC1.md", "sha256": "A2936781B1EB3CD80F4F36448ADEF3FA034D83127E68DBBEF678029FBBB9FFEB"},
+    {"artifact_id": "ART-223", "revision": "Stage 3.3B", "kind": "engineering-specification", "path": "docs/engineering/STAGE_3_3B_SYMMETRIC_PAIRED_CLIP_ANGLE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "A0804095AB0C52E281AC4727169CCFAE46A56E978586BEF2194134B058F7E542"},
+    {"artifact_id": "ART-224", "revision": "Stage 3.3B", "kind": "golden-benchmark", "path": "backend/tests/golden/stage_3_3b_symmetric_paired_clip_angle_golden_benchmarks_rc1.json", "sha256": "6C6BB25C31873AEBDC512AD50B669EB125FCF207118010A9C56D37C45E62FE99"},
+    {"artifact_id": "ART-225", "revision": "Stage 3.3B", "kind": "authority-ledger", "path": "docs/qa/STAGE_3_3B_SYMMETRIC_PAIRED_CLIP_ANGLE_AUTHORITY_LEDGER_RC1.md", "sha256": "408DA8DC9C53069749ED3BBD3644CA45E136029FF6DE92DCE5D753C68A1077E9"},
+    {"artifact_id": "ART-227", "revision": "Stage 3.3C1", "kind": "engineering-specification", "path": "docs/engineering/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "0A73AC9910E506E9E721A98EBEE39A072C096364513C62C63B736E4642591957"},
+    {"artifact_id": "ART-228", "revision": "Stage 3.3C1", "kind": "golden-benchmark", "path": "backend/tests/golden/stage_3_3c1_shared_rectangular_section_full_through_bolt_golden_benchmarks_rc1.json", "sha256": "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5"},
+    {"artifact_id": "ART-229", "revision": "Stage 3.3C1", "kind": "authority-ledger", "path": "docs/qa/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_AUTHORITY_LEDGER_RC1.md", "sha256": "21009D185C999CBDD08EBC70C2A9CE38C2AF4A221C60C4799D3E91230797946C"},
+    {"artifact_id": "ART-231", "revision": "Stage 3.3C2", "kind": "engineering-specification", "path": "docs/engineering/STAGE_3_3C2_TEE_SINGLE_CLIP_SUPPORT_RECTANGULAR_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "530CCB7A3743DE429AC0CF663D81E528660C73D0A82352D826EE6B67BCC8BC3B"},
+    {"artifact_id": "ART-232", "revision": "Stage 3.3C2", "kind": "golden-benchmark", "path": "backend/tests/golden/stage_3_3c2_tee_single_clip_support_rectangular_expansion_golden_benchmarks_rc1.json", "sha256": "CD365FAF66AC004218DABD825C3A354BFD756F604D0583EFD309A93547B367BC"},
+    {"artifact_id": "ART-233", "revision": "Stage 3.3C2", "kind": "authority-ledger", "path": "docs/qa/STAGE_3_3C2_TEE_SINGLE_CLIP_SUPPORT_RECTANGULAR_EXPANSION_AUTHORITY_LEDGER_RC1.md", "sha256": "F958ADD9DB039B9F0699D7716CD36D1A9B1DDDCDC7CFEF7FF502A7E2CAE7CF87"},
+    {"artifact_id": "ART-236", "revision": "Stage 3.3C3", "kind": "engineering-specification", "path": "docs/engineering/STAGE_3_3C3_PAIRED_CLIP_ANGLE_PROFILE_SUPPORT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "86E6A20040250EF787290569D54FB1CDB57F073599CC1E9F8C435F0E03A4F0F3"},
+    {"artifact_id": "ART-237", "revision": "Stage 3.3C3", "kind": "golden-benchmark", "path": "backend/tests/golden/stage_3_3c3_paired_clip_angle_profile_support_expansion_golden_benchmarks_rc1.json", "sha256": "DFBA62165C09DCC784A8EDD791BF9AD61BDEBE9AFC541CE7B3B06C8287FE1A3C"},
+    {"artifact_id": "ART-238", "revision": "Stage 3.3C3", "kind": "authority-ledger", "path": "docs/qa/STAGE_3_3C3_PAIRED_CLIP_ANGLE_PROFILE_SUPPORT_EXPANSION_AUTHORITY_LEDGER_RC1.md", "sha256": "A0DD2221D18525496AEE98B9069F600C912BF2C9478CE4DFB2B7A42C6C3D83AE"}
+  ],
+  "inherited_authorities": [
+    {"path": "docs/engineering/CALCULATION_SLICE_1_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "DA47468DCEE41462A19461BC102670A8DFB125195E7AA815CAB222A035317B71"},
+    {"path": "backend/tests/golden/calculation_slice_1_rc2.json", "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "44431A8921CF1ADF9C7D0F7F022C9615265308A41BE589B1EE5150A7D7886F99"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc1.json", "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc2.json", "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"},
+    {"path": "docs/qa/CALCULATION_SLICE_2_RC2_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "F2E0A253C75503C3F8FA29E5E78A4A8E4DF98204A43CAF4B07000EC65183A7A4"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470"},
+    {"path": "backend/tests/golden/calculation_slice_3_rc1.json", "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "CA091B0B6054F82980E5A9AD8D923080F9DFD2FB4CEDA08E80E3122C1B28477A"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F"},
+    {"path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json", "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "3E85C61AD10865B5293165DF5847B63E96F80D19361E194A180B40EFB403ED27"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "CBC11F8793F7B85873DB5C52D7A90536DD20CB87005895EAF3B43D319AB1B5D6"},
+    {"path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json", "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "477D8F19C50B39ED10EEFE95A3C93F73897147BB456CF412350960C9C3D24E10"},
+    {"path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json", "sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E"},
+    {"path": "docs/governance/STAGE_3_3A_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md", "sha256": "1FDA76A86891FBD871647ABB7A29187B1FD75E82B523A4D97073A8F65CA2B230"},
+    {"path": "docs/governance/STAGE_3_3C1_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md", "sha256": "065E160CED57F204F4F1DBF710B62DBBC682D31E98D12AD0223C3AE4246007DB"},
+    {"path": "docs/governance/STAGE_3_3C2_STAGE_3_2_TEE_RHS_FULL_THROUGH_SUCCESSOR.md", "sha256": "EEB183648C63BD339F0D699DEDBB5E921276AC2CE09D2ABE24D7E0A015880618"},
+    {"path": "docs/governance/STAGE_3_3C2_STAGE_3_3A_SINGLE_ANGLE_RHS_FULL_THROUGH_SUCCESSOR.md", "sha256": "D5AED8E8544F544A303EDDE3C58B542ED53F789324E3744EAA9CB7C4FE5BE042"},
+    {"path": "docs/qa/STAGE_3_3C3_R1_MATERIAL_AXES_COVERAGE_BINDING_CORRECTION.md", "sha256": "937BF076DDCEB49875741971031F8DAC7EBB1FE1FC27CE00E7DE258B928ACF82"}
+  ],
+  "benchmark_identities": {
+    "stage_3_3c1": ["C1_G1_RHS_CORE_FULL_THROUGH_PATH", "C1_G2_SRS_CORE_FULL_THROUGH_PATH", "C1_G3_RHS_ONE_SIDED_EXTERNAL_CONNECTOR_STACK", "C1_G4_RHS_PAIRED_EXTERNAL_CONNECTOR_STACK", "C1_G5_SRS_PAIRED_EXTERNAL_CONNECTOR_STACK", "C1_G6_RHS_OPPOSING_WALL_HOLE_ALIGNMENT", "C1_G7_RHS_BOTH_WALL_CONTAINMENT_REQUIRED", "C1_G8_SUPPORT_TARGET_REGISTRY", "C1_G9_NO_INTERNAL_RHS_HARDWARE", "C1_G10_CAVITY_IS_NOT_MATERIAL", "C1_G11_EXACT_US_SI_EQUIVALENCE", "C1_G12_UNSUPPORTED_LOCAL_RESISTANCE_REMAINS_FAIL_CLOSED"],
+    "stage_3_3c2": ["C2_G1_TEE_W_COLUMN_WEB", "C2_G2_TEE_CHANNEL_COLUMN_WEB", "C2_G3_TEE_ANGLE_COLUMN_LEG", "C2_G4_TEE_RHS_COLUMN_FULL_THROUGH", "C2_G5_TEE_SRS_COLUMN_FULL_THROUGH", "C2_G6_SINGLE_W_COLUMN_WEB", "C2_G7_SINGLE_CHANNEL_COLUMN_WEB", "C2_G8_SINGLE_ANGLE_COLUMN_LEG", "C2_G9_SINGLE_RHS_COLUMN_FULL_THROUGH", "C2_G10_SINGLE_SRS_COLUMN_FULL_THROUGH", "C2_G11_TEE_CONNECTED_RHS_SUCCESSOR", "C2_G12_SINGLE_CONNECTED_RHS_SUCCESSOR", "C2_G13_TEE_CONNECTED_SRS", "C2_G14_SINGLE_CONNECTED_SRS", "C2_G15_RHS_HARDWARE_AND_CONTAINMENT", "C2_G16_US_SI_EQUIVALENCE", "C2_G17_LEGACY_NON_RHS_INVARIANCE", "C2_G18_RECTANGULAR_LIMITATIONS_ARE_NOT_GEOMETRY_ERRORS"],
+    "stage_3_3c3": ["C3_G1_CONNECTED_ANGLE_VALID", "C3_G2_CONNECTED_ANGLE_HEEL_COLLISION", "C3_G3_CONNECTED_ANGLE_SHARING_NOT_AUTOMATIC", "C3_G4_CONNECTED_RHS_COMMON_FULL_THROUGH", "C3_G5_CONNECTED_SRS_COMMON_FULL_THROUGH", "C3_G6_SUPPORT_W_COLUMN_WEB", "C3_G7_SUPPORT_CHANNEL_COLUMN_WEB", "C3_G8_SUPPORT_ANGLE_COLUMN_LEG", "C3_G9_SUPPORT_RHS_COLUMN_FULL_THROUGH", "C3_G10_SUPPORT_SRS_COLUMN_FULL_THROUGH", "C3_G11_CONNECTED_RHS_ONE_COMMON_BOLT", "C3_G12_SUPPORT_RHS_EXTERNAL_HARDWARE", "C3_G13_SRS_SOLID_IDENTITY", "C3_G14_US_SI_EQUIVALENCE", "C3_G15_EXISTING_B_FINGERPRINT_INVARIANCE", "C3_G16_UNSUPPORTED_DISTRIBUTION_CURRENT_GEOMETRY", "C3_G17_TRIM_ANGLE", "C3_G18_TRIM_RECTANGULAR", "C3_G19_NO_DUPLICATE_BOLTS", "C3_G20_TEE_SINGLE_INVARIANCE"]
+  },
+  "regression_fingerprints": {
+    "stage_3_3a_accepted": {
+      "BRACE_FLAT_PLATE": "01b37ccfb93c33c700157ee16b1d70fe6d2ac0d502b77403654ee81cb4272d71",
+      "BRACE_ANGLE": "d5f64bc569730599664fd29f7e0800aa256ff09061efb9fffa5ae627be137ac2",
+      "BRACE_CHANNEL": "deea9ea9408ebd5a9e8c212e2266b9e51edf2339fb7056aace19ef1e83447dac",
+      "BRACE_WIDE_FLANGE": "2039514faf34f9889f3c384e6179630b4e77576fccb201c8938369f290db05b6",
+      "BRACE_RHS": "8228c0573f32282cc00097d9ab037538abca29518a3b5f97c568abf4a8a31d33",
+      "BEAM_FLAT_PLATE": "3fe6936cf987a040d3aabab833c10563bfdb178bb6b14af9f4040f9834544c0c",
+      "BEAM_ANGLE": "14894b938455d80d6e38986b48adb3ae38087120917ce71cf788d92104737656",
+      "BEAM_CHANNEL": "eee136baca282b251850c5ec8b99f599ba12837a8063c719e363d946bf928974",
+      "BEAM_WIDE_FLANGE": "598499a9d0fa4f4cf32b4e8b669111010d948728b3124a0b524f59cad6251ef1",
+      "BEAM_RHS": "2c168d03538ec9a98e996141fd9e8cf07b1588e7a4cf246562a2f7fa3c3ae563"
+    },
+    "stage_3_3b": {
+      "canonical": "1a1967aa0ed47593b5c33fbdef82ae0a4e18dc082500f8d794962b831fd16b5e",
+      "engineering": "67fbf413b78f57f73eebb63c467d12c9e299f3edf603edc7f51eeab6a68e1db8"
+    },
+    "current_single_profiles": {
+      "FLAT_PLATE": "a7cb1ae63b16a316ba13b8480270a36b6df537b15f9b01ee752d87216cd3e556",
+      "WIDE_FLANGE": "b87c80c632c9591757223e5a7e01d88c2301ac2db5a5cdf1d9f0cce2f37e9310",
+      "CHANNEL": "8fcff6fe14b96a03c4162afe0b5a2f21a9a0a5e074b45af35b8a4b1c6032fccd",
+      "ANGLE": "523928b8f9ecf676050c96d628346211722d294a7b3cf07489815ca25400b8c2",
+      "RHS": "30e855c9cb8b7ffa80c67f95cef3900df78408f306b809a1f3790037fc46316d",
+      "SRS": "7dec6a5cd7ba8884aaa4d2d50fc475e35257602e6b840d09a026c1058fc754fc"
+    },
+    "current_paired_profiles": {
+      "FLAT_PLATE": "25081c5b3ee3fbcc6f19d283406fb0f6b33ae800f893a11fdb5128f8ba0d18d6",
+      "WIDE_FLANGE": "49415e2d24496e7a8f4a550a93f8124053f0295c1754012ac7eb237573c42600",
+      "CHANNEL": "d40c2a9b4110846f25ce52ada607cc62d11b58cad17ad5ac06a34c033a16d00a",
+      "ANGLE": "db52bf2334265f15ef9a24b415a6e48801966773d2e524d6c4a204e9d63bb0c7",
+      "RHS": "ac3b1a52b1677214030a334fdbabf13a841e1a758e5a0b70b3c2cef231ef17b0",
+      "SRS": "1f5e555d2c7007b9dcb7dc3db9fe52b2c5a6102ae6ab9867573922efdabaf9ff"
+    },
+    "current_single_supports": {
+      "W_COLUMN_FLANGE": "a7cb1ae63b16a316ba13b8480270a36b6df537b15f9b01ee752d87216cd3e556",
+      "W_BEAM_FLANGE": "8dd74b97fbd770658b21b204957994b7ad24326c643b2afaedcb582da41c3c62",
+      "W_COLUMN_WEB": "bfca041b7922a5a197ea3daa282f30c218ee5f7afb23db813fe32c7fbec713a6",
+      "CHANNEL_COLUMN_WEB": "c760357852794ebbc986059477224852f67a4238320b54aba950ce76a0e780ab",
+      "ANGLE_COLUMN_LEG": "f38ec10901b76faf58fac4be46b21705f0e56beb02fd7108b3f4e1ef984b6349",
+      "RHS_COLUMN_WALL": "7cb5f7a92e3c22ad012bd729e48a8c515b3ae3cac68ac7c1cf2d96fa0b911928",
+      "SRS_COLUMN_FACE": "eac55e85afacfd2db27c2590482935d4138a28326cb4095c2e53d71455c20caa"
+    },
+    "current_paired_supports": {
+      "W_COLUMN_FLANGE": "db52bf2334265f15ef9a24b415a6e48801966773d2e524d6c4a204e9d63bb0c7",
+      "W_BEAM_FLANGE": "c62fc003b952eef73c1b1674023af9c604a35508a4ee6723573b189dec3c303a",
+      "W_COLUMN_WEB": "ec6125fa424b8e29ed97bb6a47c03f263c0ea4eaa9acaff27e53fc723902b2ee",
+      "CHANNEL_COLUMN_WEB": "6d6f21dea0d2142b8b1c5de830d29ea2dcfd6bae0e8b7ab9d4e4b5134367fe08",
+      "ANGLE_COLUMN_LEG": "799d766c176779e3e696b3237a52e7446771235916c2d7fe3011e8b75d66ce4e",
+      "RHS_COLUMN_WALL": "ead500c156f6b9cb1dc5827ccf6d754997059aa1592d5c40bf17f6de07405b10",
+      "SRS_COLUMN_FACE": "cf9d1521897b94065504d5741ce357b02a19c972801406ef5933483416946070"
+    },
+    "c2_rhs_successor_transitions": {
+      "tee_historical_frozen_rhs": "77fe6c18617c2900e88024b0346c1fc2856b787b2e53024984704564c9c1f196",
+      "tee_accepted_legacy_r2_successor": "cbb32000a9d4401d42116623a4d6ff43089fed59d3ff3b899ccc15c49c67131a",
+      "tee_controlled_r8_successor": "9269fc62676024a45241ce2718bf250e22714159db9b3b0b8918992e81f1c0d5",
+      "single_brace_historical_rhs": "134b392d915a7a9fc6265e308ec19e2fc1fb6d3c62e2f8ca0c516d90b571e00f",
+      "single_brace_successor": "8228c0573f32282cc00097d9ab037538abca29518a3b5f97c568abf4a8a31d33",
+      "single_beam_historical_rhs": "c3416a2bdb7505417782c75a9bb5c4b2e1963f7ef041857344e0147b253bd75d",
+      "single_beam_successor": "2c168d03538ec9a98e996141fd9e8cf07b1588e7a4cf246562a2f7fa3c3ae563",
+      "tee_c2_current": "a089c44a4652b207ff1145d8a5790154855c1078cf006a6022c8d649f947a6f9",
+      "single_brace_c2_current": "16ae7ce854c5b5b4d34da713373bcf5924f5fc411687e5dc0a765928e5db3288",
+      "single_beam_c2_current": "1c995ab0e90b76cd405bff1c5f4990bef2fdbba83e12daac47dffd9fbace7c51"
+    },
+    "c3_r1_material_axis_transition_count": 0,
+    "c3_r1_material_basis_transition_count": 0
+  },
+  "accepted_behavioral_contracts": {
+    "single_clip_angle": ["one physical clip angle", "independent connected and support groups", "six connected profile options", "seven support targets", "real profile geometry", "inclination and roll", "member-end trim", "full-through RHS and SRS bolts", "endpoint hardware", "region material axes"],
+    "symmetric_paired_clip_angles": ["two identical mirrored clip angles", "one common member group", "two distinct support groups", "six connected profile options", "seven support targets", "Angle selected-leg topology", "RHS and SRS common full-through or full-depth groups", "RHS and SRS support full-through or full-depth groups", "exact Stage 3.3B symmetry and action proof boundary"],
+    "shared_rectangular_core": ["RHS near wall, cavity, and far wall", "RHS cavity is FREE_SHANK_SPAN", "SRS is continuous solid", "one physical bolt per axis", "both-wall or both-face containment", "external-only hardware", "no internal RHS nut or washer"],
+    "visualization_and_state": ["backend-authoritative geometry", "current versus last-valid separation", "endpoint-based hardware orientation", "region-embedded material axes", "axes on connected, connector, and support regions", "presentation-only axis toggle", "exact U.S./SI equivalence"]
+  },
+  "deliberate_limitations": [
+    "SINGLE_CLIP_ANGLE_CONNECTOR_BODY_RESISTANCE = NOT_EVALUATED",
+    "PAIRED_CLIP_ANGLE_BODY_RESISTANCE = NOT_EVALUATED",
+    "COMMON_THROUGH_BOLT_DOUBLE_SHEAR_RESISTANCE = NOT_EVALUATED",
+    "PAIRED_CLIP_ANGLE_BRANCH_COMPATIBILITY = NOT_EVALUATED",
+    "PAIRED_FRP_CLIP_ANGLE_QUALIFICATION = NOT_EVALUATED",
+    "RHS_LOCAL_WALL_RESPONSE = NOT_EVALUATED",
+    "RHS_SLEEVE_OR_CRUSH_TUBE_REQUIREMENT = NOT_EVALUATED",
+    "SOLID_RECTANGULAR_FULL_DEPTH_RESISTANCE_APPLICABILITY = NOT_EVALUATED",
+    "no automatic paired 50/50 sharing unless the Stage 3.3B proof passes",
+    "Angle or asymmetric sharing may remain NOT_EVALUATED",
+    "no invented RHS or SRS local resistance",
+    "unsupported normal, prying, or tension paths remain fail-closed where applicable",
+    "moment connections remain outside Stage 3.3",
+    "session and draft boundaries remain where applicable",
+    "known supported numerical failures retain FAIL precedence"
+  ],
+  "future_stage_policy": [
+    "Future stages may reuse or refactor shared infrastructure but may not silently alter frozen Stage 3.3 contracts.",
+    "Any intentional change must identify the frozen behavior being superseded.",
+    "A new controlled authority is required if engineering meaning changes.",
+    "Exact before and after fingerprint transitions are required.",
+    "Unaffected Stage 3.3 regression evidence is required.",
+    "Historical freeze and tag evidence must be retained.",
+    "The stage-3.3-clip-angle-family-freeze tag is immutable."
+  ]
+}

@@ -1,0 +1,480 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_3B_SYMMETRIC_PAIRED_CLIP_ANGLE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering values are exact decimal strings.",
+  "source_basis": {
+    "standard": "ASCE/SEI 74-23 with Erratum 1",
+    "locators": [
+      "8.1",
+      "8.3.4",
+      "C8.3.4.1"
+    ],
+    "interpretation": "Equal sharing is permitted only for the controlled pure reaction-shear component parallel to L_P after geometry, stiffness, action, and reference-point symmetry are proven."
+  },
+  "semantic_pair_frame": {
+    "S_P": [
+      "1",
+      "0",
+      "0"
+    ],
+    "P_P": [
+      "0",
+      "1",
+      "0"
+    ],
+    "L_P": [
+      "0",
+      "0",
+      "1"
+    ],
+    "handedness": "S_P cross P_P = L_P",
+    "symmetry_plane": "S_P = 0"
+  },
+  "controlled_default": {
+    "connected_member": {
+      "role": "BRACE",
+      "profile": "FLAT_PLATE",
+      "width_in": "6",
+      "thickness_in": "0.5",
+      "member_view_length_in": "8",
+      "inclination_degrees": "0",
+      "profile_roll_degrees": "0",
+      "mid_surface_S_in": "0",
+      "positive_face_S_in": "0.25",
+      "negative_face_S_in": "-0.25"
+    },
+    "support": {
+      "role": "W_COLUMN_FLANGE",
+      "selected_flange": "POSITIVE_LOCAL_Z",
+      "length_in": "16",
+      "depth_in": "8",
+      "flange_width_in": "10",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75"
+    },
+    "pair": {
+      "identity": "SYMMETRIC_PAIRED_CLIP_ANGLES",
+      "material_family": "PULTRUDED_FRP",
+      "connected_leg_width_in": "4",
+      "support_leg_width_in": "4",
+      "angle_thickness_in": "0.5",
+      "connector_length_in": "8",
+      "length_anchor": "CENTER",
+      "anchor_position_in": "0",
+      "positive_connected_contact_S_in": "0.25",
+      "positive_outer_connected_face_S_in": "0.75",
+      "negative_connected_contact_S_in": "-0.25",
+      "negative_outer_connected_face_S_in": "-0.75",
+      "common_stack_total_material_thickness_in": "1.5",
+      "positive_support_group_centroid_S_in": "2.5",
+      "negative_support_group_centroid_S_in": "-2.5"
+    },
+    "fastener": {
+      "material_family": "STAINLESS_STEEL_316",
+      "snapshot": "ASTM_F593_17_GROUP_2_316_316L",
+      "bolt_diameter_in": "0.5",
+      "hole_diameter_in": "0.563",
+      "hole_radius_in": "0.2815"
+    },
+    "common_member_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "2",
+      "gauge_in": "2",
+      "P_coordinates_in": [
+        "1.25",
+        "3.25"
+      ],
+      "L_coordinates_in": [
+        "-1",
+        "1"
+      ],
+      "bolt_axis": [
+        "-1",
+        "0",
+        "0"
+      ],
+      "layer_order_from_head_to_nut": [
+        "POSITIVE_CONNECTED_LEG",
+        "CONNECTED_MEMBER",
+        "NEGATIVE_CONNECTED_LEG"
+      ]
+    },
+    "positive_support_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "2",
+      "gauge_in": "2",
+      "local_width_coordinates_in": [
+        "1.25",
+        "3.25"
+      ],
+      "global_S_coordinates_in": [
+        "1.5",
+        "3.5"
+      ],
+      "L_coordinates_in": [
+        "-1",
+        "1"
+      ],
+      "bolt_axis": [
+        "0",
+        "-1",
+        "0"
+      ]
+    },
+    "negative_support_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "2",
+      "gauge_in": "2",
+      "local_width_coordinates_in": [
+        "1.25",
+        "3.25"
+      ],
+      "global_S_coordinates_in": [
+        "-1.5",
+        "-3.5"
+      ],
+      "L_coordinates_in": [
+        "-1",
+        "1"
+      ],
+      "bolt_axis": [
+        "0",
+        "-1",
+        "0"
+      ]
+    },
+    "angle_leg_complete_hole_clearances_in": {
+      "heel": "0.4685",
+      "free_edge": "0.4685",
+      "positive_length_end": "2.7185",
+      "negative_length_end": "2.7185"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_DEFAULT_SYMMETRIC_FLAT_PLATE_PAIR",
+      "parent_action": {
+        "force_kip_S_P_L": [
+          "0",
+          "0",
+          "4"
+        ],
+        "moment_kip_in_S_P_L": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in_S_P_L": [
+          "0",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "symmetry_eligible": true,
+        "positive_branch_force_kip_S_P_L": [
+          "0",
+          "0",
+          "2"
+        ],
+        "negative_branch_force_kip_S_P_L": [
+          "0",
+          "0",
+          "2"
+        ],
+        "positive_branch_reference_in_S_P_L": [
+          "2.5",
+          "2.25",
+          "0"
+        ],
+        "negative_branch_reference_in_S_P_L": [
+          "-2.5",
+          "2.25",
+          "0"
+        ],
+        "branch_wrench_sum_equals_parent": true,
+        "common_group_bolt_count": 4,
+        "common_total_per_bolt_kip": "1",
+        "common_positive_angle_layer_per_bolt_kip": "0.5",
+        "common_member_layer_per_bolt_kip": "1",
+        "common_negative_angle_layer_per_bolt_kip": "0.5",
+        "positive_support_group_bolt_count": 4,
+        "negative_support_group_bolt_count": 4,
+        "positive_support_per_bolt_kip": "0.5",
+        "negative_support_per_bolt_kip": "0.5",
+        "ordinary_whole_connection_pass_allowed": false
+      }
+    },
+    {
+      "id": "G2_COMMON_GROUP_2X1_SUPPORT_GROUPS_2X2",
+      "common_member_group": {
+        "rows": 2,
+        "bolts_per_row": 1,
+        "P_coordinates_in": [
+          "2.25"
+        ],
+        "L_coordinates_in": [
+          "-1",
+          "1"
+        ]
+      },
+      "expected": {
+        "common_group_bolt_count": 2,
+        "common_total_per_bolt_kip": "2",
+        "common_positive_angle_layer_per_bolt_kip": "1",
+        "common_member_layer_per_bolt_kip": "2",
+        "common_negative_angle_layer_per_bolt_kip": "1",
+        "positive_support_per_bolt_kip": "0.5",
+        "negative_support_per_bolt_kip": "0.5"
+      }
+    },
+    {
+      "id": "G3_W_I_WEB_THREE_LAYER_STACK",
+      "connected_member": {
+        "profile": "WIDE_FLANGE_I",
+        "selected_region": "WEB",
+        "depth_in": "10",
+        "flange_width_in": "8",
+        "web_thickness_in": "0.5",
+        "flange_thickness_in": "0.5"
+      },
+      "expected": {
+        "positive_angle_outside_positive_web_face": true,
+        "negative_angle_outside_negative_web_face": true,
+        "positive_volume_overlap": false,
+        "common_layer_order": [
+          "POSITIVE_CONNECTED_LEG",
+          "W_I_WEB",
+          "NEGATIVE_CONNECTED_LEG"
+        ],
+        "common_material_thickness_in": "1.5",
+        "finite_clear_web_required": true,
+        "complete_hole_containment_all_three_layers": true
+      }
+    },
+    {
+      "id": "G4_COLUMN_BEAM_SUPPORT_LOCAL_INVARIANCE",
+      "support_roles": [
+        "W_COLUMN_FLANGE",
+        "W_BEAM_FLANGE"
+      ],
+      "expected": {
+        "same_pair_local_geometry": true,
+        "same_local_bolt_coordinates": true,
+        "same_local_branch_actions": true,
+        "global_support_transform_differs": true,
+        "duplicated_pair_engineering_logic": false
+      }
+    },
+    {
+      "id": "G5_EXACT_PAIR_AND_SUPPORT_GROUP_MIRROR",
+      "expected": {
+        "angle_geometry_exact_mirror": true,
+        "connected_leg_contact_faces_mirrored": true,
+        "support_group_coordinates_mirrored": true,
+        "support_group_bolt_axes_equal": true,
+        "material_sources_equal": true,
+        "support_group_fingerprints_are_mirror_related": true
+      }
+    },
+    {
+      "id": "G6_EQUAL_SHARING_ELIGIBILITY_PASS",
+      "action": {
+        "force_kip_S_P_L": [
+          "0",
+          "0",
+          "4"
+        ],
+        "moment_kip_in_S_P_L": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in_S_P_L": [
+          "0",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "F_S_zero": true,
+        "F_P_zero": true,
+        "all_moments_zero": true,
+        "reference_S_zero": true,
+        "F_L_is_only_nonzero_action": true,
+        "equal_sharing_eligible": true,
+        "each_branch_force_kip_S_P_L": [
+          "0",
+          "0",
+          "2"
+        ],
+        "branch_wrench_sum_equals_parent": true
+      }
+    },
+    {
+      "id": "G7_OFF_PLANE_FORCE_EQUAL_SHARING_FAIL",
+      "action": {
+        "force_kip_S_P_L": [
+          "1",
+          "0",
+          "4"
+        ],
+        "moment_kip_in_S_P_L": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in_S_P_L": [
+          "0",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "geometry_valid": true,
+        "preview_current": true,
+        "equal_sharing_eligible": false,
+        "reason": "PAIRED_CLIP_ANGLE_EQUAL_SHARING_NOT_PROVEN",
+        "branch_actions_generated": false,
+        "design_status": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G8_OFF_SYMMETRY_REFERENCE_EQUAL_SHARING_FAIL",
+      "action": {
+        "force_kip_S_P_L": [
+          "0",
+          "0",
+          "4"
+        ],
+        "moment_kip_in_S_P_L": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in_S_P_L": [
+          "0.25",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "geometry_valid": true,
+        "preview_current": true,
+        "equal_sharing_eligible": false,
+        "reason": "PAIRED_CLIP_ANGLE_EQUAL_SHARING_NOT_PROVEN",
+        "branch_actions_generated": false,
+        "design_status": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G9_METHOD_UNSUPPORTED_GEOMETRY_CURRENT",
+      "common_member_group": {
+        "rows": 4,
+        "bolts_per_row": 1,
+        "pitch_in": "0.5"
+      },
+      "expected": {
+        "geometry_valid": true,
+        "preview_current": true,
+        "method_applicability": "CALCULATED_OUTSIDE_PRESCRIPTIVE_SCOPE",
+        "design_ready": false,
+        "geometry_invalid": false
+      }
+    },
+    {
+      "id": "G10_PAIRED_TRIM_25_DEGREES_HALF_INCH",
+      "connected_member": {
+        "profile": "WIDE_FLANGE_I",
+        "inclination_degrees": "25",
+        "trim_enabled": true,
+        "end_clearance_in": "0.5"
+      },
+      "expected": {
+        "trim_kernel_uses_full_current_profile_solids": true,
+        "measured_plane_clearance_in": "0.5",
+        "untrimmed_ghost_primitives": false,
+        "positive_and_negative_angles_unchanged": true,
+        "common_and_support_bolt_centers_change": "NONE",
+        "remaining_interference": false
+      }
+    },
+    {
+      "id": "G11_US_SI_EQUIVALENCE",
+      "conversions": {
+        "10_in_mm": "254",
+        "8_in_mm": "203.2",
+        "6_in_mm": "152.4",
+        "4_in_mm": "101.6",
+        "3.5_in_mm": "88.9",
+        "2.5_in_mm": "63.5",
+        "2_in_mm": "50.8",
+        "1.5_in_mm": "38.1",
+        "1.25_in_mm": "31.75",
+        "1_in_mm": "25.4",
+        "0.75_in_mm": "19.05",
+        "0.5_in_mm": "12.7",
+        "0.563_in_mm": "14.3002",
+        "4_kip_kN": "17.792886461042",
+        "2_kip_kN": "8.896443230521",
+        "1_kip_kN": "4.4482216152605",
+        "0.5_kip_kN": "2.22411080763025"
+      },
+      "expected": {
+        "physical_geometry_equal": true,
+        "branch_actions_equal": true,
+        "layer_demands_equal": true,
+        "engineering_fingerprints_equal": true,
+        "presentation_units_excluded": true
+      }
+    },
+    {
+      "id": "G12_COMMON_THROUGH_BOLT_HARDWARE",
+      "expected": {
+        "common_bolt_count": 4,
+        "support_bolt_count_total": 8,
+        "engineering_bolt_count_total": 12,
+        "shank_count": 12,
+        "head_count": 12,
+        "nut_count": 12,
+        "common_head_on_positive_outer_face": true,
+        "common_nut_on_negative_outer_face": true,
+        "common_internal_nut_count": 0,
+        "common_layer_count": 3,
+        "hardware_axes_match_bolt_axes": true,
+        "hardware_enters_engineering_fingerprint": false
+      }
+    },
+    {
+      "id": "G13_PAIR_MATERIAL_REGIONS",
+      "expected": {
+        "positive_connected_leg_region": true,
+        "positive_support_leg_region": true,
+        "negative_connected_leg_region": true,
+        "negative_support_leg_region": true,
+        "material_region_count": 4,
+        "embedded_material_indicator_count": 4,
+        "lw_parallel_to_L_P": true,
+        "region_specific_cw_tt": true
+      }
+    },
+    {
+      "id": "G14_LIMITATIONS_AND_FAIL_PRECEDENCE",
+      "expected": {
+        "required_pair_body_check": "PAIRED_CLIP_ANGLE_BODY_RESISTANCE",
+        "required_common_bolt_check": "COMMON_THROUGH_BOLT_DOUBLE_SHEAR_RESISTANCE",
+        "required_branch_check": "PAIRED_CLIP_ANGLE_BRANCH_COMPATIBILITY",
+        "all_required_limitation_status": "NOT_EVALUATED",
+        "supported_interface_fail_governs_fail": true,
+        "supported_pass_plus_limitations": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass_allowed": false,
+        "new_resistance_equation_used": false,
+        "required_qualification_check": "PAIRED_FRP_CLIP_ANGLE_QUALIFICATION",
+        "engineering_review_required": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,1816 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_GOLDEN_BENCHMARKS_RC1_R7",
+  "version": "RC1-R7",
+  "product_id": "WI_BEAM_CONCRETE_WALL_MAJOR_AXIS_MOMENT_CONNECTION",
+  "contract": "4.2-RC1",
+  "methods": [
+    "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1",
+    "EXACT_WI_NEGATIVE_END_STRUCTURAL_TO_RIGHT_HAND_WRENCH_MAP_RC1",
+    "RATIONAL_SYMMETRIC_PAIRED_WEB_ANGLE_WRENCH_ALLOCATION_RC1",
+    "ANGLE_CONNECTOR_INTERFACE_WRENCH_CORE_RC1",
+    "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+    "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1",
+    "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+    "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+    "EXACT_FOUR_ANGLE_WALL_SUPPORT_HANDOFF_ASSEMBLY_RC1",
+    "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1"
+  ],
+  "default_fixture": {
+    "beam": {
+      "d_in": "10",
+      "b_f_in": "8",
+      "t_w_in": "0.5",
+      "t_f_in": "0.5",
+      "display_length_in": "16",
+      "gap_in": "0.5"
+    },
+    "wall": {
+      "width_in": "48",
+      "height_in": "48",
+      "thickness_in": "8"
+    },
+    "loads": {
+      "P_L_kip": "20",
+      "V_V_kip": "-10",
+      "M_T_structural_kip_in": "100"
+    },
+    "flange_angle": {
+      "L_A_in": "8",
+      "b_M_in": "4",
+      "b_S_in": "4",
+      "t_A_in": "0.5",
+      "r_i_in": "0.25"
+    },
+    "web_angle": {
+      "L_A_in": "8",
+      "b_M_in": "4",
+      "b_S_in": "4",
+      "t_A_in": "0.5",
+      "r_i_in": "0.25"
+    },
+    "connector_provider": "FRP"
+  },
+  "benchmarks": [
+    {
+      "id": "G1_PRODUCT_CONTRACT",
+      "expected": {
+        "product_id": "WI_BEAM_CONCRETE_WALL_MAJOR_AXIS_MOMENT_CONNECTION",
+        "contract": "4.2-RC1",
+        "selector_category": "Moment Connections"
+      }
+    },
+    {
+      "id": "G2_PROFILE_SCOPE",
+      "expected": {
+        "supported": [
+          "W/I"
+        ],
+        "channel": false,
+        "rhs": false,
+        "srs": false,
+        "angle": false
+      }
+    },
+    {
+      "id": "G3_ACTION_SCOPE",
+      "expected": {
+        "supported": [
+          "P_L",
+          "V_V",
+          "M_T"
+        ],
+        "minor_shear": false,
+        "minor_axis_moment": false,
+        "torsion": false
+      }
+    },
+    {
+      "id": "G4_CONNECTOR_PROVIDER_SCOPE",
+      "expected": {
+        "implemented_user_provider": "FRP",
+        "316SS_user_option": false,
+        "material_neutral_core": true
+      }
+    },
+    {
+      "id": "G5_WALL_EXTERNAL_SCOPE",
+      "expected": {
+        "anchor_capacity": false,
+        "concrete_capacity": false,
+        "group_wrench_handoff": true
+      }
+    },
+    {
+      "id": "G6_BEAM_FRAME",
+      "expected": {
+        "axes": [
+          "L_B",
+          "V_B",
+          "T_B"
+        ],
+        "handedness": "L_B_x_V_B_equals_T_B",
+        "wall_front_face_L_in": "0"
+      }
+    },
+    {
+      "id": "G7_ACTION_REFERENCES",
+      "expected": {
+        "beam_end_reference_L_V_T_in": [
+          "0.5",
+          "0",
+          "0"
+        ],
+        "wall_reference_L_V_T_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G8_STRUCTURAL_TO_RIGHT_HAND_MAP",
+      "expected": {
+        "method": "EXACT_WI_NEGATIVE_END_STRUCTURAL_TO_RIGHT_HAND_WRENCH_MAP_RC1",
+        "physical_M_T_equals": "-structural_M_T"
+      }
+    },
+    {
+      "id": "G9_DEFAULT_INPUT_WRENCH",
+      "expected": {
+        "structural": {
+          "P_L_kip": "20",
+          "V_V_kip": "-10",
+          "M_T_kip_in": "100"
+        },
+        "right_hand": {
+          "F_L_V_T_kip": [
+            "20",
+            "-10",
+            "0"
+          ],
+          "M_L_V_T_kip_in": [
+            "0",
+            "0",
+            "-100"
+          ]
+        }
+      }
+    },
+    {
+      "id": "G10_POSITIVE_GAP",
+      "expected": {
+        "gap_in": "0.5",
+        "direct_end_bearing_credited": false
+      }
+    },
+    {
+      "id": "G11_DEFAULT_WI_GEOMETRY",
+      "expected": {
+        "d_in": "10",
+        "b_f_in": "8",
+        "t_w_in": "0.5",
+        "t_f_in": "0.5",
+        "display_length_in": "16"
+      }
+    },
+    {
+      "id": "G12_DEFAULT_WALL_GEOMETRY",
+      "expected": {
+        "width_in": "48",
+        "height_in": "48",
+        "thickness_in": "8",
+        "connection_origin_centered": true,
+        "concrete_FRP_axes": false
+      }
+    },
+    {
+      "id": "G13_CONNECTOR_COUNT",
+      "expected": {
+        "flange_angles": 2,
+        "web_angles": 2,
+        "total": 4
+      }
+    },
+    {
+      "id": "G14_EXTERNAL_ANCHOR_GROUP_COUNT",
+      "expected": {
+        "count": 4,
+        "one_per_connector": true
+      }
+    },
+    {
+      "id": "G15_FLANGE_ANGLE_GEOMETRY",
+      "expected": {
+        "L_A_in": "8",
+        "b_M_in": "4",
+        "b_S_in": "4",
+        "t_A_in": "0.5",
+        "r_i_in": "0.25",
+        "top_bottom_locked": true
+      }
+    },
+    {
+      "id": "G16_WEB_ANGLE_GEOMETRY",
+      "expected": {
+        "L_A_in": "8",
+        "b_M_in": "4",
+        "b_S_in": "4",
+        "t_A_in": "0.5",
+        "r_i_in": "0.25",
+        "positive_negative_locked": true
+      }
+    },
+    {
+      "id": "G17_TOP_FRAME",
+      "expected": {
+        "A_A": "+T_B",
+        "B_A": "+L_B",
+        "C_A": "+V_B",
+        "right_handed": true
+      }
+    },
+    {
+      "id": "G18_BOTTOM_FRAME",
+      "expected": {
+        "A_A": "-T_B",
+        "B_A": "+L_B",
+        "C_A": "-V_B",
+        "right_handed": true
+      }
+    },
+    {
+      "id": "G19_POSITIVE_WEB_FRAME",
+      "expected": {
+        "A_A": "-V_B",
+        "B_A": "+L_B",
+        "C_A": "+T_B",
+        "right_handed": true
+      }
+    },
+    {
+      "id": "G20_NEGATIVE_WEB_FRAME",
+      "expected": {
+        "A_A": "+V_B",
+        "B_A": "+L_B",
+        "C_A": "-T_B",
+        "right_handed": true
+      }
+    },
+    {
+      "id": "G21_LOCAL_INTERFACE_REFERENCES",
+      "expected": {
+        "r_H_A_B_C_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "r_M_A_B_C_in": [
+          "0",
+          "2",
+          "-0.25"
+        ],
+        "r_S_A_B_C_in": [
+          "0",
+          "-0.25",
+          "2"
+        ]
+      }
+    },
+    {
+      "id": "G22_HEEL_GLOBAL_LOCATIONS",
+      "expected": {
+        "top": [
+          "0.25",
+          "5.25",
+          "0"
+        ],
+        "bottom": [
+          "0.25",
+          "-5.25",
+          "0"
+        ],
+        "positive_web": [
+          "0.25",
+          "0",
+          "0.5"
+        ],
+        "negative_web": [
+          "0.25",
+          "0",
+          "-0.5"
+        ]
+      }
+    },
+    {
+      "id": "G23_MEMBER_INTERFACE_GLOBAL_LOCATIONS",
+      "expected": {
+        "top": [
+          "2.25",
+          "5.0",
+          "0"
+        ],
+        "bottom": [
+          "2.25",
+          "-5.0",
+          "0"
+        ],
+        "positive_web": [
+          "2.25",
+          "0",
+          "0.25"
+        ],
+        "negative_web": [
+          "2.25",
+          "0",
+          "-0.25"
+        ]
+      }
+    },
+    {
+      "id": "G24_SUPPORT_GROUP_GLOBAL_LOCATIONS",
+      "expected": {
+        "top": [
+          "0",
+          "7.25",
+          "0"
+        ],
+        "bottom": [
+          "0",
+          "-7.25",
+          "0"
+        ],
+        "positive_web": [
+          "0",
+          "0",
+          "2.5"
+        ],
+        "negative_web": [
+          "0",
+          "0",
+          "-2.5"
+        ]
+      }
+    },
+    {
+      "id": "G25_SLICE5_REFERENCES",
+      "expected": {
+        "top": [
+          "0.5",
+          "4.75",
+          "0"
+        ],
+        "web": [
+          "0.5",
+          "0",
+          "0"
+        ],
+        "bottom": [
+          "0.5",
+          "-4.75",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G26_SLICE5_TOP",
+      "expected": {
+        "N_kip": "15.402961500493583415597235932872655478775913129318854886475814412635735439289240",
+        "m_structural_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G27_SLICE5_WEB",
+      "expected": {
+        "N_kip": "7.2",
+        "V_kip": "-10",
+        "m_structural_kip_in": "14.392892398815399802566633761105626850937808489634748272458045409674234945705824"
+      }
+    },
+    {
+      "id": "G28_SLICE5_BOTTOM",
+      "expected": {
+        "N_kip": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+        "m_structural_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G29_SLICE5_EXACT_EQUILIBRIUM_REQUIRED",
+      "expected": {
+        "force": true,
+        "major_moment": true,
+        "M_over_z_controlling": false,
+        "proof_authority": "INHERITED_SLICE5_ALGEBRAIC_EQUILIBRIUM_PROOF",
+        "handoff_values": "EXACT_ACCEPTED_SLICE5_SERIALIZED_DECIMALS",
+        "arbitrary_precision_serialized_force_residual_kip": "+3E-79",
+        "arbitrary_precision_serialized_major_moment_residual_kip_in": "-5.85E-79",
+        "residuals_are_diagnostic_only": true,
+        "epsilon_tolerance_used": false,
+        "residual_dumping_used": false
+      }
+    },
+    {
+      "id": "G30_TOP_MEMBER_WRENCH",
+      "expected": {
+        "F_A_B_C_kip": [
+          "0",
+          "15.402961500493583415597235932872655478775913129318854886475814412635735439289240",
+          "0"
+        ],
+        "M_A_B_C_kip_in": [
+          "3.8112537018756169792694965449160908193484698914116485686080947680157946692991116",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G31_TOP_HEEL_WRENCH",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G30_TOP_MEMBER_WRENCH",
+        "output_field": "heel_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G32_TOP_SUPPORT_WRENCH_LOCAL",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G30_TOP_MEMBER_WRENCH",
+        "output_field": "support_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G33_BOTTOM_MEMBER_WRENCH",
+      "expected": {
+        "F_A_B_C_kip": [
+          "0",
+          "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+          "0"
+        ],
+        "M_A_B_C_kip_in": [
+          "-0.61125370187561697926949654491609081934846989141164856860809476801579466929911150",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G34_BOTTOM_HEEL_WRENCH",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G33_BOTTOM_MEMBER_WRENCH",
+        "output_field": "heel_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G35_BOTTOM_SUPPORT_WRENCH_LOCAL",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G33_BOTTOM_MEMBER_WRENCH",
+        "output_field": "support_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G36_WEB_PAIR_METHOD",
+      "expected": {
+        "method": "RATIONAL_SYMMETRIC_PAIRED_WEB_ANGLE_WRENCH_ALLOCATION_RC1",
+        "half_complete_wrench_at_web_reference": true
+      }
+    },
+    {
+      "id": "G37_WEB_PAIR_SYMMETRY_REQUIREMENTS",
+      "expected": {
+        "geometry": true,
+        "material_provider": true,
+        "member_group": true,
+        "anchor_groups": true,
+        "unsupported_actions_zero": true
+      }
+    },
+    {
+      "id": "G38_POSITIVE_WEB_MEMBER_WRENCH",
+      "expected": {
+        "F_A_B_C_kip": [
+          "5",
+          "3.6",
+          "0"
+        ],
+        "M_A_B_C_kip_in": [
+          "0.900",
+          "-1.25",
+          "1.553553800592300098716683119447186574531095755182625863770977295162882527147088"
+        ]
+      }
+    },
+    {
+      "id": "G39_POSITIVE_WEB_HEEL_WRENCH",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G38_POSITIVE_WEB_MEMBER_WRENCH",
+        "output_field": "heel_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G40_POSITIVE_WEB_SUPPORT_WRENCH_LOCAL",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G38_POSITIVE_WEB_MEMBER_WRENCH",
+        "output_field": "support_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G41_NEGATIVE_WEB_MEMBER_WRENCH",
+      "expected": {
+        "F_A_B_C_kip": [
+          "-5",
+          "3.6",
+          "0"
+        ],
+        "M_A_B_C_kip_in": [
+          "0.900",
+          "1.25",
+          "-1.553553800592300098716683119447186574531095755182625863770977295162882527147088"
+        ]
+      }
+    },
+    {
+      "id": "G42_NEGATIVE_WEB_HEEL_WRENCH",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G41_NEGATIVE_WEB_MEMBER_WRENCH",
+        "output_field": "heel_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G43_NEGATIVE_WEB_SUPPORT_WRENCH_LOCAL",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "input_case": "G41_NEGATIVE_WEB_MEMBER_WRENCH",
+        "output_field": "support_wrench",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "round_or_quantize": false,
+        "recompute_in_stage42": false
+      }
+    },
+    {
+      "id": "G44_WEB_PAIR_RECOVERY",
+      "expected": {
+        "half_wrenches_shift_back_to_complete_web": true,
+        "local_offset_moments_preserved": true
+      }
+    },
+    {
+      "id": "G45_FOUR_CORE_INVOCATIONS",
+      "expected": {
+        "core": "ANGLE_CONNECTOR_INTERFACE_WRENCH_CORE_RC1",
+        "count": 4,
+        "frontend_wrench_math": false
+      }
+    },
+    {
+      "id": "G46_TOP_CORE_EQUILIBRIUM",
+      "expected": {
+        "exact": true
+      }
+    },
+    {
+      "id": "G47_BOTTOM_CORE_EQUILIBRIUM",
+      "expected": {
+        "exact": true
+      }
+    },
+    {
+      "id": "G48_POSITIVE_WEB_CORE_EQUILIBRIUM",
+      "expected": {
+        "exact": true
+      }
+    },
+    {
+      "id": "G49_NEGATIVE_WEB_CORE_EQUILIBRIUM",
+      "expected": {
+        "exact": true
+      }
+    },
+    {
+      "id": "G50_FRP_PROVIDER",
+      "expected": {
+        "provider": "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "316SS_not_exposed": true
+      }
+    },
+    {
+      "id": "G51_TOP_INSTEP",
+      "expected": {
+        "F_A_heel_kip": "0",
+        "status": "NOT_REQUIRED_ZERO_SHEAR"
+      }
+    },
+    {
+      "id": "G52_BOTTOM_INSTEP",
+      "expected": {
+        "F_A_heel_kip": "0",
+        "status": "NOT_REQUIRED_ZERO_SHEAR"
+      }
+    },
+    {
+      "id": "G53_POSITIVE_WEB_INSTEP",
+      "expected": {
+        "F_A_heel_kip": "5",
+        "test_phi_R_kip": "22.400",
+        "test_U": "0.22321428571428571428571428571428571428571428571428571428571428571428571428571429"
+      }
+    },
+    {
+      "id": "G54_NEGATIVE_WEB_INSTEP",
+      "expected": {
+        "F_A_heel_kip": "-5",
+        "test_phi_R_kip": "22.400",
+        "test_U": "0.22321428571428571428571428571428571428571428571428571428571428571428571428571429"
+      }
+    },
+    {
+      "id": "G55_QUALIFIED_CONNECTOR_SOURCE_REQUIRED",
+      "expected": {
+        "nonzero_body_wrench": true,
+        "production_default_source": false
+      }
+    },
+    {
+      "id": "G56_QUALIFIED_ATTACHMENT_SOURCE",
+      "expected": {
+        "id": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+        "analytical_prying_formula_invented": false
+      }
+    },
+    {
+      "id": "G57_ATTACHMENT_SOURCE_BINDING",
+      "expected": {
+        "member_region": true,
+        "angle_leg": true,
+        "bolt_hole_layout": true,
+        "fastener_source": true,
+        "interface_reference": true,
+        "full_wrench": true
+      }
+    },
+    {
+      "id": "G58_ATTACHMENT_REQUIRED_COVERAGE",
+      "expected": {
+        "member_through_thickness": true,
+        "pull_through_delamination": true,
+        "bolt_axis_distribution": true,
+        "secondary_bolt_bending": true,
+        "combined_interaction": true
+      }
+    },
+    {
+      "id": "G59_FLANGE_MEMBER_BOLT_GRID",
+      "expected": {
+        "top_bottom_locked": true,
+        "coordinates_A_B_in": [
+          {
+            "A_in": "-2.5",
+            "B_in": "1.25"
+          },
+          {
+            "A_in": "2.5",
+            "B_in": "1.25"
+          },
+          {
+            "A_in": "-2.5",
+            "B_in": "2.75"
+          },
+          {
+            "A_in": "2.5",
+            "B_in": "2.75"
+          }
+        ],
+        "bolt_diameter_in": "0.5",
+        "hole_diameter_in": "0.563"
+      }
+    },
+    {
+      "id": "G60_WEB_COMMON_BOLT_GRID",
+      "expected": {
+        "coordinates_A_B_in": [
+          {
+            "A_in": "-1.5",
+            "B_in": "1.25"
+          },
+          {
+            "A_in": "1.5",
+            "B_in": "1.25"
+          },
+          {
+            "A_in": "-1.5",
+            "B_in": "2.75"
+          },
+          {
+            "A_in": "1.5",
+            "B_in": "2.75"
+          }
+        ],
+        "physical_bolts": 4
+      }
+    },
+    {
+      "id": "G61_WEB_COMMON_PHYSICAL_PATH",
+      "expected": {
+        "path": [
+          "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+          "WI_WEB",
+          "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+        ],
+        "shear_planes": 2
+      }
+    },
+    {
+      "id": "G62_TOP_FLANGE_MEMBER_PATH",
+      "expected": {
+        "path": [
+          "TOP_FLANGE_ANGLE_MEMBER_LEG",
+          "WI_TOP_FLANGE"
+        ],
+        "shear_planes": 1,
+        "backing_plate": false
+      }
+    },
+    {
+      "id": "G63_BOTTOM_FLANGE_MEMBER_PATH",
+      "expected": {
+        "path": [
+          "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+          "WI_BOTTOM_FLANGE"
+        ],
+        "shear_planes": 1,
+        "backing_plate": false
+      }
+    },
+    {
+      "id": "G64_TOP_FLANGE_STAGE25A_NATIVE_DEMAND",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "STAGE_2_5A_ACCEPTED_ENGINE",
+        "input_source": "TOP_FLANGE_MEMBER_SIDE_IN_PLANE_GROUP_FROM_G30_AND_G59",
+        "required_scope": {
+          "independent_member_end_moment": "ZERO_FOR_STAGE25A_PATH",
+          "direct_in_plane_force": "G30_F_B",
+          "physical_bolt_group": "G59_FLANGE_MEMBER_BOLT_GRID"
+        },
+        "required_output": "ACTUAL_PER_BOLT_IN_PLANE_DEMAND_VECTOR_RECORDS",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "native_per_bolt_signed_B_component_example_kip": "3.850740375123395853899308983218163869693978282329713721618953603158933859822310073801547368672344557",
+        "algebraic_N_over_4_decimal80": "3.850740375123395853899308983218163869693978282329713721618953603158933859822310",
+        "algebraic_N_over_4_is_controlling_numeric_oracle": false,
+        "tolerance": false,
+        "stage42_recomputes_or_rounds_stage25a_result": false
+      }
+    },
+    {
+      "id": "G65_BOTTOM_FLANGE_STAGE25A_NATIVE_DEMAND",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "STAGE_2_5A_ACCEPTED_ENGINE",
+        "input_source": "BOTTOM_FLANGE_MEMBER_SIDE_IN_PLANE_GROUP_FROM_G33_AND_G59",
+        "required_scope": {
+          "independent_member_end_moment": "ZERO_FOR_STAGE25A_PATH",
+          "direct_in_plane_force": "G33_F_B",
+          "physical_bolt_group": "G59_FLANGE_MEMBER_BOLT_GRID"
+        },
+        "required_output": "ACTUAL_PER_BOLT_IN_PLANE_DEMAND_VECTOR_RECORDS",
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "native_per_bolt_signed_B_component_example_kip": "-0.6507403751233958538993089832181638696939782823297137216189536031589338598223098939543928889039582288",
+        "algebraic_N_over_4_decimal80": "-0.65074037512339585389930898321816386969397828232971372161895360315893385982230992",
+        "algebraic_N_over_4_is_controlling_numeric_oracle": false,
+        "tolerance": false,
+        "stage42_recomputes_or_rounds_stage25a_result": false
+      }
+    },
+    {
+      "id": "G66_POSITIVE_WEB_SLICE8_INPUT",
+      "expected": {
+        "method": "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1",
+        "bolt_coordinates_case": "G60_WEB_COMMON_BOLT_GRID",
+        "wrench_reference_A_B_in": [
+          "0",
+          "2"
+        ],
+        "F_A_kip": "5",
+        "F_B_kip": "3.6",
+        "M_C_R_kip_in": "1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+        "independent_free_moment_transferred": true,
+        "stage25a_independent_moment_path_used": false,
+        "reference_is_physical_member_interface_centroid": true,
+        "additional_reference_transport_moment_kip_in": "0"
+      }
+    },
+    {
+      "id": "G67_POSITIVE_WEB_SLICE8_OUTPUT",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_8_RC1_R1",
+        "engineering_commit": "9f86a5685be840b271929cf3298f17a5e401b7c8",
+        "input_case": "G66_POSITIVE_WEB_SLICE8_INPUT",
+        "required_output_fields": [
+          "centroid",
+          "J",
+          "transported_M_C",
+          "per_bolt_exact_rational_vectors",
+          "per_bolt_decimal80_vectors",
+          "per_bolt_magnitudes",
+          "force_moment_equilibrium_proof",
+          "fingerprint"
+        ],
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "stage42_recomputes_vectors": false,
+        "tolerance": false
+      }
+    },
+    {
+      "id": "G68_NEGATIVE_WEB_SLICE8_INPUT",
+      "expected": {
+        "method": "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1",
+        "bolt_coordinates_case": "G60_WEB_COMMON_BOLT_GRID",
+        "wrench_reference_A_B_in": [
+          "0",
+          "2"
+        ],
+        "F_A_kip": "-5",
+        "F_B_kip": "3.6",
+        "M_C_R_kip_in": "-1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+        "exact_full_negative_of_G66_M_C": true,
+        "independent_free_moment_transferred": true,
+        "stage25a_independent_moment_path_used": false,
+        "reference_is_physical_member_interface_centroid": true,
+        "additional_reference_transport_moment_kip_in": "0"
+      }
+    },
+    {
+      "id": "G69_NEGATIVE_WEB_SLICE8_OUTPUT",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_8_RC1_R1",
+        "engineering_commit": "9f86a5685be840b271929cf3298f17a5e401b7c8",
+        "input_case": "G68_NEGATIVE_WEB_SLICE8_INPUT",
+        "required_output_fields": [
+          "centroid",
+          "J",
+          "transported_M_C",
+          "per_bolt_exact_rational_vectors",
+          "per_bolt_decimal80_vectors",
+          "per_bolt_magnitudes",
+          "force_moment_equilibrium_proof",
+          "fingerprint"
+        ],
+        "comparison": "EXACT_NATIVE_OBJECT_EQUALITY",
+        "stage42_recomputes_vectors": false,
+        "tolerance": false
+      }
+    },
+    {
+      "id": "G70_SLICE8_EXACT_RECOVERY",
+      "expected": {
+        "positive_slice8_equilibrium_proof": "PASS",
+        "negative_slice8_equilibrium_proof": "PASS",
+        "positive_stage42_output_equals_direct_slice8": true,
+        "negative_stage42_output_equals_direct_slice8": true,
+        "stage25a_warning_path_invoked": false,
+        "pure_independent_moment_supported_by_dependency": true,
+        "positive_reference_A_B_in": [
+          "0",
+          "2"
+        ],
+        "negative_reference_A_B_in": [
+          "0",
+          "2"
+        ],
+        "web_group_centroid_A_B_in": [
+          "0",
+          "2"
+        ],
+        "unintended_reference_transport_moment": false
+      }
+    },
+    {
+      "id": "G71_WEB_BOLT_PLANE_METHOD",
+      "expected": {
+        "method": "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+        "positive_plane_vector_source": "G67_POSITIVE_WEB_SLICE8_OUTPUT",
+        "negative_plane_vector_source": "G69_NEGATIVE_WEB_SLICE8_OUTPUT",
+        "actual_unequal_plane_vectors": true,
+        "blind_equal_plane": false,
+        "blind_double_shear_sum": false
+      }
+    },
+    {
+      "id": "G72_OUT_OF_PLANE_COMPONENTS_RETAINED",
+      "expected": {
+        "top": [
+          "M_A"
+        ],
+        "bottom": [
+          "M_A"
+        ],
+        "positive_web": [
+          "M_A",
+          "M_B"
+        ],
+        "negative_web": [
+          "M_A",
+          "M_B"
+        ]
+      }
+    },
+    {
+      "id": "G73_FLANGE_ATTACHMENT_SOURCE_REQUIRED",
+      "expected": {
+        "one_sided_attachment": true,
+        "qualified_out_of_plane_response_required": true
+      }
+    },
+    {
+      "id": "G74_PAIRED_WEB_ATTACHMENT_SOURCE_REQUIRED",
+      "expected": {
+        "common_bolt_pair": true,
+        "qualified_out_of_plane_response_required": true
+      }
+    },
+    {
+      "id": "G75_FLANGE_ANCHOR_GROUP_COORDINATES",
+      "expected": {
+        "coordinates_A_C_in": [
+          {
+            "A_in": "-2.5",
+            "C_in": "1.25"
+          },
+          {
+            "A_in": "2.5",
+            "C_in": "1.25"
+          },
+          {
+            "A_in": "-2.5",
+            "C_in": "2.75"
+          },
+          {
+            "A_in": "2.5",
+            "C_in": "2.75"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G76_WEB_ANCHOR_GROUP_COORDINATES",
+      "expected": {
+        "coordinates_A_C_in": [
+          {
+            "A_in": "-1.5",
+            "C_in": "1.25"
+          },
+          {
+            "A_in": "1.5",
+            "C_in": "1.25"
+          },
+          {
+            "A_in": "-1.5",
+            "C_in": "2.75"
+          },
+          {
+            "A_in": "1.5",
+            "C_in": "2.75"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G77_ANCHOR_HARDWARE",
+      "expected": {
+        "blind_into_concrete": true,
+        "fictitious_far_side_hardware": false
+      }
+    },
+    {
+      "id": "G78_NO_INDIVIDUAL_ANCHOR_FORCE_FABRICATION",
+      "expected": {
+        "individual_anchor_forces": false,
+        "group_wrench": true
+      }
+    },
+    {
+      "id": "G79_TOP_SUPPORT_GLOBAL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G32_TOP_SUPPORT_WRENCH_LOCAL",
+        "operation": "SIGNED_AXIS_PERMUTATION_ONLY",
+        "frame": "TOP_FRAME",
+        "reference": "G24_TOP_SUPPORT_GROUP_REFERENCE",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G80_BOTTOM_SUPPORT_GLOBAL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G35_BOTTOM_SUPPORT_WRENCH_LOCAL",
+        "operation": "SIGNED_AXIS_PERMUTATION_ONLY",
+        "frame": "BOTTOM_FRAME",
+        "reference": "G24_BOTTOM_SUPPORT_GROUP_REFERENCE",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G81_POSITIVE_WEB_SUPPORT_GLOBAL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G40_POSITIVE_WEB_SUPPORT_WRENCH_LOCAL",
+        "operation": "SIGNED_AXIS_PERMUTATION_ONLY",
+        "frame": "POSITIVE_WEB_FRAME",
+        "reference": "G24_POSITIVE_WEB_SUPPORT_GROUP_REFERENCE",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G82_NEGATIVE_WEB_SUPPORT_GLOBAL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G43_NEGATIVE_WEB_SUPPORT_WRENCH_LOCAL",
+        "operation": "SIGNED_AXIS_PERMUTATION_ONLY",
+        "frame": "NEGATIVE_WEB_FRAME",
+        "reference": "G24_NEGATIVE_WEB_SUPPORT_GROUP_REFERENCE",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G83_TOP_SHIFTED_TO_WALL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G79_TOP_SUPPORT_GLOBAL",
+        "operation": "EXACT_RATIONAL_REFERENCE_SHIFT_TO_WALL_COMMON_REFERENCE",
+        "wall_reference_case": "G7_ACTION_REFERENCES",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G84_BOTTOM_SHIFTED_TO_WALL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G80_BOTTOM_SUPPORT_GLOBAL",
+        "operation": "EXACT_RATIONAL_REFERENCE_SHIFT_TO_WALL_COMMON_REFERENCE",
+        "wall_reference_case": "G7_ACTION_REFERENCES",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G85_POSITIVE_WEB_SHIFTED_TO_WALL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G81_POSITIVE_WEB_SUPPORT_GLOBAL",
+        "operation": "EXACT_RATIONAL_REFERENCE_SHIFT_TO_WALL_COMMON_REFERENCE",
+        "wall_reference_case": "G7_ACTION_REFERENCES",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G86_NEGATIVE_WEB_SHIFTED_TO_WALL",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_case": "G82_NEGATIVE_WEB_SUPPORT_GLOBAL",
+        "operation": "EXACT_RATIONAL_REFERENCE_SHIFT_TO_WALL_COMMON_REFERENCE",
+        "wall_reference_case": "G7_ACTION_REFERENCES",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "round_or_quantize": false
+      }
+    },
+    {
+      "id": "G87_COMBINED_WALL_RIGHT_HAND_FORCE",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_cases": [
+          "G79_TOP_SUPPORT_GLOBAL",
+          "G80_BOTTOM_SUPPORT_GLOBAL",
+          "G81_POSITIVE_WEB_SUPPORT_GLOBAL",
+          "G82_NEGATIVE_WEB_SUPPORT_GLOBAL"
+        ],
+        "operation": "EXACT_RATIONAL_FORCE_SUM",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "algebraic_target_F_L_V_T_kip": [
+          "20",
+          "-10",
+          "0"
+        ],
+        "arbitrary_precision_serialized_L_residual_vs_target_kip": "+3E-79",
+        "residual_is_diagnostic_only": true,
+        "residual_redistribution": false
+      }
+    },
+    {
+      "id": "G88_COMBINED_WALL_RIGHT_HAND_MOMENT",
+      "expected": {
+        "kind": "EXACT_RELATIONAL_GOLDEN",
+        "source_cases": [
+          "G83_TOP_SHIFTED_TO_WALL",
+          "G84_BOTTOM_SHIFTED_TO_WALL",
+          "G85_POSITIVE_WEB_SHIFTED_TO_WALL",
+          "G86_NEGATIVE_WEB_SHIFTED_TO_WALL"
+        ],
+        "operation": "EXACT_RATIONAL_MOMENT_SUM",
+        "comparison": "EXACT_OBJECT_EQUALITY",
+        "algebraic_target_M_L_V_T_kip_in": [
+          "0",
+          "0",
+          "-105"
+        ],
+        "serialized_T_residual_vs_target_kip_in": "+6E-79",
+        "residual_provenance": "COMPLETE_R3_PIPELINE_INCLUDING_PRE_CORE_DECIMAL80_MEMBER_WRENCH_CONSTRUCTION",
+        "residual_is_diagnostic_only": true,
+        "residual_redistribution": false,
+        "tolerance": false
+      }
+    },
+    {
+      "id": "G89_COMBINED_WALL_STRUCTURAL_MOMENT",
+      "expected": {
+        "kind": "PROOF_TARGET_PLUS_SERIALIZED_DIAGNOSTIC",
+        "structural_target_M_T_kip_in": "105",
+        "target_formula": "M_T_minus_g_times_V_V",
+        "proof_authority": "INHERITED_SLICE5_ALGEBRAIC_EQUILIBRIUM_PLUS_EXACT_STAGE42_ALLOCATION_PLUS_FOUR_SLICE7_CORE_PROOFS_PLUS_EXACT_FRAME_REFERENCE_TRANSPORT",
+        "serialized_structural_residual_vs_target_kip_in": "-6E-79",
+        "residual_provenance": "COMPLETE_R3_PIPELINE_INCLUDING_PRE_CORE_DECIMAL80_MEMBER_WRENCH_CONSTRUCTION",
+        "residual_is_diagnostic_only": true,
+        "residual_redistribution": false
+      }
+    },
+    {
+      "id": "G90_EXACT_WALL_EQUILIBRIUM",
+      "expected": {
+        "method": "EXACT_FOUR_ANGLE_WALL_SUPPORT_HANDOFF_ASSEMBLY_RC1",
+        "force_proof": true,
+        "moment_proof": true,
+        "comparison_contract": "NATIVE_ENGINE_BOUNDARIES_PLUS_EXACT_RELATIONAL_TRANSPORT",
+        "slice5_proof_inherited": true,
+        "four_slice7_core_equilibrium_proofs_required": true,
+        "two_slice8_web_group_equilibrium_proofs_required": true,
+        "epsilon_tolerance_used": false,
+        "requantization_used": false,
+        "residual_dumping_used": false
+      }
+    },
+    {
+      "id": "G91_WALL_REACTION_SIGN",
+      "expected": {
+        "wall_on_connection_is_negative_of_connector_on_wall": true
+      }
+    },
+    {
+      "id": "G92_WALL_EXTERNAL_STATUS",
+      "expected": {
+        "status": "EXTERNAL_ANCHOR_CONCRETE_DESIGN_REQUIRED"
+      }
+    },
+    {
+      "id": "G93_FLEXIBLE_FIXTURE_LIMITATION",
+      "expected": {
+        "status": "FLEXIBLE_FIXTURE_PRYING_DISTRIBUTION_EXTERNAL_REQUIRED"
+      }
+    },
+    {
+      "id": "G94_TEST_ONLY_HIGH_CAPACITY_SOURCE",
+      "expected": {
+        "production_default": false,
+        "strength_multiplier_vs_slice7_test": "2"
+      }
+    },
+    {
+      "id": "G95_TEST_TOP_CONNECTOR_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2_FRP_PROVIDER",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "heel_input_case": "G31_TOP_HEEL_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_SOURCE",
+        "output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "round_or_quantize": false,
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "G96_TEST_BOTTOM_CONNECTOR_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2_FRP_PROVIDER",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "heel_input_case": "G34_BOTTOM_HEEL_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_SOURCE",
+        "output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "round_or_quantize": false,
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "G97_TEST_POSITIVE_WEB_CONNECTOR_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2_FRP_PROVIDER",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "heel_input_case": "G39_POSITIVE_WEB_HEEL_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_SOURCE",
+        "output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "round_or_quantize": false,
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "G98_TEST_NEGATIVE_WEB_CONNECTOR_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "CALCULATION_SLICE_7_RC2_FRP_PROVIDER",
+        "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+        "heel_input_case": "G42_NEGATIVE_WEB_HEEL_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_SOURCE",
+        "output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "round_or_quantize": false,
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "G99_TEST_TOP_ATTACHMENT_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "QUALIFIED_SIGNED_WRENCH_SOURCE_INFRASTRUCTURE_AT_STAGE42_BASELINE",
+        "baseline_commit": "473a3c8cd43f13022d254dae2477084895478c74",
+        "member_wrench_case": "G30_TOP_MEMBER_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_ATTACHMENT_SOURCE",
+        "required_output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED",
+        "production_default": false
+      }
+    },
+    {
+      "id": "G100_TEST_BOTTOM_ATTACHMENT_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "QUALIFIED_SIGNED_WRENCH_SOURCE_INFRASTRUCTURE_AT_STAGE42_BASELINE",
+        "baseline_commit": "473a3c8cd43f13022d254dae2477084895478c74",
+        "member_wrench_case": "G33_BOTTOM_MEMBER_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_ATTACHMENT_SOURCE",
+        "required_output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED",
+        "production_default": false
+      }
+    },
+    {
+      "id": "G101_TEST_POSITIVE_WEB_ATTACHMENT_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "QUALIFIED_SIGNED_WRENCH_SOURCE_INFRASTRUCTURE_AT_STAGE42_BASELINE",
+        "baseline_commit": "473a3c8cd43f13022d254dae2477084895478c74",
+        "member_wrench_case": "G38_POSITIVE_WEB_MEMBER_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_ATTACHMENT_SOURCE",
+        "required_output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED",
+        "production_default": false
+      }
+    },
+    {
+      "id": "G102_TEST_NEGATIVE_WEB_ATTACHMENT_U",
+      "expected": {
+        "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+        "dependency": "QUALIFIED_SIGNED_WRENCH_SOURCE_INFRASTRUCTURE_AT_STAGE42_BASELINE",
+        "baseline_commit": "473a3c8cd43f13022d254dae2477084895478c74",
+        "member_wrench_case": "G41_NEGATIVE_WEB_MEMBER_WRENCH",
+        "test_source": "STAGE42_TEST_ONLY_HIGH_CAPACITY_QUALIFIED_ATTACHMENT_SOURCE",
+        "required_output_fields": [
+          "U_Q",
+          "status"
+        ],
+        "comparison": "EXACT_NATIVE_VALUE_EQUALITY",
+        "expected_status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED",
+        "production_default": false
+      }
+    },
+    {
+      "id": "G103_PRODUCTION_DEFAULT_NATIVE_FAILURE_AND_GOVERNING_SELECTION",
+      "expected": {
+        "fixture_kind": "PRODUCTION_DEFAULT_PHYSICAL_DESIGN",
+        "material_authority": "CURRENT_LOCKED_ICE_MATERIAL_RECORD_UNCHANGED",
+        "material_fingerprint": "585b3d5678c1df9a48ad07bca5d90fc20a10f84b0eda74f600e86b0321c72fe3",
+        "flange_factor_fingerprint": "a1e48a8b98c36960458c242eae733ac371a51b3982b774aacdd8472e77239435",
+        "web_factor_fingerprint": "96fdfadb561fb1358581e1476fb8ef9386ce7c4f73914581800a021a8af90a9d",
+        "connector_sources_selected": false,
+        "attachment_sources_selected": false,
+        "evaluated_local_checks_execute": true,
+        "governing_status": "FAIL",
+        "status_precedence_reason": "EVALUATED_FAILURE_OUTRANKS_MISSING_QUALIFIED_SOURCE",
+        "governing_failure_selection": {
+          "kind": "DEPENDENCY_EXACT_NATIVE_VALUE",
+          "dependency": "UNCHANGED_STAGE25A_TO_RESISTANCE_HANDOFF_GROUP_MODE_PIPELINE",
+          "comparison": "EXACT_NATIVE_OBJECT_AND_SELECTION_EQUALITY",
+          "expected_native_governing_group": "FIRST_ROW:TOP_FLANGE_ANGLE",
+          "do_not_force_specific_limit_state_to_govern": true
+        },
+        "required_visible_failed_checks": [
+          {
+            "check": "TOP_FLANGE_ANGLE_FIRST_ROW_NET_TENSION",
+            "native_status": "FAIL",
+            "audit_display_utilization_approx": "6.338667",
+            "approximate_value_is_noncontrolling": true
+          },
+          {
+            "check": "TOP_FLANGE_ANGLE_PIN_BEARING",
+            "native_status": "FAIL",
+            "audit_display_utilization_approx": "3.169334",
+            "approximate_value_is_noncontrolling": true
+          },
+          {
+            "check": "TOP_FLANGE_ANGLE_INTER_ROW_SHEAR_OUT",
+            "native_status": "FAIL",
+            "audit_display_utilization_approx": "2.498227",
+            "approximate_value_is_noncontrolling": true
+          }
+        ],
+        "bearing_failure_must_remain_visible": true,
+        "bearing_failure_must_be_governing": false,
+        "missing_qualified_sources_present": true,
+        "source_required_is_governing": false,
+        "do_not_change_material_factors_or_native_selection": true
+      }
+    },
+    {
+      "id": "G104_FRP_SIDE_SUCCESS_STATUS_CONTRACT",
+      "expected": {
+        "fixture_kind": "STATUS_AGGREGATION_CONTRACT_ONLY",
+        "production_default_physical_fixture": false,
+        "prerequisites": {
+          "all_required_evaluated_local_checks": "PASS",
+          "all_required_fastener_checks": "PASS",
+          "all_required_connector_qualified_sources": "PRESENT_APPLICABLE_PASS",
+          "all_required_member_attachment_qualified_sources": "PRESENT_APPLICABLE_PASS",
+          "required_coverage_and_interaction": "AVAILABLE"
+        },
+        "status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED",
+        "ordinary_PASS": false,
+        "does_not_define_or_override_material_properties": true,
+        "does_not_override_G103_production_default_FAIL": true
+      }
+    },
+    {
+      "id": "G105_WHOLE_CONNECTION_SUCCESS_BOUNDARY",
+      "expected": {
+        "whole_connection_PASS": false,
+        "external_support_required": true
+      }
+    },
+    {
+      "id": "G106_PREVIEW_RESISTANCE_FREE",
+      "expected": {
+        "resistance_calls": 0,
+        "four_core_calls": true,
+        "wall_handoff_available": true
+      }
+    },
+    {
+      "id": "G107_EXPLICIT_DESIGN_REQUIRED",
+      "expected": {
+        "run_design_check_required": true,
+        "engineering_edit_makes_design_stale": true
+      }
+    },
+    {
+      "id": "G108_PURE_AXIAL",
+      "expected": {
+        "input": {
+          "P_L_kip": "20",
+          "V_V_kip": "0",
+          "M_T_kip_in": "0"
+        },
+        "slice5": {
+          "top_N_kip": "6.4",
+          "web_N_kip": "7.2",
+          "bottom_N_kip": "6.4"
+        },
+        "combined_wall_right_hand_M_T_kip_in": "0"
+      }
+    },
+    {
+      "id": "G109_PURE_MAJOR_SHEAR",
+      "expected": {
+        "input": {
+          "P_L_kip": "0",
+          "V_V_kip": "-10",
+          "M_T_kip_in": "0"
+        },
+        "top_bottom_connector_zero": true,
+        "positive_web_F_A_kip": "5",
+        "negative_web_F_A_kip": "-5",
+        "wall_structural_M_T_kip_in": "5"
+      }
+    },
+    {
+      "id": "G110_PURE_MAJOR_MOMENT_NATIVE_RESULT_AND_PROOF_TARGET",
+      "expected": {
+        "input": {
+          "P_L_kip": "0",
+          "V_V_kip": "0",
+          "M_T_kip_in": "100"
+        },
+        "top_tension": true,
+        "bottom_compression": true,
+        "web_local_moment_retained": true,
+        "web_independent_in_plane_moment_uses_slice8": true,
+        "right_hand_wall_moment": {
+          "kind": "EXACT_RELATIONAL_NATIVE_PIPELINE_RESULT",
+          "source": "FOUR_NATIVE_SLICE7_SUPPORT_HANDOFFS_SHIFTED_AND_SUMMED_UNDER_R3_R4_R5_BOUNDARIES",
+          "algebraic_target_kip_in": "-100",
+          "serialized_residual_vs_target_kip_in": "+2E-78",
+          "comparison": "EXACT_NATIVE_RELATIONAL_EQUALITY",
+          "tolerance": false,
+          "residual_redistribution": false
+        },
+        "structural_wall_moment": {
+          "algebraic_target_kip_in": "100",
+          "serialized_residual_vs_target_kip_in": "-2E-78",
+          "residual_is_diagnostic_only": true
+        },
+        "equilibrium_proof_authority": [
+          "SLICE5_ALGEBRAIC_EQUILIBRIUM_PROOF",
+          "STAGE42_EXACT_COMPONENT_ALLOCATION",
+          "TWO_SLICE8_WEB_GROUP_EQUILIBRIUM_PROOFS",
+          "FOUR_SLICE7_CORE_EQUILIBRIUM_PROOFS",
+          "EXACT_STAGE42_FRAME_AND_REFERENCE_TRANSPORT"
+        ]
+      }
+    },
+    {
+      "id": "G111_AXIAL_SIGN_REVERSAL",
+      "expected": {
+        "connector_forces_reverse_uniform_parts": true,
+        "geometry_unchanged": true
+      }
+    },
+    {
+      "id": "G112_SHEAR_SIGN_REVERSAL",
+      "expected": {
+        "web_A_forces_reverse": true,
+        "gap_moment_reverses": true,
+        "support_handoffs_recompute": true
+      }
+    },
+    {
+      "id": "G113_MOMENT_SIGN_REVERSAL",
+      "expected": {
+        "top_bottom_roles_reverse": true,
+        "web_local_moments_reverse": true,
+        "geometry_unchanged": true
+      }
+    },
+    {
+      "id": "G114_UNSUPPORTED_MINOR_SHEAR_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "MINOR_SHEAR_NOT_SUPPORTED_IN_4_2_RC1"
+      }
+    },
+    {
+      "id": "G115_UNSUPPORTED_MINOR_MOMENT_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "MINOR_AXIS_MOMENT_NOT_SUPPORTED_IN_4_2_RC1"
+      }
+    },
+    {
+      "id": "G116_UNSUPPORTED_TORSION_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "TORSION_NOT_SUPPORTED_IN_4_2_RC1"
+      }
+    },
+    {
+      "id": "G117_NONPOSITIVE_GAP_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "POSITIVE_BEAM_WALL_GAP_REQUIRED"
+      }
+    },
+    {
+      "id": "G118_ANGLE_INTERFERENCE_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "ANGLE_OR_SUPPORT_LEG_INTERFERENCE"
+      }
+    },
+    {
+      "id": "G119_ANCHOR_OUTSIDE_FINITE_WALL_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "COMPLETE_ANCHOR_HOLE_WALL_CONTAINMENT_REQUIRED"
+      }
+    },
+    {
+      "id": "G120_ASYMMETRIC_WEB_PAIR_REJECTED",
+      "expected": {
+        "status": "NOT_EVALUATED",
+        "reason": "EXACT_WEB_PAIR_SYMMETRY_REQUIRED"
+      }
+    },
+    {
+      "id": "G121_TOP_BOTTOM_FLANGE_ANGLE_MISMATCH_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "LOCKED_TOP_BOTTOM_FLANGE_ANGLE_GEOMETRY_REQUIRED"
+      }
+    },
+    {
+      "id": "G122_INVALID_SOURCE_BINDING",
+      "expected": {
+        "status": "SOURCE_NOT_APPLICABLE"
+      }
+    },
+    {
+      "id": "G123_US_SI_EQUIVALENCE",
+      "expected": {
+        "geometry": true,
+        "slice5": true,
+        "core_wrenches": true,
+        "stage25a": true,
+        "provider": true,
+        "wall_handoff": true,
+        "fingerprints": true
+      }
+    },
+    {
+      "id": "G124_DETERMINISTIC_FINGERPRINTS",
+      "expected": {
+        "slice5": true,
+        "four_core_fingerprints": true,
+        "slice8_positive_web_fingerprint": true,
+        "slice8_negative_web_fingerprint": true,
+        "source_bindings": true,
+        "support_handoffs": true,
+        "presentation_excluded": true,
+        "decimal_handoff_contract_included": true,
+        "slice5_equilibrium_proof_provenance_included": true,
+        "slice7_native_numeric_authority_included": true,
+        "slice8_native_numeric_authority_included": true,
+        "cross_engine_requantization_prohibited": true,
+        "web_physical_reference_bound_fingerprint": true,
+        "web_group_centroid_reference_A_B_in": [
+          "0",
+          "2"
+        ],
+        "top_flange_stage25a_native_result_fingerprint": true,
+        "bottom_flange_stage25a_native_result_fingerprint": true,
+        "stage25a_native_numeric_authority_included": true,
+        "production_default_status_precedence_authority_included": true,
+        "pure_moment_native_result_and_proof_target_both_included": true,
+        "native_governing_failure_selection_authority_included": true,
+        "native_first_row_group_selection_included": true
+      }
+    },
+    {
+      "id": "G125_VISUAL_CONTRACT",
+      "expected": {
+        "wall": 1,
+        "beam": 1,
+        "angles": 4,
+        "member_bolt_groups": 3,
+        "wall_anchor_groups": 4,
+        "xray": true,
+        "material_axes": true
+      }
+    },
+    {
+      "id": "G126_NO_316SS_OPTION",
+      "expected": {
+        "user_selectable": false,
+        "future_provider_architecture_preserved": true
+      }
+    },
+    {
+      "id": "G127_FREEZE_REGRESSIONS",
+      "expected": {
+        "stage_4_1_family": "EXACT",
+        "stage_4_1A": "EXACT",
+        "stage_3_7": "EXACT",
+        "stage_3_6": "EXACT",
+        "stage_3_5": "EXACT",
+        "stage_3_4": "EXACT",
+        "stage_3_3": "EXACT",
+        "stage_3_2": "EXACT",
+        "stage_2_3": "EXACT",
+        "slice5": "EXACT",
+        "slice7": "EXACT",
+        "slice8": "EXACT",
+        "stage25a": "EXACT",
+        "stage25a_native_numeric_behavior": "EXACT"
+      }
+    },
+    {
+      "id": "G128_NO_DEP_WORKFLOW_TAG_OR_LATER_FAMILY",
+      "expected": {
+        "dependencies": 0,
+        "lockfiles": 0,
+        "workflows": 0,
+        "tags": 0,
+        "later_moment_family_begun": false,
+        "slice8_test_only_stabilization_preserved": true
+      }
+    }
+  ],
+  "decimal_handoff_contract": {
+    "precision_significant_digits": 80,
+    "rounding": "ROUND_HALF_EVEN",
+    "tolerance": null,
+    "slice5_outputs": "COPY_ACCEPTED_SERIALIZED_VALUES_VERBATIM",
+    "derived_values": "COMPUTE_UNDER_ACCEPTED_DECIMAL80_CONTEXT",
+    "equilibrium": "INHERIT_SLICE5_ALGEBRAIC_PROOF_AND_PROVE_STAGE42_TRANSPORT_IN_DECIMAL80",
+    "arbitrary_precision_resum_of_serialized_slice5_outputs": "DIAGNOSTIC_ONLY"
+  },
+  "cross_engine_numeric_authority": {
+    "stage42_native_pre_slice7": {
+      "arithmetic": "DECIMAL80_ROUND_HALF_EVEN",
+      "scope": "Stage 4.2 member-interface construction and other Stage 4.2-owned Decimal calculations"
+    },
+    "slice7_core_and_provider": {
+      "authority": "UNCHANGED_CALCULATION_SLICE_7_RC2_NATIVE_NUMERICS",
+      "accepted_implementation_commit": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+      "round_or_quantize_at_boundary": false,
+      "consume_outputs_verbatim": true,
+      "provider_inputs": "UNCHANGED_SLICE7_HEEL_WRENCH_OUTPUTS"
+    },
+    "stage42_post_slice7": {
+      "support_wrench_inputs": "VERBATIM_SLICE7_SUPPORT_WRENCH_OUTPUTS",
+      "frame_mapping": "EXACT_SIGNED_PERMUTATION",
+      "reference_shift_and_sum": "EXACT_RATIONAL_ARITHMETIC_ON_FINITE_DECIMAL_VALUES",
+      "residual_redistribution": false
+    },
+    "equilibrium": {
+      "proof": [
+        "INHERITED_SLICE5_ALGEBRAIC_EQUILIBRIUM_PROOF",
+        "EXACT_STAGE42_COMPONENT_ALLOCATION_PROOF",
+        "FOUR_UNCHANGED_SLICE7_CORE_EQUILIBRIUM_PROOFS",
+        "EXACT_STAGE42_FRAME_AND_REFERENCE_TRANSPORT_PROOF"
+      ],
+      "epsilon_tolerance": false,
+      "cross_engine_requantization": false
+    },
+    "slice8_member_group_demand": {
+      "authority": "CALCULATION_SLICE_8_RC1_R1_NATIVE_NUMERICS",
+      "engineering_commit": "9f86a5685be840b271929cf3298f17a5e401b7c8",
+      "mechanics": "EXACT_RATIONAL_FROM_FINITE_DECIMAL_INPUTS",
+      "decimal_projection": "PRECISION_80_ROUND_HALF_EVEN_LOCAL_CONTEXT",
+      "stage42_recomputation": false,
+      "stage25a_rounding_emulation": false
+    }
+  },
+  "stage42_r3_authority": {
+    "starting_baseline": "473a3c8cd43f13022d254dae2477084895478c74",
+    "starting_commit_count": 106,
+    "slice8_engineering_commit": "9f86a5685be840b271929cf3298f17a5e401b7c8",
+    "slice8_test_only_stabilization_commit": "473a3c8cd43f13022d254dae2477084895478c74",
+    "slice8_hosted_ci": {
+      "run": 101,
+      "attempt": 2,
+      "backend_ubuntu": "PASS",
+      "backend_windows": "PASS",
+      "frontend_ubuntu": "PASS",
+      "frontend_windows": "PASS"
+    },
+    "member_group_dispatch": {
+      "top_flange": "STAGE_2_5A_WITHIN_ACCEPTED_SCOPE",
+      "bottom_flange": "STAGE_2_5A_WITHIN_ACCEPTED_SCOPE",
+      "positive_web": "CALCULATION_SLICE_8_COMPLETE_IN_PLANE_WRENCH",
+      "negative_web": "CALCULATION_SLICE_8_COMPLETE_IN_PLANE_WRENCH"
+    },
+    "wall_diagnostic_right_hand_residual_kip_in": "+6E-79",
+    "wall_diagnostic_structural_residual_kip_in": "-6E-79"
+  },
+  "stage42_r4_reference_authority": {
+    "web_bolt_coordinate_frame": "ANGLE_LOCAL_HEEL_FRAME_A_B",
+    "web_bolt_coordinates_case": "G60_WEB_COMMON_BOLT_GRID",
+    "web_bolt_centroid_A_B_in": [
+      "0",
+      "2"
+    ],
+    "web_member_interface_reference_A_B_in": [
+      "0",
+      "2"
+    ],
+    "wrench_reference_is_group_centroid": true,
+    "slice8_centroid_transport_additional_moment_kip_in": "0",
+    "alternative_centroid_relative_coordinates": "MECHANICALLY_EQUIVALENT_BUT_NOT_CONTROLLING",
+    "reason": "PRESERVE_PHYSICAL_HEEL_LOCAL_GEOMETRY_AND_REFERENCE_BOUND_FINGERPRINT"
+  },
+  "stage42_r5_flange_stage25a_numeric_authority": {
+    "top_flange_group": "DEPENDENCY_EXACT_NATIVE_STAGE_2_5A_RESULT",
+    "bottom_flange_group": "DEPENDENCY_EXACT_NATIVE_STAGE_2_5A_RESULT",
+    "stage25a_dependency": "IMMUTABLE_ACCEPTED_ENGINE",
+    "cross_engine_N_div_4_literal": "NONCONTROLLING_ALGEBRAIC_DIAGNOSTIC_ONLY",
+    "project_stage25a_to_decimal80_for_equality": false,
+    "tolerance": false,
+    "stage25a_reimplementation_in_stage42": false,
+    "stage25a_modification": false
+  },
+  "stage42_r6_status_and_pure_moment_authority": {
+    "production_default_material": "CURRENT_LOCKED_ICE_MATERIAL_RECORD_UNCHANGED",
+    "production_default_factors": "CURRENT_ACCEPTED_NATIVE_FACTOR_PATH_UNCHANGED",
+    "status_precedence": [
+      "INVALID",
+      "FAIL",
+      "SOURCE_REQUIRED",
+      "NOT_EVALUATED",
+      "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+    ],
+    "production_default_expected_governing_status": "FAIL",
+    "missing_sources_remain_visible_but_subordinate_to_evaluated_failure": true,
+    "success_state_case_kind": "STATUS_AGGREGATION_CONTRACT_ONLY_NOT_PRODUCTION_PHYSICAL_DEFAULT",
+    "pure_moment_native_serialized_residual_right_hand_kip_in": "+2E-78",
+    "pure_moment_native_serialized_residual_structural_kip_in": "-2E-78",
+    "tolerance": false,
+    "residual_redistribution": false
+  },
+  "stage42_r7_native_governing_failure_authority": {
+    "production_default_status": "FAIL",
+    "governing_failure_selection": "UNCHANGED_NATIVE_GROUP_MODE_PIPELINE",
+    "native_governing_group": "FIRST_ROW:TOP_FLANGE_ANGLE",
+    "required_visible_failures": [
+      "TOP_FLANGE_ANGLE_FIRST_ROW_NET_TENSION",
+      "TOP_FLANGE_ANGLE_PIN_BEARING",
+      "TOP_FLANGE_ANGLE_INTER_ROW_SHEAR_OUT"
+    ],
+    "bearing_must_govern": false,
+    "status_precedence": "EVALUATED_FAILURE_OUTRANKS_MISSING_QUALIFIED_SOURCE",
+    "tolerance": false,
+    "force_governing_limit_state_override": false
+  }
+}

@@ -1,0 +1,684 @@
+{
+  "schema_version": "frp-master-connection-calculation-slice-3-golden-rc1",
+  "document_status": "candidate engineering benchmark authority pending owner approval",
+  "not_production_output": true,
+  "calculation_family": "member-end-force transfer and eccentric in-plane bolt-group demand",
+  "primary_standard": "ASCE/SEI 74-23",
+  "source_locators": [
+    "Section 2.9",
+    "Commentary C8.1",
+    "Commentary C8.3.2"
+  ],
+  "method_classification": {
+    "rigid_body_reference_transfer": "SOURCE_DERIVED_ESTABLISHED_MECHANICS",
+    "existing_direct_row_distribution": "INHERITED_APPROVED_SLICE_2_METHOD",
+    "linear_eccentric_moment_correction": "PROJECT_RATIONAL_EXTENSION_CANDIDATE",
+    "instantaneous_center_method": "NOT_USED_IN_RC1"
+  },
+  "precision": {
+    "internal_decimal_precision": 60,
+    "serialized_decimal_places": 12,
+    "rounding": "ROUND_HALF_EVEN"
+  },
+  "units": {
+    "length": "in",
+    "force": "kip",
+    "moment": "kip-in"
+  },
+  "numerical_cases": [
+    {
+      "id": "CONCENTRIC_2X2_EQUAL",
+      "bolt_coordinates_in": [
+        [
+          "-1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "-1.000000000000",
+          "1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "1.000000000000"
+        ]
+      ],
+      "direct_share_per_bolt": [
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000"
+      ],
+      "in_plane_force_kip": [
+        "10.000000000000",
+        "0.000000000000"
+      ],
+      "force_reference_point_in": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "geometric_bolt_centroid_in": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "polar_coordinate_sum_in2": "8.000000000000",
+      "external_moment_about_centroid_kip_in": "0.000000000000",
+      "direct_distribution_moment_kip_in": "0.000000000000",
+      "residual_moment_kip_in": "0.000000000000",
+      "per_bolt": [
+        {
+          "bolt_index": 1,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "0.000000000000"
+          ],
+          "total_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 2,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "0.000000000000"
+          ],
+          "total_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 3,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "0.000000000000"
+          ],
+          "total_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 4,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "0.000000000000"
+          ],
+          "total_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        }
+      ],
+      "equilibrium": {
+        "sum_force_kip": [
+          "10.000000000000",
+          "0.000000000000"
+        ],
+        "sum_moment_about_centroid_kip_in": "0.000000000000"
+      },
+      "resistance_handoff": "NOT_AUTHORIZED_IN_RC1"
+    },
+    {
+      "id": "ECCENTRIC_2X2_EQUAL",
+      "bolt_coordinates_in": [
+        [
+          "-1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "-1.000000000000",
+          "1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "1.000000000000"
+        ]
+      ],
+      "direct_share_per_bolt": [
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000"
+      ],
+      "in_plane_force_kip": [
+        "10.000000000000",
+        "0.000000000000"
+      ],
+      "force_reference_point_in": [
+        "0.000000000000",
+        "2.000000000000"
+      ],
+      "geometric_bolt_centroid_in": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "polar_coordinate_sum_in2": "8.000000000000",
+      "external_moment_about_centroid_kip_in": "-20.000000000000",
+      "direct_distribution_moment_kip_in": "0.000000000000",
+      "residual_moment_kip_in": "-20.000000000000",
+      "per_bolt": [
+        {
+          "bolt_index": 1,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "-2.500000000000",
+            "2.500000000000"
+          ],
+          "total_force_kip": [
+            "0.000000000000",
+            "2.500000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 2,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "2.500000000000",
+            "2.500000000000"
+          ],
+          "total_force_kip": [
+            "5.000000000000",
+            "2.500000000000"
+          ],
+          "total_force_magnitude_kip": "5.590169943749"
+        },
+        {
+          "bolt_index": 3,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "-2.500000000000",
+            "-2.500000000000"
+          ],
+          "total_force_kip": [
+            "0.000000000000",
+            "-2.500000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 4,
+          "direct_force_kip": [
+            "2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "2.500000000000",
+            "-2.500000000000"
+          ],
+          "total_force_kip": [
+            "5.000000000000",
+            "-2.500000000000"
+          ],
+          "total_force_magnitude_kip": "5.590169943749"
+        }
+      ],
+      "equilibrium": {
+        "sum_force_kip": [
+          "10.000000000000",
+          "0.000000000000"
+        ],
+        "sum_moment_about_centroid_kip_in": "-20.000000000000"
+      },
+      "resistance_handoff": "NOT_AUTHORIZED_IN_RC1"
+    },
+    {
+      "id": "DIAGONAL_FORCE_ECCENTRIC_2X2",
+      "bolt_coordinates_in": [
+        [
+          "-1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "-1.000000000000",
+          "1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "1.000000000000"
+        ]
+      ],
+      "direct_share_per_bolt": [
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000"
+      ],
+      "in_plane_force_kip": [
+        "6.000000000000",
+        "8.000000000000"
+      ],
+      "force_reference_point_in": [
+        "1.200000000000",
+        "-0.500000000000"
+      ],
+      "geometric_bolt_centroid_in": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "polar_coordinate_sum_in2": "8.000000000000",
+      "external_moment_about_centroid_kip_in": "12.600000000000",
+      "direct_distribution_moment_kip_in": "0.000000000000",
+      "residual_moment_kip_in": "12.600000000000",
+      "per_bolt": [
+        {
+          "bolt_index": 1,
+          "direct_force_kip": [
+            "1.500000000000",
+            "2.000000000000"
+          ],
+          "moment_force_kip": [
+            "1.575000000000",
+            "-1.575000000000"
+          ],
+          "total_force_kip": [
+            "3.075000000000",
+            "0.425000000000"
+          ],
+          "total_force_magnitude_kip": "3.104230983674"
+        },
+        {
+          "bolt_index": 2,
+          "direct_force_kip": [
+            "1.500000000000",
+            "2.000000000000"
+          ],
+          "moment_force_kip": [
+            "-1.575000000000",
+            "-1.575000000000"
+          ],
+          "total_force_kip": [
+            "-0.075000000000",
+            "0.425000000000"
+          ],
+          "total_force_magnitude_kip": "0.431566912541"
+        },
+        {
+          "bolt_index": 3,
+          "direct_force_kip": [
+            "1.500000000000",
+            "2.000000000000"
+          ],
+          "moment_force_kip": [
+            "1.575000000000",
+            "1.575000000000"
+          ],
+          "total_force_kip": [
+            "3.075000000000",
+            "3.575000000000"
+          ],
+          "total_force_magnitude_kip": "4.715532843699"
+        },
+        {
+          "bolt_index": 4,
+          "direct_force_kip": [
+            "1.500000000000",
+            "2.000000000000"
+          ],
+          "moment_force_kip": [
+            "-1.575000000000",
+            "1.575000000000"
+          ],
+          "total_force_kip": [
+            "-0.075000000000",
+            "3.575000000000"
+          ],
+          "total_force_magnitude_kip": "3.575786626744"
+        }
+      ],
+      "equilibrium": {
+        "sum_force_kip": [
+          "6.000000000000",
+          "8.000000000000"
+        ],
+        "sum_moment_about_centroid_kip_in": "12.600000000000"
+      },
+      "resistance_handoff": "NOT_AUTHORIZED_IN_RC1"
+    },
+    {
+      "id": "FORCE_REVERSAL_2X2",
+      "bolt_coordinates_in": [
+        [
+          "-1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "-1.000000000000",
+          "1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "-1.000000000000"
+        ],
+        [
+          "1.000000000000",
+          "1.000000000000"
+        ]
+      ],
+      "direct_share_per_bolt": [
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000",
+        "0.250000000000"
+      ],
+      "in_plane_force_kip": [
+        "-10.000000000000",
+        "0.000000000000"
+      ],
+      "force_reference_point_in": [
+        "0.000000000000",
+        "2.000000000000"
+      ],
+      "geometric_bolt_centroid_in": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "polar_coordinate_sum_in2": "8.000000000000",
+      "external_moment_about_centroid_kip_in": "20.000000000000",
+      "direct_distribution_moment_kip_in": "0.000000000000",
+      "residual_moment_kip_in": "20.000000000000",
+      "per_bolt": [
+        {
+          "bolt_index": 1,
+          "direct_force_kip": [
+            "-2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "2.500000000000",
+            "-2.500000000000"
+          ],
+          "total_force_kip": [
+            "0.000000000000",
+            "-2.500000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 2,
+          "direct_force_kip": [
+            "-2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "-2.500000000000",
+            "-2.500000000000"
+          ],
+          "total_force_kip": [
+            "-5.000000000000",
+            "-2.500000000000"
+          ],
+          "total_force_magnitude_kip": "5.590169943749"
+        },
+        {
+          "bolt_index": 3,
+          "direct_force_kip": [
+            "-2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "2.500000000000",
+            "2.500000000000"
+          ],
+          "total_force_kip": [
+            "0.000000000000",
+            "2.500000000000"
+          ],
+          "total_force_magnitude_kip": "2.500000000000"
+        },
+        {
+          "bolt_index": 4,
+          "direct_force_kip": [
+            "-2.500000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "-2.500000000000",
+            "2.500000000000"
+          ],
+          "total_force_kip": [
+            "-5.000000000000",
+            "2.500000000000"
+          ],
+          "total_force_magnitude_kip": "5.590169943749"
+        }
+      ],
+      "equilibrium": {
+        "sum_force_kip": [
+          "-10.000000000000",
+          "0.000000000000"
+        ],
+        "sum_moment_about_centroid_kip_in": "20.000000000000"
+      },
+      "resistance_handoff": "NOT_AUTHORIZED_IN_RC1"
+    },
+    {
+      "id": "FRP_STEEL_3ROW_ECCENTRIC",
+      "bolt_coordinates_in": [
+        [
+          "-2.000000000000",
+          "0.000000000000"
+        ],
+        [
+          "0.000000000000",
+          "0.000000000000"
+        ],
+        [
+          "2.000000000000",
+          "0.000000000000"
+        ]
+      ],
+      "direct_share_per_bolt": [
+        "0.500000000000",
+        "0.300000000000",
+        "0.200000000000"
+      ],
+      "in_plane_force_kip": [
+        "10.000000000000",
+        "0.000000000000"
+      ],
+      "force_reference_point_in": [
+        "0.000000000000",
+        "1.000000000000"
+      ],
+      "geometric_bolt_centroid_in": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "polar_coordinate_sum_in2": "8.000000000000",
+      "external_moment_about_centroid_kip_in": "-10.000000000000",
+      "direct_distribution_moment_kip_in": "0.000000000000",
+      "residual_moment_kip_in": "-10.000000000000",
+      "per_bolt": [
+        {
+          "bolt_index": 1,
+          "direct_force_kip": [
+            "5.000000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "2.500000000000"
+          ],
+          "total_force_kip": [
+            "5.000000000000",
+            "2.500000000000"
+          ],
+          "total_force_magnitude_kip": "5.590169943749"
+        },
+        {
+          "bolt_index": 2,
+          "direct_force_kip": [
+            "3.000000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "0.000000000000"
+          ],
+          "total_force_kip": [
+            "3.000000000000",
+            "0.000000000000"
+          ],
+          "total_force_magnitude_kip": "3.000000000000"
+        },
+        {
+          "bolt_index": 3,
+          "direct_force_kip": [
+            "2.000000000000",
+            "0.000000000000"
+          ],
+          "moment_force_kip": [
+            "0.000000000000",
+            "-2.500000000000"
+          ],
+          "total_force_kip": [
+            "2.000000000000",
+            "-2.500000000000"
+          ],
+          "total_force_magnitude_kip": "3.201562118716"
+        }
+      ],
+      "equilibrium": {
+        "sum_force_kip": [
+          "10.000000000000",
+          "0.000000000000"
+        ],
+        "sum_moment_about_centroid_kip_in": "-10.000000000000"
+      },
+      "resistance_handoff": "NOT_AUTHORIZED_IN_RC1"
+    }
+  ],
+  "status_cases": [
+    {
+      "id": "PURE_MOMENT_ZERO_FORCE",
+      "in_plane_force_kip": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "member_end_moment_nonzero": true,
+      "expected_availability": "CALCULATION_NOT_SUPPORTED",
+      "required_warning": "PURE_CONNECTION_MOMENT_NOT_SUPPORTED"
+    },
+    {
+      "id": "OUT_OF_PLANE_FORCE_PRESENT",
+      "in_plane_force_kip": [
+        "5.000000000000",
+        "0.000000000000"
+      ],
+      "normal_force_kip": "1.000000000000",
+      "expected_force_only_demand": "CALCULABLE",
+      "expected_resistance_handoff": "NOT_AUTHORIZED_IN_RC1",
+      "required_warning": "OUT_OF_PLANE_FORCE_REQUIRES_EXPLICIT_BOLT_AXIS_DEMAND"
+    },
+    {
+      "id": "MEMBER_END_MOMENT_PRESENT",
+      "in_plane_force_kip": [
+        "5.000000000000",
+        "0.000000000000"
+      ],
+      "member_end_moment_nonzero": true,
+      "expected_force_only_demand": "CALCULABLE",
+      "expected_resistance_handoff": "NOT_AUTHORIZED_IN_RC1",
+      "required_warning": "MEMBER_END_MOMENTS_NOT_TRANSFERRED_BY_CURRENT_DEMAND_MODEL"
+    },
+    {
+      "id": "SINGLE_BOLT_ECCENTRIC_FORCE",
+      "bolt_count": 1,
+      "residual_moment_nonzero": true,
+      "expected_availability": "CALCULATION_NOT_SUPPORTED",
+      "required_warning": "DEGENERATE_BOLT_GROUP_FOR_ECCENTRIC_MOMENT"
+    }
+  ],
+  "unit_equivalence_case": {
+    "source_case": "ECCENTRIC_2X2_EQUAL",
+    "inch_to_mm": "25.400000000000",
+    "kip_to_kN": "4.4482216152605",
+    "bolt_coordinates_mm": [
+      [
+        "-25.400000000000",
+        "-25.400000000000"
+      ],
+      [
+        "-25.400000000000",
+        "25.400000000000"
+      ],
+      [
+        "25.400000000000",
+        "-25.400000000000"
+      ],
+      [
+        "25.400000000000",
+        "25.400000000000"
+      ]
+    ],
+    "force_kN": [
+      "44.482216152605",
+      "0.000000000000"
+    ],
+    "force_reference_point_mm": [
+      "0.000000000000",
+      "50.800000000000"
+    ],
+    "external_moment_kN_mm": "-2259.696580552334",
+    "per_bolt_magnitudes_kN": [
+      "11.120554038151",
+      "24.866314776766",
+      "11.120554038151",
+      "24.866314776766"
+    ]
+  },
+  "required_invariants": [
+    "Per-bolt vector forces must sum exactly to the transformed in-plane resultant within the declared numerical tolerance.",
+    "Per-bolt moments about the geometric bolt centroid must sum exactly to the transformed external in-plane moment within the declared numerical tolerance.",
+    "Increasing eccentricity magnitude with fixed nonzero force must not reduce every bolt-force magnitude simultaneously.",
+    "Force reversal must reverse the equilibrium resultant and associated eccentric-moment sign consistently.",
+    "Display-unit changes must not change physical demand results, method, status, or fingerprint.",
+    "Member-end moments are preserved in trace but are not automatically transferred in RC1.",
+    "Out-of-plane force does not generate automatic bolt-axis tension in RC1.",
+    "No friction, slip transfer, or prying is credited or generated.",
+    "RC1 demand results are not automatically handed to the Stage 2.4B resistance engine."
+  ]
+}

@@ -1,0 +1,996 @@
+{
+  "contract": "4.3-RC1",
+  "authority_matrix_sha256": "3E277AF2388F15BA5C2CA2AA0B52ED9AAE7064F15DCFA354C8C233B174EB5043",
+  "note": "Coverage index, not engineering authority. Executable cases retain their independent/native/negative oracles. Exact-commit isolation and publication necessarily occur after this record is committed; their final direct evidence is external, not preclaimed here.",
+  "requirements": [
+    {
+      "id": "T43-001",
+      "title": "Baseline identity",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "docs/qa/STAGE_4_3_PREMUTATION_AUDIT.md",
+        "backend/tests/test_stage43_governance.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-002",
+      "title": "Support matrix",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-003",
+      "title": "Incoming member",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-004",
+      "title": "New product separation",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-005",
+      "title": "Native dependency numerics",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-006",
+      "title": "Reference provenance",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-007",
+      "title": "Beam structural sign",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-008",
+      "title": "Receiving-member frame",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-009",
+      "title": "Support attachment frame",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-010",
+      "title": "Face reference",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-011",
+      "title": "Support centroid",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-012",
+      "title": "Channel asymmetry",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-013",
+      "title": "Rigid-body shift identity",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "fixture_ids": [
+        "F43-T01"
+      ],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-014",
+      "title": "Gap",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-015",
+      "title": "Whole support handoff",
+      "oracle_kind": "EXACT_RELATION",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-016",
+      "title": "Global support action only",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-017",
+      "title": "No column-end reaction guess",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-018",
+      "title": "Four connector topology",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-019",
+      "title": "Beam-side dependency calls",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-020",
+      "title": "Web reference invariant",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-021",
+      "title": "Transfer of independent moment",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-022",
+      "title": "Four support groups",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-023",
+      "title": "W/I flange path",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-024",
+      "title": "W/I web path",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-025",
+      "title": "Channel web path",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-026",
+      "title": "Hollow square path",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-027",
+      "title": "Hollow no false double shear",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-028",
+      "title": "Hollow response specificity",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-029",
+      "title": "Solid square path",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-030",
+      "title": "Solid formula applicability",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-031",
+      "title": "Square-only selection",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-032",
+      "title": "Physical hole and washer containment",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-033",
+      "title": "Fit and access",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-034",
+      "title": "Physical load-reversal invariance",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-035",
+      "title": "Display length independence",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-036",
+      "title": "Support-response demand distinction",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-037",
+      "title": "Out-of-plane demand completeness",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-038",
+      "title": "Positive bolt tension fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "fixture_ids": [
+        "F43-R01"
+      ],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-039",
+      "title": "Tension/contact moment fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "fixture_ids": [
+        "F43-R02"
+      ],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-040",
+      "title": "Reversed contact moment fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "fixture_ids": [
+        "F43-R03"
+      ],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-041",
+      "title": "Combined response fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "fixture_ids": [
+        "F43-R04"
+      ],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-042",
+      "title": "Reaction-record mutation rejection",
+      "oracle_kind": "NEGATIVE_TEST",
+      "fixture_ids": [
+        "F43-R02"
+      ],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-043",
+      "title": "Equilibrium is not qualification",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-044",
+      "title": "Response source binding",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-045",
+      "title": "Single-load response invalidation",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-046",
+      "title": "Source units",
+      "oracle_kind": "METAMORPHIC",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-047",
+      "title": "Global group compatibility",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-048",
+      "title": "Missing response behavior",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-049",
+      "title": "Zero-demand distinction",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-050",
+      "title": "Signed contact",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-051",
+      "title": "Shear participation",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/calculation/test_support_attachment_response.py",
+        "backend/tests/application/test_wi_frp_support_sources.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-052",
+      "title": "Support bolt numerical checks",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-053",
+      "title": "Bolt-interaction stress fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "fixture_ids": [
+        "F43-B01"
+      ],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-054",
+      "title": "Fastener-source boundary",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-055",
+      "title": "Actual shear planes",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-056",
+      "title": "Pull-through two branches",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-057",
+      "title": "Time/resistance factors",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-058",
+      "title": "Support bearing directions",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-059",
+      "title": "Row and end paths",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-060",
+      "title": "Angle support-leg check",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-061",
+      "title": "Support local zone coverage",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-062",
+      "title": "No arbitrary Chapter 7 panel",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-063",
+      "title": "Source absence is not implementation blocker",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-064",
+      "title": "Synthetic fixture isolation",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "backend/tests/calculation/test_support_attachment_response.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-065",
+      "title": "Default result honesty",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-066",
+      "title": "Native governing preservation",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-067",
+      "title": "Failure table completeness",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-068",
+      "title": "Scope aggregation",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-069",
+      "title": "Highest connection status",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-070",
+      "title": "No inherited concrete warning",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-071",
+      "title": "Native aggregate versus proof target",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-072",
+      "title": "Precision robustness",
+      "oracle_kind": "METAMORPHIC",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/application/test_wi_frp_support_moment.py",
+        "backend/tests/application/test_wi_frp_support_sources.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-073",
+      "title": "Read-only preview",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-074",
+      "title": "Explicit design",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-075",
+      "title": "Support selector matrix",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-076",
+      "title": "Nested sidebar layout",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-077",
+      "title": "Fastener/source inputs",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-078",
+      "title": "Result table auditability",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-079",
+      "title": "Never blank root",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-080",
+      "title": "Race-safe switching",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py",
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-081",
+      "title": "Scene evidence",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx",
+        "docs/qa/STAGE_4_3_IMPLEMENTATION_AND_VERIFICATION.md"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-082",
+      "title": "Owner browser review",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx",
+        "docs/qa/STAGE_4_3_IMPLEMENTATION_AND_VERIFICATION.md"
+      ],
+      "gate": "LOCAL_BROWSER_PASSED_APP_RUNNING_OWNER_ACCEPTANCE_PENDING"
+    },
+    {
+      "id": "T43-083",
+      "title": "Historical UI regression",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "frontend/tests/wiFrpSupportMomentFrontend.test.tsx",
+        "frontend/tests/wiWallMomentFrontend.test.tsx"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-084",
+      "title": "Public API rejection",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_wi_frp_support_moment_api.py"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-085",
+      "title": "Ten freeze tags",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_stage43_governance.py",
+        "docs/qa/STAGE_4_3_INHERITED_IDENTITIES.json"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-086",
+      "title": "Shallow historical tests",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_stage43_governance.py",
+        "docs/qa/STAGE_4_3_INHERITED_IDENTITIES.json"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-087",
+      "title": "Repository hygiene",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "backend/tests/test_stage43_governance.py",
+        "docs/qa/STAGE_4_3_INHERITED_IDENTITIES.json"
+      ],
+      "gate": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "T43-088",
+      "title": "Full integration QA",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "docs/qa/STAGE_4_3_IMPLEMENTATION_AND_VERIFICATION.md",
+        "HANDOFF_MANIFEST.json"
+      ],
+      "gate": "LOCAL_PASSED_EXACT_COMMIT_ISOLATION_REQUIRED"
+    },
+    {
+      "id": "T43-089",
+      "title": "CI sequencing",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "docs/qa/STAGE_4_3_IMPLEMENTATION_AND_VERIFICATION.md",
+        "HANDOFF_MANIFEST.json"
+      ],
+      "gate": "NORMAL_PUSH_THEN_DIRECT_FOUR_JOB_CI_REQUIRED"
+    },
+    {
+      "id": "T43-090",
+      "title": "No automatic freeze",
+      "oracle_kind": "CONTRACT",
+      "fixture_ids": [],
+      "evidence_paths": [
+        "docs/qa/STAGE_4_3_IMPLEMENTATION_AND_VERIFICATION.md",
+        "HANDOFF_MANIFEST.json"
+      ],
+      "gate": "OWNER_ACCEPTANCE_PENDING_NO_AUTOMATIC_FREEZE"
+    }
+  ]
+}

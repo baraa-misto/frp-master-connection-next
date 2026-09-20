@@ -1,0 +1,177 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "benchmarks": [
+    {
+      "id": "C1_G1_RHS_CORE_FULL_THROUGH_PATH",
+      "rhs": {
+        "bolt_axis_depth_in": "6",
+        "orthogonal_width_in": "4",
+        "wall_thickness_in": "0.5",
+        "member_length_in": "8"
+      },
+      "expected_segments": [
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "NEAR_WALL",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "FREE_SHANK_SPAN",
+          "identity": "CAVITY",
+          "length_in": "5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "FAR_WALL",
+          "length_in": "0.5"
+        }
+      ],
+      "expected": {
+        "total_section_traversal_in": "6",
+        "physical_bolt_count": 1,
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "C1_G2_SRS_CORE_FULL_THROUGH_PATH",
+      "srs": {
+        "bolt_axis_depth_in": "6",
+        "orthogonal_width_in": "4",
+        "member_length_in": "8"
+      },
+      "expected_segments": [
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "SOLID_RECTANGULAR_SECTION",
+          "length_in": "6"
+        }
+      ],
+      "expected": {
+        "total_section_traversal_in": "6",
+        "cavity_span_in": "0",
+        "physical_bolt_count": 1
+      }
+    },
+    {
+      "id": "C1_G3_RHS_ONE_SIDED_EXTERNAL_CONNECTOR_STACK",
+      "external_near_connector_in": "0.5",
+      "expected": {
+        "stack_span_before_hardware_in": "6.5",
+        "far_internal_nut": false,
+        "far_hardware_location": "OUTSIDE_FAR_WALL"
+      }
+    },
+    {
+      "id": "C1_G4_RHS_PAIRED_EXTERNAL_CONNECTOR_STACK",
+      "external_near_connector_in": "0.5",
+      "external_far_connector_in": "0.5",
+      "expected": {
+        "stack_span_before_hardware_in": "7",
+        "one_continuous_shank": true,
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "C1_G5_SRS_PAIRED_EXTERNAL_CONNECTOR_STACK",
+      "external_near_connector_in": "0.5",
+      "external_far_connector_in": "0.5",
+      "expected": {
+        "stack_span_before_hardware_in": "7",
+        "one_continuous_shank": true
+      }
+    },
+    {
+      "id": "C1_G6_RHS_OPPOSING_WALL_HOLE_ALIGNMENT",
+      "selected_face": "Y_POS_FACE",
+      "opposite_face": "Y_NEG_FACE",
+      "near_hole_local_uv_in": [
+        "1.25",
+        "2.5"
+      ],
+      "far_hole_local_uv_in": [
+        "1.25",
+        "2.5"
+      ],
+      "expected": {
+        "same_exact_bolt_axis": true,
+        "near_and_far_projected_coordinates_equal": true
+      }
+    },
+    {
+      "id": "C1_G7_RHS_BOTH_WALL_CONTAINMENT_REQUIRED",
+      "expected": {
+        "near_wall_valid_far_wall_invalid_overall": "INVALID_GEOMETRY",
+        "near_wall_invalid_far_wall_valid_overall": "INVALID_GEOMETRY",
+        "both_valid_overall": "VALID"
+      }
+    },
+    {
+      "id": "C1_G8_SUPPORT_TARGET_REGISTRY",
+      "required_targets": [
+        "W_COLUMN_FLANGE",
+        "W_BEAM_FLANGE",
+        "W_COLUMN_WEB",
+        "CHANNEL_COLUMN_WEB",
+        "ANGLE_COLUMN_LEG",
+        "RECTANGULAR_HOLLOW_COLUMN_WALL",
+        "SOLID_RECTANGULAR_COLUMN_FACE"
+      ],
+      "expected": {
+        "count": 7,
+        "w_beam_web_present": false
+      }
+    },
+    {
+      "id": "C1_G9_NO_INTERNAL_RHS_HARDWARE",
+      "expected": {
+        "head_location": "EXTERIOR_NEAR_SIDE",
+        "nut_location": "EXTERIOR_FAR_SIDE",
+        "washer_locations": [
+          "EXTERIOR_NEAR_SIDE",
+          "EXTERIOR_FAR_SIDE"
+        ],
+        "cavity_allowed_contents": [
+          "BOLT_SHANK"
+        ]
+      }
+    },
+    {
+      "id": "C1_G10_CAVITY_IS_NOT_MATERIAL",
+      "expected": {
+        "cavity_receives_material_id": false,
+        "cavity_receives_material_axes": false,
+        "cavity_receives_bearing_demand": false,
+        "cavity_receives_resistance_check": false
+      }
+    },
+    {
+      "id": "C1_G11_EXACT_US_SI_EQUIVALENCE",
+      "conversions": {
+        "6_in_mm": "152.4",
+        "5_in_mm": "127",
+        "4_in_mm": "101.6",
+        "0.5_in_mm": "12.7",
+        "8_in_mm": "203.2"
+      },
+      "expected": {
+        "rhs_physical_path_equal": true,
+        "srs_physical_path_equal": true,
+        "engineering_fingerprint_equal": true
+      }
+    },
+    {
+      "id": "C1_G12_UNSUPPORTED_LOCAL_RESISTANCE_REMAINS_FAIL_CLOSED",
+      "expected_required_checks": [
+        "RHS_LOCAL_WALL_RESPONSE",
+        "RHS_SLEEVE_OR_CRUSH_TUBE_REQUIREMENT",
+        "SOLID_RECTANGULAR_FULL_DEPTH_RESISTANCE_APPLICABILITY"
+      ],
+      "expected": {
+        "new_resistance_equation_used": false,
+        "ordinary_pass_created_by_c1": false
+      }
+    }
+  ]
+}

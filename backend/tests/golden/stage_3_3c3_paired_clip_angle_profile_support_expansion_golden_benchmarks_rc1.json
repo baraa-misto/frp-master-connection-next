@@ -1,0 +1,238 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_3C3_PAIRED_CLIP_ANGLE_PROFILE_SUPPORT_EXPANSION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative quantities are exact decimal strings.",
+  "benchmarks": [
+    {
+      "id": "C3_G1_CONNECTED_ANGLE_VALID",
+      "expected": {
+        "common_path": [
+          "POSITIVE_CLIP_CONNECTED_LEG",
+          "MEMBER_ANGLE_SELECTED_LEG",
+          "NEGATIVE_CLIP_CONNECTED_LEG"
+        ],
+        "geometry_status": "VALID",
+        "one_common_bolt_per_axis": true
+      }
+    },
+    {
+      "id": "C3_G2_CONNECTED_ANGLE_HEEL_COLLISION",
+      "expected": {
+        "heel_collision": "INVALID_GEOMETRY",
+        "auto_reposition": false
+      }
+    },
+    {
+      "id": "C3_G3_CONNECTED_ANGLE_SHARING_NOT_AUTOMATIC",
+      "expected": {
+        "equal_sharing_inferred_from_identical_connectors": false,
+        "distribution_status": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "C3_G4_CONNECTED_RHS_COMMON_FULL_THROUGH",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "POSITIVE_CLIP_CONNECTED_LEG",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_NEAR_WALL",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "FREE_SHANK_SPAN",
+            "identity": "RHS_CAVITY",
+            "length_in": "5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_FAR_WALL",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "NEGATIVE_CLIP_CONNECTED_LEG",
+            "length_in": "0.5"
+          }
+        ],
+        "stack_span_before_hardware_in": "7",
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "C3_G5_CONNECTED_SRS_COMMON_FULL_THROUGH",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "POSITIVE_CLIP_CONNECTED_LEG",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "SOLID_RECTANGULAR_SECTION",
+            "length_in": "6"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "NEGATIVE_CLIP_CONNECTED_LEG",
+            "length_in": "0.5"
+          }
+        ],
+        "stack_span_before_hardware_in": "7",
+        "cavity_span_in": "0"
+      }
+    },
+    {
+      "id": "C3_G6_SUPPORT_W_COLUMN_WEB",
+      "expected": {
+        "positive_group_path": [
+          "POSITIVE_CLIP_SUPPORT_LEG",
+          "W_WEB"
+        ],
+        "negative_group_path": [
+          "NEGATIVE_CLIP_SUPPORT_LEG",
+          "W_WEB"
+        ],
+        "support_groups_distinct": true
+      }
+    },
+    {
+      "id": "C3_G7_SUPPORT_CHANNEL_COLUMN_WEB",
+      "expected": {
+        "positive_group_path": [
+          "POSITIVE_CLIP_SUPPORT_LEG",
+          "CHANNEL_WEB"
+        ],
+        "negative_group_path": [
+          "NEGATIVE_CLIP_SUPPORT_LEG",
+          "CHANNEL_WEB"
+        ],
+        "support_groups_distinct": true
+      }
+    },
+    {
+      "id": "C3_G8_SUPPORT_ANGLE_COLUMN_LEG",
+      "expected": {
+        "positive_group_path": [
+          "POSITIVE_CLIP_SUPPORT_LEG",
+          "ANGLE_SELECTED_LEG"
+        ],
+        "negative_group_path": [
+          "NEGATIVE_CLIP_SUPPORT_LEG",
+          "ANGLE_SELECTED_LEG"
+        ],
+        "heel_overlap_allowed": false
+      }
+    },
+    {
+      "id": "C3_G9_SUPPORT_RHS_COLUMN_FULL_THROUGH",
+      "expected": {
+        "support_groups": 2,
+        "each_group_full_through": true,
+        "internal_hardware_count": 0,
+        "groups_coincident": false
+      }
+    },
+    {
+      "id": "C3_G10_SUPPORT_SRS_COLUMN_FULL_THROUGH",
+      "expected": {
+        "support_groups": 2,
+        "each_group_full_depth": true,
+        "groups_coincident": false
+      }
+    },
+    {
+      "id": "C3_G11_CONNECTED_RHS_ONE_COMMON_BOLT",
+      "expected": {
+        "physical_bolts_per_common_axis": 1,
+        "duplicate_shanks": 0,
+        "head_location": "EXTERIOR_POSITIVE_CONNECTOR_SIDE",
+        "nut_location": "EXTERIOR_NEGATIVE_CONNECTOR_SIDE"
+      }
+    },
+    {
+      "id": "C3_G12_SUPPORT_RHS_EXTERNAL_HARDWARE",
+      "expected": {
+        "positive_group_internal_hardware": 0,
+        "negative_group_internal_hardware": 0,
+        "cavity_contents": [
+          "BOLT_SHANK"
+        ]
+      }
+    },
+    {
+      "id": "C3_G13_SRS_SOLID_IDENTITY",
+      "expected": {
+        "profile_is_solid": true,
+        "cavity_present": false,
+        "full_depth_material_layer": true
+      }
+    },
+    {
+      "id": "C3_G14_US_SI_EQUIVALENCE",
+      "conversions": {
+        "6_in_mm": "152.4",
+        "5_in_mm": "127",
+        "4_in_mm": "101.6",
+        "0.5_in_mm": "12.7",
+        "8_in_mm": "203.2"
+      },
+      "expected": {
+        "new_profile_geometry_equal": true,
+        "new_full_through_paths_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "C3_G15_EXISTING_B_FINGERPRINT_INVARIANCE",
+      "expected": {
+        "flat_plate_w_flange_change": "NONE",
+        "w_i_w_flange_change": "NONE",
+        "channel_w_flange_change": "NONE"
+      }
+    },
+    {
+      "id": "C3_G16_UNSUPPORTED_DISTRIBUTION_CURRENT_GEOMETRY",
+      "expected": {
+        "geometry_current": true,
+        "equal_sharing_status": "NOT_EVALUATED",
+        "geometry_invalid": false
+      }
+    },
+    {
+      "id": "C3_G17_TRIM_ANGLE",
+      "expected": {
+        "both_member_angle_legs_trimmed_as_applicable": true,
+        "common_group_auto_moves": false
+      }
+    },
+    {
+      "id": "C3_G18_TRIM_RECTANGULAR",
+      "expected": {
+        "rhs_remains_hollow": true,
+        "srs_remains_solid": true,
+        "hardware_endpoints_recomputed": true
+      }
+    },
+    {
+      "id": "C3_G19_NO_DUPLICATE_BOLTS",
+      "expected": {
+        "common_group_duplicate_bolts": 0,
+        "positive_support_duplicate_bolts": 0,
+        "negative_support_duplicate_bolts": 0
+      }
+    },
+    {
+      "id": "C3_G20_TEE_SINGLE_INVARIANCE",
+      "expected": {
+        "tee_fingerprint_change": "NONE",
+        "single_angle_fingerprint_change": "NONE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,447 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "contract": "CS5-RC1",
+  "method": "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1",
+  "frame": {
+    "axes": [
+      "L_B",
+      "V_B",
+      "T_B"
+    ],
+    "handedness": "L_B_x_V_B_equals_T_B"
+  },
+  "default_fixture": {
+    "geometry_in": {
+      "d": "10",
+      "b_f": "8",
+      "t_w": "0.5",
+      "t_f": "0.5"
+    },
+    "actions_us": {
+      "P_L_kip": "20",
+      "V_V_kip": "-10",
+      "M_T_kip_in": "100"
+    },
+    "derived": {
+      "h_w_in": "9.0",
+      "A_f_in2": "4.0",
+      "A_w_in2": "4.50",
+      "A_total_in2": "12.50",
+      "y_top_in": "4.75",
+      "y_bottom_in": "-4.75",
+      "I_f_c_in4": "0.083333333333333333333333333333333333333333333333333333333333333333333333333333333",
+      "I_w_c_in4": "30.3750",
+      "I_T_in4": "211.04166666666666666666666666666666666666666666666666666666666666666666666666667",
+      "z_f_in": "9.50"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_WEB_HEIGHT",
+      "expected": {
+        "h_w_in": "9.0"
+      }
+    },
+    {
+      "id": "G2_REGION_AREAS",
+      "expected": {
+        "A_top_in2": "4.0",
+        "A_web_in2": "4.50",
+        "A_bottom_in2": "4.0",
+        "A_total_in2": "12.50"
+      }
+    },
+    {
+      "id": "G3_REGION_CENTROIDS",
+      "expected": {
+        "y_top_in": "4.75",
+        "y_web_in": "0",
+        "y_bottom_in": "-4.75"
+      }
+    },
+    {
+      "id": "G4_REGION_CENTROIDAL_INERTIAS",
+      "expected": {
+        "I_top_c_in4": "0.083333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "I_web_c_in4": "30.3750",
+        "I_bottom_c_in4": "0.083333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G5_TOTAL_MAJOR_AXIS_INERTIA",
+      "expected": {
+        "I_T_in4": "211.04166666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G6_PURE_AXIAL_AREA_DISTRIBUTION",
+      "input": {
+        "P_L_kip": "20",
+        "V_V_kip": "0",
+        "M_T_kip_in": "0"
+      },
+      "expected": {
+        "N_top_kip": "6.4",
+        "N_web_kip": "7.2",
+        "N_bottom_kip": "6.4"
+      }
+    },
+    {
+      "id": "G7_PURE_AXIAL_ZERO_LOCAL_MOMENTS",
+      "expected": {
+        "m_top_kip_in": "0",
+        "m_web_kip_in": "0",
+        "m_bottom_kip_in": "0"
+      }
+    },
+    {
+      "id": "G8_PURE_MOMENT_TOP_FORCE",
+      "input": {
+        "P_L_kip": "0",
+        "V_V_kip": "0",
+        "M_T_kip_in": "100"
+      },
+      "expected": {
+        "N_top_kip": "9.0029615004935834155972359328726554787759131293188548864758144126357354392892397"
+      }
+    },
+    {
+      "id": "G9_PURE_MOMENT_WEB_FORCE_ZERO",
+      "expected": {
+        "N_web_kip": "0"
+      }
+    },
+    {
+      "id": "G10_PURE_MOMENT_BOTTOM_FORCE",
+      "expected": {
+        "N_bottom_kip": "-9.0029615004935834155972359328726554787759131293188548864758144126357354392892397"
+      }
+    },
+    {
+      "id": "G11_PURE_MOMENT_TOP_LOCAL_MOMENT",
+      "expected": {
+        "m_top_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G12_PURE_MOMENT_WEB_LOCAL_MOMENT",
+      "expected": {
+        "m_web_kip_in": "14.392892398815399802566633761105626850937808489634748272458045409674234945705824"
+      }
+    },
+    {
+      "id": "G13_PURE_MOMENT_BOTTOM_LOCAL_MOMENT",
+      "expected": {
+        "m_bottom_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G14_PURE_MOMENT_AXIAL_EQUILIBRIUM",
+      "expected": {
+        "sum_N_kip": "0E-79"
+      }
+    },
+    {
+      "id": "G15_PURE_MOMENT_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "sum_M_T_kip_in": "99.999999999999999999999999999999999999999999999999999999999999999999999999999998"
+      }
+    },
+    {
+      "id": "G16_DEFAULT_TOP_FORCE",
+      "input": {
+        "P_L_kip": "20",
+        "V_V_kip": "-10",
+        "M_T_kip_in": "100"
+      },
+      "expected": {
+        "N_top_kip": "15.402961500493583415597235932872655478775913129318854886475814412635735439289240"
+      }
+    },
+    {
+      "id": "G17_DEFAULT_WEB_FORCE",
+      "expected": {
+        "N_web_kip": "7.2"
+      }
+    },
+    {
+      "id": "G18_DEFAULT_BOTTOM_FORCE",
+      "expected": {
+        "N_bottom_kip": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397"
+      }
+    },
+    {
+      "id": "G19_DEFAULT_TOP_LOCAL_MOMENT",
+      "expected": {
+        "m_top_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G20_DEFAULT_WEB_LOCAL_MOMENT",
+      "expected": {
+        "m_web_kip_in": "14.392892398815399802566633761105626850937808489634748272458045409674234945705824"
+      }
+    },
+    {
+      "id": "G21_DEFAULT_BOTTOM_LOCAL_MOMENT",
+      "expected": {
+        "m_bottom_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G22_DEFAULT_MAJOR_SHEAR_ALLOCATION",
+      "expected": {
+        "V_top_kip": "0",
+        "V_web_kip": "-10",
+        "V_bottom_kip": "0"
+      }
+    },
+    {
+      "id": "G23_DEFAULT_AXIAL_EQUILIBRIUM",
+      "expected": {
+        "sum_N_kip": "20.000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "target_kip": "20"
+      }
+    },
+    {
+      "id": "G24_DEFAULT_SHEAR_EQUILIBRIUM",
+      "expected": {
+        "sum_V_kip": "-10",
+        "target_kip": "-10"
+      }
+    },
+    {
+      "id": "G25_DEFAULT_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "sum_M_T_kip_in": "99.999999999999999999999999999999999999999999999999999999999999999999999999999999",
+        "target_kip_in": "100"
+      }
+    },
+    {
+      "id": "G26_FLANGE_LEVER_ARM",
+      "expected": {
+        "z_f_in": "9.50"
+      }
+    },
+    {
+      "id": "G27_EXACT_FLANGE_COUPLE_FORCE",
+      "expected": {
+        "C_f_kip": "9.002961500493583415597235932872655478775913129318854886475814412635735439289240"
+      }
+    },
+    {
+      "id": "G28_EXACT_FLANGE_COUPLE_MOMENT",
+      "expected": {
+        "M_couple_kip_in": "85.528134254689042448173741362290227048371174728529121421520236920039486673247780"
+      }
+    },
+    {
+      "id": "G29_FULL_MOMENT_M_OVER_Z_REFERENCE",
+      "expected": {
+        "C_M_over_z_kip": "10.526315789473684210526315789473684210526315789473684210526315789473684210526316",
+        "controlling_design_demand": false
+      }
+    },
+    {
+      "id": "G30_RESIDUAL_MOMENT",
+      "expected": {
+        "M_residual_kip_in": "14.471865745310957551826258637709772951628825271470878578479763079960513326752220"
+      }
+    },
+    {
+      "id": "G31_RESIDUAL_IDENTITY",
+      "expected": {
+        "local_and_web_sum_kip_in": "14.471865745310957551826258637709772951628825271470878578479763079960513326752220",
+        "equals_residual": true
+      }
+    },
+    {
+      "id": "G32_TOP_STRESS_EXTREMA",
+      "expected": {
+        "inner_ksi": "3.7322803553800592300098716683119447186574531095755182625863770977295162882527147",
+        "outer_ksi": "3.9692003948667324777887462981243830207305034550839091806515301085883514313919052",
+        "crosses_zero": false
+      }
+    },
+    {
+      "id": "G33_WEB_STRESS_EXTREMA",
+      "expected": {
+        "bottom_ksi": "-0.5322803553800592300098716683119447186574531095755182625863770977295162882527147",
+        "top_ksi": "3.7322803553800592300098716683119447186574531095755182625863770977295162882527147",
+        "crosses_zero": true
+      }
+    },
+    {
+      "id": "G34_BOTTOM_STRESS_EXTREMA",
+      "expected": {
+        "outer_ksi": "-0.7692003948667324777887462981243830207305034550839091806515301085883514313919052",
+        "inner_ksi": "-0.5322803553800592300098716683119447186574531095755182625863770977295162882527147",
+        "crosses_zero": false
+      }
+    },
+    {
+      "id": "G35_REGION_FORCE_STATE",
+      "expected": {
+        "top": "TENSION",
+        "web": "TENSION",
+        "bottom": "COMPRESSION"
+      }
+    },
+    {
+      "id": "G36_REGION_STRESS_ZERO_CROSSING",
+      "expected": {
+        "top": false,
+        "web": true,
+        "bottom": false
+      }
+    },
+    {
+      "id": "G37_ALL_ZERO_ACTION",
+      "input": {
+        "P_L_kip": "0",
+        "V_V_kip": "0",
+        "M_T_kip_in": "0"
+      },
+      "expected": {
+        "all_component_wrenches_zero": true,
+        "couple_zero": true
+      }
+    },
+    {
+      "id": "G38_AXIAL_SIGN_REVERSAL",
+      "expected": {
+        "uniform_axial_shares_reverse": true,
+        "bending_terms_unchanged_for_same_M": true
+      }
+    },
+    {
+      "id": "G39_MOMENT_SIGN_REVERSAL",
+      "expected": {
+        "bending_forces_reverse": true,
+        "local_moments_reverse": true,
+        "stress_gradient_reverses": true,
+        "axial_uniform_terms_unchanged": true
+      }
+    },
+    {
+      "id": "G40_SHEAR_SIGN_REVERSAL",
+      "expected": {
+        "web_shear_reverses": true,
+        "flange_shear_remains_zero": true,
+        "normal_resultants_unchanged": true
+      }
+    },
+    {
+      "id": "G41_UNSUPPORTED_MINOR_SHEAR_REJECTED",
+      "input": {
+        "V_T_kip": "1"
+      },
+      "expected": {
+        "status": "REJECTED",
+        "reason": "MINOR_SHEAR_NOT_SUPPORTED_IN_CS5_RC1"
+      }
+    },
+    {
+      "id": "G42_UNSUPPORTED_MINOR_MOMENT_REJECTED",
+      "input": {
+        "M_V_kip_in": "1"
+      },
+      "expected": {
+        "status": "REJECTED",
+        "reason": "MINOR_AXIS_MOMENT_NOT_SUPPORTED_IN_CS5_RC1"
+      }
+    },
+    {
+      "id": "G43_UNSUPPORTED_TORSION_REJECTED",
+      "input": {
+        "M_L_kip_in": "1"
+      },
+      "expected": {
+        "status": "REJECTED",
+        "reason": "TORSION_NOT_SUPPORTED_IN_CS5_RC1"
+      }
+    },
+    {
+      "id": "G44_INVALID_DEPTH_FLANGE_GEOMETRY",
+      "input": {
+        "d_in": "1",
+        "t_f_in": "0.5"
+      },
+      "expected": {
+        "status": "REJECTED",
+        "reason": "POSITIVE_WEB_HEIGHT_REQUIRED"
+      }
+    },
+    {
+      "id": "G45_INVALID_FLANGE_WEB_WIDTH_GEOMETRY",
+      "input": {
+        "b_f_in": "0.5",
+        "t_w_in": "0.5"
+      },
+      "expected": {
+        "status": "REJECTED",
+        "reason": "FLANGE_WIDTH_MUST_EXCEED_WEB_THICKNESS"
+      }
+    },
+    {
+      "id": "G46_US_SI_EQUIVALENCE",
+      "expected": {
+        "geometry_equal": true,
+        "stress_equal": true,
+        "component_wrenches_equal": true,
+        "couple_diagnostics_equal": true,
+        "equilibrium_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G47_DETERMINISTIC_FINGERPRINTS",
+      "expected": {
+        "method_included": true,
+        "geometry_included": true,
+        "actions_included": true,
+        "component_wrenches_included": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G48_REVIEW_DISCLAIMER_METADATA",
+      "expected": {
+        "review_required": true,
+        "disclaimer_id": "WI_MOMENT_COMPONENT_RESULTANT_DECOMPOSITION_DISCLAIMER_RC1",
+        "backend_owned": true
+      }
+    },
+    {
+      "id": "G49_STAGE_3_7_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G50_STAGE_3_6_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G51_EARLIER_FREEZE_REGRESSIONS",
+      "expected": {
+        "stage_3_5": "NONE",
+        "stage_3_4": "NONE",
+        "stage_3_3": "NONE",
+        "stage_3_2": "NONE",
+        "stage_2_3": "NONE"
+      }
+    },
+    {
+      "id": "G52_NO_FRONTEND_PRODUCTION_CHANGE",
+      "expected": {
+        "frontend_production_change_count": 0
+      }
+    }
+  ]
+}

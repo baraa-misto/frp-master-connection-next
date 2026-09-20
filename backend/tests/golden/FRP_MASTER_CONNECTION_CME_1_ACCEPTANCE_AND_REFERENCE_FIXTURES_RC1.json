@@ -1,0 +1,1489 @@
+{
+  "package_id": "FRP_MASTER_CONNECTION_CME_1_RC1",
+  "contract_version": "CME-1-RC1",
+  "purpose": "Connector Material Expansion, phase 1: implemented shared foundations and complete all-family migration inventory, not production stainless resistance release",
+  "baseline": {
+    "commit": "998911ea78872b852ef097dd4e20d666a33a935a",
+    "commit_count": 124,
+    "reported_backend_tests": 5045,
+    "reported_frontend_tests": 848,
+    "reported_ci_run": 119,
+    "reported_ci_attempt": 2,
+    "evidence_source": "Owner-supplied freeze completion report; Codex re-verifies actual repository"
+  },
+  "phase_boundary": {
+    "primary_members": "FRP_ONLY",
+    "connector_targets": [
+      "FRP",
+      "SS316"
+    ],
+    "production_stainless_strength_enabled": false,
+    "existing_family_stainless_switch_enabled": false,
+    "planned_later_phases": [
+      "CME-2 shared stainless numerical/source authority",
+      "CME-3 all-family successor integrations and final release audit"
+    ]
+  },
+  "comparison_policy": {
+    "inherited_outputs": "exact native dependency equality; preserve existing fingerprint bytes",
+    "reference_math": "exact rational fixtures over the specified finite inputs",
+    "source_tables": "preserve native tabulation units/provenance; no automatic table switching on display-unit changes",
+    "no_resistance_goldens": true
+  },
+  "requirements": [
+    {
+      "id": "CME1-A001",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "All primary beams, columns, braces and FRP support members reject connector-material overrides, in both domain and exposed planning API.",
+      "reference_fixture_ids": [
+        "F01",
+        "F02",
+        "F03"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A002",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "A structural angle/tee/plate member is classified by physical role, not by cross-section name.",
+      "reference_fixture_ids": [
+        "F02",
+        "F03"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A003",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "Connector-body assignments do not change bolt/nut/washer/anchor or concrete foundation material.",
+      "reference_fixture_ids": [
+        "F06",
+        "F07"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A004",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "Direct member-to-member connections without a connector have explicit NO_CONNECTOR_BODY coverage and no fictitious material option.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A005",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "Pultruded-only reinforcement is separately classified and not swept into ordinary connector conversion.",
+      "reference_fixture_ids": [
+        "F08"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A006",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "Missing or ambiguous roles and fabricated component identifiers fail validation.",
+      "reference_fixture_ids": [
+        "F09"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A007",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "Each shared physical connector has one material assignment; contradictory aliases are rejected atomically.",
+      "reference_fixture_ids": [
+        "F10"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A008",
+      "category": "ROLES_AND_SCOPE",
+      "requirement": "CME-1 represents SS316 as a target but enables no production stainless numerical resistance.",
+      "reference_fixture_ids": [
+        "F04",
+        "F12"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A009",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Discover every current shear/moment product and mode from actual backend dispatch, frontend selector and freeze registries; reconcile all differences.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A010",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Map each product/mode to its actual connector instances, roles, body forms and native demand/resistance entry points.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A011",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Record primary-member roles and FRP property/axis authority for every member attached to each connector.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A012",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Record monolithic versus fabricated components, paired/shared connector identities and mixed-material restrictions.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A013",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Record source, response, resistance and family-adapter coverage separately; AVAILABLE is never inferred from shape alone.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A014",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "A machine-checked bijection covers all registered products and all registered modes, with reasoned NOT_APPLICABLE entries for direct cases.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A015",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Adding an unregistered future product/mode makes the coverage test fail without changing historical file hashes.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A016",
+      "category": "INVENTORY_AND_FUTURE_REGISTRATION",
+      "requirement": "Deliver an implementation-ready family-by-provider migration ledger; discovery identifiers are derived rather than invented in ChatGPT.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A017",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "Use immutable separate role, connector material, stock form, fabrication route, grade, condition and source descriptors.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A018",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "316, 316L and dual-certified stock remain distinct; no automatic upgrade to higher strength.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A019",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "ASTM F593 fastener evidence cannot satisfy connector plate/angle/tee material-property requirements.",
+      "reference_fixture_ids": [
+        "F06"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A020",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "No production Fy, Fu, E, G, nu, resistance factor or fatigue value is inferred from the label 316SS.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A021",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "Source records bind edition, clause/table, physical units basis, stock/fabrication/condition/thickness/domain and approval scope.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A022",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "Publication metadata, normative text verified, implemented method, verified material and applicable assembly qualification are different states.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A023",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "User-typed references, sample certificates and synthetic tests cannot authorize a production strength value.",
+      "reference_fixture_ids": [
+        "F12"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A024",
+      "category": "MATERIAL_AND_SOURCE_CONTRACTS",
+      "requirement": "Missing full stainless code/property sources are documented CME-2 gaps, not a reason to abandon completed CME-1 foundations.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A025",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "A shared material-provider protocol avoids per-family stainless resistance copies.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A026",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "Native FRP delegation preserves numeric values, warnings, statuses, references and legacy fingerprints exactly.",
+      "reference_fixture_ids": [
+        "F05"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A027",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "Requested stainless never invokes the FRP connector resistance provider as a fallback.",
+      "reference_fixture_ids": [
+        "F12"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A028",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "A provider key includes method/version, form/fabrication, material and applicability, not material label alone.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A029",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "A provider registration does not imply application to all load paths or all check scopes.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A030",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "Missing method returns structured unavailability and null capacity/utilization, never zero resistance disguised as evaluated failure.",
+      "reference_fixture_ids": [
+        "F04",
+        "F12"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A031",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "A fake test provider exercises dispatch only through test injection, and cannot be imported/registered in runtime production.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A032",
+      "category": "PROVIDER_DISPATCH",
+      "requirement": "FRP interface checks and fastener checks remain independent from connector-body provider selection.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A033",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "Given the same resolved wrench and geometry, rigid-reference transport remains native/material neutral.",
+      "reference_fixture_ids": [
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17",
+        "F18"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A034",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "Do not reuse stiffness/contact/prying/load-sharing response merely because transport is material neutral.",
+      "reference_fixture_ids": [
+        "F19",
+        "F20"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A035",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "Material-signature change invalidates material-bound assembly-response authority.",
+      "reference_fixture_ids": [
+        "F11"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A036",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "Preserve exact inherited FRP_FRP and FRP_STEEL row branches, including row order and applicability.",
+      "reference_fixture_ids": [
+        "F21",
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A037",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "The FRP_STEEL branch is not automatically applied to arbitrary stainless/FRP stacks or multi-plane moment demand.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A038",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "A material change revalidates canonical layers, local FRP load directions, single/double-lap applicability and shared bolt paths.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A039",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "Complete unknown bolt tension/contact/prying remains unavailable, not zero.",
+      "reference_fixture_ids": [
+        "F11",
+        "F12"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A040",
+      "category": "DEMAND_BOUNDARIES",
+      "requirement": "Assembly-source and connector-body-source blockers retain separate provenance and cannot be blanket-cleared by SS316 selection.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A041",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Use native deterministic quantities; do not impose a new universal Decimal precision or floating-point reserialization.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A042",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Verify the six independent resolved-wrench fixtures and equal/opposite reactions exactly.",
+      "reference_fixture_ids": [
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17",
+        "F18"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A043",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Two compatibility counterexamples remain test-only and are never exposed as a moment-base solver.",
+      "reference_fixture_ids": [
+        "F19",
+        "F20"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A044",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Display units, camera and ordering do not change physical plan identity; source-native unit basis remains recorded.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A045",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "New material-plan fingerprint changes with actual material/source/method/fabrication identity, without rewriting old core fingerprints.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A046",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Changing units does not replace an ASTM inch-pound property with a separately tabulated metric property.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A047",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Numeric contract validation rejects NaN, infinities, booleans as numbers, nonphysical domains and ambiguous overlapping source records.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A048",
+      "category": "NUMERICS_AND_REPRODUCIBILITY",
+      "requirement": "Plan/source mismatch invalidates response, including sign-domain, geometry, thickness, temperature or provider-version changes.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A049",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "Expose read-only capability information in one additive versioned endpoint; it executes no resistance or material mutation.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A050",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "Expose a separate stateless material-assignment planning endpoint that enforces role/identity guards before dispatch.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A051",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "Leave all existing product endpoints, FRP request contracts, geometry defaults, units, layouts and normal production selectors unchanged.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A052",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "No operative stainless design dropdown or automatic conversion is inserted into existing family editors in CME-1.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A053",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "Provide an optional read-only Connector Material Readiness diagnostic with no new primary design category.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A054",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "Diagnostic clearly states FRP-only members and stainless rollout pending; cannot imply complete design or certification.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A055",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "No source documents, local paths, credentials or nonpublic supplier records leak through diagnostic/planning responses.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A056",
+      "category": "API_AND_PRESENTATION",
+      "requirement": "Browser smoke tests verify existing shear/moment paths plus both new endpoints/diagnostic states and no unintended design calls.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A057",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "Verify all thirteen pre-existing annotated tag object identities and peeled targets before/after; Stage 4.5 target is exact.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A058",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "FRP compatibility uses real native fixtures per discovered product/mode, including source-present and source-absent paths where available.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A059",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "Legacy omission/default handling preserves accepted behavior and never silently converts legacy FRP connectors to stainless.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A060",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "New all-family inventory additions do not rewrite historical manifests, goldens, source prefixes or frozen decision records.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A061",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "Known successor-hostile tests can be maintained in one tests-only batch while preserving immutable historical evidence and negative tamper tests.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A062",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "Future evolution tests distinguish historical identity from current approved change scope; no permanent whole-current-tree hash lock is introduced.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A063",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "Shallow no-tags verification uses existing offline manifest/snapshot authority with truthful evidence limits, no silent fetch or skip.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A064",
+      "category": "HISTORICAL_COMPATIBILITY",
+      "requirement": "Existing Stage 4.5 2x1/1x1 centered defaults, action signs, LAST VALID and recovery stay unchanged.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A065",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Full current npm/runtime audits and pip consistency pass before publication; no suppression or audit bypass.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A066",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Preserve dependency/lockfile/workflow scope except the order explicitly permits a compatible dev-only security successor.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A067",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Retain obsolete drafts in other worktrees unmodified; use explicit-path staging and no destructive reset/cleanup.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A068",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Archive the two approved package artifacts byte-exact with matching input/index/blob hashes, without self-hash recursion.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A069",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Consolidate safely discoverable blockers before mutation; implement missing-source states without waiting for irrelevant numerical sources.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A070",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Run complete backend/frontend tests and configured coverage/static/build gates after the final code mutation.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A071",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Verify the exact committed object in a fresh depth-one/no-tags/no-alternates clone before push.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A072",
+      "category": "SECURITY_AND_EXECUTION",
+      "requirement": "Push normally only after local/isolated gates; direct four-job CI afterward; no force, no tags, no automatic freeze.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A073",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Completion distinguishes implemented foundation from stainless numerical provider coverage and from migrated family coverage.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A074",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Publish exact branch/ref/count and native evidence rather than inferring GitHub success or reading Windows reports unavailable to ChatGPT.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A075",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "List every required stainless rule/property/source gap for plates, angles, tees and special connecting bodies in one ledger.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A076",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Map applicability-restricted reinforcements separately so blanket any-plate substitution cannot bypass a code restriction.",
+      "reference_fixture_ids": [
+        "F08"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A077",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Plan staged shared provider implementation followed by all-family migration; no family can be silently left out.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A078",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Do not claim a stainless material choice by itself resolves existing moment-base/FRP support qualification gaps.",
+      "reference_fixture_ids": [
+        "F11"
+      ],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A079",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Leave an approved verified local application/browser running for owner inspection, with actual ports/PIDs reported.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    },
+    {
+      "id": "CME1-A080",
+      "category": "COMPLETION_AND_NEXT_GATE",
+      "requirement": "Do not implement CME-2 numerical stainless rules or activate family conversions under this order.",
+      "reference_fixture_ids": [],
+      "verification": "Executable regression/integration test or direct controlled evidence; cite exact test/node/report in completion map"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "F01",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "A primary beam cannot become stainless through connector selection",
+      "input": {
+        "role": "PRIMARY_MEMBER",
+        "member_kind": "BEAM",
+        "requested_connector_body_material": "SS316"
+      },
+      "expected": {
+        "selection": "REJECTED_ROLE",
+        "member_material": "FRP",
+        "design_executed": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F02",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Angle-shaped column is a primary member, not an angle connector",
+      "input": {
+        "role": "PRIMARY_MEMBER",
+        "member_kind": "COLUMN",
+        "shape": "ANGLE",
+        "requested_connector_body_material": "SS316"
+      },
+      "expected": {
+        "selection": "REJECTED_ROLE",
+        "member_material": "FRP",
+        "design_executed": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F03",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Brace remains FRP even where its section resembles a connector",
+      "input": {
+        "role": "PRIMARY_MEMBER",
+        "member_kind": "BRACE",
+        "shape": "CHANNEL",
+        "requested_connector_body_material": "SS316"
+      },
+      "expected": {
+        "selection": "REJECTED_ROLE",
+        "member_material": "FRP",
+        "design_executed": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F04",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Stainless connector target is representable but not numerically enabled in CME-1",
+      "input": {
+        "role": "CONNECTOR_BODY",
+        "shape": "ANGLE",
+        "requested_connector_body_material": "SS316",
+        "stainless_provider_enabled": false
+      },
+      "expected": {
+        "selection": "TARGET_ALLOWED",
+        "numerical_availability": "PROVIDER_NOT_IMPLEMENTED",
+        "capacity": null,
+        "utilization": null,
+        "ordinary_pass": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F05",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "FRP adapter is a transparent native delegation",
+      "input": {
+        "role": "CONNECTOR_BODY",
+        "shape": "ANGLE",
+        "requested_connector_body_material": "FRP",
+        "native_provider_result": "runtime_test_supplied_native_result"
+      },
+      "expected": {
+        "selection": "LEGACY_FRP",
+        "delegated_result": "exact_native_result_unchanged",
+        "legacy_fingerprint": "unchanged"
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F06",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Connector material does not configure bolts",
+      "input": {
+        "role": "FASTENER",
+        "requested_connector_body_material": "SS316",
+        "existing_fastener_source": "existing_native_fastener_record"
+      },
+      "expected": {
+        "selection": "REJECTED_ROLE",
+        "fastener_source": "unchanged"
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F07",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Concrete pedestal is not a selectable connector body",
+      "input": {
+        "role": "FOUNDATION",
+        "material": "CONCRETE",
+        "requested_connector_body_material": "SS316"
+      },
+      "expected": {
+        "selection": "REJECTED_ROLE",
+        "foundation_material": "CONCRETE"
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F08",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "A pultruded-only member doubler is not an unrestricted connector plate",
+      "input": {
+        "role": "MEMBER_REINFORCEMENT",
+        "applicability": "ASCE_74_23_5_5_2_PULTRUDED_ONLY",
+        "requested_connector_body_material": "SS316"
+      },
+      "expected": {
+        "selection": "QUALIFIED_ALTERNATIVE_REQUIRED",
+        "automatic_substitution": false,
+        "ordinary_pass": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F09",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Unknown role cannot bypass primary-member restriction",
+      "input": {
+        "role": "UNCLASSIFIED",
+        "shape": "PLATE",
+        "requested_connector_body_material": "SS316"
+      },
+      "expected": {
+        "selection": "REJECTED_UNCLASSIFIED",
+        "design_executed": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F10",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "A shared physical tee has one material identity across all UI aliases",
+      "input": {
+        "physical_component_id": "TEE_SHARED_1",
+        "aliases": [
+          {
+            "view": "BRANCH_A",
+            "material": "FRP"
+          },
+          {
+            "view": "BRANCH_B",
+            "material": "SS316"
+          }
+        ]
+      },
+      "expected": {
+        "selection": "REJECTED_CONFLICTING_PHYSICAL_ID",
+        "atomic_apply": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F11",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "A source bound to the old FRP assembly cannot survive a stainless substitution",
+      "input": {
+        "source_material_signature": "FRP_CONNECTOR_ASSEMBLY",
+        "current_material_signature": "SS316_CONNECTOR_ASSEMBLY",
+        "source_domain_accepts_new_material": false
+      },
+      "expected": {
+        "qualified_response_usable": false,
+        "branch_demands": "UNAVAILABLE",
+        "required_external_wrench": "preserved_if_independently_resolved",
+        "ordinary_pass": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F12",
+      "kind": "MATERIAL_POLICY_CONTRACT",
+      "description": "Missing stainless provider cannot fall back to FRP or fabricated strength",
+      "input": {
+        "role": "CONNECTOR_BODY",
+        "material": "SS316",
+        "source_claim": "user_typed_316",
+        "registered_stainless_methods": []
+      },
+      "expected": {
+        "numerical_availability": "PROVIDER_NOT_IMPLEMENTED",
+        "source_state": "UNVERIFIED",
+        "frp_resistance_calls": 0,
+        "capacity": null,
+        "utilization": null,
+        "ordinary_pass": false
+      },
+      "authority": "CME-1 project policy; semantic mapping to existing enum names is allowed",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F13",
+      "kind": "RESOLVED_WRENCH_TRANSPORT",
+      "description": "Identity at one reference",
+      "authority": "Exact rigid-reference transport; not a stiffness or load-sharing solution",
+      "input": {
+        "Q_columns_are_local_basis_in_global": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "force_local_kip": [
+          5,
+          -3,
+          -20
+        ],
+        "moment_local_kip_in": [
+          60,
+          40,
+          0
+        ],
+        "input_reference_global_in": [
+          0,
+          0,
+          0
+        ],
+        "output_reference_global_in": [
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "force_global_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_global_kip_in": [
+          "60",
+          "40",
+          "0"
+        ],
+        "opposite_reaction_force_global_kip": [
+          "-5",
+          "3",
+          "20"
+        ],
+        "opposite_reaction_moment_global_kip_in": [
+          "-60",
+          "-40",
+          "0"
+        ]
+      },
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F14",
+      "kind": "RESOLVED_WRENCH_TRANSPORT",
+      "description": "Offset generates bending and torsion",
+      "authority": "Exact rigid-reference transport; not a stiffness or load-sharing solution",
+      "input": {
+        "Q_columns_are_local_basis_in_global": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "force_local_kip": [
+          5,
+          -3,
+          -20
+        ],
+        "moment_local_kip_in": [
+          60,
+          40,
+          0
+        ],
+        "input_reference_global_in": [
+          2,
+          -1,
+          0
+        ],
+        "output_reference_global_in": [
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "force_global_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_global_kip_in": [
+          "80",
+          "80",
+          "-1"
+        ],
+        "opposite_reaction_force_global_kip": [
+          "-5",
+          "3",
+          "20"
+        ],
+        "opposite_reaction_moment_global_kip_in": [
+          "-80",
+          "-80",
+          "1"
+        ]
+      },
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F15",
+      "kind": "RESOLVED_WRENCH_TRANSPORT",
+      "description": "Proper 90-degree rotation and eccentric reference",
+      "authority": "Exact rigid-reference transport; not a stiffness or load-sharing solution",
+      "input": {
+        "Q_columns_are_local_basis_in_global": [
+          [
+            0,
+            -1,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "force_local_kip": [
+          6,
+          4,
+          -10
+        ],
+        "moment_local_kip_in": [
+          3,
+          7,
+          2
+        ],
+        "input_reference_global_in": [
+          1,
+          2,
+          0
+        ],
+        "output_reference_global_in": [
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "force_global_kip": [
+          "-4",
+          "6",
+          "-10"
+        ],
+        "moment_global_kip_in": [
+          "-27",
+          "13",
+          "16"
+        ],
+        "opposite_reaction_force_global_kip": [
+          "4",
+          "-6",
+          "10"
+        ],
+        "opposite_reaction_moment_global_kip_in": [
+          "27",
+          "-13",
+          "-16"
+        ]
+      },
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F16",
+      "kind": "RESOLVED_WRENCH_TRANSPORT",
+      "description": "Angle connector basis: local A=Y, B=Z, C=X",
+      "authority": "Exact rigid-reference transport; not a stiffness or load-sharing solution",
+      "input": {
+        "Q_columns_are_local_basis_in_global": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "force_local_kip": [
+          4,
+          6,
+          2
+        ],
+        "moment_local_kip_in": [
+          1,
+          3,
+          5
+        ],
+        "input_reference_global_in": [
+          0,
+          2,
+          1
+        ],
+        "output_reference_global_in": [
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "force_global_kip": [
+          "2",
+          "4",
+          "6"
+        ],
+        "moment_global_kip_in": [
+          "13",
+          "3",
+          "-1"
+        ],
+        "opposite_reaction_force_global_kip": [
+          "-2",
+          "-4",
+          "-6"
+        ],
+        "opposite_reaction_moment_global_kip_in": [
+          "-13",
+          "-3",
+          "1"
+        ]
+      },
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F17",
+      "kind": "RESOLVED_WRENCH_TRANSPORT",
+      "description": "Pure independent moment remains reference invariant",
+      "authority": "Exact rigid-reference transport; not a stiffness or load-sharing solution",
+      "input": {
+        "Q_columns_are_local_basis_in_global": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "force_local_kip": [
+          0,
+          0,
+          0
+        ],
+        "moment_local_kip_in": [
+          7,
+          -9,
+          4
+        ],
+        "input_reference_global_in": [
+          3,
+          -2,
+          5
+        ],
+        "output_reference_global_in": [
+          -1,
+          1,
+          0
+        ]
+      },
+      "expected": {
+        "force_global_kip": [
+          "0",
+          "0",
+          "0"
+        ],
+        "moment_global_kip_in": [
+          "7",
+          "-9",
+          "4"
+        ],
+        "opposite_reaction_force_global_kip": [
+          "0",
+          "0",
+          "0"
+        ],
+        "opposite_reaction_moment_global_kip_in": [
+          "-7",
+          "9",
+          "-4"
+        ]
+      },
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F18",
+      "kind": "RESOLVED_WRENCH_TRANSPORT",
+      "description": "Signed nonzero input and output references",
+      "authority": "Exact rigid-reference transport; not a stiffness or load-sharing solution",
+      "input": {
+        "Q_columns_are_local_basis_in_global": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "force_local_kip": [
+          10,
+          -4,
+          8
+        ],
+        "moment_local_kip_in": [
+          3,
+          -2,
+          5
+        ],
+        "input_reference_global_in": [
+          2,
+          1,
+          -1
+        ],
+        "output_reference_global_in": [
+          -1,
+          2,
+          0
+        ]
+      },
+      "expected": {
+        "force_global_kip": [
+          "10",
+          "-4",
+          "8"
+        ],
+        "moment_global_kip_in": [
+          "-9",
+          "-36",
+          "3"
+        ],
+        "opposite_reaction_force_global_kip": [
+          "-10",
+          "4",
+          "-8"
+        ],
+        "opposite_reaction_moment_global_kip_in": [
+          "9",
+          "36",
+          "-3"
+        ]
+      },
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F19",
+      "kind": "COMPATIBILITY_COUNTEREXAMPLE_TEST_ONLY",
+      "description": "Two ideal parallel linear springs under a rigid translating head; illustrates why connector material changes can affect demand. Not a real connection distribution method.",
+      "input": {
+        "total_force_kip": "10",
+        "spring_1_kip_per_in": "2",
+        "spring_2_kip_per_in": "2"
+      },
+      "expected": {
+        "common_displacement_in": "5/2",
+        "reaction_1_kip": "5",
+        "reaction_2_kip": "5"
+      },
+      "authority": "Independent elementary mechanics counterexample; MUST NOT be installed as a production connection response provider",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F20",
+      "kind": "COMPATIBILITY_COUNTEREXAMPLE_TEST_ONLY",
+      "description": "Two ideal parallel linear springs under a rigid translating head; illustrates why connector material changes can affect demand. Not a real connection distribution method.",
+      "input": {
+        "total_force_kip": "10",
+        "spring_1_kip_per_in": "2",
+        "spring_2_kip_per_in": "8"
+      },
+      "expected": {
+        "common_displacement_in": "1",
+        "reaction_1_kip": "2",
+        "reaction_2_kip": "8"
+      },
+      "authority": "Independent elementary mechanics counterexample; MUST NOT be installed as a production connection response provider",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F21",
+      "kind": "INHERITED_ROW_DISTRIBUTION_IDENTITY",
+      "description": "Preserve and distinguish inherited Table C8-1 branch; this fixture does not establish applicability to any new stainless assembly.",
+      "input": {
+        "pair_identity": "FRP_FRP",
+        "row_count": 2,
+        "row_1": "farthest_from_unloaded_free_end",
+        "prerequisites": "existing_accepted_native_scope_only"
+      },
+      "expected": {
+        "fractions": [
+          "1/2",
+          "1/2"
+        ]
+      },
+      "authority": "ASCE/SEI 74-23 Table C8-1, printed p.94; existing approved Slice 2 RC1 authority",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F22",
+      "kind": "INHERITED_ROW_DISTRIBUTION_IDENTITY",
+      "description": "Preserve and distinguish inherited Table C8-1 branch; this fixture does not establish applicability to any new stainless assembly.",
+      "input": {
+        "pair_identity": "FRP_STEEL",
+        "row_count": 2,
+        "row_1": "farthest_from_unloaded_free_end",
+        "prerequisites": "existing_accepted_native_scope_only"
+      },
+      "expected": {
+        "fractions": [
+          "3/5",
+          "2/5"
+        ]
+      },
+      "authority": "ASCE/SEI 74-23 Table C8-1, printed p.94; existing approved Slice 2 RC1 authority",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F23",
+      "kind": "INHERITED_ROW_DISTRIBUTION_IDENTITY",
+      "description": "Preserve and distinguish inherited Table C8-1 branch; this fixture does not establish applicability to any new stainless assembly.",
+      "input": {
+        "pair_identity": "FRP_FRP",
+        "row_count": 3,
+        "row_1": "farthest_from_unloaded_free_end",
+        "prerequisites": "existing_accepted_native_scope_only"
+      },
+      "expected": {
+        "fractions": [
+          "2/5",
+          "1/5",
+          "2/5"
+        ]
+      },
+      "authority": "ASCE/SEI 74-23 Table C8-1, printed p.94; existing approved Slice 2 RC1 authority",
+      "production_resistance_authority": false
+    },
+    {
+      "id": "F24",
+      "kind": "INHERITED_ROW_DISTRIBUTION_IDENTITY",
+      "description": "Preserve and distinguish inherited Table C8-1 branch; this fixture does not establish applicability to any new stainless assembly.",
+      "input": {
+        "pair_identity": "FRP_STEEL",
+        "row_count": 3,
+        "row_1": "farthest_from_unloaded_free_end",
+        "prerequisites": "existing_accepted_native_scope_only"
+      },
+      "expected": {
+        "fractions": [
+          "1/2",
+          "3/10",
+          "1/5"
+        ]
+      },
+      "authority": "ASCE/SEI 74-23 Table C8-1, printed p.94; existing approved Slice 2 RC1 authority",
+      "production_resistance_authority": false
+    }
+  ],
+  "source_register": [
+    {
+      "id": "S1",
+      "kind": "USER_SUPPLIED_NORMATIVE_SOURCE",
+      "title": "ASCE/SEI 74-23",
+      "locators": [
+        "1.4.2 (printed p.4)",
+        "2.9 (p.11)",
+        "5.5.2 (p.23)",
+        "8.1 / 8.1.3 (pp.31-32)",
+        "8.2 / 8.3 (pp.32-36)",
+        "C8 Table C8-1 (p.94)",
+        "C8.4 (p.97)"
+      ],
+      "local_basename": "ASCE SEI 74-23 Code.pdf",
+      "verified_local_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+      "review_status": "Relevant supplied text and C8-1 table image reviewed; not a new stainless equation source"
+    },
+    {
+      "id": "S2",
+      "kind": "USER_SUPPLIED_ERRATUM",
+      "title": "ASCE/SEI 74-23 Erratum 1, effective January 13, 2026",
+      "local_basename": "9780784415771.err.pdf",
+      "verified_local_sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550",
+      "review_status": "Supplied erratum changes Chapter 5; historical accepted errata basis retained"
+    },
+    {
+      "id": "S3",
+      "kind": "PRIMARY_PUBLISHER_METADATA",
+      "title": "AISC 370 current standard page",
+      "url": "https://www.aisc.org/aisc/publications/current-standards/aisc-370/",
+      "edition_identified": "ANSI/AISC 370-25",
+      "checked_on": "2026-09-11",
+      "review_status": "Publisher listing identified via web; normative PDF NOT obtained/reviewed for this package; no equation/strength authority granted"
+    },
+    {
+      "id": "S4",
+      "kind": "PRIMARY_PUBLISHER_RELEASE",
+      "title": "AISC releases updated structural stainless steel standards",
+      "url": "https://www.aisc.org/news/aisc-releases-updated-structural-stainless-steel-standards-ansiaisc-370-25-and-ansiaisc-313-25/",
+      "published_on": "2026-06-30",
+      "checked_on": "2026-09-11",
+      "review_status": "Release metadata identifies 370-25 and 313-25; not authority to reconstruct their clauses"
+    },
+    {
+      "id": "S5",
+      "kind": "PRIMARY_PUBLISHER_ABSTRACT",
+      "title": "ASTM A240/A240M-26: stainless plate, sheet and strip",
+      "url": "https://store.astm.org/a0240_a0240m-26.html",
+      "checked_on": "2026-09-11",
+      "review_status": "Official abstract/scope reviewed, including independently stated inch-pound/SI values; full normative mechanical-property tables NOT reviewed"
+    },
+    {
+      "id": "S6",
+      "kind": "PRIMARY_PUBLISHER_CATALOGUE",
+      "title": "ASTM steel standards catalogue",
+      "url": "https://store.astm.org/products-services/standards-and-publications/standards/steel-standards.html",
+      "checked_on": "2026-09-11",
+      "review_status": "Lists A276/A276M-25 bars/shapes, A1069/A1069M-23 laser-welded built-up shapes, A666/A666M-24 annealed/cold-worked flat products; full normative requirements NOT reviewed"
+    },
+    {
+      "id": "S7",
+      "kind": "PROJECT_NATIVE_ENGINE_AUTHORITY",
+      "title": "Calculation Slice 7 material-neutral angle core and FRP provider RC2",
+      "local_basename": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_ENGINEERING_SPECIFICATION_RC2.md",
+      "locators": [
+        "2-10 (material-neutral resolved-wrench core and provider dispatch)",
+        "11 onward (FRP-specific applicability/provider)"
+      ],
+      "review_status": "Supplied project specification reviewed; actual repository implementation/native interfaces remain Codex audit responsibility"
+    },
+    {
+      "id": "S8",
+      "kind": "PROJECT_NATIVE_ENGINE_AUTHORITY",
+      "title": "Calculation Slice 2 RC1 specification and golden benchmarks",
+      "local_basenames": [
+        "FRP_MASTER_CONNECTION_CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md",
+        "FRP_MASTER_CONNECTION_CALCULATION_SLICE_2_GOLDEN_BENCHMARKS_RC1.json"
+      ],
+      "locators": [
+        "Specification 6 (four exact row-distribution branches)"
+      ],
+      "review_status": "Existing historical authority only; does not automatically qualify arbitrary SS316/FRP interfaces"
+    }
+  ],
+  "expected_requirement_count": 80,
+  "expected_reference_fixture_count": 24,
+  "family_coverage": "Dynamic exhaustive set from actual backend products/modes and frontend selectors, not a fixed stage count",
+  "final_sentinel": "END_CME_1_ACCEPTANCE_AND_REFERENCE_FIXTURES_RC1"
+}

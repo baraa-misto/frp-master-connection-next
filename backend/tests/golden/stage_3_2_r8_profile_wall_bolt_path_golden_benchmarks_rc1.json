@@ -1,0 +1,127 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R8_PROFILE_WALL_BOLT_PATH_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "Exact decimal engineering values.",
+  "benchmarks": [
+    {
+      "id": "R8_G1_CHANNEL_WEB_CLEAR",
+      "profile": {
+        "depth": "6",
+        "flange_width": "3",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.5",
+        "unit": "in"
+      },
+      "surface": "WEB_OUTER",
+      "expected": {
+        "valid": true,
+        "penetrated_thickness": "0.5",
+        "opposing_face_count": 1
+      }
+    },
+    {
+      "id": "R8_G2_CHANNEL_WEB_FLANGE_JUNCTION_INVALID",
+      "profile": {
+        "depth": "6",
+        "flange_width": "3",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.5",
+        "unit": "in"
+      },
+      "surface": "WEB_OUTER",
+      "expected": {
+        "valid": false,
+        "reason": "NO_UNIQUE_EXPOSED_OPPOSING_BROAD_FACE"
+      }
+    },
+    {
+      "id": "R8_G3_CHANNEL_FLANGE_OVERHANG_CLEAR",
+      "profile": {
+        "depth": "6",
+        "flange_width": "3",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.5",
+        "unit": "in"
+      },
+      "surface": "FLANGE_POS_OUTER",
+      "expected": {
+        "valid": true,
+        "penetrated_thickness": "0.5",
+        "opposing_face_count": 1
+      }
+    },
+    {
+      "id": "R8_G4_CHANNEL_FLANGE_WEB_OVERLAP_INVALID",
+      "profile": {
+        "depth": "6",
+        "flange_width": "3",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.5",
+        "unit": "in"
+      },
+      "surface": "FLANGE_POS_OUTER",
+      "expected": {
+        "valid": false,
+        "reason": "NO_UNIQUE_EXPOSED_OPPOSING_BROAD_FACE"
+      }
+    },
+    {
+      "id": "R8_G5_RHS_POS_Y_CLEAR",
+      "profile": {
+        "depth": "6",
+        "width": "4",
+        "wall_thickness": "0.5",
+        "unit": "in"
+      },
+      "surface": "Y_POS_FACE",
+      "outer_point_conceptual": {
+        "x": "2",
+        "y": "2",
+        "z": "0"
+      },
+      "expected": {
+        "valid": true,
+        "penetrated_thickness": "0.5",
+        "opposing_face_count": 1,
+        "inner_point_conceptual": {
+          "x": "2",
+          "y": "1.5",
+          "z": "0"
+        },
+        "qualification": "INTERNAL_FASTENER_ACCESS_REQUIRED"
+      }
+    },
+    {
+      "id": "R8_G6_RHS_CORNER_OVERLAP_INVALID",
+      "profile": {
+        "depth": "6",
+        "width": "4",
+        "wall_thickness": "0.5",
+        "unit": "in"
+      },
+      "surface": "Y_POS_FACE",
+      "outer_point_conceptual": {
+        "x": "2",
+        "y": "2",
+        "z": "2.75"
+      },
+      "expected": {
+        "valid": false,
+        "reason": "NO_UNIQUE_EXPOSED_OPPOSING_BROAD_FACE"
+      }
+    },
+    {
+      "id": "R8_G7_WIDE_FLANGE_REGRESSION",
+      "profile": {
+        "depth": "8",
+        "flange_width": "8",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.75",
+        "unit": "in"
+      },
+      "expected": {
+        "existing_behavior_unchanged": true
+      }
+    }
+  ]
+}

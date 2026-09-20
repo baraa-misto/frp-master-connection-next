@@ -1,0 +1,1976 @@
+{
+  "phase": "CME-1_FOUNDATION_ONLY",
+  "primary_members": "FRP_ONLY",
+  "roles": [
+    "PRIMARY_MEMBER",
+    "CONNECTOR_BODY",
+    "MEMBER_REINFORCEMENT",
+    "FASTENER_OR_HARDWARE",
+    "FOUNDATION",
+    "UNCLASSIFIED"
+  ],
+  "frp": "NATIVE_EXISTING_SCOPE_UNCHANGED",
+  "SS316": "PROVIDER_NOT_IMPLEMENTED",
+  "stainless_editor_enabled": false,
+  "reinforcement": "FRP_REINFORCEMENT_RESTRICTED_QUALIFIED_ALTERNATIVE_REQUIRED",
+  "families": [
+    {
+      "route_id": "single-bolt",
+      "product_id": "DIRECT_REFERENCE",
+      "category": "SHEAR",
+      "disposition": "NO_CONNECTOR_BODY",
+      "native_entry_points": [
+        "frp_master_connection.api.calculation_mapping.map_single_bolt_preview_request",
+        "frp_master_connection.application.connection_preview.preview_single_bolt_connection",
+        "frp_master_connection.application.calculation_orchestration.evaluate_single_bolt_connection"
+      ],
+      "declared_native_modes": {
+        "/$defs/ActionConvention/enum": [
+          "MEMBER_ON_JOINT"
+        ],
+        "/$defs/AngleConnectedLeg/enum": [
+          "LEG_1",
+          "LEG_2"
+        ],
+        "/$defs/AngleSectionDTO/properties/kind/const": "ANGLE",
+        "/$defs/BraceToColumnFlangeTemplateGeometryDTO/properties/kind/const": "BRACE_TO_COLUMN_FLANGE",
+        "/$defs/ColumnFlangeConnectionSide/enum": [
+          "EXTERIOR",
+          "WEB_SIDE"
+        ],
+        "/$defs/ComponentMaterialKind/enum": [
+          "PULTRUDED_FRP",
+          "STEEL",
+          "OTHER"
+        ],
+        "/$defs/ConnectionDesignCategory/enum": [
+          "SHEAR",
+          "MOMENT"
+        ],
+        "/$defs/CoordinateFrameKind/enum": [
+          "GLOBAL",
+          "JOINT_LOCAL",
+          "MEMBER_LOCAL",
+          "CONNECTOR_LOCAL",
+          "INTERFACE_LOCAL",
+          "BOLT_GROUP_LOCAL"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/ExplicitResolvedDemandDTO/properties/source_kind/const": "EXPLICIT_RESOLVED_BOLT_DEMAND",
+        "/$defs/ExplicitResolvedDemandDTO/properties/distribution_status/const": "EXPLICITLY_RESOLVED",
+        "/$defs/FRPPropertyKind/enum": [
+          "FT_L",
+          "FT_T",
+          "ET_L",
+          "ET_T",
+          "FC_L",
+          "FC_T",
+          "EC_L",
+          "EC_T",
+          "FSH_LT",
+          "G_LT",
+          "FSH_INT",
+          "FBR_L",
+          "FBR_T",
+          "PULL_THROUGH_3_8",
+          "PULL_THROUGH_1_2",
+          "PULL_THROUGH_3_4",
+          "NU_LT"
+        ],
+        "/$defs/ISectionDTO/properties/kind/enum": [
+          "WIDE_FLANGE",
+          "I_SECTION"
+        ],
+        "/$defs/InterfaceTargetSide/enum": [
+          "FIRST",
+          "SECOND"
+        ],
+        "/$defs/LapConfiguration/enum": [
+          "DOUBLE_LAP",
+          "SINGLE_LAP"
+        ],
+        "/$defs/LayerLoadingSense/enum": [
+          "TENSION",
+          "COMPRESSION"
+        ],
+        "/$defs/LoadInputBasis/enum": [
+          "FACTORED_STRENGTH"
+        ],
+        "/$defs/MemberEnd/enum": [
+          "START",
+          "END"
+        ],
+        "/$defs/MemberRole/enum": [
+          "BEAM",
+          "COLUMN",
+          "BRACE",
+          "OTHER"
+        ],
+        "/$defs/OutstandingLegSide/enum": [
+          "POSITIVE_INTERFACE_Z",
+          "NEGATIVE_INTERFACE_Z"
+        ],
+        "/$defs/PlateSectionDTO/properties/kind/const": "PLATE",
+        "/$defs/PrincipalAxisFamily/enum": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "/$defs/PropertyBehavior/enum": [
+          "LONGITUDINAL",
+          "TRANSVERSE",
+          "IN_PLANE_SHEAR",
+          "INTERLAMINAR",
+          "DISCRETE_PULL_THROUGH",
+          "DIMENSIONLESS_RATIO"
+        ],
+        "/$defs/PultrudedElementForm/enum": [
+          "SHAPE_ELEMENT",
+          "PLATE"
+        ],
+        "/$defs/QualificationStatus/enum": [
+          "QUALIFIED",
+          "DEVELOPMENT_ONLY",
+          "SOURCE_PENDING",
+          "ENGINEERING_REVIEW_REQUIRED",
+          "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+        ],
+        "/$defs/ReferencePointKind/enum": [
+          "JOINT_ORIGIN",
+          "MEMBER_CONNECTED_END",
+          "INTERFACE_ORIGIN",
+          "BOLT_GROUP_ORIGIN",
+          "EXPLICIT_POINT"
+        ],
+        "/$defs/SourceClassification/enum": [
+          "CODE_CHARACTERISTIC",
+          "QUALIFIED_TEST_DATA",
+          "MANUFACTURER_CHARACTERISTIC",
+          "MANUFACTURER_NOMINAL",
+          "ENGINEER_APPROVED_DEVELOPMENT",
+          "USER_DEFINED",
+          "SOURCE_PENDING"
+        ],
+        "/$defs/SurfacePatchRole/enum": [
+          "NEGATIVE_THICKNESS_FACE",
+          "POSITIVE_THICKNESS_FACE",
+          "EDGE_FACE",
+          "END_CUT_FACE",
+          "OUTER_CYLINDRICAL_FACE",
+          "INNER_CYLINDRICAL_FACE",
+          "ANNULAR_END_FACE",
+          "JUNCTION_FACE",
+          "SUPPORT_FACE"
+        ],
+        "/$defs/ThreadStatus/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/TransferIntent/enum": [
+          "SHEAR_ONLY",
+          "MOMENT_RESISTING"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ]
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "NO_BODY_MEMBER_AND_FASTENER_CHECKS_RETAINED",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "multi-row",
+      "product_id": "DIRECT_REFERENCE",
+      "category": "SHEAR",
+      "disposition": "NO_CONNECTOR_BODY",
+      "native_entry_points": [
+        "frp_master_connection.api.multirow_mapping.map_multirow_request",
+        "frp_master_connection.application.multirow_orchestration.preview_multirow_connection",
+        "frp_master_connection.application.multirow_orchestration.evaluate_multirow_connection"
+      ],
+      "declared_native_modes": {
+        "/$defs/ActionConvention/enum": [
+          "MEMBER_ON_JOINT"
+        ],
+        "/$defs/AngleConnectedLeg/enum": [
+          "LEG_1",
+          "LEG_2"
+        ],
+        "/$defs/AngleSectionDTO/properties/kind/const": "ANGLE",
+        "/$defs/BraceToColumnFlangeTemplateGeometryDTO/properties/kind/const": "BRACE_TO_COLUMN_FLANGE",
+        "/$defs/ColumnFlangeConnectionSide/enum": [
+          "EXTERIOR",
+          "WEB_SIDE"
+        ],
+        "/$defs/ComponentMaterialKind/enum": [
+          "PULTRUDED_FRP",
+          "STEEL",
+          "OTHER"
+        ],
+        "/$defs/ConnectedMaterialPair/enum": [
+          "FRP_FRP",
+          "FRP_STEEL"
+        ],
+        "/$defs/ConnectionDesignCategory/enum": [
+          "SHEAR",
+          "MOMENT"
+        ],
+        "/$defs/CoordinateFrameKind/enum": [
+          "GLOBAL",
+          "JOINT_LOCAL",
+          "MEMBER_LOCAL",
+          "CONNECTOR_LOCAL",
+          "INTERFACE_LOCAL",
+          "BOLT_GROUP_LOCAL"
+        ],
+        "/$defs/EngineerDistributionKind/enum": [
+          "FRACTIONS",
+          "DIRECT_ROW_FORCES"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/ExplicitResolvedDemandDTO/properties/source_kind/const": "EXPLICIT_RESOLVED_BOLT_DEMAND",
+        "/$defs/ExplicitResolvedDemandDTO/properties/distribution_status/const": "EXPLICITLY_RESOLVED",
+        "/$defs/FRPPropertyKind/enum": [
+          "FT_L",
+          "FT_T",
+          "ET_L",
+          "ET_T",
+          "FC_L",
+          "FC_T",
+          "EC_L",
+          "EC_T",
+          "FSH_LT",
+          "G_LT",
+          "FSH_INT",
+          "FBR_L",
+          "FBR_T",
+          "PULL_THROUGH_3_8",
+          "PULL_THROUGH_1_2",
+          "PULL_THROUGH_3_4",
+          "NU_LT"
+        ],
+        "/$defs/FirstRowPlanMethod/enum": [
+          "ASCE_STANDARD_SIMPLIFIED",
+          "ASCE_COMMENTARY_FULL",
+          "RATIONAL_MULTIROW_LOWER_ENVELOPE"
+        ],
+        "/$defs/ISectionDTO/properties/kind/enum": [
+          "WIDE_FLANGE",
+          "I_SECTION"
+        ],
+        "/$defs/InterfaceTargetSide/enum": [
+          "FIRST",
+          "SECOND"
+        ],
+        "/$defs/LapConfiguration/enum": [
+          "DOUBLE_LAP",
+          "SINGLE_LAP"
+        ],
+        "/$defs/LayerLoadingSense/enum": [
+          "TENSION",
+          "COMPRESSION"
+        ],
+        "/$defs/LoadInputBasis/enum": [
+          "FACTORED_STRENGTH"
+        ],
+        "/$defs/MemberEnd/enum": [
+          "START",
+          "END"
+        ],
+        "/$defs/MemberRole/enum": [
+          "BEAM",
+          "COLUMN",
+          "BRACE",
+          "OTHER"
+        ],
+        "/$defs/MultiRowDemandSource/enum": [
+          "AUTOMATIC_MEMBER_END_FORCE",
+          "EXPLICIT_RESOLVED_CONNECTION_DEMAND"
+        ],
+        "/$defs/MultiRowLayerDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/OutstandingLegSide/enum": [
+          "POSITIVE_INTERFACE_Z",
+          "NEGATIVE_INTERFACE_Z"
+        ],
+        "/$defs/PlateSectionDTO/properties/kind/const": "PLATE",
+        "/$defs/PrincipalAxisFamily/enum": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "/$defs/PropertyBehavior/enum": [
+          "LONGITUDINAL",
+          "TRANSVERSE",
+          "IN_PLANE_SHEAR",
+          "INTERLAMINAR",
+          "DISCRETE_PULL_THROUGH",
+          "DIMENSIONLESS_RATIO"
+        ],
+        "/$defs/PublishedCodeUnitBasis/enum": [
+          "US_CUSTOMARY_PRINTED",
+          "SI_PRINTED"
+        ],
+        "/$defs/PultrudedElementClassification/enum": [
+          "SHAPE",
+          "PLATE"
+        ],
+        "/$defs/PultrudedElementForm/enum": [
+          "SHAPE_ELEMENT",
+          "PLATE"
+        ],
+        "/$defs/QualificationStatus/enum": [
+          "QUALIFIED",
+          "DEVELOPMENT_ONLY",
+          "SOURCE_PENDING",
+          "ENGINEERING_REVIEW_REQUIRED",
+          "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+        ],
+        "/$defs/ReferencePointKind/enum": [
+          "JOINT_ORIGIN",
+          "MEMBER_CONNECTED_END",
+          "INTERFACE_ORIGIN",
+          "BOLT_GROUP_ORIGIN",
+          "EXPLICIT_POINT"
+        ],
+        "/$defs/RowDistributionBasis/enum": [
+          "ASCE_PRESCRIBED",
+          "CONSERVATIVE_FULL_ROW_ENVELOPE",
+          "ENGINEER_DEFINED_ROW_DISTRIBUTION"
+        ],
+        "/$defs/SourceClassification/enum": [
+          "CODE_CHARACTERISTIC",
+          "QUALIFIED_TEST_DATA",
+          "MANUFACTURER_CHARACTERISTIC",
+          "MANUFACTURER_NOMINAL",
+          "ENGINEER_APPROVED_DEVELOPMENT",
+          "USER_DEFINED",
+          "SOURCE_PENDING"
+        ],
+        "/$defs/SurfacePatchRole/enum": [
+          "NEGATIVE_THICKNESS_FACE",
+          "POSITIVE_THICKNESS_FACE",
+          "EDGE_FACE",
+          "END_CUT_FACE",
+          "OUTER_CYLINDRICAL_FACE",
+          "INNER_CYLINDRICAL_FACE",
+          "ANNULAR_END_FACE",
+          "JUNCTION_FACE",
+          "SUPPORT_FACE"
+        ],
+        "/$defs/ThreadStatus/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/TimeEffectCategory/enum": [
+          "DEAD_ONLY",
+          "IMPACT",
+          "STORAGE",
+          "LONG_TERM_OPERATING",
+          "OTHER_LIVE",
+          "SNOW_RAIN_FLOOD_ATMOSPHERIC_ICE",
+          "WIND_TORNADO_SEISMIC"
+        ],
+        "/$defs/TransferIntent/enum": [
+          "SHEAR_ONLY",
+          "MOMENT_RESISTING"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/const": "2.5C-RC1"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "NO_BODY_MEMBER_AND_FASTENER_CHECKS_RETAINED",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "tee-connector",
+      "product_id": "FRP_TEE",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.tee_mapping.map_tee_connector_request",
+        "frp_master_connection.application.tee_orchestration.preview_tee_connector",
+        "frp_master_connection.application.tee_orchestration.design_check_tee_connector"
+      ],
+      "declared_native_modes": {
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/PublishedCodeUnitBasis/enum": [
+          "US_CUSTOMARY_PRINTED",
+          "SI_PRINTED"
+        ],
+        "/$defs/SelectedSupportFlange/enum": [
+          "POSITIVE_LOCAL_Z",
+          "NEGATIVE_LOCAL_Z"
+        ],
+        "/$defs/SharedAngleSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedAngleSupportDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/SharedAngleSupportDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/SharedChannelSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedChannelSupportDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/SharedChannelSupportDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSolidRectangularSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSupportTargetId/enum": [
+          "W_COLUMN_FLANGE",
+          "W_BEAM_FLANGE",
+          "W_COLUMN_WEB",
+          "CHANNEL_COLUMN_WEB",
+          "ANGLE_COLUMN_LEG",
+          "RECTANGULAR_HOLLOW_COLUMN_WALL",
+          "SOLID_RECTANGULAR_COLUMN_FACE"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/role/enum": [
+          "COLUMN",
+          "BEAM"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/SharedWideFlangeSupportDTO/properties/selected_profile_surface/enum": [
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER",
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/TeeBoltPlacementMode/enum": [
+          "EDGE_DISTANCE_CONTROLLED",
+          "GROUP_OFFSET_CONTROLLED"
+        ],
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_OUTER",
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER"
+        ],
+        "/$defs/TeeConnectorLengthAnchor/enum": [
+          "CENTER",
+          "POSITIVE_L_END",
+          "NEGATIVE_L_END"
+        ],
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/profile_family/const": "FLAT_PLATE",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "FACE_POS",
+          "FACE_NEG"
+        ],
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/TeeRoundHollowConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeRoundHollowConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeRoundHollowConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeRoundHollowConnectedMemberProfileDTO/properties/profile_family/const": "ROUND_HOLLOW_SECTION",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/TeeSupportRole/enum": [
+          "COLUMN",
+          "BEAM"
+        ],
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE",
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/enum": [
+          "3.2-RC1",
+          "3.2-R2",
+          "3.3C2-RC1"
+        ],
+        "/properties/connector_material/const": "PULTRUDED_FRP",
+        "/properties/fastener_material/const": "STAINLESS_STEEL_316",
+        "/properties/fastener_snapshot_id/const": "ASTM_F593_17_GROUP_2_316_316L"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_TEE_FABRICATED_AFTER_CME-2_JOINING_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "clip-angle",
+      "product_id": "SINGLE_CLIP_ANGLE",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.clip_angle_mapping.map_clip_angle_request",
+        "frp_master_connection.application.clip_angle_orchestration.preview_clip_angle",
+        "frp_master_connection.application.clip_angle_orchestration.design_check_clip_angle"
+      ],
+      "declared_native_modes": {
+        "/$defs/ClipAngleAngleProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleAngleProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleAngleProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/ClipAngleAngleProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/ClipAngleBoltPlacementMode/enum": [
+          "EDGE_DISTANCE_CONTROLLED",
+          "GROUP_OFFSET_CONTROLLED"
+        ],
+        "/$defs/ClipAngleChannelProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleChannelProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleChannelProfileDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/ClipAngleChannelProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_OUTER",
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER"
+        ],
+        "/$defs/ClipAngleFlatPlateProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleFlatPlateProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleFlatPlateProfileDTO/properties/profile_family/const": "FLAT_PLATE",
+        "/$defs/ClipAngleFlatPlateProfileDTO/properties/selected_profile_surface/enum": [
+          "FACE_POS",
+          "FACE_NEG"
+        ],
+        "/$defs/ClipAngleHand/enum": [
+          "POSITIVE_S_SIDE",
+          "NEGATIVE_S_SIDE"
+        ],
+        "/$defs/ClipAngleLengthAnchor/enum": [
+          "CENTER",
+          "POSITIVE_L_END",
+          "NEGATIVE_L_END"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ClipAngleSupportRole/enum": [
+          "W_COLUMN_FLANGE",
+          "W_BEAM_FLANGE"
+        ],
+        "/$defs/ClipAngleWideFlangeProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleWideFlangeProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleWideFlangeProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/ClipAngleWideFlangeProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE",
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/PublishedCodeUnitBasis/enum": [
+          "US_CUSTOMARY_PRINTED",
+          "SI_PRINTED"
+        ],
+        "/$defs/SelectedSupportFlange/enum": [
+          "POSITIVE_LOCAL_Z",
+          "NEGATIVE_LOCAL_Z"
+        ],
+        "/$defs/SharedAngleSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedAngleSupportDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/SharedAngleSupportDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/SharedChannelSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedChannelSupportDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/SharedChannelSupportDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSolidRectangularSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSupportTargetId/enum": [
+          "W_COLUMN_FLANGE",
+          "W_BEAM_FLANGE",
+          "W_COLUMN_WEB",
+          "CHANNEL_COLUMN_WEB",
+          "ANGLE_COLUMN_LEG",
+          "RECTANGULAR_HOLLOW_COLUMN_WALL",
+          "SOLID_RECTANGULAR_COLUMN_FACE"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/role/enum": [
+          "COLUMN",
+          "BEAM"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/SharedWideFlangeSupportDTO/properties/selected_profile_surface/enum": [
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER",
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/enum": [
+          "3.3A-RC1",
+          "3.3C2-RC1"
+        ],
+        "/properties/connector_material/const": "PULTRUDED_FRP",
+        "/properties/fastener_material/const": "STAINLESS_STEEL_316",
+        "/properties/fastener_snapshot_id/const": "ASTM_F593_17_GROUP_2_316_316L"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "paired-clip-angle",
+      "product_id": "SYMMETRIC_PAIRED_CLIP_ANGLES",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.paired_clip_angle_mapping.map_paired_clip_angle_request",
+        "frp_master_connection.application.paired_clip_angle_orchestration.preview_paired_clip_angle",
+        "frp_master_connection.application.paired_clip_angle_orchestration.design_check_paired_clip_angle"
+      ],
+      "declared_native_modes": {
+        "/$defs/ClipAngleAngleProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleAngleProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleAngleProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/ClipAngleAngleProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/ClipAngleBoltPlacementMode/enum": [
+          "EDGE_DISTANCE_CONTROLLED",
+          "GROUP_OFFSET_CONTROLLED"
+        ],
+        "/$defs/ClipAngleLengthAnchor/enum": [
+          "CENTER",
+          "POSITIVE_L_END",
+          "NEGATIVE_L_END"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ClipAngleSupportRole/enum": [
+          "W_COLUMN_FLANGE",
+          "W_BEAM_FLANGE"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/PairedChannelProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedChannelProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedChannelProfileDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/PairedChannelProfileDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/PairedFlatPlateProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedFlatPlateProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedFlatPlateProfileDTO/properties/profile_family/const": "FLAT_PLATE",
+        "/$defs/PairedFlatPlateProfileDTO/properties/selected_profile_surface/enum": [
+          "FACE_POS",
+          "FACE_NEG"
+        ],
+        "/$defs/PairedWideFlangeProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedWideFlangeProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedWideFlangeProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/PairedWideFlangeProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/PublishedCodeUnitBasis/enum": [
+          "US_CUSTOMARY_PRINTED",
+          "SI_PRINTED"
+        ],
+        "/$defs/SelectedSupportFlange/enum": [
+          "POSITIVE_LOCAL_Z",
+          "NEGATIVE_LOCAL_Z"
+        ],
+        "/$defs/SharedAngleSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedAngleSupportDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/SharedAngleSupportDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/SharedChannelSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedChannelSupportDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/SharedChannelSupportDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSolidRectangularSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSupportTargetId/enum": [
+          "W_COLUMN_FLANGE",
+          "W_BEAM_FLANGE",
+          "W_COLUMN_WEB",
+          "CHANNEL_COLUMN_WEB",
+          "ANGLE_COLUMN_LEG",
+          "RECTANGULAR_HOLLOW_COLUMN_WALL",
+          "SOLID_RECTANGULAR_COLUMN_FACE"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/role/enum": [
+          "COLUMN",
+          "BEAM"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/SharedWideFlangeSupportDTO/properties/selected_profile_surface/enum": [
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER",
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/enum": [
+          "3.3B-RC1",
+          "3.3C3-RC1"
+        ],
+        "/properties/connector_material/const": "PULTRUDED_FRP",
+        "/properties/fastener_material/const": "STAINLESS_STEEL_316",
+        "/properties/fastener_snapshot_id/const": "ASTM_F593_17_GROUP_2_316_316L",
+        "/properties/pair_symmetry/const": "LOCKED_IDENTICAL_MIRROR"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "multi-member-tee",
+      "product_id": "MULTI_MEMBER_TEE",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.multi_member_tee_mapping.map_multi_member_tee_request",
+        "frp_master_connection.application.multi_member_tee_orchestration.preview_multi_member_tee",
+        "frp_master_connection.application.multi_member_tee_orchestration.design_check_multi_member_tee"
+      ],
+      "declared_native_modes": {
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/MultiMemberTeeLowerBraceDTO/properties/slot_id/const": "LOWER_BRACE",
+        "/$defs/MultiMemberTeeLowerBraceDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/MultiMemberTeeMiddleBeamDTO/properties/slot_id/const": "MIDDLE_BEAM",
+        "/$defs/MultiMemberTeeMiddleBeamDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/MultiMemberTeeMiddleBeamDTO/properties/inclination_degrees/const": "0",
+        "/$defs/MultiMemberTeeSlotId/enum": [
+          "UPPER_BRACE",
+          "MIDDLE_BEAM",
+          "LOWER_BRACE"
+        ],
+        "/$defs/MultiMemberTeeUpperBraceDTO/properties/slot_id/const": "UPPER_BRACE",
+        "/$defs/MultiMemberTeeUpperBraceDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/PublishedCodeUnitBasis/enum": [
+          "US_CUSTOMARY_PRINTED",
+          "SI_PRINTED"
+        ],
+        "/$defs/SharedAngleSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedAngleSupportDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/SharedAngleSupportDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/SharedChannelSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedChannelSupportDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/SharedChannelSupportDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/SharedRectangularHollowSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSolidRectangularSupportDTO/properties/role/const": "COLUMN",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/SharedSolidRectangularSupportDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/SharedSupportTargetId/enum": [
+          "W_COLUMN_FLANGE",
+          "W_BEAM_FLANGE",
+          "W_COLUMN_WEB",
+          "CHANNEL_COLUMN_WEB",
+          "ANGLE_COLUMN_LEG",
+          "RECTANGULAR_HOLLOW_COLUMN_WALL",
+          "SOLID_RECTANGULAR_COLUMN_FACE"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/role/enum": [
+          "COLUMN",
+          "BEAM"
+        ],
+        "/$defs/SharedWideFlangeSupportDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/SharedWideFlangeSupportDTO/properties/selected_profile_surface/enum": [
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER",
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/TeeAngleConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/TeeChannelConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_OUTER",
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER"
+        ],
+        "/$defs/TeeConnectorLengthAnchor/enum": [
+          "CENTER",
+          "POSITIVE_L_END",
+          "NEGATIVE_L_END"
+        ],
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/profile_family/const": "FLAT_PLATE",
+        "/$defs/TeeFlatPlateConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "FACE_POS",
+          "FACE_NEG"
+        ],
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/TeeRectangularHollowConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/TeeSolidRectangularConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/role/const": "BRACE",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/TeeWideFlangeIConnectedMemberProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE",
+          "FLANGE_POS_OUTER",
+          "FLANGE_NEG_OUTER"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/enum": [
+          "3.4A-RC1",
+          "3.4B-RC1"
+        ],
+        "/properties/connector_material/const": "PULTRUDED_FRP",
+        "/properties/fastener_material/const": "STAINLESS_STEEL_316",
+        "/properties/fastener_snapshot_id/const": "ASTM_F593_17_GROUP_2_316_316L"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_TEE_FABRICATED_AFTER_CME-2_JOINING_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "beam-concrete-paired-angle",
+      "product_id": "BEAM_CONCRETE_PAIRED_ANGLE",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.beam_concrete_paired_angle_mapping.map_beam_concrete_paired_angle_request",
+        "frp_master_connection.application.beam_concrete_paired_angle_orchestration.preview_beam_concrete_paired_angle",
+        "frp_master_connection.application.beam_concrete_paired_angle_orchestration.design_check_beam_concrete_paired_angle"
+      ],
+      "declared_native_modes": {
+        "/$defs/ClipAngleAngleProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleAngleProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleAngleProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/ClipAngleAngleProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/ClipAngleBoltPlacementMode/enum": [
+          "EDGE_DISTANCE_CONTROLLED",
+          "GROUP_OFFSET_CONTROLLED"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/ExternalAnchorGeometryDTO/properties/system_classification/const": "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR",
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/PairedChannelProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedChannelProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedChannelProfileDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/PairedChannelProfileDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/PairedFlatPlateProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedFlatPlateProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedFlatPlateProfileDTO/properties/profile_family/const": "FLAT_PLATE",
+        "/$defs/PairedFlatPlateProfileDTO/properties/selected_profile_surface/enum": [
+          "FACE_POS",
+          "FACE_NEG"
+        ],
+        "/$defs/PairedWideFlangeProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedWideFlangeProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedWideFlangeProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/PairedWideFlangeProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/enum": [
+          "3.5A-RC1",
+          "3.5A-R1-RC1",
+          "3.5A-R2-RC1"
+        ]
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "EXTERNAL_ANCHOR_CONCRETE_CAPACITY_UNCHANGED"
+    },
+    {
+      "route_id": "direct-side-lap-concrete",
+      "product_id": "DIRECT_SIDE_LAP_CONCRETE",
+      "category": "SHEAR",
+      "disposition": "NO_CONNECTOR_BODY",
+      "native_entry_points": [
+        "frp_master_connection.api.direct_side_lap_concrete_mapping.map_direct_side_lap_concrete_request",
+        "frp_master_connection.application.direct_side_lap_concrete_orchestration.preview_direct_side_lap_concrete",
+        "frp_master_connection.application.direct_side_lap_concrete_orchestration.design_check_direct_side_lap_concrete"
+      ],
+      "declared_native_modes": {
+        "/$defs/ClipAngleAngleProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleAngleProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleAngleProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/ClipAngleAngleProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/ClipAngleRectangularHollowProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/ClipAngleSolidRectangularProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/ExternalAnchorGeometryDTO/properties/system_classification/const": "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR",
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/PairedChannelProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedChannelProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedChannelProfileDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/PairedChannelProfileDTO/properties/selected_profile_surface/const": "WEB_OUTER",
+        "/$defs/PairedFlatPlateProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedFlatPlateProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedFlatPlateProfileDTO/properties/profile_family/const": "FLAT_PLATE",
+        "/$defs/PairedFlatPlateProfileDTO/properties/selected_profile_surface/enum": [
+          "FACE_POS",
+          "FACE_NEG"
+        ],
+        "/$defs/PairedWideFlangeProfileDTO/properties/role/enum": [
+          "BRACE",
+          "BEAM"
+        ],
+        "/$defs/PairedWideFlangeProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/PairedWideFlangeProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/PairedWideFlangeProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/const": "3.5B-RC1"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "NO_BODY_MEMBER_AND_FASTENER_CHECKS_RETAINED",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "EXTERNAL_ANCHOR_CONCRETE_CAPACITY_UNCHANGED"
+    },
+    {
+      "route_id": "column-base-web-angles",
+      "product_id": "COLUMN_BASE_WEB_ANGLES_CONCRETE",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "map_column_base_web_angle_request",
+        "preview_column_base_web_angles",
+        "design_check_column_base_web_angles"
+      ],
+      "declared_native_modes": {
+        "/$defs/ColumnBaseAngleProfileDTO/properties/role/const": "COLUMN",
+        "/$defs/ColumnBaseAngleProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ColumnBaseAngleProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/ColumnBaseAngleProfileDTO/properties/profile_family/const": "ANGLE",
+        "/$defs/ColumnBaseAngleProfileDTO/properties/selected_profile_surface/enum": [
+          "LEG_Y_OUTER",
+          "LEG_Z_OUTER"
+        ],
+        "/$defs/ColumnBaseAssembly/enum": [
+          "SINGLE_BASE_ANGLE",
+          "SYMMETRIC_DOUBLE_BASE_ANGLES",
+          "DOUBLE_BASE_ANGLES"
+        ],
+        "/$defs/ColumnBaseProfileRequestDTO/properties/orchestration_contract_version/const": "3.7A-RC1",
+        "/$defs/ColumnBaseProfileRequestDTO/properties/assembly/enum": [
+          "SINGLE_BASE_ANGLE",
+          "DOUBLE_BASE_ANGLES"
+        ],
+        "/$defs/ColumnBaseProfileRequestDTO/properties/angle_double_topology/const": "SAME_SELECTED_LEG_OPPOSITE_FACES",
+        "/$defs/ColumnBaseRectangularHollowProfileDTO/properties/role/const": "COLUMN",
+        "/$defs/ColumnBaseRectangularHollowProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ColumnBaseRectangularHollowProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/ColumnBaseRectangularHollowProfileDTO/properties/profile_family/const": "RECTANGULAR_HOLLOW_SECTION",
+        "/$defs/ColumnBaseRectangularHollowProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ColumnBaseSide/enum": [
+          "+T_C",
+          "-T_C"
+        ],
+        "/$defs/ColumnBaseSolidRectangularProfileDTO/properties/role/const": "COLUMN",
+        "/$defs/ColumnBaseSolidRectangularProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ColumnBaseSolidRectangularProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/ColumnBaseSolidRectangularProfileDTO/properties/profile_family/const": "SOLID_RECTANGULAR_SECTION",
+        "/$defs/ColumnBaseSolidRectangularProfileDTO/properties/selected_profile_surface/enum": [
+          "Y_POS_FACE",
+          "Y_NEG_FACE",
+          "Z_POS_FACE",
+          "Z_NEG_FACE"
+        ],
+        "/$defs/ColumnBaseWebAngleRequestDTO/properties/orchestration_contract_version/const": "3.5C-RC1",
+        "/$defs/ColumnBaseWebAngleSignedRequestDTO/properties/orchestration_contract_version/const": "3.5C-R2-RC1",
+        "/$defs/ColumnBaseWideFlangeGeometryDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/ColumnBaseWideFlangeProfileDTO/properties/role/const": "COLUMN",
+        "/$defs/ColumnBaseWideFlangeProfileDTO/properties/size_basis/const": "CUSTOM_DIMENSIONS",
+        "/$defs/ColumnBaseWideFlangeProfileDTO/properties/material_kind/const": "PULTRUDED_FRP",
+        "/$defs/ColumnBaseWideFlangeProfileDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/$defs/ColumnBaseWideFlangeProfileDTO/properties/selected_profile_surface/enum": [
+          "WEB_POS_FACE",
+          "WEB_NEG_FACE"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/ExternalAnchorGeometryDTO/properties/system_classification/const": "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR",
+        "/$defs/MemberProfileOrientation/enum": [
+          "ROTATION_0",
+          "ROTATION_90",
+          "ROTATION_180",
+          "ROTATION_270"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ]
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "EXTERNAL_ANCHOR_CONCRETE_CAPACITY_UNCHANGED"
+    },
+    {
+      "route_id": "beam-web-splice",
+      "product_id": "SYMMETRIC_DOUBLE_WEB_SPLICE",
+      "category": "SHEAR",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.web_splice_mapping.map_web_splice_request",
+        "frp_master_connection.application.web_splice_orchestration.preview_web_splice",
+        "frp_master_connection.application.web_splice_orchestration.design_check_web_splice"
+      ],
+      "declared_native_modes": {
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/$defs/WebSpliceBeamGeometryDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/properties/orchestration_contract_version/enum": [
+          "3.6A-RC1",
+          "3.6B-RC2"
+        ]
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_PLATE_AFTER_CME-2_PLATE_AND_INTERFACE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "wi-major-axis-moment-splice",
+      "product_id": "WI_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+      "category": "MOMENT",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.wi_moment_splice_mapping.map_wi_moment_splice_request",
+        "frp_master_connection.application.wi_moment_splice_orchestration.preview_wi_moment_splice",
+        "frp_master_connection.application.wi_moment_splice_orchestration.design_check_wi_moment_splice"
+      ],
+      "declared_native_modes": {
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/$defs/WIMomentSpliceFastenerDTO/properties/thread_condition/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/WebSpliceBeamGeometryDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/properties/orchestration_contract_version/const": "4.1A-RC1",
+        "/properties/profile_family/const": "WIDE_FLANGE_I"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_PLATE_AFTER_CME-2_PLATE_AND_INTERFACE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "channel-major-axis-moment-splice",
+      "product_id": "CHANNEL_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+      "category": "MOMENT",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.channel_moment_splice_mapping.map_channel_moment_splice_request",
+        "frp_master_connection.application.channel_moment_splice_orchestration.preview_channel_moment_splice",
+        "frp_master_connection.application.channel_moment_splice_orchestration.design_check_channel_moment_splice"
+      ],
+      "declared_native_modes": {
+        "/$defs/ChannelMomentSpliceBeamGeometryDTO/properties/profile_family/const": "CHANNEL",
+        "/$defs/ChannelMomentSpliceFastenerDTO/properties/thread_condition/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/ChannelMomentSpliceShearCenterDTO/properties/method/enum": [
+          "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+          "EXPLICIT_VERIFIED_CHANNEL_SHEAR_CENTER_RC1"
+        ],
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/properties/orchestration_contract_version/const": "4.1B-RC1",
+        "/properties/opening_direction/const": "+T_CH"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_PLATE_AFTER_CME-2_PLATE_AND_INTERFACE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "wi-beam-concrete-wall-moment",
+      "product_id": "WI_BEAM_CONCRETE_WALL_MAJOR_AXIS_MOMENT_CONNECTION",
+      "category": "MOMENT",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.wi_wall_moment_mapping.map_wi_wall_moment_request",
+        "frp_master_connection.application.wi_wall_moment_orchestration.preview_wi_wall_moment",
+        "frp_master_connection.application.wi_wall_moment_design.evaluate_wi_wall_moment"
+      ],
+      "declared_native_modes": {
+        "/$defs/EngineeringUnitSystem/enum": [
+          "SI",
+          "US_CUSTOMARY"
+        ],
+        "/$defs/ExternalAnchorGeometryDTO/properties/system_classification/const": "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR",
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/$defs/WIMomentSpliceFastenerDTO/properties/thread_condition/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/WallMomentAngleDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/WallMomentAngleDTO/properties/provider_id/const": "FRP",
+        "/$defs/WebSpliceBeamGeometryDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/properties/contract/const": "4.2-RC1",
+        "/properties/source_length_unit/enum": [
+          "in",
+          "mm"
+        ]
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "EXTERNAL_ANCHOR_CONCRETE_CAPACITY_UNCHANGED"
+    },
+    {
+      "route_id": "wi-beam-frp-support-moment",
+      "product_id": "WI_BEAM_FRP_SUPPORT_MAJOR_AXIS_MOMENT_CONNECTION",
+      "category": "MOMENT",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.wi_frp_support_moment_mapping.map_wi_frp_support_moment_request",
+        "frp_master_connection.application.wi_frp_support_moment_orchestration.preview_wi_frp_support_moment",
+        "frp_master_connection.application.wi_frp_support_moment_design.evaluate_wi_frp_support_moment"
+      ],
+      "declared_native_modes": {
+        "/$defs/FRPMomentAngleDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/FRPMomentAngleDTO/properties/provider_id/const": "FRP",
+        "/$defs/FRPSupportFastenerDTO/properties/thread_condition/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/ReceivingSupportDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/SupportMode/enum": [
+          "WI_FLANGE",
+          "WI_WEB",
+          "HOLLOW_SQUARE",
+          "SOLID_SQUARE",
+          "CHANNEL_WEB"
+        ],
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/$defs/WebSpliceBeamGeometryDTO/properties/profile_family/const": "WIDE_FLANGE_I",
+        "/properties/contract/const": "4.3-RC1",
+        "/properties/beam_material_id/const": "ICE_LOCKED_PULTRUDED_FRP"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "NOT_A_CONNECTOR_MATERIAL_SELECTION"
+    },
+    {
+      "route_id": "angle-column-two-leg-moment-base",
+      "product_id": "ANGLE_COLUMN_TWO_LEG_MOMENT_BASE_CONNECTION",
+      "category": "MOMENT",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.angle_column_moment_base.map_angle_base_request",
+        "frp_master_connection.application.angle_column_base_preview.preview_angle_column_moment_base",
+        "frp_master_connection.application.angle_column_base_design.evaluate_angle_column_moment_base"
+      ],
+      "declared_native_modes": {
+        "/$defs/AngleBaseColumnDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/ExternalAnchorGeometryDTO/properties/system_classification/const": "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR",
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/$defs/WIMomentSpliceFastenerDTO/properties/thread_condition/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/WallMomentAngleDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/WallMomentAngleDTO/properties/provider_id/const": "FRP",
+        "/properties/contract/const": "4.4-RC1"
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "EXTERNAL_ANCHOR_CONCRETE_CAPACITY_UNCHANGED"
+    },
+    {
+      "route_id": "wi-rhs-srs-column-moment-base",
+      "product_id": "WI_RHS_SRS_COLUMN_MOMENT_BASE_CONNECTION",
+      "category": "MOMENT",
+      "disposition": "CONNECTOR_BODY_FUTURE_PROVIDER_INTEGRATION",
+      "native_entry_points": [
+        "frp_master_connection.api.column_moment_base.map_column_moment_base_request",
+        "frp_master_connection.application.column_moment_base_preview.preview_column_moment_base",
+        "frp_master_connection.application.column_moment_base_design.evaluate_column_moment_base"
+      ],
+      "declared_native_modes": {
+        "/$defs/ExternalAnchorGeometryDTO/properties/system_classification/const": "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR",
+        "/$defs/MomentBaseColumnDTO/properties/family/enum": [
+          "WI",
+          "RHS",
+          "SRS"
+        ],
+        "/$defs/MomentBaseColumnDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/Unit/enum": [
+          "in",
+          "mm",
+          "in2",
+          "mm2",
+          "in4",
+          "mm4",
+          "lbf",
+          "kip",
+          "N",
+          "kN",
+          "lbf-in",
+          "kip-in",
+          "N-mm",
+          "kN-mm",
+          "psi",
+          "ksi",
+          "MPa",
+          "kip/in",
+          "N/mm",
+          "1"
+        ],
+        "/$defs/WIMomentSpliceFastenerDTO/properties/thread_condition/enum": [
+          "INCLUDED",
+          "EXCLUDED"
+        ],
+        "/$defs/WallMomentAngleDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/WallMomentAngleDTO/properties/provider_id/const": "FRP",
+        "/properties/contract/const": "4.5-RC1",
+        "/properties/layout/enum": [
+          "TWO_X",
+          "TWO_Y",
+          "FOUR_XY"
+        ]
+      },
+      "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "NATIVE_RESOLVED_ACTIONS_UNCHANGED; MATERIAL_DEPENDENT_SHARING_CONTACT_PRYING_REVALIDATION_REQUIRED",
+      "rollout_wave": "CME-3_ANGLE_AFTER_CME-2_BODY_AND_RESPONSE_AUTHORITY",
+      "qualification_policy": "Native FRP limitations retained; source metadata does not qualify SS316.",
+      "foundation_policy": "EXTERNAL_ANCHOR_CONCRETE_CAPACITY_UNCHANGED"
+    },
+    {
+      "route_id": "double-channel-truss-node",
+      "product_id": "DOUBLE_CHANNEL_TRUSS_NODE_CONNECTION",
+      "category": "SHEAR",
+      "disposition": "NO_CONNECTOR_BODY",
+      "native_entry_points": [
+        "frp_master_connection.api.dctn3b.map_versioned_dctn",
+        "frp_master_connection.api.dctn3b.preview_versioned_dctn",
+        "frp_master_connection.api.dctn3b.design_versioned_dctn"
+      ],
+      "declared_native_modes": {
+        "/$defs/DCTNArrangement/enum": ["VERTICAL_ONLY", "ONE_INCLINED", "TWO_INCLINED", "VERTICAL_ONE_INCLINED", "VERTICAL_TWO_INCLINED"],
+        "/$defs/DCTNChannelDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/DCTNFastenerDTO/properties/product_id/const": "ASTM_F593_GROUP2_316",
+        "/$defs/DCTNForm/enum": ["RHS", "SOLID_RECTANGLE", "W_I"],
+        "/$defs/DCTNMemberDTO/properties/slot/enum": ["V", "D1", "D2"],
+        "/$defs/DCTNMemberDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/Unit/enum": ["in", "mm", "in2", "mm2", "in4", "mm4", "lbf", "kip", "N", "kN", "lbf-in", "kip-in", "N-mm", "kN-mm", "psi", "ksi", "MPa", "kip/in", "N/mm", "1"],
+        "/$defs/DCTNRequestDTO/properties/unit_system/enum": ["US", "SI"],
+        "/$defs/DCTNRequestDTO/properties/length_unit/enum": ["in", "mm"],
+        "/$defs/DCTNRequestDTO/properties/contract/const": "DCTN-2-RC1",
+        "/$defs/DCTN3BMemberDTO/properties/slot/enum": ["V", "D1", "D2"],
+        "/$defs/DCTN3BMemberDTO/properties/material_id/const": "ICE_LOCKED_PULTRUDED_FRP",
+        "/$defs/DCTN3BRequestDTO/properties/unit_system/enum": ["US", "SI"],
+        "/$defs/DCTN3BRequestDTO/properties/length_unit/enum": ["in", "mm"],
+        "/$defs/DCTN3BRequestDTO/properties/contract/const": "DCTN-3B-RC1"
+      },
+      "stainless": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "DCTN-3B exact P/Qp/Qq demand and generated moments; P-only DCTN_AXIAL_SYMMETRIC_HALF_SHARE_RESPONSE_RC1 unchanged; nonzero shear requires server-trusted complete response; production registry empty.",
+      "rollout_wave": "DCTN-3B_RC1_NO_CONNECTOR_BODY; DCTN-2_RC1_HISTORICAL_EXECUTION_PRESERVED",
+      "qualification_policy": "Trusted FRP product/use, actual hardware, full-depth solid and local/cross-group mechanisms remain source-bound; transverse sharing/contact/tension/prying/local resistance not automatically qualified; public source text grants no authority; global chord/truss design is external.",
+      "foundation_policy": "NOT_APPLICABLE_NO_FOUNDATION"
+    }
+  ],
+  "inventory_contract": "CME-1-RC1",
+  "accepted_baseline": "998911ea78872b852ef097dd4e20d666a33a935a",
+  "runtime_schema_policy": "Every finite native DTO enum/const is declared here; unsupported geometry remains subject to native applicability. No steel editor activation.",
+  "restricted_reinforcement": {
+    "disposition": "FRP_REINFORCEMENT_RESTRICTED",
+    "authority": "ASCE/SEI 74-23 5.5.2; existing pultruded member reinforcement scope",
+    "production_selectable": false,
+    "successor": "Separate qualified alternative, not body-material substitution"
+  }
+}

@@ -1,0 +1,1091 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_4_3_ACCEPTANCE_MATRIX_RC1",
+  "schema": "stage43-acceptance-matrix-rc1",
+  "document_kind": "CONTROLLED_ACCEPTANCE_REQUIREMENTS_NOT_PRECOMPUTED_PRODUCTION_GOLDENS",
+  "contract": "4.3-RC1",
+  "product_id": "WI_BEAM_FRP_SUPPORT_MAJOR_AXIS_MOMENT_CONNECTION",
+  "baseline_commit": "c8094293e6da49aa830b5801f49aae537cccae2b",
+  "support_configurations": [
+    "WI_FLANGE",
+    "WI_WEB",
+    "HOLLOW_SQUARE",
+    "SOLID_SQUARE",
+    "CHANNEL_WEB"
+  ],
+  "numeric_policy": {
+    "native_engine_outputs": "preserve verbatim at native precision",
+    "independent_integration_oracle": "call pinned dependency outside Stage4.3 orchestration with independently built exact inputs",
+    "new_equilibrium_validation": "exact rational relation on supplied finite values plus source-bound proof provenance",
+    "no_round_to_target": true,
+    "no_residual_redistribution": true,
+    "fixture_values": "integer or exact rational strings; never ambient Decimal negation or binary float"
+  },
+  "source_policy": "A synthetic fixture proves software arithmetic only; it provides no construction qualification.",
+  "load_sweep": [
+    {
+      "id": "COMBINED",
+      "P_kip": "20",
+      "V_kip": "-10",
+      "M_structural_kip_in": "100"
+    },
+    {
+      "id": "PURE_SHEAR",
+      "P_kip": "0",
+      "V_kip": "-10",
+      "M_structural_kip_in": "0"
+    },
+    {
+      "id": "PURE_MOMENT",
+      "P_kip": "0",
+      "V_kip": "0",
+      "M_structural_kip_in": "100"
+    },
+    {
+      "id": "AXIAL_TENSION",
+      "P_kip": "20",
+      "V_kip": "0",
+      "M_structural_kip_in": "0"
+    },
+    {
+      "id": "AXIAL_COMPRESSION",
+      "P_kip": "-20",
+      "V_kip": "0",
+      "M_structural_kip_in": "0"
+    },
+    {
+      "id": "REVERSE_MOMENT",
+      "P_kip": "20",
+      "V_kip": "-10",
+      "M_structural_kip_in": "-100"
+    },
+    {
+      "id": "REVERSE_SHEAR",
+      "P_kip": "20",
+      "V_kip": "10",
+      "M_structural_kip_in": "100"
+    },
+    {
+      "id": "ZERO",
+      "P_kip": "0",
+      "V_kip": "0",
+      "M_structural_kip_in": "0"
+    }
+  ],
+  "sweep_requirement": "Every support configuration x every load case x physically equivalent US/SI; at least one feasible geometry preset per support; extra face/access tests as specified by order.",
+  "independent_fixtures": [
+    {
+      "id": "F43-R01",
+      "fixture_kind": "SYNTHETIC_RESPONSE_VALIDATOR_TEST_ONLY_NOT_A_QUALIFIED_PHYSICAL_ASSEMBLY",
+      "coordinate_order": [
+        "u",
+        "v",
+        "n"
+      ],
+      "units": {
+        "length": "in",
+        "force": "kip",
+        "moment": "kip-in"
+      },
+      "reference": [
+        "0",
+        "0",
+        "0"
+      ],
+      "bolts": [
+        {
+          "id": "B1",
+          "point": [
+            "-2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B2",
+          "point": [
+            "2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B3",
+          "point": [
+            "-2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B4",
+          "point": [
+            "2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        }
+      ],
+      "contacts": [],
+      "expected_total": {
+        "force": [
+          "0",
+          "0",
+          "12"
+        ],
+        "moment": [
+          "0",
+          "0",
+          "0"
+        ]
+      },
+      "production_use_permitted": false
+    },
+    {
+      "id": "F43-R02",
+      "fixture_kind": "SYNTHETIC_RESPONSE_VALIDATOR_TEST_ONLY_NOT_A_QUALIFIED_PHYSICAL_ASSEMBLY",
+      "coordinate_order": [
+        "u",
+        "v",
+        "n"
+      ],
+      "units": {
+        "length": "in",
+        "force": "kip",
+        "moment": "kip-in"
+      },
+      "reference": [
+        "0",
+        "0",
+        "0"
+      ],
+      "bolts": [
+        {
+          "id": "B1",
+          "point": [
+            "-2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "id": "B2",
+          "point": [
+            "2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B3",
+          "point": [
+            "-2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "id": "B4",
+          "point": [
+            "2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "id": "C1",
+          "point": [
+            "-2",
+            "0",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "-6"
+          ]
+        }
+      ],
+      "expected_total": {
+        "force": [
+          "0",
+          "0",
+          "0"
+        ],
+        "moment": [
+          "0",
+          "-24",
+          "0"
+        ]
+      },
+      "production_use_permitted": false
+    },
+    {
+      "id": "F43-R03",
+      "fixture_kind": "SYNTHETIC_RESPONSE_VALIDATOR_TEST_ONLY_NOT_A_QUALIFIED_PHYSICAL_ASSEMBLY",
+      "coordinate_order": [
+        "u",
+        "v",
+        "n"
+      ],
+      "units": {
+        "length": "in",
+        "force": "kip",
+        "moment": "kip-in"
+      },
+      "reference": [
+        "0",
+        "0",
+        "0"
+      ],
+      "bolts": [
+        {
+          "id": "B1",
+          "point": [
+            "-2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B2",
+          "point": [
+            "2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "id": "B3",
+          "point": [
+            "-2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B4",
+          "point": [
+            "2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "id": "C1",
+          "point": [
+            "2",
+            "0",
+            "0"
+          ],
+          "force_on_support": [
+            "0",
+            "0",
+            "-6"
+          ]
+        }
+      ],
+      "expected_total": {
+        "force": [
+          "0",
+          "0",
+          "0"
+        ],
+        "moment": [
+          "0",
+          "24",
+          "0"
+        ]
+      },
+      "production_use_permitted": false
+    },
+    {
+      "id": "F43-R04",
+      "fixture_kind": "SYNTHETIC_RESPONSE_VALIDATOR_TEST_ONLY_NOT_A_QUALIFIED_PHYSICAL_ASSEMBLY",
+      "coordinate_order": [
+        "u",
+        "v",
+        "n"
+      ],
+      "units": {
+        "length": "in",
+        "force": "kip",
+        "moment": "kip-in"
+      },
+      "reference": [
+        "0",
+        "0",
+        "0"
+      ],
+      "bolts": [
+        {
+          "id": "B1",
+          "point": [
+            "-2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "5/2",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B2",
+          "point": [
+            "2",
+            "-1",
+            "0"
+          ],
+          "force_on_support": [
+            "5/2",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "id": "B3",
+          "point": [
+            "-2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "3/2",
+            "0",
+            "3"
+          ]
+        },
+        {
+          "id": "B4",
+          "point": [
+            "2",
+            "1",
+            "0"
+          ],
+          "force_on_support": [
+            "3/2",
+            "2",
+            "3"
+          ]
+        }
+      ],
+      "contacts": [],
+      "expected_total": {
+        "force": [
+          "8",
+          "4",
+          "12"
+        ],
+        "moment": [
+          "0",
+          "0",
+          "10"
+        ]
+      },
+      "production_use_permitted": false
+    },
+    {
+      "id": "F43-T01",
+      "fixture_kind": "SYNTHETIC_REFERENCE_SHIFT_IDENTITY",
+      "coordinate_order": [
+        "L_B",
+        "V_B",
+        "T_B"
+      ],
+      "from_reference": [
+        "0",
+        "0",
+        "0"
+      ],
+      "to_reference": [
+        "-3",
+        "0",
+        "0"
+      ],
+      "input_force": [
+        "20",
+        "-10",
+        "0"
+      ],
+      "input_moment": [
+        "0",
+        "0",
+        "-105"
+      ],
+      "expected_force": [
+        "20",
+        "-10",
+        "0"
+      ],
+      "expected_moment": [
+        "0",
+        "0",
+        "-135"
+      ],
+      "units": {
+        "length": "in",
+        "force": "kip",
+        "moment": "kip-in"
+      },
+      "defines_support_profile_dimensions": false
+    },
+    {
+      "id": "F43-B01",
+      "fixture_kind": "SYNTHETIC_BOLT_STRESS_INTERFACE_UNIT_TEST_NOT_MATERIAL_DEFAULT",
+      "source_locator": "ASCE/SEI 74-23 8.3.2.1, Equations 8-3a and 8-3b",
+      "units": "ksi",
+      "inputs": {
+        "Fnt": "60",
+        "Fnv": "40",
+        "phi": "3/4",
+        "fv": "20"
+      },
+      "expected": {
+        "modified_nominal_tension_stress": "38",
+        "design_tension_stress": "57/2",
+        "design_shear_stress": "30"
+      },
+      "boundary_checks": {
+        "ft_equal_57_over_2": "PASS",
+        "ft_equal_29": "FAIL"
+      },
+      "production_use_permitted": false
+    }
+  ],
+  "acceptance_checks": [
+    {
+      "id": "T43-001",
+      "title": "Baseline identity",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Exact synchronized commit c8094293e6da49aa830b5801f49aae537cccae2b before source mutation."
+    },
+    {
+      "id": "T43-002",
+      "title": "Support matrix",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Exactly WI_FLANGE, WI_WEB, HOLLOW_SQUARE, SOLID_SQUARE, CHANNEL_WEB; all five implemented."
+    },
+    {
+      "id": "T43-003",
+      "title": "Incoming member",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Incoming beam remains W/I; Channel is a support option only."
+    },
+    {
+      "id": "T43-004",
+      "title": "New product separation",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "New 4.3-RC1 request/workspace; Stage 4.2 endpoints, behavior and fingerprints preserved."
+    },
+    {
+      "id": "T43-005",
+      "title": "Native dependency numerics",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "required_assertion": "Native dependency outputs preserved; no independent N/n or cross-precision literals as integration oracles."
+    },
+    {
+      "id": "T43-006",
+      "title": "Reference provenance",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Every wrench carries frame, origin, component order, units, sign convention and source fingerprint."
+    },
+    {
+      "id": "T43-007",
+      "title": "Beam structural sign",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "required_assertion": "Use frozen Stage 4.2 negative-end structural-to-right-hand sign adapter exactly."
+    },
+    {
+      "id": "T43-008",
+      "title": "Receiving-member frame",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Receiving member is vertical; its LW axis is its own extrusion axis, not the incoming beam axis."
+    },
+    {
+      "id": "T43-009",
+      "title": "Support attachment frame",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "u=V_B, v=T_B, n=L_B; u cross v equals n."
+    },
+    {
+      "id": "T43-010",
+      "title": "Face reference",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Actual selected support contact face defines interface; no concrete-wall coordinate or material surrogate."
+    },
+    {
+      "id": "T43-011",
+      "title": "Support centroid",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Actual profile centroid at connection elevation, including selected-face offsets, is backend-derived."
+    },
+    {
+      "id": "T43-012",
+      "title": "Channel asymmetry",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Retain complete transformed wrench; do not silently identify centroid with shear center or zero generated torsion."
+    },
+    {
+      "id": "T43-013",
+      "title": "Rigid-body shift identity",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "required_assertion": "Independent exact reference-shift fixture matches its algebraic value.",
+      "fixture_ids": [
+        "F43-T01"
+      ]
+    },
+    {
+      "id": "T43-014",
+      "title": "Gap",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Default inherits accepted 0.5-in gap. RC1 positive gap at most 0.5 in; invalid edit is not clamped."
+    },
+    {
+      "id": "T43-015",
+      "title": "Whole support handoff",
+      "oracle_kind": "EXACT_RELATION",
+      "required_assertion": "Sum four group actions at one reference once; never add component design demands to that sum again."
+    },
+    {
+      "id": "T43-016",
+      "title": "Global support action only",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Combined wrench is this connection contribution, not a solved full-column or foundation reaction."
+    },
+    {
+      "id": "T43-017",
+      "title": "No column-end reaction guess",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "No automatic top/bottom column reaction split or full-column stability PASS."
+    },
+    {
+      "id": "T43-018",
+      "title": "Four connector topology",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Top flange angle, bottom flange angle and two web clip angles, without hidden backing plates."
+    },
+    {
+      "id": "T43-019",
+      "title": "Beam-side dependency calls",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "required_assertion": "Preserve Slice 5, four Slice 7 cores, Slice 8 web and applicable native flange demand paths."
+    },
+    {
+      "id": "T43-020",
+      "title": "Web reference invariant",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Actual heel-local web coordinates and matching group reference; never mix (0,0) reference with centroid (0,2)."
+    },
+    {
+      "id": "T43-021",
+      "title": "Transfer of independent moment",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "required_assertion": "True free in-plane moment uses Slice 8, never an invented force location or Stage 2.5A unsupported path."
+    },
+    {
+      "id": "T43-022",
+      "title": "Four support groups",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Four group references and distinct bolt IDs; no anchor terminology, embedment or concrete geometry."
+    },
+    {
+      "id": "T43-023",
+      "title": "W/I flange path",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Angle support leg to selected flange through-bolt, with actual rear washer/nut and junction clearance."
+    },
+    {
+      "id": "T43-024",
+      "title": "W/I web path",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Selected web alone is the intended layer; full surrounding flanges retained for collision and access checks."
+    },
+    {
+      "id": "T43-025",
+      "title": "Channel web path",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Actual web and opening direction retained; inside/rear hardware must be accessible and clear of flanges."
+    },
+    {
+      "id": "T43-026",
+      "title": "Hollow square path",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Angle leg, near wall, cavity and far wall are distinct; cavity is void, no internal nuts or invented sleeves."
+    },
+    {
+      "id": "T43-027",
+      "title": "Hollow no false double shear",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Two wall penetrations do not authorize two equal shear planes or 50/50 wall bearing."
+    },
+    {
+      "id": "T43-028",
+      "title": "Hollow response specificity",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Wall participation, far-wall pull-through and long-bolt bending/contact require applicable response evidence."
+    },
+    {
+      "id": "T43-029",
+      "title": "Solid square path",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "One continuous solid-depth path with external hardware; no fake cavity or thin-wall surrogate."
+    },
+    {
+      "id": "T43-030",
+      "title": "Solid formula applicability",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "A full-solid grip dimension is not automatically a thin-plate failure thickness."
+    },
+    {
+      "id": "T43-031",
+      "title": "Square-only selection",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Hollow/solid rectangular repository primitives may be reused; RC1 side dimensions must be equal."
+    },
+    {
+      "id": "T43-032",
+      "title": "Physical hole and washer containment",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Check full hole/washer footprint and hardware envelopes at every real material crossing."
+    },
+    {
+      "id": "T43-033",
+      "title": "Fit and access",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Reject flange/heel/perpendicular-member collision or inaccessible hardware; do not silently move bolts."
+    },
+    {
+      "id": "T43-034",
+      "title": "Physical load-reversal invariance",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Reversing loads does not move geometry, change bolt identities or manufacture a new physical path."
+    },
+    {
+      "id": "T43-035",
+      "title": "Display length independence",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Display clipping extents do not become strength-panel boundaries or source applicability lengths."
+    },
+    {
+      "id": "T43-036",
+      "title": "Support-response demand distinction",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Scalar qualified strength envelope is not per-bolt demand distribution."
+    },
+    {
+      "id": "T43-037",
+      "title": "Out-of-plane demand completeness",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Retain F_n, M_u, M_v; Slice 8 is not a tension/contact/prying solver."
+    },
+    {
+      "id": "T43-038",
+      "title": "Positive bolt tension fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "required_assertion": "Synthetic explicit response gives exact normal resultant without fictitious contact.",
+      "fixture_ids": [
+        "F43-R01"
+      ]
+    },
+    {
+      "id": "T43-039",
+      "title": "Tension/contact moment fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "required_assertion": "Synthetic pure-moment response closes via tension-only bolts and compressive contact.",
+      "fixture_ids": [
+        "F43-R02"
+      ]
+    },
+    {
+      "id": "T43-040",
+      "title": "Reversed contact moment fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "required_assertion": "Opposite moment uses a different active tension/contact set; no negative bolt tensions.",
+      "fixture_ids": [
+        "F43-R03"
+      ]
+    },
+    {
+      "id": "T43-041",
+      "title": "Combined response fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "required_assertion": "Per-bolt shear/tension and contact ledger recovers all six components.",
+      "fixture_ids": [
+        "F43-R04"
+      ]
+    },
+    {
+      "id": "T43-042",
+      "title": "Reaction-record mutation rejection",
+      "oracle_kind": "NEGATIVE_TEST",
+      "required_assertion": "Altering one bolt force/contact position without updating an authorized response proof fails validation.",
+      "fixture_ids": [
+        "F43-R02"
+      ]
+    },
+    {
+      "id": "T43-043",
+      "title": "Equilibrium is not qualification",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Force/moment closure alone cannot certify response stiffness, contact, prying or material capacity."
+    },
+    {
+      "id": "T43-044",
+      "title": "Response source binding",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Bind profile, face, material, fastener layout, stiffness/contact assumptions, frame, all relevant groups, load case and provenance."
+    },
+    {
+      "id": "T43-045",
+      "title": "Single-load response invalidation",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Changing loads invalidates explicit response records unless source explicitly authorizes that mapping/domain."
+    },
+    {
+      "id": "T43-046",
+      "title": "Source units",
+      "oracle_kind": "METAMORPHIC",
+      "required_assertion": "Physically equivalent units use canonical source matching; raw display units must not cause false mismatch."
+    },
+    {
+      "id": "T43-047",
+      "title": "Global group compatibility",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Separate four angle certificates do not automatically cover common support-region interaction."
+    },
+    {
+      "id": "T43-048",
+      "title": "Missing response behavior",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Missing demanded full response returns SOURCE_REQUIRED or NOT_EVALUATED with named missing items; not zero tension."
+    },
+    {
+      "id": "T43-049",
+      "title": "Zero-demand distinction",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "NOT_REQUIRED needs a true proof of no demand and no applicable prying/preload; absent data is not zero."
+    },
+    {
+      "id": "T43-050",
+      "title": "Signed contact",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Bolt tension nonnegative, compression-only contact nonnegative magnitude in its own opposite direction; no absolute-value repair."
+    },
+    {
+      "id": "T43-051",
+      "title": "Shear participation",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Use only applicable in-plane distribution authority; no friction credit or assumed far-wall participation."
+    },
+    {
+      "id": "T43-052",
+      "title": "Support bolt numerical checks",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "required_assertion": "Given verified demands and authorized properties, evaluate shear, tension and combined demand via native accepted bolt checks."
+    },
+    {
+      "id": "T43-053",
+      "title": "Bolt-interaction stress fixture",
+      "oracle_kind": "EXACT_RATIONAL_IDENTITY",
+      "required_assertion": "Exact simple source-independent arithmetic benchmark validates the combined-stress equation interface.",
+      "fixture_ids": [
+        "F43-B01"
+      ]
+    },
+    {
+      "id": "T43-054",
+      "title": "Fastener-source boundary",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "F593 without approved Fnt/Fnv remains source-required; selecting stainless fastener is not selecting a 316SS connector."
+    },
+    {
+      "id": "T43-055",
+      "title": "Actual shear planes",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Trace each loaded bolt section/plane and physical layers; no blind 2x capacity summation."
+    },
+    {
+      "id": "T43-056",
+      "title": "Pull-through two branches",
+      "oracle_kind": "NATIVE_DEPENDENCY",
+      "required_assertion": "Use both applicable Equation 8-4 branches with actual washer/FRP region and source data; missing interlaminar strength is not ignored."
+    },
+    {
+      "id": "T43-057",
+      "title": "Time/resistance factors",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Reuse accepted factors exactly once; bolt time effect follows Section 8.3.2.1 and FRP follows applicable native path."
+    },
+    {
+      "id": "T43-058",
+      "title": "Support bearing directions",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Each FRP layer uses its own LW/CW/TT and actual bearing vector with correct single-lap/thread provisions."
+    },
+    {
+      "id": "T43-059",
+      "title": "Row and end paths",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "First row, loaded end, junction exemptions and combined local group paths derive from support geometry/load direction."
+    },
+    {
+      "id": "T43-060",
+      "title": "Angle support-leg check",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Support leg is checked independently from receiving support member; no beam-side result substitution."
+    },
+    {
+      "id": "T43-061",
+      "title": "Support local zone coverage",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Track face bending, junction response, pull-through, intergroup and support-section load transfer; no silent omission."
+    },
+    {
+      "id": "T43-062",
+      "title": "No arbitrary Chapter 7 panel",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "No simply-supported panel, out-of-plane strength or axis-swap from pure plate engines without existing applicability authority."
+    },
+    {
+      "id": "T43-063",
+      "title": "Source absence is not implementation blocker",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Implement specified fail-closed states and numerical integration tests; do not invent test data for production."
+    },
+    {
+      "id": "T43-064",
+      "title": "Synthetic fixture isolation",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Validator/capacity synthetic records never selectable as production qualified sources."
+    },
+    {
+      "id": "T43-065",
+      "title": "Default result honesty",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Use locked material and native factors; choose feasible geometry, not altered strengths or forced PASS/FAIL."
+    },
+    {
+      "id": "T43-066",
+      "title": "Native governing preservation",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Preserve native governing selection and all failed records; missing sources cannot hide evaluated failures."
+    },
+    {
+      "id": "T43-067",
+      "title": "Failure table completeness",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Every displayed FAIL has a current backend failure reason/record, including support-side bolt and receiving-member checks."
+    },
+    {
+      "id": "T43-068",
+      "title": "Scope aggregation",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Separate beam, connectors, support fasteners, local support zone and full-member-design status."
+    },
+    {
+      "id": "T43-069",
+      "title": "Highest connection status",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Only fully covered connection/local-support scope can use review-required success; no ordinary unqualified PASS."
+    },
+    {
+      "id": "T43-070",
+      "title": "No inherited concrete warning",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "New FRP-support result does not claim external anchor/concrete design is required; full support-member analysis remains separate."
+    },
+    {
+      "id": "T43-071",
+      "title": "Native aggregate versus proof target",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Keep native aggregate, algebraic target, and exact serialization diagnostics distinct; no hard-coded residuals copied from Stage 4.2."
+    },
+    {
+      "id": "T43-072",
+      "title": "Precision robustness",
+      "oracle_kind": "METAMORPHIC",
+      "required_assertion": "Changing ambient Decimal context must not alter new exact reference/response validation logic."
+    },
+    {
+      "id": "T43-073",
+      "title": "Read-only preview",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Preview assembles geometry, action/reference plan and source status without resistance calls."
+    },
+    {
+      "id": "T43-074",
+      "title": "Explicit design",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Run Design Check invokes resistance; load/profile/source/fastener edits stale and invalidate prior results."
+    },
+    {
+      "id": "T43-075",
+      "title": "Support selector matrix",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "All five support modes render from actual application selector and backend geometry."
+    },
+    {
+      "id": "T43-076",
+      "title": "Nested sidebar layout",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Full-width Member bolts and Support bolts fieldsets; no collapsed columns or overlapping labels."
+    },
+    {
+      "id": "T43-077",
+      "title": "Fastener/source inputs",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Diameter, hole, actual washer, thread/strength source and response/source controls are physically separated."
+    },
+    {
+      "id": "T43-078",
+      "title": "Result table auditability",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Component, face/layer, bolt ID, demand, resistance, units, method, status and source/proof are visible."
+    },
+    {
+      "id": "T43-079",
+      "title": "Never blank root",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Initial loading, HTTP/network errors, malformed response, invalid geometry and source-pending states keep a usable shell."
+    },
+    {
+      "id": "T43-080",
+      "title": "Race-safe switching",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Rapid support changes, sign reversals and delayed responses never attach an old result to a new profile."
+    },
+    {
+      "id": "T43-081",
+      "title": "Scene evidence",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "X-ray and multiple views expose far wall/solid shank/inside-web hardware with actual surfaces and support axes."
+    },
+    {
+      "id": "T43-082",
+      "title": "Owner browser review",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Codex starts/reuses dev servers, opens local browser and leaves reviewed app running for owner acceptance."
+    },
+    {
+      "id": "T43-083",
+      "title": "Historical UI regression",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Stage 4.2 sidebar/failure corrections and all earlier selectors remain unchanged."
+    },
+    {
+      "id": "T43-084",
+      "title": "Public API rejection",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Unsupported profiles/actions/316SS provider requests reject explicitly; no silent default fallback."
+    },
+    {
+      "id": "T43-085",
+      "title": "Ten freeze tags",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "All existing freeze objects/peeled targets preserved, including Stage 4.2."
+    },
+    {
+      "id": "T43-086",
+      "title": "Shallow historical tests",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Historical expected identities resolve pinned objects or approved manifests, never current successor HEAD trees."
+    },
+    {
+      "id": "T43-087",
+      "title": "Repository hygiene",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "No source PDFs, dependency/lock/workflow modifications, secret artifacts, historical golden changes or new tags."
+    },
+    {
+      "id": "T43-088",
+      "title": "Full integration QA",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Complete configured backend/frontend QA, coverage, static/build checks, audits and isolated verification before push."
+    },
+    {
+      "id": "T43-089",
+      "title": "CI sequencing",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Normal verified commit push precedes new hosted CI; four jobs must be observed, not inferred."
+    },
+    {
+      "id": "T43-090",
+      "title": "No automatic freeze",
+      "oracle_kind": "CONTRACT",
+      "required_assertion": "Owner visual/result acceptance remains pending after hosted green; Stage 4.4 and 316SS unstarted."
+    }
+  ],
+  "counts": {
+    "support_configurations": 5,
+    "load_cases": 8,
+    "unit_systems": 2,
+    "minimum_profile_load_unit_cases": 80,
+    "independent_fixtures": 6,
+    "acceptance_checks": 90
+  }
+}

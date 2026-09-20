@@ -1,0 +1,339 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "test_only_adjusted_property_fixture": {
+    "t_in": "0.5",
+    "a_in": "24",
+    "b_in": "12",
+    "Ae_in2_per_in": "0.5",
+    "F_tL_ksi": "30",
+    "F_tT_ksi": "10",
+    "F_cL_ksi": "25",
+    "F_cT_ksi": "12",
+    "F_vLT_ksi": "8",
+    "E_L_ksi": "2500",
+    "E_T_ksi": "1200",
+    "G_LT_ksi": "500",
+    "nu_LT": "0.3",
+    "lambda": "1"
+  },
+  "benchmarks": [
+    {
+      "id": "G1_LONGITUDINAL_TENSION_NOMINAL",
+      "expected": {
+        "kip_per_in": "10.50",
+        "method": "ASCE74_EQ_7_12_LONGITUDINAL_PLATE_TENSION"
+      }
+    },
+    {
+      "id": "G2_LONGITUDINAL_TENSION_DESIGN",
+      "expected": {
+        "kip_per_in": "6.8250",
+        "phi": "0.65",
+        "lambda": "1"
+      }
+    },
+    {
+      "id": "G3_TRANSVERSE_TENSION_NOMINAL",
+      "expected": {
+        "kip_per_in": "4.250",
+        "method": "ASCE74_EQ_7_13_TRANSVERSE_PLATE_TENSION"
+      }
+    },
+    {
+      "id": "G4_TRANSVERSE_TENSION_DESIGN",
+      "expected": {
+        "kip_per_in": "2.76250",
+        "phi": "0.65"
+      }
+    },
+    {
+      "id": "G5_LONGITUDINAL_COMPRESSION_RUPTURE",
+      "expected": {
+        "kip_per_in": "12.5",
+        "method": "ASCE74_EQ_7_15_LONGITUDINAL_COMPRESSION_RUPTURE"
+      }
+    },
+    {
+      "id": "G6_TRANSVERSE_COMPRESSION_RUPTURE",
+      "expected": {
+        "kip_per_in": "6.0",
+        "method": "ASCE74_EQ_7_16_TRANSVERSE_COMPRESSION_RUPTURE"
+      }
+    },
+    {
+      "id": "G7_LONGITUDINAL_BUCKLING_STRESS",
+      "expected": {
+        "ksi": "8.83024255172850024200170156575662986972001339994848039924152",
+        "k_cr": "1.0"
+      }
+    },
+    {
+      "id": "G8_LONGITUDINAL_BUCKLING_NOMINAL",
+      "expected": {
+        "kip_per_in": "4.41512127586425012100085078287831493486000669997424019962076"
+      }
+    },
+    {
+      "id": "G9_LONGITUDINAL_COMPRESSION_GOVERNING",
+      "expected": {
+        "mode": "ORTHOTROPIC_PLATE_BUCKLING",
+        "nominal_kip_per_in": "4.41512127586425012100085078287831493486000669997424019962076"
+      }
+    },
+    {
+      "id": "G10_LONGITUDINAL_COMPRESSION_DESIGN",
+      "expected": {
+        "kip_per_in": "3.09058489310497508470059554801482045440200468998196813973453",
+        "phi": "0.70"
+      }
+    },
+    {
+      "id": "G11_TRANSVERSE_COMPRESSION_DESIGN_REFERENCE",
+      "expected": {
+        "material_rupture_design_kip_per_in": "4.200",
+        "complete_stability": "REQUIRES_SECTION_2_3_2"
+      }
+    },
+    {
+      "id": "G12_COMBINED_COMPRESSION_XI_VALID",
+      "input": {
+        "xi_LT": "0.5"
+      },
+      "expected": {
+        "applicable": true
+      }
+    },
+    {
+      "id": "G13_COMBINED_COMPRESSION_BUCKLING_STRESS",
+      "expected": {
+        "ksi": "3.87673263150428365887379095264232499021653557445873069310072"
+      }
+    },
+    {
+      "id": "G14_COMBINED_COMPRESSION_BUCKLING_NOMINAL",
+      "expected": {
+        "kip_per_in": "1.93836631575214182943689547632116249510826778722936534655036"
+      }
+    },
+    {
+      "id": "G15_COMBINED_COMPRESSION_BUCKLING_DESIGN_REFERENCE",
+      "expected": {
+        "kip_per_in": "1.35685642102649928060582683342481374657578745106055574258525",
+        "phi": "0.70"
+      }
+    },
+    {
+      "id": "G16_COMBINED_COMPRESSION_XI_LOW_REJECT",
+      "input": {
+        "xi_LT": "0.29"
+      },
+      "expected": {
+        "status": "REQUIRES_SECTION_2_3_2"
+      }
+    },
+    {
+      "id": "G17_COMBINED_COMPRESSION_XI_HIGH_REJECT",
+      "input": {
+        "xi_LT": "1.01"
+      },
+      "expected": {
+        "status": "REQUIRES_SECTION_2_3_2"
+      }
+    },
+    {
+      "id": "G18_SHEAR_ETA_LE1",
+      "expected": {
+        "eta_LT": "0.785196366097891039732442341482662139680738381727372551385298",
+        "branch": "0_LT_ETA_LE_1"
+      }
+    },
+    {
+      "id": "G19_SHEAR_BUCKLING_STRESS_LE1",
+      "expected": {
+        "ksi": "10.0989007942906052338660699950449888538294409035305580120792"
+      }
+    },
+    {
+      "id": "G20_SHEAR_BUCKLING_NOMINAL",
+      "expected": {
+        "kip_per_in": "5.04945039714530261693303499752249442691472045176527900603960"
+      }
+    },
+    {
+      "id": "G21_SHEAR_RUPTURE_NOMINAL",
+      "expected": {
+        "kip_per_in": "4.0"
+      }
+    },
+    {
+      "id": "G22_SHEAR_GOVERNING",
+      "expected": {
+        "mode": "MATERIAL_RUPTURE",
+        "nominal_kip_per_in": "4.0"
+      }
+    },
+    {
+      "id": "G23_SHEAR_DESIGN",
+      "expected": {
+        "kip_per_in": "2.800",
+        "phi": "0.70"
+      }
+    },
+    {
+      "id": "G24_SHEAR_ETA_GT1",
+      "input": {
+        "G_LT_ksi": "1000"
+      },
+      "expected": {
+        "eta_LT": "1.36254663528751680424159112198461959532834013299749942740390",
+        "branch": "ETA_GT_1"
+      }
+    },
+    {
+      "id": "G25_SHEAR_BUCKLING_STRESS_GT1",
+      "input": {
+        "G_LT_ksi": "1000"
+      },
+      "expected": {
+        "ksi": "12.1339668708477341328176138381088695405829988347944168747123"
+      }
+    },
+    {
+      "id": "G26_KCR_LOCKED",
+      "expected": {
+        "k_cr": "1.0",
+        "user_override_allowed": false
+      }
+    },
+    {
+      "id": "G27_TIME_EFFECT_APPLIED_ONCE",
+      "input": {
+        "lambda": "0.8"
+      },
+      "expected": {
+        "design_equals_lambda_times_phi_times_nominal": true
+      }
+    },
+    {
+      "id": "G28_PROPERTY_ADJUSTMENT_NOT_DUPLICATED",
+      "expected": {
+        "engine_consumes_adjusted_properties": true,
+        "section_2_4_recomputed": false
+      }
+    },
+    {
+      "id": "G29_NARROW_PLATE_CAUTION",
+      "input": {
+        "t_in": "0.5",
+        "b_in": "8"
+      },
+      "expected": {
+        "b_over_t": "16",
+        "warning": "C7_6_3_NARROW_PLATE_VALIDATION_CAUTION",
+        "FcrL_ksi": "19.8680457413891255445038285229524172068700301498840808982934"
+      }
+    },
+    {
+      "id": "G30_SHORT_PLATE_COMPRESSION_ADVISORY",
+      "input": {
+        "a_in": "24",
+        "b_in": "12"
+      },
+      "expected": {
+        "a_over_b": "2",
+        "warning": "C7_6_3_SHORT_PLATE_CONSERVATIVE_APPROXIMATION"
+      }
+    },
+    {
+      "id": "G31_SHORT_PLATE_SHEAR_ADVISORY",
+      "input": {
+        "a_in": "6",
+        "b_in": "12"
+      },
+      "expected": {
+        "warning": "C7_7_3_LONG_PLATE_EQUATION_CONSERVATIVE_FOR_A_LT_B",
+        "normative_equation_unchanged": true
+      }
+    },
+    {
+      "id": "G32_INVALID_ZERO_THICKNESS",
+      "input": {
+        "t_in": "0"
+      },
+      "expected": {
+        "status": "REJECTED"
+      }
+    },
+    {
+      "id": "G33_INVALID_ZERO_TRANSVERSE_SPAN",
+      "input": {
+        "b_in": "0"
+      },
+      "expected": {
+        "status": "REJECTED"
+      }
+    },
+    {
+      "id": "G34_INVALID_NONPOSITIVE_MODULUS",
+      "input": {
+        "E_L_ksi": "0"
+      },
+      "expected": {
+        "status": "REJECTED"
+      }
+    },
+    {
+      "id": "G35_INVALID_TIME_FACTOR",
+      "input": {
+        "lambda": "0"
+      },
+      "expected": {
+        "status": "REJECTED"
+      }
+    },
+    {
+      "id": "G36_US_SI_EQUIVALENCE",
+      "expected": {
+        "nominal_strength_equal": true,
+        "design_strength_equal": true,
+        "buckling_stress_equal": true,
+        "governing_mode_equal": true,
+        "fingerprint_equal": true
+      }
+    },
+    {
+      "id": "G37_DETERMINISTIC_FINGERPRINTS",
+      "expected": {
+        "equation_identity_included": true,
+        "property_provenance_included": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G38_STAGE_3_6A_REGRESSION",
+      "expected": {
+        "geometry_change": "NONE",
+        "demand_change": "NONE",
+        "local_result_change": "NONE",
+        "fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G39_STAGE_3_5_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G40_EARLIER_FREEZE_REGRESSIONS",
+      "expected": {
+        "stage_2_3": "NONE",
+        "stage_3_2": "NONE",
+        "stage_3_3": "NONE",
+        "stage_3_4": "NONE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R7_ANGLE_BOLT_PATH_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All engineering values are exact decimal strings.",
+  "angle": {
+    "leg_y": "6",
+    "leg_z": "6",
+    "thickness": "0.5",
+    "member_length": "8",
+    "unit": "in"
+  },
+  "benchmarks": [
+    {
+      "id": "R7_G1_LEG_Y_EXPOSED_OPPOSING_FACE",
+      "selected_surface": "LEG_Y_OUTER",
+      "outer_surface_point_local": {
+        "x": "2",
+        "y": "2",
+        "z": "0"
+      },
+      "expected": {
+        "valid": true,
+        "penetrated_thickness": "0.5",
+        "opposing_face_count": 1,
+        "opposing_surface_point_local": {
+          "x": "2",
+          "y": "2",
+          "z": "0.5"
+        }
+      }
+    },
+    {
+      "id": "R7_G2_LEG_Z_EXPOSED_OPPOSING_FACE",
+      "selected_surface": "LEG_Z_OUTER",
+      "outer_surface_point_local": {
+        "x": "2",
+        "y": "0",
+        "z": "2"
+      },
+      "expected": {
+        "valid": true,
+        "penetrated_thickness": "0.5",
+        "opposing_face_count": 1,
+        "opposing_surface_point_local": {
+          "x": "2",
+          "y": "0.5",
+          "z": "2"
+        }
+      }
+    },
+    {
+      "id": "R7_G3_HEEL_OVERLAP_NOT_EXPOSED",
+      "selected_surface": "LEG_Y_OUTER",
+      "outer_surface_point_local": {
+        "x": "2",
+        "y": "0.25",
+        "z": "0"
+      },
+      "expected": {
+        "valid": false,
+        "reason": "NO_FINITE_EXPOSED_OPPOSING_BROAD_FACE"
+      }
+    },
+    {
+      "id": "R7_G4_FREE_EDGE_OUTSIDE_INVALID",
+      "selected_surface": "LEG_Y_OUTER",
+      "outer_surface_point_local": {
+        "x": "2",
+        "y": "6.25",
+        "z": "0"
+      },
+      "expected": {
+        "valid": false,
+        "reason": "OUTSIDE_SELECTED_LEG_SURFACE"
+      }
+    },
+    {
+      "id": "R7_G5_ORIENTATION_PRESERVES_THICKNESS",
+      "selected_surface": "LEG_Y_OUTER",
+      "orientation_degrees": "90",
+      "expected": {
+        "penetrated_thickness": "0.5",
+        "opposing_face_count": 1,
+        "physical_surface_pair_preserved": true
+      }
+    }
+  ]
+}

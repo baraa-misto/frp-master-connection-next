@@ -1,0 +1,230 @@
+{
+  "schema": "frp-master-connection-stage-3.6-wi-web-splice-family-freeze-manifest-v1",
+  "schema_version": "1.0.0",
+  "stage": "3.6",
+  "freeze_name": "W/I Web-Splice Family Accepted Baseline",
+  "freeze_scope": "accepted-stage-3.6a-calculation-slice-4-stage-3.6b-rc2-wi-web-splice-family-governance-and-reproducibility",
+  "controlling_order": {
+    "name": "FRP_MASTER_CONNECTION_STAGE_3_6_WEB_SPLICE_FAMILY_FREEZE_CODEX_ORDER.md",
+    "sha256": "B3D43B7D492A4CD538029EEFD59CC0B86FF318C18B82842464E59E6B89AE8E69",
+    "final_sentinel": "END OF STAGE 3.6 W/I WEB-SPLICE FAMILY FREEZE ORDER — DO NOT PROCEED IF THIS LINE IS MISSING"
+  },
+  "accepted_product_baseline": {
+    "commit": "5f77abd0eeaf61718756e9962ae3a5a67d6db528",
+    "subject": "feat: complete web-splice resistance with rational body interaction",
+    "commit_count": 92,
+    "tracked_file_count": 571,
+    "branch": "main"
+  },
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "resolution": "the governance-only commit containing this manifest and targeted by stage-3.6-wi-web-splice-family-freeze",
+    "expected_commit_count": 93,
+    "expected_subject": "chore: freeze Stage 3.6 W/I web-splice family baseline",
+    "freeze_tag": "stage-3.6-wi-web-splice-family-freeze",
+    "tag_type": "annotated",
+    "tag_annotation": "Freeze accepted Stage 3.6 W/I Web-Splice Family baseline"
+  },
+  "repository_identities": {
+    "accepted_backend_tree": "43d0a0dedd9f46ee179329037f811fb0196bd8ee",
+    "accepted_frontend_tree": "f10468b8efb111702fd72cc816595510963f8b22",
+    "accepted_backend_src_tree": "f75a72280ed8a2ea23cc67de376f5f4474b003a8",
+    "accepted_frontend_src_tree": "35d39175e9d781dd723e4900f516c8f00e3ced3d",
+    "accepted_workflow_tree": "20edd491455e6329c4565bc72cd7b88e29d3f7b1",
+    "accepted_engineering_tree": "1544f3841c1c0e0e903f992032a3a392f7e05da5",
+    "accepted_golden_tree": "a6ba22d044d2d7821078888569c6c312211428cf",
+    "accepted_backend_requirements_tree": "d8e1a9f1c2c89a4e50a181db1997c52b3c9bdf58",
+    "backend_pyproject": {
+      "path": "backend/pyproject.toml",
+      "git_blob": "9caa35e74d01bb040369b72fe19294ba6072a786",
+      "sha256": "39BEA635FCE709607E1A4AE11D8B31829DFD07B4CADE332E030486BE1456A116"
+    },
+    "frontend_package_json": {
+      "path": "frontend/package.json",
+      "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    },
+    "frontend_package_lock": {
+      "path": "frontend/package-lock.json",
+      "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+      "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+    }
+  },
+  "existing_immutable_freezes": [
+    {"stage": "2.3", "tag": "stage-2.3-interface-geometry-freeze", "tag_type": "annotated", "tag_object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd", "peeled_target": "5bc545ab8251f9bd49dedc776962937ed5e822a2"},
+    {"stage": "3.2", "tag": "stage-3.2-tee-connection-freeze", "tag_type": "annotated", "tag_object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0", "peeled_target": "d16b354732c90bf3bf7847c62be652c230a9f91e"},
+    {"stage": "3.3", "tag": "stage-3.3-clip-angle-family-freeze", "tag_type": "annotated", "tag_object": "c22433084106a4da3006b610cc90429aba1660ce", "peeled_target": "a4d21506d45d2d21d3f5039b662ea56ec6c5da9f"},
+    {"stage": "3.4", "tag": "stage-3.4-multi-member-tee-family-freeze", "tag_type": "annotated", "tag_object": "282724c1fe2fbbeea9f742921aba5996028fd60b", "peeled_target": "2303ec713d6d038b935e076b909c3b639ced0e09"},
+    {"stage": "3.5", "tag": "stage-3.5-concrete-support-shear-family-freeze", "tag_type": "annotated", "tag_object": "7d9eaa40aa43f29e52fbae78b40057b31eaa8af8", "peeled_target": "7bb83e5c8814781419c0789b7428bd46572d514c"}
+  ],
+  "acceptance_chain": [
+    {"stage": "3.6A", "commit": "80df7524417c752ab3c0f6194348e72aff40767a", "subject": "feat: add symmetric double web splice connection"},
+    {"stage": "Calculation Slice 4", "commit": "a93aa5d127a51dc81a6c7cd108af15c44d59ff9f", "subject": "feat: add Chapter 7 plate strength engine"},
+    {"stage": "3.6B RC2", "commit": "5f77abd0eeaf61718756e9962ae3a5a67d6db528", "subject": "feat: complete web-splice resistance with rational body interaction"}
+  ],
+  "ci_evidence": {
+    "provider": "GitHub Actions",
+    "stage_3_6a": {"run_number": 85, "attempt": 2, "status": "accepted", "jobs_green": 4, "jobs_total": 4, "note": "The first Windows frontend timeout was transient; no repository correction was required."},
+    "calculation_slice_4": {"run_number": 86, "status": "accepted", "duration": "approximately 4m 48s", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_6b_rc2": {"run_number": 87, "status": "accepted", "duration": "approximately 4m 30s", "jobs_green": 4, "jobs_total": 4}
+  },
+  "accepted_owner_evidence": {
+    "status": "accepted",
+    "authority": "direct owner acceptance in the controlling Codex task",
+    "acceptance_date": "2026-08-30",
+    "stage_3_6a": ["two identical collinear W/I beams", "positive beam-end gap", "two mirrored FRP web splice plates", "two distinct mirrored Plate/Web/Plate bolt groups", "equal-and-opposite interface actions and exact group-centroid moments", "signed axial/major/minor action behavior and material axes", "no flange splice or single plate"],
+    "stage_3_6b_rc2": ["unchanged Stage 3.6A geometry", "calculated splice-plate body interaction", "rational linear method, clear body, critical sections, fibers, Slice 4 provenance, U_n, U_v, and U_R", "rational success and supported-failure precedence", "engineering review, Section 2.3.2 qualification, and deterministic disclaimer", "physical two-plane common-bolt records using actual demand", "F593 source-pending behavior", "distinct Beam A and Beam B group records", "Minor response not evaluated and no user flexural-moment claim"]
+  },
+  "historical_api_contracts": ["3.6A-RC1"],
+  "current_api_contracts": ["3.6B-RC2"],
+  "frozen_product": {
+    "family": "Beam connection — Symmetric double web splice plates",
+    "member_scope": ["Beam A = FRP W/I", "Beam B = identical FRP W/I", "collinear member axes"],
+    "topology": ["positive beam-end gap", "two mirrored FRP flat web splice plates", "two distinct mirrored Plate/Web/Plate physical bolt groups"],
+    "actions": ["signed axial force", "signed major shear", "signed minor shear", "zero user-applied moment"],
+    "channel_exclusion": "CHANNEL_WEB_SPLICE = NOT_IN_STAGE_3_6_FROZEN_SCOPE",
+    "channel_reason": "A Channel member centroid/reference axis is generally offset from its web plane; a future successor requires explicit reference-axis/web-splice eccentricity and transfer-moment authority."
+  },
+  "frozen_stage_3_6a_contract": {
+    "frame": "right-handed backend L_S/V_S/T_S frame",
+    "geometry_authority": "backend-authored finite W/I beams, end planes, gap, plates, holes, paths, physical groups, material regions, and visualization",
+    "action_authority": "exact equal-and-opposite Beam A/Beam B transfer actions with complete group-centroid moment shifts",
+    "demand_allocation": ["each beam web receives 100 percent of its interface demand", "the plate pair receives 100 percent of system demand", "each plate receives 50 percent only after exact symmetry proof"],
+    "material_and_failure_paths": ["actual per-layer material LW/CW/TT directions", "Beam B reversed failure paths resolved independently", "two independent Stage 2.5A group-demand results"]
+  },
+  "calculation_slice_4_authority": {
+    "engine": "calculation-slice-4-rc1",
+    "scope": ["plate tension", "longitudinal compression rupture and buckling", "bounded combined-compression buckling", "in-plane shear rupture and buckling"],
+    "input_boundary": "caller supplies already-adjusted properties; Section 2.4 adjustments are not duplicated",
+    "applicability": "pure transverse compression stability and out-of-range combined compression fail closed to Section 2.3.2",
+    "identity": "exact Decimal U.S./SI equivalence, factor/provenance traces, advisories, and fingerprints"
+  },
+  "rational_body_method": {
+    "method_id": "RATIONAL_LINEAR_ORTHOTROPIC_SPLICE_PLATE_BODY_INTERACTION_RC1",
+    "panel_id": "RATIONAL_SIMPLY_SUPPORTED_CLEAR_BODY_PANEL_RC1",
+    "clear_body": "finite unperforated plate body between the joint-side boundaries of the inner physical holes",
+    "critical_sections": ["SECTION_A_CLEAR_BOUNDARY", "SECTION_JOINT", "SECTION_B_CLEAR_BOUNDARY"],
+    "actions": "exact axial, in-plane shear, and eccentric body moment with top/bottom fiber normal stress",
+    "interaction": "U_R = U_n + U_v",
+    "qualification": "FRP_SPLICE_PLATE_CONNECTION_ELEMENT_QUALIFICATION=REQUIRED_2_3_2",
+    "review_required": true,
+    "disclaimer_id": "WEB_SPLICE_RATIONAL_BODY_INTERACTION_DISCLAIMER_RC1",
+    "disclaimer_meaning": "The FRP web-splice plate inter-group body under combined longitudinal normal force and in-plane shear is evaluated using a project-specific conservative linear interaction of separately derived ASCE/SEI 74-23 Chapter 7 pure-mode plate design resistances. The interaction equation and the selected clear-body panel boundary idealization are rational engineering methods and are not prescribed directly by ASCE/SEI 74-23. The engineer of record shall review the assumptions, actual restraint/buckling boundary conditions, Calculation Slice 4 advisories, and Section 2.3.2 connection-element qualification requirements."
+  },
+  "physical_double_shear_contract": {
+    "topology": "proved Plate/Web/Plate path with exactly two physical shear planes",
+    "demand": "actual Stage 2.5A per-bolt in-plane vector; each plane receives one half only after topology proof",
+    "strength": "per-plane phi F_nv A_b and physical two-plane sum using existing source/thread authority",
+    "fastener_source_boundary": "ASTM F593 remains SOURCE_DATA_PENDING unless explicit verified/custom strength authority supplies F_nv; no generic F593 strength is inferred"
+  },
+  "deliberate_limitations": [
+    "WEB_SPLICE_MINOR_SHEAR_BOLT_AXIS_RESPONSE=NOT_EVALUATED",
+    "No bolt-tension distribution, pull-through, prying, or automatic combined bolt tension/shear is authorized for Minor shear.",
+    "WEB_SPLICE_MEMBER_FLEXURAL_MOMENT_TRANSFER=NOT_AUTHORIZED_IN_RC1",
+    "Flange splice, single-sided web splice, slip-critical behavior, unequal beams, and non-W/I expansion are outside the frozen scope.",
+    "ASTM F593 nominal shear strength remains source pending unless existing explicit verified/custom authority supplies it.",
+    "No unqualified prescriptive PASS is allowed."
+  ],
+  "result_precedence": [
+    "invalid geometry or request -> invalid/rejected",
+    "supported local FRP, physical double-shear, or rational body numerical failure -> FAIL",
+    "required unavailable, source-pending, or Minor response -> NOT_EVALUATED",
+    "all required supported in-plane checks pass with rational review/qualification only -> PASS_WITH_RATIONAL_METHOD_REVIEW_REQUIRED",
+    "ordinary unqualified PASS is prohibited"
+  ],
+  "preview_and_design": ["preview performs validation, geometry, demand, applicability, provenance, and visualization with zero resistance-engine calls", "Run Design Check remains explicit", "engineering edits stale prior design", "presentation-only changes do not stale design or call APIs"],
+  "visualization_and_request_state": ["backend-authoritative W/I beams, plates, paths, groups, actions, material axes, clear-body and result panels", "persistent current/invalid/last-valid/request-failure state", "no blank workspace or guessed frontend geometry", "signed action arrows and existing viewport navigation remain unchanged"],
+  "controlled_stage_3_6_repository_artifacts": [
+    {"path": "docs/governance/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_SELECTION_DECISION.md", "sha256": "0A1E2AEC21C9946B3FAC4A2803FDA43BAE39C85273E77199C0D40DEE0F0CFBB7"},
+    {"path": "docs/engineering/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "0483595B4C8A6BCB844A0A9894E49673F220332F6A64E5D893D3D86DAD05084B"},
+    {"path": "backend/tests/golden/stage_3_6a_symmetric_double_web_splice_golden_benchmarks_rc1.json", "sha256": "D3CF8E452732E1DA187FF2BFCB2AB9CFF7BD30044945552230E3A23518476EDB"},
+    {"path": "docs/qa/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_AUTHORITY_LEDGER_RC1.md", "sha256": "DDFB0FE514123A8D6B0E879759EE89FB7617551640F1CB8CD9347CBEEBDEAD0F"},
+    {"path": "docs/governance/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_DECISION.md", "sha256": "C1FF10672CC98A832932DCBD010DCF280F0D866123280AC68565767F14093E28"},
+    {"path": "docs/engineering/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "32F1A51AC6C82701C2C9E61F08AEC1E804D500D5507BC930A6677B40CD93C541"},
+    {"path": "backend/tests/golden/calculation_slice_4_chapter_7_plate_strength_engine_golden_benchmarks_rc1.json", "sha256": "E6F00A1421751386980321A5AA046A13C706D9D32E42AAC6242F0D89525AC4CD"},
+    {"path": "docs/qa/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_AUTHORITY_LEDGER_RC1.md", "sha256": "7E515FABD6AC3118528F3404CE06456748776054627499EE06C6A0907A782971"},
+    {"path": "docs/governance/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_DECISION.md", "sha256": "1F4151F9FAB0359B5B455D11265A46C68CBE8C305A7A874628593989871CC716"},
+    {"path": "docs/engineering/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "F42A7D0F29C9DB19FB9BEACAE5C6029833E5B17F4FAC7C58E533F46E37D9F864"},
+    {"path": "backend/tests/golden/stage_3_6b_web_splice_resistance_authority_expansion_golden_benchmarks_rc2.json", "sha256": "6A80263CF0A1632F009DC9952665197F4581B31018C2C98D076E36264FA94908"},
+    {"path": "docs/qa/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_AUTHORITY_LEDGER_RC2.md", "sha256": "C3DE28C17FB09181C49F7917DA11A89FE6633E35A59A05CB824C981BA3B7D7B4"}
+  ],
+  "external_control_orders": [
+    {"revision": "Stage 3.6A", "sha256": "439AC078467896488B114116385693C3B358848820941C446226AA4834B2520F"},
+    {"revision": "Calculation Slice 4", "sha256": "B8D74C87C3CCACEC886C5723395EC2D43FEF5197BA6ED34C39FBDBBCFB801D0F"},
+    {"revision": "Stage 3.6B RC2", "sha256": "AF801B95EBDE251D4436AFF95027FA7FBD26B35DD077FB095E7B46CE9D989471"},
+    {"revision": "Stage 3.6 Freeze", "sha256": "B3D43B7D492A4CD538029EEFD59CC0B86FF318C18B82842464E59E6B89AE8E69"}
+  ],
+  "inherited_authorities": [
+    {"path": "backend/tests/calculation/test_stage_3_5_freeze_manifest.py", "sha256": "1E2AFE6DC30F0E53E960C13FAC445A18DC62F15986E946D26A8D2E3AD8E753B5"},
+    {"path": "docs/governance/STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE_MANIFEST.json", "sha256": "671DF6992BC35AFED3C7CE9CB0230F7778C74CE8E7F412C16A9467F080AB7258"},
+    {"path": "docs/qa/STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE.md", "sha256": "73A10DC77B8B0454B619CA80F94276647EA35038B3D60FBBCE4E555554F87597"},
+    {"path": "backend/tests/calculation/test_stage_3_4_freeze_manifest.py", "sha256": "B839AB8568FEAECE5A529B96CDA1D01943A4BF559C1684F0741CDEDF9C42AC29"},
+    {"path": "docs/governance/STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_MANIFEST.json", "sha256": "EE4BADFE145B9FA5815D547C079A371C8C907613CB7253E4A12F922CBF9833DD"},
+    {"path": "backend/tests/calculation/test_stage_3_3_freeze_manifest.py", "sha256": "DEA71CAD4B3DCCCCEAC9EF7588B11D83EB2D9F7783A9D0F5CE7FC8079611BF17"},
+    {"path": "docs/governance/STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_MANIFEST.json", "sha256": "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4"},
+    {"path": "backend/tests/calculation/test_stage_3_2_freeze_manifest.py", "sha256": "96FDC565AE064337EA4B11D20F18D047D1C79DF6B4781F3CCEA7D5A0A62EF10E"},
+    {"path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json", "sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E"},
+    {"path": "docs/governance/STAGE_2_3_INTERFACE_GEOMETRY_FREEZE.md", "sha256": "5901DCC3F7FB05932A9841BA4D1FF63FF7A147BE871E67D89D4B46229641D9AB"},
+    {"path": "docs/engineering/CALCULATION_SLICE_1_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "DA47468DCEE41462A19461BC102670A8DFB125195E7AA815CAB222A035317B71"},
+    {"path": "backend/tests/golden/calculation_slice_1_rc2.json", "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "44431A8921CF1ADF9C7D0F7F022C9615265308A41BE589B1EE5150A7D7886F99"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc1.json", "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc2.json", "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"},
+    {"path": "docs/qa/CALCULATION_SLICE_2_RC2_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "F2E0A253C75503C3F8FA29E5E78A4A8E4DF98204A43CAF4B07000EC65183A7A4"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470"},
+    {"path": "backend/tests/golden/calculation_slice_3_rc1.json", "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "CA091B0B6054F82980E5A9AD8D923080F9DFD2FB4CEDA08E80E3122C1B28477A"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F"},
+    {"path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json", "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "3E85C61AD10865B5293165DF5847B63E96F80D19361E194A180B40EFB403ED27"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "CBC11F8793F7B85873DB5C52D7A90536DD20CB87005895EAF3B43D319AB1B5D6"},
+    {"path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json", "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "477D8F19C50B39ED10EEFE95A3C93F73897147BB456CF412350960C9C3D24E10"},
+    {"path": "docs/engineering/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "117F4C69229045FEAF5C2461FE3FD2639B7E4A869B3B650947E99DE754B36E7F"},
+    {"path": "docs/qa/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_AUTHORITY_LEDGER_RC1.md", "sha256": "33EDC91FF28FC7C53FF9EBE3331EF7D8A47AD4CFD4177A33FCDDB34BF302A9E8"},
+    {"path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md", "sha256": "DB3DFA722AA08B44AD95F8D789178699CA8E9BEE5FADB99306867C69E9B8A74C"},
+    {"path": "backend/tests/golden/stage_3_2_r14b_region_specific_material_basis_golden_benchmarks_rc1.json", "sha256": "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236"},
+    {"path": "docs/qa/STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_AUTHORITY_LEDGER_RC1.md", "sha256": "0FFF79C4B6BFDB0C6DED1F2F551CE421D7E2E684BD75B6B84A0EC3154B87EC05"},
+    {"path": "docs/qa/STAGE_3_2_R14B_FINGERPRINT_TRANSITIONS.md", "sha256": "6C6B2FAFD1D885C7A3C5867B3C8721EC098BC8B1FA9BA41C93E3485E483209FE"},
+    {"path": "docs/engineering/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "0A73AC9910E506E9E721A98EBEE39A072C096364513C62C63B736E4642591957"},
+    {"path": "backend/tests/golden/stage_3_3c1_shared_rectangular_section_full_through_bolt_golden_benchmarks_rc1.json", "sha256": "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5"},
+    {"path": "docs/qa/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_AUTHORITY_LEDGER_RC1.md", "sha256": "21009D185C999CBDD08EBC70C2A9CE38C2AF4A221C60C4799D3E91230797946C"},
+    {"path": "backend/tests/test_stage_3_6a_web_splice.py", "sha256": "BDD77A1CDF39F24FB0424EE79F3036B4FD19E6C17A644C72891EB92A925DB52F"},
+    {"path": "backend/tests/calculation/test_plate_strength.py", "sha256": "A4869BEBECB95F3C99CA5C458B722DA09D92A0B8D45FEC75AE8A505C1B1C4A0C"},
+    {"path": "backend/tests/test_stage_3_6b_rc2_web_splice.py", "sha256": "AD95FFDE73C148710B75C097656725F993A227CA9B8371AB0FD097DD92D687A4"}
+  ],
+  "benchmark_identities": {
+    "stage_3_6a": {"count": 43, "first": "G1_DEFAULT_BEAM_GEOMETRY", "last": "G43_EARLIER_FROZEN_REGRESSION"},
+    "calculation_slice_4": {"count": 40, "first": "G1_LONGITUDINAL_TENSION_NOMINAL", "last": "G40_EARLIER_FREEZE_REGRESSIONS"},
+    "stage_3_6b_rc2": {"count": 50, "first": "G1_HISTORICAL_3_6A_EXACT", "last": "G50_EARLIER_FROZEN_REGRESSIONS"}
+  },
+  "engineering_fingerprints": {
+    "3.6A-RC1": {"canonical_input": "f2e8b090435e716f952ab6d9dee2a32922f95f9ebd5db854a781724d6a936f88", "connector_geometry": "7ffab47c7069981b876500a013ff01a2ac3decb56e99fa3233d24c5f5002b09c", "engineering": "f2e8b090435e716f952ab6d9dee2a32922f95f9ebd5db854a781724d6a936f88", "application": "cc7b920831ddff015aaefe4bd7f882bc3528b61bcf6c977b77a1a1d94944be93"},
+    "3.6B-RC2": {"canonical_input": "020e33b3aea740177196cf1b06d16f13e939817047002a5451efb05253b4794b", "connector_geometry": "7ffab47c7069981b876500a013ff01a2ac3decb56e99fa3233d24c5f5002b09c", "engineering": "020e33b3aea740177196cf1b06d16f13e939817047002a5451efb05253b4794b", "application": "a505b2613bcaeb1377417f054432d101b88504be189d7cc43178e11fbaf0015d", "clear_body_plan": "f3126484605c1b6c3d16c221191d782dcf5df01891534183b75c241dd6c78bf9", "default_design_result": "fa966c62efe2ffd0e257215eeec8c2bf49e5bb59803ab5e2d06acaa37a7d2e0a", "default_body_result": "cb81228bc254a3412586627bc6f04c7b01510bfccec651136f8f72ed2fc509ff"}
+  },
+  "no_production_change_declaration": {
+    "backend_src_changed": false,
+    "frontend_src_changed": false,
+    "calculation_method_changed": false,
+    "controlled_engineering_artifact_changed": false,
+    "dependency_changed": false,
+    "workflow_changed": false,
+    "existing_freeze_tag_changed": false,
+    "channel_support_started": false,
+    "later_stage_started": false
+  },
+  "successor_policy": [
+    "Any later frozen Stage 3.6 behavior change requires a separate controlling successor order and exact impact analysis.",
+    "Channel support additionally requires explicit member-reference/web-splice eccentricity and transfer-moment authority.",
+    "Every successor requires frozen Stage 3.6 regression evidence and an explicit fingerprint transition only when engineering meaning changes.",
+    "The historical Stage 3.6 manifest and stage-3.6-wi-web-splice-family-freeze tag remain immutable and reproducible.",
+    "Successor freeze audits resolve by historical tag, explicit historical object, or manifest_only and never substitute successor HEAD.",
+    "No Channel, flange-splice, single-sided splice, or later connection-family implementation is authorized by this freeze."
+  ],
+  "next_planned_successor": {
+    "name": "Channel web-splice support",
+    "status": "future-successor-only-not-begun",
+    "design_authority_created": false,
+    "required_authority": "explicit Channel centroid/member-reference to web-splice eccentricity and transfer moments"
+  }
+}

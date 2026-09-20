@@ -1,0 +1,569 @@
+{
+  "schema_version": "frp-master-connection-dctn2-golden-rc1",
+  "document_status": "approved DCTN-2 local-connection implementation authority after owner method closure",
+  "baseline": {
+    "commit": "28b1273bc85ef71f468a18a7b97b69c27867df66",
+    "count": 135,
+    "existing_freeze_tags": 18
+  },
+  "source_identity": {
+    "DCTN_1_AUDIT_sha256": "D4B0184869D110198DFA74AB055A0DBF7B338A32B420B744224143AE9400CFB8",
+    "DCTN_1_EVIDENCE_sha256": "C2490C0B95C5B6FEB81192A892D8FDAE91CFBDBCC064998A70364ADD7970A278",
+    "ASCE_SEI_74_23_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+    "ERRATUM_1_sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550"
+  },
+  "owner_eor_approval": {
+    "date": "2026-09-13",
+    "exact_text": "Approved: DCTN-2 RC1 shall use axial-only truss member actions; exact 50/50 channel sharing only under complete mid-plane symmetry; ASCE FRP/FRP one-to-three-row distributions with one bolt per row; the ASCE closed-section 0.50 characteristic pin-bearing reduction for the unfilled RHS full-through detail without a separate bolt-flexure equation; trusted-source-only full-depth SRS bearing; mirrored W/I single-lap sides with the ASCE 0.60 single-lap strength adjustment; independent hardware authority with no automatic double-shear multiplier; and fail-closed unsupported shared-chord cross-group paths."
+  },
+  "route": {
+    "id": "double-channel-truss-node",
+    "ui_label": "Double-Channel Truss Node",
+    "category": "SHEAR",
+    "connector_body_count": 0
+  },
+  "arrangements": [
+    "VERTICAL_ONLY",
+    "ONE_INCLINED",
+    "TWO_INCLINED",
+    "VERTICAL_ONE_INCLINED",
+    "VERTICAL_TWO_INCLINED"
+  ],
+  "forms": [
+    "RHS",
+    "SOLID_RECTANGLE",
+    "W_I"
+  ],
+  "action_sign": {
+    "positive_axial": "TENSION",
+    "negative_axial": "COMPRESSION"
+  },
+  "row_distribution": {
+    "1": [
+      "1"
+    ],
+    "2": [
+      "0.5",
+      "0.5"
+    ],
+    "3": [
+      "0.4",
+      "0.2",
+      "0.4"
+    ]
+  },
+  "method_factors": {
+    "channel_share": "0.5",
+    "rhs_closed_section_characteristic_pin_bearing": "0.50",
+    "wi_single_lap_applicable_frp_strength": "0.60"
+  },
+  "startup_candidate": {
+    "arrangement": "VERTICAL_ONLY",
+    "chord": {
+      "form": "CHANNEL",
+      "member_length_in": "72",
+      "depth_in": "12",
+      "flange_width_in": "3",
+      "web_thickness_in": "0.375",
+      "flange_thickness_in": "0.375"
+    },
+    "incoming": {
+      "slot": "V",
+      "form": "RHS",
+      "member_length_in": "24",
+      "gap_depth_in": "6",
+      "in_plane_width_in": "4",
+      "wall_thickness_in": "0.375",
+      "start_in": [
+        "0",
+        "-5",
+        "0"
+      ],
+      "direction": [
+        "0",
+        "1",
+        "0"
+      ]
+    },
+    "bolt": {
+      "nominal_diameter_in": "0.5",
+      "hole_diameter_in": "0.563",
+      "rows": 2,
+      "bolts_across_each_row": 1,
+      "pitch_in": "2",
+      "first_row_from_start_in": "2"
+    },
+    "axial_force_kip": "1"
+  },
+  "positive_cases": [
+    {
+      "id": "P01_RHS_ONE_ROW_TENSION",
+      "expected": {
+        "member_rows_kip": [
+          "10"
+        ],
+        "channel_neg_rows_kip": [
+          "5"
+        ],
+        "channel_pos_rows_kip": [
+          "5"
+        ],
+        "rhs_near_wall_rows_kip": [
+          "5"
+        ],
+        "rhs_far_wall_rows_kip": [
+          "5"
+        ],
+        "physical_bolts": 1
+      }
+    },
+    {
+      "id": "P02_RHS_ONE_ROW_COMPRESSION",
+      "expected": {
+        "member_rows_kip": [
+          "-10"
+        ],
+        "channel_neg_rows_kip": [
+          "-5"
+        ],
+        "channel_pos_rows_kip": [
+          "-5"
+        ],
+        "physical_bolts": 1
+      }
+    },
+    {
+      "id": "P03_RHS_TWO_ROW_DISTRIBUTION",
+      "expected": {
+        "member_rows_kip": [
+          "10",
+          "10"
+        ],
+        "channel_each_rows_kip": [
+          "5",
+          "5"
+        ],
+        "physical_bolts": 2
+      }
+    },
+    {
+      "id": "P04_RHS_THREE_ROW_DISTRIBUTION",
+      "expected": {
+        "member_rows_kip": [
+          "12",
+          "6",
+          "12"
+        ],
+        "channel_each_rows_kip": [
+          "6",
+          "3",
+          "6"
+        ],
+        "physical_bolts": 3
+      }
+    },
+    {
+      "id": "P05_RHS_CLOSED_SECTION_FBR_REDUCTION",
+      "input": {
+        "characteristic_Fbr": "24"
+      },
+      "expected": {
+        "effective_characteristic_Fbr": "12",
+        "factor": "0.50"
+      }
+    },
+    {
+      "id": "P06_SRS_TWO_ROW_FULL_DEPTH_RESULTANT",
+      "expected": {
+        "member_rows_kip": [
+          "10",
+          "10"
+        ],
+        "channel_each_rows_kip": [
+          "5",
+          "5"
+        ],
+        "solid_full_depth_rows_kip": [
+          "10",
+          "10"
+        ],
+        "closed_section_factor_applied": false
+      }
+    },
+    {
+      "id": "P07_WI_TWO_ROW_MIRRORED_SIDE_DEMAND",
+      "expected": {
+        "member_rows_kip": [
+          "10",
+          "10"
+        ],
+        "negative_side_rows_kip": [
+          "5",
+          "5"
+        ],
+        "positive_side_rows_kip": [
+          "5",
+          "5"
+        ],
+        "physical_bolts": 4
+      }
+    },
+    {
+      "id": "P08_WI_SINGLE_LAP_STRENGTH_ADJUSTMENT",
+      "input": {
+        "applicable_double_lap_strength": "15"
+      },
+      "expected": {
+        "single_lap_strength": "9",
+        "factor": "0.60"
+      }
+    },
+    {
+      "id": "P09_VERTICAL_CHANNEL_WRENCH",
+      "expected": {
+        "channel_each_force_kip": [
+          "0",
+          "5"
+        ],
+        "channel_each_moment_kip_in": "0"
+      }
+    },
+    {
+      "id": "P10_D1_CHANNEL_WRENCH",
+      "expected": {
+        "channel_each_force_kip": [
+          "-3",
+          "4"
+        ],
+        "channel_each_moment_kip_in": "-79"
+      }
+    },
+    {
+      "id": "P11_D2_CHANNEL_WRENCH",
+      "expected": {
+        "channel_each_force_kip": [
+          "3",
+          "4"
+        ],
+        "channel_each_moment_kip_in": "79"
+      }
+    },
+    {
+      "id": "P12_THREE_MEMBER_SYMMETRIC_CHANNEL_SUM",
+      "expected": {
+        "channel_each_force_kip": [
+          "0",
+          "13"
+        ],
+        "channel_each_moment_kip_in": "0"
+      }
+    },
+    {
+      "id": "P13_UNBALANCED_MEMBER_LOADS_CHANNEL_SUM",
+      "expected": {
+        "channel_each_force_kip": [
+          "-1.2",
+          "10.4"
+        ],
+        "channel_each_moment_kip_in": "-31.6"
+      }
+    },
+    {
+      "id": "P14_MIXED_FORMS_COMMON_GAP",
+      "input": {
+        "V": {
+          "form": "RHS",
+          "gap_dimension": "6"
+        },
+        "D1": {
+          "form": "W_I",
+          "gap_dimension": "6"
+        }
+      },
+      "expected": {
+        "compatible": true
+      }
+    },
+    {
+      "id": "P15_DIAGONALS_DIFFERENT_ANGLES_SAME_SECTION",
+      "input": {
+        "D1_angle_deg": "35",
+        "D2_angle_deg": "50",
+        "same_section": true
+      },
+      "expected": {
+        "compatible": true
+      }
+    },
+    {
+      "id": "P16_WI_ONE_ROW_PHYSICAL_INVENTORY",
+      "expected": {
+        "side_groups": 2,
+        "physical_bolts": 2,
+        "holes_per_channel_web": 1
+      }
+    },
+    {
+      "id": "P17_WI_THREE_ROW_PHYSICAL_INVENTORY",
+      "expected": {
+        "side_groups": 2,
+        "physical_bolts": 6,
+        "holes_per_channel_web": 3
+      }
+    },
+    {
+      "id": "P18_RHS_COMMON_SHAFT_PLANE_DEMANDS",
+      "expected": {
+        "one_physical_shaft": true,
+        "near_shear_plane_demand_kip": "5",
+        "far_shear_plane_demand_kip": "5",
+        "capacity_multiplier": null
+      }
+    },
+    {
+      "id": "P19_FAIL_PRECEDENCE",
+      "input": {
+        "numerical_fail": true,
+        "qualification_blocker": true
+      },
+      "expected": {
+        "summary": "FAIL",
+        "blocker_visible": true
+      }
+    },
+    {
+      "id": "P20_REVIEW_REQUIRED_PRECEDENCE",
+      "input": {
+        "numerical_fail": false,
+        "qualification_blocker": true
+      },
+      "expected": {
+        "summary": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P21_COMPLETE_LOCAL_PASS",
+      "input": {
+        "all_required_local_checks_pass": true,
+        "qualification_blocker": false
+      },
+      "expected": {
+        "summary": "PASS",
+        "global_chord_certified": false
+      }
+    },
+    {
+      "id": "P22_NO_CONNECTOR_BODY_ROLE",
+      "expected": {
+        "connector_body_count": 0,
+        "primary_member_roles": [
+          "CHORD_NEG",
+          "CHORD_POS",
+          "V",
+          "D1",
+          "D2"
+        ],
+        "hardware_role": "INDEPENDENT_316SS_HARDWARE"
+      }
+    },
+    {
+      "id": "P23_SUCCESSOR_INVENTORY",
+      "expected": {
+        "routes": 17,
+        "connector_bodies": 39,
+        "no_body_routes": 4,
+        "ui_workspaces": 16
+      }
+    },
+    {
+      "id": "P24_NATIVE_FORCE_CONVERSION",
+      "input": {
+        "force_kip": "10"
+      },
+      "expected": {
+        "force_kN": "44.482216152605",
+        "half_force_kN": "22.2411080763025"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "N01_FREE_MOMENT",
+      "expected_status": "DCTN_MEMBER_ACTION_OUTSIDE_AXIAL_TRUSS_SCOPE"
+    },
+    {
+      "id": "N02_MEMBER_TRANSVERSE_SHEAR",
+      "expected_status": "DCTN_MEMBER_ACTION_OUTSIDE_AXIAL_TRUSS_SCOPE"
+    },
+    {
+      "id": "N03_OUT_OF_PLANE_FORCE",
+      "expected_status": "DCTN_MEMBER_ACTION_OUTSIDE_AXIAL_TRUSS_SCOPE"
+    },
+    {
+      "id": "N04_TORSION",
+      "expected_status": "DCTN_MEMBER_ACTION_OUTSIDE_AXIAL_TRUSS_SCOPE"
+    },
+    {
+      "id": "N05_CHANNEL_PROFILE_MISMATCH",
+      "expected_status": "DCTN_CHANNEL_SYMMETRY_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N06_MEMBER_OFF_MIDPLANE",
+      "expected_status": "DCTN_CHANNEL_SYMMETRY_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N07_SIDE_HARDWARE_MISMATCH",
+      "expected_status": "DCTN_CHANNEL_SYMMETRY_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N08_COMMON_GAP_MISMATCH",
+      "expected_status": "DCTN_COMMON_GAP_MISMATCH"
+    },
+    {
+      "id": "N09_DIAGONAL_DIMENSION_MISMATCH",
+      "expected_status": "DCTN_DIAGONAL_SECTION_LINK_MISMATCH"
+    },
+    {
+      "id": "N10_DIAGONAL_FORM_MISMATCH",
+      "expected_status": "DCTN_DIAGONAL_SECTION_LINK_MISMATCH"
+    },
+    {
+      "id": "N11_FOUR_ROWS",
+      "expected_status": "DCTN_ROW_COUNT_OUTSIDE_RC1_SCOPE"
+    },
+    {
+      "id": "N12_TWO_BOLTS_ACROSS_ROW",
+      "expected_status": "DCTN_BOLTS_ACROSS_ROW_OUTSIDE_RC1_SCOPE"
+    },
+    {
+      "id": "N13_STAGGERED_ROWS",
+      "expected_status": "DCTN_STAGGERED_BOLTS_NOT_SUPPORTED_IN_RC1"
+    },
+    {
+      "id": "N14_RHS_FACTOR_BYPASS",
+      "expected_status": "DCTN_RHS_CLOSED_SECTION_BEARING_FACTOR_REQUIRED"
+    },
+    {
+      "id": "N15_SRS_FULL_DEPTH_SOURCE_MISSING",
+      "expected_status": "DCTN_SOLID_FULL_DEPTH_PIN_BEARING_SOURCE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N16_WI_THROUGH_BOLT_ATTEMPT",
+      "expected_status": "DCTN_WI_FLANGE_PATH_NOT_QUALIFIED"
+    },
+    {
+      "id": "N17_WI_SINGLE_LAP_FACTOR_BYPASS",
+      "expected_status": "DCTN_WI_SINGLE_LAP_FACTOR_REQUIRED"
+    },
+    {
+      "id": "N18_HARDWARE_SOURCE_MISSING",
+      "expected_status": "DCTN_HARDWARE_SOURCE_OR_INSTALLATION_NOT_QUALIFIED"
+    },
+    {
+      "id": "N19_DUPLICATE_PHYSICAL_SHAFT",
+      "expected_status": "DCTN_COMMON_SHAFT_DUPLICATE_IDENTITY"
+    },
+    {
+      "id": "N20_SHAFT_CONSERVATION_FAILURE",
+      "expected_status": "DCTN_COMMON_SHAFT_CONSERVATION_NOT_SATISFIED"
+    },
+    {
+      "id": "N21_SHARED_CHORD_CROSS_GROUP_PATH_UNRESOLVED",
+      "expected_status": "DCTN_SHARED_CHORD_CROSS_GROUP_PATH_NOT_QUALIFIED"
+    },
+    {
+      "id": "N22_FRP_LOCAL_STRENGTH_SOURCE_MISSING",
+      "expected_status": "DCTN_FRP_LOCAL_STRENGTH_SOURCE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N23_GLOBAL_CHORD_DESIGN_REQUESTED_AS_LOCAL",
+      "expected_status": "DCTN_GLOBAL_CHORD_DESIGN_OUTSIDE_LOCAL_CONNECTION_SCOPE"
+    },
+    {
+      "id": "N24_CONNECTOR_BODY_SS316_REQUEST",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"
+    },
+    {
+      "id": "N25_CHANNEL_DATUM_UNQUALIFIED",
+      "expected_status": "DCTN_CHANNEL_REFERENCE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N26_HARDWARE_COLLISION_OR_INVALID_FOOTPRINT",
+      "expected_status": "INVALID_GEOMETRY"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "text": "Every automatic row distribution sums exactly to one and is limited to one through three rows."
+    },
+    {
+      "id": "I02",
+      "text": "Under the complete symmetry predicate each incoming member contributes exactly one-half of its signed axial force to each Channel."
+    },
+    {
+      "id": "I03",
+      "text": "The two Channel contributions sum exactly to the incoming member force; no force is created or lost."
+    },
+    {
+      "id": "I04",
+      "text": "RHS and SRS use one physical full-through shaft per row; W/I uses two distinct physical side shafts per row."
+    },
+    {
+      "id": "I05",
+      "text": "A physical shaft is represented and capacity-checked once even when it crosses multiple material layers or produces render aliases."
+    },
+    {
+      "id": "I06",
+      "text": "No automatic double-shear hardware-capacity multiplier exists; full-through hardware is checked from actual per-plane demand."
+    },
+    {
+      "id": "I07",
+      "text": "The 0.50 closed-section factor changes only the designated RHS characteristic pin-bearing strength and never the applied load, hardware capacity, or unrelated FRP modes."
+    },
+    {
+      "id": "I08",
+      "text": "The 0.60 single-lap factor changes only applicable W/I-side FRP in-plane connection strengths and never hardware strength or demand."
+    },
+    {
+      "id": "I09",
+      "text": "Solid rectangular members never receive the RHS closed-section 0.50 factor and never become two fictitious walls."
+    },
+    {
+      "id": "I10",
+      "text": "When D1 and D2 are both active they have identical section form and complete dimensions, while their inclinations, loads and positions remain independently variable."
+    },
+    {
+      "id": "I11",
+      "text": "All active incoming members have one identical gap-fitting dimension; W/I uses overall flange-to-flange depth."
+    },
+    {
+      "id": "I12",
+      "text": "Each Channel resultant equals exact reference transport and summation of all qualified incoming half-forces."
+    },
+    {
+      "id": "I13",
+      "text": "Any required supported numerical failure remains FAIL even when an independent qualification blocker also exists."
+    },
+    {
+      "id": "I14",
+      "text": "An unresolved required shared-Chord cross-group path prohibits local PASS but does not erase already-calculated independent checks or Channel resultants."
+    },
+    {
+      "id": "I15",
+      "text": "DCTN creates no connector body and cannot acquire a CME-3 connector-body material target."
+    },
+    {
+      "id": "I16",
+      "text": "All sixteen pre-DCTN routes, thirty-nine body identities, existing defaults and frozen FRP/C2/CME-3 provider behavior remain unchanged."
+    },
+    {
+      "id": "I17",
+      "text": "Presentation-only unit changes do not alter DCTN topology or method selection; independently executed unit paths retain native numerical representation without normalization."
+    },
+    {
+      "id": "I18",
+      "text": "A local DCTN PASS never certifies global Channel member strength, stability, or whole-truss redistribution."
+    }
+  ]
+}

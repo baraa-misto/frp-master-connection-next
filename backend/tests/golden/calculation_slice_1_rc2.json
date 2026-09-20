@@ -1,0 +1,443 @@
+{
+  "document_status": "ENGINEERING_SPECIFICATION_RC2_APPROVED_FOR_STAGE_2_1A",
+  "calculation_family": "ASCE74_23_CH8_SINGLE_BOLT_SINGLE_ROW_FRP",
+  "standard": {
+    "name": "ASCE/SEI 74-23",
+    "errata": "Erratum 1",
+    "errata_effective_date": "2026-01-13",
+    "chapter_8_affected_by_errata": false,
+    "errata_review_status": "REVIEWED",
+    "erratum_summary": "Chapter 5 ET,f definition correction only; Chapter 8 unaffected."
+  },
+  "unit_constants": {
+    "inch_to_mm_exact": "25.4",
+    "lbf_to_N_exact": "4.4482216152605",
+    "kip_to_kN_exact": "4.4482216152605",
+    "psi_to_MPa": "0.00689475729316836133672267344534689069378138756277512555025110",
+    "ksi_to_MPa": "6.89475729316836133672267344534689069378138756277512555025110"
+  },
+  "benchmarks": {
+    "P1": {
+      "description": "One planar FRP shape element, one bolt, double-lap reference basis, LW tension, in-plane demand 3.0 kip.",
+      "inputs": {
+        "d_in": "0.500",
+        "dn_in": "0.563",
+        "dw_in": "1.000",
+        "t_in": "0.375",
+        "e1_in": "2.000",
+        "e2_each_in": "2.000",
+        "w_in": "4.000",
+        "demand_kip": "3.000",
+        "lap_multiplier": "1.0"
+      },
+      "results": {
+        "Spr": "8.000000000000",
+        "Theta": "0.500000000000",
+        "Knt": "4.338562172234",
+        "Rbr_nom": "5.625000000000",
+        "Rbr_design": "3.375000000000",
+        "U_br": "0.888888888889",
+        "Rnt_nom": "9.803449463558",
+        "Rnt_design": "4.411552258601",
+        "U_nt": "0.680032746785",
+        "Rsh_nom": "7.217700000000",
+        "Rsh_design": "3.608850000000",
+        "U_sh": "0.831289746041",
+        "Rcl_a_nom": "8.179931250000",
+        "Rcl_a_design": "4.089965625000",
+        "U_cl_a": "0.733502497347",
+        "Rcl_b_nom": "5.625000000000",
+        "Rcl_b_design": "3.375000000000",
+        "Rcl_design": "3.375000000000",
+        "U_cl": "0.888888888889"
+      },
+      "pull_through": "NOT_APPLICABLE",
+      "bolt_strength": "SOURCE_DATA_PENDING",
+      "aggregate": "ENGINEERING_REVIEW_REQUIRED"
+    },
+    "PT1": {
+      "description": "Pull-through equation activation using P1 layer and 0.5 kip supplied bolt-axis demand.",
+      "inputs": {
+        "dw_in": "1.000",
+        "t_in": "0.375",
+        "Fsh_tt_ksi": "8.0",
+        "Fsh_int_ksi": "4.5",
+        "bolt_axis_demand_kip": "0.500"
+      },
+      "Rtt_branch_8_4a_nom_kip": "4.712388980385",
+      "Rtt_branch_8_4b_nom_kip": "2.120575041173",
+      "Rtt_design_kip": "1.060287520587",
+      "utilization": "0.471570201754"
+    },
+    "P2A": {
+      "description": "Two explicit FRP layers, one bolt, single lap, both layers LW, in-plane demand 2.0 kip.",
+      "common_inputs": {
+        "d_in": "0.500",
+        "dn_in": "0.563",
+        "demand_kip": "2.000",
+        "lap_multiplier": "0.60"
+      },
+      "layer_A": {
+        "inputs": {
+          "t_in": "0.375",
+          "e1_in": "2.000",
+          "e2_each_in": "2.000",
+          "w_in": "4.000"
+        },
+        "results": {
+          "Spr": "8.000000000000",
+          "Theta": "0.500000000000",
+          "Knt": "4.338562172234",
+          "Rbr_nom": "5.625000000000",
+          "Rbr_design": "2.025000000000",
+          "U_br": "0.987654320988",
+          "Rnt_nom": "9.803449463558",
+          "Rnt_design": "2.646931355161",
+          "U_nt": "0.755591940872",
+          "Rsh_nom": "7.217700000000",
+          "Rsh_design": "2.165310000000",
+          "U_sh": "0.923655273379",
+          "Rcl_a_nom": "8.179931250000",
+          "Rcl_a_design": "2.453979375000",
+          "U_cl_a": "0.815002774830",
+          "Rcl_b_nom": "5.625000000000",
+          "Rcl_b_design": "2.025000000000",
+          "Rcl_design": "2.025000000000",
+          "U_cl": "0.987654320988"
+        }
+      },
+      "layer_B": {
+        "inputs": {
+          "t_in": "0.500",
+          "e1_in": "2.000",
+          "e2_each_in": "1.500",
+          "w_in": "3.000"
+        },
+        "results": {
+          "Spr": "6.000000000000",
+          "Theta": "0.750000000000",
+          "Knt": "3.417272871819",
+          "Rbr_nom": "7.500000000000",
+          "Rbr_design": "2.700000000000",
+          "U_br": "0.740740740741",
+          "Rnt_nom": "11.766839087273",
+          "Rnt_design": "3.177046553564",
+          "U_nt": "0.629515484360",
+          "Rsh_nom": "9.623600000000",
+          "Rsh_design": "2.887080000000",
+          "U_sh": "0.692741455034",
+          "Rcl_a_nom": "8.431575000000",
+          "Rcl_a_design": "2.529472500000",
+          "U_cl_a": "0.790678688936",
+          "Rcl_b_nom": "7.500000000000",
+          "Rcl_b_design": "2.700000000000",
+          "Rcl_design": "2.529472500000",
+          "U_cl": "0.790678688936"
+        }
+      },
+      "governing": {
+        "layer": "A",
+        "limit_states": [
+          "PIN_BEARING",
+          "CLEAVAGE"
+        ],
+        "utilization": "0.987654320988"
+      },
+      "aggregate": "ENGINEERING_REVIEW_REQUIRED"
+    },
+    "P2B": {
+      "description": "P2A with Layer B force at 45 degrees to its LW axis; transverse bearing/net-tension properties selected; cleavage unsupported.",
+      "layer_B": {
+        "Rbr_design_kip": "1.620000000000",
+        "U_br": "1.234567901235",
+        "Rnt_design_kip": "0.722056034901",
+        "U_nt": "2.769868131183",
+        "Rsh_design_kip": "2.887080000000",
+        "U_sh": "0.692741455034",
+        "cleavage": "CALCULATION_NOT_SUPPORTED"
+      },
+      "known_numerical_outcome": "FAIL",
+      "aggregate": "FAIL_WITH_UNSUPPORTED_REQUIRED_CHECK"
+    },
+    "J1_T": {
+      "description": "Resolved-demand direct angle-brace to W-flange benchmark, single lap, 0.7 kip in-plane tension demand.",
+      "angle_leg": {
+        "results": {
+          "Spr": "6.000000000000",
+          "Theta": "0.750000000000",
+          "Knt": "3.417272871819",
+          "Rbr_nom": "5.625000000000",
+          "Rbr_design": "2.025000000000",
+          "U_br": "0.345679012346",
+          "Rnt_nom": "8.825129315454",
+          "Rnt_design": "2.382784915173",
+          "U_nt": "0.293773892701",
+          "Rsh_nom": "7.217700000000",
+          "Rsh_design": "2.165310000000",
+          "U_sh": "0.323279345683",
+          "Rcl_a_nom": "6.323681250000",
+          "Rcl_a_design": "1.897104375000",
+          "U_cl_a": "0.368983388170",
+          "Rcl_b_nom": "5.625000000000",
+          "Rcl_b_design": "2.025000000000",
+          "Rcl_design": "1.897104375000",
+          "U_cl": "0.368983388170"
+        },
+        "material_direction": "LW"
+      },
+      "w_flange": {
+        "e1_in": "2.121320343560",
+        "results": {
+          "Spr": "6.000000000000",
+          "Theta": "0.792893218813",
+          "Knt": "3.425622611351",
+          "Rbr_nom": "4.500000000000",
+          "Rbr_design": "1.620000000000",
+          "U_br": "0.432098765432",
+          "Rnt_nom": "2.667763217617",
+          "Rnt_design": "0.720296068757",
+          "U_nt": "0.971822602348",
+          "Rsh_nom": "10.302993923934",
+          "Rsh_design": "3.090898177180",
+          "U_sh": "0.226471387886"
+        },
+        "material_direction": "45_DEG_TO_LW",
+        "cleavage": "CALCULATION_NOT_SUPPORTED"
+      },
+      "governing_calculated": {
+        "component": "W_FLANGE",
+        "limit_state": "NET_TENSION",
+        "utilization": "0.971822602348"
+      },
+      "aggregate": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    "J1_C": {
+      "description": "Same resolved force axis as J1_T but compression loading sense; net tension and cleavage are not applicable.",
+      "angle_leg": {
+        "Rbr_design_kip": "2.025000000000",
+        "U_br": "0.345679012346",
+        "Rsh_design_kip": "2.165310000000",
+        "U_sh": "0.323279345683",
+        "net_tension": "NOT_APPLICABLE",
+        "cleavage": "NOT_APPLICABLE"
+      },
+      "w_flange": {
+        "Rbr_design_kip": "1.620000000000",
+        "U_br": "0.432098765432",
+        "Rsh_design_kip": "3.090898177180",
+        "U_sh": "0.226471387886",
+        "net_tension": "NOT_APPLICABLE",
+        "cleavage": "NOT_APPLICABLE"
+      },
+      "aggregate": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    "B1_SYNTHETIC": {
+      "description": "Equation-only fixture. Fnt=100 ksi is explicit benchmark input and is not the locked ASTM F593 preset.",
+      "inputs": {
+        "d_in": "0.500",
+        "Fnt_ksi": "100.0",
+        "threads_excluded_from_shear_plane": true,
+        "shear_demand_kip": "5.0",
+        "tension_demand_kip": "2.0"
+      },
+      "Ab_in2": "0.196349540849",
+      "Fnv_ksi": "60.000000000000",
+      "shear_design_resistance_kip": "8.835729338221",
+      "shear_utilization": "0.565884242105",
+      "required_shear_stress_ksi": "25.464790894703",
+      "modified_tensile_stress_ksi": "73.411575789548",
+      "combined_tension_design_resistance_kip": "10.810746899479",
+      "combined_tension_utilization": "0.185001093689"
+    },
+    "DIRECTION_90": {
+      "description": "Applicability-only fixture for a force exactly perpendicular to LW.",
+      "theta_degrees": "90",
+      "bearing_property_selection": "FBR_T",
+      "net_tension_property_selection": "FT_T",
+      "cleavage": "NOT_APPLICABLE",
+      "approved_interpretation": "TRANSVERSE_ENDPOINT_INCLUDED",
+      "numerical_resistance_evaluation": "NOT_AUTHORIZED_IN_STAGE_2_1A"
+    },
+    "HOLE_US_SOURCE": {
+      "bolt_diameter": {
+        "value": "0.500",
+        "unit": "in"
+      },
+      "source_basis": "US_CUSTOMARY_PRINTED",
+      "increment": {
+        "value": "0.063",
+        "unit": "in"
+      },
+      "stored_hole": {
+        "value": "0.563",
+        "unit": "in"
+      },
+      "exact_display_mm": "14.3002"
+    },
+    "HOLE_SI_SOURCE": {
+      "bolt_diameter": {
+        "value": "12.7",
+        "unit": "mm"
+      },
+      "source_basis": "SI_PRINTED",
+      "increment": {
+        "value": "1.6",
+        "unit": "mm"
+      },
+      "stored_hole": {
+        "value": "14.3",
+        "unit": "mm"
+      },
+      "exact_display_in": "0.56299212598425196850393700787401574803149606299213"
+    }
+  },
+  "approved_by": "Baraa Misto",
+  "approved_scope": "STAGE_2_1A_SCHEMAS_UNITS_APPLICABILITY_FINGERPRINTS_GOLDEN_FIXTURES",
+  "numerical_resistance_implementation_authorized": false,
+  "stage_2_1b_required_for_equations": true,
+  "approved_policies": {
+    "published_standard_hole_increment": {
+      "US_SOURCE": {
+        "increment_in": "0.063",
+        "example_bolt_in": "0.500",
+        "generated_hole_in": "0.563",
+        "exact_mm": "14.3002"
+      },
+      "SI_SOURCE": {
+        "increment_mm": "1.6",
+        "example_bolt_mm": "12.7",
+        "generated_hole_mm": "14.3",
+        "exact_in": "0.56299212598425196850393700787401574803149606299213"
+      },
+      "stored_physical_hole_is_authoritative": true,
+      "display_unit_switch_regenerates_hole": false
+    },
+    "directional_boundary": {
+      "longitudinal_max_degrees": "5",
+      "transverse_min_exclusive_degrees": "5",
+      "transverse_max_inclusive_degrees": "90",
+      "exact_90_interpretation": "TRANSVERSE",
+      "interpretation_authority": "Baraa Misto"
+    },
+    "bearing_resistance_factor": {
+      "development_phi": "0.60",
+      "production_variability_verified": false,
+      "ordinary_qualified_pass_allowed": false,
+      "required_disposition": "ENGINEERING_REVIEW_REQUIRED"
+    },
+    "fingerprints": {
+      "stage_2_1a_required": true,
+      "display_unit_independent": true,
+      "presentation_metadata_excluded": true,
+      "algorithm": "SHA-256 over canonical JSON"
+    },
+    "implementation_split": {
+      "stage_2_1a": "schemas, units, sources, geometry mapping, applicability, statuses, fingerprints, fixtures",
+      "stage_2_1b": "numerical resistance equations and benchmark reproduction"
+    }
+  },
+  "initial_material_snapshot": {
+    "id": "ICE_LOCKED_PULTRUDED_FRP",
+    "display_name": "ICE Locked Pultruded FRP",
+    "locked": true,
+    "basis": "ENGINEER_APPROVED_DEVELOPMENT",
+    "qualification_status": "NOT_INDEPENDENTLY_VERIFIED_AS_ASTMD7290_CHARACTERISTIC",
+    "properties": {
+      "FT_L": {
+        "value": "33",
+        "unit": "ksi"
+      },
+      "FT_T": {
+        "value": "7.5",
+        "unit": "ksi"
+      },
+      "ET_L": {
+        "value": "3000",
+        "unit": "ksi"
+      },
+      "ET_T": {
+        "value": "800",
+        "unit": "ksi"
+      },
+      "FC_L": {
+        "value": "33",
+        "unit": "ksi"
+      },
+      "EC_L": {
+        "value": "3000",
+        "unit": "ksi"
+      },
+      "EC_T": {
+        "value": "1000",
+        "unit": "ksi"
+      },
+      "FSH_LT": {
+        "value": "8",
+        "unit": "ksi"
+      },
+      "G_LT": {
+        "value": "420",
+        "unit": "ksi"
+      },
+      "FSH_INT": {
+        "value": "4.5",
+        "unit": "ksi"
+      },
+      "FBR_L": {
+        "value": "30",
+        "unit": "ksi"
+      },
+      "FBR_T": {
+        "value": "18",
+        "unit": "ksi"
+      },
+      "PULL_THROUGH_3_8": {
+        "value": "0.65",
+        "unit": "kip",
+        "use_in_code_equations": false
+      },
+      "PULL_THROUGH_1_2": {
+        "value": "0.9",
+        "unit": "kip",
+        "use_in_code_equations": false
+      },
+      "PULL_THROUGH_3_4": {
+        "value": "1.25",
+        "unit": "kip",
+        "use_in_code_equations": false
+      },
+      "NU_LT": {
+        "value": "0.3",
+        "unit": "1"
+      }
+    },
+    "known_missing_property": "FC_T"
+  },
+  "default_fastener_snapshot": {
+    "id": "ASTM_F593_17_GROUP_2_316_316L",
+    "display_name": "316/316L Stainless-Steel Fastener System",
+    "locked": true,
+    "bolt_specification": "ASTM F593-17",
+    "alloy_group": "2",
+    "alloys": [
+      "316",
+      "316L"
+    ],
+    "condition": "COLD_WORKED_FASTENER_BASIS",
+    "nut_specification": "ASTM F594-15",
+    "washer_material": "compatible 316/316L stainless steel",
+    "installation": "SNUG_TIGHT",
+    "diameter_min_in": "0.375",
+    "diameter_max_in": "1.0",
+    "Fnt_status": "SOURCE_DATA_PENDING",
+    "Fnt_value": null
+  },
+  "stage_2_1a_expectations": {
+    "all_physical_input_check_plans_have_numerical_comparison": "NOT_EVALUATED",
+    "no_executable_resistance_equations": true,
+    "golden_expected_results_are_fixture_data_only": true,
+    "locked_fastener_bolt_strength_readiness": "SOURCE_DATA_PENDING",
+    "P2B_aggregate_fixture_precedence": "FAIL_WITH_UNSUPPORTED_REQUIRED_CHECK",
+    "J1_whole_connection_qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+  }
+}

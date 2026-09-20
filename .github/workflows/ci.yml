@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: 3.14.6
+      - name: Print Python and pip versions
+        run: |
+          python --version
+          python -m pip --version
+      - name: Install hash-locked dependencies
+        run: >-
+          python -m pip install
+          --require-hashes
+          --only-binary=:all:
+          --requirement requirements/requirements-dev-py314.lock.txt
+      - name: Install the local backend package
+        run: python -m pip install --no-deps --no-build-isolation --editable .
+      - name: Check dependency consistency
+        run: python -m pip check
+      - name: Check Ruff formatting
+        run: python -m ruff format --check .
+      - name: Run Ruff linting
+        run: python -m ruff check .
+      - name: Run strict mypy analysis
+        run: python -m mypy --strict src tests
+      - name: Run tests with line and branch coverage
+        run: >-
+          python -m pytest
+          --cov=frp_master_connection
+          --cov-branch
+          --cov-report=term-missing
+          --cov-fail-under=100
+      - name: Check Uvicorn CLI availability
+        run: python -m uvicorn --help
+      - name: Check Alembic CLI availability
+        run: python -m alembic --help
+      - name: Smoke-test runtime dependencies
+        run: >-
+          python -c
+          "import fastapi, pydantic, pydantic_settings, uvicorn"
+      - name: Smoke-test optional persistence dependencies
+        run: >-
+          python -c
+          "import alembic, psycopg.pq, sqlalchemy; assert psycopg.pq.__impl__ == 'binary'"
+
+  frontend:
+    name: Frontend (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+      - name: Print Node and npm versions
+        run: |
+          node --version
+          npm --version
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate the dependency tree
+        run: npm ls --all
+      - name: Run ESLint
+        run: npm run lint
+      - name: Run strict TypeScript
+        run: npm run typecheck
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      - name: Build the frontend
+        run: npm run build
+      - name: Audit all dependencies
+        run: npm audit --json
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev --json

@@ -1,0 +1,869 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "product_id": "WI_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+  "contract": "4.1A-RC1",
+  "methods": [
+    "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1",
+    "RATIONAL_BALANCED_FLANGE_FACE_COUPLE_DECOMPOSITION_RC1",
+    "RATIONAL_BALANCED_FLANGE_FACE_SUBLAYER_TRANSFER_RC1",
+    "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+    "RATIONAL_SIMPLY_SUPPORTED_CLEAR_BODY_PANEL_RC1",
+    "RATIONAL_LINEAR_ORTHOTROPIC_SPLICE_PLATE_BODY_INTERACTION_RC1"
+  ],
+  "default_fixture": {
+    "beam": {
+      "d_in": "10",
+      "b_f_in": "8",
+      "t_w_in": "0.5",
+      "t_f_in": "0.5",
+      "gap_in": "0.5"
+    },
+    "actions": {
+      "P_L_kip": "20",
+      "V_V_kip": "-10",
+      "M_T_kip_in": "100"
+    },
+    "flange_splice": {
+      "length_in": "16",
+      "thickness_in": "0.5",
+      "inner_strip_width_in": "3",
+      "n_L": 2,
+      "pitch_in": "3",
+      "group_centroid_distance_in": "4",
+      "bolt_diameter_in": "0.5",
+      "hole_diameter_in": "0.563"
+    },
+    "web_splice": "inherit Stage 3.6 default geometry"
+  },
+  "test_only_strengths": {
+    "flange_body_tension_design_stress_ksi": "12",
+    "flange_body_compression_design_stress_ksi": "10",
+    "beam_flange_face_design_bearing_stress_ksi": "20",
+    "web_body_tension_design_stress_ksi": "12",
+    "web_body_compression_design_stress_ksi": "10",
+    "web_body_shear_design_stress_ksi": "5",
+    "bolt_F3125_Fnv_ksi": "68"
+  },
+  "benchmarks": [
+    {
+      "id": "G1_PRODUCT_CONTRACT",
+      "expected": {
+        "product_id": "WI_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+        "contract": "4.1A-RC1",
+        "selector_category": "Moment Connections"
+      }
+    },
+    {
+      "id": "G2_SUPPORTED_PROFILE",
+      "expected": {
+        "supported": [
+          "W/I"
+        ],
+        "channel_supported": false,
+        "unequal_beams_supported": false
+      }
+    },
+    {
+      "id": "G3_DEFAULT_POSITIVE_GAP",
+      "expected": {
+        "beam_end_gap_in": "0.5",
+        "beam_A_end_in": "-0.25",
+        "beam_B_end_in": "0.25",
+        "direct_end_bearing_credited": false
+      }
+    },
+    {
+      "id": "G4_FLANGE_PLATE_COUNT",
+      "expected": {
+        "top": 3,
+        "bottom": 3,
+        "web": 2,
+        "total_FRP_splice_plates": 8
+      }
+    },
+    {
+      "id": "G5_OUTER_FULL_WIDTH",
+      "expected": {
+        "outer_width_in": "8",
+        "equals_beam_flange_width": true
+      }
+    },
+    {
+      "id": "G6_INNER_STRIP_POSITION",
+      "expected": {
+        "strip_width_in": "3",
+        "centers_T_in": [
+          "-2.5",
+          "2.5"
+        ],
+        "web_clearance_each_side_in": "0.75"
+      }
+    },
+    {
+      "id": "G7_TOP_FORCE_LINES",
+      "expected": {
+        "beam_flange_centroid_V_in": "4.75",
+        "outer_centroid_V_in": "5.25",
+        "inner_centroid_V_in": "4.25",
+        "e_outer_in": "0.50",
+        "e_inner_in": "-0.50"
+      }
+    },
+    {
+      "id": "G8_BOTTOM_FORCE_LINES",
+      "expected": {
+        "beam_flange_centroid_V_in": "-4.75",
+        "outer_centroid_V_in": "-5.25",
+        "inner_centroid_V_in": "-4.25",
+        "e_outer_in": "-0.50",
+        "e_inner_in": "0.50"
+      }
+    },
+    {
+      "id": "G9_FLANGE_BOLT_GRID_BEAM_A",
+      "expected": {
+        "coordinates_L_T_in": [
+          {
+            "L_in": "-5.5",
+            "T_in": "-2.5"
+          },
+          {
+            "L_in": "-2.5",
+            "T_in": "-2.5"
+          },
+          {
+            "L_in": "-5.5",
+            "T_in": "2.5"
+          },
+          {
+            "L_in": "-2.5",
+            "T_in": "2.5"
+          }
+        ],
+        "rows_across_T": 2,
+        "bolts_per_line_L": 2
+      }
+    },
+    {
+      "id": "G10_FLANGE_BOLT_GRID_BEAM_B",
+      "expected": {
+        "coordinates_L_T_in": [
+          {
+            "L_in": "2.5",
+            "T_in": "-2.5"
+          },
+          {
+            "L_in": "5.5",
+            "T_in": "-2.5"
+          },
+          {
+            "L_in": "2.5",
+            "T_in": "2.5"
+          },
+          {
+            "L_in": "5.5",
+            "T_in": "2.5"
+          }
+        ],
+        "mirror_of_A": true
+      }
+    },
+    {
+      "id": "G11_FLANGE_BOLT_GAUGE",
+      "expected": {
+        "transverse_gauge_in": "5.0",
+        "bolt_line_centered_on_inner_strip": true
+      }
+    },
+    {
+      "id": "G12_TOP_PHYSICAL_BOLT_PATH",
+      "expected": {
+        "path": [
+          "TOP_OUTER_FLANGE_SPLICE_PLATE",
+          "TOP_BEAM_FLANGE",
+          "TOP_INNER_FLANGE_SPLICE_PLATE"
+        ],
+        "shear_planes": 2
+      }
+    },
+    {
+      "id": "G13_BOTTOM_PHYSICAL_BOLT_PATH",
+      "expected": {
+        "path": [
+          "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+          "BOTTOM_BEAM_FLANGE",
+          "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+        ],
+        "shear_planes": 2
+      }
+    },
+    {
+      "id": "G14_EXTERIOR_HARDWARE",
+      "expected": {
+        "head_washer": "outside_outer_plate",
+        "nut_washer": "outside_inner_plate",
+        "internal_hardware": false
+      }
+    },
+    {
+      "id": "G15_FLANGE_MATERIAL_BASIS",
+      "expected": {
+        "LW": "L_S",
+        "CW": "T_S",
+        "TT": "V_S",
+        "backend_authoritative": true
+      }
+    },
+    {
+      "id": "G16_FLANGE_CLEAR_BODY",
+      "expected": {
+        "nearest_hole_centers_L_in": [
+          "-2.5",
+          "2.5"
+        ],
+        "hole_radius_in": "0.2815",
+        "boundaries_L_in": [
+          "-2.2185",
+          "2.2185"
+        ],
+        "length_in": "4.4370"
+      }
+    },
+    {
+      "id": "G17_SLICE5_HANDOFF_TOP",
+      "expected": {
+        "N_top_kip": "15.402961500493583415597235932872655478775913129318854886475814412635735439289240",
+        "m_top_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420",
+        "major_shear_kip": "0"
+      }
+    },
+    {
+      "id": "G18_SLICE5_HANDOFF_WEB",
+      "expected": {
+        "N_web_kip": "7.2",
+        "V_web_kip": "-10",
+        "m_web_kip_in": "14.392892398815399802566633761105626850937808489634748272458045409674234945705824"
+      }
+    },
+    {
+      "id": "G19_SLICE5_HANDOFF_BOTTOM",
+      "expected": {
+        "N_bottom_kip": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+        "m_bottom_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420",
+        "major_shear_kip": "0"
+      }
+    },
+    {
+      "id": "G20_SLICE5_EXACT_EQUILIBRIUM_REQUIRED",
+      "expected": {
+        "must_pass_before_connection_design": true,
+        "M_over_z_reference_controlling": false
+      }
+    },
+    {
+      "id": "G21_TOP_OUTER_BRANCH_FORCE",
+      "expected": {
+        "F_top_outer_kip": "7.74096742349457058242843040473840078973346495557749259624876604146100691016781842"
+      }
+    },
+    {
+      "id": "G22_TOP_INNER_TOTAL_BRANCH_FORCE",
+      "expected": {
+        "F_top_inner_total_kip": "7.66199407699901283316880552813425468904244817374136229022704837117472852912142158"
+      }
+    },
+    {
+      "id": "G23_TOP_INNER_PER_STRIP_FORCE",
+      "expected": {
+        "F_each_inner_strip_kip": "3.83099703849950641658440276406712734452122408687068114511352418558736426456071079"
+      }
+    },
+    {
+      "id": "G24_BOTTOM_OUTER_BRANCH_FORCE",
+      "expected": {
+        "F_bottom_outer_kip": "-1.34096742349457058242843040473840078973346495557749259624876604146100691016781827"
+      }
+    },
+    {
+      "id": "G25_BOTTOM_INNER_TOTAL_BRANCH_FORCE",
+      "expected": {
+        "F_bottom_inner_total_kip": "-1.26199407699901283316880552813425468904244817374136229022704837117472852912142143"
+      }
+    },
+    {
+      "id": "G26_BOTTOM_INNER_PER_STRIP_FORCE",
+      "expected": {
+        "F_each_inner_strip_kip": "-0.630997038499506416584402764067127344521224086870681145113524185587364264560710715"
+      }
+    },
+    {
+      "id": "G27_TOP_BRANCH_FORCE_EQUILIBRIUM",
+      "expected": {
+        "sum_kip": "15.40296150049358341559723593287265547877591312931885488647581441263573543928924000",
+        "target_kip": "15.402961500493583415597235932872655478775913129318854886475814412635735439289240",
+        "exact": true
+      }
+    },
+    {
+      "id": "G28_TOP_BRANCH_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "sum_local_kip_in": "0.0394866732477788746298124383020730503455083909180651530108588351431391905231984200",
+        "target_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420",
+        "exact": true
+      }
+    },
+    {
+      "id": "G29_BOTTOM_BRANCH_FORCE_EQUILIBRIUM",
+      "expected": {
+        "sum_kip": "-2.60296150049358341559723593287265547877591312931885488647581441263573543928923970",
+        "target_kip": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+        "exact": true
+      }
+    },
+    {
+      "id": "G30_BOTTOM_BRANCH_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "sum_local_kip_in": "0.0394866732477788746298124383020730503455083909180651530108588351431391905231984200",
+        "target_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420",
+        "exact": true
+      }
+    },
+    {
+      "id": "G31_TOP_GLOBAL_MOMENT_RECOVERY",
+      "expected": {
+        "branch_global_kip_in": "73.2035538005923000987166831194471865745310957551826258637709772951628825271470884200",
+        "slice5_global_kip_in": "73.203553800592300098716683119447186574531095755182625863770977295162882527147088420",
+        "exact": true
+      }
+    },
+    {
+      "id": "G32_BOTTOM_GLOBAL_MOMENT_RECOVERY",
+      "expected": {
+        "branch_global_kip_in": "12.4035538005923000987166831194471865745310957551826258637709772951628825271470869950",
+        "slice5_global_kip_in": "12.403553800592300098716683119447186574531095755182625863770977295162882527147086995",
+        "exact": true
+      }
+    },
+    {
+      "id": "G33_FULL_JOINT_FORCE_EQUILIBRIUM",
+      "expected": {
+        "sum_component_longitudinal_kip": "20",
+        "sum_component_major_shear_kip": "-10",
+        "exact": true
+      }
+    },
+    {
+      "id": "G34_FULL_JOINT_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "sum_component_major_moment_kip_in": "100",
+        "exact": true
+      }
+    },
+    {
+      "id": "G35_OUTER_GROUP_STAGE25A_DEMAND",
+      "expected": {
+        "top_per_bolt_signed_kip": "1.935241855873642645607107601184600197433366238894373149062191510365251727541954605",
+        "bottom_per_bolt_signed_kip": "-0.3352418558736426456071076011846001974333662388943731490621915103652517275419545675",
+        "engine": "Stage 2.5A"
+      }
+    },
+    {
+      "id": "G36_INNER_GROUP_STAGE25A_DEMAND",
+      "expected": {
+        "top_per_bolt_signed_kip": "1.915498519249753208292201382033563672260612043435340572556762092793682132280355395",
+        "bottom_per_bolt_signed_kip": "-0.3154985192497532082922013820335636722606120434353405725567620927936821322803553575",
+        "engine": "Stage 2.5A"
+      }
+    },
+    {
+      "id": "G37_UNEQUAL_SHEAR_PLANES_PRESERVED",
+      "expected": {
+        "top_outer_plane_kip": "1.935241855873642645607107601184600197433366238894373149062191510365251727541954605",
+        "top_inner_plane_kip": "1.915498519249753208292201382033563672260612043435340572556762092793682132280355395",
+        "equal": false
+      }
+    },
+    {
+      "id": "G38_BOTTOM_UNEQUAL_SHEAR_PLANES_PRESERVED",
+      "expected": {
+        "bottom_outer_plane_kip": "-0.3352418558736426456071076011846001974333662388943731490621915103652517275419545675",
+        "bottom_inner_plane_kip": "-0.3154985192497532082922013820335636722606120434353405725567620927936821322803553575",
+        "equal": false
+      }
+    },
+    {
+      "id": "G39_BOLT_PER_PLANE_DESIGN_STRENGTH_TEST_ONLY",
+      "expected": {
+        "grade": "F3125",
+        "F_nv_ksi": "68",
+        "diameter_in": "0.5",
+        "phi": "0.75",
+        "R_plane_kip": "10.01382658331746594759967578420341544337847746050814980435763588798116479503662500"
+      }
+    },
+    {
+      "id": "G40_TOP_OUTER_BOLT_PLANE_UTILIZATION",
+      "expected": {
+        "U": "0.193256977217646124300219332034439908070289183057640986934511467808256605822911380886313020"
+      }
+    },
+    {
+      "id": "G41_TOP_INNER_BOLT_PLANE_UTILIZATION",
+      "expected": {
+        "U": "0.191285369614936002648513360477263414415215839015020695290617247569445581482747012626652272"
+      }
+    },
+    {
+      "id": "G42_BOTTOM_OUTER_BOLT_PLANE_UTILIZATION",
+      "expected": {
+        "U": "0.0334778970940178656459673970408568622631453818436925521133238596550111932959909712215662648"
+      }
+    },
+    {
+      "id": "G43_BOTTOM_INNER_BOLT_PLANE_UTILIZATION",
+      "expected": {
+        "U": "0.0315062894913077439942614254836803686080720378010722604694296394162001689558266029619055172"
+      }
+    },
+    {
+      "id": "G44_BOLT_UTILIZATION_RULE",
+      "expected": {
+        "governing": "max(outer_plane,inner_plane)",
+        "blind_two_plane_capacity_sum": false
+      }
+    },
+    {
+      "id": "G45_F593_SOURCE_PENDING",
+      "expected": {
+        "invent_strength": false,
+        "numeric_capacity_without_controlled_source": false,
+        "state": "NOT_EVALUATED_OR_SOURCE_REQUIRED"
+      }
+    },
+    {
+      "id": "G46_BEAM_FLANGE_FACE_SUBLAYER_THICKNESS",
+      "expected": {
+        "outer_face_t_eff_in": "0.25",
+        "inner_face_t_eff_in": "0.25",
+        "physical_member_split": false
+      }
+    },
+    {
+      "id": "G47_FACE_SUBLAYER_OUTER_ACTION",
+      "expected": {
+        "top_kip": "7.74096742349457058242843040473840078973346495557749259624876604146100691016781842",
+        "bottom_kip": "-1.34096742349457058242843040473840078973346495557749259624876604146100691016781827",
+        "complete_two_line_grid": true
+      }
+    },
+    {
+      "id": "G48_FACE_SUBLAYER_INNER_ACTION",
+      "expected": {
+        "top_kip": "7.66199407699901283316880552813425468904244817374136229022704837117472852912142158",
+        "bottom_kip": "-1.26199407699901283316880552813425468904244817374136229022704837117472852912142143",
+        "complete_two_line_grid": true
+      }
+    },
+    {
+      "id": "G49_FACE_SUBLAYER_TEST_BEARING_STRENGTH",
+      "expected": {
+        "test_only_design_bearing_stress_ksi": "20",
+        "per_bolt_R_kip": "2.500"
+      }
+    },
+    {
+      "id": "G50_TOP_OUTER_FACE_TEST_UTILIZATION",
+      "expected": {
+        "U": "0.774096742349457058242843040473840078973346495557749259624876604146100691016781842"
+      }
+    },
+    {
+      "id": "G51_TOP_INNER_FACE_TEST_UTILIZATION",
+      "expected": {
+        "U": "0.766199407699901283316880552813425468904244817374136229022704837117472852912142158"
+      }
+    },
+    {
+      "id": "G52_FACE_SUBLAYER_LOCAL_CHECK_SET",
+      "expected": {
+        "checks": [
+          "pin_bearing",
+          "net_tension",
+          "shear_out",
+          "cleavage",
+          "block_shear_or_accepted_local_path"
+        ],
+        "perpendicular_web_exemption_used": false
+      }
+    },
+    {
+      "id": "G53_TOP_OUTER_PLATE_BODY_TEST_UTILIZATION",
+      "expected": {
+        "mode": "TENSION",
+        "U": "0.161270154656136887133925633432050016452780519907864429088515959197104310628496217083333333",
+        "test_only_design_stress_ksi": "12"
+      }
+    },
+    {
+      "id": "G54_TOP_INNER_PLATE_BODY_TEST_UTILIZATION",
+      "expected": {
+        "mode": "TENSION",
+        "U_each_strip": "0.212833168805528134254689042448173741362290227048371174728529121421520236920039488333333333",
+        "test_only_design_stress_ksi": "12"
+      }
+    },
+    {
+      "id": "G55_BOTTOM_OUTER_PLATE_BODY_TEST_UTILIZATION",
+      "expected": {
+        "mode": "COMPRESSION",
+        "U_arithmetic": "0.03352418558736426456071076011846001974333662388943731490621915103652517275419545675",
+        "production_uses_slice4_buckling": true
+      }
+    },
+    {
+      "id": "G56_BOTTOM_INNER_PLATE_BODY_TEST_UTILIZATION",
+      "expected": {
+        "mode": "COMPRESSION",
+        "U_each_strip_arithmetic": "0.0420664692333004277722935176044751563014149391247120763409016123724909509707140476666666667",
+        "production_uses_slice4_buckling": true
+      }
+    },
+    {
+      "id": "G57_FLANGE_COMPRESSION_PANEL_MAPPING",
+      "expected": {
+        "method": "RATIONAL_SIMPLY_SUPPORTED_CLEAR_BODY_PANEL_RC1",
+        "a_in": "4.4370",
+        "outer_b_in": "8",
+        "inner_b_in": "3",
+        "t_in": "0.5"
+      }
+    },
+    {
+      "id": "G58_WEB_FREE_MOMENT_HANDOFF",
+      "expected": {
+        "m_web_at_joint_kip_in": "14.392892398815399802566633761105626850937808489634748272458045409674234945705824",
+        "discarded": false
+      }
+    },
+    {
+      "id": "G59_WEB_BODY_GOVERNING_MOMENT_TEST",
+      "expected": {
+        "section_L_in": "2.2185",
+        "pair_M_kip_in": "36.577892398815399802566633761105626850937808489634748272458045409674234945705824",
+        "per_plate_M_kip_in": "18.288946199407699901283316880552813425468904244817374136229022704837117472852912"
+      }
+    },
+    {
+      "id": "G60_WEB_BODY_RATIONAL_TEST_UTILIZATION",
+      "expected": {
+        "U_R": "0.610764784365745310957551826258637709772951628825271470878578479763079960513326750000000001",
+        "method": "RATIONAL_LINEAR_ORTHOTROPIC_SPLICE_PLATE_BODY_INTERACTION_RC1"
+      }
+    },
+    {
+      "id": "G61_PURE_AXIAL_SLICE5",
+      "expected": {
+        "P_L_kip": "20",
+        "top_N_kip": "6.4",
+        "web_N_kip": "7.2",
+        "bottom_N_kip": "6.4",
+        "component_local_moments_zero": true
+      }
+    },
+    {
+      "id": "G62_PURE_AXIAL_FLANGE_BRANCHES",
+      "expected": {
+        "top_outer_kip": "3.2",
+        "top_inner_total_kip": "3.2",
+        "bottom_outer_kip": "3.2",
+        "bottom_inner_total_kip": "3.2"
+      }
+    },
+    {
+      "id": "G63_PURE_MOMENT_TOP_COMPONENT",
+      "expected": {
+        "P_L_kip": "0",
+        "M_T_kip_in": "100",
+        "N_top_kip": "9.002961500493583415597235932872655478775913129318854886475814412635735439289240",
+        "m_top_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G64_PURE_MOMENT_BOTTOM_COMPONENT",
+      "expected": {
+        "N_bottom_kip": "-9.0029615004935834155972359328726554787759131293188548864758144126357354392892397",
+        "m_bottom_kip_in": "0.039486673247778874629812438302073050345508390918065153010858835143139190523198420"
+      }
+    },
+    {
+      "id": "G65_PURE_MOMENT_TOP_BRANCHES",
+      "expected": {
+        "outer_kip": "4.54096742349457058242843040473840078973346495557749259624876604146100691016781842",
+        "inner_total_kip": "4.46199407699901283316880552813425468904244817374136229022704837117472852912142158"
+      }
+    },
+    {
+      "id": "G66_PURE_MOMENT_BOTTOM_BRANCHES",
+      "expected": {
+        "outer_kip": "-4.54096742349457058242843040473840078973346495557749259624876604146100691016781827",
+        "inner_total_kip": "-4.46199407699901283316880552813425468904244817374136229022704837117472852912142143"
+      }
+    },
+    {
+      "id": "G67_ZERO_RESULTANT_NONZERO_LOCAL_MOMENT_INPUT",
+      "expected": {
+        "P_L_kip": "-28.1342546890424481737413622902270483711747285291214215202369200394866732477788750",
+        "M_T_kip_in": "100",
+        "expected_N_top_kip": "0"
+      }
+    },
+    {
+      "id": "G68_ZERO_RESULTANT_NONZERO_LOCAL_MOMENT_BRANCHES",
+      "expected": {
+        "top_outer_kip": "0.03948667324777887462981243830207305034550839091806515301085883514313919052319842",
+        "top_inner_total_kip": "-0.03948667324777887462981243830207305034550839091806515301085883514313919052319842",
+        "opposite_signs": true,
+        "local_moment_preserved": true
+      }
+    },
+    {
+      "id": "G69_MOMENT_SIGN_REVERSAL",
+      "expected": {
+        "bending_terms_reverse": true,
+        "web_free_moment_reverses": true,
+        "geometry_unchanged": true
+      }
+    },
+    {
+      "id": "G70_AXIAL_SIGN_REVERSAL",
+      "expected": {
+        "uniform_axial_terms_reverse": true,
+        "bending_terms_unchanged_for_same_M": true
+      }
+    },
+    {
+      "id": "G71_SHEAR_SIGN_REVERSAL",
+      "expected": {
+        "flange_branch_forces_unchanged": true,
+        "web_shear_reverses": true,
+        "web_shear_generated_moment_reverses": true
+      }
+    },
+    {
+      "id": "G72_OUTER_ONLY_TOPOLOGY_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "BALANCED_OUTER_PLUS_TWO_INNER_PLATES_REQUIRED"
+      }
+    },
+    {
+      "id": "G73_MISSING_ONE_INNER_STRIP_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "TWO_SYMMETRIC_INNER_STRIPS_REQUIRED"
+      }
+    },
+    {
+      "id": "G74_INNER_STRIP_WEB_OVERLAP_REJECTED",
+      "expected": {
+        "input": {
+          "b_f_in": "8",
+          "t_w_in": "0.5",
+          "b_i_in": "3.8"
+        },
+        "status": "INVALID_GEOMETRY",
+        "reason": "INNER_STRIP_WEB_OVERLAP"
+      }
+    },
+    {
+      "id": "G75_NONPOSITIVE_GAP_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "POSITIVE_BEAM_END_GAP_REQUIRED"
+      }
+    },
+    {
+      "id": "G76_TOO_MANY_FLANGE_BOLTS_PER_LINE_REJECTED",
+      "expected": {
+        "input": {
+          "n_L": 4
+        },
+        "status": "REJECTED",
+        "reason": "STAGE_4_1A_RC1_MAX_THREE_BOLTS_PER_LINE"
+      }
+    },
+    {
+      "id": "G77_FLANGE_HOLE_CONTAINMENT_REJECTED",
+      "expected": {
+        "status": "INVALID_GEOMETRY",
+        "reason": "COMPLETE_HOLE_CONTAINMENT_REQUIRED"
+      }
+    },
+    {
+      "id": "G78_UNSUPPORTED_MINOR_SHEAR_REJECTED",
+      "expected": {
+        "input": {
+          "V_T_kip": "1"
+        },
+        "status": "REJECTED",
+        "reason": "MINOR_SHEAR_NOT_SUPPORTED_IN_4_1A_RC1"
+      }
+    },
+    {
+      "id": "G79_UNSUPPORTED_MINOR_MOMENT_REJECTED",
+      "expected": {
+        "input": {
+          "M_V_kip_in": "1"
+        },
+        "status": "REJECTED",
+        "reason": "MINOR_AXIS_MOMENT_NOT_SUPPORTED_IN_4_1A_RC1"
+      }
+    },
+    {
+      "id": "G80_UNSUPPORTED_TORSION_REJECTED",
+      "expected": {
+        "input": {
+          "M_L_kip_in": "1"
+        },
+        "status": "REJECTED",
+        "reason": "TORSION_NOT_SUPPORTED_IN_4_1A_RC1"
+      }
+    },
+    {
+      "id": "G81_CHANNEL_REJECTED",
+      "expected": {
+        "profile": "Channel",
+        "status": "REJECTED",
+        "reason": "CHANNEL_MOMENT_SPLICE_NOT_IN_STAGE_4_1A_RC1"
+      }
+    },
+    {
+      "id": "G82_UNEQUAL_BEAMS_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "IDENTICAL_WI_BEAMS_REQUIRED"
+      }
+    },
+    {
+      "id": "G83_BOLT_AXIS_TENSION_ZERO",
+      "expected": {
+        "flange_bolts": "0",
+        "web_bolts": "0",
+        "combined_tension_shear_equation_invoked": false
+      }
+    },
+    {
+      "id": "G84_PULL_THROUGH_PRYING_BOUNDARY",
+      "expected": {
+        "applied_axis_pull_through": "NOT_REQUIRED",
+        "out_of_plane_deformation_prying": "ENGINEERING_REVIEW_REQUIRED_NOT_NUMERICALLY_INVENTED"
+      }
+    },
+    {
+      "id": "G85_PREVIEW_RESISTANCE_FREE",
+      "expected": {
+        "resistance_calls": 0,
+        "demand_and_geometry_available": true
+      }
+    },
+    {
+      "id": "G86_EXPLICIT_DESIGN_REQUIRED",
+      "expected": {
+        "design_on_preview": false,
+        "run_design_check_required": true,
+        "engineering_edit_makes_design_stale": true
+      }
+    },
+    {
+      "id": "G87_OVERALL_SUCCESS_STATE",
+      "expected": {
+        "when_all_required_numeric_checks_pass": "PASS_WITH_RATIONAL_METHOD_REVIEW_REQUIRED",
+        "ordinary_PASS_allowed": false
+      }
+    },
+    {
+      "id": "G88_RATIONAL_REVIEW_METADATA",
+      "expected": {
+        "review_required": true,
+        "qualification": "REQUIRED_2_3_2",
+        "disclaimer_id": "WI_MAJOR_AXIS_MOMENT_SPLICE_RATIONAL_DESIGN_DISCLAIMER_RC1"
+      }
+    },
+    {
+      "id": "G89_STIFFNESS_CLASSIFICATION",
+      "expected": {
+        "state": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G90_MOMENT_ROTATION_CAPACITY",
+      "expected": {
+        "state": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G91_FULL_STRENGTH_CLASSIFICATION",
+      "expected": {
+        "state": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G92_US_SI_EQUIVALENCE",
+      "expected": {
+        "geometry": true,
+        "component_wrenches": true,
+        "branch_forces": true,
+        "per_plane_demands": true,
+        "resistance": true,
+        "equilibrium": true,
+        "fingerprints": true
+      }
+    },
+    {
+      "id": "G93_DETERMINISTIC_FINGERPRINTS",
+      "expected": {
+        "slice5_fingerprint_included": true,
+        "physical_paths_included": true,
+        "branch_decomposition_included": true,
+        "review_metadata_included": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G94_FREEZE_REGRESSIONS",
+      "expected": {
+        "stage_3_7": "EXACT",
+        "stage_3_6": "EXACT",
+        "stage_3_5": "EXACT",
+        "stage_3_4": "EXACT",
+        "stage_3_3": "EXACT",
+        "stage_3_2": "EXACT",
+        "stage_2_3": "EXACT"
+      }
+    },
+    {
+      "id": "G95_NO_DEP_WORKFLOW_TAG_CHANGE",
+      "expected": {
+        "dependencies": 0,
+        "lockfiles": 0,
+        "workflows": 0,
+        "tags": 0
+      }
+    },
+    {
+      "id": "G96_VISUAL_TOPOLOGY_CONTRACT",
+      "expected": {
+        "two_WI_beams": true,
+        "web_splice_plates": 2,
+        "top_outer": 1,
+        "top_inner": 2,
+        "bottom_outer": 1,
+        "bottom_inner": 2,
+        "major_moment_arrow": true,
+        "inner_plates_inspectable_in_xray": true,
+        "frontend_engineering_authority": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+.angle-base44-workspace .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+.angle-base44-workspace .field-grid > *, .angle-base44-workspace .field-control, .angle-base44-workspace .input-with-unit { min-width: 0; }
+.angle-base44-workspace input, .angle-base44-workspace select { width: 100%; max-width: 100%; box-sizing: border-box; }
+.angle-base44-workspace .base44-full { display: block; width: 100%; margin-top: .6rem; }
+.angle-base44-workspace .base44-full > span { display: block; }
+.angle-base44-workspace .base44-input-group { min-width: 0; margin: .75rem 0; padding: .6rem; }
+.angle-base44-workspace .base44-preset-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+.angle-base44-workspace .base44-table { overflow-x: auto; }
+.angle-base44-workspace pre { max-width: 100%; overflow: auto; max-height: 34rem; }
+.angle-base44-workspace p, .angle-base44-workspace dd, .angle-base44-workspace td { overflow-wrap: anywhere; }
+.angle-base44-workspace .source-card { min-width: 0; }
+.angle-base44-workspace .base44-preview-state { min-width: 0; }
+.angle-base44-workspace .base44-viewer-status { padding: .8rem; border: 2px solid #365b78; background: #eef5fb; margin-bottom: .5rem; }
+.angle-base44-workspace .base44-viewer-status p { margin: .5rem 0; }
+.angle-base44-workspace .base44-viewer-status code { overflow-wrap: anywhere; }
+.angle-base44-workspace .base44-last-valid { border: 3px solid #956000; padding: .35rem; }
+.angle-base44-workspace .base44-last-valid .base44-viewer-status { color: #543500; border-color: #956000; background: #fff3ce; }
+.angle-base44-workspace .base44-last-valid .scene-canvas-region { filter: saturate(.4); }
+.angle-base44-workspace .base44-last-valid .canvas-shell::after { content: "LAST VALID GEOMETRY — ACTIONS HIDDEN"; position: absolute; bottom: 5rem; left: .5rem; right: .5rem; padding: .4rem; color: #543500; background: #fff3ce; border: 2px solid #956000; font-weight: 700; text-align: center; pointer-events: none; }
+/* Stage 4.4 only: compact labels remain projected, with force/moment hit targets separated. */
+.angle-base44-workspace .applied-action-label { white-space: nowrap; font-size: .68rem; }
+.angle-base44-workspace [data-action-component="FX"] { margin-top: -15px; }
+.angle-base44-workspace [data-action-component="FY"] { margin-top: 15px; }
+.angle-base44-workspace [data-action-component="FZ"] { margin-top: -10px; }
+.angle-base44-workspace [data-action-component="MX"] { margin-top: -35px; }
+.angle-base44-workspace [data-action-component="MY"] { margin-top: 35px; }

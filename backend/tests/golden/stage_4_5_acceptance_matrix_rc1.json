@@ -1,0 +1,3106 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_4_5_ACCEPTANCE_MATRIX_RC1",
+  "version": "4.5-RC1",
+  "product": "WI_RHS_SRS_COLUMN_MOMENT_BASE_CONNECTION",
+  "baseline_commit": "99befa9780e7c7abf72c8a33e5eb45b9e368d916",
+  "baseline_count": 118,
+  "status": "CONTROLLED_IMPLEMENTATION_ACCEPTANCE_CONTRACT_ON_OWNER_HANDOFF_NOT_ASCE_PREQUALIFICATION",
+  "authority_notice": "New topology choices and complete-response integration are project decisions. ASCE source provisions retain their own applicability. These fixtures are independently derived bookkeeping/geometry checks, not a design qualification or an automatic sharing law.",
+  "checks_count": 120,
+  "fixtures_count": 24,
+  "logical_profile_layout_modes": 9,
+  "constructive_preset_layout_count": 15,
+  "minimum_no_source_sweep_count": 360,
+  "minimum_qualified_test_only_integration_count": 90,
+  "reference_number_encoding": "Exact integers or finite-decimal/numerator-denominator strings; no binary-float engineering authority.",
+  "numeric_policy": {
+    "new_reference_algebra": "EXACT_RATIONAL",
+    "native_outputs": "VERBATIM_DEPENDENCY_NATIVE_PROJECTION_AND_PROOF",
+    "independent_integration_oracle": "Direct unchanged dependency calls with independently assembled physical inputs; never adapter output as its own oracle.",
+    "tolerance_added": false,
+    "residual_redistribution": false
+  },
+  "section_presets": [
+    {
+      "id": "WI_12",
+      "family": "WI",
+      "B_in": "12",
+      "D_in": "12",
+      "tf_in": "0.5",
+      "tw_in": "0.5"
+    },
+    {
+      "id": "RHS_SQUARE_8",
+      "family": "RHS",
+      "B_in": "8",
+      "D_in": "8",
+      "wall_t_in": "0.5"
+    },
+    {
+      "id": "RHS_RECT_10_8",
+      "family": "RHS",
+      "B_in": "10",
+      "D_in": "8",
+      "wall_t_in": "0.5"
+    },
+    {
+      "id": "SRS_SQUARE_8",
+      "family": "SRS",
+      "B_in": "8",
+      "D_in": "8"
+    },
+    {
+      "id": "SRS_RECT_10_8",
+      "family": "SRS",
+      "B_in": "10",
+      "D_in": "8"
+    }
+  ],
+  "layouts": [
+    {
+      "id": "TWO_X",
+      "active_faces": [
+        "X_POS",
+        "X_NEG"
+      ]
+    },
+    {
+      "id": "TWO_Y",
+      "active_faces": [
+        "Y_POS",
+        "Y_NEG"
+      ]
+    },
+    {
+      "id": "FOUR_XY",
+      "active_faces": [
+        "X_POS",
+        "X_NEG",
+        "Y_POS",
+        "Y_NEG"
+      ]
+    }
+  ],
+  "load_cases": [
+    {
+      "id": "ZERO",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMPRESSION",
+      "N_kip": "-20",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "UPLIFT",
+      "N_kip": "20",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "VX_ONLY",
+      "N_kip": "0",
+      "Vx_kip": "5",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "VY_ONLY",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "-3",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MX_POS",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "60",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MX_NEG",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "-60",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MY_POS",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MY_NEG",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "-40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "BIAXIAL",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "60",
+      "My_kip_in": "40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMBINED_COMPRESSION",
+      "N_kip": "-20",
+      "Vx_kip": "5",
+      "Vy_kip": "-3",
+      "Mx_kip_in": "60",
+      "My_kip_in": "40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMBINED_UPLIFT_REVERSAL",
+      "N_kip": "30",
+      "Vx_kip": "-8",
+      "Vy_kip": "5",
+      "Mx_kip_in": "-45",
+      "My_kip_in": "35",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    }
+  ],
+  "units": [
+    "US",
+    "SI"
+  ],
+  "qualified_integration_load_ids": [
+    "COMBINED_COMPRESSION",
+    "COMBINED_UPLIFT_REVERSAL",
+    "BIAXIAL"
+  ],
+  "constructive_hardware": {
+    "angle_length_in": "6",
+    "member_leg_in": "8",
+    "foot_leg_in": "6",
+    "thickness_in": "0.5",
+    "inside_radius_in": "0.25",
+    "member_gauge_in": "3",
+    "member_pitch_in": "2",
+    "member_X_pair_elevations_in": [
+      "2",
+      "4"
+    ],
+    "member_Y_pair_elevations_in": [
+      "5",
+      "7"
+    ],
+    "foundation_gauge_in": "3",
+    "foundation_outward_pitch_in": "2",
+    "foundation_outward_centroid_from_face_in": "3",
+    "nominal_bolt_in": "0.5",
+    "US_source_hole_in": "0.563",
+    "foundation_embedment_in": "4",
+    "pedestal_X_in": "40",
+    "pedestal_Y_in": "40",
+    "pedestal_depth_in": "12",
+    "column_view_length_in": "18",
+    "nominal_column_lower_end_Z_in": "0",
+    "column_offset_XY_in": [
+      "0",
+      "0"
+    ],
+    "notice": "Feasible starting geometry only, not a passing strength design. Actual baseline geometry/fillets/hardware validation is mandatory. Controlled clearance-only preset tuning is permitted by the order; reference arithmetic stays unchanged."
+  },
+  "source_absent_expected_behavior": {
+    "nonzero": "Geometry and required total foundation action remain available; unresolved branch/normal/shaft/contact demands remain SOURCE_REQUIRED or native compatible unavailable statuses; no automatic sharing.",
+    "zero": "Zero transfer may be proven under explicit exclusion of self-weight/preload/pretension; no qualification or full-base adequacy claim."
+  },
+  "checks": [
+    {
+      "id": "T45-001",
+      "category": "BASELINE",
+      "title": "Exact starting state",
+      "requirement": "Verify full commit 99befa9780e7c7abf72c8a33e5eb45b9e368d916, count 118 in full history, clean active work area and origin/main/remote main equality.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PREFLIGHT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-002",
+      "category": "BASELINE",
+      "title": "Twelve historical tags",
+      "requirement": "Verify all twelve prior annotated freeze identities and peeled targets; Stage 4.4 tag peels to the starting commit. Never invent tag-object hashes.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PREFLIGHT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-003",
+      "category": "BASELINE",
+      "title": "Two-file integrity",
+      "requirement": "Read and SHA-256-check this matrix and order; verify all 120 requirements and 24 reference IDs and the final order sentinel.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PREFLIGHT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-004",
+      "category": "SOURCE",
+      "title": "Applicable source review",
+      "requirement": "Verify supplied ASCE/SEI 74-23 and Erratum bytes, source locators and figures; record the distinction between standard provisions and project integration decisions.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PREFLIGHT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-005",
+      "category": "SOURCE",
+      "title": "No stale stage restart",
+      "requirement": "Latest user-evidenced Stage 4.4 freeze supersedes the August handoff stopping point; reuse baseline source registries instead of requesting duplicate PDFs.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PREFLIGHT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-006",
+      "category": "SCOPE",
+      "title": "One new physical product",
+      "requirement": "Expose one Moment Connections product WI_RHS_SRS_COLUMN_MOMENT_BASE_CONNECTION, contract 4.5-RC1; do not alter Stage 3.7 shear or Stage 4.4 L-column products.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-007",
+      "category": "SCOPE",
+      "title": "Three distinct profile families",
+      "requirement": "Use explicit WI, RHS hollow rectangular including square, and SRS solid rectangular including square identities; never infer solidity from a display name.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-008",
+      "category": "SCOPE",
+      "title": "Nine mode combinations",
+      "requirement": "Support each profile family with TWO_X, TWO_Y and FOUR_XY. For WI, X means broad web faces; Y means exterior flange faces. No invented envelope side-face.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-009",
+      "category": "SCOPE",
+      "title": "No unsupported expansion",
+      "requirement": "Reject angle/channel/circular/skewed/unequal-thickness/hybrid profile modes outside this RC1; no 316SS connector provider, concrete-capacity engine or full-column stability design.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-010",
+      "category": "SCOPE",
+      "title": "No unqualified capacity claim",
+      "requirement": "Biaxial action input and constructive geometry do not prove either 2-angle or 4-angle adequacy; no automatic 50/50 or quarter sharing.",
+      "reference_fixture_ids": [
+        "F45-14"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-011",
+      "category": "GEOMETRY",
+      "title": "WI physical footprint",
+      "requirement": "Retain two flanges and web including native section/fillet identity; use actual section end footprint, not enclosing rectangle.",
+      "reference_fixture_ids": [
+        "F45-01"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-012",
+      "category": "GEOMETRY",
+      "title": "Hollow footprint",
+      "requirement": "Retain near/far/side walls and cavity; compare square and nonsquare cases and never fill the cavity.",
+      "reference_fixture_ids": [
+        "F45-02",
+        "F45-04",
+        "F45-17",
+        "F45-18"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-013",
+      "category": "GEOMETRY",
+      "title": "Solid footprint",
+      "requirement": "Retain the continuous solid section; do not introduce artificial walls, cavity or arbitrary effective thickness.",
+      "reference_fixture_ids": [
+        "F45-03",
+        "F45-05"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-014",
+      "category": "GEOMETRY",
+      "title": "WI flange pair",
+      "requirement": "TWO_Y has one exterior connector per opposite flange, independent short member bolt groups and real rear-hardware web clearance.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-015",
+      "category": "GEOMETRY",
+      "title": "WI web pair",
+      "requirement": "TWO_X has opposite web-face connectors and a single common shank per matching bolt, not duplicated overlapping bolts.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-016",
+      "category": "GEOMETRY",
+      "title": "WI four angles",
+      "requirement": "FOUR_XY combines exterior flange pair and opposite web pair; check web-angle extent/feet against surrounding flanges and all other hardware.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-017",
+      "category": "GEOMETRY",
+      "title": "Box two angles",
+      "requirement": "RHS/SRS TWO_X or TWO_Y is an opposite exterior-face pair with common full-depth shanks and exterior terminal hardware.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-018",
+      "category": "GEOMETRY",
+      "title": "Box four angles",
+      "requirement": "RHS/SRS FOUR_XY has two opposite pairs; use the explicit nonintersecting elevation offsets in the constructive preset.",
+      "reference_fixture_ids": [
+        "F45-22"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-019",
+      "category": "GEOMETRY",
+      "title": "Fifteen constructive examples",
+      "requirement": "One valid geometry for each of five section presets times three layouts is mandatory; approved clearance-only preset adjustments must retain topology and be recorded, not alter reference fixtures.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-020",
+      "category": "GEOMETRY",
+      "title": "Prepared nominal base",
+      "requirement": "Column lower end and connector foot undersides use the nominal foundation-top plane; no floating axial gap or hidden base plate; contact activity remains separately qualified.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-021",
+      "category": "GEOMETRY",
+      "title": "Pedestal containment",
+      "requirement": "Check real footprint, foot, anchor-hole/shank/embedment and hardware containment in the finite pedestal; no anchor capacity from embedment.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-022",
+      "category": "GEOMETRY",
+      "title": "Independent dimensions and deliberate locks",
+      "requirement": "Per-connector dimensions are independent except explicit shared physical-bolt coordinates/identity; enforce real alignment without inferring equal forces.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-023",
+      "category": "GEOMETRY",
+      "title": "View extents are not engineering dimensions",
+      "requirement": "Column display length/camera clipping does not alter physical lower-end plane, edge distance, centroidal load reference, panel restraint, engineering fingerprint or current design status.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-024",
+      "category": "GEOMETRY",
+      "title": "Offset reference and placement",
+      "requirement": "Column placement relative to report O is physical and source-bound; preserve exact generated moments when nonzero placement offsets are selected.",
+      "reference_fixture_ids": [
+        "F45-08",
+        "F45-09",
+        "F45-10"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-025",
+      "category": "HARDWARE",
+      "title": "One physical shank ID",
+      "requirement": "Represent a shared bolt once with interface/region IDs, ordered traversed zones and distinct terminal hardware; share references between connector cards, not duplicated bodies.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-026",
+      "category": "HARDWARE",
+      "title": "Hollow ordered stack",
+      "requirement": "For common RHS bolts retain ANGLE / NEAR_WALL / CAVITY / FAR_WALL / ANGLE; cavity is free shank, not a resistance layer.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-027",
+      "category": "HARDWARE",
+      "title": "Solid ordered stack",
+      "requirement": "For SRS use ANGLE / CONTINUOUS_SOLID / ANGLE and actual full grip; no virtual midplane washer or thin-plate thickness substitution.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-028",
+      "category": "HARDWARE",
+      "title": "WI web ordered stack",
+      "requirement": "Preserve ANGLE / WEB / ANGLE with two actual interfaces; unequal interface vectors remain explicit and the common bolt is checked once per physical shaft section.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-029",
+      "category": "HARDWARE",
+      "title": "WI flange ordered stack",
+      "requirement": "Preserve ANGLE / SELECTED_FLANGE; do not drill the opposite flange or web to fabricate a common-bolt arrangement.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-030",
+      "category": "HARDWARE",
+      "title": "Opposite-grid mapping",
+      "requirement": "Local A reverses on opposite faces; alignment is checked in global coordinates, not equal array indices or copied signs. Mismatched opposite patterns fail geometry validation.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-031",
+      "category": "HARDWARE",
+      "title": "Crossing shanks rejected",
+      "requirement": "Detect finite perpendicular shank and hole-envelope collisions inside hollow/solid columns; X-ray alone cannot establish clearance.",
+      "reference_fixture_ids": [
+        "F45-22"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-032",
+      "category": "HARDWARE",
+      "title": "No silent stagger",
+      "requirement": "Changing one elevation to cause a crossing returns specific validation reasons; do not shift, shorten, merge or delete another bolt without a user edit.",
+      "reference_fixture_ids": [
+        "F45-22"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-033",
+      "category": "HARDWARE",
+      "title": "Hardware containment and access",
+      "requirement": "Verify full washer/head/nut envelopes, seating surfaces, fillet clearance, column ends and assembly access. Exterior hardware only for hollow/solid common bolts.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-034",
+      "category": "HARDWARE",
+      "title": "Source-bound long grip",
+      "requirement": "Preserve native fastener-grade/thread/grip applicability; long shanks need qualified section/bending response where required, not blind short-bolt capacity.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-035",
+      "category": "HARDWARE",
+      "title": "Unequal wall and shaft reactions",
+      "requirement": "Read actual source-defined layer reactions/shaft-section vectors; no equal near/far wall reaction, additive duplicate planes or automatic doubled capacity.",
+      "reference_fixture_ids": [
+        "F45-21"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-036",
+      "category": "HARDWARE",
+      "title": "No hidden reinforcement",
+      "requirement": "Do not invent sleeves, backing plates, internal nuts, access holes, grout-filled cavities, base plates or stiffeners to make presets or strength checks work.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-037",
+      "category": "HARDWARE",
+      "title": "Opposite connectors share only physical constraints",
+      "requirement": "Mirrored holes do not establish force symmetry; per-connector source wrenches remain distinct and load-case bound.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-038",
+      "category": "HARDWARE",
+      "title": "Column material axes",
+      "requirement": "Column LW is vertical Z with actual per-region CW/TT; do not use horizontal angle extrusion direction for the column material lookup.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-039",
+      "category": "HARDWARE",
+      "title": "Angle material axes",
+      "requirement": "Angle LW is local horizontal A; B is vertical member leaf, C is outward foot. Use proper frames and actual local references.",
+      "reference_fixture_ids": [
+        "F45-06",
+        "F45-24"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-040",
+      "category": "HARDWARE",
+      "title": "Foundation attachment representation",
+      "requirement": "Vertical foot attachments use existing valid physical anchor representation; no invented nut below the pedestal, adhesive anchor behavior or anchor capacity.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-041",
+      "category": "NUMERICS",
+      "title": "Right-hand input convention",
+      "requirement": "F_C=(Vx,Vy,N), M_C=(Mx,My,0), N positive uplift; use physical right-hand moments, not beam structural-major-moment sign conventions.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-042",
+      "category": "NUMERICS",
+      "title": "Independent torsion boundary",
+      "requirement": "Reject nonzero user-input Mz at column centroid, retain reference-generated Mz and branch free moments.",
+      "reference_fixture_ids": [
+        "F45-08",
+        "F45-09",
+        "F45-24"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-043",
+      "category": "NUMERICS",
+      "title": "Native centroid identity",
+      "requirement": "All centered uniform symmetric reference sections have zero centroid offset; production uses baseline native centroid/fillets and actual placement.",
+      "reference_fixture_ids": [
+        "F45-01",
+        "F45-02",
+        "F45-03",
+        "F45-04",
+        "F45-05"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-044",
+      "category": "NUMERICS",
+      "title": "Exact total transport",
+      "requirement": "W_O uses F_O=QF_R, M_O=QM_R+(r_R-r_O) cross F_O; opposite reaction is its negative at the same reference.",
+      "reference_fixture_ids": [
+        "F45-07",
+        "F45-08",
+        "F45-09",
+        "F45-10"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-045",
+      "category": "NUMERICS",
+      "title": "Proper frame transforms",
+      "requirement": "All connector rotations are determinant +1 and preserve norms/cross products; reflecting a face without correcting local axes fails.",
+      "reference_fixture_ids": [
+        "F45-06",
+        "F45-10",
+        "F45-24"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-046",
+      "category": "NUMERICS",
+      "title": "Native dependency equality",
+      "requirement": "Build Slice 7/8 and other reused-engine inputs independently in tests and compare native outputs exactly; do not copy the product adapter output back into its oracle.",
+      "reference_fixture_ids": [
+        "F45-11",
+        "F45-19",
+        "F45-20"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-047",
+      "category": "NUMERICS",
+      "title": "Proof versus serialization",
+      "requirement": "Keep native algebraic proofs, source-ledger closure and actual finite-serialization residuals separate; no residual copied from another stage, tolerance addition or redistribution.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-048",
+      "category": "NUMERICS",
+      "title": "Member in-plane versus normal",
+      "requirement": "Retain FA,FB,MC as Slice 8 subset, FC,MA,MB as normal/contact complement; do not assign the complement zero.",
+      "reference_fixture_ids": [
+        "F45-24"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-049",
+      "category": "NUMERICS",
+      "title": "Wrench reference agrees with grid",
+      "requirement": "Use physical bolt coordinates and wrench reference in the same frame; prove physically different references change demand and consistent translations do not.",
+      "reference_fixture_ids": [
+        "F45-19",
+        "F45-20"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-050",
+      "category": "NUMERICS",
+      "title": "Exact dual-unit identity",
+      "requirement": "Use existing quantities/units, original hole-source representation, normalized physical identity and native conversion behavior.",
+      "reference_fixture_ids": [
+        "F45-23"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-051",
+      "category": "RESPONSE",
+      "title": "Complete topology-bound source",
+      "requirement": "New complete-base response binds profile/solid shape, active face set, every bracket, shared shaft, materials, hardware, load/reference, contact and versioned applicability.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-052",
+      "category": "RESPONSE",
+      "title": "Missing response is explicit",
+      "requirement": "For nonzero inputs without applicable complete response, provide valid total foundation action but no fabricated connector, per-bolt, wall or anchor demand.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-053",
+      "category": "RESPONSE",
+      "title": "No production synthetic source",
+      "requirement": "Synthetic fixtures/qualified-integration doubles are test-only and unavailable from production presets/registry/UI; a typed reference is not qualification.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-054",
+      "category": "RESPONSE",
+      "title": "Static balance is insufficient",
+      "requirement": "A source must have applicable analysis/qualification evidence beyond its own boolean flag and equilibrium; two equilibrated different allocations are not automatically acceptable.",
+      "reference_fixture_ids": [
+        "F45-14"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-055",
+      "category": "RESPONSE",
+      "title": "All active branches and direct contact",
+      "requirement": "Require exactly the active 2 or 4 branch IDs and a distinct direct-contact record or certified inactive state; omitted response is not zero.",
+      "reference_fixture_ids": [
+        "F45-12",
+        "F45-13",
+        "F45-15"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-056",
+      "category": "RESPONSE",
+      "title": "No dangling inactive branch",
+      "requirement": "Switching FOUR_XY to TWO_X/TWO_Y removes inactive branch geometry, loads/results and source bindings; reject extra branch IDs in response.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-057",
+      "category": "RESPONSE",
+      "title": "Physical contact patches",
+      "requirement": "Compression-only pressure patches lie on actual WI/RHS/SRS end material; a net resultant at a centroid may lie over a void but is not a pressure patch.",
+      "reference_fixture_ids": [
+        "F45-15",
+        "F45-17",
+        "F45-18"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-058",
+      "category": "RESPONSE",
+      "title": "Contact signs and zero area",
+      "requirement": "Reject tensile compressive pressure, zero/negative patch area, unsupported tangential friction and patches in voids; do not abs/clip forces.",
+      "reference_fixture_ids": [
+        "F45-17",
+        "F45-18"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-059",
+      "category": "RESPONSE",
+      "title": "No counted-twice contact",
+      "requirement": "Direct column contact is not inserted into both connector cores; a net foot wrench and its detailed anchors/contact are not added together twice.",
+      "reference_fixture_ids": [
+        "F45-15",
+        "F45-16"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-060",
+      "category": "RESPONSE",
+      "title": "Common bolts are coupled",
+      "requirement": "Two independent angle certificates cannot establish complete shared-shank/wall response; couple all affected branches/bolts or retain missing coverage.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-061",
+      "category": "RESPONSE",
+      "title": "Normal and secondary bending",
+      "requirement": "Require actual source-qualified bolt-axis demand, shaft sections/contact and secondary bending coverage as needed. An in-plane balance is not a normal response solver.",
+      "reference_fixture_ids": [
+        "F45-21",
+        "F45-24"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-062",
+      "category": "RESPONSE",
+      "title": "Source changes invalidate bindings",
+      "requirement": "Profile, layout, dimensions, hardware, offsets, force sign/reference and source domain changes clear incompatible qualification; no silent interpolation.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-063",
+      "category": "RESPONSE",
+      "title": "Per-bolt/source ownership",
+      "requirement": "Reject duplicate physical bolt IDs, mismatched faces, nonfinite inputs, unapproved field values, incomplete reaction arrays and missing nonzero components.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-064",
+      "category": "RESPONSE",
+      "title": "Exact ledger recovery",
+      "requirement": "Source response uses accepted exact rational/finite-value proof contract; reject altered source values and preserve inherited projection diagnostics separately.",
+      "reference_fixture_ids": [
+        "F45-12",
+        "F45-13",
+        "F45-15",
+        "F45-16"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-065",
+      "category": "RESPONSE",
+      "title": "Zero actions",
+      "requirement": "With no self-weight/preload/pretension, exact zero transfer may be proven separately; zero demand does not qualify future strength or stiffness.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-066",
+      "category": "RESPONSE",
+      "title": "Load reversal uses new admissible state",
+      "requirement": "Pure input transport is antisymmetric; contact/bolt-tension active sets are not automatically negatives of a prior response.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-067",
+      "category": "RESPONSE",
+      "title": "Response is not capacity",
+      "requirement": "Complete base response, body strength, local region capacity, bolt strength and end-zone interaction are separate authorizations; one cannot silently fill another.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-068",
+      "category": "RESPONSE",
+      "title": "All three action cases source-present",
+      "requirement": "Execute 90 actual integrations: 15 geometry/layout configurations x combined compression, combined uplift reversal and pure biaxial x US/SI; use explicit applicable test sources only.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-069",
+      "category": "CHECKS",
+      "title": "All active Slice 7 cores",
+      "requirement": "Execute two or four unchanged cores using each complete qualified member wrench; retain member, heel and foot references and all local moments.",
+      "reference_fixture_ids": [
+        "F45-11",
+        "F45-12",
+        "F45-13"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-070",
+      "category": "CHECKS",
+      "title": "FRP body/instep coverage",
+      "requirement": "Use native instep shear only for its extrusion-axis shear scope and separate full-wrench qualified body checks; vertical axial transfer is not instep shear by definition.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-071",
+      "category": "CHECKS",
+      "title": "Native bolt strengths",
+      "requirement": "When demand and source allow, invoke actual bolt shear/tension/interaction checks with source/thread/grip metadata; preserve ASTM F593 source-pending limitations.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-072",
+      "category": "CHECKS",
+      "title": "Shared physical bolt check",
+      "requirement": "Combine compatible per-plane/shaft-section demands in one physical-bolt record without summing duplicate external reactions or doubling resistance.",
+      "reference_fixture_ids": [
+        "F45-21"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-073",
+      "category": "CHECKS",
+      "title": "Actual local regions",
+      "requirement": "Check angle uprights, selected WI web/flanges or RHS walls with actual material/force directions and loaded interfaces; SRS effective sections must have applicable authority.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-074",
+      "category": "CHECKS",
+      "title": "Local limit states retained",
+      "requirement": "Preserve all applicable bearing/net tension/shear-out/cleavage/block-shear/pull-through outputs and source limitations; no blanket zero-demand shortcut for unresolved sharing.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-075",
+      "category": "CHECKS",
+      "title": "End-zone interaction separate",
+      "requirement": "Independent wall/bolt checks do not prove combined column-end-zone/junction/local bending adequacy; show qualified interaction coverage separately.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-076",
+      "category": "CHECKS",
+      "title": "Full foundation remains external",
+      "requirement": "Do not substitute metal through-bolt strength for anchor system/concrete bearing/pullout/breakout/foundation strength/stability. Group wrenches are handoffs only.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-077",
+      "category": "CHECKS",
+      "title": "Full column remains external",
+      "requirement": "No new Chapter 4/5/6 global member design or use of view length as unbraced length; stiffness/rotation/full-strength remain not evaluated.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-078",
+      "category": "CHECKS",
+      "title": "Status precedence without canned FAIL",
+      "requirement": "Geometry invalidity precedes actual evaluated failure; missing response/capacity remains explicit. No default inherited FAIL or ordinary whole-base PASS.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-079",
+      "category": "CHECKS",
+      "title": "Failure trace must explain FAIL",
+      "requirement": "Every numerical FAIL has an actual native failed-check/reason and correct input fingerprint; preserve subordinate failures and missing sources separately.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-080",
+      "category": "CHECKS",
+      "title": "Preview resistance count zero",
+      "requirement": "Preview resolves geometry, total transport and permitted source-bound demand validation only; every resistance/provider capacity call remains explicit-design-only.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-081",
+      "category": "UI_API",
+      "title": "Additive integration",
+      "requirement": "Add new product routes/types/exports and exact route inventories; do not implement through fake Stage 4.4 Angle profiles or mutate old request contracts.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-082",
+      "category": "UI_API",
+      "title": "One canonical state",
+      "requirement": "Sidebar and editable action labels share the exact current input state; response provenance binds normalized input and topology.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-083",
+      "category": "UI_API",
+      "title": "Topology selectors clear incompatible state",
+      "requirement": "WI/RHS/SRS and two-axis/four selectors rebuild from authoritative backend records without hidden preserved bolts/loads or duplicated assemblies.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-084",
+      "category": "UI_API",
+      "title": "Square and nonsquare presets",
+      "requirement": "All five presets times three layouts load in US and SI with feasible geometry; label them construction examples, not passing designs.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-085",
+      "category": "UI_API",
+      "title": "Shared group editors",
+      "requirement": "Show independent connector dimensions and explicitly shared physical-bolt pair coordinates; do not duplicate contradictory editable copies.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-086",
+      "category": "UI_API",
+      "title": "Readable input groups",
+      "requirement": "Member bolts and foundation attachments occupy full-width sidebar groups; washer/nut/strength/source inputs are labeled with engineering terms.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-087",
+      "category": "UI_API",
+      "title": "Live valid load edit",
+      "requirement": "From a valid preset change one load; inspect normalized request, accepted response and rendered signed arrow/value before running design. No old load in current scene.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-088",
+      "category": "UI_API",
+      "title": "Live valid hardware edit",
+      "requirement": "Individually verify column, bracket, member-bolt and foundation-attachment changes against backend snapshot and rendered actual geometry.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-089",
+      "category": "UI_API",
+      "title": "Prominent invalid LAST VALID",
+      "requirement": "Retained scene is visibly LAST VALID adjacent to/inside viewer; hide stale load arrows, show actual validation reasons near fields and block design.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-090",
+      "category": "UI_API",
+      "title": "Automatic recovery",
+      "requirement": "Correct invalid geometry and require automatic current preview replacement, restored current arrows and stale prior design; no manual reload required.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-091",
+      "category": "UI_API",
+      "title": "Input parsing and intermediate edits",
+      "requirement": "Empty/sign-only fields remain editable invalid intermediate state without crash or zero coercion; finite/boolean/count validation stays backend controlled.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-092",
+      "category": "UI_API",
+      "title": "Request race protection",
+      "requirement": "Slow/superseded/aborted preview or design responses cannot overwrite newer input, source or result state; test valid-invalid-valid rapid sequence.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-093",
+      "category": "UI_API",
+      "title": "Presentation-only edits",
+      "requirement": "Orbit, X-ray, fit, overlay and view-length changes do not rerun design or change engineering identity; display-length refresh is a presentation snapshot update.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-094",
+      "category": "UI_API",
+      "title": "Source absence usable",
+      "requirement": "Render actual geometry and required total wrench with useful incomplete-source trace; do not label the ordinary source-absent screen a full design verification.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-095",
+      "category": "UI_API",
+      "title": "Source-present readable trace",
+      "requirement": "Test-only integration must render two/four member/heel/foot wrenches, coupled shafts, contact, applicable local checks and missing scopes without duplicate forces.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-096",
+      "category": "UI_API",
+      "title": "Scene color/type identity",
+      "requirement": "Concrete pedestal uses its actual support appearance; WI, hollow and solid geometry are visually distinguishable without inventing bounding-box solids.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-097",
+      "category": "UI_API",
+      "title": "Hardware X-ray and views",
+      "requirement": "Use top, both sides and X-ray to inspect every shared shank, hollow cavity and nonintersecting perpendicular pair; no visible floating foot or missing hardware.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-098",
+      "category": "UI_API",
+      "title": "Action labels editable and clear",
+      "requirement": "Labels remain distinct for N,Vx,Vy,Mx,My, proper signed arrows; no overlap that blocks the intended editor and no stale labels under LAST VALID.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-099",
+      "category": "UI_API",
+      "title": "No fictitious anchors/contact graphics",
+      "requirement": "Do not draw numerical individual anchor reactions or pressure contours without applicable accepted response; unknown response remains visually unavailable.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-100",
+      "category": "UI_API",
+      "title": "Independent real-browser evidence",
+      "requirement": "Run actual app root/selector and APIs in approved browser, inspect console/network and capture representative valid/invalid/recovery cases for all modes; do not rely only on mocked tests.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_BROWSER",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-101",
+      "category": "TESTING",
+      "title": "Twenty-four independent fixtures",
+      "requirement": "Recompute all F45-01..F45-24 independently using exact rational reference algebra; these never become production qualification sources.",
+      "reference_fixture_ids": [
+        "F45-01",
+        "F45-02",
+        "F45-03",
+        "F45-04",
+        "F45-05",
+        "F45-06",
+        "F45-07",
+        "F45-08",
+        "F45-09",
+        "F45-10",
+        "F45-11",
+        "F45-12",
+        "F45-13",
+        "F45-14",
+        "F45-15",
+        "F45-16",
+        "F45-17",
+        "F45-18",
+        "F45-19",
+        "F45-20",
+        "F45-21",
+        "F45-22",
+        "F45-23",
+        "F45-24"
+      ],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-102",
+      "category": "TESTING",
+      "title": "360 source-absent integrations",
+      "requirement": "Execute 5 geometry presets x 3 layouts x 12 loads x 2 units; validate whole product normalization/geometry/total transport/status/noninvention.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-103",
+      "category": "TESTING",
+      "title": "90 source-present integrations",
+      "requirement": "Execute full product source-present paths in 15 geometries/layouts x 3 named actions x 2 units; response validation, native body/bolt/local checks cannot be stubs.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-104",
+      "category": "TESTING",
+      "title": "Normal source negative tests",
+      "requirement": "Mutate source signs, physical IDs, matrix orientation, offsets, inactive branch and shaft/contact fields; ensure correct fail-closed response without fabricated demand.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-105",
+      "category": "TESTING",
+      "title": "Real-native integration oracles",
+      "requirement": "Construct direct native calls from actual request and source geometry independently of product output; preserve each dependency independent golden suite.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-106",
+      "category": "TESTING",
+      "title": "Native capacity failure visible",
+      "requirement": "Provide test-only sufficient and insufficient qualified capacity conditions without changing production material/defaults; verify native selection and trace completeness.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-107",
+      "category": "TESTING",
+      "title": "Zero and degenerate group coverage",
+      "requirement": "Check zero load and one-bolt/zero-J applicability through the accepted engine; a nonzero independent moment in a zero-J model remains unsupported.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-108",
+      "category": "TESTING",
+      "title": "Display-unit and permutation invariance",
+      "requirement": "Equivalent US/SI and stable physical-ID reorderings preserve engineering identity; real face/physical hole changes alter source binding.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-109",
+      "category": "TESTING",
+      "title": "Preflight all legacy patterns",
+      "requirement": "Before implementation, project full planned change set through current scope/route/source-prefix guards; consolidate same-pattern tests-only repairs without changing historical hashes.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PREFLIGHT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-110",
+      "category": "TESTING",
+      "title": "No silent coverage loss",
+      "requirement": "All tests and coverage thresholds retained; maintain configured 100% coverage, static checks, build and audits. Baseline counts 3963 backend/710 frontend are reference counts, not a hard upper bound.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-111",
+      "category": "GOVERNANCE",
+      "title": "Historical/source guard successor safety",
+      "requirement": "Anchor old identities to immutable evidence; permit only recorded Stage 4.5 changes in current scope; add historical tamper and future-successor probes without global path wildcards.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-112",
+      "category": "GOVERNANCE",
+      "title": "Scope inventory and historical blobs",
+      "requirement": "Enumerate new product/additive glue/test/governance files and preserve every other baseline blob; no workflow/dependency/frozen engineering change.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-113",
+      "category": "GOVERNANCE",
+      "title": "No licensed/generated artifacts",
+      "requirement": "Commit no licensed PDFs, screenshots, logs, secrets, node_modules, virtual environments or generated coverage/build output; only controlled records and reviewed sources.",
+      "reference_fixture_ids": [],
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-114",
+      "category": "GOVERNANCE",
+      "title": "Bounded timing and environment handling",
+      "requirement": "Use approved per-test timeout/rerun and trusted module-invocation alternatives only under diagnosed conditions; no security-policy bypass or removed QA.",
+      "reference_fixture_ids": [],
+      "verification_phase": "CONDITIONAL_MAINTENANCE",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-115",
+      "category": "GOVERNANCE",
+      "title": "Precommit checkpoint",
+      "requirement": "Review explicit staged paths, hashes, whitespace, source-prefix preservation and clean-index/worktree boundaries before exactly one normal implementation commit.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PRECOMMIT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-116",
+      "category": "GOVERNANCE",
+      "title": "Correct commit lineage",
+      "requirement": "Normally create count119 subject feat: add W/I RHS SRS column moment bases. Never amend or rewrite a published baseline; only bounded postpublish timeout successor changes count.",
+      "reference_fixture_ids": [],
+      "verification_phase": "COMMIT",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-117",
+      "category": "GOVERNANCE",
+      "title": "True object-isolated verification",
+      "requirement": "Fresh depth-one --no-local --no-tags/no-alternates/no-shared-history clone of exact candidate; one reachable commit, complete QA and clean tree. No remote history needed by tests.",
+      "reference_fixture_ids": [],
+      "verification_phase": "OBJECT_ISOLATED",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-118",
+      "category": "GOVERNANCE",
+      "title": "Authorized exact destination push",
+      "requirement": "After local/browser/isolated QA, push exact unchanged candidate normally and non-force to origin main for baraa-misto/frp-master-connection; no tags.",
+      "reference_fixture_ids": [],
+      "verification_phase": "PUBLICATION",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-119",
+      "category": "GOVERNANCE",
+      "title": "Direct hosted acceptance",
+      "requirement": "Require Backend Ubuntu/Windows and Frontend Ubuntu/Windows results for the exact published candidate. Hosted evidence is obtained after push; never infer it.",
+      "reference_fixture_ids": [],
+      "verification_phase": "HOSTED_CI",
+      "evidence_required": true
+    },
+    {
+      "id": "T45-120",
+      "category": "GOVERNANCE",
+      "title": "Owner acceptance remains pending",
+      "requirement": "Leave final application running at reported localhost URL with process/session IDs; report actual scope/limitations. Do not freeze Stage 4.5, claim all moments complete, or begin 316SS.",
+      "reference_fixture_ids": [],
+      "verification_phase": "OWNER_REVIEW",
+      "evidence_required": true
+    }
+  ],
+  "reference_fixtures": [
+    {
+      "id": "F45-01",
+      "title": "WI12: sharp-corner section footprint and centroid",
+      "method": "SECTION_PROPERTIES",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "kind": "WI",
+        "B_in": "12",
+        "D_in": "12",
+        "t_or_tf_in": ".5",
+        "tw_in": ".5"
+      },
+      "expected": {
+        "area_in2": "35/2",
+        "centroid_xy_in": [
+          "0",
+          "0"
+        ],
+        "Ixx_in4": "10859/24",
+        "Iyy_in4": "13835/96",
+        "Ixy_in4": "0"
+      },
+      "notes": "The real native profile, including its accepted fillets, is production authority. These reference moments of area are geometry checks only; no new stress or load-sharing engine is authorized.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-02",
+      "title": "RHS8: sharp-corner section footprint and centroid",
+      "method": "SECTION_PROPERTIES",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "kind": "RHS",
+        "B_in": "8",
+        "D_in": "8",
+        "t_or_tf_in": ".5",
+        "tw_in": null
+      },
+      "expected": {
+        "area_in2": "15",
+        "centroid_xy_in": [
+          "0",
+          "0"
+        ],
+        "Ixx_in4": "565/4",
+        "Iyy_in4": "565/4",
+        "Ixy_in4": "0"
+      },
+      "notes": "The real native profile, including its accepted fillets, is production authority. These reference moments of area are geometry checks only; no new stress or load-sharing engine is authorized.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-03",
+      "title": "SRS8: sharp-corner section footprint and centroid",
+      "method": "SECTION_PROPERTIES",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "kind": "SRS",
+        "B_in": "8",
+        "D_in": "8",
+        "t_or_tf_in": null,
+        "tw_in": null
+      },
+      "expected": {
+        "area_in2": "64",
+        "centroid_xy_in": [
+          "0",
+          "0"
+        ],
+        "Ixx_in4": "1024/3",
+        "Iyy_in4": "1024/3",
+        "Ixy_in4": "0"
+      },
+      "notes": "The real native profile, including its accepted fillets, is production authority. These reference moments of area are geometry checks only; no new stress or load-sharing engine is authorized.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-04",
+      "title": "RHS10x8: sharp-corner section footprint and centroid",
+      "method": "SECTION_PROPERTIES",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "kind": "RHS",
+        "B_in": "10",
+        "D_in": "8",
+        "t_or_tf_in": ".5",
+        "tw_in": null
+      },
+      "expected": {
+        "area_in2": "17",
+        "centroid_xy_in": [
+          "0",
+          "0"
+        ],
+        "Ixx_in4": "2033/12",
+        "Iyy_in4": "2897/12",
+        "Ixy_in4": "0"
+      },
+      "notes": "The real native profile, including its accepted fillets, is production authority. These reference moments of area are geometry checks only; no new stress or load-sharing engine is authorized.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-05",
+      "title": "SRS10x8: sharp-corner section footprint and centroid",
+      "method": "SECTION_PROPERTIES",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "kind": "SRS",
+        "B_in": "10",
+        "D_in": "8",
+        "t_or_tf_in": null,
+        "tw_in": null
+      },
+      "expected": {
+        "area_in2": "80",
+        "centroid_xy_in": [
+          "0",
+          "0"
+        ],
+        "Ixx_in4": "1280/3",
+        "Iyy_in4": "2000/3",
+        "Ixy_in4": "0"
+      },
+      "notes": "The real native profile, including its accepted fillets, is production authority. These reference moments of area are geometry checks only; no new stress or load-sharing engine is authorized.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-06",
+      "title": "Four proper angle frames: A horizontal extrusion, B up, C outward",
+      "method": "PROPER_FRAMES",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "matrices_rows": {
+          "X_POS": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "X_NEG": [
+            [
+              0,
+              0,
+              -1
+            ],
+            [
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "Y_POS": [
+            [
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "Y_NEG": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              -1
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        "local_force_kip": [
+          "4",
+          "-6",
+          "-2"
+        ],
+        "local_moment_kip_in": [
+          "1",
+          "3",
+          "5"
+        ]
+      },
+      "expected": {
+        "X_POS": {
+          "determinant": "1",
+          "global_force_kip": [
+            "-2",
+            "4",
+            "-6"
+          ],
+          "global_moment_kip_in": [
+            "5",
+            "1",
+            "3"
+          ],
+          "Q_transpose_Q": "IDENTITY"
+        },
+        "X_NEG": {
+          "determinant": "1",
+          "global_force_kip": [
+            "2",
+            "-4",
+            "-6"
+          ],
+          "global_moment_kip_in": [
+            "-5",
+            "-1",
+            "3"
+          ],
+          "Q_transpose_Q": "IDENTITY"
+        },
+        "Y_POS": {
+          "determinant": "1",
+          "global_force_kip": [
+            "-4",
+            "-2",
+            "-6"
+          ],
+          "global_moment_kip_in": [
+            "-1",
+            "5",
+            "3"
+          ],
+          "Q_transpose_Q": "IDENTITY"
+        },
+        "Y_NEG": {
+          "determinant": "1",
+          "global_force_kip": [
+            "4",
+            "2",
+            "-6"
+          ],
+          "global_moment_kip_in": [
+            "1",
+            "-5",
+            "3"
+          ],
+          "Q_transpose_Q": "IDENTITY"
+        }
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-07",
+      "title": "Centered nominal flush base: section centroid equals report origin",
+      "method": "WRENCH_SHIFT",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "r_R_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "r_O_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "force_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_R_kip_in": [
+          "60",
+          "40",
+          "0"
+        ]
+      },
+      "expected": {
+        "force_O_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_O_kip_in": [
+          "60",
+          "40",
+          "0"
+        ],
+        "opposite_reaction_force_kip": [
+          "-5",
+          "3",
+          "20"
+        ],
+        "opposite_reaction_moment_kip_in": [
+          "-60",
+          "-40",
+          "0"
+        ]
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-08",
+      "title": "Offset base: generated vertical-axis moment retained",
+      "method": "WRENCH_SHIFT",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "r_R_in": [
+          "2",
+          "-1",
+          "0"
+        ],
+        "r_O_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "force_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_R_kip_in": [
+          "60",
+          "40",
+          "0"
+        ]
+      },
+      "expected": {
+        "force_O_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_O_kip_in": [
+          "80",
+          "80",
+          "-1"
+        ],
+        "opposite_reaction_force_kip": [
+          "-5",
+          "3",
+          "20"
+        ],
+        "opposite_reaction_moment_kip_in": [
+          "-80",
+          "-80",
+          "1"
+        ]
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-09",
+      "title": "General 3D report-reference translation, not a view-length lever arm",
+      "method": "WRENCH_SHIFT",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "r_R_in": [
+          "2",
+          "-1",
+          "3"
+        ],
+        "r_O_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "force_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_R_kip_in": [
+          "60",
+          "40",
+          "0"
+        ]
+      },
+      "expected": {
+        "force_O_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_O_kip_in": [
+          "89",
+          "95",
+          "-1"
+        ],
+        "opposite_reaction_force_kip": [
+          "-5",
+          "3",
+          "20"
+        ],
+        "opposite_reaction_moment_kip_in": [
+          "-89",
+          "-95",
+          "1"
+        ]
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-10",
+      "title": "90-degree plan rotation: force, moment and physical reference rotate together",
+      "method": "ROTATED_SHIFT",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "Q_rows": [
+          [
+            0,
+            -1,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "r_R_in": [
+          "2",
+          "-1",
+          "0"
+        ],
+        "force_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_R_kip_in": [
+          "60",
+          "40",
+          "0"
+        ]
+      },
+      "expected": {
+        "rotated_reference_in": [
+          "1",
+          "2",
+          "0"
+        ],
+        "rotated_force_kip": [
+          "3",
+          "5",
+          "-20"
+        ],
+        "rotated_moment_R_kip_in": [
+          "-40",
+          "60",
+          "0"
+        ],
+        "rotated_moment_O_kip_in": [
+          "-80",
+          "80",
+          "-1"
+        ]
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-11",
+      "title": "Connector member-to-heel-to-foot complete wrench transport",
+      "method": "CONNECTOR_TRANSPORT",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "member_reference_in": [
+          "0",
+          "3",
+          "-1/4"
+        ],
+        "heel_reference_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "foot_reference_in": [
+          "0",
+          "-1/4",
+          "3"
+        ],
+        "member_force_kip": [
+          "4",
+          "-6",
+          "-2"
+        ],
+        "member_moment_kip_in": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "expected": {
+        "heel_force_kip": [
+          "4",
+          "-6",
+          "-2"
+        ],
+        "heel_moment_kip_in": [
+          "-13/2",
+          "1",
+          "-9"
+        ],
+        "connector_on_foot_force_kip": [
+          "4",
+          "-6",
+          "-2"
+        ],
+        "connector_on_foot_moment_kip_in": [
+          "-25",
+          "-11",
+          "-10"
+        ],
+        "heel_force_closure_kip": [
+          "0",
+          "0",
+          "0"
+        ],
+        "heel_moment_closure_kip_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-12",
+      "title": "Two supplied opposite-branch wrenches recover all six components",
+      "method": "LEDGER_SUM",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "records": [
+          {
+            "id": "Y_POS",
+            "point_in": [
+              "0",
+              "5",
+              "0"
+            ],
+            "force_kip": [
+              "2",
+              "-1",
+              "8"
+            ],
+            "free_moment_kip_in": [
+              "2",
+              "3",
+              "-1"
+            ]
+          },
+          {
+            "id": "Y_NEG",
+            "point_in": [
+              "0",
+              "-5",
+              "0"
+            ],
+            "force_kip": [
+              "3",
+              "-2",
+              "2"
+            ],
+            "free_moment_kip_in": [
+              "-1",
+              "4",
+              "2"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "force_O_kip": [
+          "5",
+          "-3",
+          "10"
+        ],
+        "moment_O_kip_in": [
+          "31",
+          "7",
+          "6"
+        ]
+      },
+      "notes": "Prescribed synthetic actions; they do not authorize a production two-angle load distribution.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-13",
+      "title": "Four supplied branch wrenches retain free moments",
+      "method": "LEDGER_SUM",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "records": [
+          {
+            "id": "X_POS",
+            "point_in": [
+              "5",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "1",
+              "2",
+              "6"
+            ],
+            "free_moment_kip_in": [
+              "1",
+              "0",
+              "2"
+            ]
+          },
+          {
+            "id": "X_NEG",
+            "point_in": [
+              "-5",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "1",
+              "-1",
+              "2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "2",
+              "-1"
+            ]
+          },
+          {
+            "id": "Y_POS",
+            "point_in": [
+              "0",
+              "5",
+              "0"
+            ],
+            "force_kip": [
+              "2",
+              "1",
+              "8"
+            ],
+            "free_moment_kip_in": [
+              "-1",
+              "1",
+              "0"
+            ]
+          },
+          {
+            "id": "Y_NEG",
+            "point_in": [
+              "0",
+              "-5",
+              "0"
+            ],
+            "force_kip": [
+              "1",
+              "-2",
+              "4"
+            ],
+            "free_moment_kip_in": [
+              "2",
+              "-1",
+              "1"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "force_O_kip": [
+          "5",
+          "0",
+          "20"
+        ],
+        "moment_O_kip_in": [
+          "22",
+          "-18",
+          "12"
+        ]
+      },
+      "notes": "There is no automatic force partition or moment-couple reduction in this fixture.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-14",
+      "title": "Two different four-branch allocations satisfy identical equilibrium",
+      "method": "NONUNIQUE_ALLOCATION",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "allocation_A": [
+          {
+            "id": "0",
+            "point_in": [
+              "4",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "5/2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "1",
+            "point_in": [
+              "-4",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "5/2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "2",
+            "point_in": [
+              "0",
+              "4",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "5/2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "3",
+            "point_in": [
+              "0",
+              "-4",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "5/2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          }
+        ],
+        "allocation_B": [
+          {
+            "id": "0",
+            "point_in": [
+              "4",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "4"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "1",
+            "point_in": [
+              "-4",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "4"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "2",
+            "point_in": [
+              "0",
+              "4",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "1"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "3",
+            "point_in": [
+              "0",
+              "-4",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "1"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "shared_total": {
+          "force_O_kip": [
+            "0",
+            "0",
+            "10"
+          ],
+          "moment_O_kip_in": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "allocations_are_different": true,
+        "equilibrium_alone_qualifies_either": false
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-15",
+      "title": "Direct column-end contact is a separate additive branch",
+      "method": "CONTACT_LEDGER",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "net_foot_records": [
+          {
+            "id": "X_POS",
+            "point_in": [
+              "4",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "-2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "X_NEG",
+            "point_in": [
+              "-4",
+              "0",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "-2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "Y_POS",
+            "point_in": [
+              "0",
+              "4",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "-2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "Y_NEG",
+            "point_in": [
+              "0",
+              "-4",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "-2"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          }
+        ],
+        "direct_contact": {
+          "id": "DIRECT_CONTACT",
+          "point_in": [
+            "0",
+            "0",
+            "0"
+          ],
+          "force_kip": [
+            "0",
+            "0",
+            "-12"
+          ],
+          "free_moment_kip_in": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      },
+      "expected": {
+        "net_feet": {
+          "force_O_kip": [
+            "0",
+            "0",
+            "-8"
+          ],
+          "moment_O_kip_in": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "direct_contact": {
+          "force_O_kip": [
+            "0",
+            "0",
+            "-12"
+          ],
+          "moment_O_kip_in": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "total": {
+          "force_O_kip": [
+            "0",
+            "0",
+            "-20"
+          ],
+          "moment_O_kip_in": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      },
+      "notes": "A net contact reference at the centroid is not permission to put a pressure patch in a hollow cavity. This arithmetic ledger needs separate physical-patch evidence.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-16",
+      "title": "Optional anchors and foot contact recover net foot wrench exactly once",
+      "method": "NET_FOOT_BREAKDOWN",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "internal_records": [
+          {
+            "id": "ANCHOR_1",
+            "point_in": [
+              "-1",
+              "3",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "5"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "ANCHOR_2",
+            "point_in": [
+              "1",
+              "3",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "3"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          {
+            "id": "FOOT_CONTACT",
+            "point_in": [
+              "0",
+              "2",
+              "0"
+            ],
+            "force_kip": [
+              "0",
+              "0",
+              "-12"
+            ],
+            "free_moment_kip_in": [
+              "0",
+              "0",
+              "0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "net_foot_wrench": {
+          "force_O_kip": [
+            "0",
+            "0",
+            "-4"
+          ],
+          "moment_O_kip_in": [
+            "0",
+            "2",
+            "0"
+          ]
+        },
+        "add_net_plus_breakdown_again": false
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-17",
+      "title": "Hollow section direct contact on an actual wall, not its cavity",
+      "method": "RECTANGULAR_CONTACT_PATCH",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "RHS_B_in": "8",
+        "RHS_D_in": "8",
+        "wall_t_in": "0.5",
+        "patch_x_interval_in": [
+          "3.5",
+          "4"
+        ],
+        "patch_y_interval_in": [
+          "-0.5",
+          "0.5"
+        ],
+        "pressure_kip_in2": "8",
+        "action_on_foundation_normal": [
+          0,
+          0,
+          -1
+        ]
+      },
+      "expected": {
+        "patch_area_in2": "1/2",
+        "patch_centroid_in": [
+          "15/4",
+          "0",
+          "0"
+        ],
+        "contact_force_kip": [
+          "0",
+          "0",
+          "-4"
+        ],
+        "contact_moment_at_O_kip_in": [
+          "0",
+          "15",
+          "0"
+        ],
+        "patch_on_real_material": true
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-18",
+      "title": "Invalid contact cannot be certified by a convenient resultant",
+      "method": "CONTACT_REJECTION",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "RHS_B_in": "8",
+        "RHS_D_in": "8",
+        "wall_t_in": "0.5",
+        "void_patch_x_interval_in": [
+          "-1",
+          "1"
+        ],
+        "void_patch_y_interval_in": [
+          "-1",
+          "1"
+        ],
+        "negative_pressure_kip_in2": "-1"
+      },
+      "expected": {
+        "void_patch_on_real_material": false,
+        "negative_compressive_pressure_valid": false,
+        "automatic_abs_or_clipping_permitted": false
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-19",
+      "title": "Centroid-referenced complete in-plane bolt wrench",
+      "method": "IN_PLANE_BOLT_GROUP",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "points_in": [
+          [
+            "-1.5",
+            "2"
+          ],
+          [
+            "1.5",
+            "2"
+          ],
+          [
+            "-1.5",
+            "4"
+          ],
+          [
+            "1.5",
+            "4"
+          ]
+        ],
+        "reference_in": [
+          0,
+          3
+        ],
+        "force_kip": [
+          4,
+          -6
+        ],
+        "free_moment_kip_in": 3
+      },
+      "expected": {
+        "centroid_in": [
+          "0",
+          "3"
+        ],
+        "J_in2": "13",
+        "centroid_moment_kip_in": "3",
+        "bolt_vectors_kip": [
+          [
+            "16/13",
+            "-24/13"
+          ],
+          [
+            "16/13",
+            "-15/13"
+          ],
+          [
+            "10/13",
+            "-24/13"
+          ],
+          [
+            "10/13",
+            "-15/13"
+          ]
+        ],
+        "force_closure_kip": [
+          "0",
+          "0"
+        ],
+        "moment_closure_kip_in": "0"
+      },
+      "notes": "Use the direct unchanged Slice 8 call as the native API oracle; reference fractions only verify its exact mechanics.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-20",
+      "title": "Same physical bolt coordinates, different wrench reference",
+      "method": "IN_PLANE_BOLT_GROUP",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "points_in": [
+          [
+            "-1.5",
+            "2"
+          ],
+          [
+            "1.5",
+            "2"
+          ],
+          [
+            "-1.5",
+            "4"
+          ],
+          [
+            "1.5",
+            "4"
+          ]
+        ],
+        "reference_in": [
+          0,
+          0
+        ],
+        "force_kip": [
+          4,
+          -6
+        ],
+        "free_moment_kip_in": 3
+      },
+      "expected": {
+        "centroid_in": [
+          "0",
+          "3"
+        ],
+        "J_in2": "13",
+        "centroid_moment_kip_in": "15",
+        "bolt_vectors_kip": [
+          [
+            "28/13",
+            "-42/13"
+          ],
+          [
+            "28/13",
+            "3/13"
+          ],
+          [
+            "-2/13",
+            "-42/13"
+          ],
+          [
+            "-2/13",
+            "3/13"
+          ]
+        ],
+        "force_closure_kip": [
+          "0",
+          "0"
+        ],
+        "moment_closure_kip_in": "0"
+      },
+      "notes": "Use the direct unchanged Slice 8 call as the native API oracle; reference fractions only verify its exact mechanics.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-21",
+      "title": "One physical long through-bolt: prescribed unequal layer actions",
+      "method": "SHAFT_SECTION_LEDGER",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "ordered_zone_labels": [
+          "ANGLE_X_POS",
+          "NEAR_WALL",
+          "FAR_WALL",
+          "ANGLE_X_NEG"
+        ],
+        "external_in_plane_actions_kip": [
+          [
+            "2",
+            "1"
+          ],
+          [
+            "-1",
+            "-1/4"
+          ],
+          [
+            "-2",
+            "-3/2"
+          ],
+          [
+            "1",
+            "3/4"
+          ]
+        ]
+      },
+      "expected": {
+        "resultant_force_kip": [
+          "0",
+          "0"
+        ],
+        "cumulative_in_plane_cut_forces_kip": [
+          [
+            "2",
+            "1"
+          ],
+          [
+            "1",
+            "3/4"
+          ],
+          [
+            "-1",
+            "-3/4"
+          ],
+          [
+            "0",
+            "0"
+          ]
+        ],
+        "cut_force_squared_kip2": [
+          "5",
+          "25/16",
+          "25/16",
+          "0"
+        ],
+        "physical_shank_count": 1,
+        "automatic_double_capacity": false
+      },
+      "notes": "Cumulative vectors are section-equilibrium bookkeeping for a supplied record, not a stiffness/contact response or a strength model; actual bending/normal response remains qualified.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-22",
+      "title": "Four-angle solid/hollow base: perpendicular bolt sets at different elevations",
+      "method": "ORTHOGONAL_SHAFT_CLEARANCE",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "X_set_z_in": [
+          2,
+          4
+        ],
+        "Y_set_z_in": [
+          5,
+          7
+        ],
+        "nominal_diameter_in": "0.5",
+        "hole_diameter_in": "0.563",
+        "tangential_lines_in": [
+          "-1.5",
+          "1.5"
+        ]
+      },
+      "expected": {
+        "minimum_axis_distance_in": "1",
+        "minimum_shank_surface_clearance_in": "0.5",
+        "minimum_hole_envelope_clearance_in": "0.437",
+        "same_elevation_crossing_axis_distance_in": "0",
+        "same_elevation_crossing_rejected": true
+      },
+      "notes": "Independent straight-cylinder reference. Native complete hardware/fillet/shaft containment remains mandatory. Do not silently stagger after an edit.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-23",
+      "title": "Exact U.S. to SI conversions retain original hole and wrench",
+      "method": "UNIT_CONVERSION",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "inch_to_mm": "127/5",
+        "kip_to_kN": "8896443230521/2000000000000",
+        "hole_in": "0.563",
+        "force_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "moment_kip_in": [
+          "80",
+          "80",
+          "-1"
+        ]
+      },
+      "expected": {
+        "hole_mm": "71501/5000",
+        "force_kN": [
+          "8896443230521/400000000000",
+          "-26689329691563/2000000000000",
+          "-8896443230521/100000000000"
+        ],
+        "moment_kN_mm": [
+          "1129848290276167/125000000000",
+          "1129848290276167/125000000000",
+          "-1129848290276167/10000000000000"
+        ],
+        "moment_kN_m": [
+          "1129848290276167/125000000000000",
+          "1129848290276167/125000000000000",
+          "-1129848290276167/10000000000000000"
+        ],
+        "area_1_in2_mm2": "16129/25"
+      },
+      "notes": "",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    },
+    {
+      "id": "F45-24",
+      "title": "All-face member projections retain complementary normal components",
+      "method": "MEMBER_PROJECTION",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC_NOT_PRODUCTION_QUALIFICATION",
+      "input": {
+        "frames_rows": {
+          "X_POS": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "X_NEG": [
+            [
+              0,
+              0,
+              -1
+            ],
+            [
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "Y_POS": [
+            [
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "Y_NEG": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              -1
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        "global_force_kip": [
+          5,
+          -3,
+          -20
+        ],
+        "global_moment_kip_in": [
+          60,
+          40,
+          7
+        ]
+      },
+      "expected": {
+        "X_POS": {
+          "local_force_ABC_kip": [
+            "-3",
+            "-20",
+            "5"
+          ],
+          "local_moment_ABC_kip_in": [
+            "40",
+            "7",
+            "60"
+          ],
+          "discarded_components": []
+        },
+        "X_NEG": {
+          "local_force_ABC_kip": [
+            "3",
+            "-20",
+            "-5"
+          ],
+          "local_moment_ABC_kip_in": [
+            "-40",
+            "7",
+            "-60"
+          ],
+          "discarded_components": []
+        },
+        "Y_POS": {
+          "local_force_ABC_kip": [
+            "-5",
+            "-20",
+            "-3"
+          ],
+          "local_moment_ABC_kip_in": [
+            "-60",
+            "7",
+            "40"
+          ],
+          "discarded_components": []
+        },
+        "Y_NEG": {
+          "local_force_ABC_kip": [
+            "5",
+            "-20",
+            "3"
+          ],
+          "local_moment_ABC_kip_in": [
+            "60",
+            "7",
+            "-40"
+          ],
+          "discarded_components": []
+        }
+      },
+      "notes": "The in-plane subset is FA, FB, MC; the FC, MA, MB complement is never set to zero just because Slice 8 does not solve it. The nonzero global Mz in this fixture is at a member-interface/report reference for the projection test, not an authorized independent column-end RC1 Mz input.",
+      "comparison": "EXACT_RATIONAL_AND_DECLARED_BOOLEAN",
+      "native_boundary": "Reference arithmetic does not replace native dependency serialization; direct native integration comparisons and inherited proofs remain separate."
+    }
+  ],
+  "source_locators": [
+    {
+      "id": "S1",
+      "title": "Supplied ASCE/SEI 74-23",
+      "sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+      "locators": [
+        "1.4.2",
+        "1.7.2",
+        "2.3.2",
+        "2.9",
+        "2.10",
+        "7.1-7.2 applicability only",
+        "8.1-8.3",
+        "8.4",
+        "C8.3.4",
+        "C8.4"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Supplied Erratum 1, effective 2026-01-13",
+      "sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550",
+      "effect": "Chapter 5 transverse-modulus description; no new base allocation or anchor design method."
+    },
+    {
+      "id": "S3",
+      "title": "Current baseline native source and freeze registers",
+      "binding": "Resolve exact Stage 3.7/4.3/4.4 and Slice 7/8 identities from the actual count118 repository. Preparation did not execute repository production APIs."
+    }
+  ],
+  "phase_policy": "Execute only phase-applicable gates. Publication/hosted CI/owner review are PENDING until reached, never fabricated prerequisites for push. Conditional maintenance may be NOT_NEEDED with reason."
+}

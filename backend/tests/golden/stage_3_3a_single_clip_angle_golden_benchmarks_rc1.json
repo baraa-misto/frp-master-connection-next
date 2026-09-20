@@ -1,0 +1,358 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_3A_SINGLE_CLIP_ANGLE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "semantic_frame": {
+    "S_C": [
+      "1",
+      "0",
+      "0"
+    ],
+    "P_C": [
+      "0",
+      "1",
+      "0"
+    ],
+    "L_C": [
+      "0",
+      "0",
+      "1"
+    ],
+    "handedness": "S_C cross P_C = L_C"
+  },
+  "controlled_default": {
+    "clip_angle": {
+      "material_family": "PULTRUDED_FRP",
+      "hand": "POSITIVE_S_SIDE",
+      "connected_leg_width_in": "4",
+      "support_leg_width_in": "4",
+      "thickness_in": "0.5",
+      "length_in": "8",
+      "length_anchor": "CENTER",
+      "anchor_position_in": "0"
+    },
+    "connected_member": {
+      "role": "BRACE",
+      "profile": "FLAT_PLATE",
+      "width_in": "6",
+      "thickness_in": "0.375",
+      "member_view_length_in": "8",
+      "inclination_degrees": "0",
+      "profile_roll_degrees": "0",
+      "selected_surface": "POSITIVE_PLATE_FACE"
+    },
+    "support": {
+      "role": "W_COLUMN_FLANGE",
+      "selected_flange": "POSITIVE_LOCAL_Z",
+      "length_in": "16",
+      "depth_in": "8",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75"
+    },
+    "fastener": {
+      "material_family": "STAINLESS_STEEL_316",
+      "snapshot": "ASTM_F593_17_GROUP_2_316_316L",
+      "bolt_diameter_in": "0.5",
+      "hole_diameter_in": "0.563",
+      "hole_radius_in": "0.2815"
+    },
+    "interface_A": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "2",
+      "gauge_in": "2",
+      "width_coordinates_in": [
+        "1.25",
+        "3.25"
+      ],
+      "length_coordinates_in": [
+        "-1",
+        "1"
+      ]
+    },
+    "interface_B": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "2",
+      "gauge_in": "2",
+      "width_coordinates_in": [
+        "1.25",
+        "3.25"
+      ],
+      "length_coordinates_in": [
+        "-1",
+        "1"
+      ]
+    },
+    "clearances_in": {
+      "heel": "0.4685",
+      "free_edge": "0.4685",
+      "positive_length_end": "2.7185",
+      "negative_length_end": "2.7185"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_DEFAULT_RIGHT_HAND_CONCENTRIC_2X2_2X2",
+      "action_kip_in_semantic_S_P_L": {
+        "force": [
+          "0",
+          "0",
+          "3"
+        ],
+        "moment": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in": [
+          "2.25",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "interface_A_normal_action_kip": "0",
+        "interface_B_normal_action_kip": "0",
+        "interface_A_residual_moment_kip_in": "0",
+        "interface_B_residual_moment_kip_in": "0",
+        "interface_A_per_bolt_in_plane_vector_kip": [
+          "0",
+          "0.75"
+        ],
+        "interface_B_per_bolt_in_plane_vector_kip": [
+          "0",
+          "0.75"
+        ],
+        "interface_A_per_bolt_magnitude_kip": "0.75",
+        "interface_B_per_bolt_magnitude_kip": "0.75",
+        "interface_A_bolt_count": 4,
+        "interface_B_bolt_count": 4,
+        "connector_body_status": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass_allowed": false
+      }
+    },
+    {
+      "id": "G2_INDEPENDENT_GROUPS_A_2X1_B_2X2",
+      "interface_A": {
+        "rows": 2,
+        "bolts_per_row": 1,
+        "width_coordinates_in": [
+          "2.25"
+        ],
+        "length_coordinates_in": [
+          "-1",
+          "1"
+        ]
+      },
+      "interface_B": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "width_coordinates_in": [
+          "1.25",
+          "3.25"
+        ],
+        "length_coordinates_in": [
+          "-1",
+          "1"
+        ]
+      },
+      "action_kip_in_semantic_S_P_L": {
+        "force": [
+          "0",
+          "0",
+          "3"
+        ],
+        "moment": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in": [
+          "2.25",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "interface_A_bolt_count": 2,
+        "interface_B_bolt_count": 4,
+        "interface_A_per_bolt_magnitude_kip": "1.5",
+        "interface_B_per_bolt_magnitude_kip": "0.75",
+        "changing_A_changes_B_geometry": false,
+        "changing_B_changes_A_geometry": false
+      }
+    },
+    {
+      "id": "G3_COLUMN_BEAM_SUPPORT_LOCAL_INVARIANCE",
+      "support_roles": [
+        "W_COLUMN_FLANGE",
+        "W_BEAM_FLANGE"
+      ],
+      "expected": {
+        "same_clip_angle_local_geometry": true,
+        "same_interface_local_bolt_coordinates": true,
+        "same_local_demand_vectors": true,
+        "global_support_transform_differs": true,
+        "duplicated_clip_angle_engineering_logic": false
+      }
+    },
+    {
+      "id": "G4_CLIP_ANGLE_HAND_MIRROR",
+      "hands": [
+        "POSITIVE_S_SIDE",
+        "NEGATIVE_S_SIDE"
+      ],
+      "expected": {
+        "dimensions_unchanged": true,
+        "actions_unchanged": true,
+        "interface_A_width_coordinates_mirrored": true,
+        "interface_B_width_coordinates_mirrored": true,
+        "bolt_axis_directions_mirrored": true,
+        "clearance_magnitudes_unchanged": true,
+        "per_bolt_demand_magnitudes_unchanged": true
+      }
+    },
+    {
+      "id": "G5_INCLINED_MEMBER_FIXED_GRID_WITH_TRIM",
+      "connected_member": {
+        "profile": "ANGLE",
+        "inclination_degrees": "25",
+        "trim_enabled": true,
+        "end_clearance_to_support_leg_in": "0.25"
+      },
+      "expected": {
+        "clip_angle_body_moves_with_member_inclination": false,
+        "interface_A_grid_rotates_with_member": false,
+        "interface_A_bolt_centers_change_from_zero_inclination": "NONE",
+        "trim_plane_fixed_to_clip_angle": true,
+        "measured_trim_clearance_in": "0.25",
+        "remaining_interference": false
+      }
+    },
+    {
+      "id": "G6_SUPPORT_INTERFACE_NORMAL_ACTION_FAIL_CLOSED",
+      "action_kip_in_semantic_S_P_L": {
+        "force": [
+          "0",
+          "1",
+          "0"
+        ],
+        "moment": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_point_in": [
+          "2.25",
+          "2.25",
+          "0"
+        ]
+      },
+      "expected": {
+        "interface_A_normal_action_kip": "0",
+        "interface_B_normal_action_kip": "1",
+        "bolt_axis_tension_generated": false,
+        "prying_generated": false,
+        "support_normal_path_status": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass_allowed": false
+      }
+    },
+    {
+      "id": "G7_US_SI_EQUIVALENCE",
+      "conversions": {
+        "8_in_mm": "203.2",
+        "6_in_mm": "152.4",
+        "4_in_mm": "101.6",
+        "2_in_mm": "50.8",
+        "1.25_in_mm": "31.75",
+        "3.25_in_mm": "82.55",
+        "0.5_in_mm": "12.7",
+        "0.375_in_mm": "9.525",
+        "0.563_in_mm": "14.3002",
+        "0.25_in_mm": "6.35",
+        "3_kip_kN": "13.3446648457815",
+        "1.5_kip_kN": "6.67233242289075",
+        "0.75_kip_kN": "3.336166211445375"
+      },
+      "expected": {
+        "physical_geometry_equal": true,
+        "bolt_coordinates_equal": true,
+        "demand_results_equal": true,
+        "engineering_fingerprints_equal": true,
+        "presentation_units_excluded_from_fingerprint": true
+      }
+    },
+    {
+      "id": "G8_CLIP_ANGLE_MATERIAL_REGIONS",
+      "positive_hand_semantic_bases": {
+        "CONNECTED_MEMBER_LEG": {
+          "LW": [
+            "0",
+            "0",
+            "1"
+          ],
+          "CW": [
+            "0",
+            "-1",
+            "0"
+          ],
+          "TT": [
+            "1",
+            "0",
+            "0"
+          ]
+        },
+        "SUPPORT_LEG": {
+          "LW": [
+            "0",
+            "0",
+            "1"
+          ],
+          "CW": [
+            "-1",
+            "0",
+            "0"
+          ],
+          "TT": [
+            "0",
+            "-1",
+            "0"
+          ]
+        }
+      },
+      "expected": {
+        "independent_region_bases": true,
+        "lw_parallel_to_connector_length": true,
+        "lw_cross_cw_equals_tt": true,
+        "region_embedded_material_indicators": 2,
+        "component_wide_shared_cw_tt_basis": false
+      }
+    },
+    {
+      "id": "G9_COMPLETE_FASTENER_PRESENTATION",
+      "expected": {
+        "engineering_bolt_count": 8,
+        "solid_shank_count": 8,
+        "head_count": 8,
+        "nut_count": 8,
+        "washer_count_for_controlled_snapshot": 0,
+        "head_and_nut_on_opposite_stack_sides": true,
+        "hardware_axes_match_bolt_axes": true,
+        "schematic_hardware_enters_engineering_fingerprint": false
+      }
+    },
+    {
+      "id": "G10_CONNECTOR_BODY_LIMITATION_AND_FAILURE_PRECEDENCE",
+      "expected": {
+        "required_body_check": "SINGLE_CLIP_ANGLE_CONNECTOR_BODY_RESISTANCE",
+        "body_status": "NOT_EVALUATED",
+        "supported_interface_fail_governs_assembly_fail": true,
+        "supported_interface_pass_plus_body_unsupported": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass_allowed": false,
+        "new_connector_body_equation_used": false
+      }
+    }
+  ]
+}

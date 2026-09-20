@@ -1,0 +1,112 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R13_TEE_LENGTH_ANCHOR_POSITION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering values are exact decimal strings.",
+  "semantic_longitudinal_frame": {
+    "datum_coordinate": "0",
+    "positive_axis": "+L_T"
+  },
+  "benchmarks": [
+    {
+      "id": "R13_A1_LEGACY_CENTERED_6",
+      "connector_length": "6",
+      "anchor": "CENTER",
+      "anchor_position": "0",
+      "expected": {
+        "center": "0",
+        "positive_end": "3",
+        "negative_end": "-3"
+      }
+    },
+    {
+      "id": "R13_A2_CENTERED_8",
+      "connector_length": "8",
+      "anchor": "CENTER",
+      "anchor_position": "0",
+      "expected": {
+        "center": "0",
+        "positive_end": "4",
+        "negative_end": "-4"
+      }
+    },
+    {
+      "id": "R13_A3_KEEP_POSITIVE_END_FIXED",
+      "connector_length": "8",
+      "anchor": "POSITIVE_L_END",
+      "anchor_position": "3",
+      "expected": {
+        "center": "-1",
+        "positive_end": "3",
+        "negative_end": "-5"
+      }
+    },
+    {
+      "id": "R13_A4_KEEP_NEGATIVE_END_FIXED",
+      "connector_length": "8",
+      "anchor": "NEGATIVE_L_END",
+      "anchor_position": "-3",
+      "expected": {
+        "center": "1",
+        "positive_end": "5",
+        "negative_end": "-3"
+      }
+    },
+    {
+      "id": "R13_A5_ANCHOR_SWITCH_EQUIVALENCE",
+      "connector_length": "6",
+      "representations": [
+        {
+          "anchor": "CENTER",
+          "anchor_position": "0"
+        },
+        {
+          "anchor": "POSITIVE_L_END",
+          "anchor_position": "3"
+        },
+        {
+          "anchor": "NEGATIVE_L_END",
+          "anchor_position": "-3"
+        }
+      ],
+      "expected": {
+        "physical_body_geometry_equal": true,
+        "body_geometry_fingerprint_equal": true,
+        "viewer_jump": false
+      }
+    },
+    {
+      "id": "R13_A6_BODY_POSITION_PLUS_1",
+      "connector_length": "6",
+      "anchor": "CENTER",
+      "anchor_position": "1",
+      "expected": {
+        "center": "1",
+        "positive_end": "4",
+        "negative_end": "-2"
+      }
+    },
+    {
+      "id": "R13_A7_BOLT_INVARIANCE_UNDER_LENGTH_ANCHOR",
+      "from_case": "R13_A1_LEGACY_CENTERED_6",
+      "to_case": "R13_A3_KEEP_POSITIVE_END_FIXED",
+      "expected": {
+        "interface_A_bolt_centers_change": "NONE",
+        "interface_A_bolt_axes_change": "NONE",
+        "interface_B_bolt_centers_change": "NONE",
+        "interface_B_bolt_axes_change": "NONE",
+        "tee_body_boundaries_change": true
+      }
+    },
+    {
+      "id": "R13_A8_BODY_POSITION_BOLT_INDEPENDENCE",
+      "from_case": "R13_A1_LEGACY_CENTERED_6",
+      "to_case": "R13_A6_BODY_POSITION_PLUS_1",
+      "expected": {
+        "tee_body_translation_along_L": "1",
+        "interface_A_bolt_centers_change": "NONE",
+        "interface_B_bolt_centers_change": "NONE",
+        "clearances_recomputed": true
+      }
+    }
+  ]
+}

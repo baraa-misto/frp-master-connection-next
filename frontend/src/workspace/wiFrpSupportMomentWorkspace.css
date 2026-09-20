@@ -1,0 +1,10 @@
+.wi-frp-support-moment-workspace .frp43-input-group { min-width:0; margin:0; padding:.65rem; border:1px solid #cdd4db; border-radius:.2rem; }
+.wi-frp-support-moment-workspace .frp43-input-group legend { padding-inline:.3rem; color:#344758; font-size:.78rem; font-weight:700; }
+.wi-frp-support-moment-workspace .frp43-full { grid-column:1 / -1; }
+.wi-frp-support-moment-workspace .properties-sidebar :is(input,select,.field-grid>span) { min-width:0; max-width:100%; }
+.wi-frp-support-moment-workspace :is(p,label,legend,td,.source-card,.qualification-banner) { overflow-wrap:anywhere; }
+.wi-frp-support-moment-workspace .frp43-source input { min-width:0; }
+.wi-frp-support-moment-workspace .frp43-table { max-width:100%; overflow-x:auto; }
+.wi-frp-support-moment-workspace pre { max-width:100%; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
+.wi-frp-support-moment-workspace td { vertical-align:top; }
+.wi-frp-support-moment-workspace .frp43-table details { max-width:28rem; }

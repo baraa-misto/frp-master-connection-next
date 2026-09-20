@@ -1,0 +1,453 @@
+{
+  "parent": "2e33c562fe131cef4526390c151be024a8a734a8",
+  "paths": {
+    "tee-connector": {
+      "US": {
+        "input": "8a25c1df264fc9363dbab7746af2eabd8bde5bc449c1dcc483b7485ac58c2338",
+        "stack": [
+          "C2_R",
+          "C2_T",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "2875f4b16f936fb8a8f3388c5549b8164d7f9651745668e6d97fbdc6fe537c20"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "2ed0d5ff79b9f0acdaaddd2e5f15533d8f218f81dc052538b522379306ec46fc"
+        }
+      },
+      "SI": {
+        "input": "4657ee9be95b5d886cf4971533953d5089d37fcd8b5075e0da134db8cff40910",
+        "stack": [
+          "C2_R",
+          "C2_T",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "4e4b63878a8434072e874dc2ef29fa383d772a649e8985b4ee339bc1767ad663"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "4e0416f7b94f82fa9521fa727fbedfabafefb16aa8c078f8a92c2578137ca60a"
+        }
+      }
+    },
+    "clip-angle": {
+      "US": {
+        "input": "650f9852d2b85a9719bada19b9b9e0ed845d3a871f90c34cf9bc612f764eae35",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "7be274e5a82f781320cff7686a2e063e1398e928c2e7912958717f89c2d8cf6f"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "4dc23007a94f52fd97e81946da307a80ca38ca2195accc2689640cfc6b330e08"
+        }
+      },
+      "SI": {
+        "input": "2a52544f3e002b374247d1ba8df47536674d1a37f3e5eecab7a2d9806d6bcbd2",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "23db395e57f76c35d529f883f51571a8b65b2f7e108919d77cf7c399a1575e24"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "4a5c9b5cb362e674236464b35dc0d6090b19ac8b1a6cb07d46dac557f30d770b"
+        }
+      }
+    },
+    "paired-clip-angle": {
+      "US": {
+        "input": "f0d3a39141f0c14f0e9ee49f949a2b390706d5b43819cc7933ef595097620b19",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "ebe8ad603a7ae2535102ca1508e2f3ea059da7ce89ea338bc7d4c96f9dfade6a"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "7cb282499c689b9154dd987040647cb827a1615c98696c590bde6e5d40d3c338"
+        }
+      },
+      "SI": {
+        "input": "da85013d0fdc24abbab79db49632b608aa7b10de33f9738b9e8c1fc9188f5bb1",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "4d69a226f991963e4e10e52c75d441400dcd5a28e50f28ad856e679363e19b05"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "3bf1098b026d6599456395791d03b29fb7af627c2ad47928091f75bffecffaa1"
+        }
+      }
+    },
+    "multi-member-tee": {
+      "US": {
+        "input": "686b5e658b6cbeefef52fb3f8bf07156f70ca9676066c10e501254ccb7de2857",
+        "stack": [
+          "C2_R",
+          "C2_T",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "6bfc1817f1b6331f4e3ac77347cda774fd5fbec78ed53afdf01dcae225c7f2f4"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "0ec87a4becf8f37a2220537ca1501f285d21afa01c91e0d2cac374cde8cc00c5"
+        }
+      },
+      "SI": {
+        "input": "5a4eda50803d07d8796b4f1a7227c257078c965e19c86fdd8f9e628a351ef6f3",
+        "stack": [
+          "C2_R",
+          "C2_T",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "513eedd2f79a85de8364bea5812d5f85a715cbb864175283abcdda6aecac7cd0"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "82b488514907c443d3c53aca1394c1f25b5354bc80c3a4fe6fccd39935d02a88"
+        }
+      }
+    },
+    "beam-concrete-paired-angle": {
+      "US": {
+        "input": "86408c9f9984f6c08ec6faa6a90789c1168e3613a70e530d71e71f86593d46ed",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "dee9c1f9e1499951dcf19fe056d59218e26316d69452eb48ccd3d046308fa69d"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "9bf1418cbd3e0fb443bce50c2427f1100c78ba04b3a199baf6f06519e63ca050"
+        }
+      },
+      "SI": {
+        "input": "7e9e2f3a63aadef3edf8b62defc5ddfc83415ad829db4e8dd56f4b2bc73f9351",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "06e271c2248d0b225583aaf5d45ad6f821ead91ea8709ffcd03945c12cea7067"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "6bd5e724bd57ac0fdfbbb54c5a3e8bcfb0342a203c6fc088176cd5f37d998d39"
+        }
+      }
+    },
+    "column-base-web-angles": {
+      "US": {
+        "input": "397022e887991d55761882c64655201b70ba005eafe3b6edfc1da016324f913c",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "cb16acbdcf459e67958184571febc8686f905d381f6b49dfc0132ac887d77647"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "d29b7677fd152b0c5b34e8dad5abced224ef0f5e9db888251a111c7c7ea6deb9"
+        }
+      },
+      "SI": {
+        "input": "ca78c83e3696a4502af9e88b702d629d3fd2b1c4456b7dd28e755d792128a3a8",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "d320970d7ddd48182be18165ac2d401e2d0cb58753c79ccecc09e5336cdbab7b"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "47c0b81f8687030ee92ebd49029f5b27b68f1205e3558ba867c9c6a75b4336d6"
+        }
+      }
+    },
+    "beam-web-splice": {
+      "US": {
+        "input": "0d82a4827539b118947eb33d8ebf4cb0387eb33c2a46b27353e19512633c7e20",
+        "stack": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "97f1d64882a9f7374a38d103c2bd066e74709f59bf307be757e3b5fe1bb78fe2"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "d493bbc024f5a5ee12e1043b33d9d187edef405e8e6394219f83fda27c4f8bd4"
+        }
+      },
+      "SI": {
+        "input": "25e06f52b5c7123fd17ba43215418459ca713b791dce998ac9e8117a7a05afb8",
+        "stack": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "59f1ae1c41704c14b5520e032324d382c75195aee5e67895aaa509eb19c6f212"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "c9476b4887b31ca6a75c05ae137094019ea6eda2520cb369bb5ce40fadad39d5"
+        }
+      }
+    },
+    "wi-major-axis-moment-splice": {
+      "US": {
+        "input": "c58c1cef5d2ea910f2df5e797acd4cfad1a271ca427ed2f7b43c1f9d759b3dd5",
+        "stack": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "7f5b280ba325599822f092374cbd534be1d8a26fc2497a679f9d46f6a435d6c2"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "e00169e0d6ac7199e89c079b28853744f86ac19d4bd31a39c06dacc277b51274"
+        }
+      },
+      "SI": {
+        "input": "4c3acd838dfebc64f811689333ca8dc7ec8ef30b2e3df3fbea863f7d505b9035",
+        "stack": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "636fe8f00b4e258456b91a341b3429035a333e1e3e3eded03591a018bdf91ab8"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "340b1fce1675c80e8d6266a54db8be2a7414245d7e82aef9beb6cc19b894e663"
+        }
+      }
+    },
+    "channel-major-axis-moment-splice": {
+      "US": {
+        "input": "e5b8d54c3a2c91719f272bdf55cc16893329801aea2535300ee8806bd3152020",
+        "stack": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "7098eb78acbf5e4645eadc2f2f54a1f8faf6451e67a8496ae87c1c545a4b6bc1"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "342f4dff67cc237c328b378ec03d80b357931ddc2bb62131b042ac22138ab789"
+        }
+      },
+      "SI": {
+        "input": "359ff985395f801826f35a251036c91c4f8775e6f7e8b9c1eb96eb2ed2869231",
+        "stack": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "037f558534510c4e347e7ab434d7603544395598f54a11a58250f474d40bc682"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "9ceca2a5af96815cc039b49a1996fd2175508244cddc8ddefa3a8b5d966eb4fc"
+        }
+      }
+    },
+    "wi-beam-concrete-wall-moment": {
+      "US": {
+        "input": "009820c662553e11898fcdf9c7785826c02d7cb38cae41a6b55786e20db01d85",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "668971dcd9a3d0fa8e2214d624a65f475effbfeb5a0b2c82ed5ba93e6aa85355"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "f1805008283139e39925cd60c11791e5e84a864511dfec056cfd7e576dd1ab3a"
+        }
+      },
+      "SI": {
+        "input": "3cddfa2d46b2c8c20c9c827309c3938c613f5d8b6d47630016e8a3f3bb0c2e15",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "20dcafc0822217f51057235fe2c6b957c27598a31b5bcedb533932c24d43fd5f"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "11971a18e6c3fad25be59bc106719f48739b239cf9a703e2d01e62a8450b4d42"
+        }
+      }
+    },
+    "wi-beam-frp-support-moment": {
+      "US": {
+        "input": "04676b96638d13e1332bee4688fae6f93f26e0ed4b7149229a300552e456aedf",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "57fc06ea383d26262128d0fbee96df3282eb28ec392f505e8d8c2087a0626b64"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "174f3d5628a575082e48baf863e8af7102123efa0de3a5bdf828893b1a836485"
+        }
+      },
+      "SI": {
+        "input": "0eee5429eef4f6d7ed58107b408ec1abac1a70e9608d491c160b361b102c855f",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "24c995ee6f0256182a343ffee85f104e43defcc40a3a2a5394b9436938e999af"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "6e60ce56ebb4e154c1b225100686bbb80dc06f3a529b344643a10cf07a9bc4b7"
+        }
+      }
+    },
+    "angle-column-two-leg-moment-base": {
+      "US": {
+        "input": "c02cc4c38595b417fa4371993cdd5d5657c5630cb6693e0c16684216ceb8e43f",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "7c93c76366d1cc9c4774de7efcfcb65533ee0272f6c22a5d534510774c159b01"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "4149c32fa0274ed5695f993883c5d467b48e7ae77e765d76c3cafe5829ce7933"
+        }
+      },
+      "SI": {
+        "input": "e43442901158eba6b91845206e12691939d3c12c1e5c9822c4c20c13a9dc868d",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "fba6a720ce43f61201c4826e97c4a842565bf29d959934e2a1579a6c96ecbf77"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "3fdd27b4e0408a2682e063e008a2c1bf75e75c4189fe91e98936231e8ac1fe51"
+        }
+      }
+    },
+    "wi-rhs-srs-column-moment-base": {
+      "US": {
+        "input": "5c3bd68e641bd3ad2129e725ccb6cd1692d01a684bcfe96d3cf7509b716b21af",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "5cf5074f05ddadbce625d4468b0a855fd852416b678dd61b5b5d15a6d45036d5"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "2a8c9f882e37513783d151269b0e89cce4d5d88b70d32ee640d2cc574ccb2823"
+        }
+      },
+      "SI": {
+        "input": "a01d6c5fe9f3baaf0fd409df8cfac3a856c7be60a67529c7f1bdac61bf06d3de",
+        "stack": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "preview": {
+          "http": 200,
+          "sha256": "00927da7b539f62f9539cee221789b431cf0d3e31dc5875dab22ba3e38209060"
+        },
+        "design-check": {
+          "http": 200,
+          "sha256": "f7eaca00f4e735ab5a3214f3b49b1b063584d0222d2a79c1787ccd50174cd690"
+        }
+      }
+    }
+  }
+}

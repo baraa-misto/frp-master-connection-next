@@ -1,0 +1,359 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_3C2_TEE_SINGLE_CLIP_SUPPORT_RECTANGULAR_EXPANSION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative quantities are exact decimal strings.",
+  "reference": {
+    "connector_layer_thickness_in": "0.5",
+    "open_section_layer_thickness_in": "0.5",
+    "rectangular_section": {
+      "bolt_axis_depth_in": "6",
+      "orthogonal_width_in": "4",
+      "rhs_wall_thickness_in": "0.5",
+      "member_length_in": "8"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "C2_G1_TEE_W_COLUMN_WEB",
+      "family": "TEE",
+      "support": "W_COLUMN_WEB",
+      "expected": {
+        "path": [
+          "TEE_FLANGE",
+          "W_WEB"
+        ],
+        "support_material_thickness_in": "0.5",
+        "free_span_count": 0,
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "C2_G2_TEE_CHANNEL_COLUMN_WEB",
+      "family": "TEE",
+      "support": "CHANNEL_COLUMN_WEB",
+      "expected": {
+        "path": [
+          "TEE_FLANGE",
+          "CHANNEL_WEB"
+        ],
+        "support_material_thickness_in": "0.5",
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "C2_G3_TEE_ANGLE_COLUMN_LEG",
+      "family": "TEE",
+      "support": "ANGLE_COLUMN_LEG",
+      "expected": {
+        "path": [
+          "TEE_FLANGE",
+          "ANGLE_SELECTED_LEG"
+        ],
+        "heel_overlap_allowed": false,
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "C2_G4_TEE_RHS_COLUMN_FULL_THROUGH",
+      "family": "TEE",
+      "support": "RECTANGULAR_HOLLOW_COLUMN_WALL",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "TEE_FLANGE",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_NEAR_WALL",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "FREE_SHANK_SPAN",
+            "identity": "RHS_CAVITY",
+            "length_in": "5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_FAR_WALL",
+            "length_in": "0.5"
+          }
+        ],
+        "stack_span_before_hardware_in": "6.5",
+        "physical_bolts_per_axis": 1,
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "C2_G5_TEE_SRS_COLUMN_FULL_THROUGH",
+      "family": "TEE",
+      "support": "SOLID_RECTANGULAR_COLUMN_FACE",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "TEE_FLANGE",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "SOLID_RECTANGULAR_SECTION",
+            "length_in": "6"
+          }
+        ],
+        "stack_span_before_hardware_in": "6.5",
+        "cavity_span_in": "0",
+        "physical_bolts_per_axis": 1
+      }
+    },
+    {
+      "id": "C2_G6_SINGLE_W_COLUMN_WEB",
+      "family": "SINGLE_CLIP_ANGLE",
+      "support": "W_COLUMN_WEB",
+      "expected": {
+        "path": [
+          "CLIP_ANGLE_SUPPORT_LEG",
+          "W_WEB"
+        ],
+        "support_material_thickness_in": "0.5",
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "C2_G7_SINGLE_CHANNEL_COLUMN_WEB",
+      "family": "SINGLE_CLIP_ANGLE",
+      "support": "CHANNEL_COLUMN_WEB",
+      "expected": {
+        "path": [
+          "CLIP_ANGLE_SUPPORT_LEG",
+          "CHANNEL_WEB"
+        ],
+        "support_material_thickness_in": "0.5",
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "C2_G8_SINGLE_ANGLE_COLUMN_LEG",
+      "family": "SINGLE_CLIP_ANGLE",
+      "support": "ANGLE_COLUMN_LEG",
+      "expected": {
+        "path": [
+          "CLIP_ANGLE_SUPPORT_LEG",
+          "ANGLE_SELECTED_LEG"
+        ],
+        "heel_overlap_allowed": false,
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "C2_G9_SINGLE_RHS_COLUMN_FULL_THROUGH",
+      "family": "SINGLE_CLIP_ANGLE",
+      "support": "RECTANGULAR_HOLLOW_COLUMN_WALL",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "CLIP_ANGLE_SUPPORT_LEG",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_NEAR_WALL",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "FREE_SHANK_SPAN",
+            "identity": "RHS_CAVITY",
+            "length_in": "5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_FAR_WALL",
+            "length_in": "0.5"
+          }
+        ],
+        "stack_span_before_hardware_in": "6.5",
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "C2_G10_SINGLE_SRS_COLUMN_FULL_THROUGH",
+      "family": "SINGLE_CLIP_ANGLE",
+      "support": "SOLID_RECTANGULAR_COLUMN_FACE",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "CLIP_ANGLE_SUPPORT_LEG",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "SOLID_RECTANGULAR_SECTION",
+            "length_in": "6"
+          }
+        ],
+        "stack_span_before_hardware_in": "6.5",
+        "cavity_span_in": "0"
+      }
+    },
+    {
+      "id": "C2_G11_TEE_CONNECTED_RHS_SUCCESSOR",
+      "family": "TEE",
+      "connected_profile": "RECTANGULAR_HOLLOW_SECTION",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "TEE_STEM",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_NEAR_WALL",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "FREE_SHANK_SPAN",
+            "identity": "RHS_CAVITY",
+            "length_in": "5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_FAR_WALL",
+            "length_in": "0.5"
+          }
+        ],
+        "historical_single_wall_behavior_superseded": true,
+        "internal_access_qualification_removed_from_normal_path": true
+      }
+    },
+    {
+      "id": "C2_G12_SINGLE_CONNECTED_RHS_SUCCESSOR",
+      "family": "SINGLE_CLIP_ANGLE",
+      "connected_profile": "RECTANGULAR_HOLLOW_SECTION",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "CLIP_ANGLE_CONNECTED_LEG",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_NEAR_WALL",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "FREE_SHANK_SPAN",
+            "identity": "RHS_CAVITY",
+            "length_in": "5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "RHS_FAR_WALL",
+            "length_in": "0.5"
+          }
+        ],
+        "historical_single_wall_behavior_superseded": true,
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "C2_G13_TEE_CONNECTED_SRS",
+      "family": "TEE",
+      "connected_profile": "SOLID_RECTANGULAR_SECTION",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "TEE_STEM",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "SOLID_RECTANGULAR_SECTION",
+            "length_in": "6"
+          }
+        ],
+        "stack_span_before_hardware_in": "6.5",
+        "profile_is_solid": true
+      }
+    },
+    {
+      "id": "C2_G14_SINGLE_CONNECTED_SRS",
+      "family": "SINGLE_CLIP_ANGLE",
+      "connected_profile": "SOLID_RECTANGULAR_SECTION",
+      "expected": {
+        "segments": [
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "CLIP_ANGLE_CONNECTED_LEG",
+            "length_in": "0.5"
+          },
+          {
+            "kind": "MATERIAL_LAYER",
+            "identity": "SOLID_RECTANGULAR_SECTION",
+            "length_in": "6"
+          }
+        ],
+        "stack_span_before_hardware_in": "6.5",
+        "profile_is_solid": true
+      }
+    },
+    {
+      "id": "C2_G15_RHS_HARDWARE_AND_CONTAINMENT",
+      "expected": {
+        "near_hole_required": true,
+        "far_hole_required": true,
+        "same_exact_axis": true,
+        "head_location": "EXTERIOR_NEAR_SIDE",
+        "nut_location": "EXTERIOR_FAR_SIDE",
+        "internal_nut": false,
+        "internal_washer": false,
+        "cavity_contents": [
+          "BOLT_SHANK"
+        ]
+      }
+    },
+    {
+      "id": "C2_G16_US_SI_EQUIVALENCE",
+      "conversions": {
+        "6_in_mm": "152.4",
+        "5_in_mm": "127",
+        "4_in_mm": "101.6",
+        "0.5_in_mm": "12.7",
+        "8_in_mm": "203.2"
+      },
+      "expected": {
+        "rhs_physical_geometry_equal": true,
+        "srs_physical_geometry_equal": true,
+        "full_through_paths_equal": true,
+        "engineering_fingerprints_equal": true
+      }
+    },
+    {
+      "id": "C2_G17_LEGACY_NON_RHS_INVARIANCE",
+      "expected": {
+        "tee_w_column_flange_fingerprint_change": "NONE",
+        "tee_w_beam_flange_fingerprint_change": "NONE",
+        "single_angle_w_column_flange_fingerprint_change": "NONE",
+        "single_angle_w_beam_flange_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "C2_G18_RECTANGULAR_LIMITATIONS_ARE_NOT_GEOMETRY_ERRORS",
+      "expected": {
+        "rhs_geometry_current_when_valid": true,
+        "srs_geometry_current_when_valid": true,
+        "required_not_evaluated": [
+          "RHS_LOCAL_WALL_RESPONSE",
+          "RHS_SLEEVE_OR_CRUSH_TUBE_REQUIREMENT",
+          "SOLID_RECTANGULAR_FULL_DEPTH_RESISTANCE_APPLICABILITY"
+        ],
+        "ordinary_pass_allowed": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,438 @@
+{
+  "schema_version": "frp-master-connection-calculation-slice-3-resistance-handoff-golden-rc1",
+  "document_status": "candidate engineering benchmark authority pending owner approval",
+  "not_production_output": true,
+  "calculation_family": "eccentric bolt-group demand to directional FRP resistance compatibility and handoff",
+  "primary_standard": "ASCE/SEI 74-23",
+  "source_locators": [
+    "Section 2.9",
+    "Section 8.3.2.1",
+    "Section 8.3.2.2",
+    "Section 8.3.2.3 and Equation 8-6",
+    "Commentary C8.1",
+    "Commentary C8.3.2",
+    "Commentary C8.3.3.1",
+    "Commentary C8.3.3.3",
+    "Appendix CA8.3.3.1"
+  ],
+  "parent_authorities": {
+    "slice_2_rc2_spec_sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD",
+    "slice_2_rc2_golden_sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B",
+    "slice_3_demand_rc1_spec_sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470",
+    "slice_3_demand_rc1_golden_sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"
+  },
+  "method_classification": {
+    "per_bolt_bolt_shear_magnitude_handoff": "SOURCE_DERIVED_ACTUAL_FORCE_DISTRIBUTION",
+    "per_bolt_per_layer_pin_bearing_direction": "SOURCE_DERIVED_EQUATION_8_6",
+    "combined_bolt_tension_shear_with_explicit_axis_tension": "INHERITED_SOURCE_DERIVED",
+    "pull_through_with_explicit_axis_tension": "INHERITED_SOURCE_DERIVED",
+    "full_legacy_group_handoff_when_m_res_zero": "INHERITED_APPROVED_SLICE_2",
+    "nonzero_m_res_first_row_net_tension_handoff": "NOT_SUPPORTED_IN_RC1",
+    "nonzero_m_res_interrow_shearout_handoff": "NOT_SUPPORTED_IN_RC1",
+    "eccentric_block_shear_with_matched_existing_path_context": "INHERITED_SOURCE_DERIVED_WITH_EXISTING_QUALIFICATION",
+    "partial_handoff_aggregation": "PROJECT_SOFTWARE_CONVENTION"
+  },
+  "common_bearing_reference": {
+    "thickness_in": "0.375000000000",
+    "bolt_diameter_in": "0.500000000000",
+    "Fbr_L_ksi": "30.000000000000",
+    "Fbr_T_ksi": "18.000000000000",
+    "phi": "0.600000000000",
+    "longitudinal_nominal_kip": "5.625000000000",
+    "longitudinal_design_kip": "3.375000000000",
+    "transverse_nominal_kip": "3.375000000000",
+    "transverse_design_kip": "2.025000000000"
+  },
+  "handoff_cases": [
+    {
+      "id": "CONCENTRIC_2X2_FULL_HANDOFF",
+      "parent_demand": {
+        "in_plane_force_kip": [
+          "3.000000000000",
+          "0.000000000000"
+        ],
+        "m_res_kip_in": "0.000000000000",
+        "direct_method": "ASCE_PRESCRIBED"
+      },
+      "expected_handoff_coverage": "FULL_LEGACY_COLLINEAR",
+      "per_bolt_bearing": [
+        {
+          "bolt_index": 1,
+          "total_force_kip": [
+            "0.750000000000",
+            "0.000000000000"
+          ],
+          "magnitude_kip": "0.750000000000",
+          "bearing_required": true,
+          "bearing_angle_deg": "0.000000000000",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.222222222222"
+        },
+        {
+          "bolt_index": 2,
+          "total_force_kip": [
+            "0.750000000000",
+            "0.000000000000"
+          ],
+          "magnitude_kip": "0.750000000000",
+          "bearing_required": true,
+          "bearing_angle_deg": "0.000000000000",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.222222222222"
+        },
+        {
+          "bolt_index": 3,
+          "total_force_kip": [
+            "0.750000000000",
+            "0.000000000000"
+          ],
+          "magnitude_kip": "0.750000000000",
+          "bearing_required": true,
+          "bearing_angle_deg": "0.000000000000",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.222222222222"
+        },
+        {
+          "bolt_index": 4,
+          "total_force_kip": [
+            "0.750000000000",
+            "0.000000000000"
+          ],
+          "magnitude_kip": "0.750000000000",
+          "bearing_required": true,
+          "bearing_angle_deg": "0.000000000000",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.222222222222"
+        }
+      ],
+      "first_row_net_tension": {
+        "handoff": "AUTHORIZED",
+        "demand_kip": "3.000000000000",
+        "simplified_design_resistance_kip": "6.187500000000",
+        "utilization": "0.484848484848"
+      },
+      "interrow_shearout": {
+        "handoff": "AUTHORIZED",
+        "per_line_demand_kip": "1.500000000000",
+        "design_resistance_per_line_kip": "7.027965000000",
+        "utilization": "0.213433049254"
+      },
+      "expected_overall_disposition": "PASS_IF_ALL_OTHER_REQUIRED_LEGACY_CHECKS_PASS"
+    },
+    {
+      "id": "SMALL_ECCENTRIC_2X2_PARTIAL_SUPPORTED_CHECKS_PASS",
+      "parent_demand": {
+        "in_plane_force_kip": [
+          "3.000000000000",
+          "0.000000000000"
+        ],
+        "force_reference_offset_v_in": "0.100000000000",
+        "m_res_kip_in": "-0.300000000000"
+      },
+      "expected_handoff_coverage": "PARTIAL_ECCENTRIC",
+      "per_bolt_bearing": [
+        {
+          "bolt_index": 1,
+          "total_force_kip": [
+            "0.712500000000",
+            "0.037500000000"
+          ],
+          "magnitude_kip": "0.713486159642",
+          "bearing_required": true,
+          "bearing_angle_deg": "3.012787504183",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.211403306560"
+        },
+        {
+          "bolt_index": 2,
+          "total_force_kip": [
+            "0.787500000000",
+            "0.037500000000"
+          ],
+          "magnitude_kip": "0.788392351561",
+          "bearing_required": true,
+          "bearing_angle_deg": "2.726310993906",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.233597733796"
+        },
+        {
+          "bolt_index": 3,
+          "total_force_kip": [
+            "0.712500000000",
+            "-0.037500000000"
+          ],
+          "magnitude_kip": "0.713486159642",
+          "bearing_required": true,
+          "bearing_angle_deg": "3.012787504183",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.211403306560"
+        },
+        {
+          "bolt_index": 4,
+          "total_force_kip": [
+            "0.787500000000",
+            "-0.037500000000"
+          ],
+          "magnitude_kip": "0.788392351561",
+          "bearing_required": true,
+          "bearing_angle_deg": "2.726310993906",
+          "bearing_family": "LONGITUDINAL",
+          "design_resistance_kip": "3.375000000000",
+          "utilization": "0.233597733796"
+        }
+      ],
+      "first_row_net_tension": {
+        "handoff": "CALCULATION_NOT_SUPPORTED",
+        "warning": "ECCENTRIC_FIRST_ROW_NET_TENSION_HANDOFF_NOT_SUPPORTED_RC1"
+      },
+      "interrow_shearout": {
+        "handoff": "CALCULATION_NOT_SUPPORTED",
+        "warning": "ECCENTRIC_INTERROW_SHEAROUT_HANDOFF_NOT_SUPPORTED_RC1"
+      },
+      "expected_numerical_comparison": "NOT_EVALUATED",
+      "ordinary_pass_permitted": false
+    },
+    {
+      "id": "ECCENTRIC_2X2_BEARING_DIRECTION_SHIFT_FAIL",
+      "parent_demand_case": "ECCENTRIC_2X2_EQUAL",
+      "parent_demand": {
+        "in_plane_force_kip": [
+          "10.000000000000",
+          "0.000000000000"
+        ],
+        "m_res_kip_in": "-20.000000000000"
+      },
+      "expected_handoff_coverage": "PARTIAL_ECCENTRIC",
+      "per_bolt_bearing": [
+        {
+          "bolt_index": 1,
+          "total_force_kip": [
+            "0.000000000000",
+            "2.500000000000"
+          ],
+          "magnitude_kip": "2.500000000000",
+          "bearing_required": true,
+          "bearing_angle_deg": "90.000000000000",
+          "bearing_family": "TRANSVERSE",
+          "design_resistance_kip": "2.025000000000",
+          "utilization": "1.234567901235"
+        },
+        {
+          "bolt_index": 2,
+          "total_force_kip": [
+            "5.000000000000",
+            "2.500000000000"
+          ],
+          "magnitude_kip": "5.590169943749",
+          "bearing_required": true,
+          "bearing_angle_deg": "26.565051177078",
+          "bearing_family": "TRANSVERSE",
+          "design_resistance_kip": "2.025000000000",
+          "utilization": "2.760577750000"
+        },
+        {
+          "bolt_index": 3,
+          "total_force_kip": [
+            "0.000000000000",
+            "-2.500000000000"
+          ],
+          "magnitude_kip": "2.500000000000",
+          "bearing_required": true,
+          "bearing_angle_deg": "90.000000000000",
+          "bearing_family": "TRANSVERSE",
+          "design_resistance_kip": "2.025000000000",
+          "utilization": "1.234567901235"
+        },
+        {
+          "bolt_index": 4,
+          "total_force_kip": [
+            "5.000000000000",
+            "-2.500000000000"
+          ],
+          "magnitude_kip": "5.590169943749",
+          "bearing_required": true,
+          "bearing_angle_deg": "26.565051177078",
+          "bearing_family": "TRANSVERSE",
+          "design_resistance_kip": "2.025000000000",
+          "utilization": "2.760577750000"
+        }
+      ],
+      "first_row_net_tension": {
+        "handoff": "CALCULATION_NOT_SUPPORTED"
+      },
+      "interrow_shearout": {
+        "handoff": "CALCULATION_NOT_SUPPORTED"
+      },
+      "expected_numerical_comparison": "FAIL",
+      "expected_failed_supported_checks": [
+        "bearing:bolt:1",
+        "bearing:bolt:2",
+        "bearing:bolt:3",
+        "bearing:bolt:4"
+      ],
+      "unsupported_required_checks_remain_visible": true
+    },
+    {
+      "id": "MULTILAYER_PER_BOLT_BEARING_DIRECTION",
+      "bolt_vector_kip": [
+        "0.000000000000",
+        "2.500000000000"
+      ],
+      "layers": [
+        {
+          "layer_id": "LAYER_U_LW",
+          "lw_axis": "U",
+          "expected": {
+            "bolt_index": 1,
+            "total_force_kip": [
+              "0.000000000000",
+              "2.500000000000"
+            ],
+            "magnitude_kip": "2.500000000000",
+            "bearing_required": true,
+            "bearing_angle_deg": "90.000000000000",
+            "bearing_family": "TRANSVERSE",
+            "design_resistance_kip": "2.025000000000",
+            "utilization": "1.234567901235"
+          }
+        },
+        {
+          "layer_id": "LAYER_V_LW",
+          "lw_axis": "V",
+          "expected": {
+            "bolt_index": 1,
+            "total_force_kip": [
+              "0.000000000000",
+              "2.500000000000"
+            ],
+            "magnitude_kip": "2.500000000000",
+            "bearing_required": true,
+            "bearing_angle_deg": "0.000000000000",
+            "bearing_family": "LONGITUDINAL",
+            "design_resistance_kip": "3.375000000000",
+            "utilization": "0.740740740741"
+          }
+        }
+      ],
+      "expected_note": "same physical bolt demand may select different directional FRP bearing properties in different penetrated layers"
+    },
+    {
+      "id": "BEARING_ANGLE_BOUNDARY",
+      "checks": [
+        {
+          "id": "EXACT_5_DEG",
+          "vector_unit": [
+            "0.996194698092",
+            "0.087155742748"
+          ],
+          "angle_deg": "5.000000000000",
+          "expected_family": "LONGITUDINAL"
+        },
+        {
+          "id": "JUST_ABOVE_5_DEG",
+          "vector_unit": [
+            "0.996194696571",
+            "0.087155760135"
+          ],
+          "angle_deg": "5.000001000000",
+          "expected_family": "TRANSVERSE"
+        },
+        {
+          "id": "EXACT_90_DEG_PROJECT_ENDPOINT",
+          "vector_unit": [
+            "0.000000000000",
+            "1.000000000000"
+          ],
+          "angle_deg": "90.000000000000",
+          "expected_family": "TRANSVERSE"
+        }
+      ]
+    },
+    {
+      "id": "ZERO_DEMAND_BOLT_NOT_REQUIRED",
+      "bolt_vector_kip": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "expected_bolt_shear_required": false,
+      "expected_pin_bearing_required": false,
+      "expected_bearing_direction": "UNDEFINED_ZERO_DEMAND",
+      "expected_utilization": null
+    },
+    {
+      "id": "ECCENTRIC_BLOCK_SHEAR_MATCHED_CONTEXT",
+      "in_plane_resultant_demand_kip": "6.000000000000",
+      "existing_block_shear_case": "BS_U3_ECCENTRIC",
+      "force_line_compatibility": "MATCHED",
+      "expected_handoff": "AUTHORIZED_WITH_EXISTING_QUALIFICATION",
+      "design_resistance_kip": "11.644256250000",
+      "utilization": "0.515275503320",
+      "required_warning": "LIMITED_ECCENTRIC_BLOCK_SHEAR_TEST_BASIS"
+    },
+    {
+      "id": "ECCENTRIC_BLOCK_SHEAR_UNMATCHED_CONTEXT",
+      "in_plane_resultant_demand_kip": "6.000000000000",
+      "force_line_compatibility": "UNPROVEN",
+      "expected_handoff": "CALCULATION_NOT_SUPPORTED",
+      "ordinary_pass_permitted": false
+    }
+  ],
+  "status_cases": [
+    {
+      "id": "NONZERO_MEMBER_END_MOMENT_BLOCKS_ORDINARY_HANDOFF",
+      "member_end_moment_nonzero": true,
+      "supported_in_plane_diagnostics_may_calculate": true,
+      "expected_overall_disposition": "NOT_EVALUATED",
+      "ordinary_pass_permitted": false,
+      "required_warning": "MEMBER_END_MOMENTS_NOT_TRANSFERRED_BY_CURRENT_DEMAND_MODEL"
+    },
+    {
+      "id": "OUT_OF_PLANE_FORCE_WITHOUT_EXPLICIT_AXIS_TENSION",
+      "normal_force_nonzero": true,
+      "explicit_per_bolt_axis_tension": false,
+      "in_plane_supported_checks_may_calculate": true,
+      "bolt_tension_and_pull_through": "INCOMPLETE_INPUT",
+      "ordinary_pass_permitted": false
+    },
+    {
+      "id": "EXPLICIT_AXIS_TENSION_IS_CONSUMED_NOT_GENERATED",
+      "normal_force_nonzero": true,
+      "explicit_per_bolt_axis_tension": true,
+      "combined_bolt_check": "CALCULABLE_USING_TOTAL_IN_PLANE_MAGNITUDE_PLUS_EXPLICIT_AXIS_TENSION",
+      "pull_through": "CALCULABLE_WHERE_EXISTING_SLICE_2_REQUIREMENTS_APPLY",
+      "generated_prying": false
+    },
+    {
+      "id": "NONZERO_M_RES_GROUP_MODE_GATING",
+      "m_res_nonzero": true,
+      "bolt_shear": "CALCULABLE",
+      "pin_bearing": "CALCULABLE_PER_BOLT_PER_LAYER",
+      "first_row_net_tension": "CALCULATION_NOT_SUPPORTED",
+      "interrow_shearout": "CALCULATION_NOT_SUPPORTED",
+      "block_shear": "CONDITIONALLY_CALCULABLE_WITH_MATCHED_EXISTING_CONTEXT",
+      "ordinary_pass_permitted": false
+    }
+  ],
+  "required_invariants": [
+    "Stage 2.5A demand-result bytes and fingerprints remain unchanged by handoff evaluation.",
+    "A zero-residual-moment demand result reproduces the accepted legacy Slice 2 demand semantics without numerical change.",
+    "Bolt shear uses each bolt's actual in-plane resultant magnitude exactly once.",
+    "Pin bearing uses each bolt's actual in-plane resultant direction relative to each penetrated layer's LW axis.",
+    "The same bolt demand may select different bearing families in different FRP layers.",
+    "A zero-demand bolt does not require a bolt-shear or pin-bearing comparison.",
+    "Nonzero residual moment never silently reuses first-row net-tension or inter-row shear-out demand assumptions.",
+    "Eccentric block shear uses the total in-plane connection resultant only when the existing block-shear force-line/path context is proven compatible.",
+    "Known supported-check failure remains FAIL even when required group checks are unsupported.",
+    "Supported-check PASS plus unsupported required group checks never becomes ordinary PASS.",
+    "Member-end moments are not silently transferred.",
+    "Out-of-plane force does not generate bolt-axis tension or prying.",
+    "Display-unit changes do not alter compatibility classification, demand, resistance, status, or fingerprint."
+  ]
+}

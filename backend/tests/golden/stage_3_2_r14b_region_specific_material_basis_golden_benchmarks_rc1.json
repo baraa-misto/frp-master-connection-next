@@ -1,0 +1,294 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "Axis components are exact integers encoded as strings.",
+  "defective_region_corrections": [
+    {
+      "region_class": "W_I_WEB",
+      "before": {
+        "LW": [
+          "0",
+          "0",
+          "1"
+        ],
+        "CW": [
+          "0",
+          "-1",
+          "0"
+        ],
+        "TT": [
+          "1",
+          "0",
+          "0"
+        ]
+      },
+      "physical_plane_basis": [
+        [
+          "0",
+          "0",
+          "1"
+        ],
+        [
+          "1",
+          "0",
+          "0"
+        ]
+      ],
+      "thickness_direction": [
+        "0",
+        "-1",
+        "0"
+      ],
+      "after": {
+        "LW": [
+          "0",
+          "0",
+          "1"
+        ],
+        "CW": [
+          "-1",
+          "0",
+          "0"
+        ],
+        "TT": [
+          "0",
+          "-1",
+          "0"
+        ]
+      }
+    },
+    {
+      "region_class": "TEE_STEM",
+      "before": {
+        "LW": [
+          "0",
+          "0",
+          "1"
+        ],
+        "CW": [
+          "0",
+          "1",
+          "0"
+        ],
+        "TT": [
+          "-1",
+          "0",
+          "0"
+        ]
+      },
+      "physical_plane_basis": [
+        [
+          "0",
+          "0",
+          "1"
+        ],
+        [
+          "-1",
+          "0",
+          "0"
+        ]
+      ],
+      "thickness_direction": [
+        "0",
+        "1",
+        "0"
+      ],
+      "after": {
+        "LW": [
+          "0",
+          "0",
+          "1"
+        ],
+        "CW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "TT": [
+          "0",
+          "1",
+          "0"
+        ]
+      }
+    },
+    {
+      "region_class": "ANGLE_LEG_2",
+      "before": {
+        "LW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "CW": [
+          "0",
+          "0",
+          "-1"
+        ],
+        "TT": [
+          "0",
+          "1",
+          "0"
+        ]
+      },
+      "physical_plane_basis": [
+        [
+          "1",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "1",
+          "0"
+        ]
+      ],
+      "thickness_direction": [
+        "0",
+        "0",
+        "-1"
+      ],
+      "after": {
+        "LW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "CW": [
+          "0",
+          "-1",
+          "0"
+        ],
+        "TT": [
+          "0",
+          "0",
+          "-1"
+        ]
+      }
+    },
+    {
+      "region_class": "CHANNEL_WEB",
+      "before": {
+        "LW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "CW": [
+          "0",
+          "1",
+          "0"
+        ],
+        "TT": [
+          "0",
+          "0",
+          "1"
+        ]
+      },
+      "physical_plane_basis": [
+        [
+          "1",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "1"
+        ]
+      ],
+      "thickness_direction": [
+        "0",
+        "1",
+        "0"
+      ],
+      "after": {
+        "LW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "CW": [
+          "0",
+          "0",
+          "-1"
+        ],
+        "TT": [
+          "0",
+          "1",
+          "0"
+        ]
+      }
+    },
+    {
+      "region_class": "RHS_SIDE_WALL_1_2",
+      "before": {
+        "LW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "CW": [
+          "0",
+          "-1",
+          "0"
+        ],
+        "TT": [
+          "0",
+          "0",
+          "-1"
+        ]
+      },
+      "physical_plane_basis": [
+        [
+          "1",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "-1"
+        ]
+      ],
+      "thickness_direction": [
+        "0",
+        "-1",
+        "0"
+      ],
+      "after": {
+        "LW": [
+          "1",
+          "0",
+          "0"
+        ],
+        "CW": [
+          "0",
+          "0",
+          "1"
+        ],
+        "TT": [
+          "0",
+          "-1",
+          "0"
+        ]
+      }
+    }
+  ],
+  "unchanged_region_classes": [
+    "TEE_FLANGE",
+    "W_I_FLANGES",
+    "ANGLE_LEG_1",
+    "CHANNEL_FLANGES",
+    "RHS_TOP_BOTTOM_WALLS",
+    "FLAT_PLATE"
+  ],
+  "common_expected": {
+    "lw_unchanged_for_corrected_regions": true,
+    "lw_cw_tt_orthogonal": true,
+    "lw_cross_cw_equals_tt": true,
+    "lw_and_cw_in_physical_plane": true,
+    "tt_equals_controlled_thickness_direction": true,
+    "geometry_change": "NONE",
+    "numerical_engineering_result_change": "NONE"
+  }
+}

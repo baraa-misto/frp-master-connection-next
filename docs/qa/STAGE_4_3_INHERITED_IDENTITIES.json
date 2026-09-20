@@ -1,0 +1,1849 @@
+{
+  "schema": "STAGE_4_3_INHERITED_IDENTITIES_RC1",
+  "baseline": "c8094293e6da49aa830b5801f49aae537cccae2b",
+  "representation": "Canonical committed Git blobs. Historical object if available; manifest-only in tagless depth-one successors. Never substitute successor HEAD for historical frontend identity.",
+  "permitted_additive_shared_production_paths": [
+    "backend/src/frp_master_connection/api/routes.py",
+    "frontend/src/visualization/fastenerPresentation.ts",
+    "frontend/src/visualization/sceneModel.ts",
+    "frontend/src/workspace/MomentConnectionsWorkspace.tsx"
+  ],
+  "files": [
+    {
+      "path": ".gitattributes",
+      "blob": "1dcbd5d873e8819083f4bc14a86c13425ece9013"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "blob": "060115a687d77888054a348a1cb453d8168dd5d4"
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "blob": "9caa35e74d01bb040369b72fe19294ba6072a786"
+    },
+    {
+      "path": "backend/requirements/README.md",
+      "blob": "f91d715e0446ebd1598ed6accac32d7000fe1b9d"
+    },
+    {
+      "path": "backend/requirements/requirements-dev-py314.lock.txt",
+      "blob": "e2f9e4051ebff96954e88c6d6a4fc0b8cf3460cc"
+    },
+    {
+      "path": "backend/src/frp_master_connection/__init__.py",
+      "blob": "6c8c2edcf2fe880e0da03589d1a9348f74a7672e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/actions/__init__.py",
+      "blob": "e16c2826f46edec6f6e556942d84894440821325"
+    },
+    {
+      "path": "backend/src/frp_master_connection/actions/reference_resolution.py",
+      "blob": "f0e8b919b0114571b39e7b516c980122d13bab4a"
+    },
+    {
+      "path": "backend/src/frp_master_connection/actions/transforms.py",
+      "blob": "4e78a7154236a915668d48f7936261cc72dec53e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/__init__.py",
+      "blob": "f5d039289d6ff30711e64c580c252ff7337e7570"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/app.py",
+      "blob": "ab12943ea73f5eeb5957cd2ac61d30fe7a2701e5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/beam_concrete_paired_angle_mapping.py",
+      "blob": "8bc081a128616866799e9052e02b4c1903b72c30"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/beam_concrete_paired_angle_schemas.py",
+      "blob": "62c736b395ce9d8faffcff52558a28b0ac035f35"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/calculation_mapping.py",
+      "blob": "081670ae1a5e28cbc8f613803a2cc58789e0513e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/channel_moment_splice_mapping.py",
+      "blob": "4bc119e025e07529ab419092b0b865e1aacdc65e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/channel_moment_splice_schemas.py",
+      "blob": "36834baec4fee1e289f65ba62fdca9358317aa62"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/clip_angle_mapping.py",
+      "blob": "a0a2c70cf8b6e2feccb7dd035aefb1bc4f9b5276"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/clip_angle_schemas.py",
+      "blob": "0ab6eead7ed306da4c9b662c17a575a4b307e7db"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/column_base_web_angle_mapping.py",
+      "blob": "6ee7188c24c93666a700457ac61828d588910e08"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/column_base_web_angle_schemas.py",
+      "blob": "e3fd23d0211972a810d3c42eae470949bbbbbdfc"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/dependencies.py",
+      "blob": "601d1970303d1cb3d245cd5c9c600c911f88bcb7"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/direct_side_lap_concrete_mapping.py",
+      "blob": "27d646e2c40828ec9957566fd310fa76bb9f1cbd"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/direct_side_lap_concrete_schemas.py",
+      "blob": "bed19da9006dcc60ce4791d08f22a11189c02d5e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/multi_member_tee_mapping.py",
+      "blob": "cfa229fdb88d969ebe57a9b2d466d160cbfc38d8"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/multi_member_tee_schemas.py",
+      "blob": "932b06fa929f6611376a39f88a7150e95fd2673f"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/multirow_mapping.py",
+      "blob": "bcf3b16d44e2a3e8a27e9ecefa29786b13b27808"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/multirow_schemas.py",
+      "blob": "44ee54c94b4f9001eaf24b7eb25a5c5cb27fdfff"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/paired_clip_angle_mapping.py",
+      "blob": "fb5897d4a217b22bf02051b0b80d9f241009487e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/paired_clip_angle_schemas.py",
+      "blob": "4408eb453d6844aaf9f21f1b31b3f0ddc622be63"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/schemas.py",
+      "blob": "70ca5a0bab6c3d8a4ea167c3ddcd4379b02cb749"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/shared_support_mapping.py",
+      "blob": "292ec3662e2753b075fbf7d3a05372fed6cf3612"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/shared_support_schemas.py",
+      "blob": "258d9dd00a9c0ca25966f07851a68e0c9dfa2968"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/tee_mapping.py",
+      "blob": "9df12de283318b5454ca9f02742aac3669c355e3"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/tee_schemas.py",
+      "blob": "a9d281a9076200e43f1ce92d85b548e7c1626edd"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/web_splice_mapping.py",
+      "blob": "660e625d5d3f3f330d6c46868b7530ae5ab565b2"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/web_splice_schemas.py",
+      "blob": "e6f6d6fb84cb0dc6981917c49cec9fc665c0c099"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/wi_moment_splice_mapping.py",
+      "blob": "262a5bdd7eb5a5975bd39ad1c5f0850532406dcc"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/wi_moment_splice_schemas.py",
+      "blob": "33e54b27f757d4f464bdd7bf6dff1ed756b832c0"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/wi_wall_moment_mapping.py",
+      "blob": "a1c2f9dd8d3de3a1f49c3f28024d7b0b2a434ac8"
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/wi_wall_moment_schemas.py",
+      "blob": "0ba85b922e0dd4864fc3f5d3592d0d541554994b"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/__init__.py",
+      "blob": "e6bc010cef38fe585b425c01d2d80476406abe99"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/beam_concrete_paired_angle_orchestration.py",
+      "blob": "2ebc030a32593bcdc265cc09a67ab7c1d462e4eb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/calculation_orchestration.py",
+      "blob": "c7a0f1973d4e53b912614a1ad678b357615c1e5a"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/channel_moment_splice_orchestration.py",
+      "blob": "0c88cc12c9ddf702af2f93b73837288acc7348fe"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/clip_angle_orchestration.py",
+      "blob": "6d0ff00ea06a90ccadeeb7e82cdc14bc727f635f"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/column_base_profile_orchestration.py",
+      "blob": "497f7ada2bcdf9e113fe70cfd68943202209dac0"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/column_base_web_angle_orchestration.py",
+      "blob": "d344770e35d113f5fa442efaa055485ee5505679"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/connection_preview.py",
+      "blob": "6ca7421a98cc2d546049ea1b28cad27f840243a0"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/direct_side_lap_concrete_orchestration.py",
+      "blob": "b966773f4a9b9c2499228120e4edad15f470f282"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/member_profile_geometry.py",
+      "blob": "551859f83d16f6aceba4fb00ff84aeec3ae81cbe"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/multi_member_tee_orchestration.py",
+      "blob": "6bea68b5047cf60d938a1c72d444816a65eadad5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/multirow_orchestration.py",
+      "blob": "3af9150dc5f1e0d58f49e3416f5d7a84bf1c6d23"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/paired_clip_angle_orchestration.py",
+      "blob": "b047d307d770a40c30fe25eda7a6cc2febc49c02"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/shared_support_integration.py",
+      "blob": "117f9fb213278be32148dc9fb492741763a1368f"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/tee_orchestration.py",
+      "blob": "73599b3e8b67d3f4195484fb7f23c92bc58b0229"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/visualization.py",
+      "blob": "d33fd28a6baa185288737c5e26e706f88b1d85c8"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/web_splice_orchestration.py",
+      "blob": "3e19055129e4ee9edcafb8fdbcb223aab62bb7a9"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/wi_moment_splice_orchestration.py",
+      "blob": "1fabbaa67b275e59fac33a00c7404c2a30d039ea"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/wi_wall_moment_demand.py",
+      "blob": "c0473113ac3f4783d57b9a98b67670c66397d8f5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/wi_wall_moment_design.py",
+      "blob": "6eb68d6640323ba7c723f7a1a6af9a789ad9a524"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/wi_wall_moment_geometry.py",
+      "blob": "339543821f93241accd17e269e17b2415fd22482"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/wi_wall_moment_orchestration.py",
+      "blob": "55bb2e5b839016d15ee16c3c90d57338d3c129cb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/wi_wall_moment_sources.py",
+      "blob": "5185f2d49548716ef796c6b3128e97b16ade56f5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/__init__.py",
+      "blob": "fc9ddbcaff9abf97efa99c52bfa7196c804f867f"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_connector_core.py",
+      "blob": "a455e5f2962a8157f56d6e9d2b94c69312dad733"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_connector_providers.py",
+      "blob": "961eea8280e8de091008704856a0f05d51ea5f37"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/applicability.py",
+      "blob": "b9bd86f606b3bff44612667a92ceeb1ad074b446"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/block_shear_planning.py",
+      "blob": "6d769c286ab767ffa68ff66897889627bd0fd374"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/channel_moment_resultants.py",
+      "blob": "f06c90b9ab4ea7dc5b22ab9c991f98596ddad4a6"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/channel_moment_splice_resistance.py",
+      "blob": "cff98071bc581565e2f321adc667565e5fd7fe02"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/deterministic_trigonometry.py",
+      "blob": "7e2baf2fe3dfbc9092ff244902e6785c095a2d47"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/eccentric_demand.py",
+      "blob": "2f55df68532c1818d4e1d6ce6757c6bc9f4fef97"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/eccentric_group_modes.py",
+      "blob": "c29ce8ffba6fdab1684e0e3e08623bd373fb43c4"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/equations.py",
+      "blob": "9c15d174e65d9169f8e057f807fb9383a55436c3"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/evaluation.py",
+      "blob": "127e69540876f5d3bffd0322651afca223b2a037"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/fingerprint.py",
+      "blob": "f2f6508fc13b24cec138b0ad7c1273660a20af82"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/frp_angle_connector_provider.py",
+      "blob": "a8d09444d9af219ba3a9e18754f770012c7b65a9"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/geometry_mapping.py",
+      "blob": "f5b1d9a540bf74f83f5bcc2a54513ef097c626bb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/in_plane_wrench_demand.py",
+      "blob": "4218f1f13326a40d96ddbff3b7f9d1c2a5b34f2b"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/inputs.py",
+      "blob": "6b85ec96f86808531cbfbeab2270723f64fec861"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/material_compatibility.py",
+      "blob": "66c18600e76580315d051f8ffe8c46f1628eb854"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow.py",
+      "blob": "5a927c924aaa1bce6f20af4d05cfa9d196d28101"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_engine.py",
+      "blob": "6322650fff28b0cebb61e98e1066e2b05de896df"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_equations.py",
+      "blob": "a922c1745bfe4490fde8f42f8812508f124bab3c"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_fingerprint.py",
+      "blob": "cac1a9882f855467f82e507dc5784e49eb14687e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/plate_strength.py",
+      "blob": "9aa29fa2c1822c71f9bd9893f599489a52bee7b5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/properties.py",
+      "blob": "232a6735327ba0da19b3c3a998322fb3d4a638ee"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/quantities.py",
+      "blob": "37278099183183d5557d7859dcf2c0bec7e1febb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/resistance_handoff.py",
+      "blob": "47642677249eb7216de658e10c19bbc386166302"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/results.py",
+      "blob": "ee6c39352d88887837fe727431cc35c6a0d8c13e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/sources.py",
+      "blob": "b31c8f85c62ab661a3f3b2732d97f51346868de6"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/web_splice_resistance.py",
+      "blob": "26ad5512601ecbf947f54bedf8d76a0b884c5a35"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/wi_moment_resultants.py",
+      "blob": "bc428cc260526fe5e020c5122f52e9f1c11c9d54"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/wi_moment_splice_resistance.py",
+      "blob": "c54d1f8e87cb347ff593bbc958e1b1002d464466"
+    },
+    {
+      "path": "backend/src/frp_master_connection/capabilities/__init__.py",
+      "blob": "8319a337881e3aada26f78fbd7251314e166f0c4"
+    },
+    {
+      "path": "backend/src/frp_master_connection/config.py",
+      "blob": "330f05cc07a0f21baa511add5cce62a7a192d4d4"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/__init__.py",
+      "blob": "e745138f25aff45a51492b88268384857f7b1d86"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/assembly.py",
+      "blob": "213f238c6ea1acd944a13eecb61153892569c253"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/beam_concrete_paired_angle.py",
+      "blob": "e0419db14373e229c961daf48764a18f0c6cbb8e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/channel_moment_splice.py",
+      "blob": "8d1c0d77349342e22ba89efe27c68eb15500e5b9"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/clip_angle.py",
+      "blob": "742a33fc8fcbf9b2d0f2271c82e7d4cea9e0ee7f"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/column_base_web_angles.py",
+      "blob": "fed067729bddad1bfa3b1ae4cedbcfa412e08802"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/entities.py",
+      "blob": "4e0ad58265ca9d8da6712f2cfbc2cb2ba4f0f2e0"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/material_architecture.py",
+      "blob": "29539a8e78efc0012bf35221488a85f32ec98c56"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/member_profile.py",
+      "blob": "5e2433e90ae2a32dc2996313c66325748fdb419b"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/multi_member_tee.py",
+      "blob": "41e668ee7f20cfaa0c7f5bfe394799228e4b35c2"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/paired_clip_angle.py",
+      "blob": "8b27c606157ec2ec5e92b6a833394592e457650e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/rectangular_full_through_bolt.py",
+      "blob": "40c2f59d1ccb887074505471bb74541d5e9cf33a"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/section_topology.py",
+      "blob": "fd539e6873b055a30d5b7b984375c705789befc1"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/support_targets.py",
+      "blob": "2c54f72880552396dedd5e54a9ab0921c8903023"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/tee_connector.py",
+      "blob": "e7f0e456fdf9b9c86361b4ebcf319aeae83617b2"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/validation.py",
+      "blob": "d8ca0520a0ede78e7f966d20b6d0509fb9a378bb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/values.py",
+      "blob": "5ca278662a6f4c0ab59e01aa4c18ce6fd7878635"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/web_splice.py",
+      "blob": "ad73d355843525f81d9e4d758d43654ee6b47e97"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/wi_moment_splice.py",
+      "blob": "dbfac9fd6ebf70624e1f8d48a7b4680ed07ed2fa"
+    },
+    {
+      "path": "backend/src/frp_master_connection/domain/wi_wall_moment.py",
+      "blob": "02e1d23ed1da17994b2539f79c69702154f2e424"
+    },
+    {
+      "path": "backend/src/frp_master_connection/engineering_basis/__init__.py",
+      "blob": "b4beca044d8a0257685d29e03737fff3d5c744f5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/__init__.py",
+      "blob": "8662b8780bd0647a9823426a8f3327e9da091bde"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/bolt_paths.py",
+      "blob": "61e7ab39f296dc65fe23f1e564d1ffd2ed91a069"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/interface_targeting.py",
+      "blob": "6751790d29d3f8b268cb2da0729c3a9bb5629e3c"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/joint_context.py",
+      "blob": "800e67ad32cf154097561686b3e01c83e3b9d120"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/multirow.py",
+      "blob": "d6f8ad8924f7ac13eaada0fe29f21cfdca5aae40"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/placement.py",
+      "blob": "e2b691aafbd3ef14b0f86a7ae3ce5733fc004cf2"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/section.py",
+      "blob": "91b2b436d6cd6d918178ae5148234afd8d4d7d8c"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/spatial.py",
+      "blob": "56f2b4cc57c0839d760347d4cc8ec9beec085049"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/surfaces.py",
+      "blob": "7be889be7ad8bba88610eae36bc009f533727720"
+    },
+    {
+      "path": "backend/src/frp_master_connection/geometry/trimming.py",
+      "blob": "4a61a31f30f37501ca3db9bb0be948c1e11d812d"
+    },
+    {
+      "path": "backend/src/frp_master_connection/infrastructure/__init__.py",
+      "blob": "afb1d1b0659dc51ff2eda6e1f5c3ede235b2a816"
+    },
+    {
+      "path": "backend/src/frp_master_connection/py.typed",
+      "blob": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+    },
+    {
+      "path": "backend/src/frp_master_connection/reporting/__init__.py",
+      "blob": "4f529cc52f03b12ee89bacb66431a4e2b7711f7e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/security/__init__.py",
+      "blob": "04e74aff883910f5797fe94adeabad6eee45afbe"
+    },
+    {
+      "path": "backend/src/frp_master_connection/security/identity.py",
+      "blob": "dc6415849bb5a8a2e7b8856b347dae498eca330c"
+    },
+    {
+      "path": "backend/src/frp_master_connection/topology/__init__.py",
+      "blob": "2c9bfd5277cf962a5edad6bd658a86db3c2d28c4"
+    },
+    {
+      "path": "backend/src/frp_master_connection/units/__init__.py",
+      "blob": "4cb381f70ce6d5ac2db888a35bcea0f99cd821d0"
+    },
+    {
+      "path": "backend/src/frp_master_connection/version.py",
+      "blob": "1f5b599571cf5dd97d3e693b350a830473336573"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_1_rc2.json",
+      "blob": "a913e6bd3fa1e4fa863a659cd802b8f7c2640dc4"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_2_rc1.json",
+      "blob": "fb7cd364156672c4a5154997f5d9bf3436bc50d4"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_2_rc2.json",
+      "blob": "4caf42688e7c06fdce922db346bd0e59741a6c75"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json",
+      "blob": "b98cef8ca7211ff8e1a8b8657bebdc24c6ed2996"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_3_rc1.json",
+      "blob": "dc8832c02177284ce42689dd6177282525f2fdef"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json",
+      "blob": "2a8b5a4148b68917253c1480b762dc6b283ce8b7"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_4_chapter_7_plate_strength_engine_golden_benchmarks_rc1.json",
+      "blob": "be8ac0e5bc5544dc462c243175200ef14885a321"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_5_wi_moment_component_resultants_golden_benchmarks_rc1.json",
+      "blob": "2ccf3782a26d0dea923cc211d63486ac7c3f2422"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_6_channel_moment_reference_and_component_resultants_golden_benchmarks_rc1.json",
+      "blob": "78404946028d421751afd4dd90d660ba2f258a6f"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_7_angle_connector_core_and_frp_provider_golden_benchmarks_rc2.json",
+      "blob": "b660c2503a4596a65f635a7ac4c1ec8538adf3c1"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_8_in_plane_bolt_group_wrench_demand_golden_benchmarks_rc1_r1.json",
+      "blob": "f5bdbbc0baa9dec092ddc1b51e71908b07df6bf8"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r10_fixed_bolt_frame_positioning_golden_benchmarks_rc1.json",
+      "blob": "f67792df081f3a9eb0be9838ef1d6204a6caed2d"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r12_member_end_trim_golden_benchmarks_rc1.json",
+      "blob": "ddbd8a2809d3f473281dbcd753f3c1b2bb6d7ebd"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r13_tee_length_anchor_position_golden_benchmarks_rc1.json",
+      "blob": "325edb153d24d3f3ba6e5d51c474e5a559cbca2c"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r14b_region_specific_material_basis_golden_benchmarks_rc1.json",
+      "blob": "2ac38a7969827cd10707fa6602b658d7963fa0d3"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r2_member_profile_rc1.json",
+      "blob": "1a1b22808be5ef25caafc90c5d06a22312722483"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r4_exact_unit_and_tee_benchmark_rc1.json",
+      "blob": "fe7afaf06adeef2f5efaf5f48c4f20bf8f2c9144"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r7_angle_bolt_path_golden_benchmarks_rc1.json",
+      "blob": "c3e982a64e46cc4e3d06586a380a2e6ef1b4773c"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r8_profile_wall_bolt_path_golden_benchmarks_rc1.json",
+      "blob": "9d960276a5e80984b4759129c05dce4e95362cb4"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r9_tee_interface_brace_direction_golden_benchmarks_rc1.json",
+      "blob": "49f8f1b2f83008c276a0f8e12e2dc60ce9233db9"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_tee_connector_rc1.json",
+      "blob": "3c559dd7487fbe6511103f7841a073a55d4716c0"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3a_single_clip_angle_golden_benchmarks_rc1.json",
+      "blob": "862c0781d1c7ca2b707248ec4e318600ee46cabf"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3b_symmetric_paired_clip_angle_golden_benchmarks_rc1.json",
+      "blob": "3c6974a671d1002f5a1b5163e0471ebab95c3cf6"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3c1_shared_rectangular_section_full_through_bolt_golden_benchmarks_rc1.json",
+      "blob": "1599d23c83d68ee60ec992d0be90a1e7a42e3c86"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3c2_tee_single_clip_support_rectangular_expansion_golden_benchmarks_rc1.json",
+      "blob": "e83469cec2624c8bdef6683e1406008e5ea51bec"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3c3_paired_clip_angle_profile_support_expansion_golden_benchmarks_rc1.json",
+      "blob": "464a0cbdc23f6eecb6de2af72310b7e8d2afcea4"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_4a_multi_member_tee_node_golden_benchmarks_rc1.json",
+      "blob": "db2970ec896101eee182cabb769768f84ddb9685"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_4b_multi_member_tee_profile_support_expansion_golden_benchmarks_rc1.json",
+      "blob": "119e1912414beea11769c875ac43a4cfc6c9de64"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5a_beam_to_concrete_paired_clip_angle_golden_benchmarks_rc1.json",
+      "blob": "b4c33d9258b6e9952d27dd34243e355f92f46990"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5a_r1_concrete_wall_paired_angle_completion_golden_benchmarks_rc1.json",
+      "blob": "a0738b5311e388d16e578e99f9084e5c57bf6636"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5a_r2_material_axes_three_component_force_golden_benchmarks_rc1.json",
+      "blob": "75fd5a5e7c5622977f37e12df3b9f81f385c8618"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5b_direct_side_lap_angle_channel_concrete_wall_golden_benchmarks_rc1.json",
+      "blob": "acf4a4dc091abbdd712b276785316a86ec101ade"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5c_column_base_web_angles_concrete_golden_benchmarks_rc1.json",
+      "blob": "26eea20efb8db9f56b18f971b3bdf2073a5a8411"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5c_r2_signed_axial_uplift_expansion_golden_benchmarks_rc1.json",
+      "blob": "2506d267d1108ab6edd437335454be38d9bcfd03"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_6a_symmetric_double_web_splice_golden_benchmarks_rc1.json",
+      "blob": "f1f5bd373c88c7fab3e5d46d67250b7afe8ad804"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_6b_web_splice_resistance_authority_expansion_golden_benchmarks_rc2.json",
+      "blob": "6345aa3e83614d19843df7e42c804b55a40547cb"
+    },
+    {
+      "path": "backend/tests/golden/stage_3_7a_column_base_profile_matrix_expansion_golden_benchmarks_rc1.json",
+      "blob": "92e1ee42b4f6082f7ec251ff2ac9506ea1226e59"
+    },
+    {
+      "path": "backend/tests/golden/stage_4_1a_wi_major_axis_moment_splice_golden_benchmarks_rc1.json",
+      "blob": "b8a60a02224e7c5140fa5a787e4f92b587756583"
+    },
+    {
+      "path": "backend/tests/golden/stage_4_1b_channel_major_axis_moment_splice_golden_benchmarks_rc1.json",
+      "blob": "682449d39713dca96ff1bde0a3979ccce6be8c0d"
+    },
+    {
+      "path": "backend/tests/golden/stage_4_2_wi_beam_concrete_wall_moment_connection_golden_benchmarks_rc1_r7.json",
+      "blob": "189f18d563e5c1c4a3bf3f614a6993b2ab467891"
+    },
+    {
+      "path": "docs/engineering/ASCE_74_23_CONNECTION_COVERAGE_MATRIX.md",
+      "blob": "f6776e8408cfac70dae4ab4e39dba12cc8070e08"
+    },
+    {
+      "path": "docs/engineering/ASCE_74_23_SINGLE_BOLT_EQUATION_CATALOG.md",
+      "blob": "06a2177f03e3672736225fbce010b607099d520d"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_1_ENGINEERING_SPECIFICATION_RC2.md",
+      "blob": "322af513c95aefc3590974225b4c3fa2d003fb0c"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_1_INPUT_AND_APPLICABILITY_SPECIFICATION.md",
+      "blob": "3d99ff533cc07dfb5e87dd3e06111b87702ad7b5"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "26b99effb4e5f61c2ed9101b6413de9172a12d31"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC2.md",
+      "blob": "9d73b3860f78852f534653e198b3e413cab56c1d"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "2f14a8873a955b6a1ac45d3765c2fb894e95dfc4"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "1a26e537ee096c99f4e00aefe7a49e88dd99e0a6"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "45b2deedbd92082f86a645a07c863bfb0b1a0f8c"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "c8310409f1f0dabac083495a8cf45fb0f0495b69"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "bac652d919d28cccc127d03482e90ba123ae6f72"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_6_CHANNEL_MOMENT_REFERENCE_AND_COMPONENT_RESULTANTS_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "918b35ddaa2fba408f695561855234183f89d01a"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_ENGINEERING_SPECIFICATION_RC2.md",
+      "blob": "8394879af8c3cf0f1299ad5446e2a0c74df1ac38"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "f04655499c1bc2737e180692355d7d17b99046a1"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_8_NEGATIVE_WEB_AND_STAGE25A_COMPATIBILITY_CLARIFICATION_R1.md",
+      "blob": "0d69fd0f48fd12a3bc0e47b3d248960ca871bb41"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_STATUS_AND_FINGERPRINT_SPECIFICATION.md",
+      "blob": "2a313b801ac2b8ec7a39b8a54b12df82fbb3d545"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "90a9c15a6435b26eb81beab022b70e15c1d68f28"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_2_R4_EXACT_UNIT_GEOMETRY_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md",
+      "blob": "75200299d01422f0bc93f47b73d5f21035079c55"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_2_R7_ANGLE_BOLT_PATH_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md",
+      "blob": "74e9364b19dcb0c461cdef0efa1e76ae3acde342"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_2_R8_PROFILE_WALL_BOLT_PATH_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "4e8f02eb070928c4f05f2ff6fa555770bbe3b8be"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_2_R9_TEE_INTERFACE_BRACE_DIRECTION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "95b13c39c076b6b125d1cd245037a0a01131ed38"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_2_TEE_CONNECTOR_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "989002ac25058f988974730c75fbfcef9ed8c5d1"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_3A_SINGLE_CLIP_ANGLE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "43160584d2af10c0df57e0acf124b021979b0bd5"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_3B_SYMMETRIC_PAIRED_CLIP_ANGLE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "eb54e9d69d71e546bfa85da45360c0a033b9b917"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "cc8bf6890089832a20a8c3ca75e87daf4436096e"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_3C2_TEE_SINGLE_CLIP_SUPPORT_RECTANGULAR_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "613fe745438f17404755531ebe559f0e32cc520d"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_3C3_PAIRED_CLIP_ANGLE_PROFILE_SUPPORT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "67b906bbf3df439231d50de25153f466ff9e92d0"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "c6baa2bd068ed53ca21f0933979500a5b514e1d7"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "0fbfb6c8cd8c1e8632736a7bbc4483d50d7dba7b"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "1a8c45de35cfeefc2b5aca8199f660a55a184c4e"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "5ead4d8b023f01877f0ada7c3c61964dff68925d"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "115bed1b9d5605a87ffde9f9ba0d0f1231b014e7"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "504e3e3afaaab602060f415fbf5974eb03ba96ff"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "78c8b47e34bb33c2aa3ef392c5d7605e5e127afa"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "0fba30bbf017d9f9a7df5545be864914c22b4543"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "50814866508ccd6386e7797b5d3b359350e315e3"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_ENGINEERING_SPECIFICATION_RC2.md",
+      "blob": "fb5a1b8fbf5b0b383179a8602ecf650fbe183310"
+    },
+    {
+      "path": "docs/engineering/STAGE_3_7A_COLUMN_BASE_PROFILE_MATRIX_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "e420409a36ec3aef1d5765e59b3ce855fb94767a"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "be866c114a96ba158711ce45d965c244f619a0ba"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_1B_CHANNEL_MAJOR_AXIS_MOMENT_SPLICE_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "b0bbaf19715f7aefbd259f483a72c10fbcfdad4b"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_2_DEFAULT_STATUS_AND_PURE_MOMENT_NUMERIC_AUTHORITY_CLARIFICATION_R6.md",
+      "blob": "2d38f4dc3dc3beda8377a2464ce9a47020008e8d"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_2_FLANGE_STAGE25A_NATIVE_NUMERIC_AUTHORITY_CLARIFICATION_R5.md",
+      "blob": "7b4def92b9f0510674d3b549e5fd63673da564d4"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_2_NATIVE_GOVERNING_FAILURE_SELECTION_CLARIFICATION_R7.md",
+      "blob": "1e75d9b09690ab3b127169090135a30e8a67c91b"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_2_SLICE8_INTEGRATION_AND_FINAL_NUMERIC_AUTHORITY_CLARIFICATION_R3.md",
+      "blob": "03fd7d21424c4db8a2f5f39dbe30a3d3860eff89"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_2_WEB_GROUP_REFERENCE_CLARIFICATION_R4.md",
+      "blob": "b47a6a785b3be108d08c1a55337b5a9554539f25"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_ENGINEERING_SPECIFICATION_RC1.md",
+      "blob": "a784829a5a33307d65682cb8e021525031fb1eb2"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_DECISION.md",
+      "blob": "fa986c4de77bff0824c76293fdb709c5b1c50023"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_DECISION.md",
+      "blob": "a1ce94f0e7750c722d25fe2b1ae12f6ebca52989"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_6_CHANNEL_MOMENT_REFERENCE_AND_COMPONENT_RESULTANTS_DECISION.md",
+      "blob": "6165c64a49d4a99ba708c1679454053d0eda6f6d"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_DECISION_RC2.md",
+      "blob": "87bf7ee54f89d1af556a4b7019b5e52a7b9e2dc1"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_DECISION_RC1.md",
+      "blob": "31a66ed7f28c63fada8a90eb3d197072d9abc58a"
+    },
+    {
+      "path": "docs/governance/STAGE_2_3_DEPENDENCY_SECURITY_FREEZE_CHANGE.md",
+      "blob": "0d7d7652e5dce8fee4b1f612ba29dc5cb0b296cf"
+    },
+    {
+      "path": "docs/governance/STAGE_2_3_INTERFACE_GEOMETRY_FREEZE.md",
+      "blob": "6405e8f8be6b6f54dde0e146bd9cdf69403f9c09"
+    },
+    {
+      "path": "docs/governance/STAGE_2_4C_MULTIROW_FRONTEND_FREEZE_CHANGE.md",
+      "blob": "d17d5f8455c558aaebedabcfb02db5b55bd0661b"
+    },
+    {
+      "path": "docs/governance/STAGE_2_5C_AUTOMATIC_DEMAND_FRONTEND_FREEZE_CHANGE.md",
+      "blob": "d5db216f4b9e937b8d9da42ad1e14833d4516a37"
+    },
+    {
+      "path": "docs/governance/STAGE_2_5C_R2_LOADED_BOUNDARY_FRONTEND_FREEZE_CHANGE.md",
+      "blob": "6140da972a0ce9e9fa8d8316a634b608e1224067"
+    },
+    {
+      "path": "docs/governance/STAGE_2_6B_GROUP_MODE_FRONTEND_FREEZE_CHANGE.md",
+      "blob": "43976e6814fa7975811ca3db84362d6e2f50e4ad"
+    },
+    {
+      "path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json",
+      "blob": "6d75d5c80fd2ae067d6c830d3e93310fefd13c26"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3A_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md",
+      "blob": "9d64f0238203dc319366d1c8e6dc226a1fba6011"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3B_SHARED_PLATFORM_STAGE_3_3A_ACCEPTED_BASELINE_CHANGE.md",
+      "blob": "0e046a100532d8ce77f915876d9751881a642ad9"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3C1_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md",
+      "blob": "2c44b3da89538e753d6c5b3bcaa26ad766c0c984"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3C2_STAGE_3_2_TEE_RHS_FULL_THROUGH_SUCCESSOR.md",
+      "blob": "2de19e17c14a90061515c237451a03d3c54c84bc"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3C2_STAGE_3_3A_SINGLE_ANGLE_RHS_FULL_THROUGH_SUCCESSOR.md",
+      "blob": "7a575d9ae44e8bfea29acc349d52bce5892ab58c"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_MANIFEST.json",
+      "blob": "4e1ec40d6171461e794587f9ddbdf788ec85a1fa"
+    },
+    {
+      "path": "docs/governance/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_FAMILY_SELECTION_DECISION.md",
+      "blob": "d48529ed31bdd21bb0375b4b3012cd617c92accf"
+    },
+    {
+      "path": "docs/governance/STAGE_3_4A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "blob": "b8b3d75d20874ad91d32fafdc1184facf1c61bad"
+    },
+    {
+      "path": "docs/governance/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_DECISION.md",
+      "blob": "fa0351604f5f6474f2978972cc8c9355e59f981f"
+    },
+    {
+      "path": "docs/governance/STAGE_3_4B_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "blob": "4e33e4b8da8d6c90b5d9bb937df23dbfd9fa93a1"
+    },
+    {
+      "path": "docs/governance/STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_MANIFEST.json",
+      "blob": "f0ba2c50e978d4d8679e66330ae510e90ab3bea9"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_SELECTION_DECISION.md",
+      "blob": "e6633ca1a0e868dee9ea572fee42333f19b7b240"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_DECISION.md",
+      "blob": "96331f81be65858dc848b5e4810abb9b9f1a7258"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_DECISION.md",
+      "blob": "9f05fc914d0bed59abf2d140ada6dfe9c26dc5d6"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "blob": "e7eb747945689504b8669033654a39fa392613ab"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_SELECTION_DECISION.md",
+      "blob": "b071dcbebe9b37506a9ab5081902fa6b2659af15"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_SELECTION_DECISION.md",
+      "blob": "d300e41f410429b07e7a89f2e930c575702a0f24"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_DECISION.md",
+      "blob": "b2ff3a3744aba0734e4a334f484f59ddfff74245"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5C_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "blob": "cf1c86cfe53daa6daf9cbc2f1c1876e941641c75"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE_MANIFEST.json",
+      "blob": "ef299af1473498974b6d24188b7dddf4acf8b197"
+    },
+    {
+      "path": "docs/governance/STAGE_3_6A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "blob": "a8d26092510fd372d661dcb9b6ef94c3c8b10846"
+    },
+    {
+      "path": "docs/governance/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_SELECTION_DECISION.md",
+      "blob": "ec37289d1b9dc675942997def5641d72526c2277"
+    },
+    {
+      "path": "docs/governance/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_DECISION.md",
+      "blob": "e54bf02029a2f5941153a495a57bc68ee837228d"
+    },
+    {
+      "path": "docs/governance/STAGE_3_6_WI_WEB_SPLICE_FAMILY_FREEZE_MANIFEST.json",
+      "blob": "6507aa6f886f00f0d25df8071f408b572353d455"
+    },
+    {
+      "path": "docs/governance/STAGE_3_7A_COLUMN_BASE_PROFILE_MATRIX_EXPANSION_DECISION.md",
+      "blob": "b90bc16bd8997cd66298d56525bc4c2ba2e64725"
+    },
+    {
+      "path": "docs/governance/STAGE_3_7A_STAGE_3_5_FREEZE_SUCCESSOR_CHANGE.md",
+      "blob": "89a625a82ef38e6fcef1667ca732b0a34d89e89a"
+    },
+    {
+      "path": "docs/governance/STAGE_3_7_COLUMN_BASE_SHEAR_FAMILY_FREEZE_MANIFEST.json",
+      "blob": "3f52a211e16b5748375e1c03f32a6f7bc228a637"
+    },
+    {
+      "path": "docs/governance/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_DECISION.md",
+      "blob": "6d3b5a80c07bfd4d9d7d9f7dac8202d93d8a391d"
+    },
+    {
+      "path": "docs/governance/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_FREEZE_MANIFEST.json",
+      "blob": "2bb1bcec5ac30ab652ff87800377b748991869a3"
+    },
+    {
+      "path": "docs/governance/STAGE_4_1B_CHANNEL_MAJOR_AXIS_MOMENT_SPLICE_DECISION.md",
+      "blob": "e05dbb04e9c378651c3fc18171e72f599ab97ba8"
+    },
+    {
+      "path": "docs/governance/STAGE_4_1_BEAM_MOMENT_SPLICE_FAMILY_FREEZE_MANIFEST.json",
+      "blob": "63568e107b3effa718786e05388f9be946139639"
+    },
+    {
+      "path": "docs/governance/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_DECISION.md",
+      "blob": "6afa58e7d690034957d7c425b1f38eb283fe96b6"
+    },
+    {
+      "path": "docs/governance/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_FREEZE_MANIFEST.json",
+      "blob": "91dcdac60dfae04da95529cee9e80dc33ea201ad"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_1_GOLDEN_FIXTURES.md",
+      "blob": "95040aa64d06d42688c5c935e75f3810960849b3"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_2_GOLDEN_BENCHMARKS.md",
+      "blob": "1e4ca95fbc0c6bb5589d76d2e2ac163f4263a979"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_2_RC2_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "blob": "5e4ecec3022980a79b17e951f7804389f78696a2"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "blob": "67c9befff61864e6d50266f35aeab51f5ea25142"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "blob": "297bea840a5359ef649f49c017dd8069d2f451e7"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "blob": "184cb1d24c6883fbbcc4ee477458e59da1064e69"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "6658805ee78fe0bf212071e7671489cd7e50b1d5"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_AUTHORITY_LEDGER_RC1.md",
+      "blob": "86619fdf3c58d5030d79ebcff8d5cb357489009a"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_6_CHANNEL_MOMENT_REFERENCE_AND_COMPONENT_RESULTANTS_AUTHORITY_LEDGER_RC1.md",
+      "blob": "cc1a02215c514ed5aacfc5b40e3b1866a27e513f"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_AUTHORITY_LEDGER_RC2.md",
+      "blob": "9544ee919b23a8e2e6e11e32a444d2d6a3329e31"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_RC2.md",
+      "blob": "bc61418615ef9b690dce5027f1ec349b269e53e0"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_AUTHORITY_LEDGER_RC1.md",
+      "blob": "c90f3fa9048c0efa2b9433cb0981ad33ba245b05"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_8_IN_PLANE_WRENCH_DEMAND_RC1_R1.md",
+      "blob": "e50c71ea71499761b1a5e0f1a408bd4214addb10"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R10_FIXED_BOLT_FRAME_POSITIONING_AUTHORITY_LEDGER_RC1.md",
+      "blob": "959c4ff4aba1261a23746ff4938c4c5cf813d980"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R12_MEMBER_END_TRIM_AUTHORITY_LEDGER_RC1.md",
+      "blob": "1d584b2d4d0d16b90907eb67bca937cb976a9934"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R13_TEE_LENGTH_ANCHOR_POSITION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "804f628ed1311d52fad753f298e64f7dc08ef3ad"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R14B_FINGERPRINT_TRANSITIONS.md",
+      "blob": "fd38e54d010b817109168d62c2d22b8f96c79962"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_AUTHORITY_LEDGER_RC1.md",
+      "blob": "135cfc957a3a902141843b9a90d624a666f051c9"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "c04ab7d25059f5cee6f4f6c5afad9cfccbad43e7"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R4_EXACT_UNIT_GEOMETRY_AUTHORITY_LEDGER_RC1.md",
+      "blob": "95fa114737de11d7ea5bbf1186b1118834b750f7"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R7_ANGLE_BOLT_PATH_AUTHORITY_LEDGER_RC1.md",
+      "blob": "374f6c3917802e1c3b62aac6b1f118d643ff6e0a"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R8_PROFILE_WALL_BOLT_PATH_AUTHORITY_LEDGER_RC1.md",
+      "blob": "28f06a375266a89a7ee2844946402fbf12ffea4e"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_R9_TEE_INTERFACE_BRACE_DIRECTION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "42e5e7ba1635515d8b67b424e25cef1bd0647653"
+    },
+    {
+      "path": "docs/qa/STAGE_3_2_TEE_CONNECTOR_AUTHORITY_LEDGER_RC1.md",
+      "blob": "9901a536a851502cb4ab84e4cba25ed249ab6b5f"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3A_SINGLE_CLIP_ANGLE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "def56abea8342e8f7553550e18a4e8dff3c5b61e"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3B_SYMMETRIC_PAIRED_CLIP_ANGLE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "2592be2d02e867ea1fba0e171b27882f13127c73"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_AUTHORITY_LEDGER_RC1.md",
+      "blob": "5e621a3e0d33ee494ed2d0b5560ca485b08fe9d6"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3C2_R1_PREVIEW_INTEGRATION_CORRECTION.md",
+      "blob": "0a923606ccbfbada695379699f552f016977e201"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3C2_R2_CONNECTED_RHS_THROUGH_BOLT_ORIENTATION_CORRECTION.md",
+      "blob": "74f20dbba002e6f59c794199a7af0789f6c03d6b"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3C2_TEE_SINGLE_CLIP_SUPPORT_RECTANGULAR_EXPANSION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "b6d204d66e3d402f27250a30380e370231f73db1"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3C3_PAIRED_CLIP_ANGLE_PROFILE_SUPPORT_EXPANSION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "1456e1f661ae0319a19eec21d8001e261b920baa"
+    },
+    {
+      "path": "docs/qa/STAGE_3_3C3_R1_MATERIAL_AXES_COVERAGE_BINDING_CORRECTION.md",
+      "blob": "05a3ebea4bcec299709027dd2b30a831ce1361da"
+    },
+    {
+      "path": "docs/qa/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "e44de6bf0cb845784d1f6ac0ed6fce852ac272b4"
+    },
+    {
+      "path": "docs/qa/STAGE_3_4A_R2_MULTI_MEMBER_TEE_BLANK_WORKSPACE_CORRECTION.md",
+      "blob": "b2c37f95baea7bc700ab8f41ece747b307873f91"
+    },
+    {
+      "path": "docs/qa/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "f94ddb628279ec678cc8fe636fd261037a15f122"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "0ae492e52e0aa47132df04a25817ce28ef2a490a"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "b95362e0f352460e00ca545e589c49a33ca299a7"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "cc07a895c2c1e6bfac1ed931521b094259d21a65"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_AUTHORITY_LEDGER_RC1.md",
+      "blob": "1b1e637c9ca62c00b431e50619def18f33e11198"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5B_R1_SELECTOR_ACTION_AXES_VISUAL_CORRECTION.md",
+      "blob": "4156668d29d41584bc7180c6d27f34fbe78900f6"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "174c09653118bdd70f17af23488d1f3d06005bea"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5C_R1_SIGNED_SHEAR_ARROWS_AXIAL_UI_CLARIFICATION.md",
+      "blob": "9e7a5e16ea95ee3b9032988bd1c19fa97436f4b2"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "b04f6467cb4ffad063d8b5f5579be811c01cf756"
+    },
+    {
+      "path": "docs/qa/STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE.md",
+      "blob": "fa3651e4853fd75d856407464bc11374e34789c5"
+    },
+    {
+      "path": "docs/qa/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "75a3a7329e450c5c511819109770beb9b9be8b32"
+    },
+    {
+      "path": "docs/qa/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_AUTHORITY_LEDGER_RC2.md",
+      "blob": "3af133ec3908e7693c15d55a3231deb539cc1e46"
+    },
+    {
+      "path": "docs/qa/STAGE_3_6_WI_WEB_SPLICE_FAMILY_FREEZE.md",
+      "blob": "6364f7284fa68740c102de4c824fdde98a4fdd1a"
+    },
+    {
+      "path": "docs/qa/STAGE_3_7A_COLUMN_BASE_PROFILE_MATRIX_EXPANSION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "a8499abb8e2b29df2023224a8484714c5145c90f"
+    },
+    {
+      "path": "docs/qa/STAGE_3_7A_R1_ANGLE_SINGLE_BOLT_PATH_ORIENTATION_CORRECTION.md",
+      "blob": "25b5d6c289ce530994860f3dd4914eb76116aae7"
+    },
+    {
+      "path": "docs/qa/STAGE_3_7_COLUMN_BASE_SHEAR_FAMILY_FREEZE.md",
+      "blob": "ec5d8618fd67027dd9ab71118abe151deab0314f"
+    },
+    {
+      "path": "docs/qa/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "6062c673e807e690acaf26e4154efcbe453aaf2e"
+    },
+    {
+      "path": "docs/qa/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_FREEZE.md",
+      "blob": "627b673945d976f4529646f32015b618e981ab6f"
+    },
+    {
+      "path": "docs/qa/STAGE_4_1B_CHANNEL_MAJOR_AXIS_MOMENT_SPLICE_AUTHORITY_LEDGER_RC1.md",
+      "blob": "a51de96be29b7fc72c0e2de775a64ca7289c5edf"
+    },
+    {
+      "path": "docs/qa/STAGE_4_1B_R1_CHANNEL_WORKSPACE_BOOTSTRAP_RUNTIME_CORRECTION.md",
+      "blob": "ddb1a98d43862f3aba3b394e2f4d636279c63e42"
+    },
+    {
+      "path": "docs/qa/STAGE_4_1_BEAM_MOMENT_SPLICE_FAMILY_FREEZE.md",
+      "blob": "66c4ae09e8efaa2485cfc279bc1d34ceaf4a9cff"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_CONTROLLED_PACKAGE.json",
+      "blob": "4dd9c15678569d0c3018d4bd893c3368cc4d92d6"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_DEFAULT_STATUS_AND_PURE_MOMENT_CORRECTION_AND_RESUME_ORDER_R6.md",
+      "blob": "1ab2828d1368f97255bc91a9b4e945963ed67c10"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_FLANGE_STAGE25A_NUMERIC_AUTHORITY_CORRECTION_AND_RESUME_ORDER_R5.md",
+      "blob": "7a39092f7333f1429afb094cc15022b9c9d0bac2"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_FREEZE.md",
+      "blob": "ed9e956222356efc73d3b20941190f08229726fb"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_IMPLEMENTATION_AND_VERIFICATION_RC1_R7.md",
+      "blob": "d97d4437e518d98291cb76f2c6ed70f9a3ca9924"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_INHERITED_IDENTITIES.json",
+      "blob": "0afbc5bfe04518144ed0726e4b52f1d6c3d1fb9a"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_NATIVE_GOVERNING_FAILURE_SELECTION_CORRECTION_AND_RESUME_ORDER_R7.md",
+      "blob": "f2864bfa6011ca17ffbb59076ec8e81431640e56"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_SIDEBAR_AND_RESULT_TRACEABILITY_CORRECTION.md",
+      "blob": "0bf927d9d09954eb25b26460ff397de1af193666"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_SLICE8_INTEGRATION_CORRECTION_AND_IMPLEMENTATION_ORDER_R3.md",
+      "blob": "05d102025ff75420d5349bbad54cda9823068e29"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_WEB_GROUP_REFERENCE_CORRECTION_AND_RESUME_ORDER_R4.md",
+      "blob": "d74c3051ebf08cae5e8ae454d6ad1da83527ed71"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_AUTHORITY_LEDGER_RC1.md",
+      "blob": "177d4d4390b627976c937778c33aebe77aeb7fde"
+    },
+    {
+      "path": "docs/qa/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_CODEX_ORDER.md",
+      "blob": "6b950a40dfd54c286c9f02c65e64f873918ca3e0"
+    },
+    {
+      "path": "frontend/eslint.config.js",
+      "blob": "64ad31598e4c6612941a5c30f20a64c9ec544e40"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "blob": "ae1831268db42005517343bf555f054a673ae520"
+    },
+    {
+      "path": "frontend/package.json",
+      "blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    },
+    {
+      "path": "frontend/src/api/beamConcretePairedAngleContracts.ts",
+      "blob": "a05b5df68145914ce082a8b1a99ef371e325f0b0"
+    },
+    {
+      "path": "frontend/src/api/channelMomentSpliceContracts.ts",
+      "blob": "92ab83c7d6d4a2f47d189d12d111e0cbc85beed2"
+    },
+    {
+      "path": "frontend/src/api/client.ts",
+      "blob": "fefc1c19b6b80d32296743cb3077a03643a9c66d"
+    },
+    {
+      "path": "frontend/src/api/clipAngleContracts.ts",
+      "blob": "953a642f405478dfdaab85180c1ef38dbba28aec"
+    },
+    {
+      "path": "frontend/src/api/columnBaseWebAngleContracts.ts",
+      "blob": "7f47d0d56b2b73b4803de310fb40d9f770cb46c5"
+    },
+    {
+      "path": "frontend/src/api/contracts.ts",
+      "blob": "2782193db8b4b3f61beb98dd30d4e9ee35fb3d90"
+    },
+    {
+      "path": "frontend/src/api/directSideLapConcreteContracts.ts",
+      "blob": "669f99f8c2773dca8e9c55e69b7998f531608b2a"
+    },
+    {
+      "path": "frontend/src/api/multiMemberTeeContracts.ts",
+      "blob": "298ce7b90a1a19a0d36d6e77f7d955371e78b1ea"
+    },
+    {
+      "path": "frontend/src/api/multirowContracts.ts",
+      "blob": "3da8c41f5ceb4d7ea9051bad2337f3965bb53ccd"
+    },
+    {
+      "path": "frontend/src/api/pairedClipAngleContracts.ts",
+      "blob": "1ff5a9cce61e63d7dda4889ca73f50180bd42d8b"
+    },
+    {
+      "path": "frontend/src/api/sharedSupportContracts.ts",
+      "blob": "7aca0f068ce573ca1c01fa766d3dccce56e59691"
+    },
+    {
+      "path": "frontend/src/api/teeContracts.ts",
+      "blob": "3c6912a1ac6ccc61a78f8d28e6a9f28bf58c4b78"
+    },
+    {
+      "path": "frontend/src/api/webSpliceContracts.ts",
+      "blob": "1e753b7d614e6edc8ad045b78c127d471cc3c8bb"
+    },
+    {
+      "path": "frontend/src/api/wiMomentSpliceContracts.ts",
+      "blob": "28165a14987b119459a7be65e15bb4ef62111242"
+    },
+    {
+      "path": "frontend/src/api/wiWallMomentClient.ts",
+      "blob": "7c527e74c5687f4694c3e401d40a390b0cd9c3b1"
+    },
+    {
+      "path": "frontend/src/api/wiWallMomentContracts.ts",
+      "blob": "b95cd8b4ebe7cf6479beb8eaaed4c36561be3ec3"
+    },
+    {
+      "path": "frontend/src/app/App.tsx",
+      "blob": "795cc2c3e7cd066e3c0f2e7f850d58f4e1172d1e"
+    },
+    {
+      "path": "frontend/src/app/AppShell.tsx",
+      "blob": "9ee14f73cc2c9bc321aaa0a3dc85d1ceb2b3703a"
+    },
+    {
+      "path": "frontend/src/app/mountApplication.tsx",
+      "blob": "1662a8443f02f621e9decdbe79ae9e4b3facdcab"
+    },
+    {
+      "path": "frontend/src/domain/designCategories.ts",
+      "blob": "aa2d4fdfdd505b26cc26e640ecd82ea6a35b1ebb"
+    },
+    {
+      "path": "frontend/src/features/CategorySelector.tsx",
+      "blob": "b5b6792abadad3a7d0d2b04c1fa280aa82d64e2e"
+    },
+    {
+      "path": "frontend/src/fixtures/beamConcretePairedAngleBenchmarks.ts",
+      "blob": "268bdb2c82e11fde7616c70d948dc94fdb2e02d9"
+    },
+    {
+      "path": "frontend/src/fixtures/channelMomentSpliceBenchmarks.ts",
+      "blob": "d6b729943d35e2b4e350c3ca36fb824deaf7c143"
+    },
+    {
+      "path": "frontend/src/fixtures/clipAngleBenchmarks.ts",
+      "blob": "f37e03a77a53cd419098e39dc4b90fc3040596ca"
+    },
+    {
+      "path": "frontend/src/fixtures/columnBaseWebAngleBenchmarks.ts",
+      "blob": "13832557ff83eee86784f82df57bb1ad3764879c"
+    },
+    {
+      "path": "frontend/src/fixtures/directSideLapConcreteBenchmarks.ts",
+      "blob": "d740cdf232d0c4147092857ba7d0de9e2dd808c9"
+    },
+    {
+      "path": "frontend/src/fixtures/j1-si.json",
+      "blob": "b5fd56c0495e5bb766353202c6c8a5033097a1f6"
+    },
+    {
+      "path": "frontend/src/fixtures/j1-us.json",
+      "blob": "2f9514e0ead17ae156b35aec6db88ba57c7f87c8"
+    },
+    {
+      "path": "frontend/src/fixtures/j1Benchmarks.ts",
+      "blob": "dfc6d1ca45842ad330acaddc8828591d0769682e"
+    },
+    {
+      "path": "frontend/src/fixtures/multiMemberTeeBenchmarks.ts",
+      "blob": "e508d1e2b59f28a7229091e18f31511ce5c7b713"
+    },
+    {
+      "path": "frontend/src/fixtures/pairedClipAngleBenchmarks.ts",
+      "blob": "003f6b85cf6a752c6937b1e9f60eb5de32a47652"
+    },
+    {
+      "path": "frontend/src/fixtures/teeBenchmarks.ts",
+      "blob": "ab3dc48b6cdfae259e7fad45d53199d05d6f04fa"
+    },
+    {
+      "path": "frontend/src/fixtures/webSpliceBenchmarks.ts",
+      "blob": "ddd336414d070cff8feca8e71435c816868b7a2c"
+    },
+    {
+      "path": "frontend/src/fixtures/wiMomentSpliceBenchmarks.ts",
+      "blob": "dbd9efcd27411fa28472cb842d8b68bb1d1f934f"
+    },
+    {
+      "path": "frontend/src/fixtures/wiWallMomentBenchmarks.ts",
+      "blob": "ea55a8e76b3d554191bf2d5a6f2c1ca0370ed329"
+    },
+    {
+      "path": "frontend/src/geometry/.gitkeep",
+      "blob": "0c9dfb9b43453793fabbd5bcd9f32b9d029190f1"
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "blob": "32cbda5782878f24489da265ab55926f959a8c50"
+    },
+    {
+      "path": "frontend/src/services/.gitkeep",
+      "blob": "0c9dfb9b43453793fabbd5bcd9f32b9d029190f1"
+    },
+    {
+      "path": "frontend/src/state/.gitkeep",
+      "blob": "0c9dfb9b43453793fabbd5bcd9f32b9d029190f1"
+    },
+    {
+      "path": "frontend/src/styles.css",
+      "blob": "955917e302d5db69aa68e6b1f22d3f9a8f6761ff"
+    },
+    {
+      "path": "frontend/src/views/WorkspacePreview.tsx",
+      "blob": "4c6349cec150404db6ca88fbcc8fe52ca1bdab45"
+    },
+    {
+      "path": "frontend/src/visualization/EngineeringScene.tsx",
+      "blob": "b08650a70305a07efe08f38c9d3d37a5fa87cfcc"
+    },
+    {
+      "path": "frontend/src/visualization/MultiRowVisualizationPanel.tsx",
+      "blob": "c0ec8c1334cd0daa5fddfc7b75b8deea7c5f81c2"
+    },
+    {
+      "path": "frontend/src/visualization/VisualizationPanel.tsx",
+      "blob": "c5e14573f594d3245fdae23f3f84dd29c32c178a"
+    },
+    {
+      "path": "frontend/src/visualization/actionLabelContract.ts",
+      "blob": "b1197e99ff798c56bbf4448fe0276e32137d644d"
+    },
+    {
+      "path": "frontend/src/visualization/actionLabelProjection.ts",
+      "blob": "b931ac8853dbc2a35cad4185bcdd1b7db3ec2594"
+    },
+    {
+      "path": "frontend/src/visualization/actionPrimitiveGeometry.ts",
+      "blob": "3047921e0796b4b5f94074012804f6243bb8e219"
+    },
+    {
+      "path": "frontend/src/visualization/beamConcretePairedAngleSceneModel.ts",
+      "blob": "8d235bc68aed0ac1a741afd5c991651c78c62331"
+    },
+    {
+      "path": "frontend/src/visualization/channelMomentSpliceSceneModel.ts",
+      "blob": "432255f30d5bb26da23172117a19f7b42e67708c"
+    },
+    {
+      "path": "frontend/src/visualization/clipAngleSceneModel.ts",
+      "blob": "af729e56de6c2463fecfdbd9fe783b1f869f3b31"
+    },
+    {
+      "path": "frontend/src/visualization/columnBaseWebAngleSceneModel.ts",
+      "blob": "ca705cd25fafa90d97fc3a2d7a0395ec36c4f809"
+    },
+    {
+      "path": "frontend/src/visualization/directSideLapConcreteSceneModel.ts",
+      "blob": "2615948df1fd4320c37a38ff50ba968c2b29a22d"
+    },
+    {
+      "path": "frontend/src/visualization/materialAxisPresentation.ts",
+      "blob": "b4df67bb7fbf2de15afbec38073a0f7786879dd1"
+    },
+    {
+      "path": "frontend/src/visualization/multiMemberTeeSceneModel.ts",
+      "blob": "eb3922452f789d5734e8ee52bdf7ca12605b6ff6"
+    },
+    {
+      "path": "frontend/src/visualization/pairedClipAngleSceneModel.ts",
+      "blob": "a6dc49c68d07a03fb8abd8f86dce4c9c4a414e69"
+    },
+    {
+      "path": "frontend/src/visualization/viewportNavigation.ts",
+      "blob": "f9a3697d8ff55e4920b7f805d08384d23bc87900"
+    },
+    {
+      "path": "frontend/src/visualization/webSpliceSceneModel.ts",
+      "blob": "272c814c298d018f403415f1ab48bedf9ca5821b"
+    },
+    {
+      "path": "frontend/src/visualization/wiMomentSpliceSceneModel.ts",
+      "blob": "39ce297a4bcceb8d1b25302321b9721d14e88879"
+    },
+    {
+      "path": "frontend/src/visualization/wiWallMomentSceneModel.ts",
+      "blob": "fc70a02ca5f6e6e1133e7ebd55a419170dfe2b93"
+    },
+    {
+      "path": "frontend/src/vite-env.d.ts",
+      "blob": "11f02fe2a0061d6e6e1f271b21da95423b448b32"
+    },
+    {
+      "path": "frontend/src/workspace/BeamConcretePairedAngleWorkspace.tsx",
+      "blob": "9adc22710e43a1403c80ad63bcd6d312e6f55607"
+    },
+    {
+      "path": "frontend/src/workspace/ChannelMomentSpliceWorkspace.tsx",
+      "blob": "364032bfdd523c813b62e46fe1fb73ed4fccf5f5"
+    },
+    {
+      "path": "frontend/src/workspace/ClipAngleConnectorWorkspace.tsx",
+      "blob": "bab84d353729ee6edd1641076eabb16a687e105a"
+    },
+    {
+      "path": "frontend/src/workspace/ColumnBaseWebAngleWorkspace.tsx",
+      "blob": "e05959920fb05e80e32e3e28ff83c6475b419224"
+    },
+    {
+      "path": "frontend/src/workspace/ConnectionWorkspaceShell.tsx",
+      "blob": "dd2419bac9be6f6681de3a2452c256e6eab7d57a"
+    },
+    {
+      "path": "frontend/src/workspace/DirectSideLapConcreteWorkspace.tsx",
+      "blob": "2d74cdd48bcfbd6d6c7087657b8bae5558adbfbc"
+    },
+    {
+      "path": "frontend/src/workspace/MultiMemberTeeProfileEditor.tsx",
+      "blob": "a4bd6262b61fb5b61447983e1612e3ea5c2002ef"
+    },
+    {
+      "path": "frontend/src/workspace/MultiMemberTeeWorkspace.tsx",
+      "blob": "dcbfeefc5aa690dd235ceef0123401f0069b8135"
+    },
+    {
+      "path": "frontend/src/workspace/PairedClipAngleConnectorWorkspace.tsx",
+      "blob": "d38894cc5ae35219a310c19c449aea9e04283545"
+    },
+    {
+      "path": "frontend/src/workspace/ShearConnectionsWorkspace.tsx",
+      "blob": "9280000b16a27ad5de14c9eecc6f535309fd5017"
+    },
+    {
+      "path": "frontend/src/workspace/SingleBoltEngineeringWorkspace.tsx",
+      "blob": "915505aba3f3e64145d39927579f88eee4775a82"
+    },
+    {
+      "path": "frontend/src/workspace/SupportingMemberEditor.tsx",
+      "blob": "853ff69eacce3f69fb52e199078b8fe57c4905e9"
+    },
+    {
+      "path": "frontend/src/workspace/TeeConnectorWorkspace.tsx",
+      "blob": "a796019267ddccd518883ec700b17ee4184edf86"
+    },
+    {
+      "path": "frontend/src/workspace/WIMomentSpliceWorkspace.tsx",
+      "blob": "d8ba2ec993afc467162451f066f32dae983ae973"
+    },
+    {
+      "path": "frontend/src/workspace/WIWallMomentWorkspace.tsx",
+      "blob": "86a336fa2d71645775858b8c3aa5fee89af21996"
+    },
+    {
+      "path": "frontend/src/workspace/WebSpliceWorkspace.tsx",
+      "blob": "2d0a52e6917b32d9186633265cd1109c4ad84154"
+    },
+    {
+      "path": "frontend/src/workspace/beamConcretePairedAngleWorkflow.ts",
+      "blob": "e86ecdbcc86e33c2459637c9e584f3b894b20eb1"
+    },
+    {
+      "path": "frontend/src/workspace/channelMomentSpliceWorkflow.ts",
+      "blob": "cbbf0d0cd45f190933374dbd118a6f8caa6ea166"
+    },
+    {
+      "path": "frontend/src/workspace/clipAngleValidation.ts",
+      "blob": "411319c8f8623df2a8bf2cb8c1f288931b8486dc"
+    },
+    {
+      "path": "frontend/src/workspace/clipAngleWorkflow.ts",
+      "blob": "fd4b73439f7bdfc8c6300ff695ab1716fb889d41"
+    },
+    {
+      "path": "frontend/src/workspace/columnBaseWebAngleWorkflow.ts",
+      "blob": "1f0eb9d461066f638034eacca8fd73c1e2ac9995"
+    },
+    {
+      "path": "frontend/src/workspace/directSideLapConcreteWorkflow.ts",
+      "blob": "a06ef8a17806658db0caebe208216138fe8b83f2"
+    },
+    {
+      "path": "frontend/src/workspace/multiMemberTeeWorkflow.ts",
+      "blob": "2c7cad0609f26ee4bf004601db410871466c109f"
+    },
+    {
+      "path": "frontend/src/workspace/multirowWorkflow.ts",
+      "blob": "cba792415d62d7e77acbe64f392f17c74e742651"
+    },
+    {
+      "path": "frontend/src/workspace/pairedClipAngleOptions.ts",
+      "blob": "bd1c8ad8b81b232cff8278b1464e1e7fe32ca18a"
+    },
+    {
+      "path": "frontend/src/workspace/pairedClipAngleValidation.ts",
+      "blob": "f1e495fa66efe7c72031e7ff3b87147bcf2d0bed"
+    },
+    {
+      "path": "frontend/src/workspace/pairedClipAngleWorkflow.ts",
+      "blob": "d60f198037c891e4fb5d3e84cbf71a001ebf84da"
+    },
+    {
+      "path": "frontend/src/workspace/presentation.ts",
+      "blob": "ade0bfa3e3c6323408b173fac71d5d790667f421"
+    },
+    {
+      "path": "frontend/src/workspace/previewWorkflow.ts",
+      "blob": "e4702789fc8d9377461b38163524f30003e1c1e2"
+    },
+    {
+      "path": "frontend/src/workspace/teePlacement.ts",
+      "blob": "3cd264a80ee2a0a573f4be12464f6854a2dc4e73"
+    },
+    {
+      "path": "frontend/src/workspace/teePreviewState.ts",
+      "blob": "dfd45f7b57493c5e27e8edcad5bb37dd0da344d1"
+    },
+    {
+      "path": "frontend/src/workspace/teeProfileOptions.ts",
+      "blob": "457f12bcccf0a5ee483d054f1c3dc29f4d213d08"
+    },
+    {
+      "path": "frontend/src/workspace/teeValidation.ts",
+      "blob": "58ec096fcf94aa0a46da811c8c3357f1869bb6ac"
+    },
+    {
+      "path": "frontend/src/workspace/teeWorkflow.ts",
+      "blob": "ed4cc5eb702026176e6acaf8b638454e901500f9"
+    },
+    {
+      "path": "frontend/src/workspace/webSpliceWorkflow.ts",
+      "blob": "cbc9c9b5d0c76215e50e25ccb574e63facd466b6"
+    },
+    {
+      "path": "frontend/src/workspace/wiMomentSpliceWorkflow.ts",
+      "blob": "c7ef3a0f114222d8d688c3f7aca7377d74cdbba8"
+    },
+    {
+      "path": "frontend/src/workspace/wiWallMomentFailures.ts",
+      "blob": "64a42f3df50c0f5d4da513f17582f34ad069c342"
+    },
+    {
+      "path": "frontend/src/workspace/wiWallMomentWorkflow.ts",
+      "blob": "826f9992eb01c45675ad43aa14f32a8a1f1ac1b0"
+    },
+    {
+      "path": "frontend/src/workspace/wiWallMomentWorkspace.css",
+      "blob": "c1fef023bbd33c14ebe7e7ab503f6811b8ed026d"
+    },
+    {
+      "path": "frontend/tsconfig.app.json",
+      "blob": "f0ba52d77c9d2c9712019c861ae1052556b2abca"
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "blob": "1ffef600d959ec9e396d5a260bd3f5b927b2cef8"
+    },
+    {
+      "path": "frontend/tsconfig.node.json",
+      "blob": "4f071166fa03608bd5534b91db6bc4e520b0ab4c"
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "blob": "e82828f3ef4bf0a8b8404d8475da70b8dfcf5bb7"
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "blob": "953e9384b150e6f6bab48c94d4ffde10ed6644cc"
+    },
+    {
+      "path": "scripts/README.md",
+      "blob": "15ed7d09393df6e4a4aa1a0d59e448618e83c4f2"
+    },
+    {
+      "path": "scripts/backend-bootstrap.ps1",
+      "blob": "3e0de4ec4ae1efab8cea14f484b952bb95db9f6c"
+    },
+    {
+      "path": "scripts/backend-check.ps1",
+      "blob": "38be749c2f4399f6b88dc6da4d7c5fc25b62064d"
+    },
+    {
+      "path": "scripts/check-all.ps1",
+      "blob": "dbe14fcc9139b618badde9b9c385f1a23a260165"
+    },
+    {
+      "path": "scripts/frontend-bootstrap.ps1",
+      "blob": "248df8b231014576c575b75a0f85eed984c49446"
+    },
+    {
+      "path": "scripts/frontend-check.ps1",
+      "blob": "7f82b85599e09624e5bbd47a296c567138bbd0aa"
+    }
+  ],
+  "tags": [
+    {
+      "name": "stage-2.3-interface-geometry-freeze",
+      "object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd",
+      "peeled": "5bc545ab8251f9bd49dedc776962937ed5e822a2"
+    },
+    {
+      "name": "stage-3.2-tee-connection-freeze",
+      "object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0",
+      "peeled": "d16b354732c90bf3bf7847c62be652c230a9f91e"
+    },
+    {
+      "name": "stage-3.3-clip-angle-family-freeze",
+      "object": "c22433084106a4da3006b610cc90429aba1660ce",
+      "peeled": "a4d21506d45d2d21d3f5039b662ea56ec6c5da9f"
+    },
+    {
+      "name": "stage-3.4-multi-member-tee-family-freeze",
+      "object": "282724c1fe2fbbeea9f742921aba5996028fd60b",
+      "peeled": "2303ec713d6d038b935e076b909c3b639ced0e09"
+    },
+    {
+      "name": "stage-3.5-concrete-support-shear-family-freeze",
+      "object": "7d9eaa40aa43f29e52fbae78b40057b31eaa8af8",
+      "peeled": "7bb83e5c8814781419c0789b7428bd46572d514c"
+    },
+    {
+      "name": "stage-3.6-wi-web-splice-family-freeze",
+      "object": "748d684ae08d86d6335fc26c9bff1e6c0389aa25",
+      "peeled": "031e8367b25765652447fb358e54dd5facd1238b"
+    },
+    {
+      "name": "stage-3.7-column-base-shear-family-freeze",
+      "object": "cbce5bc3e6ab61b550b3848982d6493a32a56bdb",
+      "peeled": "b0a6ecdf03c88768ff6ab29e584a992231812bda"
+    },
+    {
+      "name": "stage-4.1-beam-moment-splice-family-freeze",
+      "object": "5dd3e25ac1e55f3304e802e931dab90a0f3cd767",
+      "peeled": "18419606f4143f27240a39374b25e294a9f39253"
+    },
+    {
+      "name": "stage-4.1a-wi-major-axis-moment-splice-freeze",
+      "object": "a265ff394413d8fef16e7012c1de910bf3ece1b7",
+      "peeled": "cc9effad0691d083bb204c44ec3fb6e9dfb3671d"
+    },
+    {
+      "name": "stage-4.2-wi-beam-concrete-wall-moment-connection-freeze",
+      "object": "5ad81fe69c1ea17bc0a76daf34cf27f44963cecf",
+      "peeled": "c8094293e6da49aa830b5801f49aae537cccae2b"
+    }
+  ]
+}

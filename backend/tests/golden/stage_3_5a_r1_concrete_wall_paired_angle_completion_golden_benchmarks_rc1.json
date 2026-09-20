@@ -1,0 +1,464 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "historical_contract": "3.5A-RC1",
+  "successor_contract": "3.5A-R1-RC1",
+  "default_successor_fixture": {
+    "connected_profile": "WIDE_FLANGE_I",
+    "reaction_shear_kip": "-4",
+    "positive_anchor_group": {
+      "rows": 1,
+      "anchors_per_row": 1,
+      "centroid_hv_in": [
+        "3",
+        "0"
+      ],
+      "anchor_coordinates_hv_in": [
+        [
+          "3",
+          "0"
+        ]
+      ]
+    },
+    "negative_anchor_group": {
+      "rows": 1,
+      "anchors_per_row": 1,
+      "centroid_hv_in": [
+        "-3",
+        "0"
+      ],
+      "anchor_coordinates_hv_in": [
+        [
+          "-3",
+          "0"
+        ]
+      ]
+    },
+    "expected_positive_branch": {
+      "force_hvn_kip": [
+        "0",
+        "-2",
+        "0"
+      ],
+      "moment_hvn_kip_in": [
+        "8",
+        "0",
+        "6"
+      ]
+    },
+    "expected_negative_branch": {
+      "force_hvn_kip": [
+        "0",
+        "-2",
+        "0"
+      ],
+      "moment_hvn_kip_in": [
+        "8",
+        "0",
+        "-6"
+      ]
+    },
+    "expected_combined_wall": {
+      "force_hvn_kip": [
+        "0",
+        "-4",
+        "0"
+      ],
+      "moment_hvn_kip_in": [
+        "16",
+        "0",
+        "0"
+      ]
+    },
+    "internal_anchor_force_distribution": "EXTERNAL_DESIGN_REQUIRED"
+  },
+  "benchmarks": [
+    {
+      "id": "G1_HISTORICAL_STAGE_3_5A_RC1_INVARIANCE",
+      "expected": {
+        "historical_contract_accepted": true,
+        "historical_w_i_only_scope_preserved": true,
+        "historical_two_by_two_anchor_default_preserved": true,
+        "historical_geometry_change": "NONE",
+        "historical_branch_wrench_change": "NONE",
+        "historical_combined_wall_wrench_change": "NONE",
+        "historical_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G2_BRACE_BEAM_PRESENTATION_LABELS",
+      "expected": {
+        "selector_group_heading": "Brace/beam connections",
+        "direct_label": "Brace/beam connection \u2014 Direct",
+        "tee_label": "Brace/beam connection \u2014 Tee connector",
+        "single_clip_label": "Brace/beam connection \u2014 Single clip angle",
+        "paired_clip_label": "Brace/beam connection \u2014 Symmetric paired clip angles",
+        "multi_member_tee_label": "Brace/beam node \u2014 Multi-member Tee connector",
+        "engineering_identity_change": "NONE",
+        "fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G3_R1_DEFAULT_ONE_ANCHOR_PER_CLIP_ANGLE",
+      "expected": {
+        "positive_rows": 1,
+        "positive_anchors_per_row": 1,
+        "negative_rows": 1,
+        "negative_anchors_per_row": 1,
+        "positive_anchor_coordinates_hv_in": [
+          [
+            "3",
+            "0"
+          ]
+        ],
+        "negative_anchor_coordinates_hv_in": [
+          [
+            "-3",
+            "0"
+          ]
+        ],
+        "hidden_additional_anchors": 0
+      }
+    },
+    {
+      "id": "G4_R1_DEFAULT_BRANCH_WRENCH_INVARIANCE",
+      "expected": {
+        "positive_force_hvn_kip": [
+          "0",
+          "-2",
+          "0"
+        ],
+        "positive_moment_hvn_kip_in": [
+          "8",
+          "0",
+          "6"
+        ],
+        "negative_force_hvn_kip": [
+          "0",
+          "-2",
+          "0"
+        ],
+        "negative_moment_hvn_kip_in": [
+          "8",
+          "0",
+          "-6"
+        ]
+      }
+    },
+    {
+      "id": "G5_R1_DEFAULT_COMBINED_WALL_WRENCH_INVARIANCE",
+      "expected": {
+        "force_hvn_kip": [
+          "0",
+          "-4",
+          "0"
+        ],
+        "moment_hvn_kip_in": [
+          "16",
+          "0",
+          "0"
+        ],
+        "force_equilibrium": true,
+        "moment_equilibrium": true
+      }
+    },
+    {
+      "id": "G6_ONE_BY_ONE_INTERNAL_FORCE_DISTRIBUTION",
+      "expected": {
+        "branch_wrench_retained": true,
+        "anchor_coordinate_retained": true,
+        "nominal_point_anchor_force_solution_present": false,
+        "status": "EXTERNAL_DESIGN_REQUIRED",
+        "limitation": "WALL_ANCHOR_INTERNAL_FORCE_DISTRIBUTION"
+      }
+    },
+    {
+      "id": "G7_INCREASE_ANCHOR_PATTERN_TWO_BY_ONE",
+      "input": {
+        "rows": 2,
+        "anchors_per_row": 1,
+        "pitch_in": "2"
+      },
+      "expected": {
+        "positive_group_anchor_count": 2,
+        "negative_group_anchor_count": 2,
+        "groups_exact_mirrors": true,
+        "branch_wrenches_change": "NONE",
+        "nominal_trace_only_if_equilibrium_applicable": true
+      }
+    },
+    {
+      "id": "G8_INCREASE_ANCHOR_PATTERN_TWO_BY_TWO",
+      "input": {
+        "rows": 2,
+        "anchors_per_row": 2,
+        "pitch_in": "2",
+        "gauge_in": "2"
+      },
+      "expected": {
+        "positive_group_anchor_count": 4,
+        "negative_group_anchor_count": 4,
+        "groups_exact_mirrors": true,
+        "historical_stage_3_5a_group_geometry_reproducible": true
+      }
+    },
+    {
+      "id": "G9_FLAT_PLATE_CONNECTED_PROFILE",
+      "profile": "FLAT_PLATE",
+      "expected": {
+        "actual_profile_geometry": true,
+        "path": [
+          "POSITIVE_CLIP_CONNECTED_LEG",
+          "FLAT_PLATE",
+          "NEGATIVE_CLIP_CONNECTED_LEG"
+        ],
+        "horizontal": true
+      }
+    },
+    {
+      "id": "G10_ANGLE_CONNECTED_PROFILE",
+      "profile": "ANGLE",
+      "expected": {
+        "actual_profile_geometry": true,
+        "path": [
+          "POSITIVE_CLIP_CONNECTED_LEG",
+          "ANGLE_SELECTED_LEG",
+          "NEGATIVE_CLIP_CONNECTED_LEG"
+        ],
+        "heel_and_perpendicular_leg_preserved": true,
+        "horizontal": true
+      }
+    },
+    {
+      "id": "G11_CHANNEL_CONNECTED_PROFILE",
+      "profile": "CHANNEL",
+      "expected": {
+        "actual_profile_geometry": true,
+        "selected_finite_region_path": true,
+        "generic_plate_fallback": false,
+        "horizontal": true
+      }
+    },
+    {
+      "id": "G12_W_I_CONNECTED_PROFILE",
+      "profile": "WIDE_FLANGE_I",
+      "expected": {
+        "historical_geometry_available": true,
+        "selected_finite_region_path": true,
+        "horizontal": true
+      }
+    },
+    {
+      "id": "G13_RHS_CONNECTED_FULL_THROUGH",
+      "profile": "RECTANGULAR_HOLLOW_SECTION",
+      "expected": {
+        "segments": [
+          "POSITIVE_CLIP_CONNECTED_LEG",
+          "RHS_NEAR_WALL",
+          "RHS_CAVITY_FREE_SHANK_SPAN",
+          "RHS_FAR_WALL",
+          "NEGATIVE_CLIP_CONNECTED_LEG"
+        ],
+        "one_physical_bolt_per_axis": true,
+        "internal_hardware_count": 0,
+        "cavity_material_layer": false
+      }
+    },
+    {
+      "id": "G14_SRS_CONNECTED_FULL_DEPTH",
+      "profile": "SOLID_RECTANGULAR_SECTION",
+      "expected": {
+        "segments": [
+          "POSITIVE_CLIP_CONNECTED_LEG",
+          "SOLID_RECTANGULAR_SECTION",
+          "NEGATIVE_CLIP_CONNECTED_LEG"
+        ],
+        "one_physical_bolt_per_axis": true,
+        "cavity_present": false
+      }
+    },
+    {
+      "id": "G15_SIX_PROFILE_SCENE_COMPLETENESS",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "connected_member_present": true,
+        "positive_clip_angle_present": true,
+        "negative_clip_angle_present": true,
+        "positive_anchor_group_present": true,
+        "negative_anchor_group_present": true,
+        "floating_anchor_group_without_owner": false
+      }
+    },
+    {
+      "id": "G16_MIRRORED_ANGLE_OWNER_IDENTITIES",
+      "expected": {
+        "positive_owner_distinct": true,
+        "negative_owner_distinct": true,
+        "mirrored_primitives_not_deduplicated": true
+      }
+    },
+    {
+      "id": "G17_ANCHOR_GROUP_OWNER_BINDING",
+      "expected": {
+        "positive_group_bound_to_positive_angle": true,
+        "negative_group_bound_to_negative_angle": true,
+        "cross_owner_binding": false
+      }
+    },
+    {
+      "id": "G18_NO_GENERIC_PROFILE_FALLBACK",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "rendered_family_matches_selected_family": true,
+        "generic_flat_plate_fallback": false
+      }
+    },
+    {
+      "id": "G19_PROFILE_SWITCH_STATE_PRESERVATION",
+      "expected": {
+        "wall_geometry_change": "NONE",
+        "angle_geometry_change": "NONE",
+        "anchor_pattern_change": "NONE",
+        "reaction_shear_change": "NONE",
+        "selected_profile_reinitialized_only": true
+      }
+    },
+    {
+      "id": "G20_BEAM_END_GAP_ALL_PROFILES",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "gap_control_available": true,
+        "negative_gap_rejected": true,
+        "member_wall_interference_rejected": true,
+        "anchor_groups_auto_move": false
+      }
+    },
+    {
+      "id": "G21_MATERIAL_AXES_MATRIX",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "connected_profile_axes_present": true,
+        "positive_angle_axes_present": true,
+        "negative_angle_axes_present": true,
+        "concrete_frp_axes_present": false,
+        "wall_frame_present": true
+      }
+    },
+    {
+      "id": "G22_RHS_CAVITY_NO_MATERIAL_AXES",
+      "expected": {
+        "rhs_wall_axes_present": true,
+        "rhs_cavity_axes_present": false,
+        "rhs_cavity_material_present": false
+      }
+    },
+    {
+      "id": "G23_EXTERNAL_HANDOFF_PATTERN_UPDATE",
+      "expected": {
+        "current_anchor_coordinates_present": true,
+        "current_anchor_count_present": true,
+        "current_edge_distances_present": true,
+        "branch_wrenches_present": true,
+        "combined_wall_wrench_present": true,
+        "anchor_capacity_present": false
+      }
+    },
+    {
+      "id": "G24_HISTORICAL_TWO_BY_TWO_HANDOFF_REPRODUCIBLE",
+      "expected": {
+        "historical_contract_handoff_reproducible": true,
+        "historical_group_coordinates_reproducible": true,
+        "historical_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G25_SHEAR_ONLY_AND_MOMENT_REJECTION_INVARIANCE",
+      "expected": {
+        "reaction_shear_only": true,
+        "user_moment_fields_present": false,
+        "nonzero_user_moment_rejected": true,
+        "eccentricity_induced_transfer_moment_retained": true
+      }
+    },
+    {
+      "id": "G26_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "branch_wrenches_available": true,
+        "handoff_available": true
+      }
+    },
+    {
+      "id": "G27_US_SI_EQUIVALENCE",
+      "cases": [
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION"
+      ],
+      "expected": {
+        "geometry_equal": true,
+        "branch_wrenches_equal": true,
+        "combined_wall_wrench_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G28_FAILURE_PRECEDENCE_AND_EXTERNAL_LIMITATIONS",
+      "expected": {
+        "supported_failure_governs_fail": true,
+        "valid_supported_checks_with_external_limitations": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G29_FROZEN_REGRESSION_BOUNDARY",
+      "expected": {
+        "direct_fingerprint_change": "NONE",
+        "single_member_tee_fingerprint_change": "NONE",
+        "single_clip_angle_fingerprint_change": "NONE",
+        "paired_clip_angle_fingerprint_change": "NONE",
+        "multi_member_tee_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G30_SCENE_REGRESSION_MISSING_MEMBER_OR_ANGLE",
+      "expected": {
+        "connected_member_missing": false,
+        "positive_clip_angle_missing": false,
+        "negative_clip_angle_missing": false,
+        "positive_anchor_group_without_angle": false,
+        "negative_anchor_group_without_angle": false
+      }
+    }
+  ]
+}

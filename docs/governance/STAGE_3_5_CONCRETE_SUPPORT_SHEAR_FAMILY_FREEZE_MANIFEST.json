@@ -1,0 +1,278 @@
+{
+  "schema": "frp-master-connection-stage-3.5-concrete-support-shear-family-freeze-manifest-v1",
+  "schema_version": "1.0.0",
+  "stage": "3.5",
+  "freeze_name": "Concrete-Support Shear Family Accepted Baseline",
+  "freeze_scope": "accepted-stage-3.5a-stage-3.5b-stage-3.5c-concrete-support-shear-family-governance-and-reproducibility",
+  "controlling_order": {
+    "name": "FRP_MASTER_CONNECTION_STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE_CODEX_ORDER.md",
+    "sha256": "5D090E262730AC5353CF157353E19C9F40787EA1661750FA6D50F5465E5D425D",
+    "final_sentinel": "END OF STAGE 3.5 CONCRETE-SUPPORT SHEAR FAMILY FREEZE ORDER — DO NOT PROCEED IF THIS LINE IS MISSING"
+  },
+  "accepted_product_baseline": {
+    "commit": "4c154b9d31e2a0100fd9f8c5cc90243e838a19c7",
+    "subject": "feat: add signed axial uplift to column base",
+    "commit_count": 88,
+    "tracked_file_count": 539,
+    "branch": "main"
+  },
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "resolution": "the governance-only commit containing this manifest and targeted by stage-3.5-concrete-support-shear-family-freeze",
+    "expected_commit_count": 89,
+    "expected_subject": "chore: freeze Stage 3.5 concrete-support shear family baseline",
+    "freeze_tag": "stage-3.5-concrete-support-shear-family-freeze",
+    "tag_type": "annotated",
+    "tag_annotation": "Freeze accepted Stage 3.5 Concrete-Support Shear Family baseline"
+  },
+  "repository_identities": {
+    "accepted_backend_tree": "42f063a1154cc99198b598470b9d2fb47c0f2c3f",
+    "accepted_frontend_tree": "b14b0e506226962904d0e12902fd295dce6919de",
+    "accepted_backend_src_tree": "e493b512d59e6218b61a2dc43bf0aed8c00cce16",
+    "accepted_frontend_src_tree": "bf2f82d8d5f2b274feab64c674a75270eca3d497",
+    "accepted_workflow_tree": "20edd491455e6329c4565bc72cd7b88e29d3f7b1",
+    "accepted_engineering_tree": "3b9864403c77710868e97a22d5a4d24ca0e15b22",
+    "accepted_golden_tree": "c79e27cd7e3d69b72c47dc80b46a0a4602786cfb",
+    "frontend_package_json": {
+      "path": "frontend/package.json",
+      "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    },
+    "frontend_package_lock": {
+      "path": "frontend/package-lock.json",
+      "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+      "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+    }
+  },
+  "existing_immutable_freezes": [
+    {"stage": "2.3", "tag": "stage-2.3-interface-geometry-freeze", "tag_type": "annotated", "tag_object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd", "peeled_target": "5bc545ab8251f9bd49dedc776962937ed5e822a2"},
+    {"stage": "3.2", "tag": "stage-3.2-tee-connection-freeze", "tag_type": "annotated", "tag_object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0", "peeled_target": "d16b354732c90bf3bf7847c62be652c230a9f91e"},
+    {"stage": "3.3", "tag": "stage-3.3-clip-angle-family-freeze", "tag_type": "annotated", "tag_object": "c22433084106a4da3006b610cc90429aba1660ce", "peeled_target": "a4d21506d45d2d21d3f5039b662ea56ec6c5da9f"},
+    {"stage": "3.4", "tag": "stage-3.4-multi-member-tee-family-freeze", "tag_type": "annotated", "tag_object": "282724c1fe2fbbeea9f742921aba5996028fd60b", "peeled_target": "2303ec713d6d038b935e076b909c3b639ced0e09"}
+  ],
+  "acceptance_chain": [
+    {"stage": "3.5A", "commit": "454f3ae9090f51d45d8efe17ebaf8cd155ec9542", "subject": "feat: add paired clip-angle concrete-wall connection"},
+    {"stage": "3.5A-R1", "commit": "23129f4cba11fb8e12001b0f450b83f9cf24dc08", "subject": "fix: complete concrete-wall paired-angle connection"},
+    {"stage": "3.5A-R2", "commit": "e0534a8da4b7ce3d74cf1bed3d4be4e0c7fcbd12", "subject": "feat: expand concrete-wall forces and correct axes"},
+    {"stage": "3.5B", "commit": "b17d4adf4cefcd981aef344fc313d7b18c492f54", "subject": "feat: add direct side-lap concrete-wall connection"},
+    {"stage": "3.5B-R1", "commit": "f72663a54700d84ac03a06e82a0e5fd39b4a0120", "subject": "fix: correct side-lap presentation and axes"},
+    {"stage": "3.5C", "commit": "af12eafd5b97696ae4272ba13a2933eefaac36d9", "subject": "feat: add column web-angle concrete-base connection"},
+    {"stage": "3.5C-R1", "commit": "58a89c52220fd8878b330206b209910008df84e4", "subject": "fix: correct column-base force presentation"},
+    {"stage": "3.5C-R2", "commit": "4c154b9d31e2a0100fd9f8c5cc90243e838a19c7", "subject": "feat: add signed axial uplift to column base"}
+  ],
+  "ci_evidence": {
+    "provider": "GitHub Actions",
+    "stage_3_5a": {"run_number": 76, "attempt": 2, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5a_r1": {"run_number": 77, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5a_r2": {"run_number": 78, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5b": {"run_number": 79, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5b_r1": {"run_number": 80, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5c": {"run_number": 81, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5c_r1": {"run_number": 82, "status": "accepted", "jobs_green": 4, "jobs_total": 4},
+    "stage_3_5c_r2": {
+      "run_number": 83,
+      "status": "accepted",
+      "duration": "approximately 5m43s",
+      "jobs": ["Backend Ubuntu: PASS", "Backend Windows: PASS", "Frontend Ubuntu: PASS", "Frontend Windows: PASS"],
+      "jobs_green": 4,
+      "jobs_total": 4,
+      "backend_tests_passed": 2567,
+      "backend_configured_coverage_percent": 100,
+      "frontend_tests_passed": 549,
+      "frontend_test_files": 37,
+      "frontend_configured_coverage_percent": 100,
+      "dependency_vulnerabilities": 0
+    }
+  },
+  "accepted_visual_evidence": {
+    "status": "accepted",
+    "authority": "direct owner acceptance in the controlling Codex task",
+    "acceptance_date": "2026-08-29",
+    "stage_3_5a_final_successor": "3.5A-R2-RC1",
+    "stage_3_5b_final_successor": "3.5B-RC1 plus accepted Stage 3.5B-R1 presentation correction",
+    "stage_3_5c_final_successor": "3.5C-R2-RC1",
+    "stage_3_5a_evidence": ["complete paired-angle wall scene and six-profile matrix", "wall-anchor pattern and exact external handoff", "R14B material axes and signed Major/Minor/Axial forces", "no fabricated anchor or concrete capacity"],
+    "stage_3_5b_evidence": ["finite-wall side lap and controlled overlap", "Channel web-only and selected Angle-leg contact", "fixed or explicitly centered anchors", "signed action arrows, region material axes, and external handoff"],
+    "stage_3_5c_evidence": ["positive +L_C uplift and negative -L_C compression", "100-percent web LW and angle-system CW signed component demands", "exact symmetry-only Double half branches and once-only foundation reaction", "exact branch/base wrenches, uplift limitations, external anchor/concrete boundary, and material-axis visualization"]
+  },
+  "historical_contract_versions": ["3.5A-RC1", "3.5A-R1-RC1", "3.5C-RC1"],
+  "current_contract_versions": ["3.5A-R2-RC1", "3.5B-RC1", "3.5C-R2-RC1"],
+  "frozen_products": {
+    "stage_3_5a": {
+      "name": "Paired Clip Angles to Concrete Wall",
+      "connected_profiles": ["FLAT_PLATE", "ANGLE", "CHANNEL", "WIDE_FLANGE_I", "RECTANGULAR_HOLLOW_SECTION", "SOLID_RECTANGULAR_SECTION"],
+      "topology": ["finite concrete-wall coordination prism", "symmetric paired FRP clip angles", "one common connected-member bolt group", "mirrored external wall-anchor groups", "one anchor per angle by default with user-expandable patterns"],
+      "actions": ["signed Major shear", "signed Minor shear", "signed Axial force", "zero user-applied moments"],
+      "handoff": ["exact branch and combined wall wrenches", "deterministic external anchor handoff", "Minor-shear branch allocation remains not evaluated"]
+    },
+    "stage_3_5b": {
+      "name": "Direct Side-Lap Angle/Channel to Concrete Wall",
+      "profiles": ["CHANNEL_WEB_TO_WALL", "SELECTED_ANGLE_LEG_TO_WALL"],
+      "topology": ["finite wall free end", "physical user-controlled side-lap overlap", "member continues beyond wall free end", "anchor group fixed unless explicit Center action is used", "anchors remain inside actual member/wall overlap"],
+      "actions": ["signed Axial force", "signed Major shear", "signed Minor shear", "zero user-applied moments"],
+      "handoff": ["exact member-to-anchor-group wrench", "no fictitious far-side concrete hardware", "external concrete and anchor design"]
+    },
+    "stage_3_5c": {
+      "name": "Column Base Using Single/Double Web Angles to Concrete",
+      "topology": ["vertical W/I column", "finite concrete base", "Single or exactly symmetric Double web-angle system", "one physical web-bolt group", "external anchor groups"],
+      "actions": ["positive signed axial uplift", "negative signed axial compression", "signed web-plane shear", "signed web-normal shear", "zero user-applied moments"],
+      "component_demands": ["column web receives 100 percent signed axial action in LW", "base-angle system receives 100 percent signed axial action in vertical-leg CW", "Single receives full system action", "Double receives signed half branches only after exact symmetry", "foundation reaction contains physical axial action once"],
+      "handoff": ["exact branch and base wrenches", "compression and uplift external/contact limitations", "external base and anchor design"]
+    }
+  },
+  "external_design_boundary": {
+    "required": ["CONCRETE_SUBSTRATE_RESISTANCE = EXTERNAL_DESIGN_REQUIRED", "ANCHOR_SYSTEM_RESISTANCE = EXTERNAL_DESIGN_REQUIRED", "ANCHOR_STEEL_RESISTANCE = EXTERNAL_DESIGN_REQUIRED", "ANCHOR_CONCRETE_LIMIT_STATES = EXTERNAL_DESIGN_REQUIRED", "EXTERNAL_ANCHOR_DEMAND_VERIFICATION = REQUIRED"],
+    "unsupported_or_external": ["concrete bearing", "anchor tension and uplift capacity", "concrete breakout, pullout, and pryout", "wall-leg or angle-body prying", "base-angle full CW body and heel transfer", "unsupported bolt-axis tension", "unsupported branch distribution", "direct side-lap pull-through and out-of-plane response", "column-end versus angle-bearing compression partition"],
+    "ordinary_whole_connection_pass_prohibited": true,
+    "supported_numerical_failure_precedence": "FAIL"
+  },
+  "frozen_principles": {
+    "force_and_moment": ["user-applied moments remain excluded", "exact physical translation moments are retained", "generated moments are equilibrium transfer moments, not moment-connection classification", "backend force, reference, and wrench data are authoritative", "exact transfer moments are never tolerance-suppressed"],
+    "material_direction": ["properties and check directions derive from actual region LW/CW/TT", "frontend does not infer engineering directions", "Channel, Angle, W/I, RHS, and SRS region axes are backend-authored", "RHS cavity and concrete carry no FRP material axes", "reflected rendering does not alter R14B bases", "Stage 3.5C web axial action uses LW and angle vertical-leg axial action uses CW"],
+    "stage_3_5c_component_demand": ["web signed axial fraction = 1", "angle-system signed axial fraction = 1", "Double branch fraction = 0.5 only after exact symmetry", "foundation reaction count = 1", "component adequacy demands are serial and conservative, not additive physical reactions"],
+    "preview_and_design": ["preview performs strict validation, geometry, demand, wrench, applicability, handoff, and visualization", "preview calls zero resistance engines", "Run Design Check is explicit", "engineering edits stale prior design", "no anchor or concrete capacity is calculated"],
+    "visualization_and_request_state": ["persistent shared viewer", "current, invalid, last-valid, and request-failure states", "no blank workspace on request failure", "backend-authoritative geometry and action references", "signed action arrows", "presentation-only material-axis toggle", "camera navigation does not call APIs or stale design", "no generic profile fallback, missing mirrored component, or fictitious anchor hardware"]
+  },
+  "controlled_stage_3_5_repository_artifacts": [
+    {"path": "docs/governance/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_SELECTION_DECISION.md", "sha256": "2288823909D7C5057C3627232665DAE8E41AB906AE03E38BD55055EEA8B87614"},
+    {"path": "docs/engineering/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "E3D5F1F80149A5D9EA610FBE9DEC6B261B34A0C943D3F9EA134764C4F8BAEA9B"},
+    {"path": "backend/tests/golden/stage_3_5a_beam_to_concrete_paired_clip_angle_golden_benchmarks_rc1.json", "sha256": "B68F6323453497B90469D437BF1A8707EAB2808B4561B30256A1EE67FF6389BD"},
+    {"path": "docs/qa/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_AUTHORITY_LEDGER_RC1.md", "sha256": "ED5735BA0A17221C5B7A1650B653A38E8AD8A1AFEC8797C4EF05CBD8F16C9534"},
+    {"path": "docs/governance/STAGE_3_5A_SHARED_PLATFORM_FREEZE_CHANGE.md", "sha256": "12FCFECDCCB6E12EA93549B5D4C91380910CAF8A4F792B2CAA5DB96C29DE3B2F"},
+    {"path": "docs/governance/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_DECISION.md", "sha256": "655B768C83F7B07C30908950323E9D5CA30F33F42167D0D9E9E7CF9511AAA29B"},
+    {"path": "docs/engineering/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "4E15CF476039A4D8910FC201D87C9FA987F936BD28D26512B7B9D1757A99A353"},
+    {"path": "backend/tests/golden/stage_3_5a_r1_concrete_wall_paired_angle_completion_golden_benchmarks_rc1.json", "sha256": "00391A534854D6A3C9EE03A3FA5D7545D47EFF1E17A9BCEA12DE736336BC7B62"},
+    {"path": "docs/qa/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_AUTHORITY_LEDGER_RC1.md", "sha256": "FBEF732897B21B172C3CE8C0DAD8B2D3E8912C25ADEB83B9E02886A07BC0455E"},
+    {"path": "docs/governance/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_DECISION.md", "sha256": "8436AB8B453DC586A48524044AD45163C5A00E3FBFB321ED198D4F54AF298E50"},
+    {"path": "docs/engineering/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "DA5E525F39EF95CA7859D756BD67E0CCB0DF285E3FF94A3EE7467204E3CAC877"},
+    {"path": "backend/tests/golden/stage_3_5a_r2_material_axes_three_component_force_golden_benchmarks_rc1.json", "sha256": "0A0C67715A73DFA02078E5F3BB7A5456775AAD9F9359EF5D66CF07B5CFF36078"},
+    {"path": "docs/qa/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_AUTHORITY_LEDGER_RC1.md", "sha256": "DE62CFA17DB219D707D3F4F3CE6C38FD8544CE0515F18404E42493AC0CC2A816"},
+    {"path": "docs/governance/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_SELECTION_DECISION.md", "sha256": "E68557B1918129786D8728D17AE340B1DF1C9B3F4DFE58CAC71AFA4745AE2B3A"},
+    {"path": "docs/engineering/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "4B7D234F4EF95A23FD4F69D2530E73A8B16B5EF26A311A9ECEA67F32DCAED979"},
+    {"path": "backend/tests/golden/stage_3_5b_direct_side_lap_angle_channel_concrete_wall_golden_benchmarks_rc1.json", "sha256": "860767C7A1246E19524DB77FBABD8754CBBB719011C0AE05AA5102310FBC3E1F"},
+    {"path": "docs/qa/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_AUTHORITY_LEDGER_RC1.md", "sha256": "D5420F96AB7ADFB9226EDA4889090B5DB09CBADA367F229DCBE3896F5DE66B37"},
+    {"path": "docs/qa/STAGE_3_5B_R1_SELECTOR_ACTION_AXES_VISUAL_CORRECTION.md", "sha256": "246869784D9697766F7E3C24871D57DA48D0103109CDBD05CD97AEAED118B62F"},
+    {"path": "docs/governance/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_SELECTION_DECISION.md", "sha256": "3E5F46CFDECA4C475D95F55A98E65244524FE8C8AE800021B1FE8898C81A6B45"},
+    {"path": "docs/engineering/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "28D134C09ACB2482FE2C13A8CFA8AD463DC3F28B1100664C13032760BB6070DD"},
+    {"path": "backend/tests/golden/stage_3_5c_column_base_web_angles_concrete_golden_benchmarks_rc1.json", "sha256": "E494165A965B75FD92F893E06F0828E965A075CD42A4F85B7175D05BE5B6D999"},
+    {"path": "docs/qa/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_AUTHORITY_LEDGER_RC1.md", "sha256": "A5278DF6224C998846F6CD8E4F6C725E6AD75B9ECD3698F53CFC6CBB17F27B83"},
+    {"path": "docs/governance/STAGE_3_5C_SHARED_PLATFORM_FREEZE_CHANGE.md", "sha256": "3CE53B582B45E6E8A320D9A1FBBF9A47F60ED96E5CCC245C9D9045F1217B77D5"},
+    {"path": "docs/qa/STAGE_3_5C_R1_SIGNED_SHEAR_ARROWS_AXIAL_UI_CLARIFICATION.md", "sha256": "A471457CD2FCAAFA2457CD5CEBB45148DDCF9D3E15FF2E39DA23BD4C53E2FDB1"},
+    {"path": "docs/governance/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_DECISION.md", "sha256": "8143BBC59A5EE9D38918B0280CA4D09A762B9F2DC92B5660F10951107FD24689"},
+    {"path": "docs/engineering/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "2A60047012F52FF5AA2C09B28BD56816CDA4588F2FFA6107B29FBE6B36E3F23F"},
+    {"path": "backend/tests/golden/stage_3_5c_r2_signed_axial_uplift_expansion_golden_benchmarks_rc1.json", "sha256": "91F88C06554F5006E69C2AA56FE396818583B2DE6AF227F83E7CD80DB382CD29"},
+    {"path": "docs/qa/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_AUTHORITY_LEDGER_RC1.md", "sha256": "ED155C1C0082A300F44EC190E6B8EB38511A1E3B66BC29BD10DFDB396B5FB5EB"}
+  ],
+  "external_control_orders": [
+    {"revision": "Stage 3.5A", "sha256": "BEE47833030B54AD9EC2D7EEF7156B5D7E67561541C0BFC4EA111384AB3AA3B4"},
+    {"revision": "Stage 3.5A-R1", "sha256": "98D46D9C0A2E51537B0F7858EB6C58C6A14D24CFD8FBA5BF5975B610F40D0B7C"},
+    {"revision": "Stage 3.5A-R2", "sha256": "2439FC7E45A6644F127C7DEEC23859AB99DC71E39D9837466026EE093DD2C753"},
+    {"revision": "Stage 3.5B", "sha256": "6D89A60096B5943EF3BA31E65F8F2172B5165833383887D49905E322F5DDD77C"},
+    {"revision": "Stage 3.5B-R1", "sha256": "9F4BE503F8615663D2DCBF299DE8D755A5F88100EF5D60E3995EA4EC2D5141CB"},
+    {"revision": "Stage 3.5C", "sha256": "0217CE08BFEF09FE37419AC19C716DE4A3972AB208015F976C3901D69EC4DBC9"},
+    {"revision": "Stage 3.5C-R1", "sha256": "181345321788B4D4F8632B17B720B35CB63886AB6A91DD02B8DCEF16772DB1DA"},
+    {"revision": "Stage 3.5C-R2", "sha256": "681E643A3F5E008F85704C83CABBAD2648B522CD3EE12D6F5811536BB0588052"},
+    {"revision": "Stage 3.5 Freeze", "sha256": "5D090E262730AC5353CF157353E19C9F40787EA1661750FA6D50F5465E5D425D"}
+  ],
+  "inherited_authorities": [
+    {"path": "backend/tests/calculation/test_stage_3_2_freeze_manifest.py", "sha256": "96FDC565AE064337EA4B11D20F18D047D1C79DF6B4781F3CCEA7D5A0A62EF10E"},
+    {"path": "backend/tests/calculation/test_stage_3_3_freeze_manifest.py", "sha256": "DEA71CAD4B3DCCCCEAC9EF7588B11D83EB2D9F7783A9D0F5CE7FC8079611BF17"},
+    {"path": "backend/tests/calculation/test_stage_3_4_freeze_manifest.py", "sha256": "B839AB8568FEAECE5A529B96CDA1D01943A4BF559C1684F0741CDEDF9C42AC29"},
+    {"path": "backend/tests/golden/calculation_slice_1_rc2.json", "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc1.json", "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc2.json", "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"},
+    {"path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json", "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"},
+    {"path": "backend/tests/golden/calculation_slice_3_rc1.json", "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"},
+    {"path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json", "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"},
+    {"path": "backend/tests/golden/stage_3_2_r14b_region_specific_material_basis_golden_benchmarks_rc1.json", "sha256": "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236"},
+    {"path": "backend/tests/golden/stage_3_3c1_shared_rectangular_section_full_through_bolt_golden_benchmarks_rc1.json", "sha256": "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5"},
+    {"path": "backend/tests/golden/stage_3_4a_multi_member_tee_node_golden_benchmarks_rc1.json", "sha256": "BF797EE78F7F7135EEA9BDA8CEB2B863E2FF31070A40ACEC1F8B6B34F6A94D26"},
+    {"path": "backend/tests/golden/stage_3_4b_multi_member_tee_profile_support_expansion_golden_benchmarks_rc1.json", "sha256": "ED98DD604A126B9A4B122A5569AC7CEAE3C3D0B4608422E2955246583B97FC36"},
+    {"path": "docs/engineering/CALCULATION_SLICE_1_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "DA47468DCEE41462A19461BC102670A8DFB125195E7AA815CAB222A035317B71"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "44431A8921CF1ADF9C7D0F7F022C9615265308A41BE589B1EE5150A7D7886F99"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "CBC11F8793F7B85873DB5C52D7A90536DD20CB87005895EAF3B43D319AB1B5D6"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F"},
+    {"path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md", "sha256": "DB3DFA722AA08B44AD95F8D789178699CA8E9BEE5FADB99306867C69E9B8A74C"},
+    {"path": "docs/engineering/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "0A73AC9910E506E9E721A98EBEE39A072C096364513C62C63B736E4642591957"},
+    {"path": "docs/engineering/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "5DCA4844A912DBAC8FF8ABCE663543672C03B3352DE95EA3C72FE39F31A4EC3E"},
+    {"path": "docs/engineering/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "A35DEDF8280B6C4E91D486D9777E95750423D055C45AC26FB64AFA8531B59BDD"},
+    {"path": "docs/governance/STAGE_2_3_DEPENDENCY_SECURITY_FREEZE_CHANGE.md", "sha256": "EBF9E3028D266D9E07393CD8A87A5283E1CC50964AD42A113B43E839362BF81A"},
+    {"path": "docs/governance/STAGE_2_3_INTERFACE_GEOMETRY_FREEZE.md", "sha256": "5901DCC3F7FB05932A9841BA4D1FF63FF7A147BE871E67D89D4B46229641D9AB"},
+    {"path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json", "sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E"},
+    {"path": "docs/governance/STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_MANIFEST.json", "sha256": "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4"},
+    {"path": "docs/governance/STAGE_3_3A_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md", "sha256": "1FDA76A86891FBD871647ABB7A29187B1FD75E82B523A4D97073A8F65CA2B230"},
+    {"path": "docs/governance/STAGE_3_3C1_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md", "sha256": "065E160CED57F204F4F1DBF710B62DBBC682D31E98D12AD0223C3AE4246007DB"},
+    {"path": "docs/governance/STAGE_3_3C2_STAGE_3_2_TEE_RHS_FULL_THROUGH_SUCCESSOR.md", "sha256": "EEB183648C63BD339F0D699DEDBB5E921276AC2CE09D2ABE24D7E0A015880618"},
+    {"path": "docs/governance/STAGE_3_3C2_STAGE_3_3A_SINGLE_ANGLE_RHS_FULL_THROUGH_SUCCESSOR.md", "sha256": "D5AED8E8544F544A303EDDE3C58B542ED53F789324E3744EAA9CB7C4FE5BE042"},
+    {"path": "docs/governance/STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_MANIFEST.json", "sha256": "EE4BADFE145B9FA5815D547C079A371C8C907613CB7253E4A12F922CBF9833DD"},
+    {"path": "docs/governance/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_FAMILY_SELECTION_DECISION.md", "sha256": "EDDAA92E3483AB408E7FA9E0003FC830D2A21D0E7EB0F50CB5244145D09DEC63"},
+    {"path": "docs/governance/STAGE_3_4A_SHARED_PLATFORM_FREEZE_CHANGE.md", "sha256": "2553A11688B1102902D9653029A44F2E086D96F3362DE5107507EBC11DF99519"},
+    {"path": "docs/governance/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_DECISION.md", "sha256": "2300908F7CC45E6385A7C55C180A5946A96278D82067AA60C2ED1C44DB2C564A"},
+    {"path": "docs/governance/STAGE_3_4B_SHARED_PLATFORM_FREEZE_CHANGE.md", "sha256": "0912CAEF183F77ED6BA5E0FA8FDF850B43CD2BBAC29598B1E51B5F63A4941839"},
+    {"path": "docs/qa/CALCULATION_SLICE_2_RC2_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "F2E0A253C75503C3F8FA29E5E78A4A8E4DF98204A43CAF4B07000EC65183A7A4"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "477D8F19C50B39ED10EEFE95A3C93F73897147BB456CF412350960C9C3D24E10"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "CA091B0B6054F82980E5A9AD8D923080F9DFD2FB4CEDA08E80E3122C1B28477A"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "3E85C61AD10865B5293165DF5847B63E96F80D19361E194A180B40EFB403ED27"},
+    {"path": "docs/qa/STAGE_3_2_R14B_FINGERPRINT_TRANSITIONS.md", "sha256": "6C6B2FAFD1D885C7A3C5867B3C8721EC098BC8B1FA9BA41C93E3485E483209FE"},
+    {"path": "docs/qa/STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_AUTHORITY_LEDGER_RC1.md", "sha256": "0FFF79C4B6BFDB0C6DED1F2F551CE421D7E2E684BD75B6B84A0EC3154B87EC05"},
+    {"path": "docs/qa/STAGE_3_3C1_SHARED_RECTANGULAR_SECTION_FULL_THROUGH_BOLT_AUTHORITY_LEDGER_RC1.md", "sha256": "21009D185C999CBDD08EBC70C2A9CE38C2AF4A221C60C4799D3E91230797946C"},
+    {"path": "docs/qa/STAGE_3_3C3_R1_MATERIAL_AXES_COVERAGE_BINDING_CORRECTION.md", "sha256": "937BF076DDCEB49875741971031F8DAC7EBB1FE1FC27CE00E7DE258B928ACF82"},
+    {"path": "docs/qa/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_AUTHORITY_LEDGER_RC1.md", "sha256": "0A8322E45E80F2EDE3ACB457116D873FA142521F5A2A85F30FFA20F231F4A5DA"},
+    {"path": "docs/qa/STAGE_3_4A_R2_MULTI_MEMBER_TEE_BLANK_WORKSPACE_CORRECTION.md", "sha256": "518AE94E589C5532F7D57AA8E3D5CB2C88BF93DD4CBFFA0AAE38ADFD9961CE59"},
+    {"path": "docs/qa/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_AUTHORITY_LEDGER_RC1.md", "sha256": "3A43B82BACA61DB79CCB1EAD49E71F2E746DED318638C2CF685AB835124F0F6F"}
+  ],
+  "benchmark_identities": {
+    "stage_3_5a": {"count": 24, "first": "G1_DEFAULT_COMMON_BEAM_GROUP", "last": "G24_FROZEN_REGRESSION_BOUNDARY"},
+    "stage_3_5a_r1": {"count": 30, "first": "G1_HISTORICAL_STAGE_3_5A_RC1_INVARIANCE", "last": "G30_SCENE_REGRESSION_MISSING_MEMBER_OR_ANGLE"},
+    "stage_3_5a_r2": {"count": 34, "first": "G1_HISTORICAL_3_5A_RC1_EXACT", "last": "G34_FROZEN_REGRESSION_BOUNDARY"},
+    "stage_3_5b": {"count": 37, "first": "G1_DEFAULT_CHANNEL_SIDE_LAP_GEOMETRY", "last": "G37_FROZEN_REGRESSION_BOUNDARY"},
+    "stage_3_5c": {"count": 43, "first": "G1_DEFAULT_DOUBLE_ANGLE_GEOMETRY", "last": "G43_FROZEN_REGRESSION_BOUNDARY"},
+    "stage_3_5c_r2": {"count": 48, "first": "G1_HISTORICAL_3_5C_RC1_EXACT", "last": "G48_FROZEN_REGRESSION_BOUNDARY"}
+  },
+  "engineering_fingerprints": {
+    "3.5A-RC1": {"input": "09c2c297de51109472ec71712fcd7075e1458e1ab0edc0c39e2a0a1b4b5d2491", "application": "1cf31db46be8a5114f0fcd1fb58562792813cbb99a1b0a2ac184511023e9877c", "engineering": "2e1f9dca79aa4af75238f27d7ae7e96232da1ca6083a613d9c6d00d75ae66e98", "handoff": "592aa3c34d176688909c4dbb01d7171719e60776dfd72faa68be9595d820b353"},
+    "3.5A-R1-RC1": {"input": "ac029264e8403f1f64a12266ba8dbe21cdfe69d407c1bd5ef9e9b11ec6f6bbbc", "application": "6792e177eb1849335cd98826b8ac43f4caa1ad8fae06365032744eaa956adbe9", "engineering": "e472fb281c358aa86c2ed22ab4da69dc6dc5fa9a51cbf8d5df9b6c782af06fa7", "handoff": "a19b526a3c99cdfe011109419ec2dd966b0a6499ab0f4de35ff26e97ec02ed91"},
+    "3.5A-R2-RC1": {"input": "6291389f95478f5684318505e9f5a59cea01069baed55d4e613ee0836e546802", "application": "5db30ce792c807c8de3de3b073b1c7ba593f45cf2881fcad60def403e187c357", "engineering": "23d003ddc8d8832b203dea3561e5f8759e7d630365f30643e0fc11df5f99dc65", "handoff": "fbcc94cd4da3e173370f0a4c0600af64f8e63f8c680ed591ebd0fbf4527fac2a"},
+    "3.5B-RC1": {"geometry": "ca3d5464ce07828547c60cfe0cf4d2378d17ff56443e1347660a4fdce3fe9aa7", "application": "7d5d165b41a54d27e7c24790e3465b15a24228080b2e2fa69d74c16b6b01fa34", "engineering": "222e86d3cb53ab435de83286d3eb248c1a93a5dc167bca2870244f78970dcd78", "handoff": "091077c9c1a4a5a5740c316258ca28b60d2be3f7c929057418bd6e417e7e7d5e"},
+    "3.5C-RC1": {"application": "031efa1743015eaea2d2f93e36de656553e1f6bfe1678be47501b722d1ec48f4", "engineering": "60fd4257515ac1ef82415b3e9de0dac07980f32970385665bb808b3edfaa8c3d", "handoff": "b8bdc968006c30b4b7e91b46aa936efe1989cc3798e2678cb8d5a6fb607ce433"},
+    "3.5C-R2-RC1": {"application": "748c22a67decfe576c6dc8a6f55d2fbf9c8885750cca62c98cfc92e62c3fa402", "engineering": "d5f15ca70f2cde2d439c5bfd0ec9c22da4f4f162c5d3021ed0c6525f4eab1f1f", "handoff": "a7d29f3935d227341957243a8506d1ccafa3bc5b52280abe66d19b8d513d8bf6"}
+  },
+  "deliberate_limitations": [
+    "Concrete and anchor-system capacities are not calculated.",
+    "User-applied moments are not accepted by Stage 3.5 products.",
+    "Exact eccentricity-generated transfer moments are retained.",
+    "Stage 3.5A Minor-shear paired-branch allocation is not evaluated.",
+    "One-anchor wall groups do not receive a fabricated moment-equilibrating force distribution.",
+    "Wall-leg, angle-body, and horizontal-leg prying are not evaluated where not explicitly authorized.",
+    "Direct side-lap pull-through and out-of-plane response remain not evaluated.",
+    "Column-base angle-body and heel uplift transfer remain not evaluated.",
+    "Column-base anchor tension and concrete uplift remain external-design-required.",
+    "Unsupported bolt-axis tension and web-normal prying are not invented.",
+    "Serial component-design demands are not additive physical reactions.",
+    "No ordinary whole-connection PASS is issued across required unevaluated or external checks."
+  ],
+  "no_production_change_declaration": {
+    "backend_src_changed": false,
+    "frontend_src_changed": false,
+    "calculation_method_changed": false,
+    "controlled_engineering_artifact_changed": false,
+    "dependency_changed": false,
+    "workflow_changed": false,
+    "existing_freeze_tag_changed": false,
+    "new_connection_family_started": false
+  },
+  "successor_policy": [
+    "Any later frozen Stage 3.5 behavior change requires a separate controlling order and explicit successor authority.",
+    "Every successor requires exact impact analysis and frozen Stage 3.5 regression evidence.",
+    "An intentional engineering-meaning change requires an explicit engineering fingerprint transition.",
+    "The historical Stage 3.5 manifest and tag must remain reproducible and immutable.",
+    "The stage-3.5-concrete-support-shear-family-freeze tag shall never move to a successor.",
+    "Successor freeze audits shall resolve by historical tag, explicit historical object, or manifest_only and shall never substitute successor HEAD."
+  ],
+  "next_planned_family": {
+    "name": "beam-to-beam web splice",
+    "status": "planned-only-not-begun",
+    "design_authority_created": false
+  }
+}

@@ -1,0 +1,780 @@
+{
+  "schema_version": "frp-master-connection-calculation-slice-2-golden-rc1",
+  "document_status": "approved engineering benchmark authority for controlled implementation",
+  "not_production_output": true,
+  "primary_standard": "ASCE/SEI 74-23",
+  "errata": {
+    "identity": "Erratum 1",
+    "effective_date": "2026-01-13",
+    "chapter_8_effect": "NONE"
+  },
+  "specification_id": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1",
+  "active_engine_version_before_implementation": "0.1.0.dev1",
+  "active_rule_set_before_implementation": "asce74-23-ch8-single-bolt-rc2.dev1",
+  "existing_rc2_golden_sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392",
+  "exact_conversions": {
+    "inch_to_mm": "25.400000000000",
+    "kip_to_kN": "4.4482216152605",
+    "ksi_to_MPa": "6.8947572931683613",
+    "square_inch_to_square_mm": "645.160000000000"
+  },
+  "common_us_source_inputs": {
+    "bolt_diameter_in": "0.500000000000",
+    "ordinary_hole_diameter_in": "0.563000000000",
+    "section_2_10_net_hole_deduction_in": "0.626000000000",
+    "thickness_in": "0.375000000000",
+    "multirow_end_distance_in": "2.000000000000",
+    "pitch_in": "2.000000000000",
+    "gauge_in": "2.000000000000",
+    "side_distance_e3_in": "1.500000000000",
+    "side_distance_e4_in": "1.500000000000"
+  },
+  "locked_development_material_us": {
+    "Ft_L_ksi": "33.000000000000",
+    "Ft_T_ksi": "7.500000000000",
+    "Fsh_ksi": "8.000000000000",
+    "Fbr_L_ksi": "30.000000000000",
+    "Fbr_T_ksi": "18.000000000000",
+    "qualification": "ENGINEERING_REVIEW_REQUIRED"
+  },
+  "prescribed_row_distributions": {
+    "FRP_FRP_2": [
+      "0.500000000000",
+      "0.500000000000"
+    ],
+    "FRP_STEEL_2": [
+      "0.600000000000",
+      "0.400000000000"
+    ],
+    "FRP_FRP_3": [
+      "0.400000000000",
+      "0.200000000000",
+      "0.400000000000"
+    ],
+    "FRP_STEEL_3": [
+      "0.500000000000",
+      "0.300000000000",
+      "0.200000000000"
+    ]
+  },
+  "prescriptive_cases": [
+    {
+      "id": "MR2_FRP_FRP_NB1_L",
+      "geometry": {
+        "row_count": 2,
+        "bolts_per_row": 1
+      },
+      "connection_materials": "FRP_FRP",
+      "material_direction": "L",
+      "total_in_plane_demand_kip": "5.000000000000",
+      "lap_factor": "1.000000000000",
+      "row_fractions": [
+        "0.500000000000",
+        "0.500000000000"
+      ],
+      "row_demands_kip": [
+        "2.500000000000",
+        "2.500000000000"
+      ],
+      "per_bolt_demands_kip": [
+        "2.500000000000",
+        "2.500000000000"
+      ],
+      "bearing": {
+        "nominal": "5.625000000000",
+        "design": "3.375000000000"
+      },
+      "bearing_utilizations": [
+        "0.740740740741",
+        "0.740740740741"
+      ],
+      "simplified": {
+        "w": "3.000000000000",
+        "phi": "0.500000000000",
+        "nominal": "7.425000000000",
+        "design": "3.712500000000"
+      },
+      "simplified_utilization": "1.346801346801",
+      "full": {
+        "w": "3.000000000000",
+        "spr": "6.000000000000",
+        "theta": "0.750000000000",
+        "knt": "0.683454574364",
+        "kop": "1.789351851852",
+        "A": "4.100727446183",
+        "B": "2.202731044545",
+        "phi": "0.500000000000",
+        "denominator": "3.151729245364",
+        "nominal": "11.779247869914",
+        "design": "5.889623934957"
+      },
+      "full_utilization": "0.848950638482",
+      "shearout": {
+        "nominal_per_line": "15.617700000000",
+        "design_per_line": "7.027965000000"
+      },
+      "shearout_line_demand_kip": "5.000000000000",
+      "shearout_utilization": "0.711443497513"
+    },
+    {
+      "id": "MR2_FRP_STEEL_NB1_L_FAIL",
+      "geometry": {
+        "row_count": 2,
+        "bolts_per_row": 1
+      },
+      "connection_materials": "FRP_STEEL",
+      "material_direction": "L",
+      "total_in_plane_demand_kip": "6.000000000000",
+      "lap_factor": "1.000000000000",
+      "row_fractions": [
+        "0.600000000000",
+        "0.400000000000"
+      ],
+      "row_demands_kip": [
+        "3.600000000000",
+        "2.400000000000"
+      ],
+      "per_bolt_demands_kip": [
+        "3.600000000000",
+        "2.400000000000"
+      ],
+      "bearing": {
+        "nominal": "5.625000000000",
+        "design": "3.375000000000"
+      },
+      "bearing_utilizations": [
+        "1.066666666667",
+        "0.711111111111"
+      ],
+      "simplified": {
+        "w": "3.000000000000",
+        "phi": "0.500000000000",
+        "nominal": "7.425000000000",
+        "design": "3.712500000000"
+      },
+      "simplified_utilization": "1.616161616162",
+      "full": {
+        "w": "3.000000000000",
+        "spr": "6.000000000000",
+        "theta": "0.750000000000",
+        "knt": "0.683454574364",
+        "kop": "1.789351851852",
+        "A": "4.100727446183",
+        "B": "2.202731044545",
+        "phi": "0.500000000000",
+        "denominator": "3.341528885528",
+        "nominal": "11.110183772700",
+        "design": "5.555091886350"
+      },
+      "full_utilization": "1.080090144817",
+      "shearout": {
+        "nominal_per_line": "15.617700000000",
+        "design_per_line": "7.027965000000"
+      },
+      "shearout_line_demand_kip": "6.000000000000",
+      "shearout_utilization": "0.853732197016"
+    },
+    {
+      "id": "MR3_FRP_FRP_NB1_L",
+      "geometry": {
+        "row_count": 3,
+        "bolts_per_row": 1
+      },
+      "connection_materials": "FRP_FRP",
+      "material_direction": "L",
+      "total_in_plane_demand_kip": "5.000000000000",
+      "lap_factor": "1.000000000000",
+      "row_fractions": [
+        "0.400000000000",
+        "0.200000000000",
+        "0.400000000000"
+      ],
+      "row_demands_kip": [
+        "2.000000000000",
+        "1.000000000000",
+        "2.000000000000"
+      ],
+      "per_bolt_demands_kip": [
+        "2.000000000000",
+        "1.000000000000",
+        "2.000000000000"
+      ],
+      "bearing": {
+        "nominal": "5.625000000000",
+        "design": "3.375000000000"
+      },
+      "bearing_utilizations": [
+        "0.592592592593",
+        "0.296296296296",
+        "0.592592592593"
+      ],
+      "simplified": {
+        "w": "3.000000000000",
+        "phi": "0.500000000000",
+        "nominal": "7.425000000000",
+        "design": "3.712500000000"
+      },
+      "simplified_utilization": "1.346801346801",
+      "full": {
+        "w": "3.000000000000",
+        "spr": "6.000000000000",
+        "theta": "0.750000000000",
+        "knt": "0.683454574364",
+        "kop": "1.789351851852",
+        "A": "4.100727446183",
+        "B": "2.202731044545",
+        "phi": "0.500000000000",
+        "denominator": "2.961929605200",
+        "nominal": "12.534058856369",
+        "design": "6.267029428184"
+      },
+      "full_utilization": "0.797826156283",
+      "shearout": {
+        "nominal_per_line": "24.000000000000",
+        "design_per_line": "10.800000000000"
+      },
+      "shearout_line_demand_kip": "5.000000000000",
+      "shearout_utilization": "0.462962962963"
+    },
+    {
+      "id": "MR3_FRP_STEEL_NB1_L",
+      "geometry": {
+        "row_count": 3,
+        "bolts_per_row": 1
+      },
+      "connection_materials": "FRP_STEEL",
+      "material_direction": "L",
+      "total_in_plane_demand_kip": "5.000000000000",
+      "lap_factor": "1.000000000000",
+      "row_fractions": [
+        "0.500000000000",
+        "0.300000000000",
+        "0.200000000000"
+      ],
+      "row_demands_kip": [
+        "2.500000000000",
+        "1.500000000000",
+        "1.000000000000"
+      ],
+      "per_bolt_demands_kip": [
+        "2.500000000000",
+        "1.500000000000",
+        "1.000000000000"
+      ],
+      "bearing": {
+        "nominal": "5.625000000000",
+        "design": "3.375000000000"
+      },
+      "bearing_utilizations": [
+        "0.740740740741",
+        "0.444444444444",
+        "0.296296296296"
+      ],
+      "simplified": {
+        "w": "3.000000000000",
+        "phi": "0.500000000000",
+        "nominal": "7.425000000000",
+        "design": "3.712500000000"
+      },
+      "simplified_utilization": "1.346801346801",
+      "full": {
+        "w": "3.000000000000",
+        "spr": "6.000000000000",
+        "theta": "0.750000000000",
+        "knt": "0.683454574364",
+        "kop": "1.789351851852",
+        "A": "4.100727446183",
+        "B": "2.202731044545",
+        "phi": "0.500000000000",
+        "denominator": "3.151729245364",
+        "nominal": "11.779247869914",
+        "design": "5.889623934957"
+      },
+      "full_utilization": "0.848950638482",
+      "shearout": {
+        "nominal_per_line": "24.000000000000",
+        "design_per_line": "10.800000000000"
+      },
+      "shearout_line_demand_kip": "5.000000000000",
+      "shearout_utilization": "0.462962962963"
+    },
+    {
+      "id": "MR2_FRP_FRP_NB2_T",
+      "geometry": {
+        "row_count": 2,
+        "bolts_per_row": 2
+      },
+      "connection_materials": "FRP_FRP",
+      "material_direction": "T",
+      "total_in_plane_demand_kip": "2.000000000000",
+      "lap_factor": "1.000000000000",
+      "row_fractions": [
+        "0.500000000000",
+        "0.500000000000"
+      ],
+      "row_demands_kip": [
+        "1.000000000000",
+        "1.000000000000"
+      ],
+      "per_bolt_demands_kip": [
+        "0.500000000000",
+        "0.500000000000"
+      ],
+      "bearing": {
+        "nominal": "3.375000000000",
+        "design": "2.025000000000"
+      },
+      "bearing_utilizations": [
+        "0.246913580247",
+        "0.246913580247"
+      ],
+      "simplified": {
+        "w": "5.000000000000",
+        "phi": "0.450000000000",
+        "nominal": "2.812500000000",
+        "design": "1.265625000000"
+      },
+      "simplified_utilization": "1.580246913580",
+      "full": {
+        "w": "5.000000000000",
+        "spr": "4.000000000000",
+        "theta": "1.000000000000",
+        "knt": "0.637500000000",
+        "kop": "1.710937500000",
+        "A": "3.187500000000",
+        "B": "2.208231156427",
+        "phi": "0.450000000000",
+        "denominator": "2.697865578214",
+        "nominal": "5.212453916741",
+        "design": "2.345604262533"
+      },
+      "full_utilization": "0.852658750645",
+      "shearout": {
+        "nominal_per_line": "15.617700000000",
+        "design_per_line": "7.027965000000"
+      },
+      "shearout_line_demand_kip": "1.000000000000",
+      "shearout_utilization": "0.142288699503"
+    }
+  ],
+  "outside_prescriptive_automatic_cases": [
+    {
+      "id": "MR5_NB2_AUTO_L",
+      "geometry": {
+        "row_count": 5,
+        "bolts_per_row": 2
+      },
+      "material_direction": "L",
+      "total_in_plane_demand_kip": "5.000000000000",
+      "row_scenario_per_bolt_demand_kip": "2.500000000000",
+      "bearing": {
+        "nominal": "5.625000000000",
+        "design": "3.375000000000"
+      },
+      "bearing_utilization": "0.740740740741",
+      "simplified_extension": {
+        "w": "5.000000000000",
+        "phi": "0.500000000000",
+        "nominal": "12.375000000000",
+        "design": "6.187500000000"
+      },
+      "unknown_lbr_envelope": {
+        "w": "5.000000000000",
+        "spr": "4.000000000000",
+        "theta": "1.000000000000",
+        "knt": "0.637500000000",
+        "kop": "1.710937500000",
+        "A": "3.187500000000",
+        "B": "2.208231156427",
+        "phi": "0.500000000000",
+        "controlling_endpoint": "LBR_1",
+        "denominator": "3.187500000000",
+        "nominal": "19.411764705882",
+        "design": "9.705882352941"
+      },
+      "automatic_first_row_design_resistance_kip": "6.187500000000",
+      "automatic_first_row_utilization": "0.808080808081",
+      "shearout_extension": {
+        "row_span": "8.000000000000",
+        "nominal_per_line": "48.000000000000",
+        "design_per_line": "21.600000000000"
+      },
+      "shearout_line_demand_kip": "2.500000000000",
+      "shearout_utilization": "0.115740740741",
+      "expected_applicability": "CALCULATED_OUTSIDE_PRESCRIPTIVE_SCOPE",
+      "expected_qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "MR6_NB3_AUTO_T_FAIL",
+      "geometry": {
+        "row_count": 6,
+        "bolts_per_row": 3
+      },
+      "material_direction": "T",
+      "total_in_plane_demand_kip": "6.000000000000",
+      "row_scenario_per_bolt_demand_kip": "2.000000000000",
+      "bearing": {
+        "nominal": "3.375000000000",
+        "design": "2.025000000000"
+      },
+      "bearing_utilization": "0.987654320988",
+      "simplified_extension": {
+        "w": "7.000000000000",
+        "phi": "0.450000000000",
+        "nominal": "3.937500000000",
+        "design": "1.771875000000"
+      },
+      "unknown_lbr_envelope": {
+        "w": "7.000000000000",
+        "spr": "4.000000000000",
+        "theta": "1.000000000000",
+        "knt": "0.695454545455",
+        "kop": "1.710937500000",
+        "A": "3.245454545455",
+        "B": "2.255048484278",
+        "phi": "0.450000000000",
+        "controlling_endpoint": "LBR_1",
+        "denominator": "3.245454545455",
+        "nominal": "6.066176470588",
+        "design": "2.729779411765"
+      },
+      "automatic_first_row_design_resistance_kip": "1.771875000000",
+      "automatic_first_row_utilization": "3.386243386243",
+      "shearout_extension": {
+        "row_span": "10.000000000000",
+        "nominal_per_line": "60.000000000000",
+        "design_per_line": "27.000000000000"
+      },
+      "shearout_line_demand_kip": "2.000000000000",
+      "shearout_utilization": "0.074074074074",
+      "expected_applicability": "CALCULATED_OUTSIDE_PRESCRIPTIVE_SCOPE",
+      "expected_qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    }
+  ],
+  "engineer_defined_case": {
+    "id": "MR5_NB2_ENGINEER_DEFINED_L",
+    "geometry": {
+      "row_count": 5,
+      "bolts_per_row": 2
+    },
+    "total_in_plane_demand_kip": "5.000000000000",
+    "row_fractions": [
+      "0.340000000000",
+      "0.240000000000",
+      "0.180000000000",
+      "0.140000000000",
+      "0.100000000000"
+    ],
+    "row_demands_kip": [
+      "1.700000000000",
+      "1.200000000000",
+      "0.900000000000",
+      "0.700000000000",
+      "0.500000000000"
+    ],
+    "per_bolt_demands_kip": [
+      "0.850000000000",
+      "0.600000000000",
+      "0.450000000000",
+      "0.350000000000",
+      "0.250000000000"
+    ],
+    "bearing": {
+      "nominal": "5.625000000000",
+      "design": "3.375000000000"
+    },
+    "bearing_utilizations": [
+      "0.251851851852",
+      "0.177777777778",
+      "0.133333333333",
+      "0.103703703704",
+      "0.074074074074"
+    ],
+    "simplified_extension": {
+      "w": "5.000000000000",
+      "phi": "0.500000000000",
+      "nominal": "12.375000000000",
+      "design": "6.187500000000"
+    },
+    "commentary_full_using_engineer_lbr": {
+      "w": "5.000000000000",
+      "spr": "4.000000000000",
+      "theta": "1.000000000000",
+      "knt": "0.637500000000",
+      "kop": "1.710937500000",
+      "A": "3.187500000000",
+      "B": "2.208231156427",
+      "phi": "0.500000000000",
+      "denominator": "2.541182563242",
+      "nominal": "24.348899955089",
+      "design": "12.174449977545"
+    },
+    "selected_full_utilization": "0.410696171837",
+    "shearout_extension": {
+      "row_span": "8.000000000000",
+      "nominal_per_line": "48.000000000000",
+      "design_per_line": "21.600000000000"
+    },
+    "shearout_line_demand_kip": "2.500000000000",
+    "shearout_utilization": "0.115740740741",
+    "expected_applicability": "ENGINEER_DEFINED_METHOD_OUTSIDE_PRESCRIPTIVE_SCOPE",
+    "expected_qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+  },
+  "single_lap_case": {
+    "id": "MR2_FRP_FRP_NB1_L_SINGLE_LAP",
+    "geometry": {
+      "row_count": 2,
+      "bolts_per_row": 1
+    },
+    "connection_materials": "FRP_FRP",
+    "material_direction": "L",
+    "total_in_plane_demand_kip": "3.000000000000",
+    "lap_factor": "0.600000000000",
+    "row_fractions": [
+      "0.500000000000",
+      "0.500000000000"
+    ],
+    "row_demands_kip": [
+      "1.500000000000",
+      "1.500000000000"
+    ],
+    "per_bolt_demands_kip": [
+      "1.500000000000",
+      "1.500000000000"
+    ],
+    "bearing": {
+      "nominal": "5.625000000000",
+      "design": "2.025000000000"
+    },
+    "bearing_utilizations": [
+      "0.740740740741",
+      "0.740740740741"
+    ],
+    "simplified": {
+      "w": "3.000000000000",
+      "phi": "0.500000000000",
+      "nominal": "7.425000000000",
+      "design": "2.227500000000"
+    },
+    "simplified_utilization": "1.346801346801",
+    "full": {
+      "w": "3.000000000000",
+      "spr": "6.000000000000",
+      "theta": "0.750000000000",
+      "knt": "0.683454574364",
+      "kop": "1.789351851852",
+      "A": "4.100727446183",
+      "B": "2.202731044545",
+      "phi": "0.500000000000",
+      "denominator": "3.151729245364",
+      "nominal": "11.779247869914",
+      "design": "3.533774360974"
+    },
+    "full_utilization": "0.848950638482",
+    "shearout": {
+      "nominal_per_line": "15.617700000000",
+      "design_per_line": "4.216779000000"
+    },
+    "shearout_line_demand_kip": "3.000000000000",
+    "shearout_utilization": "0.711443497513"
+  },
+  "block_shear_cases": [
+    {
+      "id": "BS_U3_CONCENTRIC",
+      "path_family": "U",
+      "row_count": 3,
+      "bolts_per_row": 2,
+      "eccentric": false,
+      "demand_kip": "6.000000000000",
+      "gross_shear_length_in": "8.000000000000",
+      "gross_shear_area_in2": "6.000000000000",
+      "net_shear_area_in2": "4.826250000000",
+      "gross_tension_length_in": "2.750000000000",
+      "gross_tension_area_in2": "1.031250000000",
+      "net_tension_area_in2": "0.796500000000",
+      "shear_net_to_gross": "0.804375000000",
+      "tension_net_to_gross": "0.772363636364",
+      "nominal_resistance_kip": "32.447250000000",
+      "design_resistance_kip": "14.601262500000",
+      "utilization": "0.410923370496"
+    },
+    {
+      "id": "BS_U3_ECCENTRIC",
+      "path_family": "U",
+      "row_count": 3,
+      "bolts_per_row": 2,
+      "eccentric": true,
+      "demand_kip": "6.000000000000",
+      "gross_shear_length_in": "8.000000000000",
+      "gross_shear_area_in2": "6.000000000000",
+      "net_shear_area_in2": "4.826250000000",
+      "gross_tension_length_in": "2.750000000000",
+      "gross_tension_area_in2": "1.031250000000",
+      "net_tension_area_in2": "0.796500000000",
+      "shear_net_to_gross": "0.804375000000",
+      "tension_net_to_gross": "0.772363636364",
+      "nominal_resistance_kip": "25.876125000000",
+      "design_resistance_kip": "11.644256250000",
+      "utilization": "0.515275503320"
+    },
+    {
+      "id": "BS_L3_CONCENTRIC",
+      "path_family": "L",
+      "row_count": 3,
+      "additional_tension_path_full_holes": 0,
+      "eccentric": false,
+      "demand_kip": "6.000000000000",
+      "gross_shear_length_in": "8.000000000000",
+      "gross_shear_area_in2": "3.000000000000",
+      "net_shear_area_in2": "2.413125000000",
+      "gross_tension_length_in": "2.000000000000",
+      "gross_tension_area_in2": "0.750000000000",
+      "net_tension_area_in2": "0.632625000000",
+      "shear_net_to_gross": "0.804375000000",
+      "tension_net_to_gross": "0.843500000000",
+      "nominal_resistance_kip": "20.090812500000",
+      "design_resistance_kip": "9.040865625000",
+      "utilization": "0.663653266055"
+    },
+    {
+      "id": "BS_U5_CONCENTRIC",
+      "path_family": "U",
+      "row_count": 5,
+      "bolts_per_row": 2,
+      "eccentric": false,
+      "demand_kip": "6.000000000000",
+      "gross_shear_length_in": "13.500000000000",
+      "gross_shear_area_in2": "10.125000000000",
+      "net_shear_area_in2": "8.012250000000",
+      "gross_tension_length_in": "2.750000000000",
+      "gross_tension_area_in2": "1.031250000000",
+      "net_tension_area_in2": "0.796500000000",
+      "shear_net_to_gross": "0.791333333333",
+      "tension_net_to_gross": "0.772363636364",
+      "nominal_resistance_kip": "45.191250000000",
+      "design_resistance_kip": "20.336062500000",
+      "utilization": "0.295042366240"
+    },
+    {
+      "id": "BS_L5_CONCENTRIC",
+      "path_family": "L",
+      "row_count": 5,
+      "additional_tension_path_full_holes": 0,
+      "eccentric": false,
+      "demand_kip": "6.000000000000",
+      "gross_shear_length_in": "13.500000000000",
+      "gross_shear_area_in2": "5.062500000000",
+      "net_shear_area_in2": "4.006125000000",
+      "gross_tension_length_in": "2.000000000000",
+      "gross_tension_area_in2": "0.750000000000",
+      "net_tension_area_in2": "0.632625000000",
+      "shear_net_to_gross": "0.791333333333",
+      "tension_net_to_gross": "0.843500000000",
+      "nominal_resistance_kip": "26.462812500000",
+      "design_resistance_kip": "11.908265625000",
+      "utilization": "0.503851710144"
+    }
+  ],
+  "block_shear_net_area_warning_case": {
+    "id": "BS_U3_NET_AREA_BELOW_75_PERCENT",
+    "row_count": 3,
+    "bolts_per_row": 2,
+    "gross_shear_area_in2": "4.500000000000",
+    "net_shear_area_in2": "3.326250000000",
+    "gross_tension_area_in2": "0.750000000000",
+    "net_tension_area_in2": "0.515250000000",
+    "shear_net_to_gross": "0.739166666667",
+    "tension_net_to_gross": "0.687000000000",
+    "design_resistance_using_raw_areas_kip": "9.812981250000",
+    "expected_status": "CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED",
+    "ordinary_pass_permitted": false
+  },
+  "transverse_plate_source_conflict": {
+    "case_id": "CT_PLATE_CONFLICT_NB1_LBR_050",
+    "printed_appendix_CT_0_40_design_resistance_kip": "1.326810188089",
+    "commentary_CT_0_50_design_resistance_kip": "1.204695804878",
+    "approved_controlled_value": "0.500000000000",
+    "approved_design_resistance_kip": "1.204695804878",
+    "required_warning": "ASCE_SOURCE_CONFLICT_CONSERVATIVE_INTERPRETATION"
+  },
+  "applicability_cases": [
+    {
+      "id": "GEOM_4_ROWS_VALID",
+      "row_count": 4,
+      "bolts_per_row": 2,
+      "geometry_status": "VALID",
+      "calculation_status": "CALCULATED_OUTSIDE_PRESCRIPTIVE_SCOPE",
+      "qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "GEOM_4_BOLTS_PER_ROW",
+      "row_count": 2,
+      "bolts_per_row": 4,
+      "geometry_status": "VALID",
+      "bearing_and_explicit_per_bolt_checks": "CALCULABLE_WHEN_DEMAND_RESOLVED",
+      "first_row_net_tension": "CALCULATION_NOT_SUPPORTED_IN_RC1",
+      "qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "UNEVEN_ROW_BOLT_COUNTS",
+      "geometry_status": "VALID_IF_PHYSICAL_GEOMETRY_VALID",
+      "automatic_asce_distribution": "NOT_APPLICABLE",
+      "engineer_defined_per_bolt_demand": "PERMITTED",
+      "qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "STAGGERED_GROUP",
+      "geometry_status": "VALID_IF_PHYSICAL_GEOMETRY_VALID",
+      "automatic_rc1_multirow_methods": "CALCULATION_NOT_SUPPORTED",
+      "qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "ROW_FRACTIONS_DO_NOT_SUM_TO_ONE",
+      "input_status": "INVALID_INPUT"
+    }
+  ],
+  "unit_equivalence_policy": {
+    "basis": "Convert stored physical values; do not regenerate the ordinary hole from the alternate printed unit representation.",
+    "us_source_bolt_diameter_mm": "12.700000000000",
+    "us_source_hole_diameter_mm": "14.300200000000",
+    "us_source_net_hole_deduction_mm": "15.900400000000",
+    "block_shear_expected_si": {
+      "BS_U3_CONCENTRIC": {
+        "net_shear_area_mm2": "3113.703450000000",
+        "net_tension_area_mm2": "513.869940000000",
+        "design_resistance_kN": "64.949651462593"
+      },
+      "BS_U3_ECCENTRIC": {
+        "net_shear_area_mm2": "3113.703450000000",
+        "net_tension_area_mm2": "513.869940000000",
+        "design_resistance_kN": "51.796232344882"
+      },
+      "BS_L3_CONCENTRIC": {
+        "net_shear_area_mm2": "1556.851725000000",
+        "net_tension_area_mm2": "408.144345000000",
+        "design_resistance_kN": "40.215773893791"
+      },
+      "BS_U5_CONCENTRIC": {
+        "net_shear_area_mm2": "5169.183210000000",
+        "net_tension_area_mm2": "513.869940000000",
+        "design_resistance_kN": "90.459312781788"
+      },
+      "BS_L5_CONCENTRIC": {
+        "net_shear_area_mm2": "2584.591605000000",
+        "net_tension_area_mm2": "408.144345000000",
+        "design_resistance_kN": "52.970604553389"
+      }
+    }
+  },
+  "required_invariants": [
+    "Increasing demand cannot reduce utilization.",
+    "Increasing valid thickness cannot reduce applicable resistance.",
+    "Increasing hole diameter cannot increase net-tension, shear-out, or block-shear resistance.",
+    "Changing display units cannot change results, statuses, methods, or fingerprints.",
+    "Row-order reversal is prohibited when it changes the physical loaded/free-end meaning.",
+    "Existing single-bolt RC2 results and golden hash remain unchanged.",
+    "A known numerical failure remains visible even when qualification is also required.",
+    "More than three rows may calculate numerically but cannot receive an ordinary ASCE prescriptive PASS.",
+    "No equal-share assumption is silently introduced outside an identified method."
+  ]
+}

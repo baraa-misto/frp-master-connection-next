@@ -1,0 +1,1 @@
+"""Spatial-geometry contract tests."""

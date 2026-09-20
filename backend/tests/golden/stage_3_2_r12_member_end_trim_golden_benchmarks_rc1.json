@@ -1,0 +1,94 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R12_MEMBER_END_TRIM_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering values are exact decimal strings.",
+  "semantic_clearance_frame": {
+    "reference_plane_id": "TEE_FLANGE_INNER_CLEARANCE_PLANE",
+    "clearance_normal": [
+      "1",
+      "0",
+      "0"
+    ],
+    "meaning": "Normal points away from the Tee flange/root obstruction toward the connected member."
+  },
+  "benchmarks": [
+    {
+      "id": "R12_T1_TRIM_DISABLED_BACKWARD_COMPATIBILITY",
+      "trim_enabled": false,
+      "expected": {
+        "legacy_geometry_change": "NONE",
+        "legacy_controlled_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "R12_T2_ANGLE_25_ZERO_CLEARANCE",
+      "profile": "ANGLE",
+      "brace_inclination_degrees": "25",
+      "trim_enabled": true,
+      "end_clearance_in": "0",
+      "expected": {
+        "measured_plane_clearance_in": "0",
+        "cut_plane_parallel_to_reference": true,
+        "tee_support_geometry_change": "NONE",
+        "interface_B_geometry_change": "NONE"
+      }
+    },
+    {
+      "id": "R12_T3_ANGLE_25_QUARTER_INCH_CLEARANCE",
+      "profile": "ANGLE",
+      "brace_inclination_degrees": "25",
+      "trim_enabled": true,
+      "end_clearance_in": "0.25",
+      "expected": {
+        "measured_plane_clearance_in": "0.25",
+        "cut_plane_translation_from_T2_in": "0.25",
+        "tee_support_geometry_change": "NONE",
+        "interface_B_geometry_change": "NONE"
+      }
+    },
+    {
+      "id": "R12_T4_ANGLE_25_HALF_INCH_CLEARANCE",
+      "profile": "ANGLE",
+      "brace_inclination_degrees": "25",
+      "trim_enabled": true,
+      "end_clearance_in": "0.5",
+      "expected": {
+        "measured_plane_clearance_in": "0.5",
+        "cut_plane_translation_from_T3_in": "0.25",
+        "tee_support_geometry_change": "NONE",
+        "interface_B_geometry_change": "NONE"
+      }
+    },
+    {
+      "id": "R12_T5_NEGATIVE_CLEARANCE_REJECTED",
+      "trim_enabled": true,
+      "end_clearance_in": "-0.01",
+      "expected": {
+        "valid_input": false
+      }
+    },
+    {
+      "id": "R12_T6_TRIM_EDGE_CLEARANCE_IS_PHYSICAL",
+      "expected": {
+        "per_bolt_center_to_trim_edge_reported": true,
+        "per_hole_edge_clearance_to_trim_reported": true,
+        "governing_bolt_reported": true,
+        "legacy_untrimmed_edge_distance_reused": false
+      }
+    },
+    {
+      "id": "R12_T7_PROFILE_GENERIC_CUT",
+      "profiles": [
+        "CHANNEL",
+        "RECTANGULAR_HOLLOW_SECTION"
+      ],
+      "trim_enabled": true,
+      "end_clearance_in": "0.25",
+      "expected": {
+        "uses_same_cut_plane_engine": true,
+        "actual_profile_solids_trimmed": true,
+        "frontend_only_clipping": false
+      }
+    }
+  ]
+}

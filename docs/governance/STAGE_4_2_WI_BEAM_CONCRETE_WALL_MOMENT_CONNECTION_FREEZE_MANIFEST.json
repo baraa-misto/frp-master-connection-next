@@ -1,0 +1,3360 @@
+{
+  "schema": "frp-master-connection-family-freeze-manifest",
+  "schema_version": "1.0.0",
+  "stage": "4.2",
+  "freeze_name": "Stage 4.2 W/I beam-to-concrete-wall moment connection freeze",
+  "product_id": "WI_BEAM_CONCRETE_WALL_MAJOR_AXIS_MOMENT_CONNECTION",
+  "contract": "4.2-RC1",
+  "controlling_order": {
+    "filename": "FRP_MASTER_CONNECTION_STAGE_4_2_FREEZE_CODEX_ORDER.md",
+    "sha256": "1A53E1BB30F70D83C992290B798ACA44A3AA6C3CEBE2635DB3D9B5E529964088",
+    "final_sentinel_verified": true,
+    "owner_baseline_clarification": "The owner replaces the mistyped baseline everywhere with 1dee177a02bcaec713c1e3f597b053790ff7337e; all other authority is unchanged."
+  },
+  "accepted_product_baseline": {
+    "commit": "1dee177a02bcaec713c1e3f597b053790ff7337e",
+    "subject": "fix: correct wall moment sidebar and result traceability",
+    "commit_count": 108,
+    "branch": "main",
+    "tracked_file_count": 703
+  },
+  "initial_implementation_commit": "2886daab9d736926ba78fc9c6c44c652321756d1",
+  "accepted_correction_commit": "1dee177a02bcaec713c1e3f597b053790ff7337e",
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "expected_parent": "1dee177a02bcaec713c1e3f597b053790ff7337e",
+    "expected_subject": "chore: freeze Stage 4.2 W/I beam-to-concrete-wall moment connection baseline",
+    "expected_commit_count": 109,
+    "tag": "stage-4.2-wi-beam-concrete-wall-moment-connection-freeze",
+    "tag_type": "annotated",
+    "tag_annotation": "Stage 4.2 W/I beam-to-concrete-wall moment connection freeze",
+    "activation_gate": "FROZEN only after complete local/object-isolated QA, normal main push, direct hosted four-job success, and verified annotated tag push"
+  },
+  "ci_evidence": {
+    "accepted_product": {
+      "run": 103,
+      "attempt": 1,
+      "run_id": "34087923739",
+      "commit": "1dee177a02bcaec713c1e3f597b053790ff7337e",
+      "url": "https://github.com/baraa-misto/frp-master-connection/actions/runs/34087923739",
+      "jobs": {
+        "Backend (ubuntu-24.04)": "SUCCESS",
+        "Backend (windows-2025)": "SUCCESS",
+        "Frontend (ubuntu-24.04)": "SUCCESS",
+        "Frontend (windows-2025)": "SUCCESS"
+      },
+      "evidence": "Direct authenticated GitHub Actions evidence; also expressly accepted in owner freeze order"
+    },
+    "governance_commit": "PENDING_DIRECT_FOUR_JOB_EVIDENCE_AFTER_PUSH; mandatory before tag; final completion report records actual run"
+  },
+  "accepted_owner_evidence": {
+    "visual_result_acceptance": "ACCEPTED",
+    "scope": [
+      "flange and web sidebar grouping",
+      "combined load",
+      "pure shear",
+      "pure moment",
+      "native failure/governing/source traceability",
+      "3D geometry"
+    ],
+    "local_and_object_isolated": {
+      "backend_tests": 3253,
+      "frontend_tests": 623,
+      "configured_coverage_percent": 100,
+      "audit_findings": 0
+    },
+    "new_visual_qa_required": false
+  },
+  "frozen_contracts": {
+    "topology": [
+      "one W/I beam",
+      "finite concrete wall",
+      "positive beam-wall gap",
+      "top and bottom FRP flange angles",
+      "symmetric positive/negative FRP web clip angles",
+      "two flange member bolt groups",
+      "common Angle/Web/Angle physical web bolt group with actual unequal plane vectors",
+      "four external wall-anchor groups"
+    ],
+    "actions": [
+      "signed P_L",
+      "signed V_V",
+      "signed structural M_T",
+      "explicit negative-end right-hand map"
+    ],
+    "numeric_authority": [
+      "unchanged native Slice 5 complete component output and algebraic proof",
+      "exact proven half-wrench web allocation with all local moments",
+      "unchanged Slice 7 material-neutral core and FRP provider",
+      "unchanged Stage 2.5A native flange demand within accepted scope",
+      "unchanged Slice 8 direct independent-moment web demand",
+      "exact relational integration; no tolerance, residual redistribution, or forced reserialization"
+    ],
+    "web_reference": {
+      "frame": "physical heel-local A/B",
+      "bolt_A_in": [
+        "-1.5",
+        "1.5"
+      ],
+      "bolt_B_in": [
+        "1.25",
+        "2.75"
+      ],
+      "centroid_and_wrench_reference_in": [
+        "0",
+        "2"
+      ],
+      "moment_at_centroid_equals_reference": true
+    },
+    "serialized_diagnostics": {
+      "combined_axial_kip": "+3E-79",
+      "combined_right_hand_moment_kip_in": "+6E-79",
+      "combined_structural_moment_kip_in": "-6E-79",
+      "pure_moment_right_hand_kip_in": "+2E-78",
+      "pure_moment_structural_kip_in": "-2E-78",
+      "interpretation": "native relational diagnostics, never tolerances or physical loads"
+    },
+    "statuses": {
+      "precedence": [
+        "INVALID_GEOMETRY",
+        "FAIL",
+        "SOURCE_REQUIRED",
+        "NOT_EVALUATED",
+        "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+      ],
+      "default_native_governing": "FIRST_ROW:TOP_FLANGE_ANGLE",
+      "required_failed_checks": [
+        "first-row net tension",
+        "pin bearing",
+        "inter-row shear-out"
+      ],
+      "pure_shear": "FAIL; eight native web bearing failures visible; no fabricated governing group",
+      "whole_connection": "EXTERNAL_ANCHOR_CONCRETE_DESIGN_REQUIRED",
+      "ordinary_pass": false
+    },
+    "external_boundary": {
+      "concrete_capacity": false,
+      "anchor_capacity": false,
+      "individual_anchor_forces_fabricated": false,
+      "exact_four_group_wrenches": true,
+      "common_wall_reference_sum": true,
+      "flexible_fixture": "FLEXIBLE_FIXTURE_PRYING_DISTRIBUTION_EXTERNAL_REQUIRED"
+    },
+    "qualification": {
+      "section": "2.3.2",
+      "status": "REQUIRED_2_3_2",
+      "engineering_review_required": true,
+      "stiffness": "NOT_EVALUATED",
+      "rotation_capacity": "NOT_EVALUATED",
+      "full_strength": "NOT_EVALUATED"
+    },
+    "frontend": [
+      "one Moment Connections selector option",
+      "backend-authoritative scene/frames/material axes/actions",
+      "full-width separate Member bolts and Wall anchors groups",
+      "readable labels with internal IDs retained",
+      "preview/design separation",
+      "current/invalid/last-valid/request-failure states",
+      "all required native failures and missing sources visible",
+      "no frontend governing selection",
+      "accepted 3D/X-ray behavior"
+    ],
+    "future_unfrozen": [
+      "316SS provider and generalized material expansion",
+      "Stage 4.3 W/I beam to FRP support moment connection",
+      "Stage 4.4 Angle-column two-leg moment base",
+      "Stage 4.5 W/I/RHS/SRS biaxial moment bases",
+      "concrete/anchor capacities",
+      "new qualified sources",
+      "stiffness/rotation classification"
+    ]
+  },
+  "engineering_fingerprints": {
+    "combined": {
+      "actions_us": {
+        "P_L": "20",
+        "V_V": "-10",
+        "M_T": "100"
+      },
+      "geometry": "20db6ee66b0ec1c40fed678cbe96f2ba0f1f2f80430ac99dd26832c112011f72",
+      "engineering": "4629228f806f8ec9e80c24eca9ee3c33b22dab5f3195eea75490772c94fd0624",
+      "result": "d2d041e7a76fababe8b6eef72ee3e7675d2c045e55d608bcd3dd415f3a87a9a9",
+      "slice5": "b0b98434771117b299072ef4c1d2a64241b2b4d052fec2b612547f4c9329abea",
+      "status": "FAIL",
+      "native_governing": [
+        "FIRST_ROW:TOP_FLANGE_ANGLE"
+      ],
+      "missing_source_count": 8,
+      "core": {
+        "TOP_FLANGE_ANGLE": "51d0dab9e28c6c84c3a593071fe413166dee2a306323ddf1fc8d6475ca27f554",
+        "BOTTOM_FLANGE_ANGLE": "aea98dbb743fcda5eb2efc89466850995a85b0073ad4c44892399ff5d72d358d",
+        "POSITIVE_WEB_ANGLE": "396fd9a0153a188f1d601a7c233c1df47dfb4a30bdfe805ff1fc040609bad354",
+        "NEGATIVE_WEB_ANGLE": "0ac17fbc58c12a384932f095c62ff517ec2645352c97b2bff27288b01d778374"
+      },
+      "demand": {
+        "TOP_FLANGE_ANGLE": "286cdfb3a12eeb0ca0ceb225e68ad9c7ae184217686dde2977acd6ba9d282d9b",
+        "BOTTOM_FLANGE_ANGLE": "e3d0b834b598c792f0181ddf0fd23336e965107345a873a8fedd3438f6440256",
+        "POSITIVE_WEB_ANGLE": "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598",
+        "NEGATIVE_WEB_ANGLE": "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb"
+      }
+    },
+    "pure_shear": {
+      "actions_us": {
+        "P_L": "0",
+        "V_V": "-10",
+        "M_T": "0"
+      },
+      "geometry": "20db6ee66b0ec1c40fed678cbe96f2ba0f1f2f80430ac99dd26832c112011f72",
+      "engineering": "76ad0f326eacec1c7ae7ddce981e94b235d3ff24fadf548e4f83e84f41be6968",
+      "result": "dc758641c2f59866c9ccc3f92d1d7bf13dba8fac6a7199b581105ca72534e4f1",
+      "slice5": "22f0a4928b2aa95e0c99a35c75cf026ba0313078ba9535cc3ab2414ed15dc322",
+      "status": "FAIL",
+      "native_governing": [],
+      "missing_source_count": 4,
+      "core": {
+        "TOP_FLANGE_ANGLE": "d5e8b1ddead8ee1db48127e517c05a7c19ccd673ae3208c6401c8362cf5a6aea",
+        "BOTTOM_FLANGE_ANGLE": "7e6ffe0c9036e0761497e5294a23d78f764129af21f1372632b8dbdf5fea4200",
+        "POSITIVE_WEB_ANGLE": "cbd281e321efb5f075ffa2913c2b1eb5ee51ce9ba6a16f2a23c1262f9dd3a766",
+        "NEGATIVE_WEB_ANGLE": "b50fc33275047fd96688c231d08c0e6c7900263fb5597c7da4bd2a8246e63bf9"
+      },
+      "demand": {
+        "TOP_FLANGE_ANGLE": null,
+        "BOTTOM_FLANGE_ANGLE": null,
+        "POSITIVE_WEB_ANGLE": "7ce7f9eeb38a67985a6462c8cd4ac5b56e8fc8fe219c2d1a5a58fca027b3b721",
+        "NEGATIVE_WEB_ANGLE": "0d8cd96adec14b40d3a8c3f3cce4aeed0729e6852ec5968d350851667bc5b7e1"
+      }
+    },
+    "pure_moment": {
+      "actions_us": {
+        "P_L": "0",
+        "V_V": "0",
+        "M_T": "100"
+      },
+      "geometry": "20db6ee66b0ec1c40fed678cbe96f2ba0f1f2f80430ac99dd26832c112011f72",
+      "engineering": "fc09df77047cf6026118fe9af4a310f3073cc0984092ba7165bfec76a11a1880",
+      "result": "b6a97e869b0810454a6a8ae1a0db91a33e624641d537fe884cc3cc6457fbc69c",
+      "slice5": "ec1970b5415e90751d17a907cb021cbe59aaf70633f6670ec277772f1b27d9be",
+      "status": "FAIL",
+      "native_governing": [
+        "FIRST_ROW:TOP_FLANGE_ANGLE",
+        "FIRST_ROW:BOTTOM_FLANGE_ANGLE"
+      ],
+      "missing_source_count": 8,
+      "core": {
+        "TOP_FLANGE_ANGLE": "e0cfe98a4ce5b0574ca89df006f00a91032a3152b86a66769a9e3768bbd04e69",
+        "BOTTOM_FLANGE_ANGLE": "a47a2988793cf46b6aab5d6d4cf74821434d8c178ee0aae0def2ebef9d73f3cd",
+        "POSITIVE_WEB_ANGLE": "9167f6a5cb3aeb64c3d9fb6376a976fa5e5314da59d3137a88b4154c241bd6cc",
+        "NEGATIVE_WEB_ANGLE": "49c48363afd038beca1ea1f279468a9b856b65b947b842bc30a11e75a76366f2"
+      },
+      "demand": {
+        "TOP_FLANGE_ANGLE": "799d2aec66d4d1960c0d2840798d2c271e6dad8eae732a3ecd024d06571a7408",
+        "BOTTOM_FLANGE_ANGLE": "26f0e67c5bf6171dbdfadfec33955ca975433b47fd01249ba9266748a213b7e6",
+        "POSITIVE_WEB_ANGLE": "4a9f4ab6aae431798543610554a3a824e5a9922a01fa76797a7700b94984a470",
+        "NEGATIVE_WEB_ANGLE": "396b107ca93e2e0090125cfbca0573b48d8d1f7e8e30ee7e5843164802a29afd"
+      }
+    }
+  },
+  "material_and_factor_fingerprints": {
+    "authority": "unchanged locked production-default ICE and native factor path; G103",
+    "material_fingerprint": "585b3d5678c1df9a48ad07bca5d90fc20a10f84b0eda74f600e86b0321c72fe3",
+    "flange_factor_fingerprint": "a1e48a8b98c36960458c242eae733ac371a51b3982b774aacdd8472e77239435",
+    "web_factor_fingerprint": "96fdfadb561fb1358581e1476fb8ef9386ce7c4f73914581800a021a8af90a9d"
+  },
+  "repository_identities": {
+    "trees": {
+      "backend/src": {
+        "git_tree": "8fb68c813b80746fcf4fbab43f186348cf24e877",
+        "entries": [
+          {
+            "path": "frp_master_connection/__init__.py",
+            "mode": "100644",
+            "git_blob": "6c8c2edcf2fe880e0da03589d1a9348f74a7672e",
+            "sha256": "AB64C95BDE6283DB1063CED536131511BE91F625CE54E60A166AF59749B0E9A6"
+          },
+          {
+            "path": "frp_master_connection/actions/__init__.py",
+            "mode": "100644",
+            "git_blob": "e16c2826f46edec6f6e556942d84894440821325",
+            "sha256": "B22AE3B4143C78453BFC524D1903F773867994A30D4710D54DEAFD52F1B1B8D7"
+          },
+          {
+            "path": "frp_master_connection/actions/reference_resolution.py",
+            "mode": "100644",
+            "git_blob": "f0e8b919b0114571b39e7b516c980122d13bab4a",
+            "sha256": "A6D3ED6A6422579046C792E8C77FDF081AE7E5F3C6A512C76F7A67F706108EA1"
+          },
+          {
+            "path": "frp_master_connection/actions/transforms.py",
+            "mode": "100644",
+            "git_blob": "4e78a7154236a915668d48f7936261cc72dec53e",
+            "sha256": "E45409BE92578A6DCA682FB178523C251E5F3C88B3188D06985B8F3C07C76DE7"
+          },
+          {
+            "path": "frp_master_connection/api/__init__.py",
+            "mode": "100644",
+            "git_blob": "f5d039289d6ff30711e64c580c252ff7337e7570",
+            "sha256": "4099CD2C0440E3E45B4F908C57D07A6B1AC8E50EC48B5E31C47AE5DBF0B5225A"
+          },
+          {
+            "path": "frp_master_connection/api/app.py",
+            "mode": "100644",
+            "git_blob": "ab12943ea73f5eeb5957cd2ac61d30fe7a2701e5",
+            "sha256": "6F61CAA631823ED6AC2AB390770C01CAB550DE9A8F535125780AAAC1155094AB"
+          },
+          {
+            "path": "frp_master_connection/api/beam_concrete_paired_angle_mapping.py",
+            "mode": "100644",
+            "git_blob": "8bc081a128616866799e9052e02b4c1903b72c30",
+            "sha256": "70F2AD6CFA9431A59E42F77506CFFC7D45510A1765A844AC3AA46F90153427F0"
+          },
+          {
+            "path": "frp_master_connection/api/beam_concrete_paired_angle_schemas.py",
+            "mode": "100644",
+            "git_blob": "62c736b395ce9d8faffcff52558a28b0ac035f35",
+            "sha256": "4F4E9EE7EC9159CDA9C9CCDA902CE2CCED9229B2636A80A1E5E70AFF91865CEC"
+          },
+          {
+            "path": "frp_master_connection/api/calculation_mapping.py",
+            "mode": "100644",
+            "git_blob": "081670ae1a5e28cbc8f613803a2cc58789e0513e",
+            "sha256": "B3B638281D4871D7B200ED882658D10E26EA4504D475AC89B753A9101BE8B984"
+          },
+          {
+            "path": "frp_master_connection/api/channel_moment_splice_mapping.py",
+            "mode": "100644",
+            "git_blob": "4bc119e025e07529ab419092b0b865e1aacdc65e",
+            "sha256": "C01089074C88E7583FC6D7CD0B1D2729D88B8406CCE30D7ABAC7DB62ACEC4A4F"
+          },
+          {
+            "path": "frp_master_connection/api/channel_moment_splice_schemas.py",
+            "mode": "100644",
+            "git_blob": "36834baec4fee1e289f65ba62fdca9358317aa62",
+            "sha256": "2CF7E718401496B85EDEFC960E086808717A4F34EA8C6B7E0EB1C8AFBB5DF168"
+          },
+          {
+            "path": "frp_master_connection/api/clip_angle_mapping.py",
+            "mode": "100644",
+            "git_blob": "a0a2c70cf8b6e2feccb7dd035aefb1bc4f9b5276",
+            "sha256": "BD05F314D5747E6710F22E92FBBCBA49EC9E3DA08F1137399B6E9245E84CFAD1"
+          },
+          {
+            "path": "frp_master_connection/api/clip_angle_schemas.py",
+            "mode": "100644",
+            "git_blob": "0ab6eead7ed306da4c9b662c17a575a4b307e7db",
+            "sha256": "AE362747D587EAA5B6E383EBB2265909792A0413B2359E6BB2FAF9EE3518EC49"
+          },
+          {
+            "path": "frp_master_connection/api/column_base_web_angle_mapping.py",
+            "mode": "100644",
+            "git_blob": "6ee7188c24c93666a700457ac61828d588910e08",
+            "sha256": "4063F944323EA02175DB49BD381B2DB1027E01E8530C9D273606558541669F87"
+          },
+          {
+            "path": "frp_master_connection/api/column_base_web_angle_schemas.py",
+            "mode": "100644",
+            "git_blob": "e3fd23d0211972a810d3c42eae470949bbbbbdfc",
+            "sha256": "9BF2E43004F12B92FD5EA1A2824ACFCEC11D6E381379699020D3960B107B6496"
+          },
+          {
+            "path": "frp_master_connection/api/dependencies.py",
+            "mode": "100644",
+            "git_blob": "601d1970303d1cb3d245cd5c9c600c911f88bcb7",
+            "sha256": "D0A6C0F03A3D17E15D98AB974273CC38C379B83AA3D71CB621B30DB1C973C8F9"
+          },
+          {
+            "path": "frp_master_connection/api/direct_side_lap_concrete_mapping.py",
+            "mode": "100644",
+            "git_blob": "27d646e2c40828ec9957566fd310fa76bb9f1cbd",
+            "sha256": "D2A8ECEB508EF9BD3784AAC529BEE38D713EC44E96AE8A2D1460E66762B5B831"
+          },
+          {
+            "path": "frp_master_connection/api/direct_side_lap_concrete_schemas.py",
+            "mode": "100644",
+            "git_blob": "bed19da9006dcc60ce4791d08f22a11189c02d5e",
+            "sha256": "6EAC5CE1D9EBFE0396B2C034F8BE89D5C4451CF7D39639B6774925760D49B362"
+          },
+          {
+            "path": "frp_master_connection/api/multi_member_tee_mapping.py",
+            "mode": "100644",
+            "git_blob": "cfa229fdb88d969ebe57a9b2d466d160cbfc38d8",
+            "sha256": "14A1101E9E6494C457FECDFBCA7EDA18E93EFD04643ACF1B104F922B3A467B4D"
+          },
+          {
+            "path": "frp_master_connection/api/multi_member_tee_schemas.py",
+            "mode": "100644",
+            "git_blob": "932b06fa929f6611376a39f88a7150e95fd2673f",
+            "sha256": "B8FB01943A3FD2C3C2253B85008BF7067D806B3A98BB6D0C8D87AC0A1B6F8128"
+          },
+          {
+            "path": "frp_master_connection/api/multirow_mapping.py",
+            "mode": "100644",
+            "git_blob": "bcf3b16d44e2a3e8a27e9ecefa29786b13b27808",
+            "sha256": "5D9821FA912B85A09C37550DE630C7A39B8AF508A97621EFC733691F9E522BAC"
+          },
+          {
+            "path": "frp_master_connection/api/multirow_schemas.py",
+            "mode": "100644",
+            "git_blob": "44ee54c94b4f9001eaf24b7eb25a5c5cb27fdfff",
+            "sha256": "37D9C147DA7C311D9906A33B084D8F8AFA31FB490E600FD9E5A62679E6EE4AA1"
+          },
+          {
+            "path": "frp_master_connection/api/paired_clip_angle_mapping.py",
+            "mode": "100644",
+            "git_blob": "fb5897d4a217b22bf02051b0b80d9f241009487e",
+            "sha256": "92B3F924FC8DB10B400743A24A9C5820251F3D6CD6C65A713E7E381339C14E3C"
+          },
+          {
+            "path": "frp_master_connection/api/paired_clip_angle_schemas.py",
+            "mode": "100644",
+            "git_blob": "4408eb453d6844aaf9f21f1b31b3f0ddc622be63",
+            "sha256": "D99D3DD30633B6A8C63DDEED4EB6A2F43A39C36F310545C9EDAD6757BCFBE490"
+          },
+          {
+            "path": "frp_master_connection/api/routes.py",
+            "mode": "100644",
+            "git_blob": "40cac097743c915a949a5fb6002451efec60cac5",
+            "sha256": "D4FB77C647681677B23988AC7B4F2FE19B7A12138BAB3AFA71F047697C5481E1"
+          },
+          {
+            "path": "frp_master_connection/api/schemas.py",
+            "mode": "100644",
+            "git_blob": "70ca5a0bab6c3d8a4ea167c3ddcd4379b02cb749",
+            "sha256": "8829D601CE39EE2AA939E915937CBABBD779D64BBF19A168A1A6025201FE9D3C"
+          },
+          {
+            "path": "frp_master_connection/api/shared_support_mapping.py",
+            "mode": "100644",
+            "git_blob": "292ec3662e2753b075fbf7d3a05372fed6cf3612",
+            "sha256": "26BF3932690374A7C86C5CA2647A22906AB98154068A8E7D131A8A1E1692E76F"
+          },
+          {
+            "path": "frp_master_connection/api/shared_support_schemas.py",
+            "mode": "100644",
+            "git_blob": "258d9dd00a9c0ca25966f07851a68e0c9dfa2968",
+            "sha256": "1139004C869A43BF873A787782B9121038791E2882808227010B875ACECEDF44"
+          },
+          {
+            "path": "frp_master_connection/api/tee_mapping.py",
+            "mode": "100644",
+            "git_blob": "9df12de283318b5454ca9f02742aac3669c355e3",
+            "sha256": "625EFA6FCDCD76C4953E21D61F669323C77E7599C15E4C529213A73A05C8DCFF"
+          },
+          {
+            "path": "frp_master_connection/api/tee_schemas.py",
+            "mode": "100644",
+            "git_blob": "a9d281a9076200e43f1ce92d85b548e7c1626edd",
+            "sha256": "11C4767DAE6E0AD1B21D9C915B0A30D5FE8AA9DDB33F06773F71FFCE56168B14"
+          },
+          {
+            "path": "frp_master_connection/api/web_splice_mapping.py",
+            "mode": "100644",
+            "git_blob": "660e625d5d3f3f330d6c46868b7530ae5ab565b2",
+            "sha256": "0B740DAD0BCA8796A536B8D0DFD1BD02DB885482743C386770723E575D9F78CB"
+          },
+          {
+            "path": "frp_master_connection/api/web_splice_schemas.py",
+            "mode": "100644",
+            "git_blob": "e6f6d6fb84cb0dc6981917c49cec9fc665c0c099",
+            "sha256": "311765F48A2A9255E0808A4EF1E7F0038BAE897EC120E7E2D2FD26FDFC431069"
+          },
+          {
+            "path": "frp_master_connection/api/wi_moment_splice_mapping.py",
+            "mode": "100644",
+            "git_blob": "262a5bdd7eb5a5975bd39ad1c5f0850532406dcc",
+            "sha256": "DFAA3675D70B8F91F113562D6088659DAE19EF4C9612ADFD198F4B8CB557B165"
+          },
+          {
+            "path": "frp_master_connection/api/wi_moment_splice_schemas.py",
+            "mode": "100644",
+            "git_blob": "33e54b27f757d4f464bdd7bf6dff1ed756b832c0",
+            "sha256": "3754042273435E75576A036361FA7BBD78347C006D7873C07D9CC9D9AC690068"
+          },
+          {
+            "path": "frp_master_connection/api/wi_wall_moment_mapping.py",
+            "mode": "100644",
+            "git_blob": "a1c2f9dd8d3de3a1f49c3f28024d7b0b2a434ac8",
+            "sha256": "DF45A10449B394054DC3B508676DDC8D06608E2B98C5185C4ECB8C67672E48C4"
+          },
+          {
+            "path": "frp_master_connection/api/wi_wall_moment_schemas.py",
+            "mode": "100644",
+            "git_blob": "0ba85b922e0dd4864fc3f5d3592d0d541554994b",
+            "sha256": "1EE1D7544E13C0312C6F4881263CBDF5FEAE633D9991E82A4508F1228D3DB42B"
+          },
+          {
+            "path": "frp_master_connection/application/__init__.py",
+            "mode": "100644",
+            "git_blob": "e6bc010cef38fe585b425c01d2d80476406abe99",
+            "sha256": "3E1270C010E7E3B162249B98F3E7777D110C69A8640F86C7110694E6FBC9EF67"
+          },
+          {
+            "path": "frp_master_connection/application/beam_concrete_paired_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "2ebc030a32593bcdc265cc09a67ab7c1d462e4eb",
+            "sha256": "95DF305E42DEE40D01F4C8DA0B031E1D3CFE9E3F2E283458550356BEA50D8196"
+          },
+          {
+            "path": "frp_master_connection/application/calculation_orchestration.py",
+            "mode": "100644",
+            "git_blob": "c7a0f1973d4e53b912614a1ad678b357615c1e5a",
+            "sha256": "A566F7FCFAD0638D4B429FE109B1EA9D2C5D88BF66C519446D9BC3A0EC7093D1"
+          },
+          {
+            "path": "frp_master_connection/application/channel_moment_splice_orchestration.py",
+            "mode": "100644",
+            "git_blob": "0c88cc12c9ddf702af2f93b73837288acc7348fe",
+            "sha256": "BEFF62EBB7CDA6326967497DE3DFE186427C47689AC1FD6062D1F2B33D3F7E2D"
+          },
+          {
+            "path": "frp_master_connection/application/clip_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "6d0ff00ea06a90ccadeeb7e82cdc14bc727f635f",
+            "sha256": "A42471237C6E915B28F5E3656F960E5DB376251F01BE5AA51ACD9A19D91B8ECB"
+          },
+          {
+            "path": "frp_master_connection/application/column_base_profile_orchestration.py",
+            "mode": "100644",
+            "git_blob": "497f7ada2bcdf9e113fe70cfd68943202209dac0",
+            "sha256": "ECDB5CD4C15C84E7B7DE436132313EA6F4E3E9D0632A84B00D5D3320D914F9CD"
+          },
+          {
+            "path": "frp_master_connection/application/column_base_web_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "d344770e35d113f5fa442efaa055485ee5505679",
+            "sha256": "4F75612DDA7EA81D0873F30F81EC55053113E75EC96907ACE693DD2A2FC51D65"
+          },
+          {
+            "path": "frp_master_connection/application/connection_preview.py",
+            "mode": "100644",
+            "git_blob": "6ca7421a98cc2d546049ea1b28cad27f840243a0",
+            "sha256": "98F9C69BA54A717F5C507D4ED02EE271A6EF0588A89CA8BEC328A7A009A45D17"
+          },
+          {
+            "path": "frp_master_connection/application/direct_side_lap_concrete_orchestration.py",
+            "mode": "100644",
+            "git_blob": "b966773f4a9b9c2499228120e4edad15f470f282",
+            "sha256": "163F952261AA19F8F9C374B6CD244268665A255A02D6D5300CBDD6BA1F0D67E6"
+          },
+          {
+            "path": "frp_master_connection/application/member_profile_geometry.py",
+            "mode": "100644",
+            "git_blob": "551859f83d16f6aceba4fb00ff84aeec3ae81cbe",
+            "sha256": "40F824CCE541D5041B1158E47FC83CBD63E19AA0757927C4C36E998D738F6BA0"
+          },
+          {
+            "path": "frp_master_connection/application/multi_member_tee_orchestration.py",
+            "mode": "100644",
+            "git_blob": "6bea68b5047cf60d938a1c72d444816a65eadad5",
+            "sha256": "C5699FBE66F6E8BE4C3C0E65F032D0ADA668947FA1692B85A7207DEC15D66EA7"
+          },
+          {
+            "path": "frp_master_connection/application/multirow_orchestration.py",
+            "mode": "100644",
+            "git_blob": "3af9150dc5f1e0d58f49e3416f5d7a84bf1c6d23",
+            "sha256": "0BA8D9D3E9CFA2BC55CEA94E01A4338F5C25237E385297DBAF51BF5C3C07DE22"
+          },
+          {
+            "path": "frp_master_connection/application/paired_clip_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "b047d307d770a40c30fe25eda7a6cc2febc49c02",
+            "sha256": "D349EFD0685A9076737EAE36D33E997DCF4CE5A148BFB4BD457A1B592678E115"
+          },
+          {
+            "path": "frp_master_connection/application/shared_support_integration.py",
+            "mode": "100644",
+            "git_blob": "117f9fb213278be32148dc9fb492741763a1368f",
+            "sha256": "D1C60A1D17BC3CFC656FF624CB98E3D60F4935E7D5B59CB51220747301D5BAA4"
+          },
+          {
+            "path": "frp_master_connection/application/tee_orchestration.py",
+            "mode": "100644",
+            "git_blob": "73599b3e8b67d3f4195484fb7f23c92bc58b0229",
+            "sha256": "1C948EAC92D59E101EFA9180B0C67A662A4138D4B6CBFB19201BD31FD1BB3E41"
+          },
+          {
+            "path": "frp_master_connection/application/visualization.py",
+            "mode": "100644",
+            "git_blob": "d33fd28a6baa185288737c5e26e706f88b1d85c8",
+            "sha256": "1BA55AED8B560735CDB3CD2DD5BFC5CCE1B700AFECAC1C0FE3AE3846486825E5"
+          },
+          {
+            "path": "frp_master_connection/application/web_splice_orchestration.py",
+            "mode": "100644",
+            "git_blob": "3e19055129e4ee9edcafb8fdbcb223aab62bb7a9",
+            "sha256": "1E84934497E7C35A5FBF32C8B3EDB275F88A64BEEFAECD59185046B6B1D9706F"
+          },
+          {
+            "path": "frp_master_connection/application/wi_moment_splice_orchestration.py",
+            "mode": "100644",
+            "git_blob": "1fabbaa67b275e59fac33a00c7404c2a30d039ea",
+            "sha256": "165346CA84AE1A486792ADBE7ABA200DB66F8C6DF20A67B8CFB9065336933AF2"
+          },
+          {
+            "path": "frp_master_connection/application/wi_wall_moment_demand.py",
+            "mode": "100644",
+            "git_blob": "c0473113ac3f4783d57b9a98b67670c66397d8f5",
+            "sha256": "986E88F69157277D8E67417B9FFD50236EBF0FF40D6C96C09EE8C467FB9011BE"
+          },
+          {
+            "path": "frp_master_connection/application/wi_wall_moment_design.py",
+            "mode": "100644",
+            "git_blob": "6eb68d6640323ba7c723f7a1a6af9a789ad9a524",
+            "sha256": "330CC2F4AE0797EBF3930388A40B2973D089C3B709A0F0D2DA35AB364E987CAC"
+          },
+          {
+            "path": "frp_master_connection/application/wi_wall_moment_geometry.py",
+            "mode": "100644",
+            "git_blob": "339543821f93241accd17e269e17b2415fd22482",
+            "sha256": "7BE52B51C6F87CBAF5D494484D4C788548DBCEC65701EFCAD2759CB7CAC3969D"
+          },
+          {
+            "path": "frp_master_connection/application/wi_wall_moment_orchestration.py",
+            "mode": "100644",
+            "git_blob": "55bb2e5b839016d15ee16c3c90d57338d3c129cb",
+            "sha256": "0FA3BA7199CAE1B073BDFA8001C213524951794559473EF79A5830D5C8E40E4A"
+          },
+          {
+            "path": "frp_master_connection/application/wi_wall_moment_sources.py",
+            "mode": "100644",
+            "git_blob": "5185f2d49548716ef796c6b3128e97b16ade56f5",
+            "sha256": "C93F2DE74DF3EE1FD25868D77E58F3B1EBAFB4672407587C63FDC146F01B2756"
+          },
+          {
+            "path": "frp_master_connection/calculation/__init__.py",
+            "mode": "100644",
+            "git_blob": "fc9ddbcaff9abf97efa99c52bfa7196c804f867f",
+            "sha256": "40656EC1ACEFACCCFB50456BF48FDDFCC2991204B7BB151DF923CCCBAC66E356"
+          },
+          {
+            "path": "frp_master_connection/calculation/angle_connector_core.py",
+            "mode": "100644",
+            "git_blob": "a455e5f2962a8157f56d6e9d2b94c69312dad733",
+            "sha256": "2B36DA06E44F50986D7A3078DB40D0AF66477BAEB289BE63C0F110F66BEF3BB7"
+          },
+          {
+            "path": "frp_master_connection/calculation/angle_connector_providers.py",
+            "mode": "100644",
+            "git_blob": "961eea8280e8de091008704856a0f05d51ea5f37",
+            "sha256": "F0A6FE18D2C178BFB964FA16711D8CA827F859B5F3DF5584CA2F8F6A9AF3BEDF"
+          },
+          {
+            "path": "frp_master_connection/calculation/applicability.py",
+            "mode": "100644",
+            "git_blob": "b9bd86f606b3bff44612667a92ceeb1ad074b446",
+            "sha256": "EBF83A63A52F68E22FC2911CB85602AB5EEE4D74079460786F7BB96FD51C5C41"
+          },
+          {
+            "path": "frp_master_connection/calculation/block_shear_planning.py",
+            "mode": "100644",
+            "git_blob": "6d769c286ab767ffa68ff66897889627bd0fd374",
+            "sha256": "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022"
+          },
+          {
+            "path": "frp_master_connection/calculation/channel_moment_resultants.py",
+            "mode": "100644",
+            "git_blob": "f06c90b9ab4ea7dc5b22ab9c991f98596ddad4a6",
+            "sha256": "75BCB593372563CCC93C5D138AF727E66A9A6A7AB7834DF69C5EE030E5228F4A"
+          },
+          {
+            "path": "frp_master_connection/calculation/channel_moment_splice_resistance.py",
+            "mode": "100644",
+            "git_blob": "cff98071bc581565e2f321adc667565e5fd7fe02",
+            "sha256": "FE3E11A7EC4D8CE7C58F396E7D522CE6731F6FAB9856DB08FA10898AF7F9994A"
+          },
+          {
+            "path": "frp_master_connection/calculation/deterministic_trigonometry.py",
+            "mode": "100644",
+            "git_blob": "7e2baf2fe3dfbc9092ff244902e6785c095a2d47",
+            "sha256": "018BA1FD3D0A515206F714FB8EFDA44F3C47201B700390E198B1E51A4895AB69"
+          },
+          {
+            "path": "frp_master_connection/calculation/eccentric_demand.py",
+            "mode": "100644",
+            "git_blob": "2f55df68532c1818d4e1d6ce6757c6bc9f4fef97",
+            "sha256": "B9A23CBE5A4635D940BB2B96C40DA81A87447A2E810D4E4C90C49F7C81485376"
+          },
+          {
+            "path": "frp_master_connection/calculation/eccentric_group_modes.py",
+            "mode": "100644",
+            "git_blob": "c29ce8ffba6fdab1684e0e3e08623bd373fb43c4",
+            "sha256": "493D022A447E5F985AC6AF5B46FC10D2CB511D3CE1FE186903B402E480B2042E"
+          },
+          {
+            "path": "frp_master_connection/calculation/equations.py",
+            "mode": "100644",
+            "git_blob": "9c15d174e65d9169f8e057f807fb9383a55436c3",
+            "sha256": "13EC9C0041C190D2DB47D4E8C316A3839E4657F8E186E9F58C22E83141128BF9"
+          },
+          {
+            "path": "frp_master_connection/calculation/evaluation.py",
+            "mode": "100644",
+            "git_blob": "127e69540876f5d3bffd0322651afca223b2a037",
+            "sha256": "73C7937C8599947B7B9134DA9ACFB31DB09E6A4327B3E409F51BAE7AF2BF113F"
+          },
+          {
+            "path": "frp_master_connection/calculation/fingerprint.py",
+            "mode": "100644",
+            "git_blob": "f2f6508fc13b24cec138b0ad7c1273660a20af82",
+            "sha256": "B5827F740231B8447CE95FB31F2ABE06FCF7E3E50C8E56D8BCC330D76DDF32E0"
+          },
+          {
+            "path": "frp_master_connection/calculation/frp_angle_connector_provider.py",
+            "mode": "100644",
+            "git_blob": "a8d09444d9af219ba3a9e18754f770012c7b65a9",
+            "sha256": "F7EB508C7253FBEECE2F202EAE0740C3574E5BE98D6C859A3D5AE43C3A408771"
+          },
+          {
+            "path": "frp_master_connection/calculation/geometry_mapping.py",
+            "mode": "100644",
+            "git_blob": "f5b1d9a540bf74f83f5bcc2a54513ef097c626bb",
+            "sha256": "59CE071BB08EE0F794B07BA388FA27791F1FC1DDD2EE324FB6A80E5A392FBDBE"
+          },
+          {
+            "path": "frp_master_connection/calculation/in_plane_wrench_demand.py",
+            "mode": "100644",
+            "git_blob": "4218f1f13326a40d96ddbff3b7f9d1c2a5b34f2b",
+            "sha256": "1E01134F8DADA19E87E418EC05BFFD2118475FEAFB383CD667B6EAF941BE91C4"
+          },
+          {
+            "path": "frp_master_connection/calculation/inputs.py",
+            "mode": "100644",
+            "git_blob": "6b85ec96f86808531cbfbeab2270723f64fec861",
+            "sha256": "49D6E408A6DD0FA89A6512C7777FEDB2673724DA48EFB31C60059D09B93279D2"
+          },
+          {
+            "path": "frp_master_connection/calculation/material_compatibility.py",
+            "mode": "100644",
+            "git_blob": "66c18600e76580315d051f8ffe8c46f1628eb854",
+            "sha256": "61044CA0C33F602936C6B3D519EEE4A84E1626C6F5DBCB32A06B3A4BFF784E2C"
+          },
+          {
+            "path": "frp_master_connection/calculation/multirow.py",
+            "mode": "100644",
+            "git_blob": "5a927c924aaa1bce6f20af4d05cfa9d196d28101",
+            "sha256": "1F8A5EDC1C05D88BF945EE864B5AD7431B2ADE4B2F7769BC1FD466F2742830E0"
+          },
+          {
+            "path": "frp_master_connection/calculation/multirow_engine.py",
+            "mode": "100644",
+            "git_blob": "6322650fff28b0cebb61e98e1066e2b05de896df",
+            "sha256": "E5FB704B0F2D984419DACCF5FFF6C42F9321DFA16900E7A62A4B1F7FC7D90580"
+          },
+          {
+            "path": "frp_master_connection/calculation/multirow_equations.py",
+            "mode": "100644",
+            "git_blob": "a922c1745bfe4490fde8f42f8812508f124bab3c",
+            "sha256": "73C8F081422F0629B319C2870F4B8F83752C555622DF8A38C0A1FC4C2558009D"
+          },
+          {
+            "path": "frp_master_connection/calculation/multirow_fingerprint.py",
+            "mode": "100644",
+            "git_blob": "cac1a9882f855467f82e507dc5784e49eb14687e",
+            "sha256": "2E555C9E8326BB762277C0D964E4017136BF1B5279A29F5DB710183A357434C9"
+          },
+          {
+            "path": "frp_master_connection/calculation/plate_strength.py",
+            "mode": "100644",
+            "git_blob": "9aa29fa2c1822c71f9bd9893f599489a52bee7b5",
+            "sha256": "45796D463CA22DA00145FC71547DF67AEE8D4D95A61B83303F8F06F03BCC1068"
+          },
+          {
+            "path": "frp_master_connection/calculation/properties.py",
+            "mode": "100644",
+            "git_blob": "232a6735327ba0da19b3c3a998322fb3d4a638ee",
+            "sha256": "17A168DA22ACBE8E95B23D14411E9C6413973D504B9D24ACB495500F50E0448D"
+          },
+          {
+            "path": "frp_master_connection/calculation/quantities.py",
+            "mode": "100644",
+            "git_blob": "37278099183183d5557d7859dcf2c0bec7e1febb",
+            "sha256": "E9C290F8239D1BD8B542D8D6B466ADACB36A7EE2EDB18DAF006C35DFEAB9D698"
+          },
+          {
+            "path": "frp_master_connection/calculation/resistance_handoff.py",
+            "mode": "100644",
+            "git_blob": "47642677249eb7216de658e10c19bbc386166302",
+            "sha256": "38075566DB9F4D14AF5F3872A75825DACECE6D0A158C0484C283507CC02B7B23"
+          },
+          {
+            "path": "frp_master_connection/calculation/results.py",
+            "mode": "100644",
+            "git_blob": "ee6c39352d88887837fe727431cc35c6a0d8c13e",
+            "sha256": "35BBE5A91E331E6687952A0D303088778D42324CDCC1DCBA680D8D4305B2E74D"
+          },
+          {
+            "path": "frp_master_connection/calculation/sources.py",
+            "mode": "100644",
+            "git_blob": "b31c8f85c62ab661a3f3b2732d97f51346868de6",
+            "sha256": "F73E8ED838249D7E0926926DDAA455C9A38DF569B9EAE5B5E4F52C8FAFDF31EA"
+          },
+          {
+            "path": "frp_master_connection/calculation/web_splice_resistance.py",
+            "mode": "100644",
+            "git_blob": "26ad5512601ecbf947f54bedf8d76a0b884c5a35",
+            "sha256": "42358FB7029E2FA2E003C058779EC5E918DB6A44851437CAABAFDF581B1F1918"
+          },
+          {
+            "path": "frp_master_connection/calculation/wi_moment_resultants.py",
+            "mode": "100644",
+            "git_blob": "bc428cc260526fe5e020c5122f52e9f1c11c9d54",
+            "sha256": "028CF26C7614490C07A0F699BC66FAED83BABB175B6CE635332254A4F70C226B"
+          },
+          {
+            "path": "frp_master_connection/calculation/wi_moment_splice_resistance.py",
+            "mode": "100644",
+            "git_blob": "c54d1f8e87cb347ff593bbc958e1b1002d464466",
+            "sha256": "906137E13BBAC48831BA69E92EDDA14160C334B20BD1E26E12ED8995450199F0"
+          },
+          {
+            "path": "frp_master_connection/capabilities/__init__.py",
+            "mode": "100644",
+            "git_blob": "8319a337881e3aada26f78fbd7251314e166f0c4",
+            "sha256": "12AAA9C2580252BB5A825E7190E4E124906097F7198FC1325EEFCDBAB4D16067"
+          },
+          {
+            "path": "frp_master_connection/config.py",
+            "mode": "100644",
+            "git_blob": "330f05cc07a0f21baa511add5cce62a7a192d4d4",
+            "sha256": "444BA7A691D256622A048706A901B50F30D1334A5A155D09E46D2045D2D4337E"
+          },
+          {
+            "path": "frp_master_connection/domain/__init__.py",
+            "mode": "100644",
+            "git_blob": "e745138f25aff45a51492b88268384857f7b1d86",
+            "sha256": "FCFEAC75F5F957247ADB089D137C5D986951AD478940472D1CC9CA026CA1DF75"
+          },
+          {
+            "path": "frp_master_connection/domain/assembly.py",
+            "mode": "100644",
+            "git_blob": "213f238c6ea1acd944a13eecb61153892569c253",
+            "sha256": "443607C0CE2593318516349AFD25B63197FE7670D45E147F5A51DF441553A542"
+          },
+          {
+            "path": "frp_master_connection/domain/beam_concrete_paired_angle.py",
+            "mode": "100644",
+            "git_blob": "e0419db14373e229c961daf48764a18f0c6cbb8e",
+            "sha256": "67BE00F2B31CFCC67BD5A566930A5A4CAEA55FE0B1FB217E806D2A23092CA273"
+          },
+          {
+            "path": "frp_master_connection/domain/channel_moment_splice.py",
+            "mode": "100644",
+            "git_blob": "8d1c0d77349342e22ba89efe27c68eb15500e5b9",
+            "sha256": "49D74C98499074B8B785002718035EB0D3CCFDA57BC7C48F6FB391E6EFD0FA84"
+          },
+          {
+            "path": "frp_master_connection/domain/clip_angle.py",
+            "mode": "100644",
+            "git_blob": "742a33fc8fcbf9b2d0f2271c82e7d4cea9e0ee7f",
+            "sha256": "F44A9E9F1A472EEDD891DF17E664B3FFEC74953646A5E6B40E784E2DBE95C9C9"
+          },
+          {
+            "path": "frp_master_connection/domain/column_base_web_angles.py",
+            "mode": "100644",
+            "git_blob": "fed067729bddad1bfa3b1ae4cedbcfa412e08802",
+            "sha256": "B1827423EEEDD749A42DA751D477C1A06F390BCEC501A87A154D03D722AE556F"
+          },
+          {
+            "path": "frp_master_connection/domain/entities.py",
+            "mode": "100644",
+            "git_blob": "4e0ad58265ca9d8da6712f2cfbc2cb2ba4f0f2e0",
+            "sha256": "9DBF1C13BEEBB476383B169F4857E2E70801D5949DC620E35FD673C651B696FA"
+          },
+          {
+            "path": "frp_master_connection/domain/material_architecture.py",
+            "mode": "100644",
+            "git_blob": "29539a8e78efc0012bf35221488a85f32ec98c56",
+            "sha256": "AA9BF0C27AA1BD4A757D0EDB7132D1127EB8B482FC1E50B06F6C0E7C4A8FB467"
+          },
+          {
+            "path": "frp_master_connection/domain/member_profile.py",
+            "mode": "100644",
+            "git_blob": "5e2433e90ae2a32dc2996313c66325748fdb419b",
+            "sha256": "6C6ECE7AC9A3A4627CCB9002671DDF67E9D36DB81AA5953803939E53BBF05BB5"
+          },
+          {
+            "path": "frp_master_connection/domain/multi_member_tee.py",
+            "mode": "100644",
+            "git_blob": "41e668ee7f20cfaa0c7f5bfe394799228e4b35c2",
+            "sha256": "48231EE656FF464544AE6FA0B90DF4A0E7747FE8FD7CD409D4807AD2A06D6492"
+          },
+          {
+            "path": "frp_master_connection/domain/paired_clip_angle.py",
+            "mode": "100644",
+            "git_blob": "8b27c606157ec2ec5e92b6a833394592e457650e",
+            "sha256": "B424CD0FB31E17BFCEE5EE7257B1F60E9B730D45EA56AF193EEF1BDF958303E8"
+          },
+          {
+            "path": "frp_master_connection/domain/rectangular_full_through_bolt.py",
+            "mode": "100644",
+            "git_blob": "40c2f59d1ccb887074505471bb74541d5e9cf33a",
+            "sha256": "C9491DAD6379399525CFD57D6D289AADDB7A46ECE817CFBAE56CDE48538A0719"
+          },
+          {
+            "path": "frp_master_connection/domain/section_topology.py",
+            "mode": "100644",
+            "git_blob": "fd539e6873b055a30d5b7b984375c705789befc1",
+            "sha256": "3637AAC8F635463D2B6B4102A81E3D04E5AF8B668C75106469E15F2339A675DB"
+          },
+          {
+            "path": "frp_master_connection/domain/support_targets.py",
+            "mode": "100644",
+            "git_blob": "2c54f72880552396dedd5e54a9ab0921c8903023",
+            "sha256": "1DC60EEA43CF721D15FA3D2043021C2D4C1573C71913B34EA0AB00DE5DCABB04"
+          },
+          {
+            "path": "frp_master_connection/domain/tee_connector.py",
+            "mode": "100644",
+            "git_blob": "e7f0e456fdf9b9c86361b4ebcf319aeae83617b2",
+            "sha256": "4E668CDF90205D4CEE0A01F67585F4750B622FB88EE92A3BBEBB989C62DDF5DD"
+          },
+          {
+            "path": "frp_master_connection/domain/validation.py",
+            "mode": "100644",
+            "git_blob": "d8ca0520a0ede78e7f966d20b6d0509fb9a378bb",
+            "sha256": "8E6EA5A3290F9B3CE2648BD443A8E44C6CD9654731125F1DFAB36F6A711B00F7"
+          },
+          {
+            "path": "frp_master_connection/domain/values.py",
+            "mode": "100644",
+            "git_blob": "5ca278662a6f4c0ab59e01aa4c18ce6fd7878635",
+            "sha256": "C865D4759E62EA93A5DCCE560B9F417E16FB269040BF772DCA6BBFE42D41FC2E"
+          },
+          {
+            "path": "frp_master_connection/domain/web_splice.py",
+            "mode": "100644",
+            "git_blob": "ad73d355843525f81d9e4d758d43654ee6b47e97",
+            "sha256": "F8806F0CFF1CDCEA05D3CDFC392B5C6EFC2C2EB70B2EF198F21D543BD7EF0815"
+          },
+          {
+            "path": "frp_master_connection/domain/wi_moment_splice.py",
+            "mode": "100644",
+            "git_blob": "dbfac9fd6ebf70624e1f8d48a7b4680ed07ed2fa",
+            "sha256": "9B9CCA48722AFD3506164303684C53B358F18A630CC5A1B258A0E1FC4CF1F224"
+          },
+          {
+            "path": "frp_master_connection/domain/wi_wall_moment.py",
+            "mode": "100644",
+            "git_blob": "02e1d23ed1da17994b2539f79c69702154f2e424",
+            "sha256": "7847DD87DBF7EBE1ABA711BC88B3BAAF69186FF28B293D2BCEAA5DE03184B697"
+          },
+          {
+            "path": "frp_master_connection/engineering_basis/__init__.py",
+            "mode": "100644",
+            "git_blob": "b4beca044d8a0257685d29e03737fff3d5c744f5",
+            "sha256": "9B592DC305B4FCC6A132D84E988DB6CD350B16AD4395D62BE8595B779F210D85"
+          },
+          {
+            "path": "frp_master_connection/geometry/__init__.py",
+            "mode": "100644",
+            "git_blob": "8662b8780bd0647a9823426a8f3327e9da091bde",
+            "sha256": "56BA151BED1AE95F75C962925499755934F1DF1DA5FC1E334208F694F5792B8C"
+          },
+          {
+            "path": "frp_master_connection/geometry/bolt_paths.py",
+            "mode": "100644",
+            "git_blob": "61e7ab39f296dc65fe23f1e564d1ffd2ed91a069",
+            "sha256": "D85DF24AED78A08BADD40A0C18477540EC7D68D580102511D5714A7FF1B66925"
+          },
+          {
+            "path": "frp_master_connection/geometry/interface_targeting.py",
+            "mode": "100644",
+            "git_blob": "6751790d29d3f8b268cb2da0729c3a9bb5629e3c",
+            "sha256": "E750E4E20503C38B86867A3EE673601BFD7FB2F6F697E21808FF8E3233BCE948"
+          },
+          {
+            "path": "frp_master_connection/geometry/joint_context.py",
+            "mode": "100644",
+            "git_blob": "800e67ad32cf154097561686b3e01c83e3b9d120",
+            "sha256": "D0911B57B5E0BF9C4B7D4930BE22155EA9A415587323252522098E036218B914"
+          },
+          {
+            "path": "frp_master_connection/geometry/multirow.py",
+            "mode": "100644",
+            "git_blob": "d6f8ad8924f7ac13eaada0fe29f21cfdca5aae40",
+            "sha256": "7474BA2747C37DCA4704889EAE3453D063479E79DE00A927B066B2246F087F83"
+          },
+          {
+            "path": "frp_master_connection/geometry/placement.py",
+            "mode": "100644",
+            "git_blob": "e2b691aafbd3ef14b0f86a7ae3ce5733fc004cf2",
+            "sha256": "610AFD2CFF4DA4570F1BD950F48C0E191769323141954AB9945F97EDA4A63A72"
+          },
+          {
+            "path": "frp_master_connection/geometry/section.py",
+            "mode": "100644",
+            "git_blob": "91b2b436d6cd6d918178ae5148234afd8d4d7d8c",
+            "sha256": "C6333928DCA1B7DFC873E5EB7A2AA4F7A74B1104B23BC4DB6FAEB1BF415190A3"
+          },
+          {
+            "path": "frp_master_connection/geometry/spatial.py",
+            "mode": "100644",
+            "git_blob": "56f2b4cc57c0839d760347d4cc8ec9beec085049",
+            "sha256": "0F6BB2870B25F7B433741492FF3D4A709BC8DF377A084D29A2B7830DE2373B8F"
+          },
+          {
+            "path": "frp_master_connection/geometry/surfaces.py",
+            "mode": "100644",
+            "git_blob": "7be889be7ad8bba88610eae36bc009f533727720",
+            "sha256": "02FAA48C15B176E7D7A9792498D397695117867992970AE8194F5222B51A3285"
+          },
+          {
+            "path": "frp_master_connection/geometry/trimming.py",
+            "mode": "100644",
+            "git_blob": "4a61a31f30f37501ca3db9bb0be948c1e11d812d",
+            "sha256": "17D04F592F82438F095AC285937A486BC519B89596F07017B65A8BCEE1BB5BDF"
+          },
+          {
+            "path": "frp_master_connection/infrastructure/__init__.py",
+            "mode": "100644",
+            "git_blob": "afb1d1b0659dc51ff2eda6e1f5c3ede235b2a816",
+            "sha256": "2F0FB259EA180BE9039FB7DB52E166462D5B8EEA452441216D81D51A2DF402BE"
+          },
+          {
+            "path": "frp_master_connection/py.typed",
+            "mode": "100644",
+            "git_blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+            "sha256": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B"
+          },
+          {
+            "path": "frp_master_connection/reporting/__init__.py",
+            "mode": "100644",
+            "git_blob": "4f529cc52f03b12ee89bacb66431a4e2b7711f7e",
+            "sha256": "50AF9F1B7CC5CE4A4D8E07DFA7CD54006D58A3943258DCD4DD868FC3CE48110C"
+          },
+          {
+            "path": "frp_master_connection/security/__init__.py",
+            "mode": "100644",
+            "git_blob": "04e74aff883910f5797fe94adeabad6eee45afbe",
+            "sha256": "85F41FB0212EEA0A926F810D7C9D75D3CEEAB09171DAD3DA5EA672592268237E"
+          },
+          {
+            "path": "frp_master_connection/security/identity.py",
+            "mode": "100644",
+            "git_blob": "dc6415849bb5a8a2e7b8856b347dae498eca330c",
+            "sha256": "EF0DC9F055DA2750B961B71C26D6F86CEC82E92EA68EFC98361A843F481D46B4"
+          },
+          {
+            "path": "frp_master_connection/topology/__init__.py",
+            "mode": "100644",
+            "git_blob": "2c9bfd5277cf962a5edad6bd658a86db3c2d28c4",
+            "sha256": "13C6D4DD77B9F7A92D761E501A09EBF6875E629BF01EF2044640D982DA98816C"
+          },
+          {
+            "path": "frp_master_connection/units/__init__.py",
+            "mode": "100644",
+            "git_blob": "4cb381f70ce6d5ac2db888a35bcea0f99cd821d0",
+            "sha256": "C99E478BDD93DE65F8AAC21D3E67AD4FA1AAE36677B526DC5EF562F001B35625"
+          },
+          {
+            "path": "frp_master_connection/version.py",
+            "mode": "100644",
+            "git_blob": "1f5b599571cf5dd97d3e693b350a830473336573",
+            "sha256": "CCB3749C42C633076E924C38A0D9BB1C5F22C5B2E296E2E89B0AB81FD6B0A7BA"
+          }
+        ]
+      },
+      "frontend/src": {
+        "git_tree": "93c8446db9b68a0cc612e1d4afa8d5c1898c4aa5",
+        "entries": [
+          {
+            "path": "api/beamConcretePairedAngleContracts.ts",
+            "mode": "100644",
+            "git_blob": "a05b5df68145914ce082a8b1a99ef371e325f0b0",
+            "sha256": "D29A8C2A3CF9385426B3F911E879F63DD1CD0CC8926A9E5A5B15B9B4F6D9614A"
+          },
+          {
+            "path": "api/channelMomentSpliceContracts.ts",
+            "mode": "100644",
+            "git_blob": "92ab83c7d6d4a2f47d189d12d111e0cbc85beed2",
+            "sha256": "551F225496D3CE2701DDC58C7585F07CEDED9319D99D2B6751DFA778CA6F7798"
+          },
+          {
+            "path": "api/client.ts",
+            "mode": "100644",
+            "git_blob": "fefc1c19b6b80d32296743cb3077a03643a9c66d",
+            "sha256": "BB15FB09CDDD921775F825C7435671B7F0D0733EC80F155E357803C671A85DCE"
+          },
+          {
+            "path": "api/clipAngleContracts.ts",
+            "mode": "100644",
+            "git_blob": "953a642f405478dfdaab85180c1ef38dbba28aec",
+            "sha256": "FAC472E7E31B166554CC9A64118206B791214DAADC707BA5691EC8F7AFE3D956"
+          },
+          {
+            "path": "api/columnBaseWebAngleContracts.ts",
+            "mode": "100644",
+            "git_blob": "7f47d0d56b2b73b4803de310fb40d9f770cb46c5",
+            "sha256": "E07C2E4CE91990385A969B4CEB7FB3652BFA52676181C4E362AEA8EC15EFEEB7"
+          },
+          {
+            "path": "api/contracts.ts",
+            "mode": "100644",
+            "git_blob": "2782193db8b4b3f61beb98dd30d4e9ee35fb3d90",
+            "sha256": "A111FFC24321D2AB4487B60A2419967B7C3C88EBA1F0EE71B4C75F1D63230A8C"
+          },
+          {
+            "path": "api/directSideLapConcreteContracts.ts",
+            "mode": "100644",
+            "git_blob": "669f99f8c2773dca8e9c55e69b7998f531608b2a",
+            "sha256": "AB1B56106366B2FE1E8897F184B9F07F085C3980231F5F7870E27654C89A56C0"
+          },
+          {
+            "path": "api/multiMemberTeeContracts.ts",
+            "mode": "100644",
+            "git_blob": "298ce7b90a1a19a0d36d6e77f7d955371e78b1ea",
+            "sha256": "7DA0F5078F61F4D13DA5855E4F4A6C65D7EF51B14617ADABFEE867B87B282DED"
+          },
+          {
+            "path": "api/multirowContracts.ts",
+            "mode": "100644",
+            "git_blob": "3da8c41f5ceb4d7ea9051bad2337f3965bb53ccd",
+            "sha256": "6308445C9054068268AF15DEB7AB1DF11D5E1F25444047BC03CC1F1AC4921EF8"
+          },
+          {
+            "path": "api/pairedClipAngleContracts.ts",
+            "mode": "100644",
+            "git_blob": "1ff5a9cce61e63d7dda4889ca73f50180bd42d8b",
+            "sha256": "E8A09DFBA6255D9C5B89BB8D1CC3ADA1B9C49056A80FA15DE239CB2168FD786D"
+          },
+          {
+            "path": "api/sharedSupportContracts.ts",
+            "mode": "100644",
+            "git_blob": "7aca0f068ce573ca1c01fa766d3dccce56e59691",
+            "sha256": "B23E93255C4693A2C9D77130F58C85788B9669D3657CAC64FAA491509767EE4F"
+          },
+          {
+            "path": "api/teeContracts.ts",
+            "mode": "100644",
+            "git_blob": "3c6912a1ac6ccc61a78f8d28e6a9f28bf58c4b78",
+            "sha256": "0EDA6B7A039E08F627A105A606BD4059BD2E8EEDFD9AE866410F0D654AA9A409"
+          },
+          {
+            "path": "api/webSpliceContracts.ts",
+            "mode": "100644",
+            "git_blob": "1e753b7d614e6edc8ad045b78c127d471cc3c8bb",
+            "sha256": "DF3CF649A989C214071968FF27D423C1A049C1AFBC93E5870499843C4A900ED9"
+          },
+          {
+            "path": "api/wiMomentSpliceContracts.ts",
+            "mode": "100644",
+            "git_blob": "28165a14987b119459a7be65e15bb4ef62111242",
+            "sha256": "A2A8AD74A4A1384F9C8C3E086EE70C84A8CF4F5C2F4891FEB31EDBCE9BA9517C"
+          },
+          {
+            "path": "api/wiWallMomentClient.ts",
+            "mode": "100644",
+            "git_blob": "7c527e74c5687f4694c3e401d40a390b0cd9c3b1",
+            "sha256": "8B17B68DE636D8F3958B2C874D6380EE19C455FDFBCB8C7E034667D0C7710EAE"
+          },
+          {
+            "path": "api/wiWallMomentContracts.ts",
+            "mode": "100644",
+            "git_blob": "b95cd8b4ebe7cf6479beb8eaaed4c36561be3ec3",
+            "sha256": "912A46A832DD15BD36FDCE3CBF0B4E4E0EBC215E997C0FC4A9336A516189102D"
+          },
+          {
+            "path": "app/App.tsx",
+            "mode": "100644",
+            "git_blob": "795cc2c3e7cd066e3c0f2e7f850d58f4e1172d1e",
+            "sha256": "2D3241F26CD5CDBCFBE2CFDF09EDD94478C2644F5847FE8374F36AE3898AB982"
+          },
+          {
+            "path": "app/AppShell.tsx",
+            "mode": "100644",
+            "git_blob": "9ee14f73cc2c9bc321aaa0a3dc85d1ceb2b3703a",
+            "sha256": "FD606E17928D3AAAFC5157627143B2EED3B823FA9ADFB70E8422ACADDD9E14E0"
+          },
+          {
+            "path": "app/mountApplication.tsx",
+            "mode": "100644",
+            "git_blob": "1662a8443f02f621e9decdbe79ae9e4b3facdcab",
+            "sha256": "AE9CE67D0836E801D54E1AA4E784B8E3C4F43FF5B0760268FB52B83066B92536"
+          },
+          {
+            "path": "domain/designCategories.ts",
+            "mode": "100644",
+            "git_blob": "aa2d4fdfdd505b26cc26e640ecd82ea6a35b1ebb",
+            "sha256": "BF63B1BA84CDFB7C1659256D3AB090599781A37D5FB076BAB74FD0BF3AFD05B9"
+          },
+          {
+            "path": "features/CategorySelector.tsx",
+            "mode": "100644",
+            "git_blob": "b5b6792abadad3a7d0d2b04c1fa280aa82d64e2e",
+            "sha256": "D791353B800AA2D0AB21F961F624F5BF53492E541854EB0D731BA6EF51506B41"
+          },
+          {
+            "path": "fixtures/beamConcretePairedAngleBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "268bdb2c82e11fde7616c70d948dc94fdb2e02d9",
+            "sha256": "C4057F661C54FF5563302295B527EC3FB79A729BE046ABFEC197B5468B36D1EE"
+          },
+          {
+            "path": "fixtures/channelMomentSpliceBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "d6b729943d35e2b4e350c3ca36fb824deaf7c143",
+            "sha256": "B2785DDBBCA9E812020EF6FCCF0A74F93D9BD330036852E2460A02D902373D47"
+          },
+          {
+            "path": "fixtures/clipAngleBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "f37e03a77a53cd419098e39dc4b90fc3040596ca",
+            "sha256": "A0915A65A5FDA6BB7E93330E0945A69D8116726B215CCCC291BB28F52ABC34E3"
+          },
+          {
+            "path": "fixtures/columnBaseWebAngleBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "13832557ff83eee86784f82df57bb1ad3764879c",
+            "sha256": "52E1195A5675D136A7E831808CBCAEC0E3D2EAB84C817D3914E65CE9EB4EDE1F"
+          },
+          {
+            "path": "fixtures/directSideLapConcreteBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "d740cdf232d0c4147092857ba7d0de9e2dd808c9",
+            "sha256": "175C4688086D483A476772D947549B3316FDE423D56739F07B7A83208082E63D"
+          },
+          {
+            "path": "fixtures/j1-si.json",
+            "mode": "100644",
+            "git_blob": "b5fd56c0495e5bb766353202c6c8a5033097a1f6",
+            "sha256": "4B20424FF014ADFCF22A83FE80DBBF1C7DAD67E9FB7EF574346F97768645A383"
+          },
+          {
+            "path": "fixtures/j1-us.json",
+            "mode": "100644",
+            "git_blob": "2f9514e0ead17ae156b35aec6db88ba57c7f87c8",
+            "sha256": "509FDE8B0A0DFB66F0D6B371DB31B1DA6FA82E8665C07A8996B4B6ABD0ADD10B"
+          },
+          {
+            "path": "fixtures/j1Benchmarks.ts",
+            "mode": "100644",
+            "git_blob": "dfc6d1ca45842ad330acaddc8828591d0769682e",
+            "sha256": "AEC5475E765FF0CA6C77D9A01D11C6A7FFDE762EA286D6CBC746549F11A69584"
+          },
+          {
+            "path": "fixtures/multiMemberTeeBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "e508d1e2b59f28a7229091e18f31511ce5c7b713",
+            "sha256": "4DFA9ABD51385CB6BDDC62F789DE130D33B1E00613445A8533A6A03A381F2EC7"
+          },
+          {
+            "path": "fixtures/pairedClipAngleBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "003f6b85cf6a752c6937b1e9f60eb5de32a47652",
+            "sha256": "D5416083A63221E766B2BEA2F21D38E12AB0FF537F725C7E6670768F76AB8637"
+          },
+          {
+            "path": "fixtures/teeBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "ab3dc48b6cdfae259e7fad45d53199d05d6f04fa",
+            "sha256": "52D5254B1B0EDA7000F1027A28941FD3039D9542DFEDB7B2B5004B21E3B46236"
+          },
+          {
+            "path": "fixtures/webSpliceBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "ddd336414d070cff8feca8e71435c816868b7a2c",
+            "sha256": "A3E7A47DD71F2AC2205367F9449949A3E06CE2EDF49378FF9D18BA5FCEE76CAC"
+          },
+          {
+            "path": "fixtures/wiMomentSpliceBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "dbd9efcd27411fa28472cb842d8b68bb1d1f934f",
+            "sha256": "CB81ABE167E707E7399136A4BBCFB3431376434A9601BAC02DA8E7E5A91A994E"
+          },
+          {
+            "path": "fixtures/wiWallMomentBenchmarks.ts",
+            "mode": "100644",
+            "git_blob": "ea55a8e76b3d554191bf2d5a6f2c1ca0370ed329",
+            "sha256": "23CAFE96AF7563629A72988CE02540B554788F746D6BC8C99E478661762FE1F3"
+          },
+          {
+            "path": "geometry/.gitkeep",
+            "mode": "100644",
+            "git_blob": "0c9dfb9b43453793fabbd5bcd9f32b9d029190f1",
+            "sha256": "BD90FDF45F77C955B33DEF689318B042C7DE1E29BACE83E6DE4B832750D9F948"
+          },
+          {
+            "path": "main.tsx",
+            "mode": "100644",
+            "git_blob": "32cbda5782878f24489da265ab55926f959a8c50",
+            "sha256": "786AD07C5753370B5650C9433735A3F43881781FE4555828DF2EF9D822522EC6"
+          },
+          {
+            "path": "services/.gitkeep",
+            "mode": "100644",
+            "git_blob": "0c9dfb9b43453793fabbd5bcd9f32b9d029190f1",
+            "sha256": "BD90FDF45F77C955B33DEF689318B042C7DE1E29BACE83E6DE4B832750D9F948"
+          },
+          {
+            "path": "state/.gitkeep",
+            "mode": "100644",
+            "git_blob": "0c9dfb9b43453793fabbd5bcd9f32b9d029190f1",
+            "sha256": "BD90FDF45F77C955B33DEF689318B042C7DE1E29BACE83E6DE4B832750D9F948"
+          },
+          {
+            "path": "styles.css",
+            "mode": "100644",
+            "git_blob": "955917e302d5db69aa68e6b1f22d3f9a8f6761ff",
+            "sha256": "B3BD2B6D441D5059E65CBFC1DE7E87D14220010FF481E349C9A3A6F0FBFCC9AB"
+          },
+          {
+            "path": "views/WorkspacePreview.tsx",
+            "mode": "100644",
+            "git_blob": "4c6349cec150404db6ca88fbcc8fe52ca1bdab45",
+            "sha256": "32382DF741D86476DAD3738244D1CAC735DD4EBCBDCE8068E954DA78D1A5A6B3"
+          },
+          {
+            "path": "visualization/EngineeringScene.tsx",
+            "mode": "100644",
+            "git_blob": "b08650a70305a07efe08f38c9d3d37a5fa87cfcc",
+            "sha256": "3AF7722FF835344CE5CCB56A28A8A5DB0472D86365D0D1A71EDA7A155F348B8F"
+          },
+          {
+            "path": "visualization/MultiRowVisualizationPanel.tsx",
+            "mode": "100644",
+            "git_blob": "c0ec8c1334cd0daa5fddfc7b75b8deea7c5f81c2",
+            "sha256": "07B8C509725B8F2B2C07A8817D90A98B910B5335452C8A0E3E1A14A7A9799DA4"
+          },
+          {
+            "path": "visualization/VisualizationPanel.tsx",
+            "mode": "100644",
+            "git_blob": "c5e14573f594d3245fdae23f3f84dd29c32c178a",
+            "sha256": "2C031519013AB28BEC9BCA1CE2A1419A81B5B9A75D5519AB141D89652164952F"
+          },
+          {
+            "path": "visualization/actionLabelContract.ts",
+            "mode": "100644",
+            "git_blob": "b1197e99ff798c56bbf4448fe0276e32137d644d",
+            "sha256": "0BC743EDCD67A4082389E2DBE16719ACD4415C4B15244F76572CF44E906982FE"
+          },
+          {
+            "path": "visualization/actionLabelProjection.ts",
+            "mode": "100644",
+            "git_blob": "b931ac8853dbc2a35cad4185bcdd1b7db3ec2594",
+            "sha256": "4B5D1E97BD8A0DF7A55E848092C76B063E99B60BF0AC3B48AE596B59A8BB5CE8"
+          },
+          {
+            "path": "visualization/actionPrimitiveGeometry.ts",
+            "mode": "100644",
+            "git_blob": "3047921e0796b4b5f94074012804f6243bb8e219",
+            "sha256": "FBB0326655EBCCE44A4DDFD7BF4A2E37B16A87F6BAD50CB7B1227720496F78DC"
+          },
+          {
+            "path": "visualization/beamConcretePairedAngleSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "8d235bc68aed0ac1a741afd5c991651c78c62331",
+            "sha256": "2EB297FD2ADDBACECEFB630CAB209F84EAE8A0CE35C84CCE9447EA257F474D4D"
+          },
+          {
+            "path": "visualization/channelMomentSpliceSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "432255f30d5bb26da23172117a19f7b42e67708c",
+            "sha256": "F7C25AEFC5CAEAB36A4E6416C85D16126EBAA844A0C58563FA31AF742524A0FC"
+          },
+          {
+            "path": "visualization/clipAngleSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "af729e56de6c2463fecfdbd9fe783b1f869f3b31",
+            "sha256": "6E99DFCAC6565DF59B984C740D56111B2833EF057BA44CA90D87B27D71B730F6"
+          },
+          {
+            "path": "visualization/columnBaseWebAngleSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "ca705cd25fafa90d97fc3a2d7a0395ec36c4f809",
+            "sha256": "5B0EB6AEC39119FA841F22357C643967FB3328BEB357D54E44C2B6A2F5A22BDB"
+          },
+          {
+            "path": "visualization/directSideLapConcreteSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "2615948df1fd4320c37a38ff50ba968c2b29a22d",
+            "sha256": "4DBD419DD94E3DD091A70CCF4709AC3C9844741AA0747AEE3B644D0A20E03D55"
+          },
+          {
+            "path": "visualization/fastenerPresentation.ts",
+            "mode": "100644",
+            "git_blob": "46543e93ee0ced8c2786f598c7f71850f3afe48e",
+            "sha256": "9DE0DD11AB320496F2127F91BC24B7EB290F9752C1E3451CCC3F525BC4A98FA0"
+          },
+          {
+            "path": "visualization/materialAxisPresentation.ts",
+            "mode": "100644",
+            "git_blob": "b4df67bb7fbf2de15afbec38073a0f7786879dd1",
+            "sha256": "0EE8DCEC4C7FBABDED841E6736C7DD76EE241BB465A862A751B45A2CF2F59704"
+          },
+          {
+            "path": "visualization/multiMemberTeeSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "eb3922452f789d5734e8ee52bdf7ca12605b6ff6",
+            "sha256": "2337335A5D243D5993EE285347ABA3E3BF87D021B2B4009F19721BB0E3519F46"
+          },
+          {
+            "path": "visualization/pairedClipAngleSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "a6dc49c68d07a03fb8abd8f86dce4c9c4a414e69",
+            "sha256": "269752671102635F1E69F93B97CB71E28430FD76B01752E716DC824F7DE464EC"
+          },
+          {
+            "path": "visualization/sceneModel.ts",
+            "mode": "100644",
+            "git_blob": "b6117f913111a4865f98847d838e09639518cc04",
+            "sha256": "4A437CE7B16B1514624E30ABA2DCCF4B757F912E03CFD3A4F158022D224AA10D"
+          },
+          {
+            "path": "visualization/viewportNavigation.ts",
+            "mode": "100644",
+            "git_blob": "f9a3697d8ff55e4920b7f805d08384d23bc87900",
+            "sha256": "538AFF600A91E6F7681F89CD013D376E2E8786C11ED39C3C64C585D77A4E71C7"
+          },
+          {
+            "path": "visualization/webSpliceSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "272c814c298d018f403415f1ab48bedf9ca5821b",
+            "sha256": "823C25FB60C34A7AAF7D8C24CD5AED214C568FC13A8B50BA0F414D2CD150908D"
+          },
+          {
+            "path": "visualization/wiMomentSpliceSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "39ce297a4bcceb8d1b25302321b9721d14e88879",
+            "sha256": "28434C0F954FC7B2F634EB027564FA7C934CA31C4E2AADE2A3F61AD0FF663967"
+          },
+          {
+            "path": "visualization/wiWallMomentSceneModel.ts",
+            "mode": "100644",
+            "git_blob": "fc70a02ca5f6e6e1133e7ebd55a419170dfe2b93",
+            "sha256": "9139C301540ECE3C5D607CB47682D61E73C07D0669A938ADE9542116FED834EF"
+          },
+          {
+            "path": "vite-env.d.ts",
+            "mode": "100644",
+            "git_blob": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
+            "sha256": "65996936FBB042915F7B74A200FCDDE7E410F32A669B1AB9597CFAA4B0FADDB5"
+          },
+          {
+            "path": "workspace/BeamConcretePairedAngleWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "9adc22710e43a1403c80ad63bcd6d312e6f55607",
+            "sha256": "ECC04B780CE85745A0A35085BF89FC13E47364EBA653C8765A42BC21E1FDFAA8"
+          },
+          {
+            "path": "workspace/ChannelMomentSpliceWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "364032bfdd523c813b62e46fe1fb73ed4fccf5f5",
+            "sha256": "65B41428151BDDA1E5F339B0B276C25C18E158C5E905EF4110968EFA018ECCA6"
+          },
+          {
+            "path": "workspace/ClipAngleConnectorWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "bab84d353729ee6edd1641076eabb16a687e105a",
+            "sha256": "07E16B65249EF56B90CDD138F9A5ADB4D5B20C6479BE103A9BCAE38A62816684"
+          },
+          {
+            "path": "workspace/ColumnBaseWebAngleWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "e05959920fb05e80e32e3e28ff83c6475b419224",
+            "sha256": "4A89319391CCDF97E7A2FFC695EA68FA49C72BF77D13CFC1DB63FCC5E9F85B3A"
+          },
+          {
+            "path": "workspace/ConnectionWorkspaceShell.tsx",
+            "mode": "100644",
+            "git_blob": "dd2419bac9be6f6681de3a2452c256e6eab7d57a",
+            "sha256": "FBD646317537803BD4750F5640662942FA67F57702BA8CD96F91B8467EE65A7D"
+          },
+          {
+            "path": "workspace/DirectSideLapConcreteWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "2d74cdd48bcfbd6d6c7087657b8bae5558adbfbc",
+            "sha256": "C3BC3D3BE72049AB2BBE6CE55AB02EC7E32A8D33B64AB42D8854947BFFFF04A9"
+          },
+          {
+            "path": "workspace/MomentConnectionsWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "8d4104acf158d555a692d5652d1a21696eaa8328",
+            "sha256": "300A3FBDE6058536233011C3E5101BC7252552E85416FF0E1905FAAF66D51095"
+          },
+          {
+            "path": "workspace/MultiMemberTeeProfileEditor.tsx",
+            "mode": "100644",
+            "git_blob": "a4bd6262b61fb5b61447983e1612e3ea5c2002ef",
+            "sha256": "B26244AAE16F980BDB14793ED3FFA679909CE9FA4F67F61E4B65404262A53C81"
+          },
+          {
+            "path": "workspace/MultiMemberTeeWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "dcbfeefc5aa690dd235ceef0123401f0069b8135",
+            "sha256": "D55370805A445499EF0AC9F9E4255143D227DE9B1470729A0CE98043E6A70FD8"
+          },
+          {
+            "path": "workspace/PairedClipAngleConnectorWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "d38894cc5ae35219a310c19c449aea9e04283545",
+            "sha256": "5C6E3DC2791B98CF55F8CFD2168F442500006488A685DC7EE92BBC0A5E280AE5"
+          },
+          {
+            "path": "workspace/ShearConnectionsWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "9280000b16a27ad5de14c9eecc6f535309fd5017",
+            "sha256": "28738331E9FF28033DA3D251F419C71EFA69CB257ADF837B2EE8BF98B7898520"
+          },
+          {
+            "path": "workspace/SingleBoltEngineeringWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "915505aba3f3e64145d39927579f88eee4775a82",
+            "sha256": "8F9197F0DD696F3611046893EAFE5A0AA0C599BE214D913E54F75738E4395813"
+          },
+          {
+            "path": "workspace/SupportingMemberEditor.tsx",
+            "mode": "100644",
+            "git_blob": "853ff69eacce3f69fb52e199078b8fe57c4905e9",
+            "sha256": "4590C8C80A114749E6BDFC82925ED46EE736A212870801DF1AA38F1D452302D4"
+          },
+          {
+            "path": "workspace/TeeConnectorWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "a796019267ddccd518883ec700b17ee4184edf86",
+            "sha256": "51F1DECC7FB89D38453B820B1665829279701E34F487AAAC44431C5F0611EEDE"
+          },
+          {
+            "path": "workspace/WIMomentSpliceWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "d8ba2ec993afc467162451f066f32dae983ae973",
+            "sha256": "53FFA59113467B52FBB5D6A3090CDBD3FD7B79891DF6233E490658619989C1EC"
+          },
+          {
+            "path": "workspace/WIWallMomentWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "86a336fa2d71645775858b8c3aa5fee89af21996",
+            "sha256": "83FDEDFD19B59BA1515715F75C47546E8397A678C78E5E7F0B1ADF701BFB9F4C"
+          },
+          {
+            "path": "workspace/WebSpliceWorkspace.tsx",
+            "mode": "100644",
+            "git_blob": "2d0a52e6917b32d9186633265cd1109c4ad84154",
+            "sha256": "407B9944DA8EA58A8B00906B1C0DD97218331683689E625F38DC9A9A37780DDA"
+          },
+          {
+            "path": "workspace/beamConcretePairedAngleWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "e86ecdbcc86e33c2459637c9e584f3b894b20eb1",
+            "sha256": "78F1EB80CB33D8994E3EE84BC216B2B2847F49A16DACE21F3E43D107CA640693"
+          },
+          {
+            "path": "workspace/channelMomentSpliceWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "cbbf0d0cd45f190933374dbd118a6f8caa6ea166",
+            "sha256": "B9724DF25FD1BDD6260068A442B726757A3CAC2B538943D9A5B6049CE6C09932"
+          },
+          {
+            "path": "workspace/clipAngleValidation.ts",
+            "mode": "100644",
+            "git_blob": "411319c8f8623df2a8bf2cb8c1f288931b8486dc",
+            "sha256": "54A796A391FDB543888BF7DA484C51E90277558FC90E984215257C68720BCC62"
+          },
+          {
+            "path": "workspace/clipAngleWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "fd4b73439f7bdfc8c6300ff695ab1716fb889d41",
+            "sha256": "9D326467C436DAC9C8B3D679D40E3D1FD11B25BDD6A92BCC25514470CB879BAE"
+          },
+          {
+            "path": "workspace/columnBaseWebAngleWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "1f0eb9d461066f638034eacca8fd73c1e2ac9995",
+            "sha256": "AF4CB2B1DDDCAC8FEEF04FB7A11DAF9070965CC190C8594C015B189603253A7F"
+          },
+          {
+            "path": "workspace/directSideLapConcreteWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "a06ef8a17806658db0caebe208216138fe8b83f2",
+            "sha256": "4DD877000A15467334F9DFEDE08BAC78251303E31423B26E0EB9009A5312A9FE"
+          },
+          {
+            "path": "workspace/multiMemberTeeWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "2c7cad0609f26ee4bf004601db410871466c109f",
+            "sha256": "19E4901CA94D54E387577DB1E26DC1F1CED7503C5F3EB75ECFF6260D2CFDA79F"
+          },
+          {
+            "path": "workspace/multirowWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "cba792415d62d7e77acbe64f392f17c74e742651",
+            "sha256": "83237A6E98C75BF109EB197CAC9FE011F3B242EE789F199BE1633B0F3D7F84CD"
+          },
+          {
+            "path": "workspace/pairedClipAngleOptions.ts",
+            "mode": "100644",
+            "git_blob": "bd1c8ad8b81b232cff8278b1464e1e7fe32ca18a",
+            "sha256": "EBB63C6B0B698B3AA2D7BBF4C5AF7480B4D7F2665FC241F8BC73E2E3CD414864"
+          },
+          {
+            "path": "workspace/pairedClipAngleValidation.ts",
+            "mode": "100644",
+            "git_blob": "f1e495fa66efe7c72031e7ff3b87147bcf2d0bed",
+            "sha256": "863C6B96EDB41089A7DE8B88E112BA021E142562AE39D83FD0C9556DA52BC419"
+          },
+          {
+            "path": "workspace/pairedClipAngleWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "d60f198037c891e4fb5d3e84cbf71a001ebf84da",
+            "sha256": "DEC42B580C4F0AC6F13901C34F23583CCA24F0AD9A420AE76B75F2463C3332D4"
+          },
+          {
+            "path": "workspace/presentation.ts",
+            "mode": "100644",
+            "git_blob": "ade0bfa3e3c6323408b173fac71d5d790667f421",
+            "sha256": "F58D3AF5BCD7D9495D22A238DA10ACCB7E60FF23938BD15721C7D83232E2FC48"
+          },
+          {
+            "path": "workspace/previewWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "e4702789fc8d9377461b38163524f30003e1c1e2",
+            "sha256": "A14CDFCE02733C0EA8802254FE5F4D86A47DDFF57B756F605A0D172B90CEC9B5"
+          },
+          {
+            "path": "workspace/teePlacement.ts",
+            "mode": "100644",
+            "git_blob": "3cd264a80ee2a0a573f4be12464f6854a2dc4e73",
+            "sha256": "7F795024921F28F60CB403A7A01A75F38E776CF0F117543B36527B446CD56B93"
+          },
+          {
+            "path": "workspace/teePreviewState.ts",
+            "mode": "100644",
+            "git_blob": "dfd45f7b57493c5e27e8edcad5bb37dd0da344d1",
+            "sha256": "1EF7EDC2BB2702218EC9C4EF34563878991ACFDAD56AD1277F36A755AE6D43BC"
+          },
+          {
+            "path": "workspace/teeProfileOptions.ts",
+            "mode": "100644",
+            "git_blob": "457f12bcccf0a5ee483d054f1c3dc29f4d213d08",
+            "sha256": "658D7DFB24158D449248DE57E84E263181F880ADECECB73F53B08BE2024C26DB"
+          },
+          {
+            "path": "workspace/teeValidation.ts",
+            "mode": "100644",
+            "git_blob": "58ec096fcf94aa0a46da811c8c3357f1869bb6ac",
+            "sha256": "511459F5BBC2F6D24E2C97720FB75ACED3D2022C2D5F9D89F691772D9E5F9F9E"
+          },
+          {
+            "path": "workspace/teeWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "ed4cc5eb702026176e6acaf8b638454e901500f9",
+            "sha256": "F66EA0816801C7041A0DC9B3DF1B5724730B315E9CC16C9C1688703927A175AE"
+          },
+          {
+            "path": "workspace/webSpliceWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "cbc9c9b5d0c76215e50e25ccb574e63facd466b6",
+            "sha256": "C73D8054F2ED0DEF6FCD4BBDE64CEADC1863A7DACEE7311A7FCD851DD5776104"
+          },
+          {
+            "path": "workspace/wiMomentSpliceWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "c7ef3a0f114222d8d688c3f7aca7377d74cdbba8",
+            "sha256": "6D296AF393FDC6D1DB6E4E19B9D1EE2727E52AE612FE668DCF34D1565184ECFC"
+          },
+          {
+            "path": "workspace/wiWallMomentFailures.ts",
+            "mode": "100644",
+            "git_blob": "64a42f3df50c0f5d4da513f17582f34ad069c342",
+            "sha256": "B420AEC44E91B0719626C3DE71844C874A2BAC57C8D6CB07BE22E43470A4F181"
+          },
+          {
+            "path": "workspace/wiWallMomentWorkflow.ts",
+            "mode": "100644",
+            "git_blob": "826f9992eb01c45675ad43aa14f32a8a1f1ac1b0",
+            "sha256": "387477CE9E4E3F10999AADBF90BC3C95C04DB9EEF66989B0E0514FF70C11BB5C"
+          },
+          {
+            "path": "workspace/wiWallMomentWorkspace.css",
+            "mode": "100644",
+            "git_blob": "c1fef023bbd33c14ebe7e7ab503f6811b8ed026d",
+            "sha256": "5B7D99FE98A93970F99F08F2D1B95E8A617292164010A5D6C67F50D01E132920"
+          }
+        ]
+      },
+      "backend/tests": {
+        "git_tree": "becbb665c8549cbd6b8ff62958ae694b64487cf1",
+        "entries": [
+          {
+            "path": "__init__.py",
+            "mode": "100644",
+            "git_blob": "8cf24d2cd59071aee1076057309f1480305ef820",
+            "sha256": "1C74E033030223B00AC55A06DDD05E1463A76979A7B150F878E432931AAE3B68"
+          },
+          {
+            "path": "actions/__init__.py",
+            "mode": "100644",
+            "git_blob": "246cbf6a8e0dd63a858fed33fc91bc200463affb",
+            "sha256": "2FCF0DA17B9C8B71DC8F6C06C7A6A25094FE611059EACBC38FC59FFD4F257505"
+          },
+          {
+            "path": "actions/test_reference_resolution.py",
+            "mode": "100644",
+            "git_blob": "36f5dd8fa949c9f53f933130db11d81371a3962c",
+            "sha256": "B146FD35925A1D1979058C1CA43693F32291EC81B3567EB5C573AFA9DDAA86C4"
+          },
+          {
+            "path": "actions/test_transforms.py",
+            "mode": "100644",
+            "git_blob": "ad633b688cc1d6742df4943735b29900f357de06",
+            "sha256": "53C1D4E144214106B9B741486B0BC96B4E1F0D61280EEC879E987ED590A062FC"
+          },
+          {
+            "path": "api_fixtures.py",
+            "mode": "100644",
+            "git_blob": "24df7cc0b24d85b0933d626fedaf3404f7bd26b1",
+            "sha256": "77339AFA2CFFDE11DA340DA12325266F9E094B4CA502EC7EC3EA3A3E36D1F1F5"
+          },
+          {
+            "path": "application/__init__.py",
+            "mode": "100644",
+            "git_blob": "d32226a420cdc6262c59d7a39a8c79db758a6aa0",
+            "sha256": "8D7A8C751E4FA391F2CA5CB2706686674377F266D7415BFA4E58C0B7A78D465D"
+          },
+          {
+            "path": "application/orchestration_fixtures.py",
+            "mode": "100644",
+            "git_blob": "70d36f3c6b668f83ee0c35b81fd447044671c3be",
+            "sha256": "A3284E768051CFA7E79B8C14B317E936F55DB746082F0D5752BCA350BFC01B2D"
+          },
+          {
+            "path": "application/test_beam_concrete_paired_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "64b55ffe6083a2c1a85a8027d80b116b0e32775c",
+            "sha256": "6AC0D689B51D7F0899DAB968715BEA6AAF29B66FF9F7D1D2D33FDA8E2D7798CD"
+          },
+          {
+            "path": "application/test_beam_concrete_paired_angle_r1_completion.py",
+            "mode": "100644",
+            "git_blob": "5bfd5be9119c39ceabe1c877f99fe18da1109392",
+            "sha256": "67F52F9D5BE5D9908C3176552CC9CEBB5250A42E373F87BF63A3CBC0C2305760"
+          },
+          {
+            "path": "application/test_beam_concrete_paired_angle_r2_force_axes.py",
+            "mode": "100644",
+            "git_blob": "e0f2ad529acd0aa74741f2850d61f21d75937c9c",
+            "sha256": "17C4DCB68BBB60E95A54410F481F844946125FC8AACFDABFCD527C2F2034E676"
+          },
+          {
+            "path": "application/test_calculation_orchestration.py",
+            "mode": "100644",
+            "git_blob": "8aa4361e75ffb454465d30905fb38601b3a4fd40",
+            "sha256": "D6DB525833DA2EF1D64487F7B9652EF1D50339C8433BA31F631C89FE54AF6298"
+          },
+          {
+            "path": "application/test_clip_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "461e0148d074a077cf5ffe536737c8742ebed9b0",
+            "sha256": "BABA7ED4E5400AC4FB9938F5ACCF7AEAF4192C1A7D45DD7C2C56E6CC6C7CEA8D"
+          },
+          {
+            "path": "application/test_column_base_signed_axial_uplift.py",
+            "mode": "100644",
+            "git_blob": "dd5254f663594291d3c3b99610d5519b512d0ec8",
+            "sha256": "D765364A0E986730E71BB1A733FAA8864092FEF372F5FB30075108765A90A831"
+          },
+          {
+            "path": "application/test_column_base_web_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "922c23484f51c13f5be4a38addb281e734a6367d",
+            "sha256": "71540D08F3199ED15CB52B7F8A8FA794CEC9CEDEF6F19CC2215E3A64DF69E84E"
+          },
+          {
+            "path": "application/test_direct_side_lap_concrete_orchestration.py",
+            "mode": "100644",
+            "git_blob": "bd876378201713302456d3b94fa56c52f2696eb9",
+            "sha256": "7C1078D22520627D01C7168E704CFDA10E8BC33FF5C525EFD9F19B6601294E39"
+          },
+          {
+            "path": "application/test_multi_member_tee_orchestration.py",
+            "mode": "100644",
+            "git_blob": "fcf99d92c3f2db2794c0bcbdc286d44416f491d1",
+            "sha256": "85336243C88C267094141C7C6A3D4F002D6398720CD3AF5C15A291E085AA5F6E"
+          },
+          {
+            "path": "application/test_multi_member_tee_profile_support_expansion.py",
+            "mode": "100644",
+            "git_blob": "02cf3a25985c7e8262e95cd0a886e2c4052a9ec0",
+            "sha256": "9DEA2FEC5C5AE0E74A48C28A344AD2EA253D9925918E11BC30AD7542CF26998A"
+          },
+          {
+            "path": "application/test_multirow_orchestration.py",
+            "mode": "100644",
+            "git_blob": "97372aa5ed309824dfeabed9a11169798e30ebb2",
+            "sha256": "9AC0BC7C4D282530036C7562DA9115899569019ED6182FA21853091A6E9EE4F3"
+          },
+          {
+            "path": "application/test_orchestration_fail_closed.py",
+            "mode": "100644",
+            "git_blob": "b68f2112a972116d359ba4d34e49c6b474c7fda5",
+            "sha256": "A8082639F282AC60C44F01E5EB248098F0B940645FBC982AF8961190763C8BC5"
+          },
+          {
+            "path": "application/test_orchestration_golden.py",
+            "mode": "100644",
+            "git_blob": "5ec6e8d2aeede4e1826acb8a2d8978e52d2fb015",
+            "sha256": "6A9FE0C68BF80F56E341ED72E79A0EF764AA37EEF503FF0CB2B0B887C78192E2"
+          },
+          {
+            "path": "application/test_paired_clip_angle_orchestration.py",
+            "mode": "100644",
+            "git_blob": "8dde8948c63e4a34058c91ef0204218faaf78ca2",
+            "sha256": "575ADF21EE16D4620CC3316E2FD5A37284B8684D896FB0B525F0BC354612FDD6"
+          },
+          {
+            "path": "application/test_r4_exact_unit_geometry.py",
+            "mode": "100644",
+            "git_blob": "addeda8fc499ea9f8adb0a709eda03202acff069",
+            "sha256": "8C5CF13CF23CDA4450393341460EB516000D23A2E2C118C1E4567532196E943E"
+          },
+          {
+            "path": "application/test_stage_3_3c2_r2_connected_rhs_through_bolt_orientation.py",
+            "mode": "100644",
+            "git_blob": "3b4253a260a39dc5b1b481c61c4673aea2ed541a",
+            "sha256": "604EA01F1DFF9FB64A44B0DD1E4B5CA01A4810E9E093D6D79F5606DF75302C55"
+          },
+          {
+            "path": "application/test_stage_3_3c2_support_rectangular_expansion.py",
+            "mode": "100644",
+            "git_blob": "0d2a7f2a17d30f282dcdaa79678236d46a069eb0",
+            "sha256": "96EFADF287C97A8F9B39AE20D99227CD004C359EBFF95B1DE5B8D9C4A6E8CFC1"
+          },
+          {
+            "path": "application/test_stage_3_3c3_paired_profile_support_expansion.py",
+            "mode": "100644",
+            "git_blob": "02647706b433a91d4b1d49fb791e031fb61bcbd2",
+            "sha256": "A592268BCEEDBAE84FD15B4A085E58EE7253A29411BC3F0F34508BF22632B6B7"
+          },
+          {
+            "path": "application/test_stage_3_3c3_r1_material_axes_coverage.py",
+            "mode": "100644",
+            "git_blob": "faba6062936c474420fde95cdc713a19eb83f811",
+            "sha256": "C7239676E363B4BFE38E58FA63D2D190DE4B1B394890ED8ADB30EF0C5A56314D"
+          },
+          {
+            "path": "application/test_tee_member_profiles.py",
+            "mode": "100644",
+            "git_blob": "9fe8c6366dbe32bb70a9a63dabe95b56bcce8ff1",
+            "sha256": "C69A90F76A2A6AE18E3011C7C250A6E21FA29866B77323FB8F41AE876EB7B3E4"
+          },
+          {
+            "path": "application/test_tee_orchestration.py",
+            "mode": "100644",
+            "git_blob": "d08968ee94010575ae9a0297fc5634f47b30258e",
+            "sha256": "2A77AF278C1F8CBE66B621A51E5843D43109DC1462AA367628FA0E625203757C"
+          },
+          {
+            "path": "application/test_tee_r10_fixed_grid.py",
+            "mode": "100644",
+            "git_blob": "ffdfc74a62de361f88506b97284428268d014a80",
+            "sha256": "1B8CBD980C8DB60FB919239EA2938112B685CB359FC57BEE985E7E9DA5839973"
+          },
+          {
+            "path": "application/test_tee_r12_member_end_trim.py",
+            "mode": "100644",
+            "git_blob": "1e9a3024bc344fe563d29a974dad2f3522eb7930",
+            "sha256": "51FFCBAA98C9E19976DCA673A6AFD75F97690A139951C7315316E1C544DB47E3"
+          },
+          {
+            "path": "application/test_tee_r13_length_anchor_position.py",
+            "mode": "100644",
+            "git_blob": "ca5211aa41926bc0f206be56e29723b0bfb9477c",
+            "sha256": "820179D9E1F2F474901CC18F0AA81E86801BC161753C82C6D5EAECB5F948F337"
+          },
+          {
+            "path": "application/test_tee_r14b_material_basis.py",
+            "mode": "100644",
+            "git_blob": "f0d92a7f51b6b5a35afbfc51efd0dee0a0e00cb1",
+            "sha256": "82EC2A48CA91BFA7D0BCFE1AB8DE7403FDF5BFD46539AF270D49C813A916D2B2"
+          },
+          {
+            "path": "application/test_tee_r9_controls.py",
+            "mode": "100644",
+            "git_blob": "7245dfe38e1663c8b594ad9ce9b98e1a57e34e97",
+            "sha256": "EAEF8C399B0AC9B686D1054829FB2C2039935063B033F71DA507CA7461C75BAB"
+          },
+          {
+            "path": "application/test_visualization_snapshot.py",
+            "mode": "100644",
+            "git_blob": "79cbf3684b075db67545703d522fb46cd81424b2",
+            "sha256": "4E5A788A8ABD5BB21C942F15935FB8C919542B3CC49607A355A68D0378E555F3"
+          },
+          {
+            "path": "application/test_wi_wall_moment.py",
+            "mode": "100644",
+            "git_blob": "d68db64bbfb95e92415118835f07fb877e185d40",
+            "sha256": "3C8B99125E654DE98E04F8E90DD59102242995CA0F5A60E57B18B7FA013AF0E4"
+          },
+          {
+            "path": "beam_concrete_paired_angle_fixtures.py",
+            "mode": "100644",
+            "git_blob": "d91a9e27777793d1cad53b203b28440cef782fd5",
+            "sha256": "496DB542EBE34DA321FD5AFE112DDE3B789B5D60F45DE5E8124A12887CA93DC7"
+          },
+          {
+            "path": "c3_fixtures.py",
+            "mode": "100644",
+            "git_blob": "46d6f7857d901a1251433a8925180fa536dc3b04",
+            "sha256": "01B8BB365042B73835046A1998951F6786CF34CEE2D745C45C7FDFADC3B60457"
+          },
+          {
+            "path": "calculation/__init__.py",
+            "mode": "100644",
+            "git_blob": "36e388be4f35caa526e1d9c4ff7731b44b1abe46",
+            "sha256": "DE400333C2EBF6BE0CB7D8C9031A7B558D2336C20466CFE65C99835A162BFC0F"
+          },
+          {
+            "path": "calculation/golden_loader.py",
+            "mode": "100644",
+            "git_blob": "b22099d0b1243a5ff679b5b7242566a6482283a4",
+            "sha256": "53645CB5FEA3F8C62A20414583D2D605B584FFF5490DD6C7668413FF683900C2"
+          },
+          {
+            "path": "calculation/numerical_fixtures.py",
+            "mode": "100644",
+            "git_blob": "06dfc54c713c4c325b6ee9ef8f1dcdfcb1ba1348",
+            "sha256": "1F9AA8A25FC728B04954E90379F32F3DFA36092EC7D5282E3FC0F3E1B94C873C"
+          },
+          {
+            "path": "calculation/test_angle_connector_core_and_frp_provider.py",
+            "mode": "100644",
+            "git_blob": "406bc3ae42d2ce507356a61ada5cc80c7facbdbe",
+            "sha256": "39AC759B35A74C7159A0FD97504F65D9791988666074962ECF32EFA5A1CB3B63"
+          },
+          {
+            "path": "calculation/test_applicability_and_fingerprint.py",
+            "mode": "100644",
+            "git_blob": "23d6f9320d18026137dd563649188dabadccb854",
+            "sha256": "5A5676D39A4F6DCCCAD238FF7082D6368EC9A384CEAB060DC969A8ECB613A3F5"
+          },
+          {
+            "path": "calculation/test_block_shear_planning.py",
+            "mode": "100644",
+            "git_blob": "da5681b1bd6bf46b6fee0b2b589fdad12c87a74e",
+            "sha256": "7ED16661E1D5169ED4CE72200F684384D9058413C63A808FC778306BD6FA22B6"
+          },
+          {
+            "path": "calculation/test_channel_moment_resultants.py",
+            "mode": "100644",
+            "git_blob": "04bfb4fe935e4090ee6fbe05b790f63321a57072",
+            "sha256": "1538956367AD56EC3E1BCF0168ECBA14828457B27B7264B953779189BD513EFF"
+          },
+          {
+            "path": "calculation/test_eccentric_demand.py",
+            "mode": "100644",
+            "git_blob": "51f5043d87ea379a0c341e22754653d2b6ccb383",
+            "sha256": "94B6FE638E3A97B7EA08D99F206D0E06A2F9BD63985B9F6D318B7315FE11F58A"
+          },
+          {
+            "path": "calculation/test_eccentric_group_modes.py",
+            "mode": "100644",
+            "git_blob": "dbb8df108bd29ca57b8f0706d95b9b98b25aac51",
+            "sha256": "7B2A7905649C42C5621006D35CF9C4543169191793950707DB20496EED61880C"
+          },
+          {
+            "path": "calculation/test_equations.py",
+            "mode": "100644",
+            "git_blob": "4cbb6ee4b56da2934218df3b968301e0c29b41a9",
+            "sha256": "887EBDEFEA375A4820258D4C03CA5D0FE2508F1EF5F162F8B81843F78BE0ADB7"
+          },
+          {
+            "path": "calculation/test_geometry_mapping.py",
+            "mode": "100644",
+            "git_blob": "20f4e4ea0557648d998c79962236b4b4d1212144",
+            "sha256": "E3EEC02FF5724B877016D2086A7EADC127713376E9553FD33F99DAB1D302FF2C"
+          },
+          {
+            "path": "calculation/test_golden_fixtures.py",
+            "mode": "100644",
+            "git_blob": "bac5b796fc5054a24192497505bc24f1fb49c160",
+            "sha256": "69959C6EF1CA0E6E74BC0AEBA414B4C46925C14E504846169B405B56493DE25D"
+          },
+          {
+            "path": "calculation/test_in_plane_wrench_demand.py",
+            "mode": "100644",
+            "git_blob": "fbdf2be4731fd550b6d4eed41f5167c8f27863e6",
+            "sha256": "3B2276F6744727D68F8C983B899B1EBC72D2C3DE1EFC521E5AC06B8D2E54F2DF"
+          },
+          {
+            "path": "calculation/test_inputs_and_results.py",
+            "mode": "100644",
+            "git_blob": "69d67a4d9cc2b815d9c9587694324d1dd1af3f45",
+            "sha256": "8C213C6A37B64D3CBBAA1AFD6C060FA9A1E4C96AD0BEBFABB08FC2B332AA696C"
+          },
+          {
+            "path": "calculation/test_material_compatibility.py",
+            "mode": "100644",
+            "git_blob": "be9d3ac583d6ade24e6034692194bf7450a633ed",
+            "sha256": "3883D2943402B9D9CB321634AB60C1F23CBDBA1A8ABE1279DF448301AD7D0811"
+          },
+          {
+            "path": "calculation/test_multirow_engine.py",
+            "mode": "100644",
+            "git_blob": "4db014a43f2bc5ba71ccb807981e4299ac7c9353",
+            "sha256": "98E79F831EF502E94D54086D7182C2AFD0BE020A3E41DA46895CB74290820665"
+          },
+          {
+            "path": "calculation/test_multirow_equations.py",
+            "mode": "100644",
+            "git_blob": "217eaf55bffde79df5033402ce89c4b8e4a823b9",
+            "sha256": "5A23C893F56BB06DCE42C67B03EA0A478CCE0E0692A88887D06CDA1D41F97CDF"
+          },
+          {
+            "path": "calculation/test_multirow_geometry_and_planning.py",
+            "mode": "100644",
+            "git_blob": "2ad22efb9d6ebe4bdf8c5229be0d880fa24e573e",
+            "sha256": "92B5B5C7477E81022FA4DDA1E08C896C5C5CA3C41AA55D80625339297C43131A"
+          },
+          {
+            "path": "calculation/test_numerical_contracts.py",
+            "mode": "100644",
+            "git_blob": "7c44299297057dbf33b8d72a7b4ab184fec92442",
+            "sha256": "65F32CA472A101955E8E0A8BD6D9D0416FA1C183F45250E7843D62DD14168CC8"
+          },
+          {
+            "path": "calculation/test_numerical_evaluation.py",
+            "mode": "100644",
+            "git_blob": "e68718a4a88d4c2911e867eb46ec8acd3342b806",
+            "sha256": "4FAD18E7EB63A550903C14C66CE8F7DC9F5828D213651A9018C6E1BAC1C7CC36"
+          },
+          {
+            "path": "calculation/test_numerical_golden.py",
+            "mode": "100644",
+            "git_blob": "efcd0467caaca3639d922f9e14123cff5cab1dfd",
+            "sha256": "06612ACA5EF11A7C71F252BD20246AA634783556D21509533CDC330ACE377497"
+          },
+          {
+            "path": "calculation/test_plate_strength.py",
+            "mode": "100644",
+            "git_blob": "695dfe912579a3716325d47b1290ca1a97b13ede",
+            "sha256": "A4869BEBECB95F3C99CA5C458B722DA09D92A0B8D45FEC75AE8A505C1B1C4A0C"
+          },
+          {
+            "path": "calculation/test_quantities.py",
+            "mode": "100644",
+            "git_blob": "187eb8a949f55b95d5597be31f16d15290712867",
+            "sha256": "CA43EA57FF02F4BAFABFD3AF6B71F66F379EB373BAC0B233CD95E2B3E287CC64"
+          },
+          {
+            "path": "calculation/test_resistance_handoff.py",
+            "mode": "100644",
+            "git_blob": "361c5e4bcac7c3402b8f86d19f93634c40c3a6d4",
+            "sha256": "4DA587BEBE85EA24DFE020EC02BFA92EC1692AF3D55ED885A156FF2B53C47566"
+          },
+          {
+            "path": "calculation/test_scope_boundaries.py",
+            "mode": "100644",
+            "git_blob": "3dfa90483882969f978d35935c3ec9cbf7f750e2",
+            "sha256": "622952438C1B1450720F1A3157EC03DDDF1A45ABC5E06C6CFE348BAC7BBDE82B"
+          },
+          {
+            "path": "calculation/test_slice_2_golden_fixtures.py",
+            "mode": "100644",
+            "git_blob": "4495874ac645e35550d85918b78a8379bbe0c591",
+            "sha256": "27590C70C08E2A1FF3EE86540F887812BEC555ED04A37D9EF7D47F88F68E894B"
+          },
+          {
+            "path": "calculation/test_slice_2_rc2_golden_fixtures.py",
+            "mode": "100644",
+            "git_blob": "a960aee727a159a1a8ec3869c35e02c2f105dafa",
+            "sha256": "D014B99F19E5A688B94571C8F60E7DDF05A00C2EED56203B6F695742F19B7D48"
+          },
+          {
+            "path": "calculation/test_sources_and_properties.py",
+            "mode": "100644",
+            "git_blob": "3159e8fd61888caa0062b5765cea013fa420a243",
+            "sha256": "EE3AE48E456F349B8C2F7CAA2C9DC671C627F5C2612FE7CE195DB7D47309C6FE"
+          },
+          {
+            "path": "calculation/test_stage_3_2_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "3ce71220fba8bf1ae2458d74db09015a15c3627f",
+            "sha256": "96FDC565AE064337EA4B11D20F18D047D1C79DF6B4781F3CCEA7D5A0A62EF10E"
+          },
+          {
+            "path": "calculation/test_stage_3_3_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "ade9f020bc1652bab4fd3400cd7022ef97c2d81f",
+            "sha256": "DEA71CAD4B3DCCCCEAC9EF7588B11D83EB2D9F7783A9D0F5CE7FC8079611BF17"
+          },
+          {
+            "path": "calculation/test_stage_3_4_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "2e80ee17e61169ccca4003ec54bb3af39d71af0f",
+            "sha256": "B839AB8568FEAECE5A529B96CDA1D01943A4BF559C1684F0741CDEDF9C42AC29"
+          },
+          {
+            "path": "calculation/test_stage_3_5_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "0be222351afdf7cbc2e0f2813c0f0cdbc9f64839",
+            "sha256": "1E2AFE6DC30F0E53E960C13FAC445A18DC62F15986E946D26A8D2E3AD8E753B5"
+          },
+          {
+            "path": "calculation/test_stage_3_6_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "d0c6e3b634796ae5e272bb7686087ec3ed11f039",
+            "sha256": "7691E2C73A851A08F680F1323FFBD06CF32A145D9DE59E4E36A06FEBB7034847"
+          },
+          {
+            "path": "calculation/test_stage_3_7_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "1516429bfc9f2eec11b6a886f99df42bc30f6920",
+            "sha256": "7DCCD47384DED9EC7331AD8EC6623D393AC66AC982C2DA743526B56F2479945B"
+          },
+          {
+            "path": "calculation/test_stage_4_1_beam_moment_splice_family_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "65afe9ef67b649cffa916cc9b36261d6815ccc62",
+            "sha256": "D5497CADCC4D66DFF6BB64696374E62A1EB1A05259FFCFFD69775CB7DC92A416"
+          },
+          {
+            "path": "calculation/test_stage_4_1a_freeze_manifest.py",
+            "mode": "100644",
+            "git_blob": "391e4a2a1257bacd6d91c29e769840986ad261a6",
+            "sha256": "F7533B543367C46B3C68FD4D8093EEDCE8D008575D112F90C974A9ED02D60EE2"
+          },
+          {
+            "path": "calculation/test_tee_golden.py",
+            "mode": "100644",
+            "git_blob": "2944de5630432af16cae731b8d7502875479e449",
+            "sha256": "22224D51265DFC9A5FB70D7CAF9F6722BF734BC120FEF36CDCB19EEB255FD413"
+          },
+          {
+            "path": "calculation/test_wi_moment_resultants.py",
+            "mode": "100644",
+            "git_blob": "8f5f25997a0a2f2bf090e80c175cca4b8b2cb365",
+            "sha256": "BB7CF345E248DFFBDEFEA6B84A24D151674C1C245685BCC16CADB5578A40EB43"
+          },
+          {
+            "path": "clip_angle_fixtures.py",
+            "mode": "100644",
+            "git_blob": "f91597c2bebbe8e16fddbafde85294f5c5f922b6",
+            "sha256": "B25B458E0E1A164C8A17BBAD8466B187F364E022C3A3EEA497A27490352BB9F0"
+          },
+          {
+            "path": "column_base_profile_fixtures.py",
+            "mode": "100644",
+            "git_blob": "b4de273db0638a7cca6217616711eb86b65a1e07",
+            "sha256": "5C5606F63CB4E5BF8BC9C9C6B2F98EEC3E688A6D50057B1CE813771CF9D91BCE"
+          },
+          {
+            "path": "column_base_web_angle_fixtures.py",
+            "mode": "100644",
+            "git_blob": "c8131a2fca2e289c3c5add276f5b28a47cf58a42",
+            "sha256": "EC708F02C81AF292ACB0C0C52B174052F5632D31A012D8BA6428A15C17EA57E6"
+          },
+          {
+            "path": "direct_side_lap_concrete_fixtures.py",
+            "mode": "100644",
+            "git_blob": "f52d8e73f07f8a3aba9c6d9072ecd972a8a1b5a9",
+            "sha256": "EAD37B9BBBC2C7F924AA14E1E72D45C7B5B36379B8F9A5D435AE9BF318E02BBE"
+          },
+          {
+            "path": "domain/__init__.py",
+            "mode": "100644",
+            "git_blob": "f5b90f39e57a4a8676752e9621867c6975872858",
+            "sha256": "63109A5EA86E7AC1E38B6AA1CC526ED9955FD1CF50A3A5BE56B6F07142F59310"
+          },
+          {
+            "path": "domain/factories.py",
+            "mode": "100644",
+            "git_blob": "a287651425c1dd4f2c7fde84911983abc91c9299",
+            "sha256": "164832222F32A42F71121EFD6B9C3D4AD8958FB8DE5C8682A38DC059B6562688"
+          },
+          {
+            "path": "domain/test_angle_bolt_path_golden.py",
+            "mode": "100644",
+            "git_blob": "e2efbd3e1364bcbf5b7c324aeffcbb09a63c9b13",
+            "sha256": "92B597FB67F3DF1480DE7ADE074759F4846D36A0561761642E62A5C4C0CBEA2E"
+          },
+          {
+            "path": "domain/test_entities.py",
+            "mode": "100644",
+            "git_blob": "40c1f9e6931fcb8aff4c51b86f1dfc72bf41e6d0",
+            "sha256": "B02AE19071F627F2D71984B40E8FB6F512651AACB0EE6C7F8E59BFD079D65748"
+          },
+          {
+            "path": "domain/test_joint_assembly.py",
+            "mode": "100644",
+            "git_blob": "ca1bee760fe71c70e00588ad2f694b29ac674e42",
+            "sha256": "556271947D5892EE5ACD1E53BEF6303F47DBDEF90A677BF2B813C38C3D92D7DD"
+          },
+          {
+            "path": "domain/test_material_architecture.py",
+            "mode": "100644",
+            "git_blob": "dff32fca7ec75c21e50011d33387993e51031f38",
+            "sha256": "8C36E1352481E6A54437A1775F43999D92109615C04A79836E24356DCCD5098B"
+          },
+          {
+            "path": "domain/test_member_profile.py",
+            "mode": "100644",
+            "git_blob": "b0ff1bfc34b25f19bd4a42bbecd9bf7423cba447",
+            "sha256": "02E6135216ADA5F2E4859A54DFBB1FFFCDDFF170E945E837FAA8CB115ADF60C1"
+          },
+          {
+            "path": "domain/test_member_profile_golden.py",
+            "mode": "100644",
+            "git_blob": "b9d7563253725d1c562801c30b1acc7e43ebb31d",
+            "sha256": "8809E241490625DD6BC2841F43B5B2BD33CDDD23D50D075DDFD0E8F2BE488BD4"
+          },
+          {
+            "path": "domain/test_profile_wall_bolt_path_golden.py",
+            "mode": "100644",
+            "git_blob": "9c388d963dd9165d74921d5f7f980b522764349f",
+            "sha256": "D1E26FD2AE0BF6DA2C007891069D68CC2543CFE85AA600817F723F4C2D650FA3"
+          },
+          {
+            "path": "domain/test_rectangular_full_through_bolt.py",
+            "mode": "100644",
+            "git_blob": "9cc3c410e200ca9634ccfd0800a3bef32ccaba21",
+            "sha256": "9558040A3DC0C3AB59906BF1FEA3AF8BBC35CA787278CF6606B47BD44821D63F"
+          },
+          {
+            "path": "domain/test_section_topology.py",
+            "mode": "100644",
+            "git_blob": "b00e877dcaac89162a4e069fddab0d985ac70d18",
+            "sha256": "758400A7330786B63C0FCB3B49AF13341FD4374AA251FB8EC55C1B1C76E5C975"
+          },
+          {
+            "path": "domain/test_tee_connector.py",
+            "mode": "100644",
+            "git_blob": "b76a6e29f43b044f5d5a8aa67cccb4124278a8cc",
+            "sha256": "64E96506C91D74CD331B024AE9A101279E7B87C75706E7479D547B40730F5C3E"
+          },
+          {
+            "path": "domain/test_validation.py",
+            "mode": "100644",
+            "git_blob": "0ee4d079e5bfe2d03a044057b3ec1afaa60d5112",
+            "sha256": "2D716B886585D313BF2AE7888C51DB8359FB4E9D63FFEE1D2E86C95D637B7C89"
+          },
+          {
+            "path": "domain/test_values.py",
+            "mode": "100644",
+            "git_blob": "836c0a6cc6de3a9d3908ad6f0ebb510e3823ec12",
+            "sha256": "17F1DFEF3EF2277C9D7C0AB8487EAED5FD91114BD59A68377EC0BCEE0FCAF7A0"
+          },
+          {
+            "path": "geometry/__init__.py",
+            "mode": "100644",
+            "git_blob": "ca7fde847382043671ffa5e3b410fc36aa3c7420",
+            "sha256": "3A9B13993CA29CA1D3CF5939EEB6166EDB706FF95C5E6685C08845E5932D7DF4"
+          },
+          {
+            "path": "geometry/test_bolt_paths.py",
+            "mode": "100644",
+            "git_blob": "2b2028bb198691a56299fa25e9b3af21db7fa137",
+            "sha256": "EB281637FF2D59ACCFF57624E472DE2DF56448AFBD75069FBB0F99D07F003EAC"
+          },
+          {
+            "path": "geometry/test_interface_targeting.py",
+            "mode": "100644",
+            "git_blob": "9541eb8c3d166c787523c093d9e1914cb1e3e61d",
+            "sha256": "BBE2F3A051F011D9FA7156C5E0A419020F9DAC590E44AA0AE12E8E584D01D7B5"
+          },
+          {
+            "path": "geometry/test_joint_context.py",
+            "mode": "100644",
+            "git_blob": "0d80b09eab11e872c1c808538f9f7db863c31685",
+            "sha256": "33DCD1B941A3A677211FDBE3446D1009E747249951E2387AADB0AFFCADCFF13D"
+          },
+          {
+            "path": "geometry/test_placement.py",
+            "mode": "100644",
+            "git_blob": "6d9f818d340ae318beb4e1f315d6ea0d0a83ec62",
+            "sha256": "F38F0D47A1DFBDE6C36CEDE396DE337267E728CE0CD243975B34BA48E9AE1DDD"
+          },
+          {
+            "path": "geometry/test_section.py",
+            "mode": "100644",
+            "git_blob": "de51f6f00ac17803ff353caac0e7cf221ce1bf23",
+            "sha256": "074E627851202A1D9398CB00ECAE17D914C734485131749FB44BD12FD9994A6E"
+          },
+          {
+            "path": "geometry/test_spatial.py",
+            "mode": "100644",
+            "git_blob": "a71bc1698726b97725ea53c3d4b2ae7c0475e5ed",
+            "sha256": "D51247472C17A05F15DD512358D3AE52EBCB0D78FC95CA3948E2BC4718B9BA9F"
+          },
+          {
+            "path": "geometry/test_surfaces.py",
+            "mode": "100644",
+            "git_blob": "297c2967557a7870e71e45a5cfcb6577cfb34ed4",
+            "sha256": "F359AEF56EBC364AD40A47E117A037A2D5A16478FB520E4F8BB8A1D46A5CF436"
+          },
+          {
+            "path": "geometry/test_trimming.py",
+            "mode": "100644",
+            "git_blob": "99ba5cad151ccb3c13e8f41cc670488f84ca8594",
+            "sha256": "6DC189F01FB8003E9330CBE3FAF5BEAC6C0E3009A2380C963ABB3F618875BEC5"
+          },
+          {
+            "path": "golden/calculation_slice_1_rc2.json",
+            "mode": "100644",
+            "git_blob": "a913e6bd3fa1e4fa863a659cd802b8f7c2640dc4",
+            "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"
+          },
+          {
+            "path": "golden/calculation_slice_2_rc1.json",
+            "mode": "100644",
+            "git_blob": "fb7cd364156672c4a5154997f5d9bf3436bc50d4",
+            "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"
+          },
+          {
+            "path": "golden/calculation_slice_2_rc2.json",
+            "mode": "100644",
+            "git_blob": "4caf42688e7c06fdce922db346bd0e59741a6c75",
+            "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"
+          },
+          {
+            "path": "golden/calculation_slice_3_eccentric_group_modes_rc1.json",
+            "mode": "100644",
+            "git_blob": "b98cef8ca7211ff8e1a8b8657bebdc24c6ed2996",
+            "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"
+          },
+          {
+            "path": "golden/calculation_slice_3_rc1.json",
+            "mode": "100644",
+            "git_blob": "dc8832c02177284ce42689dd6177282525f2fdef",
+            "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"
+          },
+          {
+            "path": "golden/calculation_slice_3_resistance_handoff_rc1.json",
+            "mode": "100644",
+            "git_blob": "2a8b5a4148b68917253c1480b762dc6b283ce8b7",
+            "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"
+          },
+          {
+            "path": "golden/calculation_slice_4_chapter_7_plate_strength_engine_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "be8ac0e5bc5544dc462c243175200ef14885a321",
+            "sha256": "E6F00A1421751386980321A5AA046A13C706D9D32E42AAC6242F0D89525AC4CD"
+          },
+          {
+            "path": "golden/calculation_slice_5_wi_moment_component_resultants_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "2ccf3782a26d0dea923cc211d63486ac7c3f2422",
+            "sha256": "8854FE7CB56B7D7CEE1FF30A5EA554B83D400386FAE4B1AFDCABC8DF7A1E3D82"
+          },
+          {
+            "path": "golden/calculation_slice_6_channel_moment_reference_and_component_resultants_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "78404946028d421751afd4dd90d660ba2f258a6f",
+            "sha256": "616A8A1BE727DEE8EDAEF991B0741B07488123E1F8B0ADDB05912C514881894E"
+          },
+          {
+            "path": "golden/calculation_slice_7_angle_connector_core_and_frp_provider_golden_benchmarks_rc2.json",
+            "mode": "100644",
+            "git_blob": "b660c2503a4596a65f635a7ac4c1ec8538adf3c1",
+            "sha256": "74CC12CB079A3C8429BD7249E0DE4E16CE066B156D50AF824992000E27701722"
+          },
+          {
+            "path": "golden/calculation_slice_8_in_plane_bolt_group_wrench_demand_golden_benchmarks_rc1_r1.json",
+            "mode": "100644",
+            "git_blob": "f5bdbbc0baa9dec092ddc1b51e71908b07df6bf8",
+            "sha256": "E854CEDB44EC02115014A7139C81BCACA7531E6FE3E789DC509A21BA5B70C48C"
+          },
+          {
+            "path": "golden/stage_3_2_r10_fixed_bolt_frame_positioning_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "f67792df081f3a9eb0be9838ef1d6204a6caed2d",
+            "sha256": "9F9F628082EF39F5851146973D1695F99E6F1C2AA627CD54693FDCC4FC8653DF"
+          },
+          {
+            "path": "golden/stage_3_2_r12_member_end_trim_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "ddbd8a2809d3f473281dbcd753f3c1b2bb6d7ebd",
+            "sha256": "55F54BBCB7A45D6AE1E7065278D65F0F1E3EFF8943171BE73BE3FCC9DAD765DE"
+          },
+          {
+            "path": "golden/stage_3_2_r13_tee_length_anchor_position_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "325edb153d24d3f3ba6e5d51c474e5a559cbca2c",
+            "sha256": "2859272F0C405D77DDBA4DB2C807A73033A8ED21B6C728D7123B376F63A2D1AC"
+          },
+          {
+            "path": "golden/stage_3_2_r14b_region_specific_material_basis_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "2ac38a7969827cd10707fa6602b658d7963fa0d3",
+            "sha256": "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236"
+          },
+          {
+            "path": "golden/stage_3_2_r2_member_profile_rc1.json",
+            "mode": "100644",
+            "git_blob": "1a1b22808be5ef25caafc90c5d06a22312722483",
+            "sha256": "A93CAA62946D076A1A2B09354437A5556C6CA6DAF6DD1778DDF2E0ECD0FDBD87"
+          },
+          {
+            "path": "golden/stage_3_2_r4_exact_unit_and_tee_benchmark_rc1.json",
+            "mode": "100644",
+            "git_blob": "fe7afaf06adeef2f5efaf5f48c4f20bf8f2c9144",
+            "sha256": "86600A897FF557CF176027E34449000C8B43AE227318B854D0C0AD4904BFC381"
+          },
+          {
+            "path": "golden/stage_3_2_r7_angle_bolt_path_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "c3e982a64e46cc4e3d06586a380a2e6ef1b4773c",
+            "sha256": "99E1959875E178C806EC783F521C03862C48EC25C6F8A0F306BE34F4AFC531FE"
+          },
+          {
+            "path": "golden/stage_3_2_r8_profile_wall_bolt_path_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "9d960276a5e80984b4759129c05dce4e95362cb4",
+            "sha256": "2C561803503E7870E39C00428EAEE9E9236291912F94131CFC57FA8DA3A93622"
+          },
+          {
+            "path": "golden/stage_3_2_r9_tee_interface_brace_direction_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "49f8f1b2f83008c276a0f8e12e2dc60ce9233db9",
+            "sha256": "7D888ACB32220049B3522BA19D0A9217E796E4F4E5A8294463B10C8D078E54B9"
+          },
+          {
+            "path": "golden/stage_3_2_tee_connector_rc1.json",
+            "mode": "100644",
+            "git_blob": "3c559dd7487fbe6511103f7841a073a55d4716c0",
+            "sha256": "77FD574FC0EE55F565480E131FCDC3D334B8E7047D75FADC00C96979B31F1313"
+          },
+          {
+            "path": "golden/stage_3_3a_single_clip_angle_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "862c0781d1c7ca2b707248ec4e318600ee46cabf",
+            "sha256": "C2FFE88CF80C474C39099D8C74682B116DAA8CACFCF29F42C54862C7AC577159"
+          },
+          {
+            "path": "golden/stage_3_3b_symmetric_paired_clip_angle_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "3c6974a671d1002f5a1b5163e0471ebab95c3cf6",
+            "sha256": "6C6BB25C31873AEBDC512AD50B669EB125FCF207118010A9C56D37C45E62FE99"
+          },
+          {
+            "path": "golden/stage_3_3c1_shared_rectangular_section_full_through_bolt_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "1599d23c83d68ee60ec992d0be90a1e7a42e3c86",
+            "sha256": "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5"
+          },
+          {
+            "path": "golden/stage_3_3c2_tee_single_clip_support_rectangular_expansion_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "e83469cec2624c8bdef6683e1406008e5ea51bec",
+            "sha256": "CD365FAF66AC004218DABD825C3A354BFD756F604D0583EFD309A93547B367BC"
+          },
+          {
+            "path": "golden/stage_3_3c3_paired_clip_angle_profile_support_expansion_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "464a0cbdc23f6eecb6de2af72310b7e8d2afcea4",
+            "sha256": "DFBA62165C09DCC784A8EDD791BF9AD61BDEBE9AFC541CE7B3B06C8287FE1A3C"
+          },
+          {
+            "path": "golden/stage_3_4a_multi_member_tee_node_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "db2970ec896101eee182cabb769768f84ddb9685",
+            "sha256": "BF797EE78F7F7135EEA9BDA8CEB2B863E2FF31070A40ACEC1F8B6B34F6A94D26"
+          },
+          {
+            "path": "golden/stage_3_4b_multi_member_tee_profile_support_expansion_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "119e1912414beea11769c875ac43a4cfc6c9de64",
+            "sha256": "ED98DD604A126B9A4B122A5569AC7CEAE3C3D0B4608422E2955246583B97FC36"
+          },
+          {
+            "path": "golden/stage_3_5a_beam_to_concrete_paired_clip_angle_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "b4c33d9258b6e9952d27dd34243e355f92f46990",
+            "sha256": "B68F6323453497B90469D437BF1A8707EAB2808B4561B30256A1EE67FF6389BD"
+          },
+          {
+            "path": "golden/stage_3_5a_r1_concrete_wall_paired_angle_completion_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "a0738b5311e388d16e578e99f9084e5c57bf6636",
+            "sha256": "00391A534854D6A3C9EE03A3FA5D7545D47EFF1E17A9BCEA12DE736336BC7B62"
+          },
+          {
+            "path": "golden/stage_3_5a_r2_material_axes_three_component_force_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "75fd5a5e7c5622977f37e12df3b9f81f385c8618",
+            "sha256": "0A0C67715A73DFA02078E5F3BB7A5456775AAD9F9359EF5D66CF07B5CFF36078"
+          },
+          {
+            "path": "golden/stage_3_5b_direct_side_lap_angle_channel_concrete_wall_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "acf4a4dc091abbdd712b276785316a86ec101ade",
+            "sha256": "860767C7A1246E19524DB77FBABD8754CBBB719011C0AE05AA5102310FBC3E1F"
+          },
+          {
+            "path": "golden/stage_3_5c_column_base_web_angles_concrete_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "26eea20efb8db9f56b18f971b3bdf2073a5a8411",
+            "sha256": "E494165A965B75FD92F893E06F0828E965A075CD42A4F85B7175D05BE5B6D999"
+          },
+          {
+            "path": "golden/stage_3_5c_r2_signed_axial_uplift_expansion_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "2506d267d1108ab6edd437335454be38d9bcfd03",
+            "sha256": "91F88C06554F5006E69C2AA56FE396818583B2DE6AF227F83E7CD80DB382CD29"
+          },
+          {
+            "path": "golden/stage_3_6a_symmetric_double_web_splice_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "f1f5bd373c88c7fab3e5d46d67250b7afe8ad804",
+            "sha256": "D3CF8E452732E1DA187FF2BFCB2AB9CFF7BD30044945552230E3A23518476EDB"
+          },
+          {
+            "path": "golden/stage_3_6b_web_splice_resistance_authority_expansion_golden_benchmarks_rc2.json",
+            "mode": "100644",
+            "git_blob": "6345aa3e83614d19843df7e42c804b55a40547cb",
+            "sha256": "6A80263CF0A1632F009DC9952665197F4581B31018C2C98D076E36264FA94908"
+          },
+          {
+            "path": "golden/stage_3_7a_column_base_profile_matrix_expansion_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "92e1ee42b4f6082f7ec251ff2ac9506ea1226e59",
+            "sha256": "D07174B4C347C3CDF391DA1DBDAE11E5D8D996506651BFC2848548874F2E6DBF"
+          },
+          {
+            "path": "golden/stage_4_1a_wi_major_axis_moment_splice_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "b8a60a02224e7c5140fa5a787e4f92b587756583",
+            "sha256": "386A6C7B3BEFCBABA8006C7421A30C3AF890E803CAF71F3A191F7CD33616D96C"
+          },
+          {
+            "path": "golden/stage_4_1b_channel_major_axis_moment_splice_golden_benchmarks_rc1.json",
+            "mode": "100644",
+            "git_blob": "682449d39713dca96ff1bde0a3979ccce6be8c0d",
+            "sha256": "ED636AE37A062768EC3A45D4ED234B9363D0CDD8A49DCCCEA02543ADC50D123A"
+          },
+          {
+            "path": "golden/stage_4_2_wi_beam_concrete_wall_moment_connection_golden_benchmarks_rc1_r7.json",
+            "mode": "100644",
+            "git_blob": "189f18d563e5c1c4a3bf3f614a6993b2ab467891",
+            "sha256": "6F8A22388BEEFFB1CE1B4EF9556261C63200C632E5D50F5447F4011D2C15EA2B"
+          },
+          {
+            "path": "multi_member_tee_fixtures.py",
+            "mode": "100644",
+            "git_blob": "29bc983666649cce49dd78c9ed0c7a2bde363baa",
+            "sha256": "254428404DC5328FDEC7B87528DF8C006726ABEC564B8CA7CF9151F137EA7EAA"
+          },
+          {
+            "path": "paired_clip_angle_fixtures.py",
+            "mode": "100644",
+            "git_blob": "40ef884ba399969e0b855fd19936dab10bf89d62",
+            "sha256": "2B47AACBE43D846B06515F64B3B85DCA60D3C5BAB2AD1F458B7021B1C3E0FBDA"
+          },
+          {
+            "path": "tee_fixtures.py",
+            "mode": "100644",
+            "git_blob": "b91e3902f944216bcdd6df135cc1e7ca2752db31",
+            "sha256": "B191D627BD85C94A8B7CF0EDF6A7F8EC6909CD45858EB3807FBDF013A8E155C5"
+          },
+          {
+            "path": "test_api.py",
+            "mode": "100644",
+            "git_blob": "eeec37e08b45b57dc96d872a443f4360eebe898c",
+            "sha256": "94526B24037E26F86CEF549E1DCDF7E40A60CC8E999AE4D118C89434218D6C25"
+          },
+          {
+            "path": "test_architecture.py",
+            "mode": "100644",
+            "git_blob": "72a860da62593534cc048da0bdc049d75f48e4a6",
+            "sha256": "77FD8C55CBD23E38623089536F2ECA6DB4B0A7D0C689CBF5143385DD39A5CF2D"
+          },
+          {
+            "path": "test_beam_concrete_paired_angle_api.py",
+            "mode": "100644",
+            "git_blob": "af1c6e0d9e526a2a6120c3636599d92723186366",
+            "sha256": "07CA40FE38EBD17A8736DEB4BA5D59CF49155A13D61E5A1C92BD65A92DF2CCE1"
+          },
+          {
+            "path": "test_calculation_api.py",
+            "mode": "100644",
+            "git_blob": "f968b4eb2a4492038cdc859737c82eff41a088ef",
+            "sha256": "90496E44E597D8B2205D867E1094313279E239994F1C9C4C2C7C9F5826555FE3"
+          },
+          {
+            "path": "test_clip_angle_api.py",
+            "mode": "100644",
+            "git_blob": "a6cc2c7063ae4d334706c848e7c09130639dcba8",
+            "sha256": "81C1865725A685FA71E9D73E92DD5AB211ABFBB7128DE729FFD35C8FB68A3081"
+          },
+          {
+            "path": "test_column_base_web_angle_api.py",
+            "mode": "100644",
+            "git_blob": "845708c6fffbb10568167b405540ba181ccaad10",
+            "sha256": "2029507DD1A4A28D5BDB12EC44601F4FD1E5E7D01B6545A307591C1E45F5A752"
+          },
+          {
+            "path": "test_direct_side_lap_concrete_api.py",
+            "mode": "100644",
+            "git_blob": "f0a16304e15f87d69191812bdf053a3da36b0d65",
+            "sha256": "D7E825AB68613C16BDFFA3A6338A8FE5E82834B212EB72897D27E38A380BD4CF"
+          },
+          {
+            "path": "test_identity.py",
+            "mode": "100644",
+            "git_blob": "9dbc895aeeaec0bf61d65e4f33236b04c3ad5c0f",
+            "sha256": "20844E66DABA86F96308C454C129750CD256B85DCEFEB1EE1068F72A732480BE"
+          },
+          {
+            "path": "test_imports.py",
+            "mode": "100644",
+            "git_blob": "3399fe129f65e71cd89b91a7eff7dd3c3ffc2d5b",
+            "sha256": "A862330A73BCC95750EA1D4194C68669375319EF8C57E6149E067324653CB6E7"
+          },
+          {
+            "path": "test_multirow_api.py",
+            "mode": "100644",
+            "git_blob": "2664798590c46ca36817ea1d22cdbcefed0a7951",
+            "sha256": "0CB3B8624C0C45A0144A8C719F26013500B93AE80B5CB794722B5A465C25494C"
+          },
+          {
+            "path": "test_paired_clip_angle_api.py",
+            "mode": "100644",
+            "git_blob": "d62c1f0fcfa556ffb656ae96c2d2082fb654d0ac",
+            "sha256": "05C6D921079EA21DDD6351C480413B1F647EC2F56F9F80A789C303F6B120A44C"
+          },
+          {
+            "path": "test_preview_api.py",
+            "mode": "100644",
+            "git_blob": "a683466aedf3d4806e2abdbf44dcde3c6d791c72",
+            "sha256": "864BC56D8C43553A89504EBA0247ACCAE522D36082843A2DD1B90D9BAB042AFA"
+          },
+          {
+            "path": "test_stage_1_3a_boundaries.py",
+            "mode": "100644",
+            "git_blob": "c6580864205741b4d328b66cfd3fbcd5518dc4d2",
+            "sha256": "1B03405D006044869E664523844EBCEA4A246D900D7E54D7682B567B4047A2AD"
+          },
+          {
+            "path": "test_stage_3_6a_web_splice.py",
+            "mode": "100644",
+            "git_blob": "3c3bcc73149eeca66dc30f14be32b17f657d2291",
+            "sha256": "BDD77A1CDF39F24FB0424EE79F3036B4FD19E6C17A644C72891EB92A925DB52F"
+          },
+          {
+            "path": "test_stage_3_6b_rc2_web_splice.py",
+            "mode": "100644",
+            "git_blob": "914138b4b58c961056ff5e8cb05d6ea2b1bb9bf3",
+            "sha256": "AD95FFDE73C148710B75C097656725F993A227CA9B8371AB0FD097DD92D687A4"
+          },
+          {
+            "path": "test_stage_3_7a_column_base_profiles.py",
+            "mode": "100644",
+            "git_blob": "be78197e448a07e9739eeceeb78ef6df42fbff17",
+            "sha256": "7E69AF3A22A28BA0FE135F0DFD2B61890460CDFD5C6F0B8C31A882C3EF0B229C"
+          },
+          {
+            "path": "test_stage_4_1a_wi_moment_splice.py",
+            "mode": "100644",
+            "git_blob": "092f80aff54d54379cda6cd4fc8f898dd4a26d17",
+            "sha256": "6EC45A4ADB66FAC7F076255CE4AACDBFC362006030AC0988372ABBE5546BBFE2"
+          },
+          {
+            "path": "test_stage_4_1b_channel_moment_splice.py",
+            "mode": "100644",
+            "git_blob": "ff5cbfeb52f6b1f7d841084733848c1ddbcc8ac0",
+            "sha256": "2A6623266794BFECF9DB49EABE513FD0FD0E537BBCCFF84F96EFBD1CA7B437EB"
+          },
+          {
+            "path": "test_stage_4_1b_r1_preview_contract.py",
+            "mode": "100644",
+            "git_blob": "3da6a084aa9f518c5bb9efca3e536c6f15b68683",
+            "sha256": "A6CBD13DC870C10CA09DF7EC4B8C456D7CCE931476F7068D887BDF09EA2353D4"
+          },
+          {
+            "path": "test_tee_api.py",
+            "mode": "100644",
+            "git_blob": "2b527d0b06af8d39bc128357b6d1489b19199f4e",
+            "sha256": "89FE9F0CDAA82AD57E8C364E53C40E2E8A71C6A75D733C6577F36A84BD67A4C7"
+          },
+          {
+            "path": "test_wi_wall_moment_api.py",
+            "mode": "100644",
+            "git_blob": "6742d6a4522ff7a01d9c6302b0431ac265182357",
+            "sha256": "AEA00C932ECC0A1D737B16B6A590C60F9C139272C76CA57AED521BAF0511F3FC"
+          }
+        ]
+      },
+      "frontend/tests": {
+        "git_tree": "a722394083fbcd6c60079973f8ca4747ccb106ac",
+        "entries": [
+          {
+            "path": "App.test.tsx",
+            "mode": "100644",
+            "git_blob": "cb4066e5486371627826ccd0165bd75687ddffe0",
+            "sha256": "332B1EEFB8C3B5021A32A98BE223B5790C30D1ACBA203D7F89AEAC72E26FDD18"
+          },
+          {
+            "path": "BeamConcretePairedAngleWorkspace.test.tsx",
+            "mode": "100644",
+            "git_blob": "7e95c95525a5aa4f83222e43b9c08e603b09ae07",
+            "sha256": "14914B71F72260257EEAB5662C92708AE477EBC0C3AA4B9439F574F276BF63CD"
+          },
+          {
+            "path": "ClipAngleConnectorWorkspace.test.tsx",
+            "mode": "100644",
+            "git_blob": "31efccd09548fd4807585c6ac2791d0ace1d39ed",
+            "sha256": "42DC8B64406992734AFEA95285E3B19EE33F46426EBC56C06CE52637C3ABF2AE"
+          },
+          {
+            "path": "DirectSideLapConcreteWorkspace.test.tsx",
+            "mode": "100644",
+            "git_blob": "37414d1a1c06dab2dfbaf23d7e8dfbcd6f14e54e",
+            "sha256": "C13B59C1111E858CECE8861B32DD3F8BFD2BD26B88636DD902281DF5BAD66C69"
+          },
+          {
+            "path": "MultiRowWorkspace.test.tsx",
+            "mode": "100644",
+            "git_blob": "334a98638937ed69cca3d51b3e1f3d3bdeb37108",
+            "sha256": "8889F4800EC69238EEA40A51AF7F9414DA90AA3BA7140EF437A0102FFF778B85"
+          },
+          {
+            "path": "PairedClipAngleConnectorWorkspace.test.tsx",
+            "mode": "100644",
+            "git_blob": "cf95ca198365839fc8e0c0cf2c42e57e3b2573dd",
+            "sha256": "CADB93B5D38205F48D244C707A854909967EB190874A5BC0616C79DD5844BE47"
+          },
+          {
+            "path": "Stage3C2SharedSupport.test.tsx",
+            "mode": "100644",
+            "git_blob": "64f56d8145d74dd6bc57fa73b77236a435246534",
+            "sha256": "BBA594C90BAFF4C048F57BF99F478138B61519B5C85798A8BB232B8FB372B09E"
+          },
+          {
+            "path": "TeeConnectorWorkspace.test.tsx",
+            "mode": "100644",
+            "git_blob": "fafa7e2821fcb9e66aee46a5b45f0e2ac1adba3b",
+            "sha256": "18CD15F60EFAC99413361B2D4D88D9ED69782F76E2C4795238DB787DB82702B1"
+          },
+          {
+            "path": "VisualizationPanel.test.tsx",
+            "mode": "100644",
+            "git_blob": "31801af1ec240ed429aa1c536332a1dadaf8b2a8",
+            "sha256": "F8F73165DC336CFE404EB79128E60AD4C479DF0E27F4518698A2AA5976F4B6ED"
+          },
+          {
+            "path": "actionLabelProjection.test.ts",
+            "mode": "100644",
+            "git_blob": "89a636ae0ff2e1fcc7af34c126323a61fa286a08",
+            "sha256": "F6E6ECF9D251434F5425E4BE0781979C23F0F4484C506907C896CBE57593674D"
+          },
+          {
+            "path": "actionPrimitiveGeometry.test.ts",
+            "mode": "100644",
+            "git_blob": "5b9b1c0531e1ec5ef55af1904b8d22d7d07bb02d",
+            "sha256": "829F488536BD389108A164C014A69739CE62745F5208F676866DC6056D7E9B71"
+          },
+          {
+            "path": "beamConcretePairedAngleFixtures.ts",
+            "mode": "100644",
+            "git_blob": "e6a7fa77d7d2968682d5f0bab6a188d10f9f0fad",
+            "sha256": "8EF463C74289D143CBF9F18D85AAF444253623E85AA890404E54E42B4240BEE7"
+          },
+          {
+            "path": "beamConcretePairedAngleFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "0765425343624d243afbbc3109d1a2dfeebc3d68",
+            "sha256": "DF263806E03957FB4C3877DA80034BDFFD78CCFED178838C32AEE1EB8D8728A6"
+          },
+          {
+            "path": "beamConcretePairedAngleSceneModel.test.ts",
+            "mode": "100644",
+            "git_blob": "8771aebc67b49306e64c352f443e18c324ee1ce6",
+            "sha256": "1DC64C22827AC75BF947DE91D23D9B7BCBA6B38C3283E5E31A8D2073D0190231"
+          },
+          {
+            "path": "benchmarks.test.ts",
+            "mode": "100644",
+            "git_blob": "685588fb9b357f8d21ad6c6da50fdeb289729e3f",
+            "sha256": "3FB33D0C44B23B7A4D7E656AA55FC0143949D6373F4872F1D06A14817BB49E51"
+          },
+          {
+            "path": "channelMomentSpliceBootstrap.test.tsx",
+            "mode": "100644",
+            "git_blob": "4f5603b4dfcf949f3ec25dee3a921a0e5f35c060",
+            "sha256": "EAD47414BBCBD3BC68C0AB1CA5E91472DD4EF607AB283F42347CA491C429A1B7"
+          },
+          {
+            "path": "channelMomentSpliceFixtures.ts",
+            "mode": "100644",
+            "git_blob": "6f9cc86540e8f03733facaf249a2162a05f046df",
+            "sha256": "F9332BBB5CA088B7D4AEA5660099A4126E9BB79D11D5751AF01AA42054E5F2D0"
+          },
+          {
+            "path": "channelMomentSpliceFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "969f0c786670fffa5cdcb1c92111e360771b91f6",
+            "sha256": "FFA46FDD0286832F0133B7810FD64DBC1121CE33819B1288BB68CCA2FA4142C4"
+          },
+          {
+            "path": "client.test.ts",
+            "mode": "100644",
+            "git_blob": "c1269aa5676d3d70ab6c7c2370a2d91f2cdba2e0",
+            "sha256": "1237C1A37EE5B262B0F2EEE3DF60BB5157CC6076A35CCF208B366FC77F1AE286"
+          },
+          {
+            "path": "clipAngleFixtures.ts",
+            "mode": "100644",
+            "git_blob": "59e6477156ace48509daf2e0e0bf4fa147f1ba73",
+            "sha256": "B15004FB4BC5C43D658AB70013F8AD31871F09AA279727AA438A0805029E972B"
+          },
+          {
+            "path": "clipAngleFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "f777d008460e2768a8c5a0091190ed243778f92e",
+            "sha256": "2FADCC60214B23DDAECE72FAFAC32DD5645DAF60727C86927C04A7F234AAF47F"
+          },
+          {
+            "path": "columnBaseProfileMatrixFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "4e03d45549db30333e7da586a9c49374c364cd8e",
+            "sha256": "014EC7B6226573FE18EC1CE10744ED425A5B83466AAEA920EABFA29548F82ED7"
+          },
+          {
+            "path": "columnBaseWebAngleFixtures.ts",
+            "mode": "100644",
+            "git_blob": "f9347f1cfe8631b62ac3859bad827b558a20f1da",
+            "sha256": "B57AEA70F9DBA89F8A56DE9D8C9B3ECBA7454F0D11DEA39ECD0420B4C31E48EE"
+          },
+          {
+            "path": "columnBaseWebAngleFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "6ea05436ac222a59971bce3c80a7ae4ec11cbaab",
+            "sha256": "87A4B84EF6B4CD4462636DD5D585BB1A4DB5CFC2A37CF76558B65FA8BE21ADAE"
+          },
+          {
+            "path": "columnBaseWebAngleSceneModel.test.ts",
+            "mode": "100644",
+            "git_blob": "5979ec16ecea89023e7eaf01e09eedc31e992cc7",
+            "sha256": "9CF466FD58741F5415C3D2244CB36CDEDA1AEAAA53E8B511B7970A4EEE4F3657"
+          },
+          {
+            "path": "directSideLapConcreteBenchmarks.test.ts",
+            "mode": "100644",
+            "git_blob": "b1bc33d00906052dba60284d39e042bc1cf542ea",
+            "sha256": "23724165CE3F872BDA31B561F560BC2ADD36CD7492288A0FB82BCFEC8A87C28A"
+          },
+          {
+            "path": "directSideLapConcreteFixtures.ts",
+            "mode": "100644",
+            "git_blob": "ef4af20ddf7cd88470bbfff503ab516a85b04d1e",
+            "sha256": "837C9B08F71233D53A19D584243D95862C1160BE78A37CAA5C82ACEBF272E3D8"
+          },
+          {
+            "path": "directSideLapConcreteSceneModel.test.ts",
+            "mode": "100644",
+            "git_blob": "16fb980b0d3bc9587dd5909e7c0d7c4b4751839f",
+            "sha256": "AFE32979E6035F8C529D649B3FC8CF9FAE31868043004C243E82DE3579C63B9E"
+          },
+          {
+            "path": "directSideLapConcreteWorkflow.test.tsx",
+            "mode": "100644",
+            "git_blob": "10a3da8d259bafd6c4533656a2b6711a0a300053",
+            "sha256": "E302FF42151031AB6071F871F14858B87474F29F80ECEDE2C3C99FAA6AB6DDE0"
+          },
+          {
+            "path": "fastenerPresentation.test.ts",
+            "mode": "100644",
+            "git_blob": "fc4055e8b7e497d5fdbf00929831fbc0cd3ccc97",
+            "sha256": "72DCE25A87C8584556D6F366017382A5AF3924F06F7431521CFE3F52DE3F5AEB"
+          },
+          {
+            "path": "fixtures.ts",
+            "mode": "100644",
+            "git_blob": "466e9bd7bd4e9008b279350a5e0a46900af5f017",
+            "sha256": "F3D96FD3DFFF73D3E6900F6FF693C0ADD048E63E38DE2994700C4950187D0F88"
+          },
+          {
+            "path": "fixtures/channelMomentSpliceWire.json",
+            "mode": "100644",
+            "git_blob": "76b8383cbe9e05be3a73251e058256c508848803",
+            "sha256": "B553233B29B6DE058BA17151728072E65E9AB6917C9C1ADB919CD4ECE6216B01"
+          },
+          {
+            "path": "fixtures/wiWallMomentPureShearWire.json",
+            "mode": "100644",
+            "git_blob": "89447163b41921e3115643e9207e6042518a4958",
+            "sha256": "1CC7CA617D47C160D34EEA1BC02C0A3CC9489C75BB5F0FDE381FA8236B2D2B3B"
+          },
+          {
+            "path": "fixtures/wiWallMomentWire.json",
+            "mode": "100644",
+            "git_blob": "a0330bdb746806c746b65dd0a1a0f73fe7d69087",
+            "sha256": "5C70ED9E558BCC49304BB084FCD61AC8C8D115A8BC6088B16EFE8AB3D0C8C19F"
+          },
+          {
+            "path": "main.test.tsx",
+            "mode": "100644",
+            "git_blob": "0f5e79b8c0931a3113bf834bb0ec96c828d3e62b",
+            "sha256": "A12F5C308F32DBD5E3CF40B1B3AD58C8E802610FE17B4C05E93A38BA6E720F70"
+          },
+          {
+            "path": "materialAxisPresentation.test.ts",
+            "mode": "100644",
+            "git_blob": "f0b8067fbb0ea7b273dd8710ece05826d79237bd",
+            "sha256": "639EEB51E87712889C1B89CF934F5D97089A0D6ACEBC5D4168F7576971A88191"
+          },
+          {
+            "path": "multiMemberTeeClient.test.ts",
+            "mode": "100644",
+            "git_blob": "af8818989b1e0c493e57519accf81b0716b1eeea",
+            "sha256": "8BA156932CEE6F6B5412E572EE0E67E8CC1233B8D804F227E860CB3731F323BD"
+          },
+          {
+            "path": "multiMemberTeeFixtures.ts",
+            "mode": "100644",
+            "git_blob": "a05f7a454394e3ed94f1213a7f7ba34cc75c2c92",
+            "sha256": "88433D6B901EAC2440FC64E94D5E2B50D99768E54F9EB337A7E85EB7B6A6F52E"
+          },
+          {
+            "path": "multiMemberTeeFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "56a76b8f21b9c8bfaaa3324b1079d8cb11793307",
+            "sha256": "5F8C34C29DE5F45BECAADD768337029ADEDCE47BE1584B1F4F26CC1E58779892"
+          },
+          {
+            "path": "multirowWorkflow.test.tsx",
+            "mode": "100644",
+            "git_blob": "c869c40a914f43e00ede956df41300ebc214a7bc",
+            "sha256": "6BE9D6F8B8BFEBAD04413B4D2AB89160067C4B707548747A97EEC04D08EF761C"
+          },
+          {
+            "path": "pairedClipAngleFixtures.ts",
+            "mode": "100644",
+            "git_blob": "62c54aacfef60fe35505928b1bb84a5ebae9d93d",
+            "sha256": "B06F95EEFCEAD54EBBCA4E93E3EE720BF0C65A7D4745247FCB52C930AF684828"
+          },
+          {
+            "path": "pairedClipAngleFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "6b636b13a372f3261d22c33157c279f86ec5dbe2",
+            "sha256": "892A2C7E778872ED3C213C8B22A20AC904FF57D20A42339CB07299809E061466"
+          },
+          {
+            "path": "presentation.test.ts",
+            "mode": "100644",
+            "git_blob": "4ffc73d1a39f8f0d54b15ade70848a7d734cb7fc",
+            "sha256": "3C35DEA6EAB285210BF000B6ADDC02EA5D1B3A7A4C47C0FF20D573BD98352EC8"
+          },
+          {
+            "path": "previewWorkflow.test.tsx",
+            "mode": "100644",
+            "git_blob": "5191f38498bf50cde46363145aba0e8be1248240",
+            "sha256": "04E617CECC774CE4D334DD87D2BF9D8EFFD87B00379927EC9857EE8C6DE86CDE"
+          },
+          {
+            "path": "sceneModel.test.ts",
+            "mode": "100644",
+            "git_blob": "9a0904daacd6be0c8d0dd5ba66972e207532a7c7",
+            "sha256": "E2A7AC89B4A573D6A6747DC44088470BACD6F676BD451C648CD51948A1436B7F"
+          },
+          {
+            "path": "scopeAudit.test.ts",
+            "mode": "100644",
+            "git_blob": "3d42d4f549a42443e34958f4bff20c65b19db665",
+            "sha256": "EE09006C95DC48FFA526164BEE05A933868E0588EB04DBF73D061DFC89531511"
+          },
+          {
+            "path": "setup.ts",
+            "mode": "100644",
+            "git_blob": "004761e544bc58d76fb478b0b4349ae426aab895",
+            "sha256": "25440BE8DD96559803D4EB6A9755661AAE74F6AE5DB421AFB84F87F39FA234A0"
+          },
+          {
+            "path": "teeBenchmarks.test.ts",
+            "mode": "100644",
+            "git_blob": "bf8ce71b67b68bafc7a2d2da34c78f71a80b4727",
+            "sha256": "19DEE384FEDB7E5EECBBA49326FBAE8D34AC98F7A7712A38B5F98FA014211C54"
+          },
+          {
+            "path": "teeContracts.test.ts",
+            "mode": "100644",
+            "git_blob": "6e3e56e0e7e98dc88e54bb9f00809fd76d58793e",
+            "sha256": "9405AD331C4AFD6A7D96E15A05432B9D651FCC5AF8D80F494102919889CE9851"
+          },
+          {
+            "path": "teeFixtures.ts",
+            "mode": "100644",
+            "git_blob": "2facc2cbc20e638bc341b640300ede78d9b07ea5",
+            "sha256": "E34106E7D9964BCCF7C387A051F3A7DB609FFD48F77AC08371C674E12F3E6C03"
+          },
+          {
+            "path": "teeProfileOptions.test.ts",
+            "mode": "100644",
+            "git_blob": "b02668f45ec74090c630ab743be4df452eee92d9",
+            "sha256": "2B67AE55498C901EC110800DAA71F9BEB1B54E57102A9BFB2D038245D8388C20"
+          },
+          {
+            "path": "teeWorkflow.test.tsx",
+            "mode": "100644",
+            "git_blob": "54508254f206ec32b2a018052ee4d306eb09313e",
+            "sha256": "2CE9FB7100F29B38132C36A73B2E5D1B81D9C905E832AF80A8A8F9BE43F7E2F8"
+          },
+          {
+            "path": "viewportNavigation.test.ts",
+            "mode": "100644",
+            "git_blob": "6a19e064f5231c46e72382784aae823f283f07c3",
+            "sha256": "D7CA604CDC1F644FA89C39EE9D04680409C850ACF47FC2408A2D4972A2FF1B55"
+          },
+          {
+            "path": "webSpliceFixtures.ts",
+            "mode": "100644",
+            "git_blob": "c955e9bbcc0aef58a08044dc9ef9d974651f77ab",
+            "sha256": "B232588971EE6294EF05F8FCECE7B02D430A1BAAA0F4D7557FDA7A0D7B5ECEB1"
+          },
+          {
+            "path": "webSpliceFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "62259ff7fb03acb2cef944f479446e9ef8278eea",
+            "sha256": "5BE8A4E2D099C09A8F0E727E156CB501BC5A330B3B42F54464A0D133545E907D"
+          },
+          {
+            "path": "wiMomentSpliceFixtures.ts",
+            "mode": "100644",
+            "git_blob": "415a6e3faceb3886e9d15b5e762aab0f104c626e",
+            "sha256": "1D0014C44ED5BDAB30FF9EF502449DC3F4D0C6C275BAF0E1FE5B550325E0AD72"
+          },
+          {
+            "path": "wiMomentSpliceFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "1ded4d69fc4217d60fa37062c35905b7acda1c72",
+            "sha256": "29AA6A5A668242D8B5FB9820DE9B115FB5BA9209776E21AB05349339D7EC3CA1"
+          },
+          {
+            "path": "wiWallMomentCorrection.test.tsx",
+            "mode": "100644",
+            "git_blob": "16cf9bcab5b0cde67f133e05dc67077571f85df7",
+            "sha256": "31B1EE5395F76E834A5FD5A54ABA3C319E72D2C4D32FC5007CE9D1B96BAD0282"
+          },
+          {
+            "path": "wiWallMomentFixtures.ts",
+            "mode": "100644",
+            "git_blob": "a86a44aa9c02e02bed27fdd93b726daa73ffbed8",
+            "sha256": "9CD9DEF5D78F6DAC1FA73C8F92DC1654EFB25CBACB6593860F51FE7004A44430"
+          },
+          {
+            "path": "wiWallMomentFrontend.test.tsx",
+            "mode": "100644",
+            "git_blob": "0c7bb1f87df555c3c9879a37890ad6c3f20b1a34",
+            "sha256": "D60AD17A34C4E6C965796EEB8CA861DD138A4A4D3B6EB9B42C54F05AEA05A027"
+          }
+        ]
+      },
+      ".github": {
+        "git_tree": "f282725eb695cda84cc69cd70abc06c92f0d3298",
+        "entries": [
+          {
+            "path": "workflows/ci.yml",
+            "mode": "100644",
+            "git_blob": "060115a687d77888054a348a1cb453d8168dd5d4",
+            "sha256": "C7D31A3A3D5BFF290E70355BEEE985344060311F045871B667E7A6B97BC5AB5D"
+          }
+        ]
+      },
+      "backend/requirements": {
+        "git_tree": "d8e1a9f1c2c89a4e50a181db1997c52b3c9bdf58",
+        "entries": [
+          {
+            "path": "README.md",
+            "mode": "100644",
+            "git_blob": "f91d715e0446ebd1598ed6accac32d7000fe1b9d",
+            "sha256": "6C010A608E4D1076D3384F95A19E21A02B4A782B008046336084EA7D07E91BAD"
+          },
+          {
+            "path": "requirements-dev-py314.lock.txt",
+            "mode": "100644",
+            "git_blob": "e2f9e4051ebff96954e88c6d6a4fc0b8cf3460cc",
+            "sha256": "953E6D3F6879CBAA6037AA4E8BA0D41B48380761983DCA4CDABFE54576670E0E"
+          }
+        ]
+      }
+    },
+    "packages": [
+      {
+        "path": "frontend/package.json",
+        "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a",
+        "sha256": "1085F25B94819ED98EEE10739CF4B419F39BD626CC654699B0380B26341F4359"
+      },
+      {
+        "path": "frontend/package-lock.json",
+        "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+        "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+      },
+      {
+        "path": "frontend/.npmrc",
+        "git_blob": "d9ca8860b092f4d36ea10a4883343019566769fb",
+        "sha256": "3B88D1057ADD6F92EC23DC22DD017E312DED13A042DEB0BA6F08BAD85D936456"
+      },
+      {
+        "path": "backend/pyproject.toml",
+        "git_blob": "9caa35e74d01bb040369b72fe19294ba6072a786",
+        "sha256": "39BEA635FCE709607E1A4AE11D8B31829DFD07B4CADE332E030486BE1456A116"
+      }
+    ]
+  },
+  "controlled_artifacts": {
+    "authority": "STAGE_4_2_RC1_R7",
+    "baseline": "473a3c8cd43f13022d254dae2477084895478c74",
+    "baseline_commit_count": 106,
+    "artifacts": [
+      {
+        "path": "docs/governance/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_DECISION.md",
+        "sha256": "5C681E9F0CA6D40F02BB3523CE4CE811EAEF189B77C67993900D23D6F6787067",
+        "sentinel": "**END OF STAGE 4.2 W/I BEAM CONCRETE WALL MOMENT CONNECTION DECISION**"
+      },
+      {
+        "path": "docs/engineering/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_ENGINEERING_SPECIFICATION_RC1.md",
+        "sha256": "C8FEDC9FAF1468F7D5103E6EDAEF8C84E26B4A7C6275F1E2CD008AE78ABD49F9",
+        "sentinel": "**END OF STAGE 4.2 W/I BEAM CONCRETE WALL MOMENT CONNECTION ENGINEERING SPECIFICATION RC1**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_AUTHORITY_LEDGER_RC1.md",
+        "sha256": "1486F1EB808A188C5DD117EB7DE361A2D66572FDF5EE38A393526B24882BCD42",
+        "sentinel": "**END OF STAGE 4.2 W/I BEAM CONCRETE WALL MOMENT CONNECTION AUTHORITY LEDGER RC1**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_CODEX_ORDER.md",
+        "sha256": "C647780BFACE5DABDB0ED77E9A5CA7D86D4B01833CB3E92905764FE9BFEA06DA",
+        "sentinel": "**END OF STAGE 4.2 W/I BEAM CONCRETE WALL MOMENT CONNECTION ORDER — DO NOT PROCEED IF THIS LINE IS MISSING**"
+      },
+      {
+        "path": "docs/engineering/STAGE_4_2_SLICE8_INTEGRATION_AND_FINAL_NUMERIC_AUTHORITY_CLARIFICATION_R3.md",
+        "sha256": "EF4A38B563C63B31AABBF9BE6EB05247280EAEEE068AE64D17869F06D5D10569",
+        "sentinel": "**END OF STAGE 4.2 SLICE 8 INTEGRATION AND FINAL NUMERIC AUTHORITY CLARIFICATION R3**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_SLICE8_INTEGRATION_CORRECTION_AND_IMPLEMENTATION_ORDER_R3.md",
+        "sha256": "F62F0C312F8B00A62A0DE230CB7D3FAB1A829DDCB0F912F5B12F6F20DDC695BA",
+        "sentinel": "**END OF STAGE 4.2 SLICE 8 INTEGRATION CORRECTION AND IMPLEMENTATION ORDER R3 — DO NOT PROCEED IF THIS LINE IS MISSING**"
+      },
+      {
+        "path": "docs/engineering/STAGE_4_2_WEB_GROUP_REFERENCE_CLARIFICATION_R4.md",
+        "sha256": "9788C1D92252E3F03C5D71ADA4F02A20713D3BD62D4F3326A16B2D3D53B35380",
+        "sentinel": "**END OF STAGE 4.2 WEB GROUP REFERENCE CLARIFICATION R4**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_WEB_GROUP_REFERENCE_CORRECTION_AND_RESUME_ORDER_R4.md",
+        "sha256": "3900D14C90274AF92056785E4BDC77E6A223555B1D629E1C0C8E26545530E90A",
+        "sentinel": "**END OF STAGE 4.2 WEB GROUP REFERENCE CORRECTION AND RESUME ORDER R4 — DO NOT PROCEED IF THIS LINE IS MISSING**"
+      },
+      {
+        "path": "docs/engineering/STAGE_4_2_FLANGE_STAGE25A_NATIVE_NUMERIC_AUTHORITY_CLARIFICATION_R5.md",
+        "sha256": "A2028399567F31227C5C872FC2C90180194B58056F0D563180CF3EBDADB8D9EC",
+        "sentinel": "**END OF STAGE 4.2 FLANGE STAGE 2.5A NATIVE NUMERIC AUTHORITY CLARIFICATION R5**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_FLANGE_STAGE25A_NUMERIC_AUTHORITY_CORRECTION_AND_RESUME_ORDER_R5.md",
+        "sha256": "B0B69E6E2F03025676DF09EEA7895AE5232787686E757CDC9C126CAF6EB7EB17",
+        "sentinel": "**END OF STAGE 4.2 FLANGE STAGE 2.5A NUMERIC AUTHORITY CORRECTION AND RESUME ORDER R5 — DO NOT PROCEED IF THIS LINE IS MISSING**"
+      },
+      {
+        "path": "docs/engineering/STAGE_4_2_DEFAULT_STATUS_AND_PURE_MOMENT_NUMERIC_AUTHORITY_CLARIFICATION_R6.md",
+        "sha256": "02CEF33BB0BFF2AE691736D6F1E13EE58D33F52F449C129D1C005DC14B07E934",
+        "sentinel": "**END OF STAGE 4.2 DEFAULT STATUS AND PURE-MOMENT NUMERIC AUTHORITY CLARIFICATION R6**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_DEFAULT_STATUS_AND_PURE_MOMENT_CORRECTION_AND_RESUME_ORDER_R6.md",
+        "sha256": "27656819C256F3D74114BCB126BCAF6FBE1B4D82D6BCB6734B43B0943FE9F11A",
+        "sentinel": "**END OF STAGE 4.2 DEFAULT STATUS AND PURE-MOMENT CORRECTION AND RESUME ORDER R6 — DO NOT PROCEED IF THIS LINE IS MISSING**"
+      },
+      {
+        "path": "docs/engineering/STAGE_4_2_NATIVE_GOVERNING_FAILURE_SELECTION_CLARIFICATION_R7.md",
+        "sha256": "6AC4C13F013FC024ABA513AD0C09169AA3E7860FB80586683485DCD16CECA145",
+        "sentinel": "**END OF STAGE 4.2 NATIVE GOVERNING FAILURE SELECTION CLARIFICATION R7**"
+      },
+      {
+        "path": "docs/qa/STAGE_4_2_NATIVE_GOVERNING_FAILURE_SELECTION_CORRECTION_AND_RESUME_ORDER_R7.md",
+        "sha256": "F80FE7A41479916377505DE2CC14B280915CEF50849315B6E9F67BFB8A8AD188",
+        "sentinel": "**END OF STAGE 4.2 NATIVE GOVERNING FAILURE SELECTION CORRECTION AND RESUME ORDER R7 — DO NOT PROCEED IF THIS LINE IS MISSING**"
+      }
+    ],
+    "golden": {
+      "path": "backend/tests/golden/stage_4_2_wi_beam_concrete_wall_moment_connection_golden_benchmarks_rc1_r7.json",
+      "sha256": "6F8A22388BEEFFB1CE1B4EF9556261C63200C632E5D50F5447F4011D2C15EA2B",
+      "count": 128
+    },
+    "superseded_goldens": "RC1 through RC1-R6: not registered or used",
+    "source_pdfs_read_only": {
+      "standard_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+      "erratum_sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550",
+      "erratum_effective": "2026-01-13",
+      "copied_to_repository": false
+    },
+    "identity": "Historical implementation package preserved byte-exact; only RC1-R7 golden controls."
+  },
+  "inherited_engine_identity": {
+    "path": "docs/qa/STAGE_4_2_INHERITED_IDENTITIES.json",
+    "git_blob": "0afbc5bfe04518144ed0726e4b52f1d6c3d1fb9a",
+    "sha256": "0A195D268055C5DFDFD9BA8CF536157089A2AA200F7D3CCC2DD344C7329ACB8C"
+  },
+  "inherited_authorities": [
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_ENGINEERING_SPECIFICATION_RC1.md",
+      "git_blob": "bac652d919d28cccc127d03482e90ba123ae6f72",
+      "sha256": "33C88001777BD11CAF1EE724B5F2EFFCB84D9C0232578091755FA9751BEB49B1"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_ENGINEERING_SPECIFICATION_RC2.md",
+      "git_blob": "8394879af8c3cf0f1299ad5446e2a0c74df1ac38",
+      "sha256": "DB578929B9E3355E77A8B703AB8857DC713F100FA9D1884D1D071B4751939F83"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_ENGINEERING_SPECIFICATION_RC1.md",
+      "git_blob": "f04655499c1bc2737e180692355d7d17b99046a1",
+      "sha256": "BB883A48BC340FCF4012BCBF9B6E240B3C1EDE5BE43EB6F5F7FCC4DCE9D839E6"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_8_NEGATIVE_WEB_AND_STAGE25A_COMPATIBILITY_CLARIFICATION_R1.md",
+      "git_blob": "0d69fd0f48fd12a3bc0e47b3d248960ca871bb41",
+      "sha256": "C02DC1CAFB88CD67B2B857C08B7EAD7F4FB257388AB6420409E227C40C89201D"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_DECISION.md",
+      "git_blob": "a1ce94f0e7750c722d25fe2b1ae12f6ebca52989",
+      "sha256": "1E3DFA8727953087C883F5E8627778960CBD6AFECCDC357A35C89D99A6139DC9"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_DECISION_RC2.md",
+      "git_blob": "87bf7ee54f89d1af556a4b7019b5e52a7b9e2dc1",
+      "sha256": "930517D8198A553206BCBC18CA4435D04DA98E7922186DDDEDBA8F4CAAB8CFC2"
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_DECISION_RC1.md",
+      "git_blob": "31a66ed7f28c63fada8a90eb3d197072d9abc58a",
+      "sha256": "DBA6F3EE9B753A29AE6930E9D2FCBEE08E8D0E6CA2523329D828114FCFAA443D"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_AUTHORITY_LEDGER_RC1.md",
+      "git_blob": "86619fdf3c58d5030d79ebcff8d5cb357489009a",
+      "sha256": "246EC10341A1E4011069231C296B6CCA1346DACC74455F42EFAD3C0C98937DA9"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_AUTHORITY_LEDGER_RC2.md",
+      "git_blob": "9544ee919b23a8e2e6e11e32a444d2d6a3329e31",
+      "sha256": "3A214576C1BF7DB976010CD4AEC0F1D1FAFEFC92B99D3B7633A5559E89E46D9D"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_AUTHORITY_LEDGER_RC1.md",
+      "git_blob": "c90f3fa9048c0efa2b9433cb0981ad33ba245b05",
+      "sha256": "913629A90E4354990F55FD8CAD3C44476320B0DADC288AC242F8A863B4A39A07"
+    }
+  ],
+  "inherited_calculation_commits": {
+    "slice5": "23813a5c2d015b74591e577fa95715950c34912c",
+    "slice7_rc2": "d940192ea8eecb7e35f9601c38f3ad841f580916",
+    "slice8": "9f86a5685be840b271929cf3298f17a5e401b7c8",
+    "slice8_test_only_successor": "473a3c8cd43f13022d254dae2477084895478c74"
+  },
+  "prior_freeze_manifests": [
+    {
+      "path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json",
+      "git_blob": "6d75d5c80fd2ae067d6c830d3e93310fefd13c26",
+      "sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E"
+    },
+    {
+      "path": "docs/governance/STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_MANIFEST.json",
+      "git_blob": "4e1ec40d6171461e794587f9ddbdf788ec85a1fa",
+      "sha256": "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4"
+    },
+    {
+      "path": "docs/governance/STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_MANIFEST.json",
+      "git_blob": "f0ba2c50e978d4d8679e66330ae510e90ab3bea9",
+      "sha256": "EE4BADFE145B9FA5815D547C079A371C8C907613CB7253E4A12F922CBF9833DD"
+    },
+    {
+      "path": "docs/governance/STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE_MANIFEST.json",
+      "git_blob": "ef299af1473498974b6d24188b7dddf4acf8b197",
+      "sha256": "671DF6992BC35AFED3C7CE9CB0230F7778C74CE8E7F412C16A9467F080AB7258"
+    },
+    {
+      "path": "docs/governance/STAGE_3_6_WI_WEB_SPLICE_FAMILY_FREEZE_MANIFEST.json",
+      "git_blob": "6507aa6f886f00f0d25df8071f408b572353d455",
+      "sha256": "58AA05F545984EAAC0EDED666B4BA086BA05ADE40E59C39D3B7821BFFEB60658"
+    },
+    {
+      "path": "docs/governance/STAGE_3_7_COLUMN_BASE_SHEAR_FAMILY_FREEZE_MANIFEST.json",
+      "git_blob": "3f52a211e16b5748375e1c03f32a6f7bc228a637",
+      "sha256": "8C7CD0238C7A95E54E4B6DC987E4A558AE2910DA80342137C7772B7FCF6EC9AE"
+    },
+    {
+      "path": "docs/governance/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_FREEZE_MANIFEST.json",
+      "git_blob": "2bb1bcec5ac30ab652ff87800377b748991869a3",
+      "sha256": "A77FACD1A05F60E947F3F394FCFB3FC5D28120922BF6EA9841E4EC9C80D4061F"
+    },
+    {
+      "path": "docs/governance/STAGE_4_1_BEAM_MOMENT_SPLICE_FAMILY_FREEZE_MANIFEST.json",
+      "git_blob": "63568e107b3effa718786e05388f9be946139639",
+      "sha256": "2C79F811EECFD89C04862359E583A240284872C10A0603E3D6CA276D657CED77"
+    }
+  ],
+  "existing_immutable_freezes": [
+    {
+      "tag": "stage-2.3-interface-geometry-freeze",
+      "object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd",
+      "commit": "5bc545ab8251f9bd49dedc776962937ed5e822a2"
+    },
+    {
+      "tag": "stage-3.2-tee-connection-freeze",
+      "object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0",
+      "commit": "d16b354732c90bf3bf7847c62be652c230a9f91e"
+    },
+    {
+      "tag": "stage-3.3-clip-angle-family-freeze",
+      "object": "c22433084106a4da3006b610cc90429aba1660ce",
+      "commit": "a4d21506d45d2d21d3f5039b662ea56ec6c5da9f"
+    },
+    {
+      "tag": "stage-3.4-multi-member-tee-family-freeze",
+      "object": "282724c1fe2fbbeea9f742921aba5996028fd60b",
+      "commit": "2303ec713d6d038b935e076b909c3b639ced0e09"
+    },
+    {
+      "tag": "stage-3.5-concrete-support-shear-family-freeze",
+      "object": "7d9eaa40aa43f29e52fbae78b40057b31eaa8af8",
+      "commit": "7bb83e5c8814781419c0789b7428bd46572d514c"
+    },
+    {
+      "tag": "stage-3.6-wi-web-splice-family-freeze",
+      "object": "748d684ae08d86d6335fc26c9bff1e6c0389aa25",
+      "commit": "031e8367b25765652447fb358e54dd5facd1238b"
+    },
+    {
+      "tag": "stage-3.7-column-base-shear-family-freeze",
+      "object": "cbce5bc3e6ab61b550b3848982d6493a32a56bdb",
+      "commit": "b0a6ecdf03c88768ff6ab29e584a992231812bda"
+    },
+    {
+      "tag": "stage-4.1-beam-moment-splice-family-freeze",
+      "object": "5dd3e25ac1e55f3304e802e931dab90a0f3cd767",
+      "commit": "18419606f4143f27240a39374b25e294a9f39253"
+    },
+    {
+      "tag": "stage-4.1a-wi-major-axis-moment-splice-freeze",
+      "object": "a265ff394413d8fef16e7012c1de910bf3ece1b7",
+      "commit": "cc9effad0691d083bb204c44ec3fb6e9dfb3671d"
+    }
+  ],
+  "benchmark_ranges": {
+    "Stage 4.2 RC1-R7": "G1-G128",
+    "Slice 5": "G1-G52",
+    "Slice 7 RC2": "G1-G72",
+    "Slice 8 RC1-R1": "G1-G80",
+    "historical_freeze_audits": "all existing audits unchanged"
+  },
+  "resolution_policy": {
+    "tag": "Resolve only the named annotated historical governance tag and authenticate its manifest, raw parent header and historical identities.",
+    "object": "Explicit full historical governance commit only; inspect git cat-file raw parent header, not shallow-sensitive %P.",
+    "manifest_only": "Authenticate pinned manifest SHA-256 and reconstruct recorded historical Git trees from path/mode/blob inventory. Never substitute successor HEAD for unavailable historical objects.",
+    "implementation": "Governance manifest only; no production or test audit implementation is added. Existing historical freeze audits remain unchanged.",
+    "network": false,
+    "alternates": false
+  },
+  "no_production_change_declaration": {
+    "backend": 0,
+    "frontend": 0,
+    "engineering_calculations": 0,
+    "tests": 0,
+    "controlled_artifacts": 0,
+    "goldens": 0,
+    "dependencies": 0,
+    "lockfiles": 0,
+    "workflows": 0,
+    "existing_tags": 0
+  }
+}

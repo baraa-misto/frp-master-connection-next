@@ -1,0 +1,629 @@
+{
+  "schema_version": "frp-master-connection-cme2-core-r-a-t-golden-rc1",
+  "document_status": "approved engineering benchmark authority for isolated C2-R/C2-A/C2-T implementation; no family activation",
+  "not_production_output": true,
+  "baseline": {
+    "governance_commit": "88961da28de3421722290c2bf78af0c6191b81a1",
+    "commit_count": 130,
+    "c2_p2_frozen_implementation": "61855bda1f76bbf11a85ae58664ed81bbc8ea419",
+    "c2_p2_freeze_tag": "cme-2c-c2-p2-freeze",
+    "c2_p2_freeze_tag_object": "7861f351e88fdfa7a65e6166dc941b2476c8e0b8"
+  },
+  "source_identity": {
+    "AISC_370_25_sha256": "A9C3440C127866626F633E9B5426E830E035857135FA1A38A2424757625AFCF1",
+    "ASCE_SEI_74_23_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+    "ASCE_SEI_74_23_erratum1_sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550",
+    "core_readiness_audit_sha256": "B664C1FCE58C53575952A44EE2A11C474801821DF7A8C49C45890225DE42925C",
+    "c2_p2_freeze_and_audit_report_sha256": "225DBD9C5A8A29507A0628029CABA8CDED83AA04E20A375DAF5969E6D2896A02"
+  },
+  "owner_eor_approval": {
+    "date": "2026-09-12",
+    "exact_text": "Approved: use unwelded hot-rolled/extruded ASTM A276/A276M + A484/A484M 316-family shapes as the initial C2-A/C2-T fabrication domain; retain conservative Fy=25 ksi/Fu=70 ksi; exclude formed, laser-fused, welded/built-up and other fabrication routes; adopt the bounded C2-R trusted-response-envelope policy with reuse only of proven material-neutral transport/conservation mechanics; keep angle/Tee torsion and unqualified contact/prying/sharing fail-closed."
+  },
+  "product_policy": {
+    "route_id": "A276_A484_HOT_ROLLED_EXTRUDED_UNWELDED_316_FAMILY_RC1",
+    "chemical_mechanical_standard": "ASTM A276/A276M",
+    "general_requirements_standard": "ASTM A484/A484M",
+    "permitted_processing": [
+      "HOT_ROLLED",
+      "EXTRUDED"
+    ],
+    "permitted_condition_finish": [
+      "A",
+      "HF"
+    ],
+    "excluded": [
+      "COLD_FINISHED",
+      "STRAIN_HARDENED",
+      "FORMED_BENT",
+      "LASER_FUSED",
+      "WELDED_BUILT_UP",
+      "CUT_TEE_FROM_W_OR_S"
+    ],
+    "Fy_ksi": "25",
+    "Fu_ksi": "70",
+    "E_ksi": "28000",
+    "G_ksi": "10800",
+    "mtr_overstrength_credit": false,
+    "cold_work_credit": false,
+    "csm_credit": false
+  },
+  "response_policy": {
+    "provider_id": "C2_R_TRUSTED_STAINLESS_RESPONSE_ENVELOPE_RC1",
+    "accepted_modes": [
+      "MATERIAL_NEUTRAL_TRANSPORT",
+      "ASCE74_FRP_STEEL_PRESCRIBED_ROWS",
+      "NATIVE_EQUAL_BOLT_STIFFNESS_ECCENTRIC",
+      "NATIVE_LOCKED_SYMMETRY",
+      "QUALIFIED_EXTERNAL_MATERIAL_SPECIFIC_RESPONSE"
+    ],
+    "asce74_frp_steel_rows": {
+      "2": [
+        "0.6",
+        "0.4"
+      ],
+      "3": [
+        "0.5",
+        "0.3",
+        "0.2"
+      ]
+    }
+  },
+  "shape_providers": {
+    "angle": "C2_A_AISC_370_25_A276_A484_HOT_SHAPE_LRFD_RC1",
+    "tee": "C2_T_AISC_370_25_A276_A484_HOT_SHAPE_LRFD_RC1"
+  },
+  "constants": {
+    "phi_t_yield": "0.90",
+    "phi_t_rupture": "0.75",
+    "phi_c": "0.90",
+    "phi_b": "0.90",
+    "phi_v": "0.90",
+    "curve_A": {
+      "alpha": "0.56",
+      "beta0": "0.76",
+      "beta1": "0.41",
+      "beta2": "0.69"
+    },
+    "beta_LT_austenitic": "0.82",
+    "axial_unstiffened_lambda_r": "13.721224435159",
+    "flexural_unstiffened_lambda_r": "13.721224435159"
+  },
+  "positive_cases": [
+    {
+      "id": "R_ROW_FRP_STEEL_2",
+      "kind": "C2_R",
+      "input": {
+        "total_in_plane_force_kip": "10",
+        "row_count": 2
+      },
+      "expected": {
+        "row_forces_kip": [
+          "6.000000000000",
+          "4.000000000000"
+        ],
+        "status": "QUALIFIED_RESPONSE"
+      }
+    },
+    {
+      "id": "R_ROW_FRP_STEEL_3",
+      "kind": "C2_R",
+      "input": {
+        "total_in_plane_force_kip": "20",
+        "row_count": 3
+      },
+      "expected": {
+        "row_forces_kip": [
+          "10.000000000000",
+          "6.000000000000",
+          "4.000000000000"
+        ],
+        "status": "QUALIFIED_RESPONSE"
+      }
+    },
+    {
+      "id": "R_COMMON_SHAFT_CONSERVATION",
+      "kind": "C2_R",
+      "input": {
+        "ordered_layer_forces_kip": [
+          "5",
+          "-3",
+          "-2"
+        ]
+      },
+      "expected": {
+        "cumulative_cuts_kip": [
+          "5.000000000000",
+          "2.000000000000",
+          "0.000000000000"
+        ],
+        "closure_kip": "0.000000000000"
+      }
+    },
+    {
+      "id": "R_PRYING_TOTAL_TENSION_NO_DOUBLE_ADD",
+      "kind": "C2_R",
+      "input": {
+        "direct_bolt_tension_kip": "9",
+        "source_prying_component_kip": "3",
+        "source_total_tension_kip": "12",
+        "prying_included_in_total": true
+      },
+      "expected": {
+        "design_demand_kip": "12.000000000000",
+        "extra_prying_factor": null
+      }
+    },
+    {
+      "id": "R_LOCKED_NATIVE_SYMMETRY",
+      "kind": "C2_R",
+      "input": {
+        "total_force_kip": "18",
+        "identical_branches": true,
+        "native_symmetry_gate": true
+      },
+      "expected": {
+        "branch_forces_kip": [
+          "9.000000000000",
+          "9.000000000000"
+        ],
+        "status": "QUALIFIED_RESPONSE"
+      }
+    },
+    {
+      "id": "R_EXTERNAL_TRUSTED_RESPONSE",
+      "kind": "C2_R",
+      "input": {
+        "source_class": "QUALIFIED_EXTERNAL_MATERIAL_SPECIFIC_RESPONSE",
+        "force_kip": "11",
+        "moment_kip_in": "7"
+      },
+      "expected": {
+        "force_kip": "11.000000000000",
+        "moment_kip_in": "7.000000000000",
+        "status": "QUALIFIED_RESPONSE"
+      }
+    },
+    {
+      "id": "A_TENSION_D3_CASE8_FOUR_FASTENERS",
+      "kind": "C2_A",
+      "input": {
+        "Ag_in2": "2.859375",
+        "An_in2": "2.500000",
+        "fasteners_per_line": 4,
+        "case2_available": false
+      },
+      "expected": {
+        "U": "0.800000000000",
+        "gross_yield_design_kip": "64.335937500000",
+        "net_rupture_design_kip": "105.000000000000",
+        "available_tension_kip": "64.335937500000",
+        "governing": "D2_GROSS_YIELDING"
+      }
+    },
+    {
+      "id": "A_TENSION_D3_CASE2",
+      "kind": "C2_A",
+      "input": {
+        "Ag_in2": "2.859375",
+        "An_in2": "2.500000",
+        "x_in": "0.5",
+        "l_in": "4"
+      },
+      "expected": {
+        "U": "0.875000000000",
+        "gross_yield_design_kip": "64.335937500000",
+        "net_rupture_design_kip": "114.843750000000",
+        "available_tension_kip": "64.335937500000"
+      }
+    },
+    {
+      "id": "A_SHEAR_G6_ZONE1",
+      "kind": "C2_A",
+      "input": {
+        "lambda": "10.6666666666666666666666666667",
+        "kv": "1.2",
+        "Aw_in2": "1.5"
+      },
+      "expected": {
+        "Cv2": "1.200000000000",
+        "branch": "G2_CV2_ZONE_1",
+        "available_shear_kip": "24.300000000000"
+      }
+    },
+    {
+      "id": "A_SHEAR_G6_ZONE2",
+      "kind": "C2_A",
+      "input": {
+        "lambda": "20",
+        "kv": "1.2"
+      },
+      "expected": {
+        "Cv2": "1.066362270134",
+        "branch": "G2_CV2_ZONE_2"
+      }
+    },
+    {
+      "id": "A_SHEAR_G6_ZONE3",
+      "kind": "C2_A",
+      "input": {
+        "lambda": "50",
+        "kv": "1.2"
+      },
+      "expected": {
+        "Cv2": "0.565815937747",
+        "branch": "G2_CV2_ZONE_3"
+      }
+    },
+    {
+      "id": "A_SHEAR_G6_ZONE4",
+      "kind": "C2_A",
+      "input": {
+        "lambda": "120",
+        "kv": "1.2"
+      },
+      "expected": {
+        "Cv2": "0.140933333333",
+        "branch": "G2_CV2_ZONE_4"
+      }
+    },
+    {
+      "id": "A_FLEXURE_F10_NO_LTB",
+      "kind": "C2_A",
+      "input": {
+        "Smin_in3": "0.8",
+        "Lb_in": "10",
+        "Ly_in": "20",
+        "Lr_in": "60"
+      },
+      "expected": {
+        "Mn_kip_in": "20.000000000000",
+        "Mc_kip_in": "18.000000000000",
+        "branch": "F10_NO_LTB"
+      }
+    },
+    {
+      "id": "A_FLEXURE_F10_INELASTIC_LTB",
+      "kind": "C2_A",
+      "input": {
+        "Smin_in3": "0.8",
+        "Lb_in": "40",
+        "Ly_in": "20",
+        "Lr_in": "60"
+      },
+      "expected": {
+        "alpha_LT": "0.400000000000",
+        "Mn_kip_in": "9.389984034427",
+        "Mc_kip_in": "8.450985630984",
+        "branch": "F10_INELASTIC_LTB"
+      }
+    },
+    {
+      "id": "A_FLEXURE_F10_ELASTIC_LTB",
+      "kind": "C2_A",
+      "input": {
+        "Smin_in3": "0.8",
+        "Lb_in": "80",
+        "Ly_in": "20",
+        "Lr_in": "60",
+        "Fcr_ksi": "12"
+      },
+      "expected": {
+        "Mn_kip_in": "7.872000000000",
+        "Mc_kip_in": "7.084800000000",
+        "branch": "F10_ELASTIC_LTB"
+      }
+    },
+    {
+      "id": "A_COMPRESSION_E3_E4_EQUAL_LEG",
+      "kind": "C2_A",
+      "input": {
+        "Ag_in2": "2.859375",
+        "slenderness_w": "50",
+        "slenderness_z": "33.3333333333333333333333333333",
+        "trusted_E4_Fe_ksi": "15"
+      },
+      "expected": {
+        "Pc_w_kip": "52.384261145922",
+        "Pc_z_kip": "60.350135931118",
+        "Pc_E4_kip": "23.560378107332",
+        "available_compression_kip": "23.560378107332",
+        "governing": "E4_FLEXURAL_TORSIONAL_BUCKLING"
+      }
+    },
+    {
+      "id": "A_H2_COMPRESSION_PASS",
+      "kind": "C2_A",
+      "input": {
+        "Pr_kip": "10",
+        "Mrw_kip_in": "4",
+        "Mrz_kip_in": "3"
+      },
+      "expected": {
+        "interaction": "0.868885850030",
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "A_H2_COMPRESSION_FAIL",
+      "kind": "C2_A",
+      "input": {
+        "Pr_kip": "20",
+        "Mrw_kip_in": "6",
+        "Mrz_kip_in": "5"
+      },
+      "expected": {
+        "interaction": "1.552586514875",
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "A_H2_TENSION_PASS",
+      "kind": "C2_A",
+      "input": {
+        "Pr_kip": "5",
+        "Mrw_kip_in": "4",
+        "Mrz_kip_in": "3"
+      },
+      "expected": {
+        "H2_1": "0.522161505768",
+        "H2_2": "0.366727383121",
+        "governing": "H2_1",
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "A_H2_TENSION_FAIL",
+      "kind": "C2_A",
+      "input": {
+        "Pr_kip": "20",
+        "Mrw_kip_in": "10",
+        "Mrz_kip_in": "6"
+      },
+      "expected": {
+        "H2_1": "1.310868245294",
+        "H2_2": "0.689131754706",
+        "governing": "H2_1",
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "T_TENSION_D3_CASE2",
+      "kind": "C2_T",
+      "input": {
+        "Ag_in2": "2.625",
+        "An_in2": "2.2",
+        "U": "0.9"
+      },
+      "expected": {
+        "gross_yield_design_kip": "59.062500000000",
+        "net_rupture_design_kip": "103.950000000000",
+        "available_tension_kip": "59.062500000000"
+      }
+    },
+    {
+      "id": "T_SHEAR_G6",
+      "kind": "C2_T",
+      "input": {
+        "d_in": "3",
+        "t_in": "0.375",
+        "lambda": "8",
+        "kv": "1.2"
+      },
+      "expected": {
+        "Cv2": "1.200000000000",
+        "branch": "G2_CV2_ZONE_1",
+        "available_shear_kip": "18.225000000000"
+      }
+    },
+    {
+      "id": "T_FLEXURE_F10_INELASTIC_LTB",
+      "kind": "C2_T",
+      "input": {
+        "Smin_in3": "1.2",
+        "Lb_in": "36",
+        "Ly_in": "18",
+        "Lr_in": "54"
+      },
+      "expected": {
+        "alpha_LT": "0.400000000000",
+        "Mn_kip_in": "14.084976051641",
+        "Mc_kip_in": "12.676478446477",
+        "branch": "F10_INELASTIC_LTB"
+      }
+    },
+    {
+      "id": "T_COMPRESSION_E3_E4",
+      "kind": "C2_T",
+      "input": {
+        "Ag_in2": "2.625",
+        "slenderness_w": "40",
+        "slenderness_z": "25",
+        "trusted_E4_Fe_ksi": "12"
+      },
+      "expected": {
+        "Pc_w_kip": "52.396961595297",
+        "Pc_z_kip": "59.062500000000",
+        "Pc_E4_kip": "18.468510228054",
+        "available_compression_kip": "18.468510228054",
+        "governing": "E4_FLEXURAL_TORSIONAL_BUCKLING"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "NEG_PRODUCT_A479_NOT_SELECTED",
+      "expected_status": "STAINLESS_SHAPE_PRODUCT_ROUTE_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_PRODUCT_COLD_FINISHED",
+      "expected_status": "STAINLESS_SHAPE_CONDITION_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_PRODUCT_FORMED_BENT",
+      "expected_status": "STAINLESS_SHAPE_PRODUCT_ROUTE_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_PRODUCT_LASER_FUSED",
+      "expected_status": "STAINLESS_SHAPE_PRODUCT_ROUTE_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_PRODUCT_WELDED_BUILT_UP",
+      "expected_status": "STAINLESS_SHAPE_PRODUCT_ROUTE_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_SECTION_PROPERTIES_UNTRUSTED",
+      "expected_status": "STAINLESS_SHAPE_SECTION_PROPERTIES_NOT_QUALIFIED"
+    },
+    {
+      "id": "NEG_RESPONSE_MATERIAL_DEPENDENCE_UNRESOLVED",
+      "expected_status": "STAINLESS_RESPONSE_MATERIAL_DEPENDENCE_UNRESOLVED"
+    },
+    {
+      "id": "NEG_RESPONSE_REFERENCE_MISMATCH",
+      "expected_status": "STAINLESS_RESPONSE_REFERENCE_FRAME_MISMATCH"
+    },
+    {
+      "id": "NEG_ASCE_ROW_COUNT_4",
+      "expected_status": "STAINLESS_ASCE74_ROW_DISTRIBUTION_OUTSIDE_SCOPE"
+    },
+    {
+      "id": "NEG_NATIVE_SYMMETRY_NOT_QUALIFIED",
+      "expected_status": "STAINLESS_NATIVE_SYMMETRY_NOT_QUALIFIED"
+    },
+    {
+      "id": "NEG_COMMON_SHAFT_NOT_CLOSED",
+      "expected_status": "STAINLESS_COMMON_SHAFT_CONSERVATION_NOT_SATISFIED"
+    },
+    {
+      "id": "NEG_DUPLICATE_SHAFT_LAYER",
+      "expected_status": "STAINLESS_COMMON_SHAFT_DUPLICATE_LAYER"
+    },
+    {
+      "id": "NEG_PRYING_REQUIRED_UNQUALIFIED",
+      "expected_status": "STAINLESS_CONTACT_PRYING_AUTHORITY_REQUIRED"
+    },
+    {
+      "id": "NEG_PRYING_DOUBLE_ADD",
+      "expected_status": "STAINLESS_PRYING_TOTAL_TENSION_CONVENTION_INVALID"
+    },
+    {
+      "id": "NEG_ANGLE_UNEQUAL_LEG_COMPRESSION",
+      "expected_status": "STAINLESS_ANGLE_COMPRESSION_UNEQUAL_LEG_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_SHAPE_SLENDER_ELEMENT",
+      "expected_status": "STAINLESS_SHAPE_SLENDER_ELEMENT_NOT_SUPPORTED_IN_C2_CORE"
+    },
+    {
+      "id": "NEG_COMPRESSION_E4_RECORD_MISSING",
+      "expected_status": "STAINLESS_SHAPE_COMPRESSION_STABILITY_NOT_RESOLVED"
+    },
+    {
+      "id": "NEG_F10_STABILITY_MISSING",
+      "expected_status": "STAINLESS_SHAPE_F10_STABILITY_NOT_RESOLVED"
+    },
+    {
+      "id": "NEG_TORSION_NONZERO",
+      "expected_status": "STAINLESS_SHAPE_TORSION_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_COMBINED_NORMAL_SHEAR",
+      "expected_status": "STAINLESS_SHAPE_COMBINED_NORMAL_SHEAR_NOT_SUPPORTED"
+    },
+    {
+      "id": "NEG_NET_AREA_NOT_RESOLVED",
+      "expected_status": "STAINLESS_SHAPE_NET_AREA_NOT_RESOLVED"
+    },
+    {
+      "id": "NEG_SHEAR_LAG_NOT_RESOLVED",
+      "expected_status": "STAINLESS_SHAPE_SHEAR_LAG_NOT_RESOLVED"
+    },
+    {
+      "id": "NEG_TEE_D3_CASE7_ATTEMPT",
+      "expected_status": "STAINLESS_TEE_D3_CASE7_NOT_APPLICABLE_TO_HOT_ROLLED_EXTRUDED_TEE"
+    },
+    {
+      "id": "NEG_TEE_JUNCTION_LOCAL_METHOD_REQUIRED",
+      "expected_status": "STAINLESS_TEE_LOCAL_JUNCTION_METHOD_NOT_AVAILABLE"
+    },
+    {
+      "id": "NEG_ANGLE_HEEL_PRYING_LOCAL_METHOD_REQUIRED",
+      "expected_status": "STAINLESS_ANGLE_LOCAL_HEEL_PRYING_METHOD_NOT_AVAILABLE"
+    },
+    {
+      "id": "NEG_LOCAL_REGION_SNAPSHOT_MISMATCH",
+      "expected_status": "STAINLESS_LOCAL_REGION_SNAPSHOT_MISMATCH"
+    },
+    {
+      "id": "NEG_PUBLIC_FAMILY_ACTIVATION",
+      "expected_status": "STAINLESS_PUBLIC_FAMILY_ACTIVATION_NOT_AUTHORIZED"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "text": "All accepted C2-R response modes preserve full force/moment provenance and never infer missing material-dependent response."
+    },
+    {
+      "id": "I02",
+      "text": "ASCE74 FRP-steel prescribed row fractions sum exactly to one and are available only for two or three rows."
+    },
+    {
+      "id": "I03",
+      "text": "A common physical fastener shaft is counted once and ordered layer/cut forces close exactly."
+    },
+    {
+      "id": "I04",
+      "text": "Source-total bolt tension that already includes prying is never multiplied or incremented by a second prying factor."
+    },
+    {
+      "id": "I05",
+      "text": "Changing actual material/product/section/response authority changes the canonical fingerprint or fails closed."
+    },
+    {
+      "id": "I06",
+      "text": "Display unit changes and ambient Decimal context cannot change physical result, status, governing branch, or fingerprint."
+    },
+    {
+      "id": "I07",
+      "text": "AISC 370 Curve A used stress never exceeds Fy because the frozen project cap min(Fy,Fn_raw) is retained."
+    },
+    {
+      "id": "I08",
+      "text": "For G6, 0 < Cv2 <= 1.2 and increasing resisting area at fixed Cv2 cannot reduce available pure-shear resistance."
+    },
+    {
+      "id": "I09",
+      "text": "F10 nominal flexural strength never exceeds Fy*Smin."
+    },
+    {
+      "id": "I10",
+      "text": "Within an approved F10 inelastic stability record, increasing Lb cannot increase available flexural strength."
+    },
+    {
+      "id": "I11",
+      "text": "Increasing any positive H2 demand term cannot reduce the governing interaction."
+    },
+    {
+      "id": "I12",
+      "text": "D3 shear-lag factor remains within 0 < U <= 1; angle Case 8 is not applied to Tees."
+    },
+    {
+      "id": "I13",
+      "text": "Nonzero torsion or combined normal-plus-shear action never receives a C2-A/C2-T RC1 combined resistance."
+    },
+    {
+      "id": "I14",
+      "text": "Unqualified contact, prying, stiffness sharing, or response redistribution never receives an authoritative envelope."
+    },
+    {
+      "id": "I15",
+      "text": "Frozen C2-M/C2-P1/C2-P2 production behavior and fingerprints remain exact."
+    },
+    {
+      "id": "I16",
+      "text": "No isolated C2-R/C2-A/C2-T PASS activates public SS316 family dispatch or changes FRP/hardware/foundation authority."
+    }
+  ]
+}

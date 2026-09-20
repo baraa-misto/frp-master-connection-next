@@ -1,0 +1,664 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_6_CHANNEL_MOMENT_REFERENCE_AND_COMPONENT_RESULTANTS_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "contract": "CS6-RC1",
+  "methods": [
+    "RATIONAL_ELASTIC_CHANNEL_REGION_RESULTANT_DECOMPOSITION_RC1",
+    "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+    "EXPLICIT_VERIFIED_CHANNEL_SHEAR_CENTER_RC1"
+  ],
+  "frame": {
+    "axes": [
+      "L_CH",
+      "V_CH",
+      "T_CH"
+    ],
+    "opening_direction": "+T_CH",
+    "geometry_origin": "back_web_face_at_T_0_middepth_at_V_0",
+    "component_coordinates_relative_to": "CHANNEL_CENTROID"
+  },
+  "default_fixture": {
+    "geometry_in": {
+      "d": "8",
+      "b_f": "4",
+      "t_w": "0.5",
+      "t_f": "0.5"
+    },
+    "actions_us": {
+      "P_L_kip": "20",
+      "V_V_kip": "-10",
+      "M_T_kip_in": "100"
+    },
+    "shear_center_source": "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1"
+  },
+  "benchmarks": [
+    {
+      "id": "G1_CONTRACT_AND_METHODS",
+      "expected": {
+        "contract": "CS6-RC1",
+        "component_method": "RATIONAL_ELASTIC_CHANNEL_REGION_RESULTANT_DECOMPOSITION_RC1",
+        "default_shear_center_method": "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+        "explicit_shear_center_method": "EXPLICIT_VERIFIED_CHANNEL_SHEAR_CENTER_RC1"
+      }
+    },
+    {
+      "id": "G2_SUPPORTED_PROFILE_SCOPE",
+      "expected": {
+        "supported": [
+          "UNLIPPED_CHANNEL_EQUAL_FLANGES"
+        ],
+        "WI_supported": false,
+        "lipped_channel_supported": false,
+        "unequal_flange_channel_supported": false
+      }
+    },
+    {
+      "id": "G3_DEFAULT_GEOMETRY",
+      "expected": {
+        "d_in": "8",
+        "b_f_in": "4",
+        "t_w_in": "0.5",
+        "t_f_in": "0.5",
+        "h_w_in": "7.0"
+      }
+    },
+    {
+      "id": "G4_REGION_AREAS",
+      "expected": {
+        "A_top_in2": "2.0",
+        "A_web_in2": "3.50",
+        "A_bottom_in2": "2.0",
+        "A_total_in2": "7.50"
+      }
+    },
+    {
+      "id": "G5_ABSOLUTE_REGION_COORDINATES",
+      "expected": {
+        "V_top_in": "3.75",
+        "V_web_in": "0",
+        "V_bottom_in": "-3.75",
+        "T_flange_abs_in": "2",
+        "T_web_abs_in": "0.25"
+      }
+    },
+    {
+      "id": "G6_EXACT_CHANNEL_CENTROID",
+      "expected": {
+        "T_c_abs_in": "1.18333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "centroid_source": "EXACT_SHARP_CORNER_UNION_OF_RECTANGLES"
+      }
+    },
+    {
+      "id": "G7_RELATIVE_REGION_COORDINATES",
+      "expected": {
+        "T_flange_relative_in": "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "T_web_relative_in": "-0.93333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G8_REGION_CENTROIDAL_MAJOR_INERTIAS",
+      "expected": {
+        "I_f_T_c_in4": "0.0416666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "I_w_T_c_in4": "14.2916666666666666666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G9_TOTAL_MAJOR_AXIS_INERTIA",
+      "expected": {
+        "I_T_in4": "70.6250000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
+      }
+    },
+    {
+      "id": "G10_TOTAL_MINOR_AXIS_INERTIA",
+      "expected": {
+        "I_V_in4": "11.1229166666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "I_VT_in4": "0"
+      }
+    },
+    {
+      "id": "G11_MEDIAN_LINE_DIMENSIONS",
+      "expected": {
+        "h_m_in": "7.5",
+        "b_m_in": "3.75"
+      }
+    },
+    {
+      "id": "G12_MEDIAN_LINE_MAJOR_INERTIA",
+      "expected": {
+        "I_T_m_in4": "70.3125000"
+      }
+    },
+    {
+      "id": "G13_RATIONAL_SHEAR_CENTER_OFFSET_FROM_WEB",
+      "expected": {
+        "e_w_in": "1.40625",
+        "closed_form_equal": true
+      }
+    },
+    {
+      "id": "G14_RATIONAL_SHEAR_CENTER_ABSOLUTE",
+      "expected": {
+        "T_sc_abs_in": "-1.15625"
+      }
+    },
+    {
+      "id": "G15_CENTROID_TO_SHEAR_CENTER_DISTANCE",
+      "expected": {
+        "e_Csc_in": "2.33958333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G16_SHEAR_CENTER_LOCATION_SIDE",
+      "expected": {
+        "opening_direction": "+T_CH",
+        "shear_center_is_opposite_opening": true,
+        "shear_center_is_behind_back_web_face": true
+      }
+    },
+    {
+      "id": "G17_RATIONAL_SHEAR_CENTER_REVIEW",
+      "expected": {
+        "engineering_review_required": true,
+        "experimentally_verified": false,
+        "thin_wall_ratios": {
+          "t_w_over_h_m": "0.0666666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+          "t_f_over_b_m": "0.133333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+        }
+      }
+    },
+    {
+      "id": "G18_UNEQUAL_THICKNESS_SHEAR_CENTER",
+      "expected": {
+        "fixture": {
+          "d_in": "10",
+          "b_f_in": "5",
+          "t_w_in": "0.375",
+          "t_f_in": "0.5"
+        },
+        "T_c_abs_in": "1.56809701492537313432835820895522388059701492537313432835820895522388059701492537313432836",
+        "e_w_in": "1.93001302083333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "T_sc_abs_in": "-1.74251302083333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G19_DEFAULT_ACTION_REFERENCE_CONVENTION",
+      "expected": {
+        "axial_reference": "CHANNEL_CENTROID",
+        "major_moment_reference": "CHANNEL_CENTROID",
+        "major_shear_reference": "CHANNEL_SHEAR_CENTER"
+      }
+    },
+    {
+      "id": "G20_DEFAULT_CANONICAL_CENTROID_WRENCH",
+      "expected": {
+        "P_L_kip": "20",
+        "V_V_kip": "-10",
+        "M_T_kip_in": "100",
+        "generated_M_L_kip_in": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "minor_shear_kip": "0",
+        "minor_axis_moment_kip_in": "0"
+      }
+    },
+    {
+      "id": "G21_DEFAULT_TOP_FORCE",
+      "expected": {
+        "N_top_kip": "15.9528023598820058997050147492625368731563421828908554572271386430678466076696165191740412"
+      }
+    },
+    {
+      "id": "G22_DEFAULT_WEB_FORCE",
+      "expected": {
+        "N_web_kip": "9.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G23_DEFAULT_BOTTOM_FORCE",
+      "expected": {
+        "N_bottom_kip": "-5.28613569321533923303834808259587020648967551622418879056047197640117994100294985250737457"
+      }
+    },
+    {
+      "id": "G24_DEFAULT_TOP_LOCAL_MAJOR_MOMENT",
+      "expected": {
+        "m_T_top_kip_in": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775"
+      }
+    },
+    {
+      "id": "G25_DEFAULT_WEB_LOCAL_MAJOR_MOMENT",
+      "expected": {
+        "m_T_web_kip_in": "20.2359882005899705014749262536873156342182890855457227138643067846607669616519174041297935"
+      }
+    },
+    {
+      "id": "G26_DEFAULT_BOTTOM_LOCAL_MAJOR_MOMENT",
+      "expected": {
+        "m_T_bottom_kip_in": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775"
+      }
+    },
+    {
+      "id": "G27_DEFAULT_MAJOR_SHEAR_ALLOCATION",
+      "expected": {
+        "V_top_kip": "0",
+        "V_web_kip": "-10",
+        "V_bottom_kip": "0"
+      }
+    },
+    {
+      "id": "G28_DEFAULT_LONGITUDINAL_FORCE_EQUILIBRIUM",
+      "expected": {
+        "sum_N_kip": "19.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+        "target_kip": "20",
+        "exact": true
+      }
+    },
+    {
+      "id": "G29_DEFAULT_MAJOR_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "sum_M_T_kip_in": "99.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999994",
+        "target_kip_in": "100",
+        "exact": true
+      }
+    },
+    {
+      "id": "G30_DEFAULT_MINOR_MOMENT_LEDGER",
+      "expected": {
+        "top_M_V_kip_in": "13.0281219272369714847590953785644051130776794493608652900688298918387413962635201573254670",
+        "web_M_V_kip_in": "-8.71111111111111111111111111111111111111111111111111111111111111111111111111111111111111108",
+        "bottom_M_V_kip_in": "-4.31701081612586037364798426745329400196656833824975417895771878072763028515240904621435592",
+        "sum_M_V_kip_in": "0E-89",
+        "individual_terms_preserved": true
+      }
+    },
+    {
+      "id": "G31_DEFAULT_CENTROIDAL_TORSION",
+      "expected": {
+        "M_L_C_kip_in": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G32_WEB_SHEAR_FORCE_LINE_TORSION",
+      "expected": {
+        "M_L_web_force_kip_in": "-9.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333330"
+      }
+    },
+    {
+      "id": "G33_WEB_FREE_TORSION",
+      "expected": {
+        "m_L_web_kip_in": "-14.06250"
+      }
+    },
+    {
+      "id": "G34_TORSIONAL_EQUILIBRIUM",
+      "expected": {
+        "sum_M_L_kip_in": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "target_M_L_kip_in": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "exact": true
+      }
+    },
+    {
+      "id": "G35_FLANGE_SHEAR_FLOW_RESULTANT",
+      "expected": {
+        "H_f_each_flange_kip": "-1.875",
+        "H_f_times_h_m_kip_in": "-14.0625",
+        "equals_web_free_torsion": true
+      }
+    },
+    {
+      "id": "G36_TOP_COMPONENT_REFERENCE_AND_WRENCH",
+      "expected": {
+        "reference_L_V_T_in": [
+          "0",
+          "3.75",
+          "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667"
+        ],
+        "force_L_V_T_kip": [
+          "15.9528023598820058997050147492625368731563421828908554572271386430678466076696165191740412",
+          "0",
+          "0"
+        ],
+        "moment_L_V_T_kip_in": [
+          "0",
+          "0",
+          "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775"
+        ]
+      }
+    },
+    {
+      "id": "G37_WEB_COMPONENT_REFERENCE_AND_WRENCH",
+      "expected": {
+        "reference_L_V_T_in": [
+          "0",
+          "0",
+          "-0.93333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+        ],
+        "force_L_V_T_kip": [
+          "9.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+          "-10",
+          "0"
+        ],
+        "moment_L_V_T_kip_in": [
+          "-14.06250",
+          "0",
+          "20.2359882005899705014749262536873156342182890855457227138643067846607669616519174041297935"
+        ]
+      }
+    },
+    {
+      "id": "G38_BOTTOM_COMPONENT_REFERENCE_AND_WRENCH",
+      "expected": {
+        "reference_L_V_T_in": [
+          "0",
+          "-3.75",
+          "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667"
+        ],
+        "force_L_V_T_kip": [
+          "-5.28613569321533923303834808259587020648967551622418879056047197640117994100294985250737457",
+          "0",
+          "0"
+        ],
+        "moment_L_V_T_kip_in": [
+          "0",
+          "0",
+          "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775"
+        ]
+      }
+    },
+    {
+      "id": "G39_SIX_COMPONENT_EQUILIBRIUM",
+      "expected": {
+        "axial": true,
+        "major_shear": true,
+        "major_moment": true,
+        "generated_torsion": true,
+        "zero_minor_shear": true,
+        "zero_minor_moment": true
+      }
+    },
+    {
+      "id": "G40_FLANGE_LEVER_ARM",
+      "expected": {
+        "z_f_in": "7.50"
+      }
+    },
+    {
+      "id": "G41_EXACT_FLANGE_COUPLE",
+      "expected": {
+        "C_f_kip": "10.6194690265486725663716814159292035398230088495575221238938053097345132743362831858407079",
+        "M_couple_kip_in": "79.6460176991150442477876106194690265486725663716814159292035398230088495575221238938053092"
+      }
+    },
+    {
+      "id": "G42_FULL_MOMENT_M_OVER_Z_REFERENCE",
+      "expected": {
+        "C_M_over_z_kip": "13.3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "controlling_component_demand": false
+      }
+    },
+    {
+      "id": "G43_RESIDUAL_MAJOR_MOMENT",
+      "expected": {
+        "M_residual_kip_in": "20.3539823008849557522123893805309734513274336283185840707964601769911504424778761061946908",
+        "local_and_web_identity_kip_in": "20.3539823008849557522123893805309734513274336283185840707964601769911504424778761061946908",
+        "exact": true
+      }
+    },
+    {
+      "id": "G44_TOP_STRESS_EXTREMA",
+      "expected": {
+        "inner_ksi": "7.62241887905604719764011799410029498525073746312684365781710914454277286135693215339233038",
+        "outer_ksi": "8.33038348082595870206489675516224188790560471976401179941002949852507374631268436578171091",
+        "crosses_zero": false
+      }
+    },
+    {
+      "id": "G45_WEB_STRESS_EXTREMA",
+      "expected": {
+        "bottom_ksi": "-2.28908554572271386430678466076696165191740412979351032448377581120943952802359882005899704",
+        "top_ksi": "7.62241887905604719764011799410029498525073746312684365781710914454277286135693215339233038",
+        "crosses_zero": true
+      }
+    },
+    {
+      "id": "G46_BOTTOM_STRESS_EXTREMA",
+      "expected": {
+        "outer_ksi": "-2.99705014749262536873156342182890855457227138643067846607669616519174041297935103244837757",
+        "inner_ksi": "-2.28908554572271386430678466076696165191740412979351032448377581120943952802359882005899704",
+        "crosses_zero": false
+      }
+    },
+    {
+      "id": "G47_REGION_RESULTANT_STATES",
+      "expected": {
+        "top": "TENSION",
+        "web": "TENSION",
+        "bottom": "COMPRESSION"
+      }
+    },
+    {
+      "id": "G48_PURE_AXIAL_COMPONENTS",
+      "expected": {
+        "input": {
+          "P_L_kip": "20",
+          "V_V_kip": "0",
+          "M_T_kip_in": "0"
+        },
+        "N_top_kip": "5.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "N_web_kip": "9.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "N_bottom_kip": "5.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "all_local_moments_zero": true,
+        "minor_moment_sum_zero": true
+      }
+    },
+    {
+      "id": "G49_PURE_MOMENT_COMPONENTS",
+      "expected": {
+        "input": {
+          "P_L_kip": "0",
+          "V_V_kip": "0",
+          "M_T_kip_in": "100"
+        },
+        "N_top_kip": "10.6194690265486725663716814159292035398230088495575221238938053097345132743362831858407079",
+        "N_web_kip": "0",
+        "N_bottom_kip": "-10.6194690265486725663716814159292035398230088495575221238938053097345132743362831858407079",
+        "m_T_top_kip_in": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+        "m_T_web_kip_in": "20.2359882005899705014749262536873156342182890855457227138643067846607669616519174041297935",
+        "m_T_bottom_kip_in": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+        "minor_moment_sum_zero": true
+      }
+    },
+    {
+      "id": "G50_PURE_MAJOR_SHEAR_COMPONENTS",
+      "expected": {
+        "input": {
+          "P_L_kip": "0",
+          "V_V_kip": "-10",
+          "M_T_kip_in": "0"
+        },
+        "web_shear_kip": "-10",
+        "centroidal_torsion_kip_in": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "web_free_torsion_kip_in": "-14.06250",
+        "normal_resultants_zero": true
+      }
+    },
+    {
+      "id": "G51_ALL_ZERO_ACTION",
+      "expected": {
+        "all_component_wrenches_zero": true,
+        "generated_torsion_zero": true
+      }
+    },
+    {
+      "id": "G52_AXIAL_SIGN_REVERSAL",
+      "expected": {
+        "uniform_region_forces_reverse": true,
+        "major_bending_terms_unchanged_for_same_M": true,
+        "shear_center_terms_unchanged_for_same_V": true
+      }
+    },
+    {
+      "id": "G53_MAJOR_MOMENT_SIGN_REVERSAL",
+      "expected": {
+        "bending_region_forces_reverse": true,
+        "local_major_moments_reverse": true,
+        "minor_moment_ledger_rebalances_to_zero": true,
+        "shear_center_terms_unchanged_for_same_V": true
+      }
+    },
+    {
+      "id": "G54_MAJOR_SHEAR_SIGN_REVERSAL",
+      "expected": {
+        "web_shear_reverses": true,
+        "generated_torsion_reverses": true,
+        "web_free_torsion_reverses": true,
+        "normal_resultants_unchanged": true
+      }
+    },
+    {
+      "id": "G55_EXPLICIT_VERIFIED_SHEAR_CENTER",
+      "expected": {
+        "input_T_sc_abs_in": "-1",
+        "required_provenance": true,
+        "e_Csc_in": "2.18333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "centroidal_torsion_kip_in": "-21.8333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "web_free_torsion_kip_in": "-12.50"
+      }
+    },
+    {
+      "id": "G56_EXPLICIT_SHEAR_CENTER_MISSING_PROVENANCE_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "VERIFIED_SHEAR_CENTER_PROVENANCE_REQUIRED"
+      }
+    },
+    {
+      "id": "G57_RATIONAL_AND_EXPLICIT_MODES_MUTUALLY_EXCLUSIVE",
+      "expected": {
+        "single_controlling_source_required": true,
+        "silent_override": false
+      }
+    },
+    {
+      "id": "G58_UNSUPPORTED_MINOR_SHEAR_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "MINOR_SHEAR_NOT_SUPPORTED_IN_CS6_RC1"
+      }
+    },
+    {
+      "id": "G59_UNSUPPORTED_MINOR_AXIS_MOMENT_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "MINOR_AXIS_MOMENT_NOT_SUPPORTED_IN_CS6_RC1"
+      }
+    },
+    {
+      "id": "G60_UNSUPPORTED_USER_TORSION_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "USER_TORSION_NOT_SUPPORTED_IN_CS6_RC1",
+        "generated_shear_center_torsion_still_allowed": true
+      }
+    },
+    {
+      "id": "G61_INVALID_WEB_HEIGHT_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "POSITIVE_CHANNEL_WEB_HEIGHT_REQUIRED"
+      }
+    },
+    {
+      "id": "G62_INVALID_FLANGE_WIDTH_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "FLANGE_WIDTH_MUST_EXCEED_WEB_THICKNESS"
+      }
+    },
+    {
+      "id": "G63_INHOMOGENEOUS_LONGITUDINAL_MODULUS_REJECTED",
+      "expected": {
+        "status": "REQUIRES_SECTION_2_3_2",
+        "reason": "CS6_RC1_REQUIRES_HOMOGENEOUS_LONGITUDINAL_SECTION"
+      }
+    },
+    {
+      "id": "G64_US_SI_EQUIVALENCE",
+      "expected": {
+        "geometry": true,
+        "centroid": true,
+        "section_properties": true,
+        "shear_center": true,
+        "component_wrenches": true,
+        "torsional_equilibrium": true,
+        "fingerprints": true
+      }
+    },
+    {
+      "id": "G65_DETERMINISTIC_FINGERPRINTS",
+      "expected": {
+        "geometry_included": true,
+        "shear_center_source_included": true,
+        "actions_included": true,
+        "component_wrenches_included": true,
+        "equilibrium_included": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G66_REVIEW_AND_DISCLAIMER_METADATA",
+      "expected": {
+        "review_required": true,
+        "disclaimer_id": "CHANNEL_MOMENT_REFERENCE_AND_COMPONENT_RESULTANTS_DISCLAIMER_RC1",
+        "backend_owned": true
+      }
+    },
+    {
+      "id": "G67_NO_STRENGTH_RESULT",
+      "expected": {
+        "connection_PASS_FAIL": false,
+        "torsional_resistance": false,
+        "warping_stress": false,
+        "moment_rotation_classification": false
+      }
+    },
+    {
+      "id": "G68_NO_FRONTEND_PRODUCTION_CHANGE",
+      "expected": {
+        "frontend_production_change_count": 0
+      }
+    },
+    {
+      "id": "G69_STAGE_4_1A_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G70_STAGE_3_7_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G71_EARLIER_FREEZE_REGRESSIONS",
+      "expected": {
+        "stage_3_6": "NONE",
+        "stage_3_5": "NONE",
+        "stage_3_4": "NONE",
+        "stage_3_3": "NONE",
+        "stage_3_2": "NONE",
+        "stage_2_3": "NONE"
+      }
+    },
+    {
+      "id": "G72_STAGE_4_1B_PHYSICAL_CONNECTION_NOT_BEGUN",
+      "expected": {
+        "channel_splice_geometry": false,
+        "bolt_groups": false,
+        "connection_resistance": false,
+        "selector_workspace": false
+      }
+    }
+  ]
+}

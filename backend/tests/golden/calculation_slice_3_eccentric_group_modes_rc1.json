@@ -1,0 +1,189 @@
+{
+  "schema_version": "frp-master-connection-calculation-slice-3-eccentric-group-modes-golden-rc1",
+  "document_status": "candidate engineering benchmark authority pending owner approval",
+  "not_production_output": true,
+  "calculation_family": "eccentric inter-row shear-out compatibility and first-row net-tension limitation",
+  "primary_standard": "ASCE/SEI 74-23",
+  "source_locators": [
+    "Section 2.9",
+    "Section 8.3.3.1",
+    "Section 8.3.3.2",
+    "Commentary C8.1",
+    "Commentary C8.3.3.1",
+    "Commentary C8.3.3.2",
+    "Appendix CA8.3.3.1",
+    "Appendix CA8.3.3.2"
+  ],
+  "parent_authorities": {
+    "stage_2_5a_spec_sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470",
+    "stage_2_5a_golden_sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B",
+    "stage_2_5b_spec_sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F",
+    "stage_2_5b_golden_sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2",
+    "slice_2_rc2_spec_sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD",
+    "slice_2_rc2_golden_sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"
+  },
+  "method_classification": {
+    "actual_bolt_line_resultant": "SOURCE_CONSISTENT_ACTUAL_FORCE_DISTRIBUTION",
+    "eccentric_shearout_line_handoff": "PROJECT_RATIONAL_EXTENSION_RC1",
+    "eccentric_first_row_net_tension": "NOT_SUPPORTED_FOR_NONZERO_RESIDUAL_MOMENT_RC1",
+    "legacy_zero_residual_first_row": "INHERITED_APPROVED_SLICE_2"
+  },
+  "common_shearout_reference": {
+    "equation": "8-12",
+    "unloaded_end_e1_in": "1.250000000000",
+    "hole_diameter_in": "0.563000000000",
+    "pitch_in": "2.000000000000",
+    "thickness_in": "0.375000000000",
+    "Fsh_ksi": "8.000000000000",
+    "phi": "0.450000000000",
+    "nominal_resistance_per_line_kip": "12.467700000000",
+    "design_resistance_per_line_kip": "5.610465000000"
+  },
+  "cases": [
+    {
+      "id": "SMALL_ECCENTRIC_2X2_SHEAROUT_SUPPORTED",
+      "parent_demand": {
+        "in_plane_force_kip": [
+          "3.000000000000",
+          "0.000000000000"
+        ],
+        "m_res_kip_in": "-0.300000000000",
+        "bolt_line_axis": "CONNECTION_FORCE_DIRECTION"
+      },
+      "bolt_line_results": [
+        {
+          "line_id": "LINE_NEGATIVE_GAUGE",
+          "resultant_kip": [
+            "1.425000000000",
+            "0.000000000000"
+          ],
+          "parallel_scalar_kip": "1.425000000000",
+          "transverse_scalar_kip": "0.000000000000",
+          "handoff": "AUTHORIZED_RATIONAL_ECCENTRIC_SHEAROUT",
+          "design_resistance_kip": "5.610465000000",
+          "utilization": "0.253989642570"
+        },
+        {
+          "line_id": "LINE_POSITIVE_GAUGE",
+          "resultant_kip": [
+            "1.575000000000",
+            "0.000000000000"
+          ],
+          "parallel_scalar_kip": "1.575000000000",
+          "transverse_scalar_kip": "0.000000000000",
+          "handoff": "AUTHORIZED_RATIONAL_ECCENTRIC_SHEAROUT",
+          "design_resistance_kip": "5.610465000000",
+          "utilization": "0.280725394419"
+        }
+      ],
+      "first_row_net_tension": {
+        "row_resultant_kip": [
+          "1.500000000000",
+          "0.075000000000"
+        ],
+        "row_resultant_magnitude_kip": "1.501873829588",
+        "handoff": "CALCULATION_NOT_SUPPORTED",
+        "warning": "ECCENTRIC_FIRST_ROW_NET_TENSION_NOT_SUPPORTED_NONCOLLINEAR_ROW_FORCE"
+      },
+      "ordinary_pass_permitted": false
+    },
+    {
+      "id": "LARGE_ECCENTRIC_2X2_SHEAROUT_REDISTRIBUTION_FAIL",
+      "parent_demand_case": "ECCENTRIC_2X2_EQUAL",
+      "parent_demand": {
+        "in_plane_force_kip": [
+          "10.000000000000",
+          "0.000000000000"
+        ],
+        "m_res_kip_in": "-20.000000000000"
+      },
+      "bolt_line_results": [
+        {
+          "line_id": "LINE_NEGATIVE_GAUGE",
+          "resultant_kip": [
+            "0.000000000000",
+            "0.000000000000"
+          ],
+          "parallel_scalar_kip": "0.000000000000",
+          "transverse_scalar_kip": "0.000000000000",
+          "handoff": "NOT_REQUIRED_ZERO_LINE_DEMAND",
+          "utilization": null
+        },
+        {
+          "line_id": "LINE_POSITIVE_GAUGE",
+          "resultant_kip": [
+            "10.000000000000",
+            "0.000000000000"
+          ],
+          "parallel_scalar_kip": "10.000000000000",
+          "transverse_scalar_kip": "0.000000000000",
+          "handoff": "AUTHORIZED_RATIONAL_ECCENTRIC_SHEAROUT",
+          "design_resistance_kip": "5.610465000000",
+          "utilization": "1.782383456630",
+          "expected_numerical_comparison": "FAIL"
+        }
+      ],
+      "expected_overall_numerical_comparison": "FAIL",
+      "ordinary_pass_permitted": false
+    },
+    {
+      "id": "NONCOLLINEAR_BOLT_LINE_RESULTANT_UNSUPPORTED",
+      "bolt_line_resultant_kip": [
+        "2.000000000000",
+        "0.100000000000"
+      ],
+      "connection_force_direction": [
+        "1.000000000000",
+        "0.000000000000"
+      ],
+      "expected_handoff": "CALCULATION_NOT_SUPPORTED",
+      "warning": "ECCENTRIC_SHEAROUT_LINE_RESULTANT_NOT_PARALLEL_TO_CONNECTION_FORCE"
+    },
+    {
+      "id": "REVERSED_BOLT_LINE_RESULTANT_UNSUPPORTED",
+      "bolt_line_resultant_kip": [
+        "-0.500000000000",
+        "0.000000000000"
+      ],
+      "connection_force_direction": [
+        "1.000000000000",
+        "0.000000000000"
+      ],
+      "expected_handoff": "CALCULATION_NOT_SUPPORTED",
+      "warning": "ECCENTRIC_SHEAROUT_LINE_FORCE_REVERSAL_NOT_SUPPORTED"
+    },
+    {
+      "id": "ZERO_BOLT_LINE_RESULTANT_NOT_REQUIRED",
+      "bolt_line_resultant_kip": [
+        "0.000000000000",
+        "0.000000000000"
+      ],
+      "expected_handoff": "NOT_REQUIRED_ZERO_LINE_DEMAND"
+    },
+    {
+      "id": "ZERO_RESIDUAL_FIRST_ROW_LEGACY_HANDOFF",
+      "m_res_kip_in": "0.000000000000",
+      "expected_first_row_handoff": "INHERITED_LEGACY_STAGE_2_4B",
+      "expected_shearout_handoff": "INHERITED_LEGACY_STAGE_2_4B"
+    },
+    {
+      "id": "NONZERO_RESIDUAL_FIRST_ROW_GENERAL_CASE_UNSUPPORTED",
+      "m_res_kip_in": "0.300000000000",
+      "expected_first_row_handoff": "CALCULATION_NOT_SUPPORTED",
+      "required_warning": "ECCENTRIC_FIRST_ROW_NET_TENSION_GENERAL_METHOD_NOT_ESTABLISHED_RC1"
+    }
+  ],
+  "required_invariants": [
+    "For a complete physical bolt line, the line resultant is the vector sum of the actual Stage 2.5A total bolt-demand vectors on that line.",
+    "Eccentric shear-out handoff is authorized only when the line resultant is exactly parallel and nonnegative in the canonical connection-force direction.",
+    "A zero line resultant does not require a shear-out demand comparison.",
+    "A reversed or nonparallel line resultant is fail-closed in RC1.",
+    "The existing Stage 2.4B shear-out resistance equation and factors are not changed.",
+    "Pitch, e1, row span, and geometry come from accepted canonical plans and are not re-derived from demand.",
+    "For nonzero residual moment, general first-row net-tension handoff remains unsupported because the source model assumes bearing and bypass loads aligned with the connection force and equal bolt sharing within a row.",
+    "A zero-residual case reproduces the existing Stage 2.4B first-row and shear-out behavior exactly.",
+    "Known supported shear-out failure remains FAIL even while first-row net tension remains unsupported.",
+    "Supported shear-out PASS plus unsupported first-row net tension never becomes ordinary PASS.",
+    "Display units and camera state do not affect line resultants, compatibility, resistance, status, or fingerprints."
+  ]
+}

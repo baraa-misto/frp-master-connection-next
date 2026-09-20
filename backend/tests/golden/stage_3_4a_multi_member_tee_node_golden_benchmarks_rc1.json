@@ -1,0 +1,563 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_4A_MULTI_MEMBER_TEE_NODE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "semantic_frame": {
+    "H_T": [
+      "1",
+      "0",
+      "0"
+    ],
+    "V_T": [
+      "0",
+      "1",
+      "0"
+    ],
+    "N_T": [
+      "0",
+      "0",
+      "1"
+    ],
+    "handedness": "H_T cross V_T = N_T"
+  },
+  "default_fixture": {
+    "tee": {
+      "length_in": "30",
+      "flange_width_in": "8",
+      "flange_thickness_in": "0.5",
+      "stem_depth_in": "6",
+      "stem_thickness_in": "0.5",
+      "length_anchor": "CENTER",
+      "body_position_in": "0"
+    },
+    "upper_brace": {
+      "enabled": true,
+      "profile_family": "ANGLE",
+      "leg_y_in": "6",
+      "leg_z_in": "6",
+      "thickness_in": "0.5",
+      "member_length_in": "12",
+      "inclination_degrees": "30",
+      "profile_roll_degrees": "0",
+      "anchor_hv_in": [
+        "3",
+        "10"
+      ],
+      "bolt_group": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "pitch_in": "2",
+        "gauge_in": "2"
+      },
+      "action": {
+        "force_hvn_kip": [
+          "3.4641016151377544",
+          "2.0",
+          "0"
+        ],
+        "moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_hvn_in": [
+          "3",
+          "10",
+          "0"
+        ]
+      }
+    },
+    "middle_beam": {
+      "enabled": true,
+      "profile_family": "WIDE_FLANGE_I",
+      "depth_in": "10",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75",
+      "member_length_in": "12",
+      "inclination_degrees": "0",
+      "profile_roll_degrees": "0",
+      "anchor_hv_in": [
+        "3",
+        "0"
+      ],
+      "bolt_group": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "pitch_in": "2",
+        "gauge_in": "2"
+      },
+      "action": {
+        "force_hvn_kip": [
+          "6",
+          "0",
+          "0"
+        ],
+        "moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_hvn_in": [
+          "3",
+          "0",
+          "0"
+        ]
+      }
+    },
+    "lower_brace": {
+      "enabled": true,
+      "profile_family": "ANGLE",
+      "leg_y_in": "6",
+      "leg_z_in": "6",
+      "thickness_in": "0.5",
+      "member_length_in": "12",
+      "inclination_degrees": "-30",
+      "profile_roll_degrees": "0",
+      "anchor_hv_in": [
+        "3",
+        "-10"
+      ],
+      "bolt_group": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "pitch_in": "2",
+        "gauge_in": "2"
+      },
+      "action": {
+        "force_hvn_kip": [
+          "3.4641016151377544",
+          "-2.0",
+          "0"
+        ],
+        "moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reference_hvn_in": [
+          "3",
+          "-10",
+          "0"
+        ]
+      }
+    },
+    "support_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "2",
+      "gauge_in": "2",
+      "reference_hvn_in": [
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "fastener": {
+      "bolt_diameter_in": "0.5",
+      "hole_diameter_in": "0.563",
+      "source": "ASTM_F593_17_GROUP_2_316_316L"
+    },
+    "expected_assembled_support_wrench": {
+      "force_hvn_kip": [
+        "12.9282032302755088",
+        "0",
+        "0"
+      ],
+      "moment_hvn_kip_in": [
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "expected_default_per_bolt_magnitudes_kip": {
+      "upper": "1",
+      "middle": "1.5",
+      "lower": "1",
+      "support": "3.2320508075688772"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_UPPER_ONLY_CONCENTRIC",
+      "active_slots": [
+        "UPPER_BRACE"
+      ],
+      "input": {
+        "upper_force_magnitude_kip": "4",
+        "upper_group": {
+          "rows": 2,
+          "bolts_per_row": 2
+        },
+        "support_group": {
+          "rows": 2,
+          "bolts_per_row": 2
+        }
+      },
+      "expected": {
+        "upper_bolt_count": 4,
+        "support_bolt_count": 4,
+        "upper_per_bolt_magnitude_kip": "1",
+        "support_per_bolt_magnitude_kip": "1",
+        "upper_residual_moment_kip_in": "0",
+        "support_residual_moment_kip_in": "0"
+      }
+    },
+    {
+      "id": "G2_MIDDLE_ONLY_INDEPENDENT_COUNTS",
+      "active_slots": [
+        "MIDDLE_BEAM"
+      ],
+      "input": {
+        "middle_force_hvn_kip": [
+          "6",
+          "0",
+          "0"
+        ],
+        "middle_group": {
+          "rows": 2,
+          "bolts_per_row": 1
+        },
+        "support_group": {
+          "rows": 2,
+          "bolts_per_row": 2
+        }
+      },
+      "expected": {
+        "middle_bolt_count": 2,
+        "support_bolt_count": 4,
+        "middle_per_bolt_magnitude_kip": "3",
+        "support_per_bolt_magnitude_kip": "1.5"
+      }
+    },
+    {
+      "id": "G3_LOWER_ONLY_CONCENTRIC",
+      "active_slots": [
+        "LOWER_BRACE"
+      ],
+      "input": {
+        "lower_force_magnitude_kip": "4",
+        "lower_group": {
+          "rows": 2,
+          "bolts_per_row": 2
+        },
+        "support_group": {
+          "rows": 2,
+          "bolts_per_row": 2
+        }
+      },
+      "expected": {
+        "lower_bolt_count": 4,
+        "support_bolt_count": 4,
+        "lower_per_bolt_magnitude_kip": "1",
+        "support_per_bolt_magnitude_kip": "1"
+      }
+    },
+    {
+      "id": "G4_DEFAULT_ALL_THREE_WRENCH_ASSEMBLY",
+      "expected": {
+        "active_slot_count": 3,
+        "support_force_hvn_kip": [
+          "12.9282032302755088",
+          "0",
+          "0"
+        ],
+        "support_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "upper_shifted_moment_n_kip_in": "-28.6410161513775440",
+        "lower_shifted_moment_n_kip_in": "28.6410161513775440",
+        "middle_shifted_moment_n_kip_in": "0",
+        "force_equilibrium": true,
+        "moment_equilibrium": true
+      }
+    },
+    {
+      "id": "G5_ZERO_NET_FORCE_NONZERO_COUPLE",
+      "active_slots": [
+        "UPPER_BRACE",
+        "LOWER_BRACE"
+      ],
+      "input": {
+        "upper": {
+          "force_hvn_kip": [
+            "2",
+            "0",
+            "0"
+          ],
+          "moment_hvn_kip_in": [
+            "0",
+            "0",
+            "0"
+          ],
+          "reference_hvn_in": [
+            "0",
+            "3",
+            "0"
+          ]
+        },
+        "lower": {
+          "force_hvn_kip": [
+            "-2",
+            "0",
+            "0"
+          ],
+          "moment_hvn_kip_in": [
+            "0",
+            "0",
+            "0"
+          ],
+          "reference_hvn_in": [
+            "0",
+            "-3",
+            "0"
+          ]
+        },
+        "support_reference_hvn_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      },
+      "expected": {
+        "support_force_hvn_kip": [
+          "0",
+          "0",
+          "0"
+        ],
+        "support_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "-12"
+        ],
+        "scalar_force_only_sum_forbidden": true
+      }
+    },
+    {
+      "id": "G6_DISABLED_SLOT_IS_ABSENT",
+      "input": {
+        "upper_enabled": true,
+        "middle_enabled": false,
+        "lower_enabled": true
+      },
+      "expected": {
+        "middle_geometry_present": false,
+        "middle_bolt_group_present": false,
+        "middle_action_present": false,
+        "middle_result_present": false,
+        "middle_slot_fingerprint_present": false,
+        "support_wrench_includes_middle": false
+      }
+    },
+    {
+      "id": "G7_SLOT_ORDER_AND_DOMAIN_VALIDATION",
+      "expected": {
+        "upper_below_middle": "REJECTED",
+        "lower_above_middle": "REJECTED",
+        "upper_negative_inclination": "REJECTED",
+        "lower_positive_inclination": "REJECTED",
+        "middle_nonzero_inclination": "REJECTED",
+        "valid_semantic_order": "ACCEPTED"
+      }
+    },
+    {
+      "id": "G8_GROUP_INDEPENDENCE",
+      "expected": {
+        "upper_edit_moves_middle_group": false,
+        "upper_edit_moves_lower_group": false,
+        "upper_edit_moves_support_group": false,
+        "middle_edit_moves_upper_group": false,
+        "lower_edit_moves_support_group": false,
+        "unaffected_group_geometry_fingerprints_change": false
+      }
+    },
+    {
+      "id": "G9_CROSS_GROUP_HOLE_OVERLAP",
+      "expected": {
+        "overlapping_complete_hole_disks": "INVALID_GEOMETRY",
+        "automatic_group_reposition": false,
+        "design_executes": false
+      }
+    },
+    {
+      "id": "G10_CONNECTED_MEMBER_INTERFERENCE",
+      "expected": {
+        "positive_volume_member_overlap": "INVALID_GEOMETRY",
+        "last_valid_preview_preserved": true,
+        "automatic_member_reposition": false
+      }
+    },
+    {
+      "id": "G11_SLOT_INCLINATION_RULES",
+      "expected": {
+        "upper_domain_degrees": [
+          "0",
+          "90"
+        ],
+        "middle_domain_degrees": [
+          "0",
+          "0"
+        ],
+        "lower_domain_degrees": [
+          "-90",
+          "0"
+        ],
+        "profile_roll_independent": true,
+        "bolt_grids_rotate_with_members": false
+      }
+    },
+    {
+      "id": "G12_SAME_SUPPORT_WRENCH_DIFFERENT_DECOMPOSITION",
+      "case_a": {
+        "middle_force_hvn_kip": [
+          "4",
+          "0",
+          "0"
+        ],
+        "middle_reference_hvn_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      },
+      "case_b": {
+        "upper_force_hvn_kip": [
+          "2",
+          "0",
+          "0"
+        ],
+        "upper_reference_hvn_in": [
+          "0",
+          "2",
+          "0"
+        ],
+        "lower_force_hvn_kip": [
+          "2",
+          "0",
+          "0"
+        ],
+        "lower_reference_hvn_in": [
+          "0",
+          "-2",
+          "0"
+        ]
+      },
+      "expected": {
+        "support_force_case_a_hvn_kip": [
+          "4",
+          "0",
+          "0"
+        ],
+        "support_force_case_b_hvn_kip": [
+          "4",
+          "0",
+          "0"
+        ],
+        "support_moment_case_a_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "support_moment_case_b_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "support_numerical_demand_equal": true,
+        "slot_demands_equal": false,
+        "application_provenance_fingerprint_equal": false
+      }
+    },
+    {
+      "id": "G13_UNSUPPORTED_NORMAL_ACTION",
+      "expected": {
+        "geometry_current": true,
+        "normal_action_retained": true,
+        "bolt_axis_tension_generated": false,
+        "prying_generated": false,
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G14_MEMBER_END_MOMENTS_RETAINED",
+      "expected": {
+        "slot_free_moments_retained": true,
+        "support_shifted_moment_includes_slot_free_moments": true,
+        "automatic_prying_distribution": false,
+        "automatic_bolt_tension_distribution": false
+      }
+    },
+    {
+      "id": "G15_US_SI_EQUIVALENCE",
+      "conversions": {
+        "30_in_mm": "762",
+        "12_in_mm": "304.8",
+        "10_in_mm": "254",
+        "8_in_mm": "203.2",
+        "6_in_mm": "152.4",
+        "3_in_mm": "76.2",
+        "2_in_mm": "50.8",
+        "0.75_in_mm": "19.05",
+        "0.5_in_mm": "12.7",
+        "0.563_in_mm": "14.3002",
+        "4_kip_kN": "17.792886461042",
+        "6_kip_kN": "26.689329691563"
+      },
+      "expected": {
+        "geometry_equal": true,
+        "slot_actions_equal": true,
+        "assembled_support_wrench_equal": true,
+        "demands_equal": true,
+        "engineering_fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G16_MATERIAL_AXES_COVERAGE",
+      "expected": {
+        "upper_angle_regions_present": true,
+        "middle_w_i_regions_present": true,
+        "lower_angle_regions_present": true,
+        "tee_stem_flange_regions_present": true,
+        "support_w_regions_present": true,
+        "inactive_slot_axes_present": false
+      }
+    },
+    {
+      "id": "G17_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "support_wrench_assembly_available": true,
+        "slot_demands_available_where_applicable": true
+      }
+    },
+    {
+      "id": "G18_REQUIRED_LIMITATIONS",
+      "expected": {
+        "required_not_evaluated": [
+          "TEE_CONNECTOR_BODY_RESISTANCE",
+          "MULTI_MEMBER_TEE_INTERGROUP_LOAD_PATH_AND_STABILITY"
+        ],
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G19_SUPPORTED_FAILURE_PRECEDENCE",
+      "expected": {
+        "supported_member_or_support_failure": "FAIL",
+        "overall_status": "FAIL",
+        "tee_limitations_remain_visible": true
+      }
+    },
+    {
+      "id": "G20_FROZEN_FAMILY_REGRESSION",
+      "expected": {
+        "single_member_tee_fingerprint_change": "NONE",
+        "clip_angle_family_fingerprint_change": "NONE",
+        "direct_connection_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

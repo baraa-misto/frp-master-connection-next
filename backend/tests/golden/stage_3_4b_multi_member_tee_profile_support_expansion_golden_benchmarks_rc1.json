@@ -1,0 +1,653 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "historical_stage_3_4a_default": {
+    "upper_profile": "ANGLE",
+    "middle_profile": "WIDE_FLANGE_I",
+    "lower_profile": "ANGLE",
+    "support_target": "W_COLUMN_FLANGE",
+    "support_force_hvn_kip": [
+      "12.9282032302755088",
+      "0",
+      "0"
+    ],
+    "support_moment_hvn_kip_in": [
+      "0",
+      "0",
+      "0"
+    ],
+    "engineering_fingerprint": "2594c3e28cd47fac2b5235710733ab0bd94d0c61bb82bb174e21b9979c252717",
+    "support_wrench_fingerprint": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34"
+  },
+  "family_defaults": {
+    "FLAT_PLATE": {
+      "width_in": "6",
+      "thickness_in": "0.5",
+      "member_length_in": "12",
+      "default_surface": "POSITIVE_PLATE_FACE"
+    },
+    "ANGLE": {
+      "leg_y_in": "6",
+      "leg_z_in": "6",
+      "thickness_in": "0.5",
+      "member_length_in": "12",
+      "default_surface": "LEG_Y_OUTER_FACE",
+      "roll_degrees": "0"
+    },
+    "CHANNEL": {
+      "depth_in": "8",
+      "flange_width_in": "4",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.5",
+      "member_length_in": "12",
+      "default_surface": "WEB_POSITIVE_FACE",
+      "roll_degrees": "0"
+    },
+    "WIDE_FLANGE_I": {
+      "depth_in": "10",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75",
+      "member_length_in": "12",
+      "default_surface": "WEB_POSITIVE_FACE",
+      "roll_degrees": "0"
+    },
+    "RECTANGULAR_HOLLOW_SECTION": {
+      "depth_in": "6",
+      "width_in": "4",
+      "wall_thickness_in": "0.5",
+      "member_length_in": "12",
+      "default_surface": "Y_POS_FACE",
+      "roll_degrees": "0"
+    },
+    "SOLID_RECTANGULAR_SECTION": {
+      "depth_in": "6",
+      "width_in": "4",
+      "member_length_in": "12",
+      "default_surface": "Y_POS_FACE",
+      "roll_degrees": "0"
+    }
+  },
+  "support_defaults": {
+    "W_COLUMN_FLANGE": {
+      "member_length_in": "16",
+      "depth_in": "8",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75"
+    },
+    "W_BEAM_FLANGE": {
+      "member_length_in": "16",
+      "depth_in": "8",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75"
+    },
+    "W_COLUMN_WEB": {
+      "member_length_in": "16",
+      "depth_in": "8",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.75"
+    },
+    "CHANNEL_COLUMN_WEB": {
+      "member_length_in": "16",
+      "depth_in": "8",
+      "flange_width_in": "4",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.5"
+    },
+    "ANGLE_COLUMN_LEG": {
+      "member_length_in": "16",
+      "leg_y_in": "8",
+      "leg_z_in": "8",
+      "thickness_in": "0.5"
+    },
+    "RECTANGULAR_HOLLOW_COLUMN_WALL": {
+      "member_length_in": "16",
+      "outside_width_in": "10",
+      "outside_depth_in": "6",
+      "wall_thickness_in": "0.5"
+    },
+    "SOLID_RECTANGULAR_COLUMN_FACE": {
+      "member_length_in": "16",
+      "width_in": "10",
+      "depth_in": "6"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_HISTORICAL_STAGE_3_4A_DEFAULT_INVARIANCE",
+      "expected": {
+        "contract": "3.4A-RC1",
+        "engineering_fingerprint": "2594c3e28cd47fac2b5235710733ab0bd94d0c61bb82bb174e21b9979c252717",
+        "support_wrench_fingerprint": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34",
+        "geometry_change": "NONE",
+        "demand_change": "NONE",
+        "result_change": "NONE"
+      }
+    },
+    {
+      "id": "G2_UPPER_SLOT_SIX_PROFILE_MATRIX",
+      "slot": "UPPER_BRACE",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "inclination_degrees": "30",
+      "expected": {
+        "accepted_profile_count": 6,
+        "actual_profile_geometry": true,
+        "same_tee_stem_face": true,
+        "group_frame_fixed_to_tee": true
+      }
+    },
+    {
+      "id": "G3_MIDDLE_SLOT_SIX_PROFILE_MATRIX",
+      "slot": "MIDDLE_BEAM",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "inclination_degrees": "0",
+      "expected": {
+        "accepted_profile_count": 6,
+        "flat_plate_accepted": true,
+        "angle_accepted": true,
+        "actual_profile_geometry": true
+      }
+    },
+    {
+      "id": "G4_LOWER_SLOT_SIX_PROFILE_MATRIX",
+      "slot": "LOWER_BRACE",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "inclination_degrees": "-30",
+      "expected": {
+        "accepted_profile_count": 6,
+        "actual_profile_geometry": true,
+        "same_tee_stem_face": true,
+        "group_frame_fixed_to_tee": true
+      }
+    },
+    {
+      "id": "G5_MIDDLE_FLAT_PLATE_HORIZONTAL",
+      "input": {
+        "slot": "MIDDLE_BEAM",
+        "profile": "FLAT_PLATE",
+        "inclination_degrees": "0"
+      },
+      "expected": {
+        "geometry_status": "VALID",
+        "member_direction": "+H_T",
+        "profile_family_preserved": true
+      }
+    },
+    {
+      "id": "G6_MIDDLE_ANGLE_HORIZONTAL",
+      "input": {
+        "slot": "MIDDLE_BEAM",
+        "profile": "ANGLE",
+        "inclination_degrees": "0"
+      },
+      "expected": {
+        "geometry_status": "VALID",
+        "member_direction": "+H_T",
+        "selected_leg_geometry_preserved": true
+      }
+    },
+    {
+      "id": "G7_MIDDLE_NONZERO_INCLINATION_REJECTED",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "invalid_inclination_degrees": "1",
+      "expected": {
+        "all_profiles_rejected": true,
+        "geometry_not_auto_rotated": true,
+        "slot_not_relabelled": true
+      }
+    },
+    {
+      "id": "G8_UPPER_LOWER_PROFILE_INCLINATION_DOMAINS",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "upper_valid_domain_degrees": [
+          "0",
+          "90"
+        ],
+        "lower_valid_domain_degrees": [
+          "-90",
+          "0"
+        ],
+        "upper_negative_rejected": true,
+        "lower_positive_rejected": true,
+        "profile_roll_independent": true
+      }
+    },
+    {
+      "id": "G9_CONNECTED_RHS_FULL_THROUGH_EACH_SLOT",
+      "slots": [
+        "UPPER_BRACE",
+        "MIDDLE_BEAM",
+        "LOWER_BRACE"
+      ],
+      "expected_segments": [
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "TEE_STEM",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "RHS_NEAR_WALL",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "FREE_SHANK_SPAN",
+          "identity": "RHS_CAVITY",
+          "length_in": "5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "RHS_FAR_WALL",
+          "length_in": "0.5"
+        }
+      ],
+      "expected": {
+        "stack_span_before_hardware_in": "6.5",
+        "one_physical_bolt_per_axis": true,
+        "internal_hardware_count": 0,
+        "both_walls_independently_contained": true
+      }
+    },
+    {
+      "id": "G10_CONNECTED_SRS_FULL_DEPTH_EACH_SLOT",
+      "slots": [
+        "UPPER_BRACE",
+        "MIDDLE_BEAM",
+        "LOWER_BRACE"
+      ],
+      "expected_segments": [
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "TEE_STEM",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "SOLID_RECTANGULAR_SECTION",
+          "length_in": "6"
+        }
+      ],
+      "expected": {
+        "stack_span_before_hardware_in": "6.5",
+        "cavity_present": false,
+        "one_physical_bolt_per_axis": true
+      }
+    },
+    {
+      "id": "G11_OPEN_PROFILE_SURFACE_AND_PATH_MATRIX",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I"
+      ],
+      "expected": {
+        "flat_plate_path": [
+          "FLAT_PLATE",
+          "TEE_STEM"
+        ],
+        "angle_path": [
+          "ANGLE_SELECTED_LEG",
+          "TEE_STEM"
+        ],
+        "channel_path": [
+          "CHANNEL_SELECTED_REGION",
+          "TEE_STEM"
+        ],
+        "w_i_path": [
+          "W_I_SELECTED_REGION",
+          "TEE_STEM"
+        ],
+        "generic_plate_fallback": false,
+        "junction_exclusions_enforced": true
+      }
+    },
+    {
+      "id": "G12_SEVEN_SUPPORT_TARGETS",
+      "support_targets": [
+        "W_COLUMN_FLANGE",
+        "W_BEAM_FLANGE",
+        "W_COLUMN_WEB",
+        "CHANNEL_COLUMN_WEB",
+        "ANGLE_COLUMN_LEG",
+        "RECTANGULAR_HOLLOW_COLUMN_WALL",
+        "SOLID_RECTANGULAR_COLUMN_FACE"
+      ],
+      "expected": {
+        "accepted_target_count": 7,
+        "w_beam_web_present": false,
+        "actual_support_geometry": true,
+        "shared_support_editor": true
+      }
+    },
+    {
+      "id": "G13_RHS_SUPPORT_FULL_THROUGH",
+      "support_target": "RECTANGULAR_HOLLOW_COLUMN_WALL",
+      "expected_segments": [
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "TEE_FLANGE",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "RHS_NEAR_WALL",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "FREE_SHANK_SPAN",
+          "identity": "RHS_CAVITY",
+          "length_in": "5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "RHS_FAR_WALL",
+          "length_in": "0.5"
+        }
+      ],
+      "expected": {
+        "stack_span_before_hardware_in": "6.5",
+        "internal_hardware_count": 0,
+        "far_nut_external": true,
+        "endpoint_oriented_hardware": true
+      }
+    },
+    {
+      "id": "G14_SRS_SUPPORT_FULL_DEPTH",
+      "support_target": "SOLID_RECTANGULAR_COLUMN_FACE",
+      "expected_segments": [
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "TEE_FLANGE",
+          "length_in": "0.5"
+        },
+        {
+          "kind": "MATERIAL_LAYER",
+          "identity": "SOLID_RECTANGULAR_SECTION",
+          "length_in": "6"
+        }
+      ],
+      "expected": {
+        "stack_span_before_hardware_in": "6.5",
+        "support_is_solid": true,
+        "cavity_present": false
+      }
+    },
+    {
+      "id": "G15_OPEN_SUPPORT_PATHS",
+      "expected": {
+        "w_column_web": [
+          "TEE_FLANGE",
+          "W_WEB"
+        ],
+        "channel_column_web": [
+          "TEE_FLANGE",
+          "CHANNEL_WEB"
+        ],
+        "angle_column_leg": [
+          "TEE_FLANGE",
+          "ANGLE_SELECTED_LEG"
+        ],
+        "w_flange_paths_unchanged": true,
+        "heel_junction_exclusions_enforced": true
+      }
+    },
+    {
+      "id": "G16_MIXED_PROFILE_ALL_THREE_WRENCH_INVARIANCE",
+      "input": {
+        "upper_profile": "FLAT_PLATE",
+        "middle_profile": "ANGLE",
+        "lower_profile": "CHANNEL",
+        "slot_actions_and_references": "HISTORICAL_STAGE_3_4A_DEFAULT"
+      },
+      "expected": {
+        "support_force_hvn_kip": [
+          "12.9282032302755088",
+          "0",
+          "0"
+        ],
+        "support_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "wrench_assembly_depends_on_actions_not_profile_names": true
+      }
+    },
+    {
+      "id": "G17_EXPANDED_PROFILE_SLOT_COMBINATIONS",
+      "cases": [
+        [
+          "UPPER_BRACE"
+        ],
+        [
+          "MIDDLE_BEAM"
+        ],
+        [
+          "LOWER_BRACE"
+        ],
+        [
+          "UPPER_BRACE",
+          "MIDDLE_BEAM"
+        ],
+        [
+          "UPPER_BRACE",
+          "LOWER_BRACE"
+        ],
+        [
+          "MIDDLE_BEAM",
+          "LOWER_BRACE"
+        ],
+        [
+          "UPPER_BRACE",
+          "MIDDLE_BEAM",
+          "LOWER_BRACE"
+        ]
+      ],
+      "expected": {
+        "all_valid_with_generous_fixtures": true,
+        "inactive_slots_absent": true,
+        "support_wrench_uses_active_slots_only": true
+      }
+    },
+    {
+      "id": "G18_MIXED_PROFILE_MEMBER_INTERFERENCE",
+      "expected": {
+        "positive_volume_overlap": "INVALID_GEOMETRY",
+        "automatic_slot_reposition": false,
+        "last_valid_preview_preserved": true
+      }
+    },
+    {
+      "id": "G19_CROSS_GROUP_TEE_STEM_HOLE_OVERLAP",
+      "expected": {
+        "overlapping_complete_hole_disks": "INVALID_GEOMETRY",
+        "automatic_group_reposition": false,
+        "governing_pair_reported": true
+      }
+    },
+    {
+      "id": "G20_PROFILE_TRIM_MATRIX",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "actual_profile_solids_trimmed": true,
+        "group_auto_moves": false,
+        "fabricated_edge_clearances_recomputed": true,
+        "rhs_remains_hollow": true,
+        "srs_remains_solid": true,
+        "no_ghost_untrimmed_geometry": true
+      }
+    },
+    {
+      "id": "G21_MATERIAL_AXIS_MATRIX",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "support_targets": [
+        "W_COLUMN_FLANGE",
+        "W_BEAM_FLANGE",
+        "W_COLUMN_WEB",
+        "CHANNEL_COLUMN_WEB",
+        "ANGLE_COLUMN_LEG",
+        "RECTANGULAR_HOLLOW_COLUMN_WALL",
+        "SOLID_RECTANGULAR_COLUMN_FACE"
+      ],
+      "expected": {
+        "all_active_member_regions_present": true,
+        "tee_regions_present": true,
+        "support_regions_present": true,
+        "rhs_cavity_axis_present": false,
+        "srs_volume_basis_present": true,
+        "toggle_presentation_only": true
+      }
+    },
+    {
+      "id": "G22_US_SI_EQUIVALENCE_REPRESENTATIVE_MIXED_NODE",
+      "input": {
+        "upper_profile": "RECTANGULAR_HOLLOW_SECTION",
+        "middle_profile": "FLAT_PLATE",
+        "lower_profile": "SOLID_RECTANGULAR_SECTION",
+        "support_target": "RECTANGULAR_HOLLOW_COLUMN_WALL"
+      },
+      "conversions": {
+        "16_in_mm": "406.4",
+        "12_in_mm": "304.8",
+        "10_in_mm": "254",
+        "8_in_mm": "203.2",
+        "6_in_mm": "152.4",
+        "4_in_mm": "101.6",
+        "2_in_mm": "50.8",
+        "0.75_in_mm": "19.05",
+        "0.5_in_mm": "12.7"
+      },
+      "expected": {
+        "geometry_equal": true,
+        "paths_equal": true,
+        "demands_equal": true,
+        "support_wrench_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G23_PROFILE_SUPPORT_CHANGE_INDEPENDENCE",
+      "expected": {
+        "upper_profile_change_moves_middle_group": false,
+        "middle_profile_change_moves_lower_group": false,
+        "support_target_change_moves_connected_groups": false,
+        "unaffected_group_fingerprint_change": "NONE",
+        "slot_actions_change": "NONE"
+      }
+    },
+    {
+      "id": "G24_DISABLED_SLOT_AFTER_PROFILE_CHANGE",
+      "expected": {
+        "disabled_slot_profile_fields_present_in_request": false,
+        "disabled_slot_geometry_present": false,
+        "disabled_slot_group_present": false,
+        "disabled_slot_action_present": false,
+        "disabled_slot_fingerprint_present": false
+      }
+    },
+    {
+      "id": "G25_RECTANGULAR_LIMITATIONS_ARE_DESIGN_LIMITATIONS",
+      "expected": {
+        "valid_rhs_geometry_current": true,
+        "valid_srs_geometry_current": true,
+        "required_not_evaluated": [
+          "TEE_CONNECTOR_BODY_RESISTANCE",
+          "MULTI_MEMBER_TEE_INTERGROUP_LOAD_PATH_AND_STABILITY",
+          "RHS_LOCAL_WALL_RESPONSE",
+          "RHS_SLEEVE_OR_CRUSH_TUBE_REQUIREMENT",
+          "SOLID_RECTANGULAR_FULL_DEPTH_RESISTANCE_APPLICABILITY"
+        ],
+        "geometry_invalid_due_to_limitations": false,
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G26_STRICT_PROFILE_TARGET_FIELD_VALIDATION",
+      "expected": {
+        "srs_with_wall_thickness": "REJECTED",
+        "flat_plate_with_web_thickness": "REJECTED",
+        "rhs_without_wall_thickness": "REJECTED",
+        "unknown_profile": "REJECTED",
+        "unknown_support_target": "REJECTED",
+        "w_beam_web": "REJECTED",
+        "unknown_contract": "REJECTED"
+      }
+    },
+    {
+      "id": "G27_RECTANGULAR_HARDWARE_IDENTITY",
+      "expected": {
+        "one_physical_bolt_per_axis": true,
+        "duplicate_shanks": 0,
+        "internal_rhs_nut": false,
+        "internal_rhs_washer": false,
+        "physical_endpoint_orientation": true,
+        "engineering_axis_unchanged": true
+      }
+    },
+    {
+      "id": "G28_REGRESSION_BOUNDARY",
+      "expected": {
+        "stage_3_4a_default_fingerprint_change": "NONE",
+        "single_member_tee_fingerprint_change": "NONE",
+        "clip_angle_family_fingerprint_change": "NONE",
+        "direct_connection_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,5705 @@
+{
+  "api_transport_schema_version": "4.2-API-RC1",
+  "contract": "4.2-RC1",
+  "request_id": "stage-4.2-us_customary",
+  "geometry_status": "VALID",
+  "geometry_invalid_reasons": [],
+  "assembly_status": "FAIL",
+  "whole_connection_status": "EXTERNAL_ANCHOR_CONCRETE_DESIGN_REQUIRED",
+  "ordinary_pass_allowed": false,
+  "resistance_evaluated": true,
+  "design_check_ready": true,
+  "engineering_fingerprint": "4629228f806f8ec9e80c24eca9ee3c33b22dab5f3195eea75490772c94fd0624",
+  "result_fingerprint": "d2d041e7a76fababe8b6eef72ee3e7675d2c045e55d608bcd3dd415f3a87a9a9",
+  "result": {
+    "preview": {
+      "request_id": "stage-4.2-us_customary",
+      "product_id": "WI_BEAM_CONCRETE_WALL_MAJOR_AXIS_MOMENT_CONNECTION",
+      "contract": "4.2-RC1",
+      "geometry": {
+        "status": "VALID",
+        "reasons": [],
+        "symmetry_proven": true,
+        "angles": [
+          {
+            "connector_id": "TOP_FLANGE_ANGLE",
+            "heel": {
+              "x": {
+                "value": "0.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "5.25",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            },
+            "member_reference_global": {
+              "x": {
+                "value": "2.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            },
+            "support_reference_global": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "7.25",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            }
+          },
+          {
+            "connector_id": "BOTTOM_FLANGE_ANGLE",
+            "heel": {
+              "x": {
+                "value": "0.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-5.25",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            },
+            "member_reference_global": {
+              "x": {
+                "value": "2.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            },
+            "support_reference_global": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-7.25",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            }
+          },
+          {
+            "connector_id": "POSITIVE_WEB_ANGLE",
+            "heel": {
+              "x": {
+                "value": "0.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0.5",
+                "unit": "in"
+              }
+            },
+            "member_reference_global": {
+              "x": {
+                "value": "2.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0.25",
+                "unit": "in"
+              }
+            },
+            "support_reference_global": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            }
+          },
+          {
+            "connector_id": "NEGATIVE_WEB_ANGLE",
+            "heel": {
+              "x": {
+                "value": "0.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-0.5",
+                "unit": "in"
+              }
+            },
+            "member_reference_global": {
+              "x": {
+                "value": "2.25",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-0.25",
+                "unit": "in"
+              }
+            },
+            "support_reference_global": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            }
+          }
+        ],
+        "parts": [
+          {
+            "part_id": "CONCRETE_WALL",
+            "box": {
+              "component_id": "CONCRETE_WALL",
+              "role": "SUPPORT",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-4",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "8",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "48",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "48",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": null
+          },
+          {
+            "part_id": "WI_TOP_FLANGE",
+            "box": {
+              "component_id": "WI_BEAM",
+              "role": "MEMBER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "8.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "8",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "WI_BEAM",
+              "region_id": "WI_TOP_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "WI_WEB",
+            "box": {
+              "component_id": "WI_BEAM",
+              "role": "MEMBER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "8.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "9",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "WI_BEAM",
+              "region_id": "WI_WEB",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            }
+          },
+          {
+            "part_id": "WI_BOTTOM_FLANGE",
+            "box": {
+              "component_id": "WI_BEAM",
+              "role": "MEMBER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "8.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "8",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "WI_BEAM",
+              "region_id": "WI_BOTTOM_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "TOP_FLANGE_ANGLE_MEMBER_LEG",
+            "box": {
+              "component_id": "TOP_FLANGE_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "5.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "4",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "8",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "TOP_FLANGE_ANGLE",
+              "region_id": "TOP_FLANGE_ANGLE_MEMBER_LEG",
+              "lw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "cw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+            "box": {
+              "component_id": "TOP_FLANGE_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "7.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "8",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "TOP_FLANGE_ANGLE",
+              "region_id": "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+              "lw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "-1",
+                "0",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+            "box": {
+              "component_id": "BOTTOM_FLANGE_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-5.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "4",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "8",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "BOTTOM_FLANGE_ANGLE",
+              "region_id": "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+              "lw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "cw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "BOTTOM_FLANGE_ANGLE_SUPPORT_LEG",
+            "box": {
+              "component_id": "BOTTOM_FLANGE_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-7.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "8",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "BOTTOM_FLANGE_ANGLE",
+              "region_id": "BOTTOM_FLANGE_ANGLE_SUPPORT_LEG",
+              "lw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "cw_axis": [
+                "0",
+                "-1",
+                "0"
+              ],
+              "tt_axis": [
+                "-1",
+                "0",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "POSITIVE_WEB_ANGLE_MEMBER_LEG",
+            "box": {
+              "component_id": "POSITIVE_WEB_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "4",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "8",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "POSITIVE_WEB_ANGLE",
+              "region_id": "POSITIVE_WEB_ANGLE_MEMBER_LEG",
+              "lw_axis": [
+                "0",
+                "-1",
+                "0"
+              ],
+              "cw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            }
+          },
+          {
+            "part_id": "POSITIVE_WEB_ANGLE_SUPPORT_LEG",
+            "box": {
+              "component_id": "POSITIVE_WEB_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.5",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "8",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "3.5",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "POSITIVE_WEB_ANGLE",
+              "region_id": "POSITIVE_WEB_ANGLE_SUPPORT_LEG",
+              "lw_axis": [
+                "0",
+                "-1",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "-1",
+                "0",
+                "0"
+              ]
+            }
+          },
+          {
+            "part_id": "NEGATIVE_WEB_ANGLE_MEMBER_LEG",
+            "box": {
+              "component_id": "NEGATIVE_WEB_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "4",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "8",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "NEGATIVE_WEB_ANGLE",
+              "region_id": "NEGATIVE_WEB_ANGLE_MEMBER_LEG",
+              "lw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "cw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "-1"
+              ]
+            }
+          },
+          {
+            "part_id": "NEGATIVE_WEB_ANGLE_SUPPORT_LEG",
+            "box": {
+              "component_id": "NEGATIVE_WEB_ANGLE",
+              "role": "CONNECTOR",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-2.5",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "8",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "3.5",
+                  "unit": "in"
+                }
+              }
+            },
+            "material_region": {
+              "component_id": "NEGATIVE_WEB_ANGLE",
+              "region_id": "NEGATIVE_WEB_ANGLE_SUPPORT_LEG",
+              "lw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "tt_axis": [
+                "-1",
+                "0",
+                "0"
+              ]
+            }
+          }
+        ],
+        "member_bolts": [
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:B_R1_L1",
+            "group_id": "TOP_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_TOP_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "TOP_FLANGE_ANGLE",
+                "B_R1_L1"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:B_R1_L2",
+            "group_id": "TOP_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_TOP_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "TOP_FLANGE_ANGLE",
+                "B_R1_L2"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:B_R2_L1",
+            "group_id": "TOP_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_TOP_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "TOP_FLANGE_ANGLE",
+                "B_R2_L1"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:B_R2_L2",
+            "group_id": "TOP_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_TOP_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "TOP_FLANGE_ANGLE",
+                "B_R2_L2"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:B_R1_L1",
+            "group_id": "BOTTOM_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_BOTTOM_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "BOTTOM_FLANGE_ANGLE",
+                "B_R1_L1"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:B_R1_L2",
+            "group_id": "BOTTOM_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_BOTTOM_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "BOTTOM_FLANGE_ANGLE",
+                "B_R1_L2"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:B_R2_L1",
+            "group_id": "BOTTOM_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_BOTTOM_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "BOTTOM_FLANGE_ANGLE",
+                "B_R2_L1"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:B_R2_L2",
+            "group_id": "BOTTOM_FLANGE_ANGLE",
+            "start": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-5.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-4.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_MEMBER_LEG",
+              "WI_BOTTOM_FLANGE"
+            ],
+            "connector_bolt_ids": [
+              [
+                "BOTTOM_FLANGE_ANGLE",
+                "B_R2_L2"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "COMMON_WEB:B_R1_L1",
+            "group_id": "COMMON_WEB",
+            "start": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-0.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+              "WI_WEB",
+              "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+            ],
+            "connector_bolt_ids": [
+              [
+                "NEGATIVE_WEB_ANGLE",
+                "B_R1_L1"
+              ],
+              [
+                "POSITIVE_WEB_ANGLE",
+                "B_R1_L2"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "COMMON_WEB:B_R1_L2",
+            "group_id": "COMMON_WEB",
+            "start": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-0.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+              "WI_WEB",
+              "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+            ],
+            "connector_bolt_ids": [
+              [
+                "NEGATIVE_WEB_ANGLE",
+                "B_R1_L2"
+              ],
+              [
+                "POSITIVE_WEB_ANGLE",
+                "B_R1_L1"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "COMMON_WEB:B_R2_L1",
+            "group_id": "COMMON_WEB",
+            "start": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-0.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+              "WI_WEB",
+              "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+            ],
+            "connector_bolt_ids": [
+              [
+                "NEGATIVE_WEB_ANGLE",
+                "B_R2_L1"
+              ],
+              [
+                "POSITIVE_WEB_ANGLE",
+                "B_R2_L2"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "COMMON_WEB:B_R2_L2",
+            "group_id": "COMMON_WEB",
+            "start": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-0.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "3",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+              "WI_WEB",
+              "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+            ],
+            "connector_bolt_ids": [
+              [
+                "NEGATIVE_WEB_ANGLE",
+                "B_R2_L2"
+              ],
+              [
+                "POSITIVE_WEB_ANGLE",
+                "B_R2_L1"
+              ]
+            ],
+            "exterior_washer_count": 2,
+            "blind": false,
+            "individual_force": null,
+            "capacity": null
+          }
+        ],
+        "wall_anchors": [
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:ANCHOR:B_R1_L1",
+            "group_id": "TOP_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:ANCHOR:B_R1_L2",
+            "group_id": "TOP_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:ANCHOR:B_R2_L1",
+            "group_id": "TOP_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "TOP_FLANGE_ANGLE:ANCHOR:B_R2_L2",
+            "group_id": "TOP_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:ANCHOR:B_R1_L1",
+            "group_id": "BOTTOM_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:ANCHOR:B_R1_L2",
+            "group_id": "BOTTOM_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-6.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:ANCHOR:B_R2_L1",
+            "group_id": "BOTTOM_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "BOTTOM_FLANGE_ANGLE:ANCHOR:B_R2_L2",
+            "group_id": "BOTTOM_FLANGE_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-8",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "BOTTOM_FLANGE_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "POSITIVE_WEB_ANGLE:ANCHOR:B_R1_L1",
+            "group_id": "POSITIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "1.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "1.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "POSITIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "POSITIVE_WEB_ANGLE:ANCHOR:B_R1_L2",
+            "group_id": "POSITIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "1.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "1.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "POSITIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "POSITIVE_WEB_ANGLE:ANCHOR:B_R2_L1",
+            "group_id": "POSITIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "3.25",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "3.25",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "POSITIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "POSITIVE_WEB_ANGLE:ANCHOR:B_R2_L2",
+            "group_id": "POSITIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "3.25",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "3.25",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "POSITIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "NEGATIVE_WEB_ANGLE:ANCHOR:B_R1_L1",
+            "group_id": "NEGATIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-1.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-1.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "NEGATIVE_WEB_ANGLE:ANCHOR:B_R1_L2",
+            "group_id": "NEGATIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-1.75",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-1.75",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "NEGATIVE_WEB_ANGLE:ANCHOR:B_R2_L1",
+            "group_id": "NEGATIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-3.25",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-3.25",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          },
+          {
+            "hardware_id": "NEGATIVE_WEB_ANGLE:ANCHOR:B_R2_L2",
+            "group_id": "NEGATIVE_WEB_ANGLE_WALL_GROUP",
+            "start": {
+              "x": {
+                "value": "0.5",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-3.25",
+                "unit": "in"
+              }
+            },
+            "end": {
+              "x": {
+                "value": "-4",
+                "unit": "in"
+              },
+              "y": {
+                "value": "1.5",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-3.25",
+                "unit": "in"
+              }
+            },
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "layers": [
+              "NEGATIVE_WEB_ANGLE_SUPPORT_LEG",
+              "CONCRETE_WALL"
+            ],
+            "connector_bolt_ids": [],
+            "exterior_washer_count": 1,
+            "blind": true,
+            "individual_force": null,
+            "capacity": null
+          }
+        ],
+        "fingerprint": "20db6ee66b0ec1c40fed678cbe96f2ba0f1f2f80430ac99dd26832c112011f72"
+      },
+      "slice5": {
+        "components": [
+          {
+            "region_id": "TOP_FLANGE",
+            "wrench": {
+              "reference_lvt": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "force_lvt": {
+                "l": {
+                  "value": "15.40296150049358341559723593287265547877591312931885488647581441263573543928924",
+                  "unit": "kip"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "kip"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment_lvt": {
+                "l": {
+                  "value": "0",
+                  "unit": "kip-in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "kip-in"
+                },
+                "t": {
+                  "value": "0.03948667324777887462981243830207305034550839091806515301085883514313919052319842",
+                  "unit": "kip-in"
+                }
+              },
+              "provenance": "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1:TOP_FLANGE:REGION_CENTROID"
+            }
+          },
+          {
+            "region_id": "WEB",
+            "wrench": {
+              "reference_lvt": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "force_lvt": {
+                "l": {
+                  "value": "7.2",
+                  "unit": "kip"
+                },
+                "v": {
+                  "value": "-10",
+                  "unit": "kip"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment_lvt": {
+                "l": {
+                  "value": "0",
+                  "unit": "kip-in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "kip-in"
+                },
+                "t": {
+                  "value": "14.392892398815399802566633761105626850937808489634748272458045409674234945705824",
+                  "unit": "kip-in"
+                }
+              },
+              "provenance": "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1:WEB:REGION_CENTROID"
+            }
+          },
+          {
+            "region_id": "BOTTOM_FLANGE",
+            "wrench": {
+              "reference_lvt": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "force_lvt": {
+                "l": {
+                  "value": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+                  "unit": "kip"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "kip"
+                },
+                "t": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment_lvt": {
+                "l": {
+                  "value": "0",
+                  "unit": "kip-in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "kip-in"
+                },
+                "t": {
+                  "value": "0.03948667324777887462981243830207305034550839091806515301085883514313919052319842",
+                  "unit": "kip-in"
+                }
+              },
+              "provenance": "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1:BOTTOM_FLANGE:REGION_CENTROID"
+            }
+          }
+        ]
+      },
+      "connectors": [
+        {
+          "connector_id": "TOP_FLANGE_ANGLE",
+          "slice5_region": "TOP_FLANGE",
+          "allocation_fraction": "1",
+          "core": {
+            "request": {
+              "member_action": {
+                "reference": {
+                  "x": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "y": {
+                    "value": "2",
+                    "unit": "in"
+                  },
+                  "z": {
+                    "value": "-0.25",
+                    "unit": "in"
+                  }
+                },
+                "force": {
+                  "x": {
+                    "value": "0",
+                    "unit": "kip"
+                  },
+                  "y": {
+                    "value": "15.40296150049358341559723593287265547877591312931885488647581441263573543928924",
+                    "unit": "kip"
+                  },
+                  "z": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment": {
+                  "x": {
+                    "value": "3.8112537018756169792694965449160908193484698914116485686080947680157946692991116",
+                    "unit": "kip-in"
+                  },
+                  "y": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "z": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  }
+                }
+              }
+            },
+            "heel": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "15.40296150049358341559723593287265547877591312931885488647581441263573543928924",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "865689.09080034528995064165844027640671273445212240868706811451135241855873642646508309396390072",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "connector_on_support": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "-0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "15.40296150049358341559723593287265547877591312931885488647581441263573543928924",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "4346291.03410480509930898321816386969397828232971372161895360315893385982230997042077545227251672",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "fingerprint": "51d0dab9e28c6c84c3a593071fe413166dee2a306323ddf1fc8d6475ca27f554"
+          },
+          "flange_demand": {
+            "result_fingerprint": "286cdfb3a12eeb0ca0ceb225e68ad9c7ae184217686dde2977acd6ba9d282d9b"
+          },
+          "web_demand": null,
+          "support_global": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "7.25",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "68515.78628552086238894373149062191510365251727541954590325765054294175715695952668685744702",
+                "unit": "N"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "4346291.03410480509930898321816386969397828232971372161895360315893385982230997042077545227251672",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "support_at_wall": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "z": {
+                "value": "0",
+                "unit": "mm"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "68515.78628552086238894373149062191510365251727541954590325765054294175715695952668685744702",
+                "unit": "N"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "-8270891.01037386170961500493583415597235932872655478775913129318854886475814412641860934659621628",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "out_of_plane_attachment_components": [
+            {
+              "value": "0",
+              "unit": "kip"
+            },
+            {
+              "value": "3.8112537018756169792694965449160908193484698914116485686080947680157946692991116",
+              "unit": "kip-in"
+            },
+            {
+              "value": "0",
+              "unit": "kip-in"
+            }
+          ],
+          "instep_plan_status": "NOT_REQUIRED_ZERO_SHEAR"
+        },
+        {
+          "connector_id": "BOTTOM_FLANGE_ANGLE",
+          "slice5_region": "BOTTOM_FLANGE",
+          "allocation_fraction": "1",
+          "core": {
+            "request": {
+              "member_action": {
+                "reference": {
+                  "x": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "y": {
+                    "value": "2",
+                    "unit": "in"
+                  },
+                  "z": {
+                    "value": "-0.25",
+                    "unit": "in"
+                  }
+                },
+                "force": {
+                  "x": {
+                    "value": "0",
+                    "unit": "kip"
+                  },
+                  "y": {
+                    "value": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+                    "unit": "kip"
+                  },
+                  "z": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment": {
+                  "x": {
+                    "value": "-0.6112537018756169792694965449160908193484698914116485686080947680157946692991115",
+                    "unit": "kip-in"
+                  },
+                  "y": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "z": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  }
+                }
+              }
+            },
+            "heel": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "-142586.1850235984099506416584402764067127344521224086870681145113524185587364264453107488840677975",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "connector_on_support": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "-0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "-2.6029615004935834155972359328726554787759131293188548864758144126357354392892397",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "-730776.5052210706993089832181638696939782823297137216189536031589338598223099703332122097761137775",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "fingerprint": "aea98dbb743fcda5eb2efc89466850995a85b0073ad4c44892399ff5d72d358d"
+          },
+          "flange_demand": {
+            "result_fingerprint": "e3d0b834b598c792f0181ddf0fd23336e965107345a873a8fedd3438f6440256"
+          },
+          "web_demand": null,
+          "support_global": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "-7.25",
+                "unit": "in"
+              },
+              "z": {
+                "value": "0",
+                "unit": "in"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "-11578.54961018646238894373149062191510365251727541954590325765054294175715695952535239096244185",
+                "unit": "N"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "730776.5052210706993089832181638696939782823297137216189536031589338598223099703332122097761137775",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "support_at_wall": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "z": {
+                "value": "0",
+                "unit": "mm"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "-11578.54961018646238894373149062191510365251727541954590325765054294175715695952535239096244185",
+                "unit": "N"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "-1401413.4054947663496150049358341559723593287265547877591312931885488647581441262604305859575529",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "out_of_plane_attachment_components": [
+            {
+              "value": "0",
+              "unit": "kip"
+            },
+            {
+              "value": "-0.6112537018756169792694965449160908193484698914116485686080947680157946692991115",
+              "unit": "kip-in"
+            },
+            {
+              "value": "0",
+              "unit": "kip-in"
+            }
+          ],
+          "instep_plan_status": "NOT_REQUIRED_ZERO_SHEAR"
+        },
+        {
+          "connector_id": "POSITIVE_WEB_ANGLE",
+          "slice5_region": "WEB",
+          "allocation_fraction": "0.5",
+          "core": {
+            "request": {
+              "member_action": {
+                "reference": {
+                  "x": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "y": {
+                    "value": "2",
+                    "unit": "in"
+                  },
+                  "z": {
+                    "value": "-0.25",
+                    "unit": "in"
+                  }
+                },
+                "force": {
+                  "x": {
+                    "value": "5",
+                    "unit": "kip"
+                  },
+                  "y": {
+                    "value": "3.6",
+                    "unit": "kip"
+                  },
+                  "z": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment": {
+                  "x": {
+                    "value": "0.9",
+                    "unit": "kip-in"
+                  },
+                  "y": {
+                    "value": "-1.25",
+                    "unit": "kip-in"
+                  },
+                  "z": {
+                    "value": "1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+                    "unit": "kip-in"
+                  }
+                }
+              }
+            },
+            "heel": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "5",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "3.6",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "203372.69224971006",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "-282462.07256904175",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "-954320.2797310418453849950641658440276406712734452122408687068114511352418558736265845850148304",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "connector_on_support": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "-0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "5",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "3.6",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "1016863.4612485503",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "-1412310.36284520875",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "-1095551.3160155627203849950641658440276406712734452122408687068114511352418558736265845850148304",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "fingerprint": "396fd9a0153a188f1d601a7c233c1df47dfb4a30bdfe805ff1fc040609bad354"
+          },
+          "flange_demand": null,
+          "web_demand": {
+            "fingerprint": "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598",
+            "status": "CALCULATED"
+          },
+          "support_global": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "2.5",
+                "unit": "in"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "16013.5978149378",
+                "unit": "N"
+              },
+              "y": {
+                "value": "-22241.1080763025",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "-1412310.36284520875",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "-1016863.4612485503",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "-1095551.3160155627203849950641658440276406712734452122408687068114511352418558736265845850148304",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "support_at_wall": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "z": {
+                "value": "0",
+                "unit": "mm"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "16013.5978149378",
+                "unit": "N"
+              },
+              "y": {
+                "value": "-22241.1080763025",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "-1095551.3160155627203849950641658440276406712734452122408687068114511352418558736265845850148304",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "out_of_plane_attachment_components": [
+            {
+              "value": "0",
+              "unit": "kip"
+            },
+            {
+              "value": "0.9",
+              "unit": "kip-in"
+            },
+            {
+              "value": "-1.25",
+              "unit": "kip-in"
+            }
+          ],
+          "instep_plan_status": "ASCE_8_15_DIRECT_INSTEP_SHEAR_CHECK_REQUIRED"
+        },
+        {
+          "connector_id": "NEGATIVE_WEB_ANGLE",
+          "slice5_region": "WEB",
+          "allocation_fraction": "0.5",
+          "core": {
+            "request": {
+              "member_action": {
+                "reference": {
+                  "x": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "y": {
+                    "value": "2",
+                    "unit": "in"
+                  },
+                  "z": {
+                    "value": "-0.25",
+                    "unit": "in"
+                  }
+                },
+                "force": {
+                  "x": {
+                    "value": "-5",
+                    "unit": "kip"
+                  },
+                  "y": {
+                    "value": "3.6",
+                    "unit": "kip"
+                  },
+                  "z": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment": {
+                  "x": {
+                    "value": "0.9",
+                    "unit": "kip-in"
+                  },
+                  "y": {
+                    "value": "1.25",
+                    "unit": "kip-in"
+                  },
+                  "z": {
+                    "value": "-1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+                    "unit": "kip-in"
+                  }
+                }
+              }
+            },
+            "heel": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "-5",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "3.6",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "203372.69224971006",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "282462.07256904175",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "954320.2797310418453849950641658440276406712734452122408687068114511352418558736265845850148304",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "connector_on_support": {
+              "reference": {
+                "x": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "-0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "-5",
+                  "unit": "kip"
+                },
+                "y": {
+                  "value": "3.6",
+                  "unit": "kip"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "kip"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "1016863.4612485503",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "1412310.36284520875",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "1095551.3160155627203849950641658440276406712734452122408687068114511352418558736265845850148304",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "fingerprint": "0ac17fbc58c12a384932f095c62ff517ec2645352c97b2bff27288b01d778374"
+          },
+          "flange_demand": null,
+          "web_demand": {
+            "fingerprint": "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+            "status": "CALCULATED"
+          },
+          "support_global": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "in"
+              },
+              "y": {
+                "value": "0",
+                "unit": "in"
+              },
+              "z": {
+                "value": "-2.5",
+                "unit": "in"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "16013.5978149378",
+                "unit": "N"
+              },
+              "y": {
+                "value": "-22241.1080763025",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "1412310.36284520875",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "1016863.4612485503",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "-1095551.3160155627203849950641658440276406712734452122408687068114511352418558736265845850148304",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "support_at_wall": {
+            "reference": {
+              "x": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "mm"
+              },
+              "z": {
+                "value": "0",
+                "unit": "mm"
+              }
+            },
+            "force": {
+              "x": {
+                "value": "16013.5978149378",
+                "unit": "N"
+              },
+              "y": {
+                "value": "-22241.1080763025",
+                "unit": "N"
+              },
+              "z": {
+                "value": "0",
+                "unit": "N"
+              }
+            },
+            "moment": {
+              "x": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "y": {
+                "value": "0",
+                "unit": "N-mm"
+              },
+              "z": {
+                "value": "-1095551.3160155627203849950641658440276406712734452122408687068114511352418558736265845850148304",
+                "unit": "N-mm"
+              }
+            }
+          },
+          "out_of_plane_attachment_components": [
+            {
+              "value": "0",
+              "unit": "kip"
+            },
+            {
+              "value": "0.9",
+              "unit": "kip-in"
+            },
+            {
+              "value": "1.25",
+              "unit": "kip-in"
+            }
+          ],
+          "instep_plan_status": "ASCE_8_15_DIRECT_INSTEP_SHEAR_CHECK_REQUIRED"
+        }
+      ],
+      "joint_right_hand_action": {
+        "reference": {
+          "x": {
+            "value": "0.5",
+            "unit": "in"
+          },
+          "y": {
+            "value": "0",
+            "unit": "in"
+          },
+          "z": {
+            "value": "0",
+            "unit": "in"
+          }
+        },
+        "force": {
+          "x": {
+            "value": "20",
+            "unit": "kip"
+          },
+          "y": {
+            "value": "-10",
+            "unit": "kip"
+          },
+          "z": {
+            "value": "0",
+            "unit": "kip"
+          }
+        },
+        "moment": {
+          "x": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "y": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "z": {
+            "value": "-11298482.90276167",
+            "unit": "N-mm"
+          }
+        }
+      },
+      "wall_handoff": {
+        "reference": {
+          "x": {
+            "value": "0",
+            "unit": "mm"
+          },
+          "y": {
+            "value": "0",
+            "unit": "mm"
+          },
+          "z": {
+            "value": "0",
+            "unit": "mm"
+          }
+        },
+        "force": {
+          "x": {
+            "value": "88964.43230521000000000000000000000000000000000000000000000000000000000000000000133446648457815",
+            "unit": "N"
+          },
+          "y": {
+            "value": "-44482.216152605",
+            "unit": "N"
+          },
+          "z": {
+            "value": "0",
+            "unit": "N"
+          }
+        },
+        "moment": {
+          "x": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "y": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "z": {
+            "value": "-11863407.04789975349999999999999999999999999999999999999999999999999999999999999993220910258342998",
+            "unit": "N-mm"
+          }
+        }
+      },
+      "wall_reaction": {
+        "reference": {
+          "x": {
+            "value": "0",
+            "unit": "mm"
+          },
+          "y": {
+            "value": "0",
+            "unit": "mm"
+          },
+          "z": {
+            "value": "0",
+            "unit": "mm"
+          }
+        },
+        "force": {
+          "x": {
+            "value": "-88964.43230521000000000000000000000000000000000000000000000000000000000000000000133446648457815",
+            "unit": "N"
+          },
+          "y": {
+            "value": "44482.216152605",
+            "unit": "N"
+          },
+          "z": {
+            "value": "0",
+            "unit": "N"
+          }
+        },
+        "moment": {
+          "x": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "y": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "z": {
+            "value": "11863407.04789975349999999999999999999999999999999999999999999999999999999999999993220910258342998",
+            "unit": "N-mm"
+          }
+        }
+      },
+      "equilibrium": {
+        "slice5_algebraic_proof": true,
+        "paired_web_symmetry_proof": true,
+        "connector_core_proofs": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "web_group_proofs": [
+          true,
+          true
+        ],
+        "proof_passed": true,
+        "algebraic_wall_target": {
+          "reference": {
+            "x": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "y": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "z": {
+              "value": "0",
+              "unit": "mm"
+            }
+          },
+          "force": {
+            "x": {
+              "value": "20",
+              "unit": "kip"
+            },
+            "y": {
+              "value": "-10",
+              "unit": "kip"
+            },
+            "z": {
+              "value": "0",
+              "unit": "kip"
+            }
+          },
+          "moment": {
+            "x": {
+              "value": "0",
+              "unit": "N-mm"
+            },
+            "y": {
+              "value": "0",
+              "unit": "N-mm"
+            },
+            "z": {
+              "value": "-11863407.0478997535",
+              "unit": "N-mm"
+            }
+          }
+        },
+        "serialized_force_diagnostic": {
+          "x": {
+            "value": "0.00000000000000000000000000000000000000000000000000000000000000000000000000133446648457815",
+            "unit": "N"
+          },
+          "y": {
+            "value": "0",
+            "unit": "N"
+          },
+          "z": {
+            "value": "0",
+            "unit": "N"
+          }
+        },
+        "serialized_moment_diagnostic": {
+          "x": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "y": {
+            "value": "0",
+            "unit": "N-mm"
+          },
+          "z": {
+            "value": "0.00000000000000000000000000000000000000000000000000000000000000000000000006779089741657002",
+            "unit": "N-mm"
+          }
+        },
+        "structural_major_moment": {
+          "value": "11863407.04789975349999999999999999999999999999999999999999999999999999999999999993220910258342998",
+          "unit": "N-mm"
+        },
+        "structural_major_moment_diagnostic": {
+          "value": "-0.00000000000000000000000000000000000000000000000000000000000000000000000006779089741657002",
+          "unit": "N-mm"
+        },
+        "tolerance_used": false,
+        "residual_redistribution": false
+      },
+      "engineering_fingerprint": "4629228f806f8ec9e80c24eca9ee3c33b22dab5f3195eea75490772c94fd0624",
+      "status": "VALID",
+      "design_check_ready": true,
+      "applied_actions": {
+        "axial": {
+          "value": "20",
+          "unit": "kip"
+        },
+        "major_shear": {
+          "value": "-10",
+          "unit": "kip"
+        },
+        "structural_major_moment": {
+          "value": "100",
+          "unit": "kip-in"
+        },
+        "minor_shear": {
+          "value": "0",
+          "unit": "kip"
+        },
+        "minor_moment": {
+          "value": "0",
+          "unit": "kip-in"
+        },
+        "torsion": {
+          "value": "0",
+          "unit": "kip-in"
+        }
+      },
+      "resistance_evaluated": false,
+      "whole_connection_status": "EXTERNAL_ANCHOR_CONCRETE_DESIGN_REQUIRED",
+      "sign_method": "EXACT_WI_NEGATIVE_END_STRUCTURAL_TO_RIGHT_HAND_WRENCH_MAP_RC1",
+      "allocation_method": "RATIONAL_SYMMETRIC_PAIRED_WEB_ANGLE_WRENCH_ALLOCATION_RC1",
+      "wall_method": "EXACT_FOUR_ANGLE_WALL_SUPPORT_HANDOFF_ASSEMBLY_RC1",
+      "numeric_authority": [
+        "STAGE_4_2_RC1_R7",
+        "SLICE5_NATIVE_DECIMAL80_HALF_EVEN",
+        "STAGE42_PRE_CORE_DECIMAL80_HALF_EVEN",
+        "SLICE7_NATIVE_UNCHANGED",
+        "STAGE42_POST_CORE_EXACT_FINITE_RATIONAL",
+        "R4_WEB_HEEL_GRID_REFERENCE_0_2",
+        "R5_NATIVE_STAGE25A_FLANGES",
+        "R6_NATIVE_STATUS_AND_PURE_MOMENT_PROOF_TARGET",
+        "R7_NATIVE_GOVERNING_SELECTION"
+      ],
+      "disclaimer_id": "WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_DISCLAIMER_RC1",
+      "disclaimer": "Rational W/I beam-to-concrete-wall moment connection requiring engineering review and Section 2.3.2 qualification. Qualified connector and member-attachment sources must cover the complete signed wrench, including through-thickness, prying, contact and secondary bolt bending. Anchor/concrete design and individual anchor distribution are external. Stiffness, rotation capacity and full-strength classification are not evaluated.",
+      "qualification": "REQUIRED_2_3_2",
+      "stiffness": "NOT_EVALUATED",
+      "rotation_capacity": "NOT_EVALUATED",
+      "full_strength_classification": "NOT_EVALUATED",
+      "flexible_fixture_status": "FLEXIBLE_FIXTURE_PRYING_DISTRIBUTION_EXTERNAL_REQUIRED",
+      "source_plans": [
+        {
+          "connector_id": "TOP_FLANGE_ANGLE",
+          "method": "QUALIFIED_FRP_ANGLE_CONNECTOR_FULL_WRENCH_SOURCE",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "8d8f60f3555f0203d2b533fe31de7efe33a1f86fafa9e86f0fb2006eccc3495b",
+            "support_fixture": "4add385cf6e4448fdce2f7b3a8f35b55d20d6756cc5befc78cac18f60f7e1b89",
+            "references": "5a9d7c66702ce4107d6b6e3fc812e42661eadde8cf0ecec4c5b104560ded4242"
+          },
+          "required_coverage": [
+            "ANGLE_BODY",
+            "HEEL_INSTEP",
+            "MEMBER_LEG",
+            "SUPPORT_LEG",
+            "OUT_OF_PLANE",
+            "THROUGH_THICKNESS_DELAMINATION",
+            "CONTACT",
+            "PRYING_EFFECT_ON_CONNECTOR",
+            "SECONDARY_BOLT_BENDING_EFFECT_ON_CONNECTOR",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "TOP_FLANGE_ANGLE",
+          "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "ef826abf53a149523a09993733f732714ec20e2261fde53938087e777992c031",
+            "support_fixture": "4add385cf6e4448fdce2f7b3a8f35b55d20d6756cc5befc78cac18f60f7e1b89",
+            "references": "5a9d7c66702ce4107d6b6e3fc812e42661eadde8cf0ecec4c5b104560ded4242"
+          },
+          "required_coverage": [
+            "MEMBER_THROUGH_THICKNESS_PULL_THROUGH_DELAMINATION",
+            "BOLT_AXIS_FORCE_DISTRIBUTION",
+            "SECONDARY_BOLT_BENDING",
+            "LOCAL_LEG_MEMBER_BENDING_PRYING",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "BOTTOM_FLANGE_ANGLE",
+          "method": "QUALIFIED_FRP_ANGLE_CONNECTOR_FULL_WRENCH_SOURCE",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "8d8f60f3555f0203d2b533fe31de7efe33a1f86fafa9e86f0fb2006eccc3495b",
+            "support_fixture": "4add385cf6e4448fdce2f7b3a8f35b55d20d6756cc5befc78cac18f60f7e1b89",
+            "references": "0f3907a2e138935391711f6d923689c5bb92b3ddd223c083a8d8f4fe1e9d55af"
+          },
+          "required_coverage": [
+            "ANGLE_BODY",
+            "HEEL_INSTEP",
+            "MEMBER_LEG",
+            "SUPPORT_LEG",
+            "OUT_OF_PLANE",
+            "THROUGH_THICKNESS_DELAMINATION",
+            "CONTACT",
+            "PRYING_EFFECT_ON_CONNECTOR",
+            "SECONDARY_BOLT_BENDING_EFFECT_ON_CONNECTOR",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "BOTTOM_FLANGE_ANGLE",
+          "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "c41e619ab42b32120a60ec5bca80a0939fd9f83d29134589d60ade4baf6795c0",
+            "support_fixture": "4add385cf6e4448fdce2f7b3a8f35b55d20d6756cc5befc78cac18f60f7e1b89",
+            "references": "0f3907a2e138935391711f6d923689c5bb92b3ddd223c083a8d8f4fe1e9d55af"
+          },
+          "required_coverage": [
+            "MEMBER_THROUGH_THICKNESS_PULL_THROUGH_DELAMINATION",
+            "BOLT_AXIS_FORCE_DISTRIBUTION",
+            "SECONDARY_BOLT_BENDING",
+            "LOCAL_LEG_MEMBER_BENDING_PRYING",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "POSITIVE_WEB_ANGLE",
+          "method": "QUALIFIED_FRP_ANGLE_CONNECTOR_FULL_WRENCH_SOURCE",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "d893cfb0504344c1078d902fe7dc90a86dab07068f0c5d94e76da1a9c5a49b4d",
+            "support_fixture": "d4222afba27b824a42cf0acd0bccb19e2a49dd0aeb5573f71f13fd78020f77d7",
+            "references": "4b90a13dabdcc3bb9041c1c5565a3db38b717ab95e52c85c00812e6670f58fa7"
+          },
+          "required_coverage": [
+            "ANGLE_BODY",
+            "HEEL_INSTEP",
+            "MEMBER_LEG",
+            "SUPPORT_LEG",
+            "OUT_OF_PLANE",
+            "THROUGH_THICKNESS_DELAMINATION",
+            "CONTACT",
+            "PRYING_EFFECT_ON_CONNECTOR",
+            "SECONDARY_BOLT_BENDING_EFFECT_ON_CONNECTOR",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "POSITIVE_WEB_ANGLE",
+          "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "63e90d6d1bd9bee6b1732e8bee069226ab17df47340b1cd1208080fc7c6fb5fd",
+            "support_fixture": "d4222afba27b824a42cf0acd0bccb19e2a49dd0aeb5573f71f13fd78020f77d7",
+            "references": "4b90a13dabdcc3bb9041c1c5565a3db38b717ab95e52c85c00812e6670f58fa7"
+          },
+          "required_coverage": [
+            "MEMBER_THROUGH_THICKNESS_PULL_THROUGH_DELAMINATION",
+            "BOLT_AXIS_FORCE_DISTRIBUTION",
+            "SECONDARY_BOLT_BENDING",
+            "LOCAL_LEG_MEMBER_BENDING_PRYING",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "NEGATIVE_WEB_ANGLE",
+          "method": "QUALIFIED_FRP_ANGLE_CONNECTOR_FULL_WRENCH_SOURCE",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "d893cfb0504344c1078d902fe7dc90a86dab07068f0c5d94e76da1a9c5a49b4d",
+            "support_fixture": "d4222afba27b824a42cf0acd0bccb19e2a49dd0aeb5573f71f13fd78020f77d7",
+            "references": "c8a5c3b171df53f855d35a9d1a6519f1e1a5c1182ff89715c051fbf059a25a7b"
+          },
+          "required_coverage": [
+            "ANGLE_BODY",
+            "HEEL_INSTEP",
+            "MEMBER_LEG",
+            "SUPPORT_LEG",
+            "OUT_OF_PLANE",
+            "THROUGH_THICKNESS_DELAMINATION",
+            "CONTACT",
+            "PRYING_EFFECT_ON_CONNECTOR",
+            "SECONDARY_BOLT_BENDING_EFFECT_ON_CONNECTOR",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        },
+        {
+          "connector_id": "NEGATIVE_WEB_ANGLE",
+          "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+          "selected_reference": "",
+          "binding": {
+            "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+            "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+            "member_fasteners": "49e15052a897aecc2db725e9afec2bafbda8a5bcdefcf743e2b2ff6faf8dc6ff",
+            "support_fixture": "d4222afba27b824a42cf0acd0bccb19e2a49dd0aeb5573f71f13fd78020f77d7",
+            "references": "c8a5c3b171df53f855d35a9d1a6519f1e1a5c1182ff89715c051fbf059a25a7b"
+          },
+          "required_coverage": [
+            "MEMBER_THROUGH_THICKNESS_PULL_THROUGH_DELAMINATION",
+            "BOLT_AXIS_FORCE_DISTRIBUTION",
+            "SECONDARY_BOLT_BENDING",
+            "LOCAL_LEG_MEMBER_BENDING_PRYING",
+            "COMBINED_INTERACTION"
+          ],
+          "resistance_evaluated": false
+        }
+      ]
+    },
+    "status": "FAIL",
+    "status_reason": "EVALUATED_FAILURE_OUTRANKS_MISSING_QUALIFIED_SOURCE",
+    "native_governing_check_ids": [
+      "FIRST_ROW:TOP_FLANGE_ANGLE"
+    ],
+    "native_failed_checks": [
+      {
+        "result_id": "PIN_BEARING:TOP_FLANGE_ANGLE:B_R1_L1",
+        "limit_state": "PIN_BEARING",
+        "utilization": "3.16933364207686901555498681728395061728395061728395061728395",
+        "design_resistance": {
+          "value": "5404.5892625415075",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:TOP_FLANGE_ANGLE:B_R1_L2",
+        "limit_state": "PIN_BEARING",
+        "utilization": "3.16933364207686901555498681728395061728395061728395061728395",
+        "design_resistance": {
+          "value": "5404.5892625415075",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:TOP_FLANGE_ANGLE:B_R2_L1",
+        "limit_state": "PIN_BEARING",
+        "utilization": "3.16933364207686901555498681728395061728395061728395061728395",
+        "design_resistance": {
+          "value": "5404.5892625415075",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:TOP_FLANGE_ANGLE:B_R2_L2",
+        "limit_state": "PIN_BEARING",
+        "utilization": "3.16933364207686901555498681728395061728395061728395061728395",
+        "design_resistance": {
+          "value": "5404.5892625415075",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "FIRST_ROW:TOP_FLANGE_ANGLE",
+        "limit_state": "FIRST_ROW_NET_TENSION",
+        "utilization": "6.3386672841537380311099736345679012345679012345679012345679",
+        "design_resistance": {
+          "value": "5404.5892625415075",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7.701480750246791707798617966",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "INTERROW:TOP_FLANGE_ANGLE:BOLT_LINE_1",
+        "limit_state": "INTERROW_SHEAR_OUT",
+        "utilization": "2.49822668126608871664125711458276047014332086881979780037359",
+        "design_resistance": {
+          "value": "13712.8841828711489295",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7.70148075024679170779861796643632773938795656465942744323790720631786771964462",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "INTERROW:TOP_FLANGE_ANGLE:BOLT_LINE_2",
+        "limit_state": "INTERROW_SHEAR_OUT",
+        "utilization": "2.49822668126608871664125711458276047014332086881979780037359",
+        "design_resistance": {
+          "value": "13712.8841828711489295",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7.70148075024679170779861796643632773938795656465942744323790720631786771964462",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:WI_TOP_FLANGE:B_R1_L1",
+        "limit_state": "PIN_BEARING",
+        "utilization": "1.90160018524612140933299209037037037037037037037037037037037",
+        "design_resistance": {
+          "value": "9007.6487709025125",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:WI_TOP_FLANGE:B_R1_L2",
+        "limit_state": "PIN_BEARING",
+        "utilization": "1.90160018524612140933299209037037037037037037037037037037037",
+        "design_resistance": {
+          "value": "9007.6487709025125",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:WI_TOP_FLANGE:B_R2_L1",
+        "limit_state": "PIN_BEARING",
+        "utilization": "1.90160018524612140933299209037037037037037037037037037037037",
+        "design_resistance": {
+          "value": "9007.6487709025125",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "PIN_BEARING:WI_TOP_FLANGE:B_R2_L2",
+        "limit_state": "PIN_BEARING",
+        "utilization": "1.90160018524612140933299209037037037037037037037037037037037",
+        "design_resistance": {
+          "value": "9007.6487709025125",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "3.850740375123395853899308983",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "FIRST_ROW:WI_TOP_FLANGE",
+        "limit_state": "FIRST_ROW_NET_TENSION",
+        "utilization": "1.29654558084962823363613097070707070707070707070707070707071",
+        "design_resistance": {
+          "value": "26422.43639464737",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7.701480750246791707798617966",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "INTERROW:WI_TOP_FLANGE:BOLT_LINE_1",
+        "limit_state": "INTERROW_SHEAR_OUT",
+        "utilization": "3.06127078342206994644546200856129562230543961320109097151932",
+        "design_resistance": {
+          "value": "11190.7425270184454295",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7.70148075024679170779861796643632773938795656465942744323790720631786771964462",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "INTERROW:WI_TOP_FLANGE:BOLT_LINE_2",
+        "limit_state": "INTERROW_SHEAR_OUT",
+        "utilization": "3.06127078342206994644546200856129562230543961320109097151932",
+        "design_resistance": {
+          "value": "11190.7425270184454295",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7.70148075024679170779861796643632773938795656465942744323790720631786771964462",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      },
+      {
+        "result_id": "FIRST_ROW:BOTTOM_FLANGE_ANGLE",
+        "limit_state": "FIRST_ROW_NET_TENSION",
+        "utilization": "1.07117757221958165250915058930041152263374485596707818930041",
+        "design_resistance": {
+          "value": "5404.5892625415075",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "1.301480750246791707798617966",
+          "unit": "kip"
+        },
+        "numerical_comparison": "FAIL"
+      }
+    ],
+    "missing_sources": [
+      "TOP_FLANGE_ANGLE:CONNECTOR_SOURCE:SOURCE_REQUIRED",
+      "TOP_FLANGE_ANGLE:MEMBER_ATTACHMENT_SOURCE:SOURCE_REQUIRED",
+      "BOTTOM_FLANGE_ANGLE:CONNECTOR_SOURCE:SOURCE_REQUIRED",
+      "BOTTOM_FLANGE_ANGLE:MEMBER_ATTACHMENT_SOURCE:SOURCE_REQUIRED",
+      "POSITIVE_WEB_ANGLE:CONNECTOR_SOURCE:SOURCE_REQUIRED",
+      "POSITIVE_WEB_ANGLE:MEMBER_ATTACHMENT_SOURCE:SOURCE_REQUIRED",
+      "NEGATIVE_WEB_ANGLE:CONNECTOR_SOURCE:SOURCE_REQUIRED",
+      "NEGATIVE_WEB_ANGLE:MEMBER_ATTACHMENT_SOURCE:SOURCE_REQUIRED"
+    ],
+    "connector_results": [
+      {
+        "core_fingerprint": "51d0dab9e28c6c84c3a593071fe413166dee2a306323ddf1fc8d6475ca27f554",
+        "provider_id": "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "status": "SOURCE_REQUIRED",
+        "reason": "SOURCE_REQUIRED",
+        "detail": {
+          "body": {
+            "status": "SOURCE_REQUIRED",
+            "utilization": null,
+            "terms": [],
+            "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+            "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+          },
+          "instep": {
+            "length": {
+              "value": "8",
+              "unit": "in"
+            },
+            "demand": {
+              "value": "0",
+              "unit": "kip"
+            },
+            "factors": {
+              "property_traces": [
+                {
+                  "property_kind": "FSH_LT",
+                  "source_property": {
+                    "value": "8",
+                    "unit": "ksi"
+                  },
+                  "qualification_status": "DEVELOPMENT_ONLY",
+                  "cm": "1",
+                  "ct": "1",
+                  "cch": "1",
+                  "adjusted_property": {
+                    "value": "55.1580583453468906937813875627751255502511005022010044020088",
+                    "unit": "MPa"
+                  }
+                }
+              ],
+              "nominal_resistance": {
+                "value": "32",
+                "unit": "kip"
+              },
+              "c_delta": "1",
+              "c_lap": "1",
+              "phi": "0.7",
+              "lambda_factor": "1",
+              "design_resistance": {
+                "value": "22.4",
+                "unit": "kip"
+              }
+            },
+            "utilization": "0",
+            "passed": true,
+            "source": {
+              "standard_name": "ASCE/SEI 74-23",
+              "edition": "2023",
+              "chapter": "8",
+              "section": "8.3.4",
+              "equation_reference": "8-15",
+              "errata_identifier": "Erratum 1",
+              "errata_effective_date": "2026-01-13",
+              "chapter_affected_by_errata": false,
+              "interpretation_id": null,
+              "source_classification": "CODE_CHARACTERISTIC",
+              "source_revision": "RC2_VERIFIED_2026-08-08",
+              "engineer_approval_authority": null,
+              "engineer_approval_date": null
+            },
+            "method": "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1",
+            "covered_component": "F_A"
+          }
+        },
+        "fingerprint": "82e58c888994b2571ae7fa1c8deb8ed333b32e324d3dfa12e7041dda17a8301d",
+        "contract": "ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1"
+      },
+      {
+        "core_fingerprint": "aea98dbb743fcda5eb2efc89466850995a85b0073ad4c44892399ff5d72d358d",
+        "provider_id": "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "status": "SOURCE_REQUIRED",
+        "reason": "SOURCE_REQUIRED",
+        "detail": {
+          "body": {
+            "status": "SOURCE_REQUIRED",
+            "utilization": null,
+            "terms": [],
+            "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+            "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+          },
+          "instep": {
+            "length": {
+              "value": "8",
+              "unit": "in"
+            },
+            "demand": {
+              "value": "0",
+              "unit": "kip"
+            },
+            "factors": {
+              "property_traces": [
+                {
+                  "property_kind": "FSH_LT",
+                  "source_property": {
+                    "value": "8",
+                    "unit": "ksi"
+                  },
+                  "qualification_status": "DEVELOPMENT_ONLY",
+                  "cm": "1",
+                  "ct": "1",
+                  "cch": "1",
+                  "adjusted_property": {
+                    "value": "55.1580583453468906937813875627751255502511005022010044020088",
+                    "unit": "MPa"
+                  }
+                }
+              ],
+              "nominal_resistance": {
+                "value": "32",
+                "unit": "kip"
+              },
+              "c_delta": "1",
+              "c_lap": "1",
+              "phi": "0.7",
+              "lambda_factor": "1",
+              "design_resistance": {
+                "value": "22.4",
+                "unit": "kip"
+              }
+            },
+            "utilization": "0",
+            "passed": true,
+            "source": {
+              "standard_name": "ASCE/SEI 74-23",
+              "edition": "2023",
+              "chapter": "8",
+              "section": "8.3.4",
+              "equation_reference": "8-15",
+              "errata_identifier": "Erratum 1",
+              "errata_effective_date": "2026-01-13",
+              "chapter_affected_by_errata": false,
+              "interpretation_id": null,
+              "source_classification": "CODE_CHARACTERISTIC",
+              "source_revision": "RC2_VERIFIED_2026-08-08",
+              "engineer_approval_authority": null,
+              "engineer_approval_date": null
+            },
+            "method": "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1",
+            "covered_component": "F_A"
+          }
+        },
+        "fingerprint": "9f8256483be2d471cdc311393ba082e2af9ae1a1768491b3946fbc45866e0c38",
+        "contract": "ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1"
+      },
+      {
+        "core_fingerprint": "396fd9a0153a188f1d601a7c233c1df47dfb4a30bdfe805ff1fc040609bad354",
+        "provider_id": "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "status": "SOURCE_REQUIRED",
+        "reason": "SOURCE_REQUIRED",
+        "detail": {
+          "body": {
+            "status": "SOURCE_REQUIRED",
+            "utilization": null,
+            "terms": [],
+            "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+            "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+          },
+          "instep": {
+            "length": {
+              "value": "8",
+              "unit": "in"
+            },
+            "demand": {
+              "value": "5",
+              "unit": "kip"
+            },
+            "factors": {
+              "property_traces": [
+                {
+                  "property_kind": "FSH_LT",
+                  "source_property": {
+                    "value": "8",
+                    "unit": "ksi"
+                  },
+                  "qualification_status": "DEVELOPMENT_ONLY",
+                  "cm": "1",
+                  "ct": "1",
+                  "cch": "1",
+                  "adjusted_property": {
+                    "value": "55.1580583453468906937813875627751255502511005022010044020088",
+                    "unit": "MPa"
+                  }
+                }
+              ],
+              "nominal_resistance": {
+                "value": "32",
+                "unit": "kip"
+              },
+              "c_delta": "1",
+              "c_lap": "1",
+              "phi": "0.7",
+              "lambda_factor": "1",
+              "design_resistance": {
+                "value": "22.4",
+                "unit": "kip"
+              }
+            },
+            "utilization": "0.22321428571428571428571428571428571428571428571428571428571428571428571428571429",
+            "passed": true,
+            "source": {
+              "standard_name": "ASCE/SEI 74-23",
+              "edition": "2023",
+              "chapter": "8",
+              "section": "8.3.4",
+              "equation_reference": "8-15",
+              "errata_identifier": "Erratum 1",
+              "errata_effective_date": "2026-01-13",
+              "chapter_affected_by_errata": false,
+              "interpretation_id": null,
+              "source_classification": "CODE_CHARACTERISTIC",
+              "source_revision": "RC2_VERIFIED_2026-08-08",
+              "engineer_approval_authority": null,
+              "engineer_approval_date": null
+            },
+            "method": "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1",
+            "covered_component": "F_A"
+          }
+        },
+        "fingerprint": "d99b8a21ff9dc9327bf63cc77257a2e45f1a4767928544651b0578703b262e3f",
+        "contract": "ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1"
+      },
+      {
+        "core_fingerprint": "0ac17fbc58c12a384932f095c62ff517ec2645352c97b2bff27288b01d778374",
+        "provider_id": "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "status": "SOURCE_REQUIRED",
+        "reason": "SOURCE_REQUIRED",
+        "detail": {
+          "body": {
+            "status": "SOURCE_REQUIRED",
+            "utilization": null,
+            "terms": [],
+            "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+            "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+          },
+          "instep": {
+            "length": {
+              "value": "8",
+              "unit": "in"
+            },
+            "demand": {
+              "value": "5",
+              "unit": "kip"
+            },
+            "factors": {
+              "property_traces": [
+                {
+                  "property_kind": "FSH_LT",
+                  "source_property": {
+                    "value": "8",
+                    "unit": "ksi"
+                  },
+                  "qualification_status": "DEVELOPMENT_ONLY",
+                  "cm": "1",
+                  "ct": "1",
+                  "cch": "1",
+                  "adjusted_property": {
+                    "value": "55.1580583453468906937813875627751255502511005022010044020088",
+                    "unit": "MPa"
+                  }
+                }
+              ],
+              "nominal_resistance": {
+                "value": "32",
+                "unit": "kip"
+              },
+              "c_delta": "1",
+              "c_lap": "1",
+              "phi": "0.7",
+              "lambda_factor": "1",
+              "design_resistance": {
+                "value": "22.4",
+                "unit": "kip"
+              }
+            },
+            "utilization": "0.22321428571428571428571428571428571428571428571428571428571428571428571428571429",
+            "passed": true,
+            "source": {
+              "standard_name": "ASCE/SEI 74-23",
+              "edition": "2023",
+              "chapter": "8",
+              "section": "8.3.4",
+              "equation_reference": "8-15",
+              "errata_identifier": "Erratum 1",
+              "errata_effective_date": "2026-01-13",
+              "chapter_affected_by_errata": false,
+              "interpretation_id": null,
+              "source_classification": "CODE_CHARACTERISTIC",
+              "source_revision": "RC2_VERIFIED_2026-08-08",
+              "engineer_approval_authority": null,
+              "engineer_approval_date": null
+            },
+            "method": "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1",
+            "covered_component": "F_A"
+          }
+        },
+        "fingerprint": "ff5be63436b88d8dfa2d7191d1fe0a7fae99c5ac182778d722730132de1b25d2",
+        "contract": "ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1"
+      }
+    ],
+    "attachment_results": [
+      {
+        "connector_id": "TOP_FLANGE_ANGLE",
+        "binding": {
+          "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+          "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+          "member_fasteners": "ef826abf53a149523a09993733f732714ec20e2261fde53938087e777992c031",
+          "support_fixture": "4add385cf6e4448fdce2f7b3a8f35b55d20d6756cc5befc78cac18f60f7e1b89",
+          "references": "5a9d7c66702ce4107d6b6e3fc812e42661eadde8cf0ecec4c5b104560ded4242"
+        },
+        "source_reference": "",
+        "source_version": null,
+        "coverage": [],
+        "check": {
+          "status": "SOURCE_REQUIRED",
+          "utilization": null,
+          "terms": [],
+          "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+          "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+        },
+        "fingerprint": "802ed1ce9799d940d5d2808ae37ccac0e50371689b4f6d4f85a4c1fc830c8023",
+        "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+        "individual_bolt_axis_forces": null,
+        "invented_prying": false
+      },
+      {
+        "connector_id": "BOTTOM_FLANGE_ANGLE",
+        "binding": {
+          "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+          "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+          "member_fasteners": "c41e619ab42b32120a60ec5bca80a0939fd9f83d29134589d60ade4baf6795c0",
+          "support_fixture": "4add385cf6e4448fdce2f7b3a8f35b55d20d6756cc5befc78cac18f60f7e1b89",
+          "references": "0f3907a2e138935391711f6d923689c5bb92b3ddd223c083a8d8f4fe1e9d55af"
+        },
+        "source_reference": "",
+        "source_version": null,
+        "coverage": [],
+        "check": {
+          "status": "SOURCE_REQUIRED",
+          "utilization": null,
+          "terms": [],
+          "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+          "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+        },
+        "fingerprint": "29f2dcf3104d118acbbfaf04afad5dd406ffbd20f3f5aa8d2745f9e1bcb9c16d",
+        "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+        "individual_bolt_axis_forces": null,
+        "invented_prying": false
+      },
+      {
+        "connector_id": "POSITIVE_WEB_ANGLE",
+        "binding": {
+          "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+          "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+          "member_fasteners": "63e90d6d1bd9bee6b1732e8bee069226ab17df47340b1cd1208080fc7c6fb5fd",
+          "support_fixture": "d4222afba27b824a42cf0acd0bccb19e2a49dd0aeb5573f71f13fd78020f77d7",
+          "references": "4b90a13dabdcc3bb9041c1c5565a3db38b717ab95e52c85c00812e6670f58fa7"
+        },
+        "source_reference": "",
+        "source_version": null,
+        "coverage": [],
+        "check": {
+          "status": "SOURCE_REQUIRED",
+          "utilization": null,
+          "terms": [],
+          "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+          "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+        },
+        "fingerprint": "e4e40d25f1b9972072d8b1a9720986d52882c3920413e0c8af83dbcd66415e2f",
+        "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+        "individual_bolt_axis_forces": null,
+        "invented_prying": false
+      },
+      {
+        "connector_id": "NEGATIVE_WEB_ANGLE",
+        "binding": {
+          "geometry": "f8eafa5b33618c28ff2d446811b1f382902491e00f1bed00804456d8b111f3c4",
+          "material": "867192c84d5bacab2ead091b866aeeb7cd874f8d113df16e252f40855ba9826d",
+          "member_fasteners": "49e15052a897aecc2db725e9afec2bafbda8a5bcdefcf743e2b2ff6faf8dc6ff",
+          "support_fixture": "d4222afba27b824a42cf0acd0bccb19e2a49dd0aeb5573f71f13fd78020f77d7",
+          "references": "c8a5c3b171df53f855d35a9d1a6519f1e1a5c1182ff89715c051fbf059a25a7b"
+        },
+        "source_reference": "",
+        "source_version": null,
+        "coverage": [],
+        "check": {
+          "status": "SOURCE_REQUIRED",
+          "utilization": null,
+          "terms": [],
+          "method": "QUALIFIED_FRP_ANGLE_ASSEMBLY_FULL_WRENCH_ENVELOPE_RC1",
+          "interaction_method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1"
+        },
+        "fingerprint": "046aa0109f51a1ed6ad0ae331a2a1146f6568d97e740ee793827cf90d8590189",
+        "method": "QUALIFIED_FRP_MEMBER_ANGLE_ATTACHMENT_SOURCE_RC1",
+        "individual_bolt_axis_forces": null,
+        "invented_prying": false
+      }
+    ],
+    "local_checks": [
+      {
+        "connector_id": "TOP_FLANGE_ANGLE",
+        "layer_id": "TOP_FLANGE_ANGLE",
+        "scope_status": "NATIVE_STAGE25A_HANDOFF_GROUP_MODE"
+      },
+      {
+        "connector_id": "TOP_FLANGE_ANGLE",
+        "layer_id": "WI_TOP_FLANGE",
+        "scope_status": "NATIVE_STAGE25A_HANDOFF_GROUP_MODE"
+      },
+      {
+        "connector_id": "BOTTOM_FLANGE_ANGLE",
+        "layer_id": "BOTTOM_FLANGE_ANGLE",
+        "scope_status": "NATIVE_STAGE25A_HANDOFF_GROUP_MODE"
+      },
+      {
+        "connector_id": "BOTTOM_FLANGE_ANGLE",
+        "layer_id": "WI_BOTTOM_FLANGE",
+        "scope_status": "NATIVE_STAGE25A_HANDOFF_GROUP_MODE"
+      },
+      {
+        "connector_id": "POSITIVE_WEB_ANGLE",
+        "layer_id": "POSITIVE_WEB_ANGLE",
+        "scope_status": "NOT_EVALUATED_FORCE_ALIGNED_PRESCRIBED_ROW_COMPATIBILITY_REQUIRED"
+      },
+      {
+        "connector_id": "POSITIVE_WEB_ANGLE",
+        "layer_id": "WI_WEB",
+        "scope_status": "NOT_EVALUATED_FORCE_ALIGNED_PRESCRIBED_ROW_COMPATIBILITY_REQUIRED"
+      },
+      {
+        "connector_id": "NEGATIVE_WEB_ANGLE",
+        "layer_id": "NEGATIVE_WEB_ANGLE",
+        "scope_status": "NOT_EVALUATED_FORCE_ALIGNED_PRESCRIBED_ROW_COMPATIBILITY_REQUIRED"
+      }
+    ],
+    "web_bearing": [
+      {
+        "check_id": "BEARING:POSITIVE_WEB_ANGLE:B_R1_L1",
+        "layer_id": "POSITIVE_WEB_ANGLE",
+        "bolt_id": "B_R1_L1",
+        "force_a": {
+          "value": "6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "6763.9399696623597339881950937731609765152748681296474946013040173262318745269954",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.750910713960337224411456070186728287582962146789214714251919",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:POSITIVE_WEB_ANGLE:B_R1_L2",
+        "layer_id": "POSITIVE_WEB_ANGLE",
+        "bolt_id": "B_R1_L2",
+        "force_a": {
+          "value": "6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7778.5553353728503594601354087709740701767050183852765630826230403268323486268643",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.863550026561868893353033869365523017628822735051817932329767",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:POSITIVE_WEB_ANGLE:B_R2_L1",
+        "layer_id": "POSITIVE_WEB_ANGLE",
+        "bolt_id": "B_R2_L1",
+        "force_a": {
+          "value": "5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "5958.5509076091711131494633453306415528604310832791330084083006058006882209242121",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.661499028121204149874088072931978190457176220100792268687069",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:POSITIVE_WEB_ANGLE:B_R2_L2",
+        "layer_id": "POSITIVE_WEB_ANGLE",
+        "bolt_id": "B_R2_L2",
+        "force_a": {
+          "value": "5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7089.3841841750591813394166350615161704174903185173069199605832742693392316973918",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.78704047687515965533740766699807879313614564166970969456807",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:NEGATIVE_WEB_ANGLE:B_R1_L1",
+        "layer_id": "NEGATIVE_WEB_ANGLE",
+        "bolt_id": "B_R1_L1",
+        "force_a": {
+          "value": "-6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7778.5553353728503594601354087709740701767050183852765630826230403268323486268643",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.863550026561868893353033869365523017628822735051817932329767",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb"
+        ]
+      },
+      {
+        "check_id": "BEARING:NEGATIVE_WEB_ANGLE:B_R1_L2",
+        "layer_id": "NEGATIVE_WEB_ANGLE",
+        "bolt_id": "B_R1_L2",
+        "force_a": {
+          "value": "-6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "6763.9399696623597339881950937731609765152748681296474946013040173262318745269954",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.750910713960337224411456070186728287582962146789214714251919",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb"
+        ]
+      },
+      {
+        "check_id": "BEARING:NEGATIVE_WEB_ANGLE:B_R2_L1",
+        "layer_id": "NEGATIVE_WEB_ANGLE",
+        "bolt_id": "B_R2_L1",
+        "force_a": {
+          "value": "-5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "7089.3841841750591813394166350615161704174903185173069199605832742693392316973918",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.78704047687515965533740766699807879313614564166970969456807",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb"
+        ]
+      },
+      {
+        "check_id": "BEARING:NEGATIVE_WEB_ANGLE:B_R2_L2",
+        "layer_id": "NEGATIVE_WEB_ANGLE",
+        "bolt_id": "B_R2_L2",
+        "force_a": {
+          "value": "-5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "5958.5509076091711131494633453306415528604310832791330084083006058006882209242121",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "PASS",
+          "utilization": "0.661499028121204149874088072931978190457176220100792268687069",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb"
+        ]
+      },
+      {
+        "check_id": "BEARING:WI_WEB:COMMON_WEB:B_R1_L1",
+        "layer_id": "WI_WEB",
+        "bolt_id": "COMMON_WEB:B_R1_L1",
+        "force_a": {
+          "value": "-12041.960917653219315564330371832839749917736097400460677854557420204014478446858",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "9849.6126664728386311286607436656794998354721948009213557091148404080289568937152",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "15557.110670745700718920270817541948140353410036770553126165246080653664697253728",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "FAIL",
+          "utilization": "1.72710005312373778670606773873104603525764547010363586465953",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:WI_WEB:COMMON_WEB:B_R1_L2",
+        "layer_id": "WI_WEB",
+        "bolt_id": "COMMON_WEB:B_R1_L2",
+        "force_a": {
+          "value": "-12041.960917653219315564330371832839749917736097400460677854557420204014478446858",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "6163.9851484649613688713392563343205001645278051990786442908851595919710431062848",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "13527.879939324719467976390187546321953030549736259294989202608034652463749053991",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "FAIL",
+          "utilization": "1.50182142792067444882291214037345657516592429357842942850384",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:WI_WEB:COMMON_WEB:B_R2_L1",
+        "layer_id": "WI_WEB",
+        "bolt_id": "COMMON_WEB:B_R2_L1",
+        "force_a": {
+          "value": "-10199.147158649280684435669628167160250082263902599539322145442579795985521553142",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "9849.6126664728386311286607436656794998354721948009213557091148404080289568937152",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "14178.768368350118362678833270123032340834980637034613839921166548538678463394783",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "FAIL",
+          "utilization": "1.57408095375031931067481533399615758627229128333941938913614",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      },
+      {
+        "check_id": "BEARING:WI_WEB:COMMON_WEB:B_R2_L2",
+        "layer_id": "WI_WEB",
+        "bolt_id": "COMMON_WEB:B_R2_L2",
+        "force_a": {
+          "value": "-10199.147158649280684435669628167160250082263902599539322145442579795985521553142",
+          "unit": "N"
+        },
+        "force_b": {
+          "value": "6163.9851484649613688713392563343205001645278051990786442908851595919710431062848",
+          "unit": "N"
+        },
+        "demand": {
+          "value": "11917.101815218342226298926690661283105720862166558266016816601211601376441848424",
+          "unit": "N"
+        },
+        "material_direction": "TRANSVERSE",
+        "trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi"
+            },
+            "qualification_status": "DEVELOPMENT_ONLY",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi"
+                },
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N"
+            },
+            "c_delta": "0.75",
+            "c_lap": "1",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "9007.6487709025125",
+              "unit": "N"
+            }
+          }
+        },
+        "comparison": {
+          "numerical_comparison": "FAIL",
+          "utilization": "1.32299805624240829974817614586395638091435244020158453737414",
+          "warnings": []
+        },
+        "demand_fingerprints": [
+          "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598"
+        ]
+      }
+    ],
+    "common_web_bolts": [
+      {
+        "bolt_id": "COMMON_WEB:B_R1_L1",
+        "physical_path": [
+          "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+          "WI_WEB",
+          "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+        ],
+        "physical_shear_plane_count": 2,
+        "outer_plane": {
+          "force_l": {
+            "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "group_id": "NEGATIVE_WEB_ANGLE",
+          "bolt_id": "B_R1_L1"
+        },
+        "inner_plane": {
+          "force_l": {
+            "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598",
+          "group_id": "POSITIVE_WEB_ANGLE",
+          "bolt_id": "B_R1_L2"
+        },
+        "planes_equal": true,
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "source_authorized": false,
+        "thread_condition": "EXCLUDED",
+        "per_plane_design_capacity": null,
+        "outer_utilization": null,
+        "inner_utilization": null,
+        "governing_utilization": null,
+        "status": "NOT_EVALUATED",
+        "source_required_reason": "SOURCE_AUTHORIZED_FNV_REQUIRED",
+        "resistance_trace": null,
+        "bolt_axis_tension": {
+          "value": "0",
+          "unit": "N"
+        },
+        "pull_through_status": "NOT_REQUIRED",
+        "prying_status": "ENGINEERING_REVIEW_REQUIRED_NOT_NUMERICALLY_INVENTED",
+        "method": "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+        "result_fingerprint": "d025f8f6e3bc951e2d4ae1f15fd2abfeaf03acbe09fa9a28fb50ae53298ef0c3"
+      },
+      {
+        "bolt_id": "COMMON_WEB:B_R1_L2",
+        "physical_path": [
+          "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+          "WI_WEB",
+          "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+        ],
+        "physical_shear_plane_count": 2,
+        "outer_plane": {
+          "force_l": {
+            "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "group_id": "NEGATIVE_WEB_ANGLE",
+          "bolt_id": "B_R1_L2"
+        },
+        "inner_plane": {
+          "force_l": {
+            "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-6020.9804588266096577821651859164198749588680487002303389272787101020072392234288",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598",
+          "group_id": "POSITIVE_WEB_ANGLE",
+          "bolt_id": "B_R1_L1"
+        },
+        "planes_equal": true,
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "source_authorized": false,
+        "thread_condition": "EXCLUDED",
+        "per_plane_design_capacity": null,
+        "outer_utilization": null,
+        "inner_utilization": null,
+        "governing_utilization": null,
+        "status": "NOT_EVALUATED",
+        "source_required_reason": "SOURCE_AUTHORIZED_FNV_REQUIRED",
+        "resistance_trace": null,
+        "bolt_axis_tension": {
+          "value": "0",
+          "unit": "N"
+        },
+        "pull_through_status": "NOT_REQUIRED",
+        "prying_status": "ENGINEERING_REVIEW_REQUIRED_NOT_NUMERICALLY_INVENTED",
+        "method": "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+        "result_fingerprint": "1a5333a8bc77b9b8ebe1087f7570c75ba40f1ea8c8e524b72b2e75e6463cf842"
+      },
+      {
+        "bolt_id": "COMMON_WEB:B_R2_L1",
+        "physical_path": [
+          "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+          "WI_WEB",
+          "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+        ],
+        "physical_shear_plane_count": 2,
+        "outer_plane": {
+          "force_l": {
+            "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "group_id": "NEGATIVE_WEB_ANGLE",
+          "bolt_id": "B_R2_L1"
+        },
+        "inner_plane": {
+          "force_l": {
+            "value": "4924.8063332364193155643303718328397499177360974004606778545574202040144784468576",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598",
+          "group_id": "POSITIVE_WEB_ANGLE",
+          "bolt_id": "B_R2_L2"
+        },
+        "planes_equal": true,
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "source_authorized": false,
+        "thread_condition": "EXCLUDED",
+        "per_plane_design_capacity": null,
+        "outer_utilization": null,
+        "inner_utilization": null,
+        "governing_utilization": null,
+        "status": "NOT_EVALUATED",
+        "source_required_reason": "SOURCE_AUTHORIZED_FNV_REQUIRED",
+        "resistance_trace": null,
+        "bolt_axis_tension": {
+          "value": "0",
+          "unit": "N"
+        },
+        "pull_through_status": "NOT_REQUIRED",
+        "prying_status": "ENGINEERING_REVIEW_REQUIRED_NOT_NUMERICALLY_INVENTED",
+        "method": "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+        "result_fingerprint": "3cd21feef4d673f5f43815ca8647e38c14c5321844ab38aad27ff80e952e8e90"
+      },
+      {
+        "bolt_id": "COMMON_WEB:B_R2_L2",
+        "physical_path": [
+          "NEGATIVE_WEB_CLIP_ANGLE_MEMBER_LEG",
+          "WI_WEB",
+          "POSITIVE_WEB_CLIP_ANGLE_MEMBER_LEG"
+        ],
+        "physical_shear_plane_count": 2,
+        "outer_plane": {
+          "force_l": {
+            "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "178c51cff7944974ce4845d1481247f944a1edb7365436b8a641e807cca657fb",
+          "group_id": "NEGATIVE_WEB_ANGLE",
+          "bolt_id": "B_R2_L2"
+        },
+        "inner_plane": {
+          "force_l": {
+            "value": "3081.9925742324806844356696281671602500822639025995393221454425797959855215531424",
+            "unit": "N"
+          },
+          "force_t": {
+            "value": "-5099.5735793246403422178348140835801250411319512997696610727212898979927607765712",
+            "unit": "N"
+          },
+          "source_demand_fingerprint": "488720c098153d341ec2c4a8ccc93a2223e94d53dc9a01fa25dae64779886598",
+          "group_id": "POSITIVE_WEB_ANGLE",
+          "bolt_id": "B_R2_L1"
+        },
+        "planes_equal": true,
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "source_authorized": false,
+        "thread_condition": "EXCLUDED",
+        "per_plane_design_capacity": null,
+        "outer_utilization": null,
+        "inner_utilization": null,
+        "governing_utilization": null,
+        "status": "NOT_EVALUATED",
+        "source_required_reason": "SOURCE_AUTHORIZED_FNV_REQUIRED",
+        "resistance_trace": null,
+        "bolt_axis_tension": {
+          "value": "0",
+          "unit": "N"
+        },
+        "pull_through_status": "NOT_REQUIRED",
+        "prying_status": "ENGINEERING_REVIEW_REQUIRED_NOT_NUMERICALLY_INVENTED",
+        "method": "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+        "result_fingerprint": "b0002d59f88db9f212781d9f2f52f1fc5eb5e9e7ad8e7d60eaa996795cff2a1c"
+      }
+    ],
+    "flange_bearing": []
+  }
+}

@@ -1,0 +1,624 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "contract": "3.6A-RC1",
+  "default_fixture": {
+    "frame": {
+      "axes_order": [
+        "L_S",
+        "V_S",
+        "T_S"
+      ],
+      "joint_reference_l_v_t_in": [
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "beam": {
+      "profile": "WIDE_FLANGE_I",
+      "depth_in": "10",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.5",
+      "display_length_each_side_in": "18"
+    },
+    "beam_end_gap_in": "0.5",
+    "splice_plate": {
+      "count": 2,
+      "length_in": "16",
+      "height_in": "8",
+      "thickness_in": "0.5",
+      "lw_axis": "L_S",
+      "cw_axis": "V_S",
+      "tt_axis": "T_S"
+    },
+    "beam_a_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "vertical_pitch_in": "3",
+      "longitudinal_gauge_in": "3",
+      "centroid_l_v_t_in": [
+        "-4",
+        "0",
+        "0"
+      ],
+      "coordinates_l_v_t_in": [
+        [
+          "-5.5",
+          "-1.5",
+          "0"
+        ],
+        [
+          "-2.5",
+          "-1.5",
+          "0"
+        ],
+        [
+          "-5.5",
+          "1.5",
+          "0"
+        ],
+        [
+          "-2.5",
+          "1.5",
+          "0"
+        ]
+      ]
+    },
+    "beam_b_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "vertical_pitch_in": "3",
+      "longitudinal_gauge_in": "3",
+      "centroid_l_v_t_in": [
+        "4",
+        "0",
+        "0"
+      ],
+      "coordinates_l_v_t_in": [
+        [
+          "2.5",
+          "-1.5",
+          "0"
+        ],
+        [
+          "5.5",
+          "-1.5",
+          "0"
+        ],
+        [
+          "2.5",
+          "1.5",
+          "0"
+        ],
+        [
+          "5.5",
+          "1.5",
+          "0"
+        ]
+      ]
+    },
+    "fastener": {
+      "bolt_diameter_in": "0.5",
+      "hole_diameter_in": "0.563"
+    },
+    "loads": {
+      "axial_force_kip": "0",
+      "major_shear_kip": "-10",
+      "minor_shear_kip": "0",
+      "user_moment_l_v_t_kip_in": [
+        "0",
+        "0",
+        "0"
+      ]
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_DEFAULT_BEAM_GEOMETRY",
+      "expected": {
+        "beam_a_profile": "WIDE_FLANGE_I",
+        "beam_b_profile": "WIDE_FLANGE_I",
+        "beams_identical": true,
+        "depth_in": "10",
+        "flange_width_in": "8",
+        "web_thickness_in": "0.5",
+        "flange_thickness_in": "0.5",
+        "display_length_each_side_in": "18"
+      }
+    },
+    {
+      "id": "G2_POSITIVE_BEAM_END_GAP",
+      "expected": {
+        "beam_end_gap_in": "0.5",
+        "beam_a_end_l_in": "-0.25",
+        "beam_b_end_l_in": "0.25",
+        "direct_end_bearing_used": false
+      }
+    },
+    {
+      "id": "G3_SPLICE_PLATE_PAIR_MIRROR",
+      "expected": {
+        "positive_plate_dimensions_in": [
+          "16",
+          "8",
+          "0.5"
+        ],
+        "negative_plate_dimensions_in": [
+          "16",
+          "8",
+          "0.5"
+        ],
+        "exact_mirror": true,
+        "locked_identical": true
+      }
+    },
+    {
+      "id": "G4_BOLT_GROUPS_MIRROR",
+      "expected": {
+        "beam_a_group_centroid_l_v_t_in": [
+          "-4",
+          "0",
+          "0"
+        ],
+        "beam_b_group_centroid_l_v_t_in": [
+          "4",
+          "0",
+          "0"
+        ],
+        "exact_mirror": true,
+        "group_pattern_locked_identical": true
+      }
+    },
+    {
+      "id": "G5_DEFAULT_BEAM_A_GROUP_WRENCH",
+      "input": {
+        "axial_force_kip": "0",
+        "major_shear_kip": "-10",
+        "minor_shear_kip": "0"
+      },
+      "expected": {
+        "force_l_v_t_kip": [
+          "0",
+          "-10",
+          "0"
+        ],
+        "moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "-40"
+        ]
+      }
+    },
+    {
+      "id": "G6_DEFAULT_BEAM_B_GROUP_WRENCH",
+      "input": {
+        "axial_force_kip": "0",
+        "major_shear_kip": "-10",
+        "minor_shear_kip": "0"
+      },
+      "expected": {
+        "force_l_v_t_kip": [
+          "0",
+          "10",
+          "0"
+        ],
+        "moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "-40"
+        ]
+      }
+    },
+    {
+      "id": "G7_GROUP_WRENCH_SHIFT_TO_JOINT",
+      "expected": {
+        "beam_a_shifted_user_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "beam_b_shifted_user_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "exact_translation": true
+      }
+    },
+    {
+      "id": "G8_PLATE_PAIR_INTERFACE_EQUILIBRIUM",
+      "expected": {
+        "beam_a_and_beam_b_interface_forces_equal_opposite": true,
+        "joint_transfer_force_not_doubled": true,
+        "plate_pair_free_body_equilibrium": true
+      }
+    },
+    {
+      "id": "G9_PURE_AXIAL_TENSION",
+      "input": {
+        "axial_force_kip": "10",
+        "major_shear_kip": "0",
+        "minor_shear_kip": "0"
+      },
+      "expected": {
+        "beam_a_force_l_v_t_kip": [
+          "10",
+          "0",
+          "0"
+        ],
+        "beam_a_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "beam_b_force_l_v_t_kip": [
+          "-10",
+          "0",
+          "0"
+        ],
+        "beam_b_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G10_PURE_AXIAL_COMPRESSION_THROUGH_PLATES",
+      "input": {
+        "axial_force_kip": "-10",
+        "major_shear_kip": "0",
+        "minor_shear_kip": "0"
+      },
+      "expected": {
+        "beam_a_force_l_v_t_kip": [
+          "-10",
+          "0",
+          "0"
+        ],
+        "beam_b_force_l_v_t_kip": [
+          "10",
+          "0",
+          "0"
+        ],
+        "direct_beam_end_bearing_used": false,
+        "positive_gap_required": true
+      }
+    },
+    {
+      "id": "G11_COMBINED_AXIAL_MAJOR",
+      "input": {
+        "axial_force_kip": "5",
+        "major_shear_kip": "-10",
+        "minor_shear_kip": "0"
+      },
+      "expected": {
+        "beam_a_force_l_v_t_kip": [
+          "5",
+          "-10",
+          "0"
+        ],
+        "beam_a_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "-40"
+        ],
+        "beam_b_force_l_v_t_kip": [
+          "-5",
+          "10",
+          "0"
+        ],
+        "beam_b_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "-40"
+        ]
+      }
+    },
+    {
+      "id": "G12_MINOR_SHEAR_NORMAL_ACTION",
+      "input": {
+        "minor_shear_kip": "3"
+      },
+      "expected": {
+        "bolt_axis_normal_action_retained": true,
+        "normal_axis": "T_S"
+      }
+    },
+    {
+      "id": "G13_MINOR_SHEAR_RESPONSE_LIMITATION",
+      "expected": {
+        "status": "NOT_EVALUATED",
+        "limitation": "WEB_SPLICE_MINOR_SHEAR_BOLT_AXIS_RESPONSE",
+        "generated_bolt_tension_capacity": false,
+        "generated_prying_capacity": false
+      }
+    },
+    {
+      "id": "G14_BEAM_A_WEB_LAYER_FULL_DEMAND",
+      "expected": {
+        "layer": "BEAM_A_WEB",
+        "demand_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G15_BEAM_B_WEB_LAYER_FULL_DEMAND",
+      "expected": {
+        "layer": "BEAM_B_WEB",
+        "demand_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G16_POSITIVE_SPLICE_PLATE_HALF_DEMAND",
+      "expected": {
+        "layer": "POSITIVE_WEB_SPLICE_PLATE",
+        "demand_fraction": "0.5",
+        "symmetry_required": true
+      }
+    },
+    {
+      "id": "G17_NEGATIVE_SPLICE_PLATE_HALF_DEMAND",
+      "expected": {
+        "layer": "NEGATIVE_WEB_SPLICE_PLATE",
+        "demand_fraction": "0.5",
+        "symmetry_required": true
+      }
+    },
+    {
+      "id": "G18_PLATE_PAIR_SYSTEM_FULL_DEMAND",
+      "expected": {
+        "splice_plate_pair_system_fraction": "1.0",
+        "individual_full_demands_not_summed": true
+      }
+    },
+    {
+      "id": "G19_AXIAL_MATERIAL_DIRECTION",
+      "expected": {
+        "beam_a_web": "LW",
+        "beam_b_web": "LW",
+        "positive_plate": "LW",
+        "negative_plate": "LW"
+      }
+    },
+    {
+      "id": "G20_MAJOR_SHEAR_MATERIAL_DIRECTION",
+      "expected": {
+        "beam_a_web": "CW",
+        "beam_b_web": "CW",
+        "positive_plate": "CW",
+        "negative_plate": "CW"
+      }
+    },
+    {
+      "id": "G21_COMBINED_MATERIAL_DIRECTION",
+      "expected": {
+        "actual_resultant_used_per_layer": true,
+        "single_layer_angle_reused_for_all_layers": false
+      }
+    },
+    {
+      "id": "G22_BEAM_A_LOCAL_EDGE_APPLICABILITY",
+      "expected": {
+        "derived_from_actual_signed_beam_a_action": true,
+        "copied_from_beam_b": false
+      }
+    },
+    {
+      "id": "G23_BEAM_B_REVERSED_EDGE_APPLICABILITY",
+      "expected": {
+        "derived_from_actual_signed_beam_b_action": true,
+        "copied_from_beam_a_with_abs_sign": false
+      }
+    },
+    {
+      "id": "G24_PLATE_INTERGROUP_BODY_TRANSFER_LIMITATION",
+      "expected": {
+        "status": "NOT_EVALUATED",
+        "limitation": "WEB_SPLICE_PLATE_INTERGROUP_BODY_TRANSFER"
+      }
+    },
+    {
+      "id": "G25_COMMON_BOLT_DOUBLE_SHEAR_LIMITATION",
+      "expected": {
+        "status": "NOT_EVALUATED",
+        "limitation": "WEB_SPLICE_COMMON_BOLT_DOUBLE_SHEAR",
+        "single_shear_capacity_multiplied_by_two": false
+      }
+    },
+    {
+      "id": "G26_MEMBER_FLEXURAL_MOMENT_LIMITATION",
+      "expected": {
+        "status": "NOT_AUTHORIZED_IN_RC1",
+        "limitation": "WEB_SPLICE_MEMBER_FLEXURAL_MOMENT_TRANSFER"
+      }
+    },
+    {
+      "id": "G27_USER_MOMENT_REJECTED",
+      "input": {
+        "user_moment_l_v_t_kip_in": [
+          "0",
+          "0",
+          "1"
+        ]
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "moment_connection": false
+      }
+    },
+    {
+      "id": "G28_ZERO_OR_NEGATIVE_GAP_REJECTED",
+      "inputs": [
+        {
+          "beam_end_gap_in": "0"
+        },
+        {
+          "beam_end_gap_in": "-0.1"
+        }
+      ],
+      "expected": {
+        "request_status": "REJECTED",
+        "reason": "POSITIVE_BEAM_END_GAP_REQUIRED"
+      }
+    },
+    {
+      "id": "G29_UNEQUAL_BEAMS_REJECTED",
+      "input": {
+        "beam_a_depth_in": "10",
+        "beam_b_depth_in": "12"
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "reason": "STAGE_3_6A_IDENTICAL_BEAMS_REQUIRED"
+      }
+    },
+    {
+      "id": "G30_SINGLE_SPLICE_PLATE_REJECTED",
+      "input": {
+        "splice_plate_count": 1
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "reason": "SYMMETRIC_DOUBLE_WEB_SPLICE_PLATES_REQUIRED"
+      }
+    },
+    {
+      "id": "G31_FLANGE_SPLICE_REQUEST_REJECTED",
+      "input": {
+        "flange_splice_enabled": true
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "reason": "FLANGE_SPLICE_NOT_AUTHORIZED_IN_RC1"
+      }
+    },
+    {
+      "id": "G32_WEB_HOLE_CONTAINMENT_INVALID",
+      "expected": {
+        "invalid_complete_hole_in_web": "INVALID_GEOMETRY",
+        "governing_web_edge_or_junction_reported": true
+      }
+    },
+    {
+      "id": "G33_PLATE_HOLE_FREE_EDGE_CONTAINMENT_INVALID",
+      "expected": {
+        "invalid_complete_hole_in_plate": "INVALID_GEOMETRY",
+        "governing_plate_edge_reported": true
+      }
+    },
+    {
+      "id": "G34_PLATE_FLANGE_INTERFERENCE_INVALID",
+      "expected": {
+        "positive_volume_plate_flange_overlap": "INVALID_GEOMETRY",
+        "automatic_plate_resize_or_move": false
+      }
+    },
+    {
+      "id": "G35_PHYSICAL_BOLT_IDENTITY",
+      "expected": {
+        "one_shank_per_axis": true,
+        "head_nut_outside_plate_pair": true,
+        "internal_hardware_count": 0,
+        "duplicate_bolt_ids": false
+      }
+    },
+    {
+      "id": "G36_MATERIAL_AXIS_COVERAGE",
+      "expected": {
+        "beam_a_regions": [
+          "WEB",
+          "TOP_FLANGE",
+          "BOTTOM_FLANGE"
+        ],
+        "beam_b_regions": [
+          "WEB",
+          "TOP_FLANGE",
+          "BOTTOM_FLANGE"
+        ],
+        "plate_regions": [
+          "POSITIVE_WEB_SPLICE_PLATE",
+          "NEGATIVE_WEB_SPLICE_PLATE"
+        ],
+        "all_required_lw_cw_tt_present": true
+      }
+    },
+    {
+      "id": "G37_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "group_wrenches_available": true,
+        "component_transfer_trace_available": true
+      }
+    },
+    {
+      "id": "G38_SUPPORTED_LOCAL_FAILURE_PRECEDENCE",
+      "expected": {
+        "supported_local_failure": "FAIL",
+        "overall_status": "FAIL",
+        "limitations_still_visible": true
+      }
+    },
+    {
+      "id": "G39_VALID_WITH_LIMITATIONS",
+      "expected": {
+        "geometry_status": "VALID",
+        "overall_status": "NOT_EVALUATED",
+        "ordinary_whole_splice_pass": false
+      }
+    },
+    {
+      "id": "G40_US_SI_DEFAULT_EQUIVALENCE",
+      "conversions": {
+        "18_in_mm": "457.2",
+        "16_in_mm": "406.4",
+        "10_in_mm": "254",
+        "8_in_mm": "203.2",
+        "4_in_mm": "101.6",
+        "3_in_mm": "76.2",
+        "1.5_in_mm": "38.1",
+        "0.563_in_mm": "14.3002",
+        "0.5_in_mm": "12.7",
+        "10_kip_kN": "44.482216152605",
+        "40_kip_in_kN_m": "4.519393161104668"
+      },
+      "expected": {
+        "geometry_equal": true,
+        "group_references_equal": true,
+        "signed_actions_equal": true,
+        "generated_moments_equal": true,
+        "demand_provenance_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G41_DETERMINISTIC_FINGERPRINTS",
+      "expected": {
+        "input_fingerprint_deterministic": true,
+        "geometry_fingerprint_deterministic": true,
+        "application_fingerprint_deterministic": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G42_STAGE_3_5_FROZEN_REGRESSION",
+      "expected": {
+        "stage_3_5_frozen_behavior_change": "NONE",
+        "stage_3_5_fingerprint_change": "NONE",
+        "stage_3_5_freeze_tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G43_EARLIER_FROZEN_REGRESSION",
+      "expected": {
+        "stage_2_3_change": "NONE",
+        "stage_3_2_change": "NONE",
+        "stage_3_3_change": "NONE",
+        "stage_3_4_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

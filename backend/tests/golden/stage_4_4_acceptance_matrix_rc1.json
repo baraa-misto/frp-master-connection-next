@@ -1,0 +1,1810 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_4_4_ACCEPTANCE_MATRIX_RC1",
+  "version": "4.4-RC1",
+  "product": "ANGLE_COLUMN_TWO_LEG_MOMENT_BASE_CONNECTION",
+  "baseline_commit": "1faa1ff522d0e0a39a42e2dc2d3974b5dba98479",
+  "baseline_count": 114,
+  "status": "CONTROLLED_IMPLEMENTATION_ACCEPTANCE_CONTRACT_ON_OWNER_HANDOFF_NOT_ASCE_PREQUALIFICATION",
+  "authority_notice": "Sources provide applicable requirements/capacities; the two-leg topology and response-ledger integration are project decisions. No fixture is a qualified construction source. No unverified 50/50 allocation is authorized.",
+  "checks_count": 96,
+  "fixtures_count": 14,
+  "minimum_no_source_sweep_count": 64,
+  "minimum_qualified_test_only_integration_count": 24,
+  "reference_number_encoding": "Integers, exact finite-decimal strings or exact numerator/denominator strings. No binary float engineering inputs.",
+  "numeric_policy": {
+    "new_reference_algebra": "EXACT_RATIONAL",
+    "native_dependency_outputs": "EXACT_NATIVE_DEPENDENCY_EQUALITY_NO_REQUANTIZATION",
+    "fixture_arithmetic_scope": "Independent algebra, frames and synthetic ledgers; not replacement native output strings.",
+    "proof_boundary": "Source ledger conservation and dependency native proofs are separate from displayed/serialized residuals.",
+    "tolerance_added": false
+  },
+  "section_presets": [
+    {
+      "id": "L_EQUAL",
+      "leg_x_in": "8",
+      "leg_y_in": "8",
+      "thickness_in": "0.5"
+    },
+    {
+      "id": "L_UNEQUAL",
+      "leg_x_in": "8",
+      "leg_y_in": "6",
+      "thickness_in": "0.5"
+    }
+  ],
+  "load_cases": [
+    {
+      "id": "ZERO",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMPRESSION",
+      "N_kip": "-20",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "UPLIFT",
+      "N_kip": "20",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "VX_POS",
+      "N_kip": "0",
+      "Vx_kip": "5",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "VX_NEG",
+      "N_kip": "0",
+      "Vx_kip": "-5",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "VY_POS",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "5",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "VY_NEG",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "-5",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MX_POS",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "60",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MX_NEG",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "-60",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MY_POS",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "MY_NEG",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "-40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "BIAXIAL",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "60",
+      "My_kip_in": "40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "BIAXIAL_MIXED",
+      "N_kip": "0",
+      "Vx_kip": "0",
+      "Vy_kip": "0",
+      "Mx_kip_in": "60",
+      "My_kip_in": "-40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMBINED",
+      "N_kip": "-20",
+      "Vx_kip": "5",
+      "Vy_kip": "-3",
+      "Mx_kip_in": "60",
+      "My_kip_in": "40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMBINED_REVERSED",
+      "N_kip": "20",
+      "Vx_kip": "-5",
+      "Vy_kip": "3",
+      "Mx_kip_in": "-60",
+      "My_kip_in": "-40",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    },
+    {
+      "id": "COMPRESSION_SHEAR",
+      "N_kip": "-20",
+      "Vx_kip": "5",
+      "Vy_kip": "0",
+      "Mx_kip_in": "0",
+      "My_kip_in": "0",
+      "Mz_kip_in": "0",
+      "reference": "ACTUAL_NATIVE_COLUMN_END_CENTROID"
+    }
+  ],
+  "units": [
+    "US",
+    "SI"
+  ],
+  "qualified_integration_load_ids": [
+    "COMPRESSION",
+    "UPLIFT",
+    "MX_POS",
+    "MY_POS",
+    "BIAXIAL",
+    "COMBINED"
+  ],
+  "source_absent_expected_behavior": {
+    "nonzero": "Base branch response SOURCE_REQUIRED; no invented connector demand; total applied-to-foundation wrench can still be computed.",
+    "zero": "No prestress/self-weight in problem: zero transfer can be proven; no whole-foundation qualification claim."
+  },
+  "checks": [
+    {
+      "id": "T44-001",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Frozen baseline",
+      "requirement": "Verify exact count-114 baseline, Stage 4.3 peeled freeze target, and eleven existing annotated tag identities before source changes.",
+      "evidence_required": true,
+      "verification_phase": "PREFLIGHT",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-002",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "One new product",
+      "requirement": "Expose one distinct Moment Connections product ANGLE_COLUMN_TWO_LEG_MOMENT_BASE_CONNECTION, contract 4.4-RC1; leave Stage 3.7 shear products intact.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-003",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Column versus connector identity",
+      "requirement": "One vertical L-section column and exactly two base-angle connectors; each connector is attached to a different column leg.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-004",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Materials",
+      "requirement": "FRP column and FRP connectors use separate qualified/property records; 316SS connector material remains unavailable.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-005",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Supported actions",
+      "requirement": "Signed N=Fz, Vx, Vy, Mx, My at the actual column-end centroid; reject independently applied Mz in RC1 and retain generated reference Mz.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-006",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Applied-load definition",
+      "requirement": "Member-on-base actions, right-hand physical moments, +Z upward, positive N uplift; no implicit beam-end sign inversion.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-007",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Foundation scope",
+      "requirement": "Anchor/concrete/foundation adequacy remains external; no whole-foundation PASS or fabricated anchor forces.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-008",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Contact topology",
+      "requirement": "Flush nominal cut end and connector feet at the foundation plane; no invented floating base, grout layer, plate, hidden reinforcing part or friction credit.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-009",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Engineering sources",
+      "requirement": "Locate current baseline source/engine versions and accessible supplied standard/erratum; distinguish source provisions from new integration decisions.",
+      "evidence_required": true,
+      "verification_phase": "PREFLIGHT",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-010",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "Missing source behavior",
+      "requirement": "Expected missing qualified base response is SOURCE_REQUIRED, not development failure or guessed load sharing.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-011",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "No member design claim",
+      "requirement": "Overall angle-column strength/stability, foundation system analysis and stiffness/rotation/full-strength classification remain outside RC1.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-012",
+      "category": "BASELINE_AND_SCOPE",
+      "title": "One consolidated preflight",
+      "requirement": "Complete all safe source, API, geometry, numeric, historical-scope and permission audits before a consolidated real-engineering blocker report.",
+      "evidence_required": true,
+      "verification_phase": "PREFLIGHT",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-013",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Actual angle section",
+      "requirement": "Use accepted sharp/filleted angle geometry and native centroid; do not count heel overlap twice or silently replace a fillet.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-014",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Equal and unequal examples",
+      "requirement": "At least one valid equal-leg and one valid unequal-leg preset using existing angle-section applicability; dimensions are not strengths.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-015",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Different-leg enforcement",
+      "requirement": "Two connectors on the same leg, absent second connector and duplicated group IDs are rejected, not auto-relocated.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-016",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Exterior placement",
+      "requirement": "RC1 connectors attach to the two exterior broad faces and project feet outward; no internal wrapping or hidden face flip.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-017",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Independent connectors",
+      "requirement": "Each base angle has independently editable length, vertical-leg width, foot width, thickness, radius and physical pattern; no silent symmetry lock.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-018",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Member bolt path",
+      "requirement": "Each member bolt traverses one connector upright and the matching column leg; one physical shear interface, no unrelated leg penetration.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-019",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Separate anchor groups",
+      "requirement": "Two foundation anchor groups are associated separately with the two feet; no common shank between perpendicular upright groups.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-020",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Hardware envelope",
+      "requirement": "Finite shanks, head/nut/washer endpoints and access are checked; no hardware through the column heel, other leg, or outside an intended layer.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-021",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Real edge distances",
+      "requirement": "Bolt/hole/pitch/gauge/free-end distances and net paths derive from canonical geometry, not display extents or raw user labels.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-022",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Contact surfaces",
+      "requirement": "Column-end and foot contact patches have real physical boundaries; positive-volume interference is invalid while intended boundary contact is allowed.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-023",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Finite foundation",
+      "requirement": "Model footing/pedestal bounds, group positions and embedment geometry only; geometry validity does not certify concrete strength.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-024",
+      "category": "GEOMETRY_AND_HARDWARE",
+      "title": "Presentation extents",
+      "requirement": "Column display length/camera changes do not move the engineering end/reference, change demands, or invalidate current results.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-025",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Frame determinants",
+      "requirement": "Both connector frames satisfy Q^T Q=I and det Q=+1. Test F44-01 and axis arrows.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-026",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Centroid references",
+      "requirement": "Use native actual column centroid and explicit foundation report reference; leg-parallel axes are not mislabeled principal axes.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-027",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Product of inertia",
+      "requirement": "Reference tests F44-02/F44-03 retain the nonzero product of inertia; no W/I symmetric-section shortcut for angle load transfer.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-028",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Rigid transform",
+      "requirement": "Use M_O=Q M_R+(r_R-r_O) cross Q F; test F44-04/F44-14 and co-translation invariance.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-029",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "All six outputs",
+      "requirement": "Preserve all six force/moment components at each column/member/heel/foot/foundation reference, including zero and generated Mz.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-030",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Native authority",
+      "requirement": "Each inherited dependency owns its quantity conversion/Decimal/proof output; compare exact integration with independently assembled direct calls.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-031",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "No dual numeric oracle",
+      "requirement": "Reference rational fixture values never become replacement Decimal oracles for inherited engines.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-032",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "No residual correction",
+      "requirement": "Record any inherited serialization residual and its origin; do not redistribute, clip, round-to-target, or convert it into an epsilon pass.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-033",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "True proof meaning",
+      "requirement": "Global applied transport can pass when branch response is unavailable; branch equilibrium must not be displayed PASS until supported and actually checked.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-034",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Connector transport",
+      "requirement": "Both actual connector calls independently recover heel/foot reactions using Slice 7 native core; reference tests F44-05/F44-06.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-035",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Bolt centroid",
+      "requirement": "Slice 8 gets the actual in-plane wrench reference and physical coordinates; verify matched reference F44-09 and wrong-reference F44-10.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-036",
+      "category": "FRAMES_AND_NUMERICS",
+      "title": "Physical unit identity",
+      "requirement": "Equivalent U.S./SI inputs preserve native engineering identity and source binding; display changes do not regenerate a hole, test F44-13.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-037",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Whole-base source",
+      "requirement": "Bind a complete two-leg-base response source to topology, geometry, contact, materials, fasteners, frames, loads, sign and revision.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-038",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "No equal split",
+      "requirement": "No automatic half axial/shear/moment allocation just because two angles exist, including equal-leg geometry; test F44-12.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-039",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "No M-over-z substitute",
+      "requirement": "A scalar force couple cannot replace local moment, biaxial coupling, contact or full branch wrenches.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-040",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Two branch records",
+      "requirement": "A valid source must identify both member-interface wrenches, or certify an exact inactive branch; missing does not mean zero.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-041",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Column bearing separately",
+      "requirement": "Direct column-end contact is separate from both connector paths and included once in global recovery, test F44-07/F44-08.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-042",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Contact admissibility",
+      "requirement": "No tensile bearing pressure or frictional shear without authority; retain contact footprint/state/evidence, test F44-11.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-043",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Equilibrium plus compatibility",
+      "requirement": "Exact equilibrium is necessary but not qualification; require actual response/applicability/compatibility provenance, including prying and support flexibility as demanded.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-044",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Foot decomposition",
+      "requirement": "Foot group wrench is not an individual anchor tension. A furnished anchor/contact breakdown must recover its parent and not double-count contact.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-045",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Partial sources",
+      "requirement": "Branch allocation, member normal response, angle-body capacity and footing response are separate availability scopes; missing one does not suppress valid other checks.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-046",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Source edits invalidate",
+      "requirement": "Changes to leg assignment, profile, patterns, load sign, material, contact or source revision stale results and invalidate incompatible qualification.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-047",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Synthetic segregation",
+      "requirement": "No test source ID or arithmetic fixture appears as a production qualification choice; typed text alone never grants a source.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-048",
+      "category": "RESPONSE_AND_CONTACT_AUTHORITY",
+      "title": "Zero case",
+      "requirement": "With exactly zero actions, no prestress/self-weight/preload in the modeled problem, zero transfer may be proven; geometry validity and external design disclaimers still apply.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-049",
+      "category": "CONNECTION_DESIGN",
+      "title": "Slice 7 core reuse",
+      "requirement": "Reuse material-neutral core and separate FRP provider for both connectors; no fake wall/beam adapter and no duplicate equation implementation.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-050",
+      "category": "CONNECTION_DESIGN",
+      "title": "Instep applicability",
+      "requirement": "Only the local extrusion-axis demand uses the inherited instep-shear check within its stated domain; not all vertical/normal loads are instep shear.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-051",
+      "category": "CONNECTION_DESIGN",
+      "title": "Slice 8 free moments",
+      "requirement": "Use native full in-plane group wrench demand for each member group when known; independent in-plane moments must not go through Stage 2.5A unsupported paths.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-052",
+      "category": "CONNECTION_DESIGN",
+      "title": "Normal demand retained",
+      "requirement": "Retain F_C,M_A,M_B and require a qualified normal/contact/per-bolt response for tensile/pull-through/interaction calculations; unknown is not zero.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-053",
+      "category": "CONNECTION_DESIGN",
+      "title": "Bolt strength sources",
+      "requirement": "Use actual metallic bolt source/condition/diameter/grip; unqualified F593 strength remains unavailable, never inferred from 316 alone.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-054",
+      "category": "CONNECTION_DESIGN",
+      "title": "Shear/tension interaction",
+      "requirement": "With verified per-bolt demands and applicable strength source, execute native shear, tension and combined checks without weakening any limit state.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-055",
+      "category": "CONNECTION_DESIGN",
+      "title": "Local FRP checks",
+      "requirement": "Evaluate applicable bearing, net tension, shear-out, cleavage/block paths and pull-through on each actual column leg/connector layer; unsupported applicability remains explicit.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-056",
+      "category": "CONNECTION_DESIGN",
+      "title": "Material axes",
+      "requirement": "Column LW is vertical; connector LW follows its horizontal extrusion; track CW and TT separately per physical leaf.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-057",
+      "category": "CONNECTION_DESIGN",
+      "title": "Whole-angle local zone",
+      "requirement": "Per-leg passing checks do not prove angle heel/junction or combined two-leg local-region adequacy; report missing interaction/coverage.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-058",
+      "category": "CONNECTION_DESIGN",
+      "title": "Native failure selection",
+      "requirement": "Preserve backend selection and full failed-check records. Do not force default PASS, FAIL or a named governing mode.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-059",
+      "category": "CONNECTION_DESIGN",
+      "title": "Independent source-present integration",
+      "requirement": "Exercise numerical column-bolt/FRP/body paths using test-only applicable source records for both equal/unequal configurations, plus invalid sources.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-060",
+      "category": "CONNECTION_DESIGN",
+      "title": "External base adequacy",
+      "requirement": "Even all internal checks passing does not certify anchors, concrete bearing/breakout or global column/foundation adequacy; export signed groups/contact/total.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-061",
+      "category": "API_AND_WORKSPACE",
+      "title": "Preview separation",
+      "requirement": "Preview resolves geometry/actions/source applicability only; execute zero resistance functions and no automatic design.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-062",
+      "category": "API_AND_WORKSPACE",
+      "title": "Explicit design",
+      "requirement": "Design is an explicit action with complete input/result fingerprint association, not a preview side effect.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-063",
+      "category": "API_AND_WORKSPACE",
+      "title": "Structured scopes",
+      "requirement": "Report geometry, total transport, branch response, two member attachments, bodies, foot handoff, local zone and external foundation separately.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-064",
+      "category": "API_AND_WORKSPACE",
+      "title": "Failure visibility",
+      "requirement": "Every FAIL has a visible native reason/record; subordinate failures and missing sources remain separate and inspectable.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-065",
+      "category": "API_AND_WORKSPACE",
+      "title": "Unknown visibility",
+      "requirement": "Unavailable per-connector/per-bolt quantities display unavailable, not zero or an inherited previous load case.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-066",
+      "category": "API_AND_WORKSPACE",
+      "title": "Input grouping",
+      "requirement": "Full-width per-connector Member bolts / Foundation anchors / Qualified sources groups; no fieldset nesting beside individual scalar fields.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-067",
+      "category": "API_AND_WORKSPACE",
+      "title": "Source explanation",
+      "requirement": "Explain required response and capacity sources in engineering language and identify concrete/anchor design as external.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-068",
+      "category": "API_AND_WORKSPACE",
+      "title": "Current state",
+      "requirement": "Any engineering edit stales design and starts canonical preview; camera/selection does not stale it.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-069",
+      "category": "API_AND_WORKSPACE",
+      "title": "Request ordering",
+      "requirement": "Aborted/superseded responses cannot overwrite current data; failures retain last-valid scene without pretending its design is current.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-070",
+      "category": "API_AND_WORKSPACE",
+      "title": "3D correctness",
+      "requirement": "One L column, exactly two base-angle connectors on different legs, actual bolts/anchors, finite pedestal and correct coordinate/material arrows.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-071",
+      "category": "API_AND_WORKSPACE",
+      "title": "Xray views",
+      "requirement": "Plan/front/two side views plus X-ray reveal both perpendicular connections, inner nuts, support feet and real shanks.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-072",
+      "category": "API_AND_WORKSPACE",
+      "title": "Browser regression",
+      "requirement": "Actual root navigation and all primary load cases work without blank screen, console exceptions, failed unexpected requests or clipped inputs.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-073",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Matrix integrity",
+      "requirement": "Exactly 96 unique T44 IDs and 14 F44 IDs; resolve all fixture/case references before source mutation.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-074",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Inherited suite",
+      "requirement": "All inherited stages/slices retain native values and source/proof identities; eleven freeze tag/manifest audits preserve exact historical authority.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-075",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Sixty-four combinations",
+      "requirement": "Run two angle configurations x sixteen named load cases x two physical input unit systems, with explicit checks and not just construction smoke.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-076",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Qualified subset",
+      "requirement": "For each configuration test source-present compression, uplift, Mx, My, biaxial and combined cases in U.S./SI; 24 integration cases minimum in addition to source-absent sweep.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-077",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Metamorphic checks",
+      "requirement": "Test zero, sign/domain changes, reference co-translation, proper quarter-turn, bolt ordering, and all negative source/contact/ref counterexamples.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-078",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Native oracle independence",
+      "requirement": "Build dependency inputs independently of Stage 4.4 production adapter; response source fixtures do not simply echo the tested result.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-079",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Repo-wide historical audit",
+      "requirement": "Before implementation project candidate stage additions through all historical scope guards, not only currently failing file paths.",
+      "evidence_required": true,
+      "verification_phase": "PREFLIGHT",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-080",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Authorized guard repair",
+      "requirement": "Tests-only historic identity maintenance may proceed across discovered test/helper paths under exact old hashes and tamper tests; no whole-file/wildcard scope bypass.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_CONDITIONAL_MAINTENANCE",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-081",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Future governance probe",
+      "requirement": "Test an in-memory later governance append, registered selector addition and scoped test-maintenance example; historic verification must not impose future whole-tree equality.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-082",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Fresh object isolation",
+      "requirement": "One reachable commit, zero tags, no alternates/shared object dependency in final disposable clone; approved manifest-only evidence is explicitly labeled.",
+      "evidence_required": true,
+      "verification_phase": "POSTCOMMIT_BEFORE_PUSH",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-083",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Audit freshness",
+      "requirement": "Run full/runtime audits and locked installs; findings or endpoint unavailability are not zero findings. Preserve accepted dependency pins.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-084",
+      "category": "VERIFICATION_AND_SUCCESSOR_SAFETY",
+      "title": "Coverage unchanged",
+      "requirement": "Full backend/frontend suites and configured 100% coverage, static checks/build; no new exclusions, skipped assertions or broad timeout setting.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-085",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Old drafts protected",
+      "requirement": "Preserved obsolete Stage 4.3 drafts in another worktree remain untouched; use clean active area at the accepted baseline.",
+      "evidence_required": true,
+      "verification_phase": "PREFLIGHT",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-086",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Reuse controlled files",
+      "requirement": "Read existing exact sources from accessible copies, no repeated attachments solely for convenience; preserve historical bytes and source locators.",
+      "evidence_required": true,
+      "verification_phase": "PREFLIGHT",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-087",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Bounded test timeouts",
+      "requirement": "New broad UI integration tests may declare 15 seconds; existing timing-only cases follow scoped proof and 10 consecutive Windows passes, no assertion removal.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-088",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Standing local permissions",
+      "requirement": "Use approved existing dev commands, locked installs/audits, localhost browser and exact repository push; never bypass environmental security policy.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_CONDITIONAL_MAINTENANCE",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-089",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Focused defect repair",
+      "requirement": "New Stage 4.4 implementation bugs within this authority may be corrected without routine milestone approvals; engineering-method changes need review.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_CONDITIONAL_MAINTENANCE",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-090",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Deterministic documents",
+      "requirement": "Use LF/no trailing spaces for new controlled artifacts; no self-referential hash, future CI result or global source-tree freeze.",
+      "evidence_required": true,
+      "verification_phase": "LOCAL_IMPLEMENTATION_AND_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-091",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Commit rule",
+      "requirement": "Main implementation subject feat: add angle-column two-leg moment base connection; normally count 115; report any explicitly permitted maintenance successor separately.",
+      "evidence_required": true,
+      "verification_phase": "POSTCOMMIT_BEFORE_PUSH",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-092",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Unpublished correction",
+      "requirement": "At most one unpublished narrow tests-only/authorized bookkeeping amend after isolated failure, with exact production identity unchanged and full re-verification.",
+      "evidence_required": true,
+      "verification_phase": "CONDITIONAL_UNPUBLISHED_CORRECTION",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-093",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Normal push",
+      "requirement": "Only after local/browser/isolated gates, normal non-force push exact commit to the specified main destination, no tags.",
+      "evidence_required": true,
+      "verification_phase": "PUSH_AFTER_ISOLATED_QA",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-094",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Hosted CI rule",
+      "requirement": "Verify all four job results for exact SHA after push; one failed-job retry per transient episode, truthful logs and no erased failures.",
+      "evidence_required": true,
+      "verification_phase": "HOSTED_CI_AFTER_PUSH",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-095",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Autonomous timing fallback",
+      "requirement": "If the same hosted timeout recurs after retry and diagnosis is timing-only, bounded test-only successor under the standing order then full QA/isolated/CI; no repeated permission request.",
+      "evidence_required": true,
+      "verification_phase": "CONDITIONAL_POSTPUSH_TIMING_MAINTENANCE",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    },
+    {
+      "id": "T44-096",
+      "category": "EXECUTION_AND_PUBLICATION",
+      "title": "Owner closeout",
+      "requirement": "Leave current verified app running, give URL and process ownership; require owner visual/result acceptance; do not freeze or start Stage 4.5/316SS.",
+      "evidence_required": true,
+      "verification_phase": "OWNER_REVIEW_AFTER_HOSTED_CI",
+      "not_required_rule": "Only genuinely conditional maintenance may be NOT_NEEDED, with reason; a later phase is PENDING, never fabricated PASS."
+    }
+  ],
+  "reference_fixtures": [
+    {
+      "id": "F44-01",
+      "title": "Two proper connector frames, not a mirror with determinant minus one",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "Q1_rows": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "Q2_rows": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "local_force": [
+          "4",
+          "-6",
+          "-2"
+        ]
+      },
+      "expected": {
+        "Q1_determinant": "1",
+        "Q2_determinant": "1",
+        "Q1_global_force": [
+          "4",
+          "2",
+          "-6"
+        ],
+        "Q2_global_force": [
+          "2",
+          "-4",
+          "-6"
+        ],
+        "Q_transpose_Q": "IDENTITY"
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-02",
+      "title": "Equal sharp-corner L-section reference geometry",
+      "scope": "EXACT_MATHEMATICAL_GEOMETRY_REFERENCE_NOT_A_NEW_MEMBER_STRENGTH_METHOD",
+      "input": {
+        "leg_x_in": "8",
+        "leg_y_in": "8",
+        "uniform_thickness_in": "1/2",
+        "section": "([0,bx] x [0,t]) union ([0,t] x [0,by]); overlap counted once; zero fillet in this reference fixture only"
+      },
+      "expected": {
+        "area_in2": "31/4",
+        "centroid_x_in": "271/124",
+        "centroid_y_in": "271/124",
+        "Ixx_centroid_in4": "289441/5952",
+        "Iyy_centroid_in4": "289441/5952",
+        "Ixy_centroid_in4": "-900/31",
+        "principal_axes_coincident_with_leg_parallel_axes": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-03",
+      "title": "Unequal sharp-corner L-section reference geometry",
+      "scope": "EXACT_MATHEMATICAL_GEOMETRY_REFERENCE_NOT_A_NEW_MEMBER_STRENGTH_METHOD",
+      "input": {
+        "leg_x_in": "8",
+        "leg_y_in": "6",
+        "uniform_thickness_in": "1/2",
+        "section": "([0,bx] x [0,t]) union ([0,t] x [0,by]); overlap counted once; zero fillet in this reference fixture only"
+      },
+      "expected": {
+        "area_in2": "27/4",
+        "centroid_x_in": "89/36",
+        "centroid_y_in": "53/36",
+        "Ixx_centroid_in4": "4163/192",
+        "Iyy_centroid_in4": "8507/192",
+        "Ixy_centroid_in4": "-55/3",
+        "principal_axes_coincident_with_leg_parallel_axes": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-04",
+      "title": "Wrench transport generates a reference moment about Z",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "r_R_in": [
+          "2",
+          "1",
+          "3"
+        ],
+        "r_O_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "F_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "M_R_kip_in": [
+          "60",
+          "40",
+          "0"
+        ]
+      },
+      "expected": {
+        "F_O_kip": [
+          "5",
+          "-3",
+          "-20"
+        ],
+        "M_O_kip_in": [
+          "49",
+          "95",
+          "-11"
+        ],
+        "reaction_F_O_kip": [
+          "-5",
+          "3",
+          "20"
+        ],
+        "reaction_M_O_kip_in": [
+          "-49",
+          "-95",
+          "11"
+        ],
+        "independently_applied_Mz_at_R": "0",
+        "generated_reference_Mz_at_O": "-11"
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-05",
+      "title": "Connector 1 local heel/support transport and global handoff",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "Q_rows": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "global_heel_origin_in": [
+          "4",
+          "0",
+          "0"
+        ],
+        "r_M_local_in": [
+          "0",
+          "3",
+          "-1/4"
+        ],
+        "r_S_local_in": [
+          "0",
+          "1/4",
+          "2"
+        ],
+        "F_M_local_kip": [
+          "4",
+          "-6",
+          "-2"
+        ],
+        "M_M_local_kip_in": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "expected": {
+        "M_heel_local_kip_in": [
+          "-13/2",
+          "1",
+          "-9"
+        ],
+        "M_support_local_kip_in": [
+          "-18",
+          "-7",
+          "-8"
+        ],
+        "global_support_reference_in": [
+          "4",
+          "-2",
+          "1/4"
+        ],
+        "global_member_reference_in": [
+          "4",
+          "1/4",
+          "3"
+        ],
+        "F_global_kip": [
+          "4",
+          "2",
+          "-6"
+        ],
+        "M_support_global_kip_in": [
+          "-18",
+          "8",
+          "-7"
+        ],
+        "M_about_foundation_origin_kip_in": [
+          "-13/2",
+          "33",
+          "9"
+        ],
+        "local_core_equilibrium": "PASS"
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-06",
+      "title": "Connector 2 local heel/support transport and global handoff",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "Q_rows": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "global_heel_origin_in": [
+          "0",
+          "4",
+          "0"
+        ],
+        "r_M_local_in": [
+          "0",
+          "3",
+          "-1/4"
+        ],
+        "r_S_local_in": [
+          "0",
+          "1/4",
+          "2"
+        ],
+        "F_M_local_kip": [
+          "-3",
+          "-4",
+          "-1"
+        ],
+        "M_M_local_kip_in": [
+          "-2",
+          "-23/4",
+          "4"
+        ]
+      },
+      "expected": {
+        "M_heel_local_kip_in": [
+          "-6",
+          "-5",
+          "13"
+        ],
+        "M_support_local_kip_in": [
+          "-55/4",
+          "1",
+          "49/4"
+        ],
+        "global_support_reference_in": [
+          "-2",
+          "4",
+          "1/4"
+        ],
+        "global_member_reference_in": [
+          "1/4",
+          "4",
+          "3"
+        ],
+        "F_global_kip": [
+          "1",
+          "3",
+          "-4"
+        ],
+        "M_support_global_kip_in": [
+          "-49/4",
+          "55/4",
+          "1"
+        ],
+        "M_about_foundation_origin_kip_in": [
+          "-29",
+          "6",
+          "-9"
+        ],
+        "local_core_equilibrium": "PASS"
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-07",
+      "title": "Complete two-connector plus direct-contact assembly ledger",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "connector_fixture_ids": [
+          "F44-05",
+          "F44-06"
+        ],
+        "direct_contact_reference_in": [
+          "2",
+          "1/4",
+          "0"
+        ],
+        "direct_contact_force_on_foundation_kip": [
+          "0",
+          "0",
+          "-10"
+        ],
+        "direct_contact_free_moment_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "applied_reference_R_in": [
+          "2",
+          "2",
+          "0"
+        ],
+        "applied_force_kip": [
+          "5",
+          "5",
+          "-20"
+        ],
+        "applied_moment_at_R_kip_in": [
+          "2",
+          "19",
+          "0"
+        ],
+        "note": "R is an arbitrary synthetic wrench reference, not the default column centroid."
+      },
+      "expected": {
+        "foundation_force_kip": [
+          "5",
+          "5",
+          "-20"
+        ],
+        "foundation_moment_at_O_kip_in": [
+          "-38",
+          "59",
+          "0"
+        ],
+        "force_residual_kip": [
+          "0",
+          "0",
+          "0"
+        ],
+        "moment_residual_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "reaction_force_kip": [
+          "-5",
+          "-5",
+          "20"
+        ],
+        "reaction_moment_kip_in": [
+          "38",
+          "-59",
+          "0"
+        ],
+        "two_connector_forces_alone_equal_applied_force": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-08",
+      "title": "Omitting column-end contact cannot pass an exact assembly proof",
+      "scope": "NEGATIVE_REFERENCE_LEDGER",
+      "input": {
+        "source_fixture_id": "F44-07",
+        "fault": "OMIT_DIRECT_CONTACT_BRANCH"
+      },
+      "expected": {
+        "computed_minus_required_force_kip": [
+          "0",
+          "0",
+          "10"
+        ],
+        "computed_minus_required_moment_kip_in": [
+          "5/2",
+          "-20",
+          "0"
+        ],
+        "response_accepted": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-09",
+      "title": "Pure in-plane bolt-group reference, centroid already matched",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "coordinates_A_B_in": [
+          [
+            "-3/2",
+            "2"
+          ],
+          [
+            "3/2",
+            "2"
+          ],
+          [
+            "-3/2",
+            "4"
+          ],
+          [
+            "3/2",
+            "4"
+          ]
+        ],
+        "reference_A_B_in": [
+          0,
+          3
+        ],
+        "F_A_B_kip": [
+          4,
+          -6
+        ],
+        "M_C_kip_in": 3
+      },
+      "expected": {
+        "centroid_A_B_in": [
+          0,
+          3
+        ],
+        "J_in2": "13",
+        "centroid_M_C_kip_in": 3,
+        "per_bolt_A_B_kip": [
+          [
+            "16/13",
+            "-24/13"
+          ],
+          [
+            "16/13",
+            "-15/13"
+          ],
+          [
+            "10/13",
+            "-24/13"
+          ],
+          [
+            "10/13",
+            "-15/13"
+          ]
+        ],
+        "squared_magnitudes_kip2": [
+          "64/13",
+          "37/13",
+          "4",
+          "25/13"
+        ],
+        "sum_F_A_B_kip": [
+          4,
+          -6
+        ],
+        "sum_M_C_kip_in": 3,
+        "bolt_axis_tension_solved_by_this_fixture": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-10",
+      "title": "Wrong bolt-group reference is a physical error, not rounding",
+      "scope": "NEGATIVE_REFERENCE_TRANSPORT",
+      "input": {
+        "source_fixture_id": "F44-09",
+        "changed_reference_A_B_in": [
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "additional_centroid_M_C_kip_in": 12,
+        "centroid_M_C_kip_in": 15,
+        "equal_to_original_vectors": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-11",
+      "title": "Compression-only contact patch integrates force and moment",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "rectangle_xy_bounds_in": [
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            "0.5"
+          ]
+        ],
+        "uniform_pressure_kip_per_in2": 10,
+        "normal_force_on_foundation_direction": [
+          0,
+          0,
+          -1
+        ]
+      },
+      "expected": {
+        "area_in2": "1",
+        "force_kip": [
+          "0",
+          "0",
+          "-10"
+        ],
+        "resultant_xy_in": [
+          2,
+          "1/4"
+        ],
+        "moment_about_O_kip_in": [
+          "-5/2",
+          "20",
+          "0"
+        ],
+        "negative_pressure_admissible": false,
+        "frictional_shear_credited": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-12",
+      "title": "Equilibrated branch allocations are nonunique without a response authority",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "base_fixture_id": "F44-07",
+        "delta_force_at_member_reference_1_global_kip": [
+          "0",
+          "0",
+          "1"
+        ],
+        "delta_force_at_member_reference_2_global_kip": [
+          "0",
+          "0",
+          "-1"
+        ],
+        "delta_free_moment_at_member_reference_2_global_kip_in": [
+          "15/4",
+          "15/4",
+          "0"
+        ]
+      },
+      "expected": {
+        "total_force_change_kip": [
+          "0",
+          "0",
+          "0"
+        ],
+        "total_moment_change_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "individual_branch_forces_unchanged": false,
+        "equilibrium_alone_proves_physical_load_sharing": false,
+        "equal_50_50_split_authorized": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-13",
+      "title": "Exact physical U.S. to SI conversion, without regenerating holes",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "length_in": "0.563",
+        "force_kip": "5",
+        "moment_kip_in": "19",
+        "inch_to_mm": "127/5",
+        "kip_to_kN": "8896443230521/2000000000000"
+      },
+      "expected": {
+        "length_mm": "71501/5000",
+        "force_kN": "8896443230521/400000000000",
+        "moment_kN_mm": "21467117515247173/10000000000000",
+        "regenerated_14_3_mm_hole_is_equivalent": false
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    },
+    {
+      "id": "F44-14",
+      "title": "Proper quarter-turn rotates both force and moment, not a sign-only reflection",
+      "scope": "INDEPENDENT_REFERENCE_ARITHMETIC",
+      "input": {
+        "Q_rows": [
+          [
+            0,
+            -1,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "F_kip": [
+          "5",
+          "5",
+          "-20"
+        ],
+        "M_O_kip_in": [
+          "-38",
+          "59",
+          "0"
+        ]
+      },
+      "expected": {
+        "rotated_force_kip": [
+          "-5",
+          "5",
+          "-20"
+        ],
+        "rotated_moment_kip_in": [
+          "-59",
+          "-38",
+          "0"
+        ],
+        "determinant": 1,
+        "reference_frames_and_source_domain_must_rotate_together": true
+      },
+      "comparison": "EXACT_RATIONAL_OR_DECLARED_BOOLEAN",
+      "production_qualification": false,
+      "native_serialization_rule": "Reference results do not override inherited native Decimal/unit serialization. Native integration uses independently constructed direct dependency calls and separately records any serialization diagnostic."
+    }
+  ],
+  "source_locators": [
+    {
+      "id": "S1",
+      "title": "Supplied ASCE/SEI 74-23",
+      "sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+      "sections": [
+        "1.4.2",
+        "1.7.2",
+        "2.3.2",
+        "2.9",
+        "8.1-8.3",
+        "8.4",
+        "C8.3.4",
+        "C8.4"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Supplied Erratum 1 effective 2026-01-13",
+      "sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550",
+      "effect": "Chapter 5 ET,f description; no new base/anchor design solver."
+    },
+    {
+      "id": "S3",
+      "title": "Accepted baseline repository authorities",
+      "binding": "Resolve exact source paths/versions in preflight, including Stage 3.7, Slice 7, Slice 8, Stage 4.2 and Stage 4.3. No production APIs were executed in the ChatGPT preparation runtime."
+    }
+  ],
+  "phase_policy": "Local/object-isolated gates check requirements applicable to that phase. Publication, hosted CI and owner acceptance remain PENDING until actually reached. They are not prerequisites for the push that enables them."
+}

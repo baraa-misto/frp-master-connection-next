@@ -1,0 +1,430 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "frame": {
+    "axes_order": [
+      "L_LAP",
+      "S_LAP",
+      "N_W"
+    ],
+    "wall_free_end_l": "0",
+    "wall_occupies": "L_LAP <= 0",
+    "connected_member_continues": "L_LAP > 0"
+  },
+  "default_fixture": {
+    "profile": "CHANNEL",
+    "channel": {
+      "depth_in": "8",
+      "flange_width_in": "4",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.5",
+      "contact_region": "WEB"
+    },
+    "wall": {
+      "run_length_in": "48",
+      "transverse_width_in": "48",
+      "thickness_in": "8"
+    },
+    "side_lap_length_in": "12",
+    "member_projection_beyond_wall_in": "16",
+    "anchor_group": {
+      "rows": 2,
+      "anchors_per_row": 1,
+      "pitch_in": "4",
+      "centroid_distance_behind_free_end_in": "6",
+      "transverse_offset_in": "0",
+      "anchor_l_coordinates_in": [
+        "-8",
+        "-4"
+      ]
+    },
+    "external_anchor": {
+      "nominal_diameter_in": "0.5",
+      "hole_diameter_in": "0.563",
+      "embedment_in": "4"
+    },
+    "loads": {
+      "axial_force_kip": "0",
+      "major_shear_kip": "-4",
+      "minor_shear_kip": "0"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_DEFAULT_CHANNEL_SIDE_LAP_GEOMETRY",
+      "input": {
+        "profile": "CHANNEL",
+        "side_lap_length_in": "12",
+        "member_projection_beyond_wall_in": "16"
+      },
+      "expected": {
+        "wall_free_end_l_in": "0",
+        "member_start_l_in": "-12",
+        "member_end_l_in": "16",
+        "physical_overlap_interval_l_in": [
+          "-12",
+          "0"
+        ],
+        "channel_contact_region": "WEB"
+      }
+    },
+    {
+      "id": "G2_WALL_STOPS_MEMBER_CONTINUES",
+      "expected": {
+        "wall_positive_free_end_l_in": "0",
+        "member_exists_for_positive_l": true,
+        "wall_exists_for_positive_l": false,
+        "member_continues_beyond_wall": true
+      }
+    },
+    {
+      "id": "G3_DEFAULT_ANCHORS_INSIDE_OVERLAP",
+      "expected": {
+        "group_centroid_l_in": "-6",
+        "anchor_l_coordinates_in": [
+          "-8",
+          "-4"
+        ],
+        "anchor_s_coordinates_in": [
+          "0",
+          "0"
+        ],
+        "all_anchor_centers_inside_overlap": true
+      }
+    },
+    {
+      "id": "G4_INCREASE_LAP_DOES_NOT_MOVE_ANCHORS",
+      "input": {
+        "side_lap_length_in": "18"
+      },
+      "expected": {
+        "member_start_l_in": "-18",
+        "group_centroid_l_in": "-6",
+        "anchor_l_coordinates_in": [
+          "-8",
+          "-4"
+        ],
+        "automatic_anchor_reposition": false
+      }
+    },
+    {
+      "id": "G5_REDUCE_LAP_OUTSIDE_ANCHOR_INVALID",
+      "input": {
+        "side_lap_length_in": "7"
+      },
+      "expected": {
+        "geometry_status": "INVALID_GEOMETRY",
+        "governing_anchor_l_in": "-8",
+        "reason": "ANCHOR_OUTSIDE_PHYSICAL_SIDE_LAP_OVERLAP",
+        "automatic_anchor_reposition": false
+      }
+    },
+    {
+      "id": "G6_EXPLICIT_CENTER_ON_EIGHTEEN_INCH_LAP",
+      "input": {
+        "side_lap_length_in": "18",
+        "action": "CENTER_ANCHOR_GROUP_IN_OVERLAP"
+      },
+      "expected": {
+        "group_centroid_l_in": "-9",
+        "explicit_user_action_required": true
+      }
+    },
+    {
+      "id": "G7_LAP_CHANGE_NEVER_AUTO_CENTERS",
+      "expected": {
+        "lap_change_moves_group": false,
+        "center_action_moves_group": true
+      }
+    },
+    {
+      "id": "G8_CHANNEL_WEB_CONTACT_ACCEPTED",
+      "expected": {
+        "profile": "CHANNEL",
+        "contact_region": "WEB",
+        "geometry_status": "VALID"
+      }
+    },
+    {
+      "id": "G9_CHANNEL_FLANGE_TO_WALL_REJECTED",
+      "input": {
+        "profile": "CHANNEL",
+        "contact_region": "TOP_FLANGE"
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "reason": "CHANNEL_WEB_CONTACT_ONLY"
+      }
+    },
+    {
+      "id": "G10_CHANNEL_FLANGES_OUTSIDE_CONCRETE",
+      "expected": {
+        "top_flange_positive_volume_concrete_overlap": false,
+        "bottom_flange_positive_volume_concrete_overlap": false,
+        "web_face_coincident_with_wall": true
+      }
+    },
+    {
+      "id": "G11_ANGLE_SELECTED_LEG_CONTACT",
+      "input": {
+        "profile": "ANGLE"
+      },
+      "expected": {
+        "selected_leg_face_coincident_with_wall": true,
+        "unselected_leg_present": true
+      }
+    },
+    {
+      "id": "G12_ANGLE_FREE_LEG_AND_HEEL_OUTSIDE_CONCRETE",
+      "expected": {
+        "perpendicular_leg_positive_volume_concrete_overlap": false,
+        "heel_positive_volume_concrete_overlap": false
+      }
+    },
+    {
+      "id": "G13_ANGLE_EMBEDDED_FREE_LEG_INVALID",
+      "expected": {
+        "invalid_embedded_orientation": "INVALID_GEOMETRY",
+        "automatic_angle_flip": false
+      }
+    },
+    {
+      "id": "G14_CHANNEL_DIRECT_ANCHOR_PATH",
+      "expected": {
+        "path": [
+          "CHANNEL_WEB",
+          "CONCRETE_EMBEDMENT"
+        ],
+        "intermediate_connector_present": false
+      }
+    },
+    {
+      "id": "G15_ANGLE_DIRECT_ANCHOR_PATH",
+      "expected": {
+        "path": [
+          "ANGLE_SELECTED_LEG",
+          "CONCRETE_EMBEDMENT"
+        ],
+        "intermediate_connector_present": false
+      }
+    },
+    {
+      "id": "G16_NO_FAR_SIDE_CONCRETE_HARDWARE",
+      "expected": {
+        "exterior_nut_washer_present": true,
+        "embedment_shank_present": true,
+        "far_side_nut_present": false,
+        "far_side_washer_present": false
+      }
+    },
+    {
+      "id": "G17_THREE_FORCE_INPUTS_NO_MOMENT",
+      "expected": {
+        "inputs": [
+          "AXIAL_FORCE",
+          "MAJOR_SHEAR",
+          "MINOR_SHEAR"
+        ],
+        "user_moment_inputs_present": false
+      }
+    },
+    {
+      "id": "G18_ACTION_REFERENCE_FROM_CURRENT_PROFILE",
+      "expected": {
+        "reference_at_wall_free_end_plane": true,
+        "reference_backend_authoritative": true,
+        "reference_uses_actual_profile_section_geometry": true,
+        "frontend_reference_calculation": false
+      }
+    },
+    {
+      "id": "G19_EXACT_ANCHOR_GROUP_WRENCH_TRANSLATION",
+      "expected": {
+        "force_identity": "F_anchor = F_member",
+        "moment_identity": "M_anchor = M_member + (r_member-r_anchor) cross F_member",
+        "exact_force_equilibrium": true,
+        "exact_moment_equilibrium": true
+      }
+    },
+    {
+      "id": "G20_IN_PLANE_NOMINAL_DEMAND_APPLICABILITY",
+      "input": {
+        "minor_shear": "0"
+      },
+      "expected": {
+        "axial_and_major_enter_in_plane_group_mechanics": true,
+        "nominal_demand_only_under_existing_applicability": true,
+        "new_distribution_equation": false
+      }
+    },
+    {
+      "id": "G21_MINOR_SHEAR_NORMAL_ACTION",
+      "input": {
+        "minor_shear_nonzero": true
+      },
+      "expected": {
+        "normal_action_retained": true,
+        "direct_side_lap_bolt_axis_response": "NOT_EVALUATED",
+        "generated_anchor_tension_capacity": false,
+        "generated_prying": false
+      }
+    },
+    {
+      "id": "G22_MINOR_SHEAR_PULL_THROUGH_AND_CONTACT_LIMITS",
+      "expected": {
+        "direct_side_lap_frp_pull_through": "NOT_EVALUATED",
+        "wall_normal_contact_and_anchor_force_partition": "EXTERNAL_DESIGN_REQUIRED"
+      }
+    },
+    {
+      "id": "G23_OUT_OF_PLANE_TRANSFER_MOMENTS_RETAINED",
+      "expected": {
+        "full_anchor_group_wrench_exported": true,
+        "generated_moments_suppressed": false,
+        "direct_side_lap_out_of_plane_response": "NOT_EVALUATED_WHEN_APPLICABLE"
+      }
+    },
+    {
+      "id": "G24_ANCHOR_OUTSIDE_OVERLAP_INVALID_EVEN_INSIDE_WALL",
+      "expected": {
+        "concrete_face_containment_alone_sufficient": false,
+        "overlap_containment_required": true
+      }
+    },
+    {
+      "id": "G25_FRP_COMPLETE_HOLE_CONTAINMENT",
+      "expected": {
+        "hole_outside_selected_frp_region": "INVALID_GEOMETRY",
+        "governing_frp_edge_reported": true
+      }
+    },
+    {
+      "id": "G26_CONCRETE_FACE_CONTAINMENT",
+      "expected": {
+        "anchor_center_outside_finite_wall_face": "INVALID_GEOMETRY",
+        "governing_wall_edge_reported": true
+      }
+    },
+    {
+      "id": "G27_EMBEDMENT_GREATER_THAN_WALL_THICKNESS",
+      "expected": {
+        "geometry_status": "INVALID_GEOMETRY",
+        "reason": "ANCHOR_EMBEDMENT_EXCEEDS_WALL_THICKNESS"
+      }
+    },
+    {
+      "id": "G28_SIDE_LAP_MATERIAL_AXIS_COVERAGE",
+      "expected": {
+        "channel_regions": [
+          "WEB",
+          "TOP_FLANGE",
+          "BOTTOM_FLANGE"
+        ],
+        "angle_regions": [
+          "LEG_1",
+          "LEG_2"
+        ],
+        "all_required_lw_cw_tt_present": true
+      }
+    },
+    {
+      "id": "G29_CONCRETE_NO_FRP_AXES",
+      "expected": {
+        "concrete_lw_cw_tt_present": false,
+        "side_lap_frame_present": true
+      }
+    },
+    {
+      "id": "G30_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "anchor_group_wrench_available": true,
+        "external_handoff_available": true
+      }
+    },
+    {
+      "id": "G31_SUPPORTED_FRP_FAILURE_PRECEDENCE",
+      "expected": {
+        "supported_local_frp_failure": "FAIL",
+        "overall_status": "FAIL",
+        "external_limitations_visible": true
+      }
+    },
+    {
+      "id": "G32_VALID_GEOMETRY_EXTERNAL_LIMITATIONS",
+      "expected": {
+        "geometry_status": "VALID",
+        "overall_status": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G33_EXTERNAL_HANDOFF_DETERMINISTIC",
+      "expected": {
+        "frame_present": true,
+        "overlap_geometry_present": true,
+        "member_reference_present": true,
+        "anchor_group_wrench_present": true,
+        "anchor_coordinates_present": true,
+        "overlap_edge_distances_present": true,
+        "anchor_capacity_present": false,
+        "full_precision": true,
+        "deterministic_fingerprint": true
+      }
+    },
+    {
+      "id": "G34_US_SI_CHANNEL_EQUIVALENCE",
+      "conversions": {
+        "48_in_mm": "1219.2",
+        "18_in_mm": "457.2",
+        "16_in_mm": "406.4",
+        "12_in_mm": "304.8",
+        "8_in_mm": "203.2",
+        "6_in_mm": "152.4",
+        "4_in_mm": "101.6",
+        "0.5_in_mm": "12.7",
+        "0.563_in_mm": "14.3002",
+        "4_kip_kN": "17.792886461042"
+      },
+      "expected": {
+        "geometry_equal": true,
+        "overlap_equal": true,
+        "anchor_coordinates_equal": true,
+        "force_vector_equal": true,
+        "wrench_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G35_PROFILE_SWITCH_PRESERVES_CONNECTION_STATE",
+      "expected": {
+        "wall_geometry_change": "NONE",
+        "side_lap_length_change": "NONE",
+        "anchor_group_position_change": "NONE",
+        "load_change": "NONE",
+        "only_profile_specific_state_reinitialized": true
+      }
+    },
+    {
+      "id": "G36_STAGE_3_5_REGRESSION_BOUNDARY",
+      "expected": {
+        "stage_3_5a_rc1_change": "NONE",
+        "stage_3_5a_r1_change": "NONE",
+        "stage_3_5a_r2_change": "NONE"
+      }
+    },
+    {
+      "id": "G37_FROZEN_REGRESSION_BOUNDARY",
+      "expected": {
+        "direct_fingerprint_change": "NONE",
+        "single_member_tee_fingerprint_change": "NONE",
+        "single_clip_angle_fingerprint_change": "NONE",
+        "paired_clip_angle_fingerprint_change": "NONE",
+        "multi_member_tee_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

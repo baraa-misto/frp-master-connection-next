@@ -1,0 +1,567 @@
+{
+  "schema": "frp-master-connection-stage-3.4-multi-member-tee-family-freeze-manifest-v1",
+  "schema_version": "1.0.0",
+  "stage": "3.4",
+  "freeze_name": "Multi-Member Tee Family Accepted Baseline",
+  "freeze_scope": "accepted-stage-3.4a-and-stage-3.4b-multi-member-tee-family-governance-and-reproducibility",
+  "controlling_order": {
+    "name": "FRP_MASTER_CONNECTION_STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_CODEX_ORDER.md",
+    "sha256": "93750C4E403DAF36F2B1858154FF2B36D30D128E3A6AF1673F2682EF9B6A2A88",
+    "final_sentinel": "END OF STAGE 3.4 MULTI-MEMBER TEE FAMILY FREEZE ORDER — DO NOT PROCEED IF THIS LINE IS MISSING"
+  },
+  "accepted_product_baseline": {
+    "commit": "b2da06ea04276e2113906d4e7c2b4295496f685f",
+    "subject": "feat: expand multi-member tee profiles and supports",
+    "commit_count": 79,
+    "tracked_file_count": 459,
+    "branch": "main"
+  },
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "resolution": "the governance-only commit containing this manifest and targeted by stage-3.4-multi-member-tee-family-freeze",
+    "expected_commit_count": 80,
+    "expected_subject": "chore: freeze Stage 3.4 multi-member tee family baseline",
+    "freeze_tag": "stage-3.4-multi-member-tee-family-freeze",
+    "tag_type": "annotated"
+  },
+  "repository_identities": {
+    "accepted_backend_tree": "2f0d679488f2414a02b201f9efb5cf0f09d2f177",
+    "accepted_frontend_tree": "33000ba7f25108dd3b944b2690c89fe257dcb0b2",
+    "accepted_backend_src_tree": "91c91446a9c31440693b37c88195be02e60c98b1",
+    "accepted_frontend_src_tree": "21676d8011c07d804fb334393499cfd42145849d",
+    "accepted_workflow_tree": "20edd491455e6329c4565bc72cd7b88e29d3f7b1",
+    "accepted_engineering_tree": "15e39a30f7c5e9793941827c61403d4309ac3bf3",
+    "accepted_golden_tree": "0ed98af247762493d148284a03819708c472ccff",
+    "frontend_package_json": {
+      "path": "frontend/package.json",
+      "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    },
+    "frontend_package_lock": {
+      "path": "frontend/package-lock.json",
+      "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+      "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+    }
+  },
+  "existing_immutable_freezes": [
+    {
+      "stage": "2.3",
+      "tag": "stage-2.3-interface-geometry-freeze",
+      "tag_type": "annotated",
+      "tag_object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd",
+      "peeled_target": "5bc545ab8251f9bd49dedc776962937ed5e822a2"
+    },
+    {
+      "stage": "3.2",
+      "tag": "stage-3.2-tee-connection-freeze",
+      "tag_type": "annotated",
+      "tag_object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0",
+      "peeled_target": "d16b354732c90bf3bf7847c62be652c230a9f91e"
+    },
+    {
+      "stage": "3.3",
+      "tag": "stage-3.3-clip-angle-family-freeze",
+      "tag_type": "annotated",
+      "tag_object": "c22433084106a4da3006b610cc90429aba1660ce",
+      "peeled_target": "a4d21506d45d2d21d3f5039b662ea56ec6c5da9f"
+    }
+  ],
+  "ci_evidence": {
+    "provider": "GitHub Actions",
+    "superseded_development_run": {
+      "run_number": 71,
+      "run_id": 33137536833,
+      "commit": "7154d62f0476d69899d23ee5a27e31362da49f08",
+      "status": "superseded-failure",
+      "jobs_green": 2,
+      "jobs_total": 4
+    },
+    "stage_3_4a_r1": {
+      "run_number": 72,
+      "run_id": 33138794652,
+      "commit": "731cc0a31c6ed564681aaa157ee29d37f9e9d177",
+      "status": "accepted",
+      "duration": "4m32s",
+      "jobs_green": 4,
+      "jobs_total": 4
+    },
+    "stage_3_4a_r2": {
+      "run_number": 73,
+      "run_id": 33141339028,
+      "commit": "51fd10ffe269fd4b07000eb3dd234411315d7429",
+      "status": "accepted",
+      "duration": "4m52s",
+      "jobs_green": 4,
+      "jobs_total": 4
+    },
+    "stage_3_4b_final": {
+      "run_number": 74,
+      "run_id": 33146877695,
+      "commit": "b2da06ea04276e2113906d4e7c2b4295496f685f",
+      "status": "accepted",
+      "duration": "4m53s",
+      "jobs": [
+        "Backend Ubuntu: PASS",
+        "Backend Windows: PASS",
+        "Frontend Ubuntu: PASS",
+        "Frontend Windows: PASS"
+      ],
+      "jobs_green": 4,
+      "jobs_total": 4,
+      "backend_tests_passed": 2420,
+      "backend_configured_coverage_percent": 100,
+      "frontend_tests_passed": 442,
+      "frontend_test_files": 28,
+      "frontend_configured_coverage_percent": 100,
+      "dependency_vulnerabilities": 0
+    }
+  },
+  "accepted_visual_evidence": {
+    "status": "accepted",
+    "authority": "direct owner acceptance in the controlling Codex task",
+    "acceptance_date": "2026-08-28",
+    "multi_member_topology": [
+      "optional Upper, Middle, and Lower slots in every nonempty combination",
+      "all active members on the same Tee-stem face",
+      "one independent bolt group per active slot plus one independent support group",
+      "no automatic group repositioning or coupling"
+    ],
+    "connected_profiles": [
+      "Flat Plate, Angle, Channel, Wide-Flange / I, RHS, and SRS in every slot",
+      "Middle Flat Plate at horizontal 0 degrees",
+      "Middle Angle at horizontal 0 degrees"
+    ],
+    "support_targets": [
+      "W Column Flange",
+      "W Beam Flange",
+      "W Column Web",
+      "Channel Column Web",
+      "Angle Column Leg",
+      "Rectangular Hollow Column Wall",
+      "Solid Rectangular Column Face"
+    ],
+    "rectangular_behavior": [
+      "RHS remains physically hollow before and after trim",
+      "RHS bolts traverse near wall, cavity, and far wall with external-only hardware",
+      "SRS remains physically solid before and after trim",
+      "SRS bolts traverse full solid depth",
+      "endpoint-based hardware orientation remains exact"
+    ],
+    "geometry_ui_state": [
+      "actual selected profile and support geometry",
+      "mixed-profile and cross-group-hole failures remain fail-closed",
+      "independent member-end trim and complete material-axis coverage",
+      "disabled slots are absent",
+      "current, invalid, and last-valid state behavior is retained",
+      "the blank-workspace defect remains corrected"
+    ],
+    "joint_equilibrium": [
+      "per-slot complete member-end wrenches are retained",
+      "exact shifted-moment support-wrench assembly is displayed",
+      "zero-force nonzero-couple behavior is retained",
+      "profile and support changes do not alter wrench-assembly meaning"
+    ],
+    "frozen_regression": "historical single-member Tee remains separately available and unchanged"
+  },
+  "acceptance_chain": [
+    {
+      "stage": "3.4A",
+      "commit": "7154d62f0476d69899d23ee5a27e31362da49f08",
+      "subject": "feat: add multi-member tee node"
+    },
+    {
+      "stage": "3.4A-R1",
+      "commit": "731cc0a31c6ed564681aaa157ee29d37f9e9d177",
+      "subject": "test: make Stage 3.3 freeze audit successor-safe"
+    },
+    {
+      "stage": "3.4A-R2",
+      "commit": "51fd10ffe269fd4b07000eb3dd234411315d7429",
+      "subject": "fix: render multi-member tee workspace"
+    },
+    {
+      "stage": "3.4B",
+      "commit": "b2da06ea04276e2113906d4e7c2b4295496f685f",
+      "subject": "feat: expand multi-member tee profiles and supports"
+    }
+  ],
+  "superseded_unpublished_candidate": {
+    "commit": "8f74aa44b0a1930bee8a44526afe1e417a3a5c73",
+    "status": "superseded-unpublished-not-reachable-from-controlling-main",
+    "part_of_acceptance_chain": false
+  },
+  "controlled_stage_3_4_repository_artifacts": [
+    {
+      "revision": "Stage 3.4A",
+      "kind": "family-selection-decision",
+      "path": "docs/governance/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_FAMILY_SELECTION_DECISION.md",
+      "sha256": "EDDAA92E3483AB408E7FA9E0003FC830D2A21D0E7EB0F50CB5244145D09DEC63"
+    },
+    {
+      "revision": "Stage 3.4A",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "5DCA4844A912DBAC8FF8ABCE663543672C03B3352DE95EA3C72FE39F31A4EC3E"
+    },
+    {
+      "revision": "Stage 3.4A",
+      "kind": "golden-benchmarks",
+      "path": "backend/tests/golden/stage_3_4a_multi_member_tee_node_golden_benchmarks_rc1.json",
+      "sha256": "BF797EE78F7F7135EEA9BDA8CEB2B863E2FF31070A40ACEC1F8B6B34F6A94D26"
+    },
+    {
+      "revision": "Stage 3.4A",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "0A8322E45E80F2EDE3ACB457116D873FA142521F5A2A85F30FFA20F231F4A5DA"
+    },
+    {
+      "revision": "Stage 3.4A",
+      "kind": "shared-platform-freeze-change",
+      "path": "docs/governance/STAGE_3_4A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "2553A11688B1102902D9653029A44F2E086D96F3362DE5107507EBC11DF99519"
+    },
+    {
+      "revision": "Stage 3.4A-R2",
+      "kind": "workspace-correction-evidence",
+      "path": "docs/qa/STAGE_3_4A_R2_MULTI_MEMBER_TEE_BLANK_WORKSPACE_CORRECTION.md",
+      "sha256": "518AE94E589C5532F7D57AA8E3D5CB2C88BF93DD4CBFFA0AAE38ADFD9961CE59"
+    },
+    {
+      "revision": "Stage 3.4B",
+      "kind": "expansion-decision",
+      "path": "docs/governance/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_DECISION.md",
+      "sha256": "2300908F7CC45E6385A7C55C180A5946A96278D82067AA60C2ED1C44DB2C564A"
+    },
+    {
+      "revision": "Stage 3.4B",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "A35DEDF8280B6C4E91D486D9777E95750423D055C45AC26FB64AFA8531B59BDD"
+    },
+    {
+      "revision": "Stage 3.4B",
+      "kind": "golden-benchmarks",
+      "path": "backend/tests/golden/stage_3_4b_multi_member_tee_profile_support_expansion_golden_benchmarks_rc1.json",
+      "sha256": "ED98DD604A126B9A4B122A5569AC7CEAE3C3D0B4608422E2955246583B97FC36"
+    },
+    {
+      "revision": "Stage 3.4B",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "3A43B82BACA61DB79CCB1EAD49E71F2E746DED318638C2CF685AB835124F0F6F"
+    },
+    {
+      "revision": "Stage 3.4B",
+      "kind": "shared-platform-freeze-change",
+      "path": "docs/governance/STAGE_3_4B_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "0912CAEF183F77ED6BA5E0FA8FDF850B43CD2BBAC29598B1E51B5F63A4941839"
+    }
+  ],
+  "external_control_orders": [
+    {
+      "revision": "Stage 3.4A",
+      "name": "FRP_MASTER_CONNECTION_STAGE_3_4A_MULTI_MEMBER_TEE_NODE_CODEX_ORDER.md",
+      "sha256": "3C41E877A601690F6B5D1047645B64ACDF75CD3BDACADCB7FD28CD010C93D182"
+    },
+    {
+      "revision": "Stage 3.4A-R1",
+      "name": "FRP_MASTER_CONNECTION_STAGE_3_4A_R1_SUCCESSOR_SAFE_STAGE_3_3_FREEZE_AUDIT_CODEX_ORDER.md",
+      "sha256": "F0663CF25973CAA7B654DCD60B4F9F09433B1FC8CE9B4905C4F884A453B5A09B"
+    },
+    {
+      "revision": "Stage 3.4A-R2",
+      "name": "FRP_MASTER_CONNECTION_STAGE_3_4A_R2_MULTI_MEMBER_TEE_BLANK_WORKSPACE_CORRECTION_CODEX_ORDER.md",
+      "sha256": "D8D0DD0D0D3E1B2E5D383C686A2AEEAF8FD896BD686A46D47A99397331173907"
+    },
+    {
+      "revision": "Stage 3.4B",
+      "name": "FRP_MASTER_CONNECTION_STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_CODEX_ORDER.md",
+      "sha256": "BCA7A0982FA903DACC9ED5DCA59FE48FDBEE06D99B677A227FF42533FB6C106F"
+    },
+    {
+      "revision": "Stage 3.4 Freeze",
+      "name": "FRP_MASTER_CONNECTION_STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_CODEX_ORDER.md",
+      "sha256": "93750C4E403DAF36F2B1858154FF2B36D30D128E3A6AF1673F2682EF9B6A2A88"
+    }
+  ],
+  "inherited_authorities": [
+    {"path": "docs/engineering/CALCULATION_SLICE_1_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "DA47468DCEE41462A19461BC102670A8DFB125195E7AA815CAB222A035317B71"},
+    {"path": "backend/tests/golden/calculation_slice_1_rc2.json", "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "44431A8921CF1ADF9C7D0F7F022C9615265308A41BE589B1EE5150A7D7886F99"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc1.json", "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"},
+    {"path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD"},
+    {"path": "backend/tests/golden/calculation_slice_2_rc2.json", "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"},
+    {"path": "docs/qa/CALCULATION_SLICE_2_RC2_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "F2E0A253C75503C3F8FA29E5E78A4A8E4DF98204A43CAF4B07000EC65183A7A4"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470"},
+    {"path": "backend/tests/golden/calculation_slice_3_rc1.json", "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "CA091B0B6054F82980E5A9AD8D923080F9DFD2FB4CEDA08E80E3122C1B28477A"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F"},
+    {"path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json", "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "3E85C61AD10865B5293165DF5847B63E96F80D19361E194A180B40EFB403ED27"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "CBC11F8793F7B85873DB5C52D7A90536DD20CB87005895EAF3B43D319AB1B5D6"},
+    {"path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json", "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "477D8F19C50B39ED10EEFE95A3C93F73897147BB456CF412350960C9C3D24E10"},
+    {"path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json", "sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E"},
+    {"path": "docs/governance/STAGE_3_3A_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md", "sha256": "1FDA76A86891FBD871647ABB7A29187B1FD75E82B523A4D97073A8F65CA2B230"},
+    {"path": "docs/governance/STAGE_3_3C1_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md", "sha256": "065E160CED57F204F4F1DBF710B62DBBC682D31E98D12AD0223C3AE4246007DB"},
+    {"path": "docs/governance/STAGE_3_3C2_STAGE_3_2_TEE_RHS_FULL_THROUGH_SUCCESSOR.md", "sha256": "EEB183648C63BD339F0D699DEDBB5E921276AC2CE09D2ABE24D7E0A015880618"},
+    {"path": "docs/governance/STAGE_3_3C2_STAGE_3_3A_SINGLE_ANGLE_RHS_FULL_THROUGH_SUCCESSOR.md", "sha256": "D5AED8E8544F544A303EDDE3C58B542ED53F789324E3744EAA9CB7C4FE5BE042"},
+    {"path": "docs/qa/STAGE_3_3C3_R1_MATERIAL_AXES_COVERAGE_BINDING_CORRECTION.md", "sha256": "937BF076DDCEB49875741971031F8DAC7EBB1FE1FC27CE00E7DE258B928ACF82"},
+    {"path": "docs/governance/STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_MANIFEST.json", "sha256": "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4"},
+    {"path": "backend/tests/calculation/test_stage_3_3_freeze_manifest.py", "sha256": "DEA71CAD4B3DCCCCEAC9EF7588B11D83EB2D9F7783A9D0F5CE7FC8079611BF17"},
+    {"path": "docs/governance/STAGE_3_4A_SHARED_PLATFORM_FREEZE_CHANGE.md", "sha256": "2553A11688B1102902D9653029A44F2E086D96F3362DE5107507EBC11DF99519"},
+    {"path": "docs/qa/STAGE_3_4A_R2_MULTI_MEMBER_TEE_BLANK_WORKSPACE_CORRECTION.md", "sha256": "518AE94E589C5532F7D57AA8E3D5CB2C88BF93DD4CBFFA0AAE38ADFD9961CE59"},
+    {"path": "docs/governance/STAGE_3_4B_SHARED_PLATFORM_FREEZE_CHANGE.md", "sha256": "0912CAEF183F77ED6BA5E0FA8FDF850B43CD2BBAC29598B1E51B5F63A4941839"}
+  ],
+  "benchmark_identities": {
+    "stage_3_4a": [
+      "G1_UPPER_ONLY_CONCENTRIC",
+      "G2_MIDDLE_ONLY_INDEPENDENT_COUNTS",
+      "G3_LOWER_ONLY_CONCENTRIC",
+      "G4_DEFAULT_ALL_THREE_WRENCH_ASSEMBLY",
+      "G5_ZERO_NET_FORCE_NONZERO_COUPLE",
+      "G6_DISABLED_SLOT_IS_ABSENT",
+      "G7_SLOT_ORDER_AND_DOMAIN_VALIDATION",
+      "G8_GROUP_INDEPENDENCE",
+      "G9_CROSS_GROUP_HOLE_OVERLAP",
+      "G10_CONNECTED_MEMBER_INTERFERENCE",
+      "G11_SLOT_INCLINATION_RULES",
+      "G12_SAME_SUPPORT_WRENCH_DIFFERENT_DECOMPOSITION",
+      "G13_UNSUPPORTED_NORMAL_ACTION",
+      "G14_MEMBER_END_MOMENTS_RETAINED",
+      "G15_US_SI_EQUIVALENCE",
+      "G16_MATERIAL_AXES_COVERAGE",
+      "G17_PREVIEW_ZERO_RESISTANCE",
+      "G18_REQUIRED_LIMITATIONS",
+      "G19_SUPPORTED_FAILURE_PRECEDENCE",
+      "G20_FROZEN_FAMILY_REGRESSION"
+    ],
+    "stage_3_4b": [
+      "G1_HISTORICAL_STAGE_3_4A_DEFAULT_INVARIANCE",
+      "G2_UPPER_SLOT_SIX_PROFILE_MATRIX",
+      "G3_MIDDLE_SLOT_SIX_PROFILE_MATRIX",
+      "G4_LOWER_SLOT_SIX_PROFILE_MATRIX",
+      "G5_MIDDLE_FLAT_PLATE_HORIZONTAL",
+      "G6_MIDDLE_ANGLE_HORIZONTAL",
+      "G7_MIDDLE_NONZERO_INCLINATION_REJECTED",
+      "G8_UPPER_LOWER_PROFILE_INCLINATION_DOMAINS",
+      "G9_CONNECTED_RHS_FULL_THROUGH_EACH_SLOT",
+      "G10_CONNECTED_SRS_FULL_DEPTH_EACH_SLOT",
+      "G11_OPEN_PROFILE_SURFACE_AND_PATH_MATRIX",
+      "G12_SEVEN_SUPPORT_TARGETS",
+      "G13_RHS_SUPPORT_FULL_THROUGH",
+      "G14_SRS_SUPPORT_FULL_DEPTH",
+      "G15_OPEN_SUPPORT_PATHS",
+      "G16_MIXED_PROFILE_ALL_THREE_WRENCH_INVARIANCE",
+      "G17_EXPANDED_PROFILE_SLOT_COMBINATIONS",
+      "G18_MIXED_PROFILE_MEMBER_INTERFERENCE",
+      "G19_CROSS_GROUP_TEE_STEM_HOLE_OVERLAP",
+      "G20_PROFILE_TRIM_MATRIX",
+      "G21_MATERIAL_AXIS_MATRIX",
+      "G22_US_SI_EQUIVALENCE_REPRESENTATIVE_MIXED_NODE",
+      "G23_PROFILE_SUPPORT_CHANGE_INDEPENDENCE",
+      "G24_DISABLED_SLOT_AFTER_PROFILE_CHANGE",
+      "G25_RECTANGULAR_LIMITATIONS_ARE_DESIGN_LIMITATIONS",
+      "G26_STRICT_PROFILE_TARGET_FIELD_VALIDATION",
+      "G27_RECTANGULAR_HARDWARE_IDENTITY",
+      "G28_REGRESSION_BOUNDARY"
+    ]
+  },
+  "engineering_fingerprints": {
+    "historical_stage_3_4a": {
+      "engineering": "2594c3e28cd47fac2b5235710733ab0bd94d0c61bb82bb174e21b9979c252717",
+      "support_wrench": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34"
+    },
+    "representative_stage_3_4b": {
+      "expanded_default_us": {
+        "input": "3d30b75defdb11c20595885a69977b49b98e5a16c76a2e6802cffd85dfbb47d1",
+        "engineering": "0ae1724adf74c7aa966e62ad002922dce4165060c03363c57fcc6174406fc64a",
+        "support_wrench": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34"
+      },
+      "mixed_rhs_us": {
+        "input": "b6130b62918379bd4d321583b31739e6a0ea85be5f8eafcefe1a99a08e9cc601",
+        "engineering": "56fc59c1ce94fac67477084ff2a17211b8f7a8e915085ead31715b96c0bfcf39",
+        "support_wrench": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34"
+      },
+      "mixed_rhs_si": {
+        "input": "b6130b62918379bd4d321583b31739e6a0ea85be5f8eafcefe1a99a08e9cc601",
+        "engineering": "56fc59c1ce94fac67477084ff2a17211b8f7a8e915085ead31715b96c0bfcf39",
+        "support_wrench": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34"
+      },
+      "all_srs_us": {
+        "input": "257217fc334a5077db989f31a887c687b0557b76cdacb1c41f31dcfeaa3dee61",
+        "engineering": "9cbf5161d17527fce16ec9919de5e6755feb373bcff25106fe2835e4ce32215d",
+        "support_wrench": "1a045a3fdd132d18249c2cc27a9208ffad18a7dd6e857cf85215aaf5090a2e34"
+      }
+    },
+    "us_si_equality": {
+      "fixture": "G22_US_SI_EQUIVALENCE_REPRESENTATIVE_MIXED_NODE",
+      "us_case": "mixed_rhs_us",
+      "si_case": "mixed_rhs_si",
+      "input_equal": true,
+      "engineering_equal": true,
+      "support_wrench_equal": true
+    }
+  },
+  "frozen_contracts": {
+    "topology": {
+      "connection_type_count": 1,
+      "slots": ["UPPER_BRACE", "MIDDLE_BEAM", "LOWER_BRACE"],
+      "minimum_active_slots": 1,
+      "maximum_active_slots": 3,
+      "same_tee_stem_face": true,
+      "one_independent_group_per_active_slot": true,
+      "one_independent_support_group": true,
+      "shared_connected_group_bolts": false,
+      "automatic_group_repositioning": false,
+      "disabled_slots_absent": true
+    },
+    "connected_profiles": {
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "upper_inclination_degrees": "0 <= theta <= 90",
+      "middle_inclination_degrees": "theta = 0",
+      "lower_inclination_degrees": "-90 <= theta <= 0",
+      "middle_flat_plate_zero_degrees_valid": true,
+      "middle_angle_zero_degrees_valid": true,
+      "profile_roll_independent": true,
+      "backend_authoritative_geometry_and_surface": true,
+      "generic_flat_plate_fallback": false
+    },
+    "support_matrix": {
+      "targets": [
+        "W_COLUMN_FLANGE",
+        "W_BEAM_FLANGE",
+        "W_COLUMN_WEB",
+        "CHANNEL_COLUMN_WEB",
+        "ANGLE_COLUMN_LEG",
+        "RECTANGULAR_HOLLOW_COLUMN_WALL",
+        "SOLID_RECTANGULAR_COLUMN_FACE"
+      ],
+      "w_beam_web_present": false,
+      "shared_support_architecture_reused": true
+    },
+    "rectangular_sections": {
+      "rhs": [
+        "near-wall MATERIAL_LAYER",
+        "cavity FREE_SHANK_SPAN",
+        "far-wall MATERIAL_LAYER",
+        "both walls independently contained",
+        "one physical bolt per axis",
+        "no internal nut or washer",
+        "external endpoint-oriented hardware",
+        "cavity has no material axes, bearing demand, or resistance"
+      ],
+      "srs": [
+        "actual solid geometry",
+        "one continuous full-depth material traversal",
+        "no cavity",
+        "entry and exit face containment",
+        "external hardware"
+      ],
+      "trim": [
+        "RHS remains hollow",
+        "SRS remains solid",
+        "hardware endpoints follow current physical geometry"
+      ]
+    },
+    "joint_equilibrium": {
+      "force_equation": "F_S = sum(F_i)",
+      "moment_equation": "M_S = sum(M_i + (r_i - r_S) cross F_i)",
+      "exact_decimal_vector_arithmetic": true,
+      "disabled_slots_excluded": true,
+      "scalar_only_summation": false,
+      "tolerance_based_zeroing": false,
+      "hidden_load_redistribution": false,
+      "stage_2_5a_demand_runs_per_active_slot": 1,
+      "support_demand_runs_on_assembled_wrench": 1,
+      "support_demand_is_sum_of_separate_group_results": false,
+      "distinct_decomposition_provenance_retained": true
+    },
+    "geometry_trim_interference": [
+      "fixed Tee-frame connected bolt grids",
+      "independent count, pitch, gauge, offsets, and Center",
+      "exact cross-group complete-hole non-overlap",
+      "positive-volume member interference invalid",
+      "member-to-Tee embedding invalid",
+      "no automatic geometry correction",
+      "slot-specific full-profile trim",
+      "trim never moves bolt groups",
+      "fabricated-edge clearances recomputed",
+      "current and last-valid state retained",
+      "backend-authored profile and support primitives"
+    ],
+    "visualization_material_axes": [
+      "persistent shared viewer",
+      "actual selected profile and support geometry",
+      "active members only",
+      "independent group focus",
+      "endpoint-based hardware",
+      "action and reference overlays",
+      "region-embedded axes on every active connected, Tee, and support region",
+      "no axes in RHS cavity",
+      "SRS solid-volume basis",
+      "material-axis toggle is presentation-only",
+      "navigation does not call engineering APIs or stale results"
+    ],
+    "preview_design_error_state": {
+      "preview": [
+        "strict validation",
+        "geometry, path, trim, and interference",
+        "per-slot demand",
+        "support-wrench assembly and support demand",
+        "visualization and status",
+        "zero resistance-engine calls"
+      ],
+      "design": [
+        "user-triggered",
+        "consumes current accepted preview",
+        "uses existing accepted resistance handoff only",
+        "retains exact call counts and limitations"
+      ],
+      "error_state": [
+        "valid geometry remains current despite engineering limitations",
+        "true invalidity retains exact backend reason and last-valid state",
+        "request or server failure keeps workspace mounted",
+        "unsupported contract keeps workspace mounted and fails closed",
+        "no blank page"
+      ]
+    },
+    "versions": {
+      "accepted": ["3.4A-RC1", "3.4B-RC1"],
+      "historical_3_4a_exact": true,
+      "expanded_3_4b_strict": true,
+      "unknown_future_versions_fail_closed": true
+    }
+  },
+  "deliberate_limitations": [
+    "TEE_CONNECTOR_BODY_RESISTANCE = NOT_EVALUATED",
+    "MULTI_MEMBER_TEE_INTERGROUP_LOAD_PATH_AND_STABILITY = NOT_EVALUATED",
+    "RHS_LOCAL_WALL_RESPONSE = NOT_EVALUATED when RHS is present",
+    "RHS_SLEEVE_OR_CRUSH_TUBE_REQUIREMENT = NOT_EVALUATED when RHS is present",
+    "SOLID_RECTANGULAR_FULL_DEPTH_RESISTANCE_APPLICABILITY = NOT_EVALUATED when SRS is present",
+    "automatic prying generation remains unsupported",
+    "automatic bolt-axis tension generation remains unsupported",
+    "unsupported moment-connection behavior remains fail-closed",
+    "unsupported connector-body and global stress-field mechanics remain fail-closed",
+    "unsupported load redistribution remains prohibited",
+    "known supported numerical FAIL retains precedence",
+    "ordinary whole-connection PASS is prohibited while required checks remain unevaluated"
+  ],
+  "future_stage_policy": [
+    "Future stages may reuse or refactor shared infrastructure but may not silently alter frozen Stage 3.4 contracts.",
+    "Any intentional change must identify the frozen behavior being superseded.",
+    "A new controlled engineering authority is required when engineering meaning changes.",
+    "Exact before and after fingerprint transitions are required where applicable.",
+    "Unaffected Stage 3.4 regression evidence is required.",
+    "Historical freeze and tag evidence must be retained.",
+    "Successor-safe Stage 3.4 freeze-audit compatibility is required.",
+    "The stage-3.4-multi-member-tee-family-freeze tag is immutable and shall never move."
+  ]
+}

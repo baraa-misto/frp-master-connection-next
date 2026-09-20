@@ -1,0 +1,225 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R2_MEMBER_PROFILE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "authority": "Stage 3.2-R2 member/profile geometry, surface mapping, invariance, and state semantics only. No new resistance equation is authorized.",
+  "decimal_policy": "All engineering numeric values are exact decimal strings.",
+  "local_frame": {
+    "X": "member longitudinal axis",
+    "Y": "first cross-section axis",
+    "Z": "second cross-section axis",
+    "handedness": "right-handed"
+  },
+  "benchmarks": [
+    {
+      "id": "T32R2_G1_ANGLE_SURFACES",
+      "profile_family": "ANGLE",
+      "dimensions_in": {
+        "member_length": "8",
+        "leg_y": "4",
+        "leg_z": "3",
+        "thickness": "0.5"
+      },
+      "cross_section_definition": "Union of Y-leg [Y=0..4,Z=0..0.5] and Z-leg [Y=0..0.5,Z=0..3]. Member is centered along X.",
+      "expected_surfaces": {
+        "LEG_Y_OUTER": {
+          "plane": "Z=0",
+          "unit_normal_local": ["0", "0", "-1"],
+          "in_plane_member_axis": "X",
+          "cross_section_span": {"Y_min": "0", "Y_max": "4"}
+        },
+        "LEG_Z_OUTER": {
+          "plane": "Y=0",
+          "unit_normal_local": ["0", "-1", "0"],
+          "in_plane_member_axis": "X",
+          "cross_section_span": {"Z_min": "0", "Z_max": "3"}
+        }
+      },
+      "expected_selectable_surfaces": ["LEG_Y_OUTER", "LEG_Z_OUTER"]
+    },
+    {
+      "id": "T32R2_G2_CHANNEL_WEB_SURFACE",
+      "profile_family": "CHANNEL",
+      "dimensions_in": {
+        "member_length": "8",
+        "depth": "6",
+        "flange_width": "3",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.5"
+      },
+      "cross_section_definition": "Channel opens toward +Y; outside web plane Y=0; depth centered about Z=0.",
+      "expected_surfaces": {
+        "WEB_OUTER": {
+          "plane": "Y=0",
+          "unit_normal_local": ["0", "-1", "0"],
+          "span": {"Z_min": "-3", "Z_max": "3"}
+        },
+        "FLANGE_POS_OUTER": {
+          "plane": "Z=3",
+          "unit_normal_local": ["0", "0", "1"],
+          "span": {"Y_min": "0", "Y_max": "3"}
+        },
+        "FLANGE_NEG_OUTER": {
+          "plane": "Z=-3",
+          "unit_normal_local": ["0", "0", "-1"],
+          "span": {"Y_min": "0", "Y_max": "3"}
+        }
+      },
+      "expected_selectable_surfaces": ["WEB_OUTER", "FLANGE_POS_OUTER", "FLANGE_NEG_OUTER"]
+    },
+    {
+      "id": "T32R2_G3_WIDE_FLANGE_SURFACES",
+      "profile_family": "WIDE_FLANGE_I",
+      "dimensions_in": {
+        "member_length": "8",
+        "depth": "8",
+        "flange_width": "8",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.5"
+      },
+      "cross_section_definition": "Section centered at Y=0,Z=0; web centered at Y=0; outer flange planes at Z=+/-4.",
+      "expected_surfaces": {
+        "WEB_POS_FACE": {
+          "plane": "Y=0.25",
+          "unit_normal_local": ["0", "1", "0"],
+          "span": {"Z_min": "-3.5", "Z_max": "3.5"}
+        },
+        "WEB_NEG_FACE": {
+          "plane": "Y=-0.25",
+          "unit_normal_local": ["0", "-1", "0"],
+          "span": {"Z_min": "-3.5", "Z_max": "3.5"}
+        },
+        "FLANGE_POS_OUTER": {
+          "plane": "Z=4",
+          "unit_normal_local": ["0", "0", "1"],
+          "span": {"Y_min": "-4", "Y_max": "4"}
+        },
+        "FLANGE_NEG_OUTER": {
+          "plane": "Z=-4",
+          "unit_normal_local": ["0", "0", "-1"],
+          "span": {"Y_min": "-4", "Y_max": "4"}
+        }
+      }
+    },
+    {
+      "id": "T32R2_G4_RECTANGULAR_HOLLOW_SURFACES",
+      "profile_family": "RECTANGULAR_HOLLOW_SECTION",
+      "dimensions_in": {
+        "member_length": "8",
+        "depth": "6",
+        "width": "4",
+        "wall_thickness": "0.5"
+      },
+      "cross_section_definition": "Closed rectangular tube centered at Y=0,Z=0.",
+      "expected_surfaces": {
+        "Y_POS_FACE": {"plane": "Y=2", "unit_normal_local": ["0", "1", "0"]},
+        "Y_NEG_FACE": {"plane": "Y=-2", "unit_normal_local": ["0", "-1", "0"]},
+        "Z_POS_FACE": {"plane": "Z=3", "unit_normal_local": ["0", "0", "1"]},
+        "Z_NEG_FACE": {"plane": "Z=-3", "unit_normal_local": ["0", "0", "-1"]}
+      },
+      "expected_selectable_surfaces": ["Y_POS_FACE", "Y_NEG_FACE", "Z_POS_FACE", "Z_NEG_FACE"]
+    },
+    {
+      "id": "T32R2_G5_FLAT_PLATE_SURFACES",
+      "profile_family": "FLAT_PLATE",
+      "dimensions_in": {
+        "member_length": "8",
+        "width": "4",
+        "thickness": "0.5"
+      },
+      "cross_section_definition": "Plate centered at Z=0 and spanning Y=-2..2.",
+      "expected_surfaces": {
+        "FACE_POS": {"plane": "Z=0.25", "unit_normal_local": ["0", "0", "1"]},
+        "FACE_NEG": {"plane": "Z=-0.25", "unit_normal_local": ["0", "0", "-1"]}
+      },
+      "expected_selectable_surfaces": ["FACE_POS", "FACE_NEG"]
+    },
+    {
+      "id": "T32R2_G6_ROUND_TUBE_DIRECT_TEE_REJECTION",
+      "profile_family": "ROUND_HOLLOW_SECTION",
+      "dimensions_in": {
+        "member_length": "8",
+        "outer_diameter": "4",
+        "wall_thickness": "0.25"
+      },
+      "expected": {
+        "profile_geometry_identity_valid": true,
+        "flat_direct_tee_stem_surface_available": false,
+        "tee_template_selectable": false,
+        "reason": "CURVED_SURFACE_REQUIRES_SEPARATELY_DEFINED_INTERFACE_OR_ADAPTER"
+      }
+    },
+    {
+      "id": "T32R2_G7_W_SUPPORT_ROLE_LOCAL_INVARIANCE",
+      "profile_family": "WIDE_FLANGE_I",
+      "dimensions_in": {
+        "member_length": "16",
+        "depth": "8",
+        "flange_width": "8",
+        "web_thickness": "0.5",
+        "flange_thickness": "0.75"
+      },
+      "selected_surface": "FLANGE_POS_OUTER",
+      "expected": {
+        "column_local_surface_plane": "Z=4",
+        "beam_local_surface_plane": "Z=4",
+        "column_local_surface_normal": ["0", "0", "1"],
+        "beam_local_surface_normal": ["0", "0", "1"],
+        "local_cross_section_geometry_equal": true,
+        "global_support_transform_equal": false,
+        "tee_connector_implementation_equal": true
+      }
+    },
+    {
+      "id": "T32R2_G8_SURFACE_FILTERING",
+      "expected_selectable_surfaces_by_profile": {
+        "ANGLE": ["LEG_Y_OUTER", "LEG_Z_OUTER"],
+        "CHANNEL": ["WEB_OUTER", "FLANGE_POS_OUTER", "FLANGE_NEG_OUTER"],
+        "WIDE_FLANGE_I": ["WEB_POS_FACE", "WEB_NEG_FACE", "FLANGE_POS_OUTER", "FLANGE_NEG_OUTER"],
+        "RECTANGULAR_HOLLOW_SECTION": ["Y_POS_FACE", "Y_NEG_FACE", "Z_POS_FACE", "Z_NEG_FACE"],
+        "FLAT_PLATE": ["FACE_POS", "FACE_NEG"],
+        "ROUND_HOLLOW_SECTION": []
+      },
+      "invalid_surface_selection_rejected": true,
+      "no_generic_non_frp_or_unknown_fallback": true
+    },
+    {
+      "id": "T32R2_G9_INTERFACE_LAYOUT_INDEPENDENCE",
+      "initial": {
+        "interface_A": {"rows": "2", "bolts_per_row": "2", "pitch": "2", "gauge": "2"},
+        "interface_B": {"rows": "2", "bolts_per_row": "2", "pitch": "2", "gauge": "2"}
+      },
+      "mutation": {"interface_A_pitch": "3"},
+      "expected": {
+        "interface_A_pitch": "3",
+        "interface_B_pitch": "2",
+        "interface_B_geometry_identity_unchanged": true,
+        "interface_A_geometry_identity_changed": true
+      }
+    },
+    {
+      "id": "T32R2_G10_STALE_AND_DISPLAY_ONLY_STATE",
+      "engineering_changes_that_stale": [
+        "connection_type",
+        "profile_family",
+        "profile_dimensions",
+        "selected_profile_surface",
+        "profile_orientation",
+        "support_role",
+        "selected_support_flange",
+        "tee_dimensions",
+        "interface_A_layout",
+        "interface_B_layout",
+        "load_or_reference_point"
+      ],
+      "display_changes_that_do_not_stale": [
+        "camera_rotate",
+        "camera_pan",
+        "camera_zoom",
+        "front_top_side_fit_reset",
+        "overlay_visibility",
+        "accordion_state",
+        "interface_highlight"
+      ]
+    }
+  ]
+}

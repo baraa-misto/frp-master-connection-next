@@ -1,0 +1,526 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_7A_COLUMN_BASE_PROFILE_MATRIX_EXPANSION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "successor_contract": "3.7A-RC1",
+  "historical_wi_contracts_preserved": true,
+  "profile_matrix": [
+    "WIDE_FLANGE_I",
+    "RECTANGULAR_HOLLOW_SECTION",
+    "SOLID_RECTANGULAR_SECTION",
+    "ANGLE"
+  ],
+  "assembly_matrix": [
+    "SINGLE_BASE_ANGLE",
+    "DOUBLE_BASE_ANGLES"
+  ],
+  "fixtures": {
+    "rhs": {
+      "S_dimension_in": "10",
+      "T_dimension_in": "8",
+      "wall_thickness_in": "0.5",
+      "display_height_in": "24",
+      "cavity_in": "7"
+    },
+    "srs": {
+      "S_dimension_in": "10",
+      "T_dimension_in": "8",
+      "display_height_in": "24"
+    },
+    "angle": {
+      "leg_y_in": "6",
+      "leg_z_in": "6",
+      "thickness_in": "0.5",
+      "display_height_in": "24"
+    }
+  },
+  "benchmarks": [
+    {
+      "id": "G1_HISTORICAL_WI_SINGLE_EXACT",
+      "expected": {
+        "historical_contract_change": "NONE",
+        "historical_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G2_HISTORICAL_WI_DOUBLE_EXACT",
+      "expected": {
+        "historical_contract_change": "NONE",
+        "historical_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G3_SUCCESSOR_WI_PHYSICAL_EQUIVALENCE",
+      "expected": {
+        "geometry_equal": true,
+        "actions_equal": true,
+        "foundation_handoff_equal": true
+      }
+    },
+    {
+      "id": "G4_PROFILE_SELECTOR_MATRIX",
+      "expected": {
+        "profiles": [
+          "WIDE_FLANGE_I",
+          "RECTANGULAR_HOLLOW_SECTION",
+          "SOLID_RECTANGULAR_SECTION",
+          "ANGLE"
+        ]
+      }
+    },
+    {
+      "id": "G5_ASSEMBLY_SELECTOR_MATRIX",
+      "expected": {
+        "assemblies": [
+          "SINGLE_BASE_ANGLE",
+          "DOUBLE_BASE_ANGLES"
+        ]
+      }
+    },
+    {
+      "id": "G6_RHS_SINGLE_GEOMETRY",
+      "expected": {
+        "profile": "RECTANGULAR_HOLLOW_SECTION",
+        "assembly": "SINGLE_BASE_ANGLE",
+        "one_connector": true
+      }
+    },
+    {
+      "id": "G7_RHS_SINGLE_PATH",
+      "fixture": {
+        "through_depth_in": "8",
+        "wall_thickness_in": "0.5",
+        "connector_thickness_in": "0.5"
+      },
+      "expected": {
+        "path": [
+          "BASE_ANGLE_VERTICAL_LEG",
+          "RHS_NEAR_WALL",
+          "FREE_SHANK_CAVITY",
+          "RHS_FAR_WALL"
+        ],
+        "near_wall_in": "0.5",
+        "cavity_in": "7",
+        "far_wall_in": "0.5"
+      }
+    },
+    {
+      "id": "G8_RHS_CAVITY_FREE_SHANK_ONLY",
+      "expected": {
+        "cavity_material_layer": false,
+        "cavity_bearing_check": false,
+        "cavity_axes": false
+      }
+    },
+    {
+      "id": "G9_RHS_SINGLE_EXTERNAL_HARDWARE",
+      "expected": {
+        "head_washer_exterior_to_connector": true,
+        "nut_washer_exterior_to_far_wall": true,
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "G10_RHS_DOUBLE_OPPOSITE_FACE_GEOMETRY",
+      "expected": {
+        "selected_and_opposite_faces": true,
+        "connectors_identical": true
+      }
+    },
+    {
+      "id": "G11_RHS_DOUBLE_COMMON_PATH",
+      "expected": {
+        "path": [
+          "POSITIVE_BASE_ANGLE_VERTICAL_LEG",
+          "RHS_NEAR_WALL",
+          "FREE_SHANK_CAVITY",
+          "RHS_FAR_WALL",
+          "NEGATIVE_BASE_ANGLE_VERTICAL_LEG"
+        ]
+      }
+    },
+    {
+      "id": "G12_RHS_DOUBLE_PHYSICAL_BOLT_IDENTITY",
+      "expected": {
+        "one_shank_per_axis": true,
+        "duplicate_bolt_ids": false,
+        "internal_hardware_count": 0
+      }
+    },
+    {
+      "id": "G13_RHS_DOUBLE_HALF_SHARING_ELIGIBLE",
+      "input": {
+        "V_T": "0",
+        "user_moment": "0"
+      },
+      "expected": {
+        "requires_exact_symmetry": true,
+        "positive_branch_fraction": "0.5",
+        "negative_branch_fraction": "0.5"
+      }
+    },
+    {
+      "id": "G14_RHS_DOUBLE_NORMAL_ACTION_LIMIT",
+      "input": {
+        "V_T": "NONZERO"
+      },
+      "expected": {
+        "complete_branch_allocation": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G15_SRS_SINGLE_SOLID_PATH",
+      "fixture": {
+        "through_depth_in": "8"
+      },
+      "expected": {
+        "path": [
+          "BASE_ANGLE_VERTICAL_LEG",
+          "SOLID_RECTANGULAR_COLUMN"
+        ],
+        "solid_depth_in": "8",
+        "cavity": false
+      }
+    },
+    {
+      "id": "G16_SRS_DOUBLE_SOLID_PATH",
+      "expected": {
+        "path": [
+          "POSITIVE_BASE_ANGLE_VERTICAL_LEG",
+          "SOLID_RECTANGULAR_COLUMN",
+          "NEGATIVE_BASE_ANGLE_VERTICAL_LEG"
+        ]
+      }
+    },
+    {
+      "id": "G17_SRS_NO_FICTITIOUS_CAVITY",
+      "expected": {
+        "free_shank_cavity_count": 0,
+        "continuous_solid_material": true
+      }
+    },
+    {
+      "id": "G18_SRS_DOUBLE_HALF_SHARING_ELIGIBLE",
+      "input": {
+        "V_T": "0",
+        "user_moment": "0"
+      },
+      "expected": {
+        "requires_exact_symmetry": true,
+        "positive_branch_fraction": "0.5",
+        "negative_branch_fraction": "0.5"
+      }
+    },
+    {
+      "id": "G19_RECTANGULAR_FACE_FRAME",
+      "expected": {
+        "selected_face_changes_T_C": true,
+        "S_C_cross_T_C_equals_L_C": true
+      }
+    },
+    {
+      "id": "G20_RECTANGULAR_OPPOSITE_FACE_BACKEND",
+      "expected": {
+        "opposite_face_derived_by_backend": true,
+        "frontend_transform_authority": false
+      }
+    },
+    {
+      "id": "G21_ANGLE_LEG_Y_SELECTION",
+      "expected": {
+        "selected_leg": "LEG_Y",
+        "other_leg_retained": true
+      }
+    },
+    {
+      "id": "G22_ANGLE_LEG_Z_SELECTION",
+      "expected": {
+        "selected_leg": "LEG_Z",
+        "other_leg_retained": true
+      }
+    },
+    {
+      "id": "G23_ANGLE_SINGLE_FACE",
+      "expected": {
+        "one_connector": true,
+        "selected_leg_broad_face_required": true
+      }
+    },
+    {
+      "id": "G24_ANGLE_SINGLE_BOLT_PATH",
+      "expected": {
+        "path": [
+          "BASE_ANGLE_VERTICAL_LEG",
+          "SELECTED_ANGLE_COLUMN_LEG"
+        ],
+        "external_nut_on_opposite_leg_face": true
+      }
+    },
+    {
+      "id": "G25_ANGLE_DOUBLE_SAME_SELECTED_LEG",
+      "expected": {
+        "positive_and_negative_connectors_on_same_selected_leg": true,
+        "different_column_legs_used": false
+      }
+    },
+    {
+      "id": "G26_ANGLE_DOUBLE_COMMON_BOLT",
+      "expected": {
+        "path": [
+          "POSITIVE_BASE_ANGLE_VERTICAL_LEG",
+          "SELECTED_ANGLE_COLUMN_LEG",
+          "NEGATIVE_BASE_ANGLE_VERTICAL_LEG"
+        ],
+        "one_shank_per_axis": true
+      }
+    },
+    {
+      "id": "G27_ANGLE_OTHER_LEG_PHYSICAL",
+      "expected": {
+        "other_leg_in_scene": true,
+        "other_leg_in_interference_model": true
+      }
+    },
+    {
+      "id": "G28_ANGLE_INTERFERENCE_FAIL_CLOSED",
+      "expected": {
+        "heel_or_perpendicular_leg_collision": "INVALID_GEOMETRY",
+        "automatic_reposition": false
+      }
+    },
+    {
+      "id": "G29_ANGLE_DIFFERENT_LEGS_MOMENT_TOPOLOGY_REJECTED",
+      "expected": {
+        "status": "REJECTED",
+        "reason": "ANGLE_COLUMN_TWO_DIFFERENT_LEGS_MOMENT_BASE_NOT_IN_STAGE_3_7A_SCOPE"
+      }
+    },
+    {
+      "id": "G30_ANGLE_MEMBER_REFERENCE",
+      "expected": {
+        "backend_member_centroid_reference_used": true,
+        "selected_leg_reference_substitution": false
+      }
+    },
+    {
+      "id": "G31_ANGLE_CENTROID_ECCENTRICITY",
+      "expected": {
+        "centroid_to_selected_leg_offset_retained": true,
+        "forced_zero": false
+      }
+    },
+    {
+      "id": "G32_ANGLE_AXIAL_GENERATED_MOMENT",
+      "expected": {
+        "generated_moment_from_reference_offset_retained": true,
+        "user_moment_required": false
+      }
+    },
+    {
+      "id": "G33_ANGLE_DOUBLE_IN_PLANE_LAYER_PROVENANCE",
+      "expected": {
+        "positive_connector_fraction": "0.5",
+        "column_leg_fraction": "1.0",
+        "negative_connector_fraction": "0.5",
+        "requires_local_symmetry": true
+      }
+    },
+    {
+      "id": "G34_ANGLE_COMPLETE_BRANCH_WRENCH_LIMIT",
+      "expected": {
+        "complete_branch_wrench_50_50_inferred_from_geometry_only": false,
+        "status": "NOT_EVALUATED_WHEN_ACTION_SYMMETRY_UNPROVEN"
+      }
+    },
+    {
+      "id": "G35_WI_COLUMN_AXIAL_DEMAND",
+      "expected": {
+        "fraction": "1.0",
+        "material_axis": "LW"
+      }
+    },
+    {
+      "id": "G36_RHS_COLUMN_AXIAL_DEMAND",
+      "expected": {
+        "fraction": "1.0",
+        "material_axis": "LW",
+        "new_wall_share_equation": false
+      }
+    },
+    {
+      "id": "G37_SRS_COLUMN_AXIAL_DEMAND",
+      "expected": {
+        "fraction": "1.0",
+        "material_axis": "LW"
+      }
+    },
+    {
+      "id": "G38_ANGLE_COLUMN_AXIAL_DEMAND",
+      "expected": {
+        "fraction": "1.0",
+        "material_axis": "LW"
+      }
+    },
+    {
+      "id": "G39_BASE_ANGLE_SYSTEM_AXIAL_DEMAND",
+      "expected": {
+        "fraction": "1.0",
+        "vertical_leg_material_axis": "CW"
+      }
+    },
+    {
+      "id": "G40_SINGLE_CONNECTOR_FULL_SYSTEM_ACTION",
+      "expected": {
+        "branch_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G41_FOUNDATION_ACTION_COUNTED_ONCE",
+      "expected": {
+        "column_plus_connector_demands_summed": false,
+        "foundation_action_count": "ONCE"
+      }
+    },
+    {
+      "id": "G42_COMPRESSION_CONTACT_BOUNDARY",
+      "expected": {
+        "status": "EXTERNAL_DESIGN_REQUIRED",
+        "limitation": "COLUMN_END_VS_BASE_ANGLE_BEARING_PARTITION"
+      }
+    },
+    {
+      "id": "G43_UPLIFT_COLUMN_END_BEARING",
+      "expected": {
+        "status": "NOT_REQUIRED"
+      }
+    },
+    {
+      "id": "G44_CONCRETE_ANCHOR_EXTERNAL",
+      "expected": {
+        "concrete_capacity": "EXTERNAL_DESIGN_REQUIRED",
+        "anchor_capacity": "EXTERNAL_DESIGN_REQUIRED"
+      }
+    },
+    {
+      "id": "G45_CONNECTION_NORMAL_BOLT_AXIS_LIMIT",
+      "expected": {
+        "bolt_axis_response": "NOT_EVALUATED",
+        "automatic_prying": false
+      }
+    },
+    {
+      "id": "G46_RHS_CAVITY_AXES",
+      "expected": {
+        "cavity_axes_count": 0
+      }
+    },
+    {
+      "id": "G47_SRS_MATERIAL_AXES",
+      "expected": {
+        "solid_region_axes_present": true
+      }
+    },
+    {
+      "id": "G48_ANGLE_BOTH_LEG_AXES",
+      "expected": {
+        "selected_leg_axes_present": true,
+        "other_leg_axes_present": true
+      }
+    },
+    {
+      "id": "G49_BASE_ANGLE_AXES",
+      "expected": {
+        "vertical_leg_axes_present": true,
+        "horizontal_leg_axes_present": true
+      }
+    },
+    {
+      "id": "G50_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0
+      }
+    },
+    {
+      "id": "G51_SUPPORTED_FAILURE_PRECEDENCE",
+      "expected": {
+        "supported_numerical_failure": "FAIL",
+        "limitations_retained": true
+      }
+    },
+    {
+      "id": "G52_US_SI_WI_EQUIVALENCE",
+      "expected": {
+        "geometry_equal": true,
+        "actions_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G53_US_SI_RHS_EQUIVALENCE",
+      "expected": {
+        "geometry_equal": true,
+        "physical_paths_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G54_US_SI_SRS_EQUIVALENCE",
+      "expected": {
+        "geometry_equal": true,
+        "physical_paths_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G55_US_SI_ANGLE_EQUIVALENCE",
+      "expected": {
+        "geometry_equal": true,
+        "member_reference_equal": true,
+        "generated_moments_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G56_SUCCESSOR_FINGERPRINTS",
+      "expected": {
+        "profile_family_included": true,
+        "selected_surface_or_leg_included": true,
+        "member_reference_included": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G57_STAGE_3_5_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G58_STAGE_3_6_FREEZE_REGRESSION",
+      "expected": {
+        "change": "NONE",
+        "tag_movement": "NONE"
+      }
+    },
+    {
+      "id": "G59_STAGE_3_2_3_3_3_4_REGRESSIONS",
+      "expected": {
+        "stage_3_2": "NONE",
+        "stage_3_3": "NONE",
+        "stage_3_4": "NONE"
+      }
+    },
+    {
+      "id": "G60_OTHER_FAMILY_REGRESSIONS",
+      "expected": {
+        "Direct": "NONE",
+        "Tee": "NONE",
+        "Clip_Angle": "NONE",
+        "Multi_Member_Tee": "NONE",
+        "Web_Splice": "NONE"
+      }
+    }
+  ]
+}

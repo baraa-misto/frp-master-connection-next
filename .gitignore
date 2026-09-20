@@ -1,0 +1,95 @@
+# Licensed/private engineering sources: track only the explanation.
+/reference-private/*
+!/reference-private/README.md
+
+# Generated artifacts: track only explanations.
+/generated/reports/*
+!/generated/reports/README.md
+/generated/snapshots/*
+!/generated/snapshots/README.md
+
+# Environment files and local secrets.
+.env
+.env.*
+!.env.example
+*.secret
+*.secrets
+secrets.*
+credentials*.json
+service-account*.json
+
+# Credentials, certificates, and keys.
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+
+# Python environments and caches.
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+*.egg-info/
+dist/
+build/
+
+# Node dependencies and build output.
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+frontend/dist/
+frontend/build/
+.vite/
+
+# Local databases.
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Coverage and test output.
+.coverage
+.coverage.*
+coverage/
+htmlcov/
+.nyc_output/
+test-results/
+playwright-report/
+
+# IDE-local and operating-system files.
+.idea/
+.vscode/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary and editor files.
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+~$*
+
+# Local logs.
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

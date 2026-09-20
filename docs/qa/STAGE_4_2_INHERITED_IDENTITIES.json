@@ -1,0 +1,158 @@
+{
+  "baseline": "473a3c8cd43f13022d254dae2477084895478c74",
+  "format": "Git blob identities; CRLF checkout presentation is normalized to LF; no dependency or historical calculation mutation",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "blob": "060115a687d77888054a348a1cb453d8168dd5d4"
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "blob": "9caa35e74d01bb040369b72fe19294ba6072a786"
+    },
+    {
+      "path": "backend/requirements/README.md",
+      "blob": "f91d715e0446ebd1598ed6accac32d7000fe1b9d"
+    },
+    {
+      "path": "backend/requirements/requirements-dev-py314.lock.txt",
+      "blob": "e2f9e4051ebff96954e88c6d6a4fc0b8cf3460cc"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/__init__.py",
+      "blob": "fc9ddbcaff9abf97efa99c52bfa7196c804f867f"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_connector_core.py",
+      "blob": "a455e5f2962a8157f56d6e9d2b94c69312dad733"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_connector_providers.py",
+      "blob": "961eea8280e8de091008704856a0f05d51ea5f37"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/applicability.py",
+      "blob": "b9bd86f606b3bff44612667a92ceeb1ad074b446"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/block_shear_planning.py",
+      "blob": "6d769c286ab767ffa68ff66897889627bd0fd374"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/channel_moment_resultants.py",
+      "blob": "f06c90b9ab4ea7dc5b22ab9c991f98596ddad4a6"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/channel_moment_splice_resistance.py",
+      "blob": "cff98071bc581565e2f321adc667565e5fd7fe02"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/deterministic_trigonometry.py",
+      "blob": "7e2baf2fe3dfbc9092ff244902e6785c095a2d47"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/eccentric_demand.py",
+      "blob": "2f55df68532c1818d4e1d6ce6757c6bc9f4fef97"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/eccentric_group_modes.py",
+      "blob": "c29ce8ffba6fdab1684e0e3e08623bd373fb43c4"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/equations.py",
+      "blob": "9c15d174e65d9169f8e057f807fb9383a55436c3"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/evaluation.py",
+      "blob": "127e69540876f5d3bffd0322651afca223b2a037"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/fingerprint.py",
+      "blob": "f2f6508fc13b24cec138b0ad7c1273660a20af82"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/frp_angle_connector_provider.py",
+      "blob": "a8d09444d9af219ba3a9e18754f770012c7b65a9"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/geometry_mapping.py",
+      "blob": "f5b1d9a540bf74f83f5bcc2a54513ef097c626bb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/in_plane_wrench_demand.py",
+      "blob": "4218f1f13326a40d96ddbff3b7f9d1c2a5b34f2b"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/inputs.py",
+      "blob": "6b85ec96f86808531cbfbeab2270723f64fec861"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/material_compatibility.py",
+      "blob": "66c18600e76580315d051f8ffe8c46f1628eb854"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow.py",
+      "blob": "5a927c924aaa1bce6f20af4d05cfa9d196d28101"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_engine.py",
+      "blob": "6322650fff28b0cebb61e98e1066e2b05de896df"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_equations.py",
+      "blob": "a922c1745bfe4490fde8f42f8812508f124bab3c"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_fingerprint.py",
+      "blob": "cac1a9882f855467f82e507dc5784e49eb14687e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/plate_strength.py",
+      "blob": "9aa29fa2c1822c71f9bd9893f599489a52bee7b5"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/properties.py",
+      "blob": "232a6735327ba0da19b3c3a998322fb3d4a638ee"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/quantities.py",
+      "blob": "37278099183183d5557d7859dcf2c0bec7e1febb"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/resistance_handoff.py",
+      "blob": "47642677249eb7216de658e10c19bbc386166302"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/results.py",
+      "blob": "ee6c39352d88887837fe727431cc35c6a0d8c13e"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/sources.py",
+      "blob": "b31c8f85c62ab661a3f3b2732d97f51346868de6"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/web_splice_resistance.py",
+      "blob": "26ad5512601ecbf947f54bedf8d76a0b884c5a35"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/wi_moment_resultants.py",
+      "blob": "bc428cc260526fe5e020c5122f52e9f1c11c9d54"
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/wi_moment_splice_resistance.py",
+      "blob": "c54d1f8e87cb347ff593bbc958e1b1002d464466"
+    },
+    {
+      "path": "frontend/.npmrc",
+      "blob": "d9ca8860b092f4d36ea10a4883343019566769fb"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "blob": "ae1831268db42005517343bf555f054a673ae520"
+    },
+    {
+      "path": "frontend/package.json",
+      "blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    }
+  ]
+}

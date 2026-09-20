@@ -1,0 +1,431 @@
+{
+  "schema_version": "frp-master-connection-cme2-c2-p2-golden-rc1",
+  "document_status": "approved RC1 implementation authority for isolated C2-P2; not family activation",
+  "not_production_output": true,
+  "baseline": {
+    "governance_commit": "20fabefa90247dd3470d4698edda1b22d017e7c6",
+    "frozen_c2_m_c2_p1_implementation": "7ef49bdbf8b9704af3d314735963069ddf7259f3",
+    "freeze_tag": "cme-2b-c2-m-c2-p1-freeze",
+    "expected_commit_count": 128
+  },
+  "source_locks": {
+    "SL_370_25_FINAL": "CLOSED_DIRECT_FINAL_SOURCE",
+    "SL_C2M_C2P1_FROZEN_AUTHORITY": "CLOSED",
+    "SL_C2P2_BOUNDED_METHOD_POLICY": "CLOSED_OWNER_EOR_APPROVED_2026_09_12"
+  },
+  "source_identity": {
+    "AISC_370_25_sha256": "A9C3440C127866626F633E9B5426E830E035857135FA1A38A2424757625AFCF1",
+    "C2M_spec_sha256": "D7364C080B983CA7830177DE278DD30826D17770D196A72664BDD02C02DCB0A0",
+    "C2P1_spec_sha256": "1A40C852DA4AB2A7E9BE434E65CA519B5074B8D5C7433FD1BCF6DC3BE6ACB165",
+    "C2P1_golden_sha256": "C0A63BB1DD20CC3985671CCEC2406FD928AC0A1541EC91D4F2E8922937D5C492"
+  },
+  "material": {
+    "label": "316 Stainless Steel",
+    "basis": "GENERIC_316SS_CONSERVATIVE_BASIS_US_SOURCE",
+    "Fy_ksi": "25.000000000000",
+    "Fu_ksi": "70.000000000000",
+    "E_ksi": "28000.000000000000",
+    "cold_work_credit": false,
+    "mtr_overstrength_credit": false,
+    "csm_strength_credit": false
+  },
+  "factors": {
+    "phi_compression": "0.900000000000",
+    "phi_flexure": "0.900000000000",
+    "curve_A_alpha": "0.560000000000",
+    "curve_A_beta0": "0.760000000000",
+    "curve_A_beta1": "0.410000000000",
+    "curve_A_beta2": "0.690000000000"
+  },
+  "native_exact_conversions": {
+    "inch_to_mm": "25.4",
+    "kip_to_kN": "4.4482216152605",
+    "kip_in_to_kN_mm": "112.98482902761670",
+    "ksi_to_MPa": "6.89475729316836133672267344534689069378138756277512555025110"
+  },
+  "primary_section": {
+    "width_b_in": "4.000000000000",
+    "nominal_thickness_in": "0.375000000000",
+    "design_thickness_in": "0.375000000000",
+    "A_in2": "1.500000000000",
+    "Iy_in4": "0.017578125000",
+    "Iz_in4": "2.000000000000",
+    "ry_in": "0.108253175473",
+    "rz_in": "1.154700538379",
+    "Sy_in3": "0.093750000000",
+    "Sz_in3": "1.000000000000",
+    "Zy_in3": "0.140625000000",
+    "Zz_in3": "1.500000000000",
+    "Mp_kip_in": "37.500000000000",
+    "My_kip_in": "25.000000000000",
+    "F9_q_lower": "342.720000000000",
+    "F9_q_upper": "2240.000000000000"
+  },
+  "positive_cases": [
+    {
+      "id": "P2_DESIGN_THICKNESS_AT_3_16_REUSES_C2P1",
+      "inputs": {
+        "b_in": "4",
+        "t_nom_in": "0.1875",
+        "verified_nominal_credit": false
+      },
+      "expected": {
+        "t_design_in": "0.178125000000",
+        "A_in2": "0.712500000000",
+        "Iz_in4": "0.950000000000",
+        "Sz_in3": "0.475000000000",
+        "Zz_in3": "0.712500000000"
+      }
+    },
+    {
+      "id": "P2_CLEAR_STRIP_SECTION_PROPERTIES",
+      "inputs": {
+        "b_in": "4",
+        "t_nom_in": "0.375"
+      },
+      "expected": {
+        "A_in2": "1.500000000000",
+        "Iy_in4": "0.017578125000",
+        "Iz_in4": "2.000000000000",
+        "ry_in": "0.108253175473",
+        "rz_in": "1.154700538379",
+        "Sy_in3": "0.093750000000",
+        "Sz_in3": "1.000000000000",
+        "Zy_in3": "0.140625000000",
+        "Zz_in3": "1.500000000000"
+      }
+    },
+    {
+      "id": "P2_COMPRESSION_CURVE_A_YIELD_BRANCH",
+      "inputs": {
+        "Lc_y_in": "2",
+        "Lc_z_in": "2",
+        "E4_disposition": "QUALIFIED_NOT_CONTROLLING",
+        "Pr_kip": "10"
+      },
+      "expected": {
+        "governing_axis": "y",
+        "slenderness_y": "18.475208614068",
+        "Fe_y_ksi": "809.615986026861",
+        "Fn_y_ksi": "25.000000000000",
+        "branch_y": "E3_YIELD_PLATEAU",
+        "Pc_kip": "33.750000000000",
+        "utilization": "0.296296296296"
+      }
+    },
+    {
+      "id": "P2_COMPRESSION_CURVE_A_INELASTIC_BRANCH",
+      "inputs": {
+        "Lc_y_in": "12",
+        "Lc_z_in": "12",
+        "E4_disposition": "QUALIFIED_NOT_CONTROLLING",
+        "Pr_kip": "10"
+      },
+      "expected": {
+        "governing_axis": "y",
+        "slenderness_y": "110.851251684408",
+        "Fe_y_ksi": "22.489332945191",
+        "Fy_over_Fe_y": "1.111638129105",
+        "Fn_y_ksi": "11.648287747001",
+        "branch_y": "E3_INELASTIC",
+        "Pc_kip": "15.725188458451",
+        "utilization": "0.635922426394"
+      }
+    },
+    {
+      "id": "P2_COMPRESSION_CURVE_A_ELASTIC_BRANCH",
+      "inputs": {
+        "Lc_y_in": "21",
+        "Lc_z_in": "21",
+        "E4_disposition": "QUALIFIED_NOT_CONTROLLING",
+        "Pr_kip": "5"
+      },
+      "expected": {
+        "governing_axis": "y",
+        "slenderness_y": "193.989690447714",
+        "Fe_y_ksi": "7.343455655572",
+        "Fy_over_Fe_y": "3.404391770383",
+        "Fn_y_ksi": "5.066984402345",
+        "branch_y": "E3_ELASTIC",
+        "Pc_kip": "6.840428943166",
+        "utilization": "0.730948313555"
+      }
+    },
+    {
+      "id": "P2_FLEXURE_F9_NO_LTB",
+      "inputs": {
+        "Lb_in": "10",
+        "Cb": "1.0",
+        "Cb_authority": "CONSERVATIVE_DEFAULT",
+        "Mr_kip_in": "20"
+      },
+      "expected": {
+        "q": "284.444444444444",
+        "branch": "F9_NO_LTB",
+        "Mn_kip_in": "37.500000000000",
+        "Mc_kip_in": "33.750000000000",
+        "utilization": "0.592592592593"
+      }
+    },
+    {
+      "id": "P2_FLEXURE_F9_INELASTIC_LTB",
+      "inputs": {
+        "Lb_in": "30",
+        "Cb": "1.0",
+        "Cb_authority": "CONSERVATIVE_DEFAULT",
+        "Mr_kip_in": "20"
+      },
+      "expected": {
+        "q": "853.333333333333",
+        "branch": "F9_INELASTIC_LTB",
+        "Mn_kip_in": "33.392857142857",
+        "Mc_kip_in": "30.053571428571",
+        "utilization": "0.665478312537"
+      }
+    },
+    {
+      "id": "P2_FLEXURE_F9_ELASTIC_LTB",
+      "inputs": {
+        "Lb_in": "100",
+        "Cb": "1.0",
+        "Cb_authority": "CONSERVATIVE_DEFAULT",
+        "Mr_kip_in": "10"
+      },
+      "expected": {
+        "q": "2844.444444444444",
+        "branch": "F9_ELASTIC_LTB",
+        "Fcr_ksi": "17.521875000000",
+        "Mn_kip_in": "17.521875000000",
+        "Mc_kip_in": "15.769687500000",
+        "utilization": "0.634127974952"
+      }
+    },
+    {
+      "id": "P2_FLEXURE_TRUSTED_CB_CREDIT",
+      "inputs": {
+        "Lb_in": "50",
+        "Cb": "1.1",
+        "Cb_authority": "TRUSTED_F1_PROFILE",
+        "Mr_kip_in": "20"
+      },
+      "expected": {
+        "q": "1422.222222222222",
+        "branch": "F9_INELASTIC_LTB",
+        "Mn_kip_in": "31.703571428571",
+        "Mc_kip_in": "28.533214285714",
+        "utilization": "0.700937503911"
+      }
+    },
+    {
+      "id": "P2_H2_COMPRESSION_PLUS_FLEXURE_PASS",
+      "inputs": {
+        "Pr_compression_kip": "10",
+        "Mr_kip_in": "15",
+        "Pc_kip": "33.75",
+        "Mc_kip_in": "33.75"
+      },
+      "expected": {
+        "interaction": "0.740740740741",
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "P2_H2_COMPRESSION_PLUS_FLEXURE_FAIL",
+      "inputs": {
+        "Pr_compression_kip": "15",
+        "Mr_kip_in": "20",
+        "Pc_kip": "33.75",
+        "Mc_kip_in": "33.75"
+      },
+      "expected": {
+        "interaction": "1.037037037037",
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "P2_H2_TENSION_PLUS_FLEXURE_PASS",
+      "inputs": {
+        "Pr_tension_kip": "5",
+        "Mr_kip_in": "15",
+        "Pct_kip": "33.75",
+        "Mct_kip_in": "22.5",
+        "Mc_kip_in": "33.75"
+      },
+      "expected": {
+        "interaction_tension_side": "0.814814814815",
+        "interaction_compression_side": "0.296296296296",
+        "governing": "H2_TENSION_SIDE",
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "P2_H2_TENSION_PLUS_FLEXURE_FAIL",
+      "inputs": {
+        "Pr_tension_kip": "10",
+        "Mr_kip_in": "20",
+        "Pct_kip": "33.75",
+        "Mct_kip_in": "22.5",
+        "Mc_kip_in": "33.75"
+      },
+      "expected": {
+        "interaction_tension_side": "1.185185185185",
+        "interaction_compression_side": "0.296296296296",
+        "governing": "H2_TENSION_SIDE",
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "P2_US_SOURCE_SI_DISPLAY",
+      "inputs": {
+        "Pc_kip": "33.75",
+        "Mc_kip_in": "33.75"
+      },
+      "expected": {
+        "Pc_kN": "150.127479515041875",
+        "Mc_kN_mm": "3813.237979682063625",
+        "source_property_system_remains": "US_CUSTOMARY"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "P2_NEG_CLEAR_SECTION_CONTAINS_HOLE",
+      "expected_status": "STAINLESS_CLEAR_BODY_SECTION_NOT_QUALIFIED"
+    },
+    {
+      "id": "P2_NEG_LOCAL_BEARING_PRYING_ZONE",
+      "expected_status": "STAINLESS_CLEAR_BODY_SECTION_NOT_QUALIFIED"
+    },
+    {
+      "id": "P2_NEG_COMPRESSION_EFFECTIVE_LENGTH_MISSING",
+      "expected_status": "STAINLESS_COMPRESSION_EFFECTIVE_LENGTH_NOT_RESOLVED"
+    },
+    {
+      "id": "P2_NEG_COMPRESSION_K_UNTRUSTED",
+      "expected_status": "STAINLESS_COMPRESSION_EFFECTIVE_LENGTH_NOT_RESOLVED"
+    },
+    {
+      "id": "P2_NEG_E4_DISPOSITION_UNKNOWN",
+      "expected_status": "STAINLESS_TORSIONAL_BUCKLING_SCOPE_NOT_RESOLVED"
+    },
+    {
+      "id": "P2_NEG_E4_REQUIRED",
+      "expected_status": "STAINLESS_TORSIONAL_BUCKLING_METHOD_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_FLEXURAL_LB_MISSING",
+      "expected_status": "STAINLESS_FLEXURAL_UNBRACED_LENGTH_NOT_RESOLVED"
+    },
+    {
+      "id": "P2_NEG_FAVORABLE_CB_UNTRUSTED",
+      "expected_status": "STAINLESS_CB_CREDIT_NOT_QUALIFIED"
+    },
+    {
+      "id": "P2_NEG_CB_ABOVE_1_67",
+      "expected_status": "STAINLESS_CB_OUTSIDE_APPROVED_RANGE"
+    },
+    {
+      "id": "P2_NEG_OUT_OF_PLANE_MOMENT",
+      "expected_status": "STAINLESS_OUT_OF_PLANE_FLEXURE_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_BIAXIAL_MOMENT",
+      "expected_status": "STAINLESS_BIAXIAL_FLEXURE_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_NONZERO_TORSION",
+      "expected_status": "STAINLESS_TORSION_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_COMBINED_NORMAL_SHEAR",
+      "expected_status": "STAINLESS_COMBINED_NORMAL_SHEAR_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_RAW_ECCENTRICITY_WITHOUT_RESOLVED_MOMENT",
+      "expected_status": "STAINLESS_ECCENTRIC_MOMENT_NOT_RESOLVED"
+    },
+    {
+      "id": "P2_NEG_CSM_REQUESTED",
+      "expected_status": "STAINLESS_CSM_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_ANGLE_TEE_OR_WELDED_FORM",
+      "expected_status": "STAINLESS_FORM_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "P2_NEG_FAMILY_ACTIVATION_WITHOUT_RESPONSE_AUTHORITY",
+      "expected_status": "STAINLESS_MATERIAL_DEPENDENT_RESPONSE_NOT_QUALIFIED"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "text": "Increasing absolute supported demand cannot reduce its utilization/interaction."
+    },
+    {
+      "id": "I02",
+      "text": "Increasing qualified flexural-buckling effective length cannot increase compression resistance."
+    },
+    {
+      "id": "I03",
+      "text": "Both principal flexural-buckling axes are retained; the lower available compression strength governs."
+    },
+    {
+      "id": "I04",
+      "text": "Increasing Lb with fixed Cb cannot increase F9 flexural resistance."
+    },
+    {
+      "id": "I05",
+      "text": "Increasing a trusted Cb within the approved domain cannot reduce F9 flexural resistance."
+    },
+    {
+      "id": "I06",
+      "text": "F9 nominal flexural strength never exceeds Mp."
+    },
+    {
+      "id": "I07",
+      "text": "Display-unit changes cannot change source identity, result, status, governing branch, or fingerprint."
+    },
+    {
+      "id": "I08",
+      "text": "Raw eccentricity never creates an authoritative moment inside C2-P2."
+    },
+    {
+      "id": "I09",
+      "text": "Missing or unresolved E4 disposition cannot produce a compression capacity."
+    },
+    {
+      "id": "I10",
+      "text": "Favorable Cb credit requires trusted profile authority; otherwise Cb is exactly 1.0."
+    },
+    {
+      "id": "I11",
+      "text": "C2-P2 never evaluates torsion or combined normal-plus-shear interaction in RC1."
+    },
+    {
+      "id": "I12",
+      "text": "CSM/strain-hardening strength credit remains disabled."
+    },
+    {
+      "id": "I13",
+      "text": "No isolated C2-P2 result activates public SS316 family dispatch or changes frozen C2-P1/FRP behavior."
+    }
+  ],
+  "owner_eor_approval": {
+    "date": "2026-09-12",
+    "exact_text": "Approved: C2-P2 bounded clear-plate E3/F9/H2 method policy with Cb=1.0 default and fail-closed E4/shear/torsion boundaries.",
+    "effect": "closes C2-P2 bounded method lock; permits isolated C2-P2 implementation only; no family activation"
+  },
+  "approved_method_policy": {
+    "clear_strip_cross_section_mapping": "A240 plate product provenance retained; qualified hole-free strip evaluated geometrically as a solid rectangular cross-section.",
+    "compression": "AISC 370 E3 Curve A only when E4 is explicitly qualified not controlling; both principal flexural-buckling axes evaluated.",
+    "flexure": "AISC 370 F9 in-plane major-axis bending only.",
+    "combined_N_M": "AISC 370 H2 used in lieu of H1.",
+    "Cb_default": "1.0 when favorable moment-gradient authority is absent.",
+    "E4": "required or unresolved => fail closed; no E4 numerical resistance in C2-P2.",
+    "combined_normal_shear": "not supported in C2-P2 RC1",
+    "torsion": "not supported",
+    "CSM": "not supported"
+  },
+  "provider_identity": "C2_P2_AISC_370_25_CLEAR_RECTANGULAR_PLATE_LRFD_RC1"
+}

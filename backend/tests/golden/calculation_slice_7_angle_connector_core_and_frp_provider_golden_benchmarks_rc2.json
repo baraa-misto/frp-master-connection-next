@@ -1,0 +1,530 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_GOLDEN_BENCHMARKS_RC2",
+  "version": "RC2",
+  "contract": "CS7-RC2",
+  "core_method": "ANGLE_CONNECTOR_INTERFACE_WRENCH_CORE_RC1",
+  "provider_contract": "ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+  "implemented_providers": [
+    "FRP"
+  ],
+  "benchmarks": [
+    {
+      "id": "G1_RC2_SUPERSEDES_UNEXECUTED_RC1",
+      "expected": {
+        "superseded_package": "CS7-RC1-preexecution",
+        "execute_old_package": false
+      }
+    },
+    {
+      "id": "G2_CORE_CONTRACT",
+      "expected": {
+        "core": "ANGLE_CONNECTOR_INTERFACE_WRENCH_CORE_RC1",
+        "material_specific": false
+      }
+    },
+    {
+      "id": "G3_PROVIDER_CONTRACT",
+      "expected": {
+        "provider_contract": "ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "implemented_providers": [
+          "FRP"
+        ]
+      }
+    },
+    {
+      "id": "G4_FUTURE_316SS_BOUNDARY",
+      "expected": {
+        "provider": "316SS",
+        "status": "CONNECTOR_RESISTANCE_PROVIDER_NOT_IMPLEMENTED",
+        "user_selectable_now": false
+      }
+    },
+    {
+      "id": "G5_CORE_FRAME",
+      "expected": {
+        "axes": [
+          "A_A",
+          "B_A",
+          "C_A"
+        ],
+        "right_handed": "A_A_x_B_A_equals_C_A"
+      }
+    },
+    {
+      "id": "G6_CORE_GEOMETRY",
+      "expected": {
+        "L_A_in": "8",
+        "b_M_in": "4",
+        "b_S_in": "4",
+        "t_A_in": "0.5",
+        "r_i_in": "0.25"
+      }
+    },
+    {
+      "id": "G7_CORE_REFERENCES",
+      "expected": {
+        "r_H": [
+          "0",
+          "0",
+          "0"
+        ],
+        "r_M": [
+          "0",
+          "2.5",
+          "0"
+        ],
+        "r_S": [
+          "0",
+          "0",
+          "2"
+        ]
+      }
+    },
+    {
+      "id": "G8_CORE_INPUT_FORCE",
+      "expected": {
+        "F_kip": [
+          "4",
+          "6",
+          "-1"
+        ]
+      }
+    },
+    {
+      "id": "G9_CORE_INPUT_MOMENT",
+      "expected": {
+        "M_kip_in": [
+          "1.5",
+          "-0.5",
+          "1"
+        ]
+      }
+    },
+    {
+      "id": "G10_HEEL_FORCE",
+      "expected": {
+        "F_H_kip": [
+          "4",
+          "6",
+          "-1"
+        ]
+      }
+    },
+    {
+      "id": "G11_HEEL_MOMENT",
+      "expected": {
+        "M_H_kip_in": [
+          "-1.0",
+          "-0.5",
+          "-9.0"
+        ]
+      }
+    },
+    {
+      "id": "G12_SUPPORT_HANDOFF_FORCE",
+      "expected": {
+        "F_support_kip": [
+          "4",
+          "6",
+          "-1"
+        ]
+      }
+    },
+    {
+      "id": "G13_SUPPORT_HANDOFF_MOMENT",
+      "expected": {
+        "M_support_kip_in": [
+          "11.0",
+          "-8.5",
+          "-9.0"
+        ]
+      }
+    },
+    {
+      "id": "G14_CORE_FORCE_EQUILIBRIUM",
+      "expected": {
+        "exact": true
+      }
+    },
+    {
+      "id": "G15_CORE_MOMENT_EQUILIBRIUM",
+      "expected": {
+        "exact": true
+      }
+    },
+    {
+      "id": "G16_CORE_FINGERPRINT_MATERIAL_NEUTRAL",
+      "expected": {
+        "includes_material_provider": false,
+        "includes_geometry_references_wrench": true
+      }
+    },
+    {
+      "id": "G17_CORE_FINGERPRINT_FRP_VS_FUTURE_PROVIDER",
+      "expected": {
+        "same_core_fingerprint": true
+      }
+    },
+    {
+      "id": "G18_PROVIDER_DISPATCH_FRP",
+      "expected": {
+        "provider_id": "FRP_ANGLE_CONNECTOR_RESISTANCE_PROVIDER_RC1",
+        "status": "IMPLEMENTED"
+      }
+    },
+    {
+      "id": "G19_PROVIDER_DISPATCH_UNSUPPORTED",
+      "expected": {
+        "provider_id": "316SS",
+        "status": "CONNECTOR_RESISTANCE_PROVIDER_NOT_IMPLEMENTED"
+      }
+    },
+    {
+      "id": "G20_NO_SILENT_FRP_FALLBACK",
+      "expected": {
+        "unsupported_provider_falls_back_to_FRP": false
+      }
+    },
+    {
+      "id": "G21_FRP_MATERIAL_AXES",
+      "expected": {
+        "LW": "A_A",
+        "member_leg_transverse": "B_A",
+        "support_leg_transverse": "C_A"
+      }
+    },
+    {
+      "id": "G22_FRP_INSTEP_METHOD",
+      "expected": {
+        "method": "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1",
+        "phi": "0.70"
+      }
+    },
+    {
+      "id": "G23_FRP_EFFECTIVE_INSTEP_LENGTH",
+      "expected": {
+        "l_sp_in": "8"
+      }
+    },
+    {
+      "id": "G24_FRP_INSTEP_TEST_STRENGTH",
+      "expected": {
+        "F_sh_ksi": "8",
+        "phi_R_kip": "22.400"
+      }
+    },
+    {
+      "id": "G25_FRP_INSTEP_DEFAULT_DEMAND",
+      "expected": {
+        "V_instep_kip": "4"
+      }
+    },
+    {
+      "id": "G26_FRP_INSTEP_DEFAULT_UTILIZATION",
+      "expected": {
+        "U": "0.17857142857142857142857142857142857142857142857142857142857142857142857142857143"
+      }
+    },
+    {
+      "id": "G27_FRP_INSTEP_APPLICABILITY",
+      "expected": {
+        "only_F_A_component": true,
+        "other_components_covered_by_eq_8_15": false
+      }
+    },
+    {
+      "id": "G28_FRP_QUALIFIED_PACKAGE_REQUIRED",
+      "expected": {
+        "nonzero_full_wrench": true,
+        "anonymous_numeric_source_allowed": false
+      }
+    },
+    {
+      "id": "G29_FRP_SOURCE_BINDING",
+      "expected": {
+        "geometry": true,
+        "material": true,
+        "member_fasteners": true,
+        "support_fixture": true,
+        "references": true,
+        "interpolation": false
+      }
+    },
+    {
+      "id": "G30_FRP_SIGNED_FORCE_STRENGTHS",
+      "expected": {
+        "positive_negative_distinct": true
+      }
+    },
+    {
+      "id": "G31_FRP_SIGNED_MOMENT_STRENGTHS",
+      "expected": {
+        "positive_negative_distinct": true
+      }
+    },
+    {
+      "id": "G32_FRP_REQUIRED_COVERAGE",
+      "expected": {
+        "heel": true,
+        "legs": true,
+        "through_thickness": true,
+        "contact": true,
+        "prying": true,
+        "secondary_bolt_bending_effect": true
+      }
+    },
+    {
+      "id": "G33_FRP_INTERACTION_METHOD",
+      "expected": {
+        "method": "RATIONAL_LINEAR_QUALIFIED_ANGLE_ASSEMBLY_INTERACTION_RC1",
+        "source_authorization_required": true
+      }
+    },
+    {
+      "id": "G34_FRP_DEFAULT_INTERACTION",
+      "expected": {
+        "U_Q": "0.92666666666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G35_FRP_DEFAULT_BODY_RESULT",
+      "expected": {
+        "status": "PASS_WITH_QUALIFIED_SOURCE_AND_ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "G36_FRP_ORDINARY_PASS_PROHIBITED",
+      "expected": {
+        "ordinary_PASS": false
+      }
+    },
+    {
+      "id": "G37_FRP_SOURCE_REQUIRED_STATE",
+      "expected": {
+        "no_qualified_source_nonzero_demand": "SOURCE_REQUIRED"
+      }
+    },
+    {
+      "id": "G38_FRP_SOURCE_MISMATCH",
+      "expected": {
+        "status": "SOURCE_NOT_APPLICABLE"
+      }
+    },
+    {
+      "id": "G39_FRP_MISSING_SIGNED_STRENGTH",
+      "expected": {
+        "status": "NOT_EVALUATED_SIGNED_STRENGTH_REQUIRED"
+      }
+    },
+    {
+      "id": "G40_FRP_MISSING_INTERACTION_AUTHORITY",
+      "expected": {
+        "status": "NOT_EVALUATED_INTERACTION_AUTHORITY_REQUIRED"
+      }
+    },
+    {
+      "id": "G41_FRP_MISSING_COVERAGE",
+      "expected": {
+        "status": "NOT_EVALUATED_QUALIFIED_COVERAGE_MISSING"
+      }
+    },
+    {
+      "id": "G42_FRP_MISSING_PRYING_COVERAGE",
+      "expected": {
+        "status": "NOT_EVALUATED_PRYING_CONTACT_COVERAGE_REQUIRED"
+      }
+    },
+    {
+      "id": "G43_FRP_ZERO_DEMAND",
+      "expected": {
+        "source_required": false,
+        "status": "NOT_REQUIRED_ZERO_DEMAND"
+      }
+    },
+    {
+      "id": "G44_EXTERNAL_SUPPORT_HANDOFF_ALWAYS_AVAILABLE",
+      "expected": {
+        "anchor_capacity_calculated": false,
+        "concrete_capacity_calculated": false
+      }
+    },
+    {
+      "id": "G45_NO_FABRICATED_ANCHOR_REACTIONS",
+      "expected": {
+        "individual_anchor_forces_fabricated": false
+      }
+    },
+    {
+      "id": "G46_FLEXIBLE_FIXTURE_EXTERNAL_STATE",
+      "expected": {
+        "state": "FLEXIBLE_FIXTURE_PRYING_DISTRIBUTION_EXTERNAL_REQUIRED"
+      }
+    },
+    {
+      "id": "G47_CORE_US_SI_EQUIVALENCE",
+      "expected": {
+        "geometry": true,
+        "wrench": true,
+        "equilibrium": true,
+        "fingerprint": true
+      }
+    },
+    {
+      "id": "G48_FRP_PROVIDER_US_SI_EQUIVALENCE",
+      "expected": {
+        "instep": true,
+        "qualified_interaction": true,
+        "provider_fingerprint": true
+      }
+    },
+    {
+      "id": "G49_CORE_RESULT_SEPARATE_FROM_PROVIDER_RESULT",
+      "expected": {
+        "separate_records": true
+      }
+    },
+    {
+      "id": "G50_PROVIDER_RESULT_SEPARATE_FINGERPRINT",
+      "expected": {
+        "separate_provider_fingerprint": true
+      }
+    },
+    {
+      "id": "G51_FUTURE_PROVIDER_ADD_NO_CORE_REWRITE",
+      "expected": {
+        "architectural_contract": true
+      }
+    },
+    {
+      "id": "G52_NO_STAINLESS_PROPERTIES_NOW",
+      "expected": {
+        "Fy_Fu_tables": false,
+        "stainless_equations": false
+      }
+    },
+    {
+      "id": "G53_NO_STAINLESS_PRYING_NOW",
+      "expected": {
+        "implemented": false
+      }
+    },
+    {
+      "id": "G54_NO_STAINLESS_USER_OPTION_NOW",
+      "expected": {
+        "frontend_option": false
+      }
+    },
+    {
+      "id": "G55_NO_STAGE_4_2_PRODUCT",
+      "expected": {
+        "selector": false,
+        "wall_geometry": false,
+        "angle_placement": false
+      }
+    },
+    {
+      "id": "G56_NO_FRONTEND_PRODUCTION_CHANGE",
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "G57_NO_DEPENDENCY_CHANGE",
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "G58_NO_WORKFLOW_CHANGE",
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "G59_NO_TAG_CHANGE",
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "G60_STAGE_4_1_FAMILY_FREEZE_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G61_STAGE_4_1A_FREEZE_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G62_SLICE5_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G63_SLICE6_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G64_STAGE3_7_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G65_STAGE3_6_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G66_STAGE3_5_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G67_STAGE3_4_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G68_STAGE3_3_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G69_STAGE3_2_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G70_STAGE2_3_EXACT",
+      "expected": {
+        "change": "NONE"
+      }
+    },
+    {
+      "id": "G71_QUALIFIED_FRP_REVIEW_METADATA",
+      "expected": {
+        "review_required": true,
+        "qualification": "REQUIRED_2_3_2",
+        "disclaimer_id": "QUALIFIED_FRP_ANGLE_CONNECTOR_TRANSFER_DISCLAIMER_RC1"
+      }
+    },
+    {
+      "id": "G72_PHYSICAL_STAGE_4_2_NOT_BEGUN",
+      "expected": {
+        "not_begun": true
+      }
+    }
+  ]
+}

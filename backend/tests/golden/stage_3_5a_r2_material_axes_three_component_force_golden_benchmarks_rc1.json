@@ -1,0 +1,519 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "contracts": {
+    "historical": [
+      "3.5A-RC1",
+      "3.5A-R1-RC1"
+    ],
+    "successor": "3.5A-R2-RC1"
+  },
+  "force_frame": {
+    "axes_order": [
+      "H_W",
+      "V_W",
+      "N_W"
+    ],
+    "major_shear_direction": "V_W",
+    "minor_shear_direction": "H_W",
+    "axial_force_direction": "N_W",
+    "default_force_hvn_kip": [
+      "0",
+      "-4",
+      "0"
+    ],
+    "user_moment_hvn_kip_in": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "default_reference": {
+    "beam_hvn_in": [
+      "0",
+      "0",
+      "4"
+    ],
+    "wall_hvn_in": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "benchmarks": [
+    {
+      "id": "G1_HISTORICAL_3_5A_RC1_EXACT",
+      "expected": {
+        "historical_contract": "3.5A-RC1",
+        "geometry_change": "NONE",
+        "result_change": "NONE",
+        "fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G2_HISTORICAL_3_5A_R1_RC1_EXACT",
+      "expected": {
+        "historical_contract": "3.5A-R1-RC1",
+        "geometry_change": "NONE",
+        "result_change": "NONE",
+        "fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G3_R2_DEFAULT_REPRODUCES_R1",
+      "input": {
+        "major_shear_kip": "-4",
+        "minor_shear_kip": "0",
+        "axial_force_kip": "0"
+      },
+      "expected": {
+        "user_force_hvn_kip": [
+          "0",
+          "-4",
+          "0"
+        ],
+        "user_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "positive_force_hvn_kip": [
+          "0",
+          "-2",
+          "0"
+        ],
+        "positive_moment_hvn_kip_in": [
+          "8",
+          "0",
+          "6"
+        ],
+        "negative_force_hvn_kip": [
+          "0",
+          "-2",
+          "0"
+        ],
+        "negative_moment_hvn_kip_in": [
+          "8",
+          "0",
+          "-6"
+        ],
+        "combined_force_hvn_kip": [
+          "0",
+          "-4",
+          "0"
+        ],
+        "combined_moment_hvn_kip_in": [
+          "16",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G4_PURE_AXIAL_TENSION_COMBINED_WRENCH",
+      "input": {
+        "major_shear_kip": "0",
+        "minor_shear_kip": "0",
+        "axial_force_kip": "4"
+      },
+      "expected": {
+        "combined_force_hvn_kip": [
+          "0",
+          "0",
+          "4"
+        ],
+        "combined_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "nonmajor_force_connection_qualification": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G5_PURE_AXIAL_TENSION_EXACT_HALF_SHARE",
+      "input": {
+        "major_shear_kip": "0",
+        "minor_shear_kip": "0",
+        "axial_force_kip": "4"
+      },
+      "expected": {
+        "symmetry_eligible": true,
+        "positive_force_hvn_kip": [
+          "0",
+          "0",
+          "2"
+        ],
+        "negative_force_hvn_kip": [
+          "0",
+          "0",
+          "2"
+        ]
+      }
+    },
+    {
+      "id": "G6_PURE_AXIAL_TENSION_BRANCH_MOMENTS",
+      "expected": {
+        "positive_moment_hvn_kip_in": [
+          "0",
+          "6",
+          "0"
+        ],
+        "negative_moment_hvn_kip_in": [
+          "0",
+          "-6",
+          "0"
+        ],
+        "combined_wall_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "moment_equilibrium": true
+      }
+    },
+    {
+      "id": "G7_PURE_AXIAL_COMPRESSION",
+      "input": {
+        "major_shear_kip": "0",
+        "minor_shear_kip": "0",
+        "axial_force_kip": "-4"
+      },
+      "expected": {
+        "combined_force_hvn_kip": [
+          "0",
+          "0",
+          "-4"
+        ],
+        "combined_moment_hvn_kip_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "wall_normal_contact_and_anchor_force_partition": "EXTERNAL_DESIGN_REQUIRED",
+        "clip_angle_wall_leg_axial_transfer_and_prying": "NOT_EVALUATED",
+        "nonmajor_force_connection_qualification": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G8_PURE_MINOR_SHEAR_COMBINED_WRENCH",
+      "input": {
+        "major_shear_kip": "0",
+        "minor_shear_kip": "2",
+        "axial_force_kip": "0"
+      },
+      "expected": {
+        "combined_force_hvn_kip": [
+          "2",
+          "0",
+          "0"
+        ],
+        "combined_moment_hvn_kip_in": [
+          "0",
+          "8",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G9_PURE_MINOR_SHEAR_BRANCH_ALLOCATION",
+      "input": {
+        "minor_shear_kip": "2"
+      },
+      "expected": {
+        "complete_branch_allocation": "NOT_EVALUATED",
+        "minor_shear_paired_branch_allocation": "NOT_EVALUATED",
+        "combined_wall_handoff_available": true,
+        "nonmajor_force_connection_qualification": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G10_COMBINED_THREE_COMPONENT_WRENCH",
+      "input": {
+        "major_shear_kip": "-4",
+        "minor_shear_kip": "2",
+        "axial_force_kip": "3"
+      },
+      "expected": {
+        "combined_force_hvn_kip": [
+          "2",
+          "-4",
+          "3"
+        ],
+        "combined_moment_hvn_kip_in": [
+          "16",
+          "8",
+          "0"
+        ],
+        "force_equilibrium": true,
+        "moment_equilibrium": true
+      }
+    },
+    {
+      "id": "G11_NONZERO_MINOR_COMBINED_LAYOUT_HANDOFF",
+      "expected": {
+        "handoff_mode": "COMBINED_LAYOUT",
+        "all_anchor_coordinates_present": true,
+        "positive_group_identity_preserved": true,
+        "negative_group_identity_preserved": true,
+        "complete_branch_wrenches_present": false,
+        "branch_allocation_status": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G12_MAJOR_PLUS_AXIAL_ZERO_MINOR_SYMMETRY",
+      "input": {
+        "major_shear_kip": "-4",
+        "minor_shear_kip": "0",
+        "axial_force_kip": "3"
+      },
+      "expected": {
+        "symmetry_eligible": true,
+        "positive_force_hvn_kip": [
+          "0",
+          "-2",
+          "1.5"
+        ],
+        "negative_force_hvn_kip": [
+          "0",
+          "-2",
+          "1.5"
+        ],
+        "positive_moment_hvn_kip_in": [
+          "8",
+          "4.5",
+          "6"
+        ],
+        "negative_moment_hvn_kip_in": [
+          "8",
+          "-4.5",
+          "-6"
+        ],
+        "combined_force_hvn_kip": [
+          "0",
+          "-4",
+          "3"
+        ],
+        "combined_moment_hvn_kip_in": [
+          "16",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G13_MINOR_SHEAR_COMMON_GROUP_NORMAL_ACTION",
+      "input": {
+        "minor_shear_kip": "2"
+      },
+      "expected": {
+        "common_group_normal_action_kip": "2",
+        "common_member_group_bolt_axis_response": "NOT_EVALUATED",
+        "generated_bolt_tension": false,
+        "generated_prying": false
+      }
+    },
+    {
+      "id": "G14_AXIAL_WALL_LEG_LIMITATION",
+      "input": {
+        "axial_force_kip": "3"
+      },
+      "expected": {
+        "clip_angle_wall_leg_axial_transfer_and_prying": "NOT_EVALUATED",
+        "wall_normal_contact_and_anchor_force_partition": "EXTERNAL_DESIGN_REQUIRED"
+      }
+    },
+    {
+      "id": "G15_USER_APPLIED_MOMENT_REJECTED",
+      "input": {
+        "user_moment_hvn_kip_in": [
+          "1",
+          "0",
+          "0"
+        ]
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "moment_connection_classification": false
+      }
+    },
+    {
+      "id": "G16_FORCE_SIGN_CONVENTION",
+      "expected": {
+        "major_positive": "+V_W",
+        "minor_positive": "+H_W",
+        "axial_positive": "+N_W_PULL_AWAY_FROM_WALL",
+        "axial_negative": "-N_W_COMPRESSION_TOWARD_WALL"
+      }
+    },
+    {
+      "id": "G17_ONE_BY_ONE_ANCHOR_INTERNAL_DISTRIBUTION",
+      "expected": {
+        "wall_anchor_internal_force_distribution": "EXTERNAL_DESIGN_REQUIRED",
+        "fabricated_point_force_solution": false
+      }
+    },
+    {
+      "id": "G18_MULTI_ANCHOR_NOMINAL_TRACE_APPLICABILITY",
+      "expected": {
+        "nominal_trace_only_if_exact_equilibrium": true,
+        "external_anchor_software_governs": true
+      }
+    },
+    {
+      "id": "G19_W_I_WEB_MATERIAL_BASIS",
+      "expected": {
+        "unit_axes": true,
+        "pairwise_orthogonal": true,
+        "tt_parallel_to_physical_normal": true,
+        "rendered_vectors_equal_backend_vectors": true,
+        "tt_present": true
+      }
+    },
+    {
+      "id": "G20_W_I_TOP_FLANGE_TT",
+      "expected": {
+        "lw_present": true,
+        "cw_present": true,
+        "tt_present": true,
+        "tt_parallel_to_physical_normal": true
+      }
+    },
+    {
+      "id": "G21_W_I_BOTTOM_FLANGE_TT",
+      "expected": {
+        "lw_present": true,
+        "cw_present": true,
+        "tt_present": true,
+        "tt_parallel_to_physical_normal": true
+      }
+    },
+    {
+      "id": "G22_POSITIVE_CLIP_WALL_LEG_TT",
+      "expected": {
+        "tt_present": true,
+        "tt_parallel_to_physical_normal": true,
+        "tt_collinear_with_cw": false
+      }
+    },
+    {
+      "id": "G23_NEGATIVE_CLIP_WALL_LEG_TT",
+      "expected": {
+        "tt_present": true,
+        "tt_parallel_to_physical_normal": true,
+        "tt_collinear_with_cw": false
+      }
+    },
+    {
+      "id": "G24_NO_MATERIAL_AXIS_COLLINEARITY",
+      "expected": {
+        "lw_cw_collinear_regions": [],
+        "lw_tt_collinear_regions": [],
+        "cw_tt_collinear_regions": [],
+        "all_frp_regions_pairwise_orthogonal": true
+      }
+    },
+    {
+      "id": "G25_SIX_PROFILE_MATERIAL_AXIS_MATRIX",
+      "profiles": [
+        "FLAT_PLATE",
+        "ANGLE",
+        "CHANNEL",
+        "WIDE_FLANGE_I",
+        "RECTANGULAR_HOLLOW_SECTION",
+        "SOLID_RECTANGULAR_SECTION"
+      ],
+      "expected": {
+        "all_backend_regions_bound": true,
+        "all_required_lw_cw_tt_present": true
+      }
+    },
+    {
+      "id": "G26_RHS_CAVITY_NO_AXES",
+      "expected": {
+        "rhs_wall_axes_present": true,
+        "rhs_cavity_axes_present": false,
+        "rhs_cavity_material_present": false
+      }
+    },
+    {
+      "id": "G27_CONCRETE_WALL_FRAME_NO_FRP_AXES",
+      "expected": {
+        "wall_frame_present": true,
+        "concrete_lw_cw_tt_present": false
+      }
+    },
+    {
+      "id": "G28_MATERIAL_AXIS_TOGGLE_PRESENTATION_ONLY",
+      "expected": {
+        "toggle_off_hides_axes_and_legend": true,
+        "toggle_on_restores_axes_and_legend": true,
+        "api_calls_on_toggle": 0,
+        "design_staled": false,
+        "camera_reset": false,
+        "engineering_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G29_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "combined_wall_wrench_available": true,
+        "material_axes_available": true
+      }
+    },
+    {
+      "id": "G30_FAILURE_PRECEDENCE_AND_LIMITATIONS",
+      "expected": {
+        "supported_numerical_failure_governs": "FAIL",
+        "valid_geometry_with_limitations": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G31_US_SI_THREE_COMPONENT_EQUIVALENCE",
+      "conversions": {
+        "4_kip_kN": "17.792886461042",
+        "3_kip_kN": "13.3446648457815",
+        "2_kip_kN": "8.896443230521",
+        "16_kip_in_kN_m": "1.807757264441867",
+        "8_kip_in_kN_m": "0.9038786322209335",
+        "6_kip_in_kN_m": "0.6779089741657001"
+      },
+      "expected": {
+        "force_vector_equal": true,
+        "combined_wall_wrench_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G32_HANDOFF_DETERMINISM_BOTH_MODES",
+      "expected": {
+        "branch_resolved_mode_deterministic": true,
+        "combined_layout_mode_deterministic": true,
+        "full_precision": true,
+        "camera_state_excluded": true
+      }
+    },
+    {
+      "id": "G33_HISTORICAL_R1_HANDOFF_UNCHANGED",
+      "expected": {
+        "default_r1_handoff_change": "NONE",
+        "default_r1_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G34_FROZEN_REGRESSION_BOUNDARY",
+      "expected": {
+        "direct_fingerprint_change": "NONE",
+        "single_member_tee_fingerprint_change": "NONE",
+        "single_clip_angle_fingerprint_change": "NONE",
+        "paired_clip_angle_fingerprint_change": "NONE",
+        "multi_member_tee_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

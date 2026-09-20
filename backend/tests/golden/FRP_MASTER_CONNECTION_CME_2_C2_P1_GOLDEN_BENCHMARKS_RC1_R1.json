@@ -1,0 +1,428 @@
+{
+  "schema_version": "frp-master-connection-cme2-c2-p1-golden-rc1",
+  "document_status": "approved engineering benchmark authority for controlled isolated C2-M/C2-P1 implementation; not family activation and not production output",
+  "not_production_output": true,
+  "source_locks": {
+    "SL_370_25_FINAL_RELEVANT_TEXT_DIRECT_LOCK": "CLOSED_DIRECTLY_VERIFIED_2026-09-12",
+    "SL_CONSERVATIVE_316SS_PROJECT_PROPERTY_SNAPSHOT": "CLOSED_BY_OWNER_APPROVAL_2026-09-12_FINAL_370_COMMENTARY_CORROBORATED",
+    "SL_OWNER_STAINLESS_CODE_BASIS_BRIDGE": "CLOSED_BY_OWNER_APPROVAL_2026-09-12"
+  },
+  "material_policy": {
+    "commercial_label": "316 Stainless Steel",
+    "accepted_aliases": [
+      "316SS",
+      "316 SS",
+      "316",
+      "316L",
+      "316L SS",
+      "316/316L"
+    ],
+    "initial_numerical_basis": "GENERIC_316SS_CONSERVATIVE_BASIS_US_SOURCE",
+    "design_property_policy": "For C2-P1 all accepted 316-family client aliases use the conservative 316L-based specified-minimum project snapshot. Exact S31600 or MTR values do not increase C2-P1 resistance.",
+    "Fy_ksi": "25.000000000000",
+    "Fu_ksi": "70.000000000000",
+    "Fy_display_MPa_exact_from_us_source": "172.36893232920903341806683613367226734453468906937813875627750",
+    "Fu_display_MPa_exact_from_us_source": "482.63301052178529357058714117428234856469712939425878851757700",
+    "cold_work_strength_credit": false,
+    "mtr_strength_enhancement": false
+  },
+  "factors": {
+    "phi_tension_yielding": "0.900000000000",
+    "phi_tension_rupture": "0.750000000000",
+    "phi_shear_yielding": "0.900000000000",
+    "phi_shear_rupture": "0.750000000000",
+    "phi_block_shear": "0.750000000000",
+    "phi_bearing_tearout": "0.750000000000",
+    "Cv_connecting_element_shear": "1.200000000000"
+  },
+  "exact_conversions": {
+    "inch_to_mm": "25.4",
+    "kip_to_kN": "4.4482216152605",
+    "ksi_to_MPa": "6.89475729316836133672267344534689069378138756277512555025110"
+  },
+  "design_thickness_policy": {
+    "source_basis": "Final ANSI/AISC 370-25 Section B4.2a, directly verified 2026-09-12; U.S.-source 3/16-in boundary retained as source identity.",
+    "nominal_thickness_boundary_in": "0.1875",
+    "if_nominal_gt_boundary": "DESIGN_THICKNESS_EQUALS_NOMINAL",
+    "if_nominal_le_boundary_without_verified_tolerance_credit": "DESIGN_THICKNESS_EQUALS_0.95_NOMINAL",
+    "automatic_nominal_credit_at_or_below_boundary": false,
+    "nominal_credit_condition": "A separately verified product minimum-thickness tolerance no greater than 0.05 times nominal thickness is required before nominal-thickness credit is used."
+  },
+  "initial_us_standard_hole_geometry": {
+    "source_basis": "Final ANSI/AISC 370-25 Sections B4.4b and J3.2-J3.5, directly verified 2026-09-12; initial project hardware range bounds automatic C2-P1 rows to 1/2 through 1 in.",
+    "automatic_supported_nominal_bolt_diameters_in": [
+      "0.500",
+      "0.625",
+      "0.750",
+      "0.875",
+      "1.000"
+    ],
+    "rows": {
+      "0.500": {
+        "standard_hole_diameter_in": "0.5625",
+        "net_area_deduction_width_in": "0.6250",
+        "minimum_edge_distance_in": "0.750",
+        "minimum_center_spacing_exact_fraction_in": {
+          "numerator": "4",
+          "denominator": "3"
+        },
+        "minimum_clear_spacing_in": "0.500"
+      },
+      "0.625": {
+        "standard_hole_diameter_in": "0.6875",
+        "net_area_deduction_width_in": "0.7500",
+        "minimum_edge_distance_in": "0.875",
+        "minimum_center_spacing_exact_fraction_in": {
+          "numerator": "5",
+          "denominator": "3"
+        },
+        "minimum_clear_spacing_in": "0.625"
+      },
+      "0.750": {
+        "standard_hole_diameter_in": "0.8125",
+        "net_area_deduction_width_in": "0.8750",
+        "minimum_edge_distance_in": "1.000",
+        "minimum_center_spacing_exact_fraction_in": {
+          "numerator": "2",
+          "denominator": "1"
+        },
+        "minimum_clear_spacing_in": "0.750"
+      },
+      "0.875": {
+        "standard_hole_diameter_in": "0.9375",
+        "net_area_deduction_width_in": "1.0000",
+        "minimum_edge_distance_in": "1.125",
+        "minimum_center_spacing_exact_fraction_in": {
+          "numerator": "7",
+          "denominator": "3"
+        },
+        "minimum_clear_spacing_in": "0.875"
+      },
+      "1.000": {
+        "standard_hole_diameter_in": "1.1250",
+        "net_area_deduction_width_in": "1.1875",
+        "minimum_edge_distance_in": "1.250",
+        "minimum_center_spacing_exact_fraction_in": {
+          "numerator": "8",
+          "denominator": "3"
+        },
+        "minimum_clear_spacing_in": "1.000"
+      }
+    },
+    "minimum_center_spacing_rule": "s >= (8/3)d AND clear distance between holes or slots >= d",
+    "preferred_center_spacing_rule": "3d; preference only",
+    "maximum_center_to_edge_rule": "e <= min(12t, 6 in)",
+    "maximum_longitudinal_spacing_rule": "s_long <= min(24 t_thinner, 12 in)",
+    "unsupported_automatic_bolt_diameter_in": [
+      "0.375"
+    ],
+    "unsupported_reason_0_375": "The automatic standard-hole and edge-distance tables used by C2-P1 provide no 3/8-in row. C2-P1 does not extrapolate a new row."
+  },
+  "cases": [
+    {
+      "id": "P1_DESIGN_THICKNESS_ABOVE_3_16",
+      "inputs": {
+        "nominal_thickness_in": "0.375000000000",
+        "verified_minimum_thickness_tolerance_le_5_percent": false
+      },
+      "expected": {
+        "design_thickness_in": "0.375000000000",
+        "rule": "NOMINAL_GT_3_16"
+      }
+    },
+    {
+      "id": "P1_DESIGN_THICKNESS_AT_3_16_DEFAULT_095",
+      "inputs": {
+        "nominal_thickness_in": "0.187500000000",
+        "verified_minimum_thickness_tolerance_le_5_percent": false
+      },
+      "expected": {
+        "design_thickness_in": "0.178125000000",
+        "rule": "NOMINAL_LE_3_16_DEFAULT_095",
+        "four_inch_gross_area_in2": "0.712500000000",
+        "tension_yield_nominal_kip": "17.812500000000",
+        "tension_yield_design_kip": "16.031250000000"
+      }
+    },
+    {
+      "id": "P1_GEOMETRY_US_1_2_STANDARD_HOLE",
+      "inputs": {
+        "bolt_source_system": "US_CUSTOMARY",
+        "bolt_diameter_in": "0.500000000000",
+        "plate_thickness_in": "0.375000000000"
+      },
+      "expected": {
+        "standard_hole_diameter_in": "0.562500000000",
+        "net_area_deduction_width_in": "0.625000000000",
+        "minimum_edge_distance_in": "0.750000000000",
+        "minimum_center_spacing_exact_fraction_in": {
+          "numerator": "4",
+          "denominator": "3"
+        },
+        "maximum_center_to_edge_in": "4.500000000000",
+        "maximum_longitudinal_spacing_in": "9.000000000000"
+      }
+    },
+    {
+      "id": "P1_GEOMETRY_US_1_2_SI_DISPLAY_DOES_NOT_REGENERATE_SOURCE",
+      "inputs": {
+        "stored_bolt_source_system": "US_CUSTOMARY",
+        "display_units": "SI"
+      },
+      "expected": {
+        "bolt_diameter_mm": "12.700000",
+        "standard_hole_diameter_mm": "14.287500",
+        "net_area_deduction_width_mm": "15.875000",
+        "minimum_edge_distance_mm": "19.050000",
+        "minimum_center_spacing_exact_mm": "(4/3)*25.4",
+        "maximum_center_to_edge_mm": "114.300000",
+        "maximum_longitudinal_spacing_mm": "228.600000",
+        "source_geometry_system_remains": "US_CUSTOMARY"
+      }
+    },
+    {
+      "id": "P1_TENSION_GEOMETRY_DERIVED_ONE_STANDARD_HOLE_U1",
+      "inputs": {
+        "plate_width_in": "4.000000000000",
+        "standard_hole_diameter_in": "0.562500000000",
+        "net_hole_deduction_in": "0.625000000000",
+        "direct_full_cross_section_transfer_case": true,
+        "U": "1.000000000000",
+        "factored_tension_demand_kip": "20.000000000000",
+        "nominal_plate_thickness_in": "0.375000000000"
+      },
+      "expected": {
+        "Ag_in2": "1.500000000000",
+        "An_in2": "1.265625000000",
+        "Ae_in2": "1.265625000000",
+        "yield_nominal_kip": "37.500000000000",
+        "yield_design_kip": "33.750000000000",
+        "rupture_nominal_kip": "88.593750000000",
+        "rupture_design_kip": "66.445312500000",
+        "governing": "TENSILE_GROSS_YIELDING",
+        "design_resistance_kip": "33.750000000000",
+        "yield_utilization": "0.592592592593",
+        "rupture_utilization": "0.300999412111",
+        "governing_utilization": "0.592592592593",
+        "design_thickness_in": "0.375000000000"
+      }
+    },
+    {
+      "id": "P1_SHEAR_PURE_SECTION_NO_HOLES",
+      "inputs": {
+        "gross_shear_length_in": "2.000000000000",
+        "net_shear_length_in": "2.000000000000",
+        "factored_shear_demand_kip": "10.000000000000",
+        "nominal_plate_thickness_in": "0.375000000000"
+      },
+      "expected": {
+        "Agv_in2": "0.750000000000",
+        "Anv_in2": "0.750000000000",
+        "yield_nominal_kip": "13.500000000000",
+        "yield_design_kip": "12.150000000000",
+        "rupture_nominal_kip": "31.500000000000",
+        "rupture_design_kip": "23.625000000000",
+        "governing": "SHEAR_YIELDING",
+        "design_resistance_kip": "12.150000000000",
+        "yield_utilization": "0.823045267490",
+        "rupture_utilization": "0.423280423280",
+        "governing_utilization": "0.823045267490",
+        "design_thickness_in": "0.375000000000"
+      }
+    },
+    {
+      "id": "P1_BLOCK_SHEAR_UNIFORM_RESOLVED_PATH",
+      "inputs": {
+        "Agv_in2": "1.500000000000",
+        "Anv_in2": "1.100000000000",
+        "Ant_in2": "0.450000000000",
+        "tension_distribution": "UNIFORM",
+        "Ubs": "1.000000000000",
+        "factored_path_demand_kip": "30.000000000000"
+      },
+      "expected": {
+        "rupture_branch_nominal_kip": "77.700000000000",
+        "yield_cap_branch_nominal_kip": "58.500000000000",
+        "nominal_kip": "58.500000000000",
+        "design_kip": "43.875000000000",
+        "governing_branch": "SHEAR_YIELD_CAP",
+        "utilization": "0.683760683761"
+      }
+    },
+    {
+      "id": "P1_BLOCK_SHEAR_NONUNIFORM_RESOLVED_PATH",
+      "inputs": {
+        "Agv_in2": "1.500000000000",
+        "Anv_in2": "1.100000000000",
+        "Ant_in2": "0.450000000000",
+        "tension_distribution": "NONUNIFORM",
+        "Ubs": "0.500000000000",
+        "factored_path_demand_kip": "30.000000000000"
+      },
+      "expected": {
+        "rupture_branch_nominal_kip": "61.950000000000",
+        "yield_cap_branch_nominal_kip": "42.750000000000",
+        "nominal_kip": "42.750000000000",
+        "design_kip": "32.062500000000",
+        "governing_branch": "SHEAR_YIELD_CAP",
+        "utilization": "0.935672514620"
+      }
+    },
+    {
+      "id": "P1_STANDARD_HOLE_BEARING_TEAROUT_EDGE_1_0",
+      "inputs": {
+        "bolt_diameter_in": "0.500000000000",
+        "standard_hole_diameter_in": "0.562500000000",
+        "l1_in": "1.000000000000",
+        "deformation_at_service_load_considered": true,
+        "resolved_per_hole_bearing_demand_kip": "8.000000000000",
+        "nominal_plate_thickness_in": "0.375000000000"
+      },
+      "expected": {
+        "bearing_nominal_kip": "16.406250000000",
+        "bearing_design_kip": "12.304687500000",
+        "tearout_nominal_kip": "14.583333333333",
+        "tearout_design_kip": "10.937500000000",
+        "governing": "TEAROUT",
+        "per_hole_design_resistance_kip": "10.937500000000",
+        "utilization": "0.731428571429",
+        "design_thickness_in": "0.375000000000"
+      }
+    },
+    {
+      "id": "P1_STANDARD_HOLE_TEAROUT_AT_TABLE_MIN_EDGE",
+      "inputs": {
+        "bolt_diameter_in": "0.500000000000",
+        "standard_hole_diameter_in": "0.562500000000",
+        "edge_distance_l1_in": "0.750000000000",
+        "deformation_at_service_load_considered": true,
+        "resolved_per_hole_bearing_demand_kip": "6.000000000000",
+        "nominal_plate_thickness_in": "0.375000000000"
+      },
+      "expected": {
+        "bearing_design_kip": "12.304687500000",
+        "tearout_design_kip": "8.203125000000",
+        "governing": "TEAROUT",
+        "per_hole_design_resistance_kip": "8.203125000000",
+        "utilization": "0.731428571429",
+        "design_thickness_in": "0.375000000000"
+      }
+    },
+    {
+      "id": "P1_US_SOURCE_RESISTANCE_SI_DISPLAY",
+      "inputs": {
+        "source_property_system": "US_CUSTOMARY",
+        "tension_design_resistance_kip": "33.750000000000",
+        "bearing_design_resistance_kip": "12.304687500000"
+      },
+      "expected": {
+        "tension_design_resistance_kN": "150.12747951504187500",
+        "bearing_design_resistance_kN": "54.733976906525683593750",
+        "source_property_system_remains": "US_CUSTOMARY",
+        "source_Fy_ksi_remains": "25.000000000000",
+        "source_Fu_ksi_remains": "70.000000000000"
+      }
+    }
+  ],
+  "required_negative_cases": [
+    {
+      "id": "P1_NEG_UNVERIFIED_NOMINAL_THICKNESS_CREDIT_AT_OR_BELOW_3_16",
+      "expected_status": "STAINLESS_NOMINAL_THICKNESS_CREDIT_NOT_QUALIFIED",
+      "expected_behavior": "Use 0.95 times nominal thickness unless verified tolerance authority exists; do not accept a client override."
+    },
+    {
+      "id": "P1_NEG_BOLT_3_8_AUTOMATIC_J3_GEOMETRY_UNSUPPORTED",
+      "expected_status": "STAINLESS_BOLT_DIAMETER_OUTSIDE_AUTOMATIC_J3_TABLE_SCOPE"
+    },
+    {
+      "id": "P1_NEG_SPACING_BELOW_MINIMUM",
+      "expected_status": "STAINLESS_CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED"
+    },
+    {
+      "id": "P1_NEG_CLEAR_SPACING_BELOW_D",
+      "expected_status": "STAINLESS_CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED"
+    },
+    {
+      "id": "P1_NEG_EDGE_BELOW_TABLE_MINIMUM",
+      "expected_status": "STAINLESS_CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED"
+    },
+    {
+      "id": "P1_NEG_EDGE_EXCEPTION_REQUIRES_EOR",
+      "expected_status": "STAINLESS_ENGINEERING_REVIEW_REQUIRED"
+    },
+    {
+      "id": "P1_NEG_MAX_EDGE_EXCEEDED",
+      "expected_status": "STAINLESS_CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED"
+    },
+    {
+      "id": "P1_NEG_MAX_LONGITUDINAL_SPACING_EXCEEDED",
+      "expected_status": "STAINLESS_CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED"
+    },
+    {
+      "id": "P1_NEG_OVERSIZED_OR_SLOTTED_HOLE",
+      "expected_status": "STAINLESS_HOLE_TYPE_NOT_SUPPORTED_IN_C2_P1"
+    },
+    {
+      "id": "P1_NEG_STAGGERED_NET_PATH",
+      "expected_status": "STAINLESS_STAGGERED_NET_PATH_NOT_SUPPORTED_IN_C2_P1"
+    },
+    {
+      "id": "P1_NEG_UNKNOWN_SHEAR_LAG",
+      "expected_status": "STAINLESS_SHEAR_LAG_METHOD_NOT_AVAILABLE"
+    },
+    {
+      "id": "P1_NEG_UNRESOLVED_PER_HOLE_DEMAND",
+      "expected_status": "STAINLESS_PER_HOLE_DEMAND_NOT_RESOLVED"
+    },
+    {
+      "id": "P1_NEG_MISSING_SOURCE_LOCK",
+      "expected_status": "STAINLESS_SOURCE_AUTHORITY_NOT_LOCKED"
+    },
+    {
+      "id": "P1_NEG_FAMILY_ACTIVATION_WITHOUT_RESPONSE_AUTHORITY",
+      "expected_status": "STAINLESS_MATERIAL_DEPENDENT_RESPONSE_NOT_QUALIFIED"
+    }
+  ],
+  "required_invariants": [
+    "Demand increase cannot reduce utilization.",
+    "For nominal thickness at or below 3/16 in., unverified nominal-thickness credit is prohibited; default design thickness is 0.95 times nominal.",
+    "Increasing valid plate thickness cannot reduce a covered pure-mode resistance.",
+    "Increasing a net-hole deduction cannot increase net-section or block-shear resistance.",
+    "Reducing valid l1 cannot increase tearout resistance.",
+    "Changing display units cannot change source properties, result, method, status, or fingerprint.",
+    "A U.S.-source 1/2-in bolt remains a 1/2-in source identity in SI display; source-defined hole geometry is converted, not regenerated.",
+    "Bolt, nut, and washer authority remains independent from connector-body material.",
+    "No unresolved bolt-group demand receives automatic equal-share allocation.",
+    "No isolated stainless-body PASS becomes a whole-connection PASS while response, FRP member, fastener, support, or foundation checks remain unresolved.",
+    "All existing native FRP results remain unchanged."
+  ],
+  "owner_approvals": {
+    "date": "2026-09-12",
+    "code_basis_bridge": "APPROVED_AISC_370_25_FOR_STAINLESS_CONNECTOR_BODIES_WITH_ASCE_74_23_FRP_AUTHORITY_PRESERVED",
+    "conservative_316ss_project_snapshot": "APPROVED_Fy_25_KSI_Fu_70_KSI_US_SOURCE_NO_MTR_OR_COLD_WORK_ENHANCEMENT",
+    "final_aisc_370_25_detailed_text_lock": "CLOSED_DIRECTLY_VERIFIED_2026-09-12"
+  },
+  "controlling_sources": {
+    "ANSI_AISC_370_25": {
+      "identity": "Specification for Structural Stainless Steel Buildings, December 8, 2025",
+      "file_sha256": "A9C3440C127866626F633E9B5426E830E035857135FA1A38A2424757625AFCF1",
+      "status": "FINAL_DIRECTLY_VERIFIED"
+    },
+    "ASCE_SEI_74_23": {
+      "role": "FRP member/interface authority preserved",
+      "file_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC"
+    },
+    "ASCE_SEI_74_23_ERRATUM_1": {
+      "role": "FRP erratum authority preserved",
+      "file_sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550"
+    },
+    "AISC_360_22": {
+      "role": "comparison/reference bridge only, not stainless numerical authority",
+      "file_sha256": "6B1322440EEDAA0B82D617811DC4B2A2657E7492CF9067CBB3DEBDF9E610ABB7"
+    },
+    "AISC_370_REFERENCED_FLAT_PRODUCT_CHAIN": {
+      "mechanical_and_chemical": "ASTM A240/A240M-24",
+      "general_requirements": "ASTM A480/A480M-24"
+    }
+  }
+}

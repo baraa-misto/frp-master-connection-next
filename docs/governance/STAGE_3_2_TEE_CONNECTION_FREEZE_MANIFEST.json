@@ -1,0 +1,445 @@
+{
+  "schema": "frp-master-connection-stage-3.2-tee-connection-freeze-manifest-v1",
+  "schema_version": "1.0.0",
+  "stage": "3.2",
+  "name": "Stage 3.2 Tee Connection Freeze",
+  "freeze_scope": "tee-connection-governance-and-reproducibility",
+  "accepted_product_baseline": {
+    "commit": "9aa5706e89639e990a701de965b04fa448d09c26",
+    "subject": "feat: embed material axes on profile regions",
+    "commit_count": 61,
+    "branch": "main"
+  },
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "resolution": "the commit containing this manifest and targeted by stage-3.2-tee-connection-freeze",
+    "expected_commit_count": 62,
+    "expected_subject": "chore: freeze Stage 3.2 tee connection baseline",
+    "tag": "stage-3.2-tee-connection-freeze"
+  },
+  "source_trees": {
+    "frontend_src": "fbbf52fa5ad719a6f3e434a19df74c236cd25dfb",
+    "backend_src": "5b46aa0f06e1f2ba51a79141c724997a159f8de4"
+  },
+  "frontend_dependency_identities": {
+    "package_json": {
+      "path": "frontend/package.json",
+      "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a"
+    },
+    "package_lock": {
+      "path": "frontend/package-lock.json",
+      "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+      "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+    }
+  },
+  "accepted_ci_evidence": {
+    "provider": "GitHub Actions",
+    "run_number": 56,
+    "baseline_commit": "9aa5706e89639e990a701de965b04fa448d09c26",
+    "jobs_green": 4,
+    "jobs_total": 4,
+    "status": "accepted",
+    "frontend_tests_passed": 288,
+    "frontend_tests_total": 288,
+    "frontend_test_files": 21
+  },
+  "accepted_visual_checks": [
+    "Column and Beam support roles",
+    "Flat Plate, Angle, Channel, W/I, and RHS connected profiles",
+    "independent Tee interfaces",
+    "brace inclination with fixed Tee-frame bolts",
+    "bolt-group positioning",
+    "solid fastener hardware",
+    "member-end trim",
+    "Tee length anchoring and positioning",
+    "corrected region-specific material bases",
+    "region-embedded material-axis visualization",
+    "U.S./SI physical equivalence"
+  ],
+  "accepted_stage_3_2_controlled_artifacts": [
+    {
+      "artifact_id": "ART-172",
+      "revision": "Stage 3.2",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_2_TEE_CONNECTOR_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "802C74CD6FCC76872E3E63DE34C52392111A5C44D495B80919C06616B65E48C2"
+    },
+    {
+      "artifact_id": "ART-173",
+      "revision": "Stage 3.2",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_tee_connector_rc1.json",
+      "sha256": "77FD574FC0EE55F565480E131FCDC3D334B8E7047D75FADC00C96979B31F1313"
+    },
+    {
+      "artifact_id": "ART-174",
+      "revision": "Stage 3.2",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_TEE_CONNECTOR_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "2D9324690886BBE39F09827AB5F9BEA465443C47F2905AA3AB5C252333BCF11A"
+    },
+    {
+      "artifact_id": "ART-177",
+      "revision": "Stage 3.2-R2",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "117F4C69229045FEAF5C2461FE3FD2639B7E4A869B3B650947E99DE754B36E7F"
+    },
+    {
+      "artifact_id": "ART-178",
+      "revision": "Stage 3.2-R2",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r2_member_profile_rc1.json",
+      "sha256": "A93CAA62946D076A1A2B09354437A5556C6CA6DAF6DD1778DDF2E0ECD0FDBD87"
+    },
+    {
+      "artifact_id": "ART-179",
+      "revision": "Stage 3.2-R2",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "33EDC91FF28FC7C53FF9EBE3331EF7D8A47AD4CFD4177A33FCDDB34BF302A9E8"
+    },
+    {
+      "artifact_id": "ART-183",
+      "revision": "Stage 3.2-R4",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_2_R4_EXACT_UNIT_GEOMETRY_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md",
+      "sha256": "58C1139F3AAA13EE1E221F5A7AECA99D407EF9C69BA50A11459CC9B5B62F912E"
+    },
+    {
+      "artifact_id": "ART-184",
+      "revision": "Stage 3.2-R4",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r4_exact_unit_and_tee_benchmark_rc1.json",
+      "sha256": "86600A897FF557CF176027E34449000C8B43AE227318B854D0C0AD4904BFC381"
+    },
+    {
+      "artifact_id": "ART-185",
+      "revision": "Stage 3.2-R4",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R4_EXACT_UNIT_GEOMETRY_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "9B9A8F65CA8D6943648A54586E67F6964CEB669F1E98059006281D8D7B3C52BD"
+    },
+    {
+      "artifact_id": "ART-189",
+      "revision": "Stage 3.2-R7",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_2_R7_ANGLE_BOLT_PATH_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md",
+      "sha256": "0BC40BF8F8F4F27C51E6A21552A67C77D9BC808347E3BB129C9BF6F0CBA4131D"
+    },
+    {
+      "artifact_id": "ART-190",
+      "revision": "Stage 3.2-R7",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r7_angle_bolt_path_golden_benchmarks_rc1.json",
+      "sha256": "99E1959875E178C806EC783F521C03862C48EC25C6F8A0F306BE34F4AFC531FE"
+    },
+    {
+      "artifact_id": "ART-191",
+      "revision": "Stage 3.2-R7",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R7_ANGLE_BOLT_PATH_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "C30424776908D0D6343C5D3DCB9E89F1FE25F8D5CBDB51CD9A74A003C79E5262"
+    },
+    {
+      "artifact_id": "ART-193",
+      "revision": "Stage 3.2-R8",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_2_R8_PROFILE_WALL_BOLT_PATH_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "3961E43CE69412CC69727ED2192308B6C55F10A3A046F92CEA85757419896403"
+    },
+    {
+      "artifact_id": "ART-194",
+      "revision": "Stage 3.2-R8",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r8_profile_wall_bolt_path_golden_benchmarks_rc1.json",
+      "sha256": "2C561803503E7870E39C00428EAEE9E9236291912F94131CFC57FA8DA3A93622"
+    },
+    {
+      "artifact_id": "ART-195",
+      "revision": "Stage 3.2-R8",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R8_PROFILE_WALL_BOLT_PATH_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "F7D6A6A3DE993612808243FEFADBBD3F708505C40BD8E77C64DB49E77D5BD932"
+    },
+    {
+      "artifact_id": "ART-197",
+      "revision": "Stage 3.2-R9",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/STAGE_3_2_R9_TEE_INTERFACE_BRACE_DIRECTION_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "26743A8986010DF4517BB9AD47AF473377A8BD648EB441CE51A8A7D400CD6A5D"
+    },
+    {
+      "artifact_id": "ART-198",
+      "revision": "Stage 3.2-R9",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r9_tee_interface_brace_direction_golden_benchmarks_rc1.json",
+      "sha256": "7D888ACB32220049B3522BA19D0A9217E796E4F4E5A8294463B10C8D078E54B9"
+    },
+    {
+      "artifact_id": "ART-199",
+      "revision": "Stage 3.2-R9",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R9_TEE_INTERFACE_BRACE_DIRECTION_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "698EE7DFB7F48CE927658BE766FD07E559B888C488D7ABCC65665DAEFACBE1A0"
+    },
+    {
+      "artifact_id": "ART-201",
+      "revision": "Stage 3.2-R10",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R10_FIXED_BOLT_FRAME_POSITIONING_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "B2AEE4063048C55CCB4B3DDC74CC9E47AB5ACD0B20D0A049A091C423E6177012"
+    },
+    {
+      "artifact_id": "ART-202",
+      "revision": "Stage 3.2-R10",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r10_fixed_bolt_frame_positioning_golden_benchmarks_rc1.json",
+      "sha256": "9F9F628082EF39F5851146973D1695F99E6F1C2AA627CD54693FDCC4FC8653DF"
+    },
+    {
+      "artifact_id": "ART-203",
+      "revision": "Stage 3.2-R10",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R10_FIXED_BOLT_FRAME_POSITIONING_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "C48E86CD734793561DF07293794A25F9779781D79D9B8281614CDFBE4D092CF0"
+    },
+    {
+      "artifact_id": "ART-206",
+      "revision": "Stage 3.2-R12",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R12_MEMBER_END_TRIM_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "56168130530A930E0F97E64FAF6394DDF5E31F5F92DF25F667CD10D6E357D008"
+    },
+    {
+      "artifact_id": "ART-207",
+      "revision": "Stage 3.2-R12",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r12_member_end_trim_golden_benchmarks_rc1.json",
+      "sha256": "55F54BBCB7A45D6AE1E7065278D65F0F1E3EFF8943171BE73BE3FCC9DAD765DE"
+    },
+    {
+      "artifact_id": "ART-208",
+      "revision": "Stage 3.2-R12",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R12_MEMBER_END_TRIM_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "1A06B1A7AC08537A9F3DB017F0F4F29B87711D2B7A257EE3D5983E4491680395"
+    },
+    {
+      "artifact_id": "ART-210",
+      "revision": "Stage 3.2-R13",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R13_TEE_LENGTH_ANCHOR_POSITION_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "0DF3F0BB4531A5AEFE722CB992A509A682E3FDE9313517F20C22D58044EC7C7E"
+    },
+    {
+      "artifact_id": "ART-211",
+      "revision": "Stage 3.2-R13",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r13_tee_length_anchor_position_golden_benchmarks_rc1.json",
+      "sha256": "2859272F0C405D77DDBA4DB2C807A73033A8ED21B6C728D7123B376F63A2D1AC"
+    },
+    {
+      "artifact_id": "ART-212",
+      "revision": "Stage 3.2-R13",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R13_TEE_LENGTH_ANCHOR_POSITION_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "AB823E87C9AB383318A302F41B5A626A3D21671F9D9CE3B640A799720F100522"
+    },
+    {
+      "artifact_id": "ART-214",
+      "revision": "Stage 3.2-R14B",
+      "kind": "engineering-specification",
+      "path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md",
+      "sha256": "DB3DFA722AA08B44AD95F8D789178699CA8E9BEE5FADB99306867C69E9B8A74C"
+    },
+    {
+      "artifact_id": "ART-215",
+      "revision": "Stage 3.2-R14B",
+      "kind": "golden-benchmark",
+      "path": "backend/tests/golden/stage_3_2_r14b_region_specific_material_basis_golden_benchmarks_rc1.json",
+      "sha256": "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236"
+    },
+    {
+      "artifact_id": "ART-216",
+      "revision": "Stage 3.2-R14B",
+      "kind": "authority-ledger",
+      "path": "docs/qa/STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "0FFF79C4B6BFDB0C6DED1F2F551CE421D7E2E684BD75B6B84A0EC3154B87EC05"
+    }
+  ],
+  "inherited_stage_2_controlled_artifacts": [
+    {
+      "artifact_id": "ART-127",
+      "path": "backend/tests/golden/calculation_slice_1_rc2.json",
+      "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"
+    },
+    {
+      "artifact_id": "ART-128",
+      "path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "44431A8921CF1ADF9C7D0F7F022C9615265308A41BE589B1EE5150A7D7886F99"
+    },
+    {
+      "artifact_id": "ART-129",
+      "path": "backend/tests/golden/calculation_slice_2_rc1.json",
+      "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"
+    },
+    {
+      "artifact_id": "ART-132",
+      "path": "docs/engineering/CALCULATION_SLICE_2_ENGINEERING_SPECIFICATION_RC2.md",
+      "sha256": "C296E5FB3B304985A62D49B3F486EF6DB8E5D212EDFE2B83AACB6D68E09B71FD"
+    },
+    {
+      "artifact_id": "ART-133",
+      "path": "backend/tests/golden/calculation_slice_2_rc2.json",
+      "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"
+    },
+    {
+      "artifact_id": "ART-134",
+      "path": "docs/qa/CALCULATION_SLICE_2_RC2_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "sha256": "F2E0A253C75503C3F8FA29E5E78A4A8E4DF98204A43CAF4B07000EC65183A7A4"
+    },
+    {
+      "artifact_id": "ART-146",
+      "path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470"
+    },
+    {
+      "artifact_id": "ART-147",
+      "path": "backend/tests/golden/calculation_slice_3_rc1.json",
+      "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"
+    },
+    {
+      "artifact_id": "ART-148",
+      "path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "sha256": "CA091B0B6054F82980E5A9AD8D923080F9DFD2FB4CEDA08E80E3122C1B28477A"
+    },
+    {
+      "artifact_id": "ART-151",
+      "path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F"
+    },
+    {
+      "artifact_id": "ART-152",
+      "path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json",
+      "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"
+    },
+    {
+      "artifact_id": "ART-153",
+      "path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "sha256": "3E85C61AD10865B5293165DF5847B63E96F80D19361E194A180B40EFB403ED27"
+    },
+    {
+      "artifact_id": "ART-160",
+      "path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "CBC11F8793F7B85873DB5C52D7A90536DD20CB87005895EAF3B43D319AB1B5D6"
+    },
+    {
+      "artifact_id": "ART-161",
+      "path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json",
+      "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"
+    },
+    {
+      "artifact_id": "ART-162",
+      "path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md",
+      "sha256": "477D8F19C50B39ED10EEFE95A3C93F73897147BB456CF412350960C9C3D24E10"
+    }
+  ],
+  "controlled_r4_fingerprints": {
+    "us_execution": "c61a4d73946a014e218fdf02896ea08de90c1d9f94c6a2ca23495e72ca006a27",
+    "us_preview": "f21cd78fc1c332c52268295c4fb273c1dc4ae841e6d94f7edeb5cbd984558961",
+    "si_execution": "40ba8cb419f56f5b5c59e2b102c9842850bc925a600088b62185d96cc0314a69",
+    "si_preview": "94dee19bc2b27a9a726c94eed9e66ddcfd637d5a80a8d74230d8716b9294e9d2",
+    "deprecated_si_execution": "7c6d7bb9b3d04246c789ad9ed9b291d5b7349a46435594d9bebb181c8488bf57",
+    "deprecated_si_preview": "673b55de5986f7c39252f888eef6a2e8a538e66ab54488944b9f4ad820268d8d"
+  },
+  "r10_fixed_grid_transition_provenance": {
+    "historical_r9_commit": "cc336f6a7161200656f1f4689c8b72585e6627d1",
+    "controlled_r10_commit": "a447ff8f384914b9c466ebd4241f3b195188926a",
+    "r10a_tests_only_commit": "865b08b2a4d52c8bb17b35ef06faf2486e6346e5",
+    "r10a_purpose": "tests-only exact fixed-grid fingerprint assertions",
+    "zero_inclination_transition_count": 0,
+    "nonzero_transitions": [
+      {
+        "brace_inclination_degrees": "30",
+        "historical_before": {
+          "engineering": "27e7e4e56568920dfd439ea0445ba30ca2feb282cee26f2d81a00308e5cff63f",
+          "interface_a": "c72b1443f4f435a33f3d74bb61587bba02b4ece57bab5ff9056e64d7be58ae48",
+          "interface_b": "e4d3767be331318ffbc13b4a08326f2dc6a6d0b1be7103cb26dfa3d89aac64e3"
+        },
+        "controlled_after": {
+          "engineering": "b37cc2f170eaaa8ae1902e71c0bfdd4665a3d549924d8dac31b24a56a5e8f983",
+          "interface_a": "51dc8986c6d4a0e8e4eb8efa19bb45999c2e6637082c9469c9d2cca9e956a7b2",
+          "interface_b": "e4d3767be331318ffbc13b4a08326f2dc6a6d0b1be7103cb26dfa3d89aac64e3"
+        }
+      },
+      {
+        "brace_inclination_degrees": "-30",
+        "historical_before": {
+          "engineering": "d33228e754761382a058e585cd68db7e686f007a792fbe221b5d6cd3ee23d339",
+          "interface_a": "b13ce5e44e6c227af0181b613fc1cbf2895d98287280706e391d7cd65ae65b88",
+          "interface_b": "e4d3767be331318ffbc13b4a08326f2dc6a6d0b1be7103cb26dfa3d89aac64e3"
+        },
+        "controlled_after": {
+          "engineering": "20b2f9deb4c2107598808e01875cb8bf22bc8c4fb8984a813484bedfe9ee8662",
+          "interface_a": "56f493c23e059a0a9c5fffe6d375b80c0087d28e66088071c54f20c8045c862a",
+          "interface_b": "e4d3767be331318ffbc13b4a08326f2dc6a6d0b1be7103cb26dfa3d89aac64e3"
+        }
+      },
+      {
+        "brace_inclination_degrees": "27.5",
+        "historical_before": {
+          "engineering": "bb6c2503695b1cc8060d8e166f46c353ab4895ee6a60b60e0713bfe5d9d4406e",
+          "interface_a": "e7f44c3dd9036a91d5f30867b8346eef06add4c861538f04bb569ac9664b04a6",
+          "interface_b": "e4d3767be331318ffbc13b4a08326f2dc6a6d0b1be7103cb26dfa3d89aac64e3"
+        },
+        "controlled_after": {
+          "engineering": "af6e93d98dbc82da2e55e38335d1792ba915f116592895e94fc84a1923e327af",
+          "interface_a": "c707293db29f5f42d6bd3c00bd02464b37501a17dfd959faa44bbb947c79e618",
+          "interface_b": "e4d3767be331318ffbc13b4a08326f2dc6a6d0b1be7103cb26dfa3d89aac64e3"
+        }
+      }
+    ]
+  },
+  "r14b_fingerprint_transition_register": {
+    "identity": "Stage 3.2-R14B material-basis fingerprint transitions",
+    "path": "docs/qa/STAGE_3_2_R14B_FINGERPRINT_TRANSITIONS.md",
+    "sha256": "6C6B2FAFD1D885C7A3C5867B3C8721EC098BC8B1FA9BA41C93E3485E483209FE"
+  },
+  "existing_stage_2_3_freeze": {
+    "tag": "stage-2.3-interface-geometry-freeze",
+    "tag_type": "annotated",
+    "target": "5bc545ab8251f9bd49dedc776962937ed5e822a2",
+    "record_path": "docs/governance/STAGE_2_3_INTERFACE_GEOMETRY_FREEZE.md",
+    "record_sha256": "5901DCC3F7FB05932A9841BA4D1FF63FF7A147BE871E67D89D4B46229641D9AB"
+  },
+  "accepted_behavioral_contracts": [
+    "Canonical Tee topology and all engineering geometry remain backend-authoritative.",
+    "Column and Beam support roles and either selected physical flange remain supported within the accepted slice.",
+    "Flat Plate, Angle, Channel, W/I, and RHS connected profiles retain their accepted exact physical behavior.",
+    "Brace-to-Tee Stem and Tee Flange-to-Support remain independent physical interfaces with independent groups, layouts, paths, layers, demands, results, and identities.",
+    "Brace inclination rotates the connected member while both physical Tee bolt frames remain fixed to their Tee datums.",
+    "Signed group-offset and legacy edge-distance placement retain exact complete-hole containment and clearance behavior.",
+    "Fastener shanks, heads, nuts, and authority-provided washers remain solid canonical or explicitly schematic presentation without engineering authority from display ratios.",
+    "Member-end trim uses backend physical solids and fails closed when trimmed-edge resistance mapping is unavailable.",
+    "Tee body length, anchor, and longitudinal position remain independent of fixed bolt-group positions.",
+    "Every physical FRP region retains the accepted R14B right-handed LW/CW/TT basis.",
+    "Region-embedded material-axis visualization consumes backend vectors without changing canonical snapshots or engineering identity.",
+    "U.S. and SI representations of the same accepted physical connection remain equivalent.",
+    "Live preview executes zero resistance equations; design resistance and utilization require explicit Run Design Check.",
+    "Unsupported geometry, action, applicability, qualification, and resistance mappings remain fail-closed.",
+    "The workspace remains session-only and no persistence or report authority is implied."
+  ],
+  "deliberate_limitations": [
+    "Tee connector body resistance remains NOT_EVALUATED.",
+    "Unsupported normal action, bolt-axis tension, and prying remain fail-closed.",
+    "Row-distribution frame compatibility may remain unsupported.",
+    "Trimmed-edge resistance mapping remains unsupported where current authority cannot consume it.",
+    "RHS single-wall bolting retains INTERNAL_FASTENER_ACCESS_REQUIRED qualification.",
+    "Round-hollow direct flat-Tee contact is unsupported.",
+    "Moment connections are not implemented by Stage 3.2.",
+    "The workspace is session-only and the product, project schema, and relevant transport schemas remain draft.",
+    "No persistence, report generation, authentication, entitlement, or billing capability is frozen as implemented.",
+    "No Stage 3.3 or additional connection-family behavior is included."
+  ]
+}

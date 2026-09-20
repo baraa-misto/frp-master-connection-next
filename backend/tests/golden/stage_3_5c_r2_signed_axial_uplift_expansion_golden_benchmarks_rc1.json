@@ -1,0 +1,557 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "contracts": {
+    "historical": "3.5C-RC1",
+    "successor": "3.5C-R2-RC1"
+  },
+  "frame": {
+    "axes_order": [
+      "S_C",
+      "T_C",
+      "L_C"
+    ],
+    "axial_positive": "UPLIFT_+L_C",
+    "axial_negative": "COMPRESSION_-L_C"
+  },
+  "default_successor": {
+    "axial_force_kip": "-20",
+    "web_plane_shear_kip": "4",
+    "web_normal_shear_kip": "0",
+    "user_moment_s_t_l_kip_in": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "benchmarks": [
+    {
+      "id": "G1_HISTORICAL_3_5C_RC1_EXACT",
+      "expected": {
+        "historical_contract": "3.5C-RC1",
+        "engineering_result_change": "NONE",
+        "fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G2_HISTORICAL_R1_PRESENTATION_EXACT",
+      "expected": {
+        "r1_engineering_change": "NONE",
+        "r1_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G3_R2_DEFAULT_REPRODUCES_HISTORICAL",
+      "input": {
+        "axial_force_kip": "-20",
+        "web_plane_shear_kip": "4",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "combined_force_s_t_l_kip": [
+          "4",
+          "0",
+          "-20"
+        ],
+        "combined_moment_s_t_l_kip_in": [
+          "0",
+          "16",
+          "0"
+        ],
+        "historical_default_equivalent": true
+      }
+    },
+    {
+      "id": "G4_R2_AXIAL_SIGN_CONVENTION",
+      "expected": {
+        "positive": "UPLIFT_+L_C",
+        "negative": "COMPRESSION_-L_C",
+        "zero": "NO_AXIAL_ACTION"
+      }
+    },
+    {
+      "id": "G5_PURE_COMPRESSION_BASE_WRENCH",
+      "input": {
+        "axial_force_kip": "-20",
+        "web_plane_shear_kip": "0",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "force_s_t_l_kip": [
+          "0",
+          "0",
+          "-20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G6_PURE_UPLIFT_BASE_WRENCH",
+      "input": {
+        "axial_force_kip": "20",
+        "web_plane_shear_kip": "0",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "force_s_t_l_kip": [
+          "0",
+          "0",
+          "20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G7_UPLIFT_PLUS_SHEAR_BASE_WRENCH",
+      "input": {
+        "axial_force_kip": "20",
+        "web_plane_shear_kip": "4",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "force_s_t_l_kip": [
+          "4",
+          "0",
+          "20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "0",
+          "16",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G8_WEB_COMPRESSION_FULL_DEMAND",
+      "expected": {
+        "signed_action_kip": "-20",
+        "design_magnitude_kip": "20",
+        "fraction": "1.0",
+        "signed_material_direction": "-LW",
+        "axis_classification": "LW"
+      }
+    },
+    {
+      "id": "G9_WEB_UPLIFT_FULL_DEMAND",
+      "expected": {
+        "signed_action_kip": "20",
+        "design_magnitude_kip": "20",
+        "fraction": "1.0",
+        "signed_material_direction": "+LW",
+        "axis_classification": "LW"
+      }
+    },
+    {
+      "id": "G10_ANGLE_SYSTEM_COMPRESSION_FULL_DEMAND",
+      "expected": {
+        "signed_action_kip": "-20",
+        "design_magnitude_kip": "20",
+        "fraction": "1.0",
+        "signed_material_direction": "-CW",
+        "axis_classification": "CW"
+      }
+    },
+    {
+      "id": "G11_ANGLE_SYSTEM_UPLIFT_FULL_DEMAND",
+      "expected": {
+        "signed_action_kip": "20",
+        "design_magnitude_kip": "20",
+        "fraction": "1.0",
+        "signed_material_direction": "+CW",
+        "axis_classification": "CW"
+      }
+    },
+    {
+      "id": "G12_DOUBLE_COMPRESSION_BRANCHES",
+      "expected": {
+        "positive_axial_kip": "-10",
+        "negative_axial_kip": "-10",
+        "branch_fraction_each": "0.5"
+      }
+    },
+    {
+      "id": "G13_DOUBLE_UPLIFT_BRANCHES",
+      "expected": {
+        "positive_axial_kip": "10",
+        "negative_axial_kip": "10",
+        "branch_fraction_each": "0.5"
+      }
+    },
+    {
+      "id": "G14_SINGLE_COMPRESSION_BRANCH",
+      "expected": {
+        "single_axial_kip": "-20",
+        "branch_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G15_SINGLE_UPLIFT_BRANCH",
+      "expected": {
+        "single_axial_kip": "20",
+        "branch_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G16_NO_DOUBLED_FOUNDATION_REACTION_COMPRESSION",
+      "expected": {
+        "web_design_axial_kip": "-20",
+        "angle_system_design_axial_kip": "-20",
+        "foundation_axial_kip": "-20",
+        "component_demands_summed": false
+      }
+    },
+    {
+      "id": "G17_NO_DOUBLED_FOUNDATION_REACTION_UPLIFT",
+      "expected": {
+        "web_design_axial_kip": "20",
+        "angle_system_design_axial_kip": "20",
+        "foundation_axial_kip": "20",
+        "component_demands_summed": false
+      }
+    },
+    {
+      "id": "G18_COMPRESSION_MATERIAL_CLASSIFICATION",
+      "expected": {
+        "web_axis": "LW",
+        "angle_vertical_leg_axis": "CW",
+        "sign_changes_axis_classification": false
+      }
+    },
+    {
+      "id": "G19_UPLIFT_MATERIAL_CLASSIFICATION",
+      "expected": {
+        "web_axis": "LW",
+        "angle_vertical_leg_axis": "CW",
+        "sign_changes_axis_classification": false
+      }
+    },
+    {
+      "id": "G20_SIGN_REVERSAL_IN_LAYER_DEMAND_VECTORS",
+      "expected": {
+        "compression_and_uplift_vectors_exact_opposites_for_pure_axial": true,
+        "layer_fractions_unchanged": true
+      }
+    },
+    {
+      "id": "G21_REVERSE_LOAD_FAILURE_PATH_APPLICABILITY",
+      "expected": {
+        "bearing_direction_available": true,
+        "net_shearout_block_paths_only_if_existing_method_maps_actual_loaded_edge": true,
+        "unsupported_reverse_path": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G22_COMPRESSION_BEARING_PARTITION",
+      "expected": {
+        "column_end_vs_base_angle_partition": "EXTERNAL_DESIGN_REQUIRED",
+        "base_angle_to_concrete_bearing": "EXTERNAL_DESIGN_REQUIRED"
+      }
+    },
+    {
+      "id": "G23_UPLIFT_COLUMN_END_BEARING",
+      "expected": {
+        "column_end_bearing_for_uplift": "NOT_REQUIRED",
+        "uplift_assigned_to_column_end_bearing": false
+      }
+    },
+    {
+      "id": "G24_UPLIFT_ANGLE_BODY_HEEL",
+      "expected": {
+        "base_angle_cw_body_and_heel_uplift_transfer": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G25_UPLIFT_HORIZONTAL_LEG_PRYING",
+      "expected": {
+        "base_angle_horizontal_leg_uplift_prying": "NOT_EVALUATED"
+      }
+    },
+    {
+      "id": "G26_ANCHOR_TENSION_EXTERNAL",
+      "expected": {
+        "anchor_tension_resistance": "EXTERNAL_DESIGN_REQUIRED",
+        "anchor_tension_capacity_present": false
+      }
+    },
+    {
+      "id": "G27_CONCRETE_UPLIFT_LIMIT_STATES_EXTERNAL",
+      "expected": {
+        "concrete_uplift_anchorage_limit_states": "EXTERNAL_DESIGN_REQUIRED",
+        "concrete_uplift_capacity_present": false
+      }
+    },
+    {
+      "id": "G28_COMPRESSION_DOUBLE_POSITIVE_BRANCH_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "2",
+          "0",
+          "-10"
+        ],
+        "moment_s_t_l_kip_in": [
+          "32.5",
+          "8",
+          "6.5"
+        ]
+      }
+    },
+    {
+      "id": "G29_COMPRESSION_DOUBLE_NEGATIVE_BRANCH_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "2",
+          "0",
+          "-10"
+        ],
+        "moment_s_t_l_kip_in": [
+          "-32.5",
+          "8",
+          "-6.5"
+        ]
+      }
+    },
+    {
+      "id": "G30_UPLIFT_DOUBLE_POSITIVE_BRANCH_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "2",
+          "0",
+          "10"
+        ],
+        "moment_s_t_l_kip_in": [
+          "-32.5",
+          "8",
+          "6.5"
+        ]
+      }
+    },
+    {
+      "id": "G31_UPLIFT_DOUBLE_NEGATIVE_BRANCH_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "2",
+          "0",
+          "10"
+        ],
+        "moment_s_t_l_kip_in": [
+          "32.5",
+          "8",
+          "-6.5"
+        ]
+      }
+    },
+    {
+      "id": "G32_PURE_UPLIFT_BRANCH_MOMENTS_CANCEL",
+      "expected": {
+        "positive_moment_s_t_l_kip_in": [
+          "-32.5",
+          "0",
+          "0"
+        ],
+        "negative_moment_s_t_l_kip_in": [
+          "32.5",
+          "0",
+          "0"
+        ],
+        "base_moment_s_t_l_kip_in": [
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G33_SINGLE_POSITIVE_COMPRESSION_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "4",
+          "0",
+          "-20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "65",
+          "16",
+          "13"
+        ]
+      }
+    },
+    {
+      "id": "G34_SINGLE_POSITIVE_UPLIFT_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "4",
+          "0",
+          "20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "-65",
+          "16",
+          "13"
+        ]
+      }
+    },
+    {
+      "id": "G35_SINGLE_NEGATIVE_UPLIFT_MIRROR_WRENCH",
+      "expected": {
+        "force_s_t_l_kip": [
+          "4",
+          "0",
+          "20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "65",
+          "16",
+          "-13"
+        ]
+      }
+    },
+    {
+      "id": "G36_WEB_NORMAL_STILL_BLOCKS_DOUBLE_BRANCH",
+      "input": {
+        "axial_force_kip": "20",
+        "web_normal_shear_kip": "3"
+      },
+      "expected": {
+        "complete_branch_allocation": "NOT_EVALUATED",
+        "limitation": "WEB_NORMAL_SHEAR_DOUBLE_ANGLE_BRANCH_ALLOCATION"
+      }
+    },
+    {
+      "id": "G37_UPLIFT_WEB_NORMAL_COMBINED_HANDOFF",
+      "input": {
+        "axial_force_kip": "20",
+        "web_plane_shear_kip": "0",
+        "web_normal_shear_kip": "3"
+      },
+      "expected": {
+        "combined_force_s_t_l_kip": [
+          "0",
+          "3",
+          "20"
+        ],
+        "combined_moment_s_t_l_kip_in": [
+          "-12",
+          "0",
+          "0"
+        ],
+        "complete_layout_present": true,
+        "branch_wrenches_fabricated": false
+      }
+    },
+    {
+      "id": "G38_SIGNED_AXIAL_ARROW",
+      "expected": {
+        "positive_arrow": "+L_C",
+        "negative_arrow": "-L_C",
+        "zero_arrow_present": false
+      }
+    },
+    {
+      "id": "G39_NO_USER_MOMENT",
+      "expected": {
+        "moment_inputs_present": false,
+        "nonzero_user_moment_rejected": true
+      }
+    },
+    {
+      "id": "G40_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "signed_demand_trace_available": true,
+        "external_handoff_available": true
+      }
+    },
+    {
+      "id": "G41_SUPPORTED_LOCAL_FAILURE_PRECEDENCE",
+      "expected": {
+        "supported_local_failure": "FAIL",
+        "overall_status": "FAIL",
+        "uplift_external_limitations_visible": true
+      }
+    },
+    {
+      "id": "G42_VALID_UPLIFT_REMAINS_CURRENT",
+      "expected": {
+        "geometry_status": "VALID",
+        "overall_status": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G43_EXTERNAL_HANDOFF_DETERMINISTIC",
+      "expected": {
+        "compression_mode_deterministic": true,
+        "uplift_mode_deterministic": true,
+        "signed_axial_present": true,
+        "full_precision": true
+      }
+    },
+    {
+      "id": "G44_US_SI_COMPRESSION_DEFAULT",
+      "expected": {
+        "geometry_equal": true,
+        "signed_action_equal": true,
+        "demand_provenance_equal": true,
+        "wrenches_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G45_US_SI_UPLIFT_REPRESENTATIVE",
+      "conversions": {
+        "20_kip_kN": "88.96443230521",
+        "10_kip_kN": "44.482216152605",
+        "4_kip_kN": "17.792886461042",
+        "65_kip_in_kN_m": "7.344013886795085",
+        "32.5_kip_in_kN_m": "3.6720069433975425",
+        "16_kip_in_kN_m": "1.807757264441867",
+        "13_kip_in_kN_m": "1.468802777359017",
+        "6.5_kip_in_kN_m": "0.7344013886795085"
+      },
+      "expected": {
+        "signed_action_equal": true,
+        "branch_wrenches_equal": true,
+        "base_wrench_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G46_HISTORICAL_3_5C_FINGERPRINT_EXACT",
+      "expected": {
+        "historical_contract_fingerprint_change": "NONE"
+      }
+    },
+    {
+      "id": "G47_STAGE_3_5_HISTORICAL_REGRESSION",
+      "expected": {
+        "stage_3_5a_change": "NONE",
+        "stage_3_5a_r1_change": "NONE",
+        "stage_3_5a_r2_change": "NONE",
+        "stage_3_5b_change": "NONE",
+        "stage_3_5b_r1_change": "NONE",
+        "stage_3_5c_r1_presentation_change_only": true
+      }
+    },
+    {
+      "id": "G48_FROZEN_REGRESSION_BOUNDARY",
+      "expected": {
+        "direct_fingerprint_change": "NONE",
+        "single_member_tee_fingerprint_change": "NONE",
+        "single_clip_angle_fingerprint_change": "NONE",
+        "paired_clip_angle_fingerprint_change": "NONE",
+        "multi_member_tee_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

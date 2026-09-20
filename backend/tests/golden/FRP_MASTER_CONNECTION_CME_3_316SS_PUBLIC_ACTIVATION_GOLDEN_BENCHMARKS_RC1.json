@@ -1,0 +1,501 @@
+{
+  "schema_version": "frp-master-connection-cme3-316ss-public-activation-rc1",
+  "document_status": "approved CME-3 conditional public connector-body activation authority",
+  "baseline": {
+    "governance_commit": "2e33c562fe131cef4526390c151be024a8a734a8",
+    "commit_count": 132,
+    "frozen_core_implementation": "1d730c70bc446901452f2eacecd9df3f9f36ff4b",
+    "frozen_core_tag": "cme-2-core-r-a-t-freeze",
+    "frozen_core_tag_object": "4729e0996ef7ff07144d88050c667691221017ef",
+    "expected_existing_tag_count": 17
+  },
+  "owner_eor_approval": {
+    "date": "2026-09-13",
+    "exact_text": "Approved: proceed with CME-3 conditional public 316SS connector-body activation on the 13 body-bearing routes, preserving FRP-only primary members, independent hardware authority, all frozen C2 applicability gates, fail-closed unsupported configurations, the three no-body routes unchanged, and historical Tee behavior."
+  },
+  "source_identity": {
+    "c2_core_combined_completion_report_sha256": "C8995E52513858C284E2478B9FBA3BE0C2480E4DC673500F70A4A64EDDC93393",
+    "c2_core_final_verification_sha256": "AFEFD87BE830AA42AC2BAAD4EBA6C99F51FFD0CC939711E3297EDAD9C235E852",
+    "c2_core_readiness_audit_sha256": "B664C1FCE58C53575952A44EE2A11C474801821DF7A8C49C45890225DE42925C",
+    "AISC_370_25_sha256": "A9C3440C127866626F633E9B5426E830E035857135FA1A38A2424757625AFCF1",
+    "ASCE_SEI_74_23_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+    "ASCE_SEI_74_23_erratum1_sha256": "5B58E842DA9025934D12EB386C416E94CB3B53999B21F59B0606F2B09D9DE550"
+  },
+  "public_material_contract": {
+    "default": "FRP",
+    "frp_value": "FRP",
+    "ss316_value": "SS316",
+    "ss316_label": "316 Stainless Steel",
+    "aliases": [
+      "316 Stainless Steel",
+      "316SS",
+      "316 SS",
+      "316",
+      "316L",
+      "316L SS",
+      "316/316L"
+    ],
+    "selection_scope": "ONE_CONNECTION_WIDE_CONNECTOR_BODY_MATERIAL",
+    "mixed_materials_supported": false,
+    "custom_stainless_properties_editable": false
+  },
+  "route_matrix": [
+    {
+      "route": "single-bolt",
+      "body_count": 0,
+      "form": "NONE",
+      "activation": "NOT_ELIGIBLE_NO_BODY",
+      "selector": false
+    },
+    {
+      "route": "multi-row",
+      "body_count": 0,
+      "form": "NONE",
+      "activation": "NOT_ELIGIBLE_NO_BODY",
+      "selector": false
+    },
+    {
+      "route": "direct-side-lap-concrete",
+      "body_count": 0,
+      "form": "NONE",
+      "activation": "NOT_ELIGIBLE_NO_BODY",
+      "selector": false
+    },
+    {
+      "route": "beam-web-splice",
+      "body_count": 2,
+      "form": "PLATE",
+      "activation": "CME3_PLATE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "wi-major-axis-moment-splice",
+      "body_count": 8,
+      "form": "PLATE",
+      "activation": "CME3_PLATE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "channel-major-axis-moment-splice",
+      "body_count": 6,
+      "form": "PLATE",
+      "activation": "CME3_PLATE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "clip-angle",
+      "body_count": 1,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "paired-clip-angle",
+      "body_count": 2,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "beam-concrete-paired-angle",
+      "body_count": 2,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "column-base-web-angles",
+      "body_count": 2,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "wi-beam-concrete-wall-moment",
+      "body_count": 4,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "wi-beam-frp-support-moment",
+      "body_count": 4,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "angle-column-two-leg-moment-base",
+      "body_count": 2,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "wi-rhs-srs-column-moment-base",
+      "body_count": 4,
+      "form": "ANGLE",
+      "activation": "CME3_ANGLE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "tee-connector",
+      "body_count": 1,
+      "form": "TEE",
+      "activation": "CME3_TEE_CONDITIONAL",
+      "selector": true
+    },
+    {
+      "route": "multi-member-tee",
+      "body_count": 1,
+      "form": "TEE",
+      "activation": "CME3_TEE_CONDITIONAL",
+      "selector": true
+    }
+  ],
+  "public_provider_state": "STAINLESS_CONDITIONAL_PROVIDER_AVAILABLE",
+  "whole_connection_summary_policy": {
+    "FAIL": "at least one required supported numerical check fails",
+    "ENGINEERING_REVIEW_REQUIRED": "no required numerical failure, but at least one required source/applicability/response check is unavailable",
+    "PASS": "all required checks evaluated and pass, with no required blocker"
+  },
+  "positive_cases": [
+    {
+      "id": "P01_DEFAULT_MISSING_SELECTION_NORMALIZES_TO_FRP",
+      "expected": {
+        "effective_material": "FRP",
+        "historical_request_response_fingerprint": "UNCHANGED",
+        "native_provider": "NATIVE_FRP_DELEGATION_AVAILABLE"
+      }
+    },
+    {
+      "id": "P02_EXPLICIT_FRP_NORMALIZES_TO_HISTORICAL_FRP",
+      "expected": {
+        "effective_material": "FRP",
+        "historical_request_response_fingerprint": "UNCHANGED",
+        "native_provider": "NATIVE_FRP_DELEGATION_AVAILABLE"
+      }
+    },
+    {
+      "id": "P03_SS316_ALIAS_NORMALIZATION",
+      "input_aliases": [
+        "316 Stainless Steel",
+        "316SS",
+        "316 SS",
+        "316",
+        "316L",
+        "316L SS",
+        "316/316L"
+      ],
+      "expected": {
+        "canonical_material": "SS316",
+        "display_label": "316 Stainless Steel"
+      }
+    },
+    {
+      "id": "P04_NO_BODY_ROUTES_REMAIN_TARGETLESS",
+      "expected": {
+        "routes": [
+          "single-bolt",
+          "multi-row",
+          "direct-side-lap-concrete"
+        ],
+        "target_count": 0,
+        "selector_visible": false
+      }
+    },
+    {
+      "id": "P05_PLATE_ROUTE_PLAN_ACTIVATES_CONDITIONALLY",
+      "route": "beam-web-splice",
+      "expected": {
+        "provider_state": "STAINLESS_CONDITIONAL_PROVIDER_AVAILABLE",
+        "adapter": "CME3_PLATE",
+        "plan_capacity": null,
+        "plan_utilization": null
+      }
+    },
+    {
+      "id": "P06_ANGLE_ROUTE_PLAN_ACTIVATES_CONDITIONALLY",
+      "route": "clip-angle",
+      "expected": {
+        "provider_state": "STAINLESS_CONDITIONAL_PROVIDER_AVAILABLE",
+        "adapter": "CME3_ANGLE",
+        "plan_capacity": null,
+        "plan_utilization": null
+      }
+    },
+    {
+      "id": "P07_TEE_ROUTE_PLAN_ACTIVATES_CONDITIONALLY",
+      "route": "tee-connector",
+      "expected": {
+        "provider_state": "STAINLESS_CONDITIONAL_PROVIDER_AVAILABLE",
+        "adapter": "CME3_TEE",
+        "plan_capacity": null,
+        "plan_utilization": null
+      }
+    },
+    {
+      "id": "P08_QUALIFIED_PLATE_DISPATCH_STACK",
+      "expected": {
+        "required_authorities": [
+          "C2_M",
+          "C2_R",
+          "C2_P1",
+          "C2_P2_AS_APPLICABLE"
+        ],
+        "frp_body_provider_used": false,
+        "member_hardware_foundation_authority": "UNCHANGED"
+      }
+    },
+    {
+      "id": "P09_QUALIFIED_ANGLE_DISPATCH_STACK",
+      "expected": {
+        "required_authorities": [
+          "C2_R",
+          "C2_A",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "frp_body_provider_used": false,
+        "member_hardware_foundation_authority": "UNCHANGED"
+      }
+    },
+    {
+      "id": "P10_QUALIFIED_TEE_DISPATCH_STACK",
+      "expected": {
+        "required_authorities": [
+          "C2_R",
+          "C2_T",
+          "C2_P1_P2_LOCAL_AS_APPLICABLE"
+        ],
+        "frp_body_provider_used": false,
+        "member_hardware_foundation_authority": "UNCHANGED"
+      }
+    },
+    {
+      "id": "P11_SUPPORTED_NUMERICAL_FAIL_REMAINS_VISIBLE",
+      "expected": {
+        "whole_connection_status": "FAIL",
+        "qualification_blockers_may_coexist": true
+      }
+    },
+    {
+      "id": "P12_NO_FAIL_BUT_REQUIRED_BLOCKER",
+      "expected": {
+        "whole_connection_status": "ENGINEERING_REVIEW_REQUIRED",
+        "ordinary_pass": false
+      }
+    },
+    {
+      "id": "P13_COMPLETE_SUPPORTED_CONNECTION_CAN_PASS",
+      "expected": {
+        "whole_connection_status": "PASS",
+        "requires_all_required_checks_pass": true,
+        "requires_no_blockers": true
+      }
+    },
+    {
+      "id": "P14_MATERIAL_CHANGE_STALES_DESIGN",
+      "expected": {
+        "preview_may_refresh": true,
+        "design_automatically_reruns": false,
+        "prior_design_state": "STALE"
+      }
+    },
+    {
+      "id": "P15_SS316_SELECTION_APPLIES_TO_ALL_CANONICAL_BODIES_IN_ROUTE_RC1",
+      "expected": {
+        "mixed_connector_body_materials": false,
+        "single_connection_wide_body_material": "SS316"
+      }
+    },
+    {
+      "id": "P16_CORE_RESULT_REMAINS_ISOLATED_BUT_CME3_WRAPPER_ACTIVATES",
+      "expected": {
+        "frozen_core_family_activation": false,
+        "cme3_public_activation": "ACTIVE_CONDITIONAL"
+      }
+    },
+    {
+      "id": "P17_PLAN_IS_NOT_DESIGN",
+      "expected": {
+        "material_plan_executes_resistance": false,
+        "capacity": null,
+        "utilization": null
+      }
+    },
+    {
+      "id": "P18_VALID_GEOMETRY_REQUIRED_BEFORE_MATERIAL_DISPATCH",
+      "expected": {
+        "invalid_geometry_short_circuits_material_provider": true
+      }
+    },
+    {
+      "id": "P19_HISTORICAL_TEE_DEFAULT_PRESERVED",
+      "expected": {
+        "http_status": 422,
+        "status": "CANONICAL_TEE_MAPPING_INVALID",
+        "cause": "OUTSIDE_SELECTED_LEG_SURFACE"
+      }
+    },
+    {
+      "id": "P20_CAPABILITIES_DECLARE_CONDITIONAL_ACTIVATION",
+      "expected": {
+        "primary_members": "FRP_ONLY",
+        "connector_body_materials": [
+          "FRP",
+          "316 Stainless Steel"
+        ],
+        "no_body_routes_have_selector": false,
+        "custom_stainless_properties_editable": false
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "N01_MIXED_FRP_SS316_BODIES_IN_ONE_CONNECTION",
+      "expected_status": "STAINLESS_MIXED_CONNECTOR_BODY_MATERIALS_NOT_SUPPORTED_IN_CME3_RC1"
+    },
+    {
+      "id": "N02_PRIMARY_MEMBER_SS316_REQUEST",
+      "expected_status": "PRIMARY_MEMBER_MATERIAL_MUST_REMAIN_FRP"
+    },
+    {
+      "id": "N03_FASTENER_BODY_AUTHORITY_SUBSTITUTION",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_CANNOT_REPLACE_FASTENER_AUTHORITY"
+    },
+    {
+      "id": "N04_FOUNDATION_BODY_AUTHORITY_SUBSTITUTION",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_CANNOT_REPLACE_FOUNDATION_AUTHORITY"
+    },
+    {
+      "id": "N05_NO_BODY_ROUTE_SELECTOR_INJECTION",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"
+    },
+    {
+      "id": "N06_UNKNOWN_MATERIAL_ALIAS",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_NOT_SUPPORTED"
+    },
+    {
+      "id": "N07_SS316_FRP_BODY_FALLBACK_ATTEMPT",
+      "expected_status": "STAINLESS_FRP_BODY_FALLBACK_PROHIBITED"
+    },
+    {
+      "id": "N08_RESPONSE_NOT_QUALIFIED",
+      "expected_status": "STAINLESS_RESPONSE_MATERIAL_DEPENDENCE_UNRESOLVED"
+    },
+    {
+      "id": "N09_PLATE_COMBINED_NORMAL_SHEAR_UNSUPPORTED",
+      "expected_status": "STAINLESS_COMBINED_NORMAL_SHEAR_NOT_SUPPORTED_IN_C2_P2"
+    },
+    {
+      "id": "N10_ANGLE_TORSION",
+      "expected_status": "STAINLESS_SHAPE_TORSION_NOT_SUPPORTED"
+    },
+    {
+      "id": "N11_ANGLE_SECTION_UNQUALIFIED",
+      "expected_status": "STAINLESS_SHAPE_SECTION_PROPERTIES_NOT_QUALIFIED"
+    },
+    {
+      "id": "N12_ANGLE_HEEL_PRYING_LOCAL_UNQUALIFIED",
+      "expected_status": "STAINLESS_ANGLE_LOCAL_HEEL_PRYING_METHOD_NOT_AVAILABLE"
+    },
+    {
+      "id": "N13_TEE_SECTION_UNQUALIFIED",
+      "expected_status": "STAINLESS_SHAPE_SECTION_PROPERTIES_NOT_QUALIFIED"
+    },
+    {
+      "id": "N14_TEE_LOCAL_JUNCTION_UNQUALIFIED",
+      "expected_status": "STAINLESS_TEE_LOCAL_JUNCTION_METHOD_NOT_AVAILABLE"
+    },
+    {
+      "id": "N15_PUBLIC_TRUSTED_SOURCE_HASH_INJECTION",
+      "expected_status": "STAINLESS_PUBLIC_TRUSTED_AUTHORITY_INJECTION_PROHIBITED"
+    },
+    {
+      "id": "N16_STALE_MATERIAL_FINGERPRINT",
+      "expected_status": "STAINLESS_ACTIVATION_SNAPSHOT_STALE"
+    },
+    {
+      "id": "N17_BODY_ALIAS_ROUTE_MISMATCH",
+      "expected_status": "STAINLESS_ACTIVATION_BODY_IDENTITY_MISMATCH"
+    },
+    {
+      "id": "N18_HISTORICAL_TEE_AUTOREPAIR_ATTEMPT",
+      "expected_status": "CANONICAL_TEE_MAPPING_INVALID"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "text": "Absent connector-body material selection and explicit FRP selection are numerically and semantically identical to the frozen historical FRP path."
+    },
+    {
+      "id": "I02",
+      "text": "Exactly 13 routes expose connector-body material selection; exactly three no-body routes do not."
+    },
+    {
+      "id": "I03",
+      "text": "The canonical route-qualified body inventory remains exactly 39: 21 ANGLE, 16 PLATE, 2 TEE."
+    },
+    {
+      "id": "I04",
+      "text": "Selecting SS316 never changes primary-member material; every primary member remains FRP_ONLY."
+    },
+    {
+      "id": "I05",
+      "text": "Selecting SS316 never changes bolt/nut/washer, anchor, concrete, support or foundation numerical authority."
+    },
+    {
+      "id": "I06",
+      "text": "No SS316 body request may fall back to an FRP connector-body resistance provider."
+    },
+    {
+      "id": "I07",
+      "text": "A supported numerical failure remains visible even when separate qualification blockers also exist."
+    },
+    {
+      "id": "I08",
+      "text": "Whole-connection PASS requires every required evaluated check to pass and no required qualification/source/applicability blocker."
+    },
+    {
+      "id": "I09",
+      "text": "Material planning does not execute resistance and therefore does not populate design capacity/utilization."
+    },
+    {
+      "id": "I10",
+      "text": "Changing connector-body material is design-affecting, changes the activation fingerprint, and stales prior design results."
+    },
+    {
+      "id": "I11",
+      "text": "Display-unit changes do not change physical activation, provider selection, result, status, governing check or canonical fingerprint."
+    },
+    {
+      "id": "I12",
+      "text": "Frozen C2-M/P1/P2/R/A/T provider outputs and fingerprints are not modified by CME-3 activation."
+    },
+    {
+      "id": "I13",
+      "text": "The CME-3 wrapper may activate a frozen isolated provider publicly without mutating that provider's own frozen family_activation field."
+    },
+    {
+      "id": "I14",
+      "text": "Unsupported response/product/stability/torsion/prying/junction conditions fail closed and never receive fabricated capacity."
+    },
+    {
+      "id": "I15",
+      "text": "Historical Tee startup/default invalid geometry remains exact and is never repaired by material selection."
+    },
+    {
+      "id": "I16",
+      "text": "All pre-CME-3 FRP native responses remain exact except for deliberately changed readiness/capability/material-selection metadata."
+    },
+    {
+      "id": "I17",
+      "text": "RC1 uses one connection-wide connector-body material selection; mixed FRP/SS316 connector bodies within one connection are unsupported."
+    },
+    {
+      "id": "I18",
+      "text": "Public clients cannot manufacture trusted C2 response/source/section/local-region authority through hashes, flags or arbitrary records."
+    }
+  ]
+}

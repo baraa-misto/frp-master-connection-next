@@ -1,0 +1,25 @@
+/* Stage 4.2 only: fieldsets are full-width siblings, never geometry-grid cells. */
+.wi-wall-moment-workspace .wall-moment-input-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0.65rem;
+  border: 1px solid #cdd4db;
+  border-radius: 0.2rem;
+}
+.wi-wall-moment-workspace .wall-moment-input-group legend {
+  padding-inline: 0.3rem;
+  color: #344758;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.wi-wall-moment-workspace .wall-moment-full-width { grid-column: 1 / -1; }
+.wi-wall-moment-workspace .properties-sidebar :is(input, select, .field-grid > span) { min-width: 0; }
+.wi-wall-moment-workspace .properties-sidebar :is(p, label, legend) { overflow-wrap: anywhere; }
+.wi-wall-moment-workspace .wall-moment-source-field input { min-width: 0; }
+.wi-wall-moment-workspace .wall-moment-input-group .input-with-unit input { padding-right: 2.25rem; }
+.wi-wall-moment-workspace .wall-moment-failure-table { max-width: 100%; overflow-x: auto; }
+.wi-wall-moment-workspace .wall-moment-failure-table td { vertical-align: top; overflow-wrap: anywhere; }
+.wi-wall-moment-workspace .wall-moment-native-record { max-width: 32rem; }
+.wi-wall-moment-workspace .wall-moment-native-record pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.wi-wall-moment-workspace .wall-moment-result-identity { overflow-wrap: anywhere; font-size: 0.75rem; }
+.wi-wall-moment-workspace :is(.source-card, .qualification-banner) p { overflow-wrap: anywhere; }

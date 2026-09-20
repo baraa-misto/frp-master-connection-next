@@ -1,0 +1,608 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "decimal_policy": "All authoritative engineering quantities are exact decimal strings.",
+  "frame": {
+    "axes_order": [
+      "S_C",
+      "T_C",
+      "L_C"
+    ],
+    "handedness": "S_C cross T_C = L_C",
+    "concrete_top_l": "0"
+  },
+  "default_fixture": {
+    "column": {
+      "profile": "WIDE_FLANGE_I",
+      "depth_in": "10",
+      "flange_width_in": "8",
+      "web_thickness_in": "0.5",
+      "flange_thickness_in": "0.5",
+      "display_height_in": "24"
+    },
+    "concrete": {
+      "s_dimension_in": "36",
+      "t_dimension_in": "36",
+      "depth_in": "12"
+    },
+    "assembly": "SYMMETRIC_DOUBLE_BASE_ANGLES",
+    "angle": {
+      "vertical_leg_height_in": "6",
+      "horizontal_leg_width_in": "6",
+      "thickness_in": "0.5",
+      "length_s_in": "6"
+    },
+    "web_group": {
+      "rows": 2,
+      "bolts_per_row": 2,
+      "pitch_in": "3",
+      "gauge_in": "2",
+      "centroid_height_l_in": "3",
+      "bolt_diameter_in": "0.5",
+      "hole_diameter_in": "0.563"
+    },
+    "positive_anchor_group": {
+      "rows": 2,
+      "anchors_per_row": 1,
+      "pitch_in": "3",
+      "centroid_s_t_l_in": [
+        "0",
+        "3.25",
+        "0"
+      ],
+      "anchor_coordinates_s_t_l_in": [
+        [
+          "-1.5",
+          "3.25",
+          "0"
+        ],
+        [
+          "1.5",
+          "3.25",
+          "0"
+        ]
+      ]
+    },
+    "negative_anchor_group": {
+      "rows": 2,
+      "anchors_per_row": 1,
+      "pitch_in": "3",
+      "centroid_s_t_l_in": [
+        "0",
+        "-3.25",
+        "0"
+      ],
+      "anchor_coordinates_s_t_l_in": [
+        [
+          "-1.5",
+          "-3.25",
+          "0"
+        ],
+        [
+          "1.5",
+          "-3.25",
+          "0"
+        ]
+      ]
+    },
+    "external_anchor": {
+      "nominal_diameter_in": "0.5",
+      "hole_diameter_in": "0.563",
+      "embedment_in": "4"
+    },
+    "loads": {
+      "axial_compression_kip": "20",
+      "web_plane_shear_kip": "4",
+      "web_normal_shear_kip": "0",
+      "user_moment_s_t_l_kip_in": [
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "column_action_reference_s_t_l_in": [
+      "0",
+      "0",
+      "4"
+    ],
+    "base_reference_s_t_l_in": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "benchmarks": [
+    {
+      "id": "G1_DEFAULT_DOUBLE_ANGLE_GEOMETRY",
+      "expected": {
+        "assembly": "SYMMETRIC_DOUBLE_BASE_ANGLES",
+        "positive_angle_present": true,
+        "negative_angle_present": true,
+        "column_web_between_angles": true,
+        "horizontal_legs_on_concrete": true
+      }
+    },
+    {
+      "id": "G2_SINGLE_POSITIVE_ANGLE_GEOMETRY",
+      "expected": {
+        "assembly": "SINGLE_BASE_ANGLE",
+        "side": "+T_C",
+        "angle_count": 1,
+        "full_system_demand_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G3_SINGLE_NEGATIVE_ANGLE_MIRROR",
+      "expected": {
+        "assembly": "SINGLE_BASE_ANGLE",
+        "side": "-T_C",
+        "exact_mirror_of_positive": true
+      }
+    },
+    {
+      "id": "G4_DOUBLE_ANGLE_EXACT_MIRROR",
+      "expected": {
+        "geometry_mirror_exact": true,
+        "materials_identical": true,
+        "web_group_centered": true,
+        "anchor_groups_mirrored": true
+      }
+    },
+    {
+      "id": "G5_COLUMN_WEB_PURE_COMPRESSION_FULL_DEMAND_LW",
+      "input": {
+        "axial_compression_kip": "20",
+        "web_plane_shear_kip": "0",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "column_web_axial_demand_kip": "20",
+        "demand_fraction": "1.0",
+        "material_direction": "LW",
+        "bearing_direction_classification": "LONGITUDINAL"
+      }
+    },
+    {
+      "id": "G6_DOUBLE_ANGLE_SYSTEM_PURE_COMPRESSION_FULL_DEMAND",
+      "input": {
+        "axial_compression_kip": "20"
+      },
+      "expected": {
+        "pair_system_axial_demand_kip": "20",
+        "system_fraction": "1.0"
+      }
+    },
+    {
+      "id": "G7_DOUBLE_ANGLE_BRANCH_PURE_COMPRESSION_HALF",
+      "expected": {
+        "positive_angle_axial_demand_kip": "10",
+        "negative_angle_axial_demand_kip": "10",
+        "branch_fraction_each": "0.5",
+        "sum_kip": "20",
+        "vertical_leg_material_direction": "CW"
+      }
+    },
+    {
+      "id": "G8_SINGLE_ANGLE_PURE_COMPRESSION_FULL_DEMAND",
+      "expected": {
+        "single_angle_axial_demand_kip": "20",
+        "branch_fraction": "1.0",
+        "vertical_leg_material_direction": "CW"
+      }
+    },
+    {
+      "id": "G9_SAME_COMPRESSION_DIFFERENT_MATERIAL_DIRECTION",
+      "expected": {
+        "physical_force_direction": "-L_C",
+        "column_web_relative_direction": "LW",
+        "angle_vertical_leg_relative_direction": "CW",
+        "column_web_bearing_class": "LONGITUDINAL",
+        "angle_leg_bearing_class": "TRANSVERSE"
+      }
+    },
+    {
+      "id": "G10_PURE_WEB_PLANE_SHEAR_DIRECTION_CLASSIFICATION",
+      "input": {
+        "axial_compression_kip": "0",
+        "web_plane_shear_kip": "4",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "column_web_relative_direction": "CW",
+        "angle_vertical_leg_relative_direction": "LW",
+        "column_web_bearing_class": "TRANSVERSE",
+        "angle_leg_bearing_class": "LONGITUDINAL"
+      }
+    },
+    {
+      "id": "G11_COMBINED_P_PLUS_VS_PER_LAYER_BEARING_ANGLE",
+      "input": {
+        "axial_compression_kip": "20",
+        "web_plane_shear_kip": "4",
+        "web_normal_shear_kip": "0"
+      },
+      "expected": {
+        "column_web_and_angle_use_independent_material_bases": true,
+        "bearing_angles_not_reused_between_layers": true
+      }
+    },
+    {
+      "id": "G12_DEFAULT_COMMON_GROUP_DEMAND",
+      "expected": {
+        "physical_bolts": 4,
+        "per_bolt_components_s_l_kip": [
+          "1",
+          "-5"
+        ],
+        "per_bolt_resultant_kip": "5.099019513592784830028224109022781989564",
+        "force_equilibrium": true
+      }
+    },
+    {
+      "id": "G13_DOUBLE_COMMON_LAYER_ALLOCATIONS",
+      "expected": {
+        "positive_angle_fraction": "0.5",
+        "column_web_fraction": "1.0",
+        "negative_angle_fraction": "0.5",
+        "positive_per_bolt_resultant_kip": "2.549509756796392415014112054511390994782",
+        "web_per_bolt_resultant_kip": "5.099019513592784830028224109022781989564",
+        "negative_per_bolt_resultant_kip": "2.549509756796392415014112054511390994782"
+      }
+    },
+    {
+      "id": "G14_SINGLE_COMMON_LAYER_ALLOCATIONS",
+      "expected": {
+        "angle_fraction": "1.0",
+        "column_web_fraction": "1.0",
+        "angle_per_bolt_resultant_kip": "5.099019513592784830028224109022781989564",
+        "web_per_bolt_resultant_kip": "5.099019513592784830028224109022781989564"
+      }
+    },
+    {
+      "id": "G15_WEB_NORMAL_SHEAR_BOLT_AXIS_ACTION",
+      "input": {
+        "web_normal_shear_kip": "3"
+      },
+      "expected": {
+        "normal_action_retained": true,
+        "common_web_group_bolt_axis_response": "NOT_EVALUATED",
+        "generated_bolt_tension": false,
+        "generated_prying": false
+      }
+    },
+    {
+      "id": "G16_DOUBLE_WEB_NORMAL_BRANCH_ALLOCATION",
+      "input": {
+        "assembly": "SYMMETRIC_DOUBLE_BASE_ANGLES",
+        "web_normal_shear_kip": "3"
+      },
+      "expected": {
+        "complete_branch_allocation": "NOT_EVALUATED",
+        "limitation": "WEB_NORMAL_SHEAR_DOUBLE_ANGLE_BRANCH_ALLOCATION",
+        "combined_foundation_handoff_available": true
+      }
+    },
+    {
+      "id": "G17_NO_GENERATED_BOLT_TENSION_PRYING",
+      "expected": {
+        "bolt_axis_tension_capacity_generated": false,
+        "prying_capacity_generated": false
+      }
+    },
+    {
+      "id": "G18_BASE_ANGLE_BODY_HEEL_TRANSFER",
+      "expected": {
+        "system_axial_demand_retained": true,
+        "capacity_status": "NOT_EVALUATED",
+        "limitation": "BASE_ANGLE_CW_BODY_AND_HEEL_COMPRESSION_TRANSFER"
+      }
+    },
+    {
+      "id": "G19_HORIZONTAL_LEG_BEARING_EXTERNAL",
+      "expected": {
+        "bearing_footprint_present": true,
+        "concrete_bearing_capacity_present": false,
+        "status": "EXTERNAL_DESIGN_REQUIRED"
+      }
+    },
+    {
+      "id": "G20_COLUMN_END_VS_ANGLE_BEARING_PARTITION",
+      "expected": {
+        "stiffness_based_partition_calculated": false,
+        "status": "EXTERNAL_DESIGN_REQUIRED",
+        "component_design_demand_policy_preserved": true
+      }
+    },
+    {
+      "id": "G21_DEFAULT_COMBINED_FOUNDATION_WRENCH",
+      "expected": {
+        "reference_s_t_l_in": [
+          "0",
+          "0",
+          "0"
+        ],
+        "force_s_t_l_kip": [
+          "4",
+          "0",
+          "-20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "0",
+          "16",
+          "0"
+        ],
+        "reaction_counted_once": true
+      }
+    },
+    {
+      "id": "G22_DEFAULT_POSITIVE_BRANCH_ANCHOR_WRENCH",
+      "expected": {
+        "reference_s_t_l_in": [
+          "0",
+          "3.25",
+          "0"
+        ],
+        "force_s_t_l_kip": [
+          "2",
+          "0",
+          "-10"
+        ],
+        "moment_s_t_l_kip_in": [
+          "32.5",
+          "8",
+          "6.5"
+        ]
+      }
+    },
+    {
+      "id": "G23_DEFAULT_NEGATIVE_BRANCH_ANCHOR_WRENCH",
+      "expected": {
+        "reference_s_t_l_in": [
+          "0",
+          "-3.25",
+          "0"
+        ],
+        "force_s_t_l_kip": [
+          "2",
+          "0",
+          "-10"
+        ],
+        "moment_s_t_l_kip_in": [
+          "-32.5",
+          "8",
+          "-6.5"
+        ]
+      }
+    },
+    {
+      "id": "G24_DOUBLE_BRANCH_SUM_RECOVERS_BASE",
+      "expected": {
+        "shifted_force_sum_s_t_l_kip": [
+          "4",
+          "0",
+          "-20"
+        ],
+        "shifted_moment_sum_s_t_l_kip_in": [
+          "0",
+          "16",
+          "0"
+        ],
+        "force_equilibrium": true,
+        "moment_equilibrium": true
+      }
+    },
+    {
+      "id": "G25_SINGLE_POSITIVE_ANCHOR_WRENCH",
+      "expected": {
+        "reference_s_t_l_in": [
+          "0",
+          "3.25",
+          "0"
+        ],
+        "force_s_t_l_kip": [
+          "4",
+          "0",
+          "-20"
+        ],
+        "moment_s_t_l_kip_in": [
+          "65",
+          "16",
+          "13"
+        ]
+      }
+    },
+    {
+      "id": "G26_SINGLE_SHIFTED_WRENCH_RECOVERS_BASE",
+      "expected": {
+        "shifted_force_s_t_l_kip": [
+          "4",
+          "0",
+          "-20"
+        ],
+        "shifted_moment_s_t_l_kip_in": [
+          "0",
+          "16",
+          "0"
+        ],
+        "equilibrium": true
+      }
+    },
+    {
+      "id": "G27_NO_DOUBLED_FOUNDATION_REACTION",
+      "expected": {
+        "column_web_design_axial_kip": "20",
+        "angle_system_design_axial_kip": "20",
+        "foundation_axial_reaction_kip": "20",
+        "component_design_demands_summed_for_equilibrium": false
+      }
+    },
+    {
+      "id": "G28_NO_CONCRETE_OR_ANCHOR_CAPACITY",
+      "expected": {
+        "concrete_bearing_capacity_present": false,
+        "anchor_steel_capacity_present": false,
+        "concrete_breakout_capacity_present": false,
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G29_ANGLE_BEARING_FOOTPRINTS_EXPORTED",
+      "expected": {
+        "positive_footprint_present": true,
+        "negative_footprint_present": true,
+        "single_option_footprint_present": true,
+        "capacity_inferred": false
+      }
+    },
+    {
+      "id": "G30_EXTERNAL_HANDOFF_DETERMINISTIC",
+      "expected": {
+        "base_frame_present": true,
+        "combined_foundation_wrench_present": true,
+        "component_design_demands_present": true,
+        "anchor_groups_present": true,
+        "bearing_footprints_present": true,
+        "full_precision": true,
+        "deterministic_fingerprint": true
+      }
+    },
+    {
+      "id": "G31_AXIAL_TENSION_UPLIFT_REJECTED",
+      "input": {
+        "axial_compression_kip": "-1"
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "reason": "STAGE_3_5C_AXIAL_TENSION_UPLIFT_NOT_AUTHORIZED"
+      }
+    },
+    {
+      "id": "G32_USER_MOMENT_REJECTED",
+      "input": {
+        "user_moment_s_t_l_kip_in": [
+          "1",
+          "0",
+          "0"
+        ]
+      },
+      "expected": {
+        "request_status": "REJECTED",
+        "moment_connection": false
+      }
+    },
+    {
+      "id": "G33_MATERIAL_AXES_COLUMN_WEB_PU_PARALLEL_LW",
+      "expected": {
+        "column_web_lw_parallel_l_c": true,
+        "compression_parallel_lw": true,
+        "column_web_tt_normal_to_web": true
+      }
+    },
+    {
+      "id": "G34_MATERIAL_AXES_ANGLE_VERTICAL_LEG_PU_PARALLEL_CW",
+      "expected": {
+        "angle_lw_parallel_s_c": true,
+        "vertical_leg_cw_parallel_l_c": true,
+        "compression_parallel_cw": true
+      }
+    },
+    {
+      "id": "G35_DOUBLE_ANGLE_SYMMETRY_INVALID",
+      "input": {
+        "positive_angle_length_in": "6",
+        "negative_angle_length_in": "5.5"
+      },
+      "expected": {
+        "request_status": "REJECTED_OR_INVALID",
+        "equal_sharing_not_inferred": true,
+        "automatic_geometry_correction": false
+      }
+    },
+    {
+      "id": "G36_ANCHOR_HOLE_CONTAINMENT_INVALID",
+      "expected": {
+        "invalid_anchor_or_hole": "INVALID_GEOMETRY",
+        "governing_angle_or_concrete_edge_reported": true
+      }
+    },
+    {
+      "id": "G37_WEB_BOLT_CONTAINMENT_INTERFERENCE_INVALID",
+      "expected": {
+        "invalid_web_bolt_path": "INVALID_GEOMETRY",
+        "automatic_group_reposition": false
+      }
+    },
+    {
+      "id": "G38_PREVIEW_ZERO_RESISTANCE",
+      "expected": {
+        "resistance_engine_calls": 0,
+        "component_demand_trace_available": true,
+        "external_handoff_available": true
+      }
+    },
+    {
+      "id": "G39_SUPPORTED_LOCAL_FRP_FAILURE_PRECEDENCE",
+      "expected": {
+        "supported_local_failure": "FAIL",
+        "overall_status": "FAIL",
+        "external_limitations_remain_visible": true
+      }
+    },
+    {
+      "id": "G40_VALID_GEOMETRY_LIMITATIONS",
+      "expected": {
+        "geometry_status": "VALID",
+        "overall_status": "NOT_EVALUATED",
+        "ordinary_whole_connection_pass": false
+      }
+    },
+    {
+      "id": "G41_US_SI_DEFAULT_EQUIVALENCE",
+      "conversions": {
+        "36_in_mm": "914.4",
+        "24_in_mm": "609.6",
+        "20_kip_kN": "88.96443230521",
+        "16_kip_in_kN_m": "1.807757264441867",
+        "10_in_mm": "254",
+        "8_in_mm": "203.2",
+        "6_in_mm": "152.4",
+        "4_in_mm": "101.6",
+        "3.25_in_mm": "82.55",
+        "3_in_mm": "76.2",
+        "2_in_mm": "50.8",
+        "1.5_in_mm": "38.1",
+        "0.563_in_mm": "14.3002",
+        "0.5_in_mm": "12.7"
+      },
+      "expected": {
+        "geometry_equal": true,
+        "material_direction_classification_equal": true,
+        "demand_traces_equal": true,
+        "wrenches_equal": true,
+        "handoff_equal": true,
+        "fingerprints_equal": true
+      }
+    },
+    {
+      "id": "G42_STAGE_3_5_HISTORICAL_REGRESSION",
+      "expected": {
+        "stage_3_5a_change": "NONE",
+        "stage_3_5a_r1_change": "NONE",
+        "stage_3_5a_r2_change": "NONE",
+        "stage_3_5b_change": "NONE",
+        "stage_3_5b_r1_change": "NONE"
+      }
+    },
+    {
+      "id": "G43_FROZEN_REGRESSION_BOUNDARY",
+      "expected": {
+        "direct_fingerprint_change": "NONE",
+        "single_member_tee_fingerprint_change": "NONE",
+        "single_clip_angle_fingerprint_change": "NONE",
+        "paired_clip_angle_fingerprint_change": "NONE",
+        "multi_member_tee_fingerprint_change": "NONE",
+        "freeze_tag_movement": "NONE"
+      }
+    }
+  ]
+}

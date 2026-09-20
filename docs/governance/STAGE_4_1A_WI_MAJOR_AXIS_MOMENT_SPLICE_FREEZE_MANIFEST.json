@@ -1,0 +1,478 @@
+{
+  "schema": "frp-master-connection-family-freeze-manifest",
+  "schema_version": "1.0.0",
+  "stage": "4.1A",
+  "freeze_name": "Stage 4.1A W/I Major-Axis Moment Splice",
+  "freeze_scope": [
+    "Calculation Slice 5 W/I moment component resultant engine",
+    "Stage 4.1A physical W/I major-axis moment splice architecture"
+  ],
+  "controlling_order": {
+    "file": "FRP_MASTER_CONNECTION_STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_FREEZE_CODEX_ORDER.md",
+    "sha256": "0646F456A035C0A2C09492AFF4A59B4A4A8D8E665B346F1DC7B16443D79A3290",
+    "sentinel": "END OF STAGE 4.1A W/I MAJOR-AXIS MOMENT SPLICE FREEZE ORDER — DO NOT PROCEED IF THIS LINE IS MISSING"
+  },
+  "accepted_product_baseline": {
+    "commit": "59713e53c522a6a301e19e458559986fb114d735",
+    "subject": "feat: add W/I major-axis moment splice connection",
+    "commit_count": 98,
+    "tracked_file_count": 611,
+    "branch": "main"
+  },
+  "governance_freeze_commit": {
+    "identity": "SELF",
+    "expected_parent": "59713e53c522a6a301e19e458559986fb114d735",
+    "expected_subject": "chore: freeze Stage 4.1A W/I moment splice baseline",
+    "expected_commit_count": 99,
+    "tag": "stage-4.1a-wi-major-axis-moment-splice-freeze",
+    "tag_type": "annotated",
+    "tag_annotation": "Freeze accepted Stage 4.1A W/I Major-Axis Moment Splice baseline"
+  },
+  "repository_identities": {
+    "accepted_backend_tree": "3c882a9f5877497816acb5592d423d441d7b93f2",
+    "accepted_frontend_tree": "d1793de27c13cca41ce881827cf6e42ff4826324",
+    "accepted_backend_src_tree": "70dca07ca9fac3bbc45b8363f0d5f21157a1bc52",
+    "accepted_frontend_src_tree": "7deabca069f034e7f43f426ba31d7dca0c839419",
+    "accepted_workflow_tree": "20edd491455e6329c4565bc72cd7b88e29d3f7b1",
+    "accepted_engineering_tree": "3bcf35139e636ce052f6082a59b4748752e5edda",
+    "accepted_golden_tree": "3098c9113af244d04a0930dcecc31e70bc061a9d",
+    "accepted_backend_requirements_tree": "d8e1a9f1c2c89a4e50a181db1997c52b3c9bdf58",
+    "backend_pyproject": {
+      "path": "backend/pyproject.toml",
+      "git_blob": "9caa35e74d01bb040369b72fe19294ba6072a786",
+      "sha256": "39BEA635FCE709607E1A4AE11D8B31829DFD07B4CADE332E030486BE1456A116"
+    },
+    "backend_requirements_readme": {
+      "path": "backend/requirements/README.md",
+      "git_blob": "f91d715e0446ebd1598ed6accac32d7000fe1b9d",
+      "sha256": "6C010A608E4D1076D3384F95A19E21A02B4A782B008046336084EA7D07E91BAD"
+    },
+    "backend_requirements_lock": {
+      "path": "backend/requirements/requirements-dev-py314.lock.txt",
+      "git_blob": "e2f9e4051ebff96954e88c6d6a4fc0b8cf3460cc",
+      "sha256": "953E6D3F6879CBAA6037AA4E8BA0D41B48380761983DCA4CDABFE54576670E0E"
+    },
+    "frontend_package_json": {
+      "path": "frontend/package.json",
+      "git_blob": "b753abd55004168eee5844879f0596d435fe4b5a",
+      "sha256": "1085F25B94819ED98EEE10739CF4B419F39BD626CC654699B0380B26341F4359"
+    },
+    "frontend_package_lock": {
+      "path": "frontend/package-lock.json",
+      "git_blob": "ae1831268db42005517343bf555f054a673ae520",
+      "sha256": "20205C82940ABF46288DE6704245E6F7E5AA91B0686BA605B687590A0D17C254"
+    }
+  },
+  "existing_immutable_freezes": [
+    {
+      "tag": "stage-2.3-interface-geometry-freeze",
+      "tag_object": "0296c360101fccbeac0cf321fddb5f0e9f37a3dd",
+      "peeled_target": "5bc545ab8251f9bd49dedc776962937ed5e822a2"
+    },
+    {
+      "tag": "stage-3.2-tee-connection-freeze",
+      "tag_object": "17aaec64e72131a7030780f3c581e8c4dc1d19c0",
+      "peeled_target": "d16b354732c90bf3bf7847c62be652c230a9f91e"
+    },
+    {
+      "tag": "stage-3.3-clip-angle-family-freeze",
+      "tag_object": "c22433084106a4da3006b610cc90429aba1660ce",
+      "peeled_target": "a4d21506d45d2d21d3f5039b662ea56ec6c5da9f"
+    },
+    {
+      "tag": "stage-3.4-multi-member-tee-family-freeze",
+      "tag_object": "282724c1fe2fbbeea9f742921aba5996028fd60b",
+      "peeled_target": "2303ec713d6d038b935e076b909c3b639ced0e09"
+    },
+    {
+      "tag": "stage-3.5-concrete-support-shear-family-freeze",
+      "tag_object": "7d9eaa40aa43f29e52fbae78b40057b31eaa8af8",
+      "peeled_target": "7bb83e5c8814781419c0789b7428bd46572d514c"
+    },
+    {
+      "tag": "stage-3.6-wi-web-splice-family-freeze",
+      "tag_object": "748d684ae08d86d6335fc26c9bff1e6c0389aa25",
+      "peeled_target": "031e8367b25765652447fb358e54dd5facd1238b"
+    },
+    {
+      "tag": "stage-3.7-column-base-shear-family-freeze",
+      "tag_object": "cbce5bc3e6ab61b550b3848982d6493a32a56bdb",
+      "peeled_target": "b0a6ecdf03c88768ff6ab29e584a992231812bda"
+    }
+  ],
+  "acceptance_chain": [
+    {
+      "stage": "Calculation Slice 5",
+      "commit": "23813a5c2d015b74591e577fa95715950c34912c",
+      "subject": "feat: add W/I moment component resultant engine"
+    },
+    {
+      "stage": "Stage 4.1A",
+      "commit": "59713e53c522a6a301e19e458559986fb114d735",
+      "parent": "23813a5c2d015b74591e577fa95715950c34912c",
+      "subject": "feat: add W/I major-axis moment splice connection"
+    }
+  ],
+  "ci_evidence": {
+    "calculation_slice_5": {
+      "provider": "GitHub Actions",
+      "run_number": 92,
+      "result": "4/4 green",
+      "duration": "approximately 5m26s",
+      "authority": "direct evidence recorded by controlling freeze order"
+    },
+    "stage_4_1a": {
+      "provider": "GitHub Actions",
+      "run_number": 93,
+      "result": "4/4 green",
+      "duration": "approximately 6m05s",
+      "authority": "direct evidence recorded by controlling freeze order"
+    },
+    "governance_freeze_commit": "PENDING_DIRECT_EVIDENCE_AFTER_PUSH"
+  },
+  "accepted_owner_evidence": {
+    "status": "COMPLETE",
+    "authority": "direct owner acceptance recorded by controlling freeze order",
+    "accepted_cases": [
+      "default combined P=+20 kip, V=-10 kip, M=+100 kip-in",
+      "negative moment with P=+20 kip, V=-10 kip, M=-100 kip-in",
+      "pure axial P=+20 kip, V=0, M=0",
+      "pure moment P=0, V=0, M=+100 kip-in"
+    ],
+    "confirmed": [
+      "correct sign reversal",
+      "correct pure-axial branch equality",
+      "retained web moment in pure moment",
+      "correct split-inner geometry",
+      "correct flange bolt paths",
+      "exterior hardware",
+      "explicit design workflow",
+      "no ordinary PASS",
+      "F593 source-pending behavior"
+    ]
+  },
+  "frozen_product": {
+    "product_id": "WI_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+    "contract": "4.1A-RC1",
+    "selector_category": "Moment Connections",
+    "supported_profiles": ["WIDE_FLANGE_I"],
+    "supported_actions": ["signed axial P_L", "signed major shear V_V", "signed major-axis moment M_T"],
+    "unsupported_actions": ["minor shear", "minor-axis moment", "torsion"],
+    "excluded_successor": "Stage 4.1B Channel Moment Splice"
+  },
+  "slice_5_component_decomposition": {
+    "method": "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1",
+    "complete_component_wrenches": ["top flange", "web", "bottom flange"],
+    "decimal_arithmetic": "EXACT",
+    "web_moment_participation": "REQUIRED",
+    "local_flange_region_moments": "RETAINED",
+    "equilibrium": "EXACT",
+    "stress_extrema_and_state": "RETAINED",
+    "m_over_z": "REFERENCE_ONLY_NOT_SOLE_CONTROLLING_DEMAND"
+  },
+  "physical_topology": {
+    "top_flange": ["one outer full-width FRP plate", "two split inner FRP plates, one each side of web"],
+    "web": ["two symmetric FRP web splice plates"],
+    "bottom_flange": ["one outer full-width FRP plate", "two split inner FRP plates, one each side of web"],
+    "total_frp_splice_plates": 8,
+    "outer_only_flange_splice": "PROHIBITED"
+  },
+  "flange_bolt_path": {
+    "ordered_layers": ["OUTER_FLANGE_SPLICE_PLATE", "BEAM_FLANGE", "CORRESPONDING_INNER_FLANGE_SPLICE_PLATE"],
+    "continuous_shank": true,
+    "physical_shear_planes": 2,
+    "bolt_through_web": false,
+    "hardware": ["exterior head/washer", "exterior nut/washer"],
+    "endpoints_and_layer_order": "BACKEND_AUTHORITATIVE",
+    "duplicate_physical_bolt": false
+  },
+  "web_subsystem": {
+    "reuse": "Stage 3.6 successor-specific adapter",
+    "receives": [
+      "Slice 5 web longitudinal force",
+      "100% major shear",
+      "Slice 5 web local/free major-axis moment",
+      "exact generated reference-translation moments"
+    ],
+    "methods": [
+      "Stage 2.5A exact eccentric group demand",
+      "accepted local FRP connection checks",
+      "Calculation Slice 4",
+      "RATIONAL_SIMPLY_SUPPORTED_CLEAR_BODY_PANEL_RC1",
+      "RATIONAL_LINEAR_ORTHOTROPIC_SPLICE_PLATE_BODY_INTERACTION_RC1",
+      "physical Plate/Web/Plate common-bolt shear logic"
+    ],
+    "stage_3_6_public_contract_and_fingerprints": "UNCHANGED"
+  },
+  "flange_branch": {
+    "method": "RATIONAL_BALANCED_FLANGE_FACE_COUPLE_DECOMPOSITION_RC1",
+    "equations": ["F_o + F_i = N_f", "e_o F_o + e_i F_i = m_f"],
+    "force_line_locations": "AUTHORITATIVE_PHYSICAL_LOCATIONS",
+    "recovery": ["flange force", "local flange moment", "global flange moment contribution"],
+    "discarded_residual_moment": false
+  },
+  "inner_strip_allocation": {
+    "rule": "F_i,+ = F_i/2 and F_i,- = F_i/2",
+    "requires_exact_rc1_symmetry": [
+      "symmetric W/I geometry",
+      "symmetric inner-strip geometry",
+      "identical material",
+      "identical bolt-line geometry",
+      "zero minor shear",
+      "zero minor-axis moment",
+      "zero torsion"
+    ],
+    "not_authority_for": ["Channel", "torsional", "biaxial", "asymmetric future splices"]
+  },
+  "beam_flange_face_transfer": {
+    "method": "RATIONAL_BALANCED_FLANGE_FACE_SUBLAYER_TRANSFER_RC1",
+    "outer_effective_thickness": "t_f/2",
+    "inner_effective_thickness": "t_f/2",
+    "outer_force": "F_o",
+    "inner_force": "F_i",
+    "width": "full actual flange width",
+    "bolt_grid": "actual full bolt grid",
+    "material_axes": "actual",
+    "loaded_edge": "signed",
+    "physical_member": "one beam flange",
+    "physical_delamination_planes": false
+  },
+  "unequal_two_plane_bolt": {
+    "method": "RATIONAL_ASYMMETRIC_TWO_PLANE_COMMON_BOLT_SHEAR_RC1",
+    "planes": ["outer plate / flange", "flange / inner plate"],
+    "demand": "actual Stage 2.5A per-plane demand",
+    "equal_plane_assumption": false,
+    "plane_check": "independent against accepted per-plane strength when source-authorized",
+    "governing_utilization": "maximum plane utilization",
+    "blind_two_times_capacity": false
+  },
+  "flange_body_and_local_checks": {
+    "independent_plate_bodies": ["outer", "each inner"],
+    "tension": "Calculation Slice 4 longitudinal tension",
+    "compression": "Calculation Slice 4 longitudinal compression rupture/buckling",
+    "panel_mapping": "RATIONAL_SIMPLY_SUPPORTED_CLEAR_BODY_PANEL_RC1",
+    "local_checks": ["pin bearing", "net tension", "shear-out", "cleavage", "accepted block-shear/local failure path"],
+    "local_components": [
+      "outer flange splice plate",
+      "each inner flange splice plate",
+      "rational outer beam-flange face sublayer",
+      "rational inner beam-flange face sublayer",
+      "inherited web components"
+    ],
+    "new_strength_equation": false
+  },
+  "bolt_axis_and_prying_boundary": {
+    "authoritative_bolt_axis_force": "0",
+    "bolt_tension_demand": "0",
+    "applied_pull_through": "NOT_REQUIRED",
+    "combined_tension_shear_when_tension_zero": "NOT_INVOKED",
+    "requires_review": [
+      "out-of-plane deformation",
+      "prying/contact",
+      "unequal-plane secondary bolt bending",
+      "moment-rotation behavior"
+    ],
+    "invented_numerical_prying_force": false
+  },
+  "result_precedence": [
+    "invalid/rejected input",
+    "supported required failure -> FAIL",
+    "required method/source unavailable -> NOT_EVALUATED",
+    "all required numerical strength checks pass -> PASS_WITH_RATIONAL_METHOD_REVIEW_REQUIRED"
+  ],
+  "ordinary_unqualified_pass": "PROHIBITED",
+  "qualification": {
+    "RATIONAL_METHOD_ENGINEERING_REVIEW_REQUIRED": true,
+    "WI_MOMENT_SPLICE_CONNECTION_QUALIFICATION": "REQUIRED_2_3_2",
+    "MOMENT_CONNECTION_STIFFNESS_CLASSIFICATION": "NOT_EVALUATED",
+    "MOMENT_ROTATION_CAPACITY": "NOT_EVALUATED",
+    "FULL_STRENGTH_CLASSIFICATION": "NOT_EVALUATED"
+  },
+  "disclaimer": {
+    "id": "WI_MAJOR_AXIS_MOMENT_SPLICE_RATIONAL_DESIGN_DISCLAIMER_RC1",
+    "meaning": [
+      "Slice 5 region-resultant decomposition is project rational authority",
+      "balanced flange force-line decomposition is project rational authority",
+      "beam-flange face-sublayer transfer is project rational authority",
+      "unequal two-plane common-bolt shear is project rational authority",
+      "local/code-based component strengths are used where applicable",
+      "Stage 3.6 rational web body method is inherited",
+      "EOR review and Section 2.3.2 qualification are required",
+      "stiffness, rotation capacity, and full-strength classification are not established"
+    ]
+  },
+  "preview_and_design": {
+    "preview_includes": [
+      "strict validation",
+      "authoritative geometry",
+      "Slice 5 decomposition",
+      "flange branch decomposition",
+      "web/flange group demand planning",
+      "physical paths/endpoints",
+      "material axes",
+      "applicability/source plan",
+      "exact equilibrium",
+      "review/qualification/disclaimer metadata"
+    ],
+    "preview_resistance_calls": 0,
+    "design_check": "EXPLICIT_USER_ACTION_ONLY",
+    "engineering_edits_stale_prior_design": true
+  },
+  "visualization_and_request_state": {
+    "physical_scene": [
+      "two W/I beams",
+      "positive joint gap",
+      "two web plates",
+      "top outer plate",
+      "two top inner strips",
+      "bottom outer plate",
+      "two bottom inner strips",
+      "all physical bolts/hardware",
+      "major moment arrow",
+      "material axes",
+      "X-ray inner-plate visibility"
+    ],
+    "geometry_and_endpoints": "BACKEND_AUTHORITATIVE",
+    "viewer": "PERSISTENT",
+    "states": ["current", "invalid", "last-valid", "request-failure"],
+    "blank_workspace": false,
+    "frontend_engineering_authority": false
+  },
+  "source_pending_behavior": {
+    "astm_f593_numerical_bolt_resistance": "SOURCE_PENDING_WHERE_CONTROLLED_FNT_FNV_UNAVAILABLE",
+    "invented_strength": false,
+    "verified_or_custom_source_authority": "USABLE",
+    "limitation_propagation": "DETERMINISTIC"
+  },
+  "engineering_fingerprints": {
+    "default_canonical_input": "e68ee9c793299d84fea4e0fd5e3535dc31d1e1ef863564e8776c8be86da687fa",
+    "default_geometry": "14bc21dd10750d45b3bae7a315277843b60fe186c055023e080bd86462d00ef8",
+    "default_engineering": "9a93033db155c3330fd2fc309c1150e430ffd6a17acebe07afa44d961ae846e3",
+    "default_application": "8edb3c187b430cd8b6aa9eabedf78a8f9d7c8403a5ef8cc4f0f1d62653e2dff4",
+    "slice_5_result": "b0b98434771117b299072ef4c1d2a64241b2b4d052fec2b612547f4c9329abea",
+    "top_flange_branch": "61c6b875efca18f0b0d311a077f17628f0ba161e012f47cf18c3f37741050942",
+    "bottom_flange_branch": "b4b68414c6e527516c437b844eab715b21cc721864268926aea3f385221c1975",
+    "equilibrium": "77c259bd348016e8b402063c8b4803b65b09d66ff3b11dcf119448b6fe8aaf2b",
+    "default_design": "816a06d3ff951e1047e7198916e52db9986ae936cb24be3c81b16d9bacf3cc40"
+  },
+  "controlled_stage_4_1a_repository_artifacts": [
+    {
+      "path": "docs/governance/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_DECISION.md",
+      "sha256": "D60A4F95340E70632E8EB277E9F7353151A2C35D80BA66BF2F71D98A6A06FD05"
+    },
+    {
+      "path": "docs/engineering/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "2C4FDBB51468C65EBA35D8E887E404C43D5DC620EAC88DDC613232E0CDE7F218"
+    },
+    {
+      "path": "backend/tests/golden/stage_4_1a_wi_major_axis_moment_splice_golden_benchmarks_rc1.json",
+      "sha256": "386A6C7B3BEFCBABA8006C7421A30C3AF890E803CAF71F3A191F7CD33616D96C"
+    },
+    {
+      "path": "docs/qa/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "4DA812A1DFC2825F82688A9F837BACD640DBB7819248C4DD4799D8751E6B1DDD"
+    }
+  ],
+  "controlled_slice_5_repository_artifacts": [
+    {
+      "path": "docs/governance/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_DECISION.md",
+      "sha256": "1E3DFA8727953087C883F5E8627778960CBD6AFECCDC357A35C89D99A6139DC9"
+    },
+    {
+      "path": "docs/engineering/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_ENGINEERING_SPECIFICATION_RC1.md",
+      "sha256": "33C88001777BD11CAF1EE724B5F2EFFCB84D9C0232578091755FA9751BEB49B1"
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_5_wi_moment_component_resultants_golden_benchmarks_rc1.json",
+      "sha256": "8854FE7CB56B7D7CEE1FF30A5EA554B83D400386FAE4B1AFDCABC8DF7A1E3D82"
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_AUTHORITY_LEDGER_RC1.md",
+      "sha256": "246EC10341A1E4011069231C296B6CCA1346DACC74455F42EFAD3C0C98937DA9"
+    }
+  ],
+  "external_control_orders": [
+    {
+      "file": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_CODEX_ORDER.md",
+      "sha256": "27E3B713F358CFBB1B27A15F3745A7FF6D263FEF0F87AC4534062723F9B60755"
+    },
+    {
+      "file": "FRP_MASTER_CONNECTION_STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_CODEX_ORDER.md",
+      "sha256": "4F90112CDEDDFC05382A1E37702E86812C8D1B0C94D4CB60DFFF20B588F90EE1"
+    },
+    {
+      "file": "FRP_MASTER_CONNECTION_STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_FREEZE_CODEX_ORDER.md",
+      "sha256": "0646F456A035C0A2C09492AFF4A59B4A4A8D8E665B346F1DC7B16443D79A3290"
+    }
+  ],
+  "inherited_authorities": [
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "38D742EAB8AA9EE2706135C96B32A4E01E74082D1A6360D82C3D787BB42E0470"},
+    {"path": "backend/tests/golden/calculation_slice_3_rc1.json", "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "CA091B0B6054F82980E5A9AD8D923080F9DFD2FB4CEDA08E80E3122C1B28477A"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "C0E2C63096DA357D23E684B835DFACA050F9112C21E9B7EC5E90EFFEA890105F"},
+    {"path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json", "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_RESISTANCE_HANDOFF_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "3E85C61AD10865B5293165DF5847B63E96F80D19361E194A180B40EFB403ED27"},
+    {"path": "docs/engineering/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "CBC11F8793F7B85873DB5C52D7A90536DD20CB87005895EAF3B43D319AB1B5D6"},
+    {"path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json", "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"},
+    {"path": "docs/qa/CALCULATION_SLICE_3_ECCENTRIC_GROUP_MODES_RC1_INDEPENDENT_VERIFICATION_LEDGER.md", "sha256": "477D8F19C50B39ED10EEFE95A3C93F73897147BB456CF412350960C9C3D24E10"},
+    {"path": "docs/governance/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_DECISION.md", "sha256": "C1FF10672CC98A832932DCBD010DCF280F0D866123280AC68565767F14093E28"},
+    {"path": "docs/engineering/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "32F1A51AC6C82701C2C9E61F08AEC1E804D500D5507BC930A6677B40CD93C541"},
+    {"path": "backend/tests/golden/calculation_slice_4_chapter_7_plate_strength_engine_golden_benchmarks_rc1.json", "sha256": "E6F00A1421751386980321A5AA046A13C706D9D32E42AAC6242F0D89525AC4CD"},
+    {"path": "docs/qa/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_AUTHORITY_LEDGER_RC1.md", "sha256": "7E515FABD6AC3118528F3404CE06456748776054627499EE06C6A0907A782971"},
+    {"path": "docs/governance/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_SELECTION_DECISION.md", "sha256": "0A1E2AEC21C9946B3FAC4A2803FDA43BAE39C85273E77199C0D40DEE0F0CFBB7"},
+    {"path": "docs/engineering/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "0483595B4C8A6BCB844A0A9894E49673F220332F6A64E5D893D3D86DAD05084B"},
+    {"path": "backend/tests/golden/stage_3_6a_symmetric_double_web_splice_golden_benchmarks_rc1.json", "sha256": "D3CF8E452732E1DA187FF2BFCB2AB9CFF7BD30044945552230E3A23518476EDB"},
+    {"path": "docs/qa/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_AUTHORITY_LEDGER_RC1.md", "sha256": "DDFB0FE514123A8D6B0E879759EE89FB7617551640F1CB8CD9347CBEEBDEAD0F"},
+    {"path": "docs/governance/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_DECISION.md", "sha256": "1F4151F9FAB0359B5B455D11265A46C68CBE8C305A7A874628593989871CC716"},
+    {"path": "docs/engineering/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_ENGINEERING_SPECIFICATION_RC2.md", "sha256": "F42A7D0F29C9DB19FB9BEACAE5C6029833E5B17F4FAC7C58E533F46E37D9F864"},
+    {"path": "backend/tests/golden/stage_3_6b_web_splice_resistance_authority_expansion_golden_benchmarks_rc2.json", "sha256": "6A80263CF0A1632F009DC9952665197F4581B31018C2C98D076E36264FA94908"},
+    {"path": "docs/qa/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_AUTHORITY_LEDGER_RC2.md", "sha256": "C3DE28C17FB09181C49F7917DA11A89FE6633E35A59A05CB824C981BA3B7D7B4"},
+    {"path": "docs/governance/STAGE_3_6_WI_WEB_SPLICE_FAMILY_FREEZE_MANIFEST.json", "sha256": "58AA05F545984EAAC0EDED666B4BA086BA05ADE40E59C39D3B7821BFFEB60658"},
+    {"path": "backend/tests/calculation/test_stage_3_6_freeze_manifest.py", "sha256": "7691E2C73A851A08F680F1323FFBD06CF32A145D9DE59E4E36A06FEBB7034847"},
+    {"path": "docs/qa/STAGE_3_6_WI_WEB_SPLICE_FAMILY_FREEZE.md", "sha256": "D1F7FBD2370A03DC5CC7C5B5109D94156E3D1033AC8AA3F6962A469437877486"},
+    {"path": "docs/governance/STAGE_3_7_COLUMN_BASE_SHEAR_FAMILY_FREEZE_MANIFEST.json", "sha256": "8C7CD0238C7A95E54E4B6DC987E4A558AE2910DA80342137C7772B7FCF6EC9AE"},
+    {"path": "backend/tests/calculation/test_stage_3_7_freeze_manifest.py", "sha256": "7DCCD47384DED9EC7331AD8EC6623D393AC66AC982C2DA743526B56F2479945B"},
+    {"path": "docs/qa/STAGE_3_7_COLUMN_BASE_SHEAR_FAMILY_FREEZE.md", "sha256": "3CCFE82D105F098581E02B496FC693025A7642E7DB512D898C12E71ECF339E67"},
+    {"path": "docs/engineering/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_ENGINEERING_SPECIFICATION_RC1.md", "sha256": "117F4C69229045FEAF5C2461FE3FD2639B7E4A869B3B650947E99DE754B36E7F"},
+    {"path": "docs/qa/STAGE_3_2_R2_UNIFIED_WORKSPACE_MEMBER_PROFILE_AUTHORITY_LEDGER_RC1.md", "sha256": "33EDC91FF28FC7C53FF9EBE3331EF7D8A47AD4CFD4177A33FCDDB34BF302A9E8"},
+    {"path": "docs/engineering/STAGE_3_2_R7_ANGLE_BOLT_PATH_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md", "sha256": "0BC40BF8F8F4F27C51E6A21552A67C77D9BC808347E3BB129C9BF6F0CBA4131D"},
+    {"path": "docs/qa/STAGE_3_2_R7_ANGLE_BOLT_PATH_AUTHORITY_LEDGER_RC1.md", "sha256": "C30424776908D0D6343C5D3DCB9E89F1FE25F8D5CBDB51CD9A74A003C79E5262"},
+    {"path": "docs/engineering/FRP_MASTER_CONNECTION_STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_ENGINEERING_CORRECTION_SPECIFICATION_RC1.md", "sha256": "DB3DFA722AA08B44AD95F8D789178699CA8E9BEE5FADB99306867C69E9B8A74C"},
+    {"path": "docs/qa/STAGE_3_2_R14B_REGION_SPECIFIC_MATERIAL_BASIS_AUTHORITY_LEDGER_RC1.md", "sha256": "0FFF79C4B6BFDB0C6DED1F2F551CE421D7E2E684BD75B6B84A0EC3154B87EC05"},
+    {"path": "docs/engineering/COORDINATE_MATERIAL_AXIS_AND_FORCE_CONVENTIONS.md", "sha256": "33B0544545237CABD135FE10A21988AF9D09F08DDE3AC9172EEA3F2AC292522E"},
+    {"path": "docs/engineering/JOINT_GEOMETRY_REFERENCE_AND_ECCENTRICITY_SPECIFICATION.md", "sha256": "E51B928739163D3C3993AD176AA301A8F6253F918CBC31B4E8297CF0E7614FF8"},
+    {"path": "docs/engineering/MATERIAL_AND_FASTENER_SNAPSHOT_SPECIFICATION.md", "sha256": "991DFB4C6327C9F680A29CBB6D434F6AEBD028A3C011C0FB3A16FC1A53017C72"},
+    {"path": "docs/engineering/ENGINEERING_SOURCE_REGISTER.md", "sha256": "D2F45B4EF8006FF471EBA511D976AB80CE6E663B652F2E38B303E52169D92C17"},
+    {"path": "docs/governance/STAGE_2_6B_GROUP_MODE_FRONTEND_FREEZE_CHANGE.md", "sha256": "33FBB01F526D64EAC750C2F4F1C96DB42CD766147BE3FEBD18279AA47EECE6BC"}
+  ],
+  "benchmark_identity": {
+    "stage_4_1a": {"first": "G1_PRODUCT_CONTRACT", "last": "G96_VISUAL_TOPOLOGY_CONTRACT", "count": 96},
+    "calculation_slice_5": {"first": "G1_WEB_HEIGHT", "last": "G52_NO_FRONTEND_PRODUCTION_CHANGE", "count": 52}
+  },
+  "successor_policy": {
+    "requires_new_authority_for": [
+      "Channel Moment Splice",
+      "minor shear",
+      "minor-axis moment",
+      "torsion",
+      "physical prying or bolt-axis tension",
+      "stiffness classification",
+      "rotation capacity",
+      "full-strength classification",
+      "outer-only flange topology",
+      "asymmetric inner-strip allocation"
+    ],
+    "freeze_tag_and_manifest_must_be_preserved": true,
+    "engineering_meaning_change_requires_explicit_fingerprint_transition": true,
+    "successor_head_substitution_for_frozen_object": false
+  },
+  "no_production_change_declaration": {
+    "production_source_changes": 0,
+    "engineering_method_changes": 0,
+    "controlled_engineering_artifact_changes": 0,
+    "dependency_changes": 0,
+    "workflow_changes": 0,
+    "freeze_tag_changes": 0,
+    "governance_and_test_only": true
+  }
+}

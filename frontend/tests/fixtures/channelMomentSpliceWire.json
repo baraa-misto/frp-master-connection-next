@@ -1,0 +1,4894 @@
+{
+  "US_CUSTOMARY": {
+    "request": {
+      "orchestration_contract_version": "4.1B-RC1",
+      "request_id": "stage-4.1b-us_customary",
+      "unit_system": "US_CUSTOMARY",
+      "source_length_unit": "in",
+      "beams_locked_identical": true,
+      "beams_same_orientation": true,
+      "opening_direction": "+T_CH",
+      "beam": {
+        "profile_family": "CHANNEL",
+        "depth": {
+          "value": "8",
+          "unit": "in"
+        },
+        "flange_width": {
+          "value": "4",
+          "unit": "in"
+        },
+        "web_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "flange_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "display_length_each_side": {
+          "value": "18",
+          "unit": "in"
+        },
+        "equal_flange": true,
+        "lipped": false,
+        "back_to_back": false
+      },
+      "beam_end_gap": {
+        "value": "0.5",
+        "unit": "in"
+      },
+      "web_splice_plate": {
+        "length": {
+          "value": "16",
+          "unit": "in"
+        },
+        "height": {
+          "value": "5.5",
+          "unit": "in"
+        },
+        "thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "count": 2,
+        "locked_identical": true
+      },
+      "web_bolt_group": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "vertical_pitch": {
+          "value": "3",
+          "unit": "in"
+        },
+        "longitudinal_gauge": {
+          "value": "3",
+          "unit": "in"
+        },
+        "centroid_offset": {
+          "value": "4",
+          "unit": "in"
+        },
+        "locked_identical_mirror": true
+      },
+      "web_fastener": {
+        "bolt_diameter": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "hole_diameter": {
+          "value": "0.563",
+          "unit": "in"
+        },
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "thread_condition": "EXCLUDED",
+        "nominal_shear_stress": null
+      },
+      "flange_geometry": {
+        "plate_length": {
+          "value": "16",
+          "unit": "in"
+        },
+        "plate_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "inner_plate_width": {
+          "value": "3",
+          "unit": "in"
+        },
+        "transverse_gauge": {
+          "value": "1.5",
+          "unit": "in"
+        },
+        "bolts_per_transverse_line": 2,
+        "longitudinal_pitch": {
+          "value": "3",
+          "unit": "in"
+        },
+        "group_centroid_distance": {
+          "value": "4",
+          "unit": "in"
+        },
+        "outer_plate_count_per_flange": 1,
+        "inner_plate_count_per_flange": 1,
+        "locked_top_bottom_identical": true
+      },
+      "flange_fastener": {
+        "bolt_diameter": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "hole_diameter": {
+          "value": "0.563",
+          "unit": "in"
+        },
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "thread_condition": "EXCLUDED",
+        "nominal_shear_stress": null
+      },
+      "actions": {
+        "axial_force_l": {
+          "value": "20",
+          "unit": "kip"
+        },
+        "major_shear_v": {
+          "value": "-10",
+          "unit": "kip"
+        },
+        "major_moment_t": {
+          "value": "100",
+          "unit": "kip-in"
+        }
+      },
+      "shear_center": {
+        "method": "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+        "explicit_coordinate_t": null,
+        "explicit_provenance": null,
+        "include_rational_comparison": false
+      }
+    },
+    "response": {
+      "api_transport_schema_version": "4.1B-API-RC1",
+      "orchestration_contract_version": "4.1B-RC1",
+      "preview_schema_version": "4.1B-PREVIEW-RC1",
+      "request_id": "stage-4.1b-us_customary",
+      "geometry_status": "VALID",
+      "geometry_invalid_reasons": [],
+      "assembly_status": "NOT_EVALUATED",
+      "ordinary_pass_allowed": false,
+      "resistance_evaluated": false,
+      "design_check_ready": true,
+      "engineering_fingerprint": "eb589c21a8d84375ec6d7ded0b8ac147e0960e411b84adbbbc4e883140153617",
+      "application_fingerprint": "1e38d4c03593f8998687699964e65cb90894690df827f3e05a5736266ccf3cda",
+      "result": {
+        "product_id": "CHANNEL_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+        "contract_version": "4.1B-RC1",
+        "geometry_status": "VALID",
+        "geometry_invalid_reasons": [],
+        "assembly_status": "NOT_EVALUATED",
+        "design_check_ready": true,
+        "slice6_result": {
+          "section_properties": {
+            "channel_centroid_t_absolute": {
+              "value": "1.18333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "in"
+            }
+          },
+          "shear_center": {
+            "method": "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+            "absolute_coordinate_t": {
+              "value": "-1.15625",
+              "unit": "in"
+            },
+            "centroid_to_shear_center": {
+              "value": "2.33958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "in"
+            },
+            "controlling_source_provenance": "PROJECT_CONTROLLED_RATIONAL_THIN_WALL_CHANNEL_GEOMETRY_RC1"
+          },
+          "components": [
+            {
+              "region_id": "TOP_FLANGE",
+              "wrench": {
+                "reference_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "v": {
+                    "value": "3.75",
+                    "unit": "in"
+                  },
+                  "t": {
+                    "value": "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+                    "unit": "in"
+                  }
+                },
+                "force_lvt": {
+                  "l": {
+                    "value": "15.9528023598820058997050147492625368731563421828908554572271386430678466076696165191740412",
+                    "unit": "kip"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip"
+                  },
+                  "t": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "t": {
+                    "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+                    "unit": "kip-in"
+                  }
+                }
+              },
+              "global_minor_moment": {
+                "value": "13.028121927236971484759095378564405113077679449360865290068829891838741396263520157325467",
+                "unit": "kip-in"
+              }
+            },
+            {
+              "region_id": "WEB",
+              "wrench": {
+                "reference_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "t": {
+                    "value": "-0.93333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+                    "unit": "in"
+                  }
+                },
+                "force_lvt": {
+                  "l": {
+                    "value": "9.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+                    "unit": "kip"
+                  },
+                  "v": {
+                    "value": "-10",
+                    "unit": "kip"
+                  },
+                  "t": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment_lvt": {
+                  "l": {
+                    "value": "-14.0625",
+                    "unit": "kip-in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "t": {
+                    "value": "20.2359882005899705014749262536873156342182890855457227138643067846607669616519174041297935",
+                    "unit": "kip-in"
+                  }
+                }
+              },
+              "global_minor_moment": {
+                "value": "-8.71111111111111111111111111111111111111111111111111111111111111111111111111111111111111108",
+                "unit": "kip-in"
+              }
+            },
+            {
+              "region_id": "BOTTOM_FLANGE",
+              "wrench": {
+                "reference_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "v": {
+                    "value": "-3.75",
+                    "unit": "in"
+                  },
+                  "t": {
+                    "value": "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+                    "unit": "in"
+                  }
+                },
+                "force_lvt": {
+                  "l": {
+                    "value": "-5.28613569321533923303834808259587020648967551622418879056047197640117994100294985250737457",
+                    "unit": "kip"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip"
+                  },
+                  "t": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "t": {
+                    "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+                    "unit": "kip-in"
+                  }
+                }
+              },
+              "global_minor_moment": {
+                "value": "-4.31701081612586037364798426745329400196656833824975417895771878072763028515240904621435592",
+                "unit": "kip-in"
+              }
+            }
+          ],
+          "torsion_diagnostics": {
+            "generated_centroidal_torsion": {
+              "value": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "kip-in"
+            },
+            "web_free_torsion": {
+              "value": "-14.0625",
+              "unit": "kip-in"
+            }
+          },
+          "result_fingerprint": "293fdbdd68ab66e806a875347c606c811886b151ca9f0fc29b15dfb3a0c38b99"
+        },
+        "top_flange": {
+          "flange_id": "TOP",
+          "flange_force": {
+            "value": "15.9528023598820058997050147492625368731563421828908554572271386430678466076696165191740412",
+            "unit": "kip"
+          },
+          "flange_local_moment": {
+            "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+            "unit": "kip-in"
+          },
+          "outer_force": {
+            "value": "8.0353982300884955752212389380530973451327433628318584070796460176991150442477876106194689775",
+            "unit": "kip"
+          },
+          "inner_total_force": {
+            "value": "7.9174041297935103244837758112094395280235988200589970501474926253687315634218289085545722225",
+            "unit": "kip"
+          },
+          "exact_force_equilibrium": true,
+          "exact_local_moment_equilibrium": true
+        },
+        "bottom_flange": {
+          "flange_id": "BOTTOM",
+          "flange_force": {
+            "value": "-5.28613569321533923303834808259587020648967551622418879056047197640117994100294985250737457",
+            "unit": "kip"
+          },
+          "flange_local_moment": {
+            "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+            "unit": "kip-in"
+          },
+          "outer_force": {
+            "value": "-2.7020648967551622418879056047197640117994100294985250737463126843657817109144542772861356625",
+            "unit": "kip"
+          },
+          "inner_total_force": {
+            "value": "-2.5840707964601769911504424778761061946902654867256637168141592920353982300884955752212389075",
+            "unit": "kip"
+          },
+          "exact_force_equilibrium": true,
+          "exact_local_moment_equilibrium": true
+        },
+        "web_faces": {
+          "back_normal_force": {
+            "value": "4.666666666666666666666666666666666666666666666666666666666666666666666666666666666666666665",
+            "unit": "kip"
+          },
+          "opening_normal_force": {
+            "value": "4.666666666666666666666666666666666666666666666666666666666666666666666666666666666666666665",
+            "unit": "kip"
+          },
+          "back_major_shear": {
+            "value": "-19.0625",
+            "unit": "kip"
+          },
+          "opening_major_shear": {
+            "value": "9.0625",
+            "unit": "kip"
+          },
+          "web_free_torsion": {
+            "value": "-14.0625",
+            "unit": "kip-in"
+          },
+          "exact_normal_force_recovery": true,
+          "exact_major_shear_recovery": true,
+          "exact_local_major_moment_recovery": true,
+          "exact_free_torsion_recovery": true,
+          "blind_equal_shear_assumption_used": false,
+          "method": "RATIONAL_CHANNEL_WEB_FACE_SHEAR_CENTER_COUPLE_DECOMPOSITION_RC1"
+        },
+        "web_group_demands": [
+          {
+            "group_id": "BEAM_A_WEB_BACK"
+          },
+          {
+            "group_id": "BEAM_A_WEB_OPENING"
+          },
+          {
+            "group_id": "BEAM_B_WEB_BACK"
+          },
+          {
+            "group_id": "BEAM_B_WEB_OPENING"
+          }
+        ],
+        "flange_group_demands": [
+          {
+            "group_id": "BEAM_A_TOP_OUTER"
+          },
+          {
+            "group_id": "BEAM_A_TOP_INNER"
+          },
+          {
+            "group_id": "BEAM_A_BOTTOM_OUTER"
+          },
+          {
+            "group_id": "BEAM_A_BOTTOM_INNER"
+          },
+          {
+            "group_id": "BEAM_B_TOP_OUTER"
+          },
+          {
+            "group_id": "BEAM_B_TOP_INNER"
+          },
+          {
+            "group_id": "BEAM_B_BOTTOM_OUTER"
+          },
+          {
+            "group_id": "BEAM_B_BOTTOM_INNER"
+          }
+        ],
+        "equilibrium": {
+          "whole_connection_six_component_exact": true,
+          "beam_a_b_equal_opposite_complete_wrenches": true
+        },
+        "visualization": {
+          "frame_axes": [
+            "L_CH",
+            "V_CH",
+            "T_CH"
+          ],
+          "joint_reference_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "in"
+            },
+            "v": {
+              "value": "0",
+              "unit": "in"
+            },
+            "t": {
+              "value": "0",
+              "unit": "in"
+            }
+          },
+          "channel_centroid_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "in"
+            },
+            "v": {
+              "value": "0",
+              "unit": "in"
+            },
+            "t": {
+              "value": "1.18333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "in"
+            }
+          },
+          "channel_shear_center_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "in"
+            },
+            "v": {
+              "value": "0",
+              "unit": "in"
+            },
+            "t": {
+              "value": "-1.15625",
+              "unit": "in"
+            }
+          },
+          "beam_end_planes_l": [
+            {
+              "value": "-0.25",
+              "unit": "in"
+            },
+            {
+              "value": "0.25",
+              "unit": "in"
+            }
+          ],
+          "boxes": [
+            {
+              "component_id": "BEAM_A_TOP_FLANGE",
+              "role": "CHANNEL_TOP_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-9.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "18",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "4",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_A_WEB",
+              "role": "CHANNEL_WEB",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-9.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "18",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "7",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_A_BOTTOM_FLANGE",
+              "role": "CHANNEL_BOTTOM_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-9.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "18",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "4",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_B_TOP_FLANGE",
+              "role": "CHANNEL_TOP_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "9.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "18",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "4",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_B_WEB",
+              "role": "CHANNEL_WEB",
+              "center_l_v_t": {
+                "l": {
+                  "value": "9.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "18",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "7",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_B_BOTTOM_FLANGE",
+              "role": "CHANNEL_BOTTOM_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "9.25",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "18",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "4",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BACK_WEB_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_WEB_SPLICE_PLATE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.25",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "OPENING_WEB_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_WEB_SPLICE_PLATE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.75",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.5",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "TOP_OUTER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "4",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "TOP_INNER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_TOP_INNER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "3",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "4",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "component_id": "BOTTOM_INNER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_BOTTOM_INNER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.25",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2",
+                  "unit": "in"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "16",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "0.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "3",
+                  "unit": "in"
+                }
+              }
+            }
+          ],
+          "bolts": [
+            {
+              "bolt_id": "BEAM_A_WEB_B1",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_WEB_B2",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_WEB_B3",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_WEB_B4",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B1",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B2",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B3",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B4",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "0.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "-0.5",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "1.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B1",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B2",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B3",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B4",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B1",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B2",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B3",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B4",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B1",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B2",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B3",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B4",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B1",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B2",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "1.25",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B3",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "2.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B4",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3.75",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-4.5",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "5.5",
+                  "unit": "in"
+                },
+                "v": {
+                  "value": "-3",
+                  "unit": "in"
+                },
+                "t": {
+                  "value": "2.75",
+                  "unit": "in"
+                }
+              }
+            }
+          ],
+          "web_bolt_diameter": {
+            "value": "0.5",
+            "unit": "in"
+          },
+          "web_hole_diameter": {
+            "value": "0.563",
+            "unit": "in"
+          },
+          "flange_bolt_diameter": {
+            "value": "0.5",
+            "unit": "in"
+          },
+          "flange_hole_diameter": {
+            "value": "0.563",
+            "unit": "in"
+          },
+          "material_regions": [
+            {
+              "component_id": "BEAM_A_TOP_FLANGE",
+              "region_id": "BEAM_A_TOP_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BEAM_A_WEB",
+              "region_id": "BEAM_A_WEB",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            },
+            {
+              "component_id": "BEAM_A_BOTTOM_FLANGE",
+              "region_id": "BEAM_A_BOTTOM_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BEAM_B_TOP_FLANGE",
+              "region_id": "BEAM_B_TOP_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BEAM_B_WEB",
+              "region_id": "BEAM_B_WEB",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            },
+            {
+              "component_id": "BEAM_B_BOTTOM_FLANGE",
+              "region_id": "BEAM_B_BOTTOM_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BACK_WEB_SPLICE_PLATE",
+              "region_id": "BACK_WEB_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "-1"
+              ]
+            },
+            {
+              "component_id": "OPENING_WEB_SPLICE_PLATE",
+              "region_id": "OPENING_WEB_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            },
+            {
+              "component_id": "TOP_OUTER_FLANGE_SPLICE_PLATE",
+              "region_id": "TOP_OUTER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "TOP_INNER_FLANGE_SPLICE_PLATE",
+              "region_id": "TOP_INNER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+              "region_id": "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BOTTOM_INNER_FLANGE_SPLICE_PLATE",
+              "region_id": "BOTTOM_INNER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            }
+          ],
+          "action_reference_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "in"
+            },
+            "v": {
+              "value": "0",
+              "unit": "in"
+            },
+            "t": {
+              "value": "1.18333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "in"
+            }
+          },
+          "applied_force_l_v_t": {
+            "l": {
+              "value": "20",
+              "unit": "kip"
+            },
+            "v": {
+              "value": "-10",
+              "unit": "kip"
+            },
+            "t": {
+              "value": "0",
+              "unit": "kip"
+            }
+          },
+          "applied_moment_l_v_t": {
+            "l": {
+              "value": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "kip-in"
+            },
+            "v": {
+              "value": "0",
+              "unit": "kip-in"
+            },
+            "t": {
+              "value": "100",
+              "unit": "kip-in"
+            }
+          },
+          "generated_centroidal_torsion": {
+            "value": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+            "unit": "kip-in"
+          },
+          "xray_inner_components": true
+        },
+        "rational_method_engineering_review_required": true,
+        "connection_element_qualification": "REQUIRED_2_3_2",
+        "moment_connection_stiffness_classification": "NOT_EVALUATED",
+        "moment_rotation_capacity": "NOT_EVALUATED",
+        "full_strength_classification": "NOT_EVALUATED",
+        "warping_connection_response": "NOT_EVALUATED",
+        "disclaimer_id": "CHANNEL_MAJOR_AXIS_MOMENT_SPLICE_RATIONAL_DESIGN_DISCLAIMER_RC1",
+        "disclaimer_text": "The Channel major-axis moment splice uses the project-controlled Calculation Slice 6 Channel reference and complete region-resultant decomposition, a rational back/opening web-face shear-center couple decomposition, rational web/flange face-sublayer transfers, Calculation Slice 4 plate strengths, inherited rational plate-body interaction, and actual unequal two-plane common-bolt shear demands. These connection-detail methods are not prescribed directly by ASCE/SEI 74-23. The engineer of record shall review the section, contact and shear-center idealizations, stiffness compatibility, open-section torsion and warping response, out-of-plane deformation, prying, secondary bolt bending, experimental qualification under Section 2.3.2, and all source-pending fastener properties. Connection stiffness, rotation capacity, and full-strength classification are not evaluated.",
+        "engineering_fingerprint": "eb589c21a8d84375ec6d7ded0b8ac147e0960e411b84adbbbc4e883140153617",
+        "application_fingerprint": "1e38d4c03593f8998687699964e65cb90894690df827f3e05a5736266ccf3cda"
+      }
+    }
+  },
+  "SI": {
+    "request": {
+      "orchestration_contract_version": "4.1B-RC1",
+      "request_id": "stage-4.1b-si",
+      "unit_system": "SI",
+      "source_length_unit": "mm",
+      "beams_locked_identical": true,
+      "beams_same_orientation": true,
+      "opening_direction": "+T_CH",
+      "beam": {
+        "profile_family": "CHANNEL",
+        "depth": {
+          "value": "203.2",
+          "unit": "mm"
+        },
+        "flange_width": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "web_thickness": {
+          "value": "12.7",
+          "unit": "mm"
+        },
+        "flange_thickness": {
+          "value": "12.7",
+          "unit": "mm"
+        },
+        "display_length_each_side": {
+          "value": "457.2",
+          "unit": "mm"
+        },
+        "equal_flange": true,
+        "lipped": false,
+        "back_to_back": false
+      },
+      "beam_end_gap": {
+        "value": "12.7",
+        "unit": "mm"
+      },
+      "web_splice_plate": {
+        "length": {
+          "value": "406.4",
+          "unit": "mm"
+        },
+        "height": {
+          "value": "139.7",
+          "unit": "mm"
+        },
+        "thickness": {
+          "value": "12.7",
+          "unit": "mm"
+        },
+        "count": 2,
+        "locked_identical": true
+      },
+      "web_bolt_group": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "vertical_pitch": {
+          "value": "76.2",
+          "unit": "mm"
+        },
+        "longitudinal_gauge": {
+          "value": "76.2",
+          "unit": "mm"
+        },
+        "centroid_offset": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "locked_identical_mirror": true
+      },
+      "web_fastener": {
+        "bolt_diameter": {
+          "value": "12.7",
+          "unit": "mm"
+        },
+        "hole_diameter": {
+          "value": "14.3002",
+          "unit": "mm"
+        },
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "thread_condition": "EXCLUDED",
+        "nominal_shear_stress": null
+      },
+      "flange_geometry": {
+        "plate_length": {
+          "value": "406.4",
+          "unit": "mm"
+        },
+        "plate_thickness": {
+          "value": "12.7",
+          "unit": "mm"
+        },
+        "inner_plate_width": {
+          "value": "76.2",
+          "unit": "mm"
+        },
+        "transverse_gauge": {
+          "value": "38.1",
+          "unit": "mm"
+        },
+        "bolts_per_transverse_line": 2,
+        "longitudinal_pitch": {
+          "value": "76.2",
+          "unit": "mm"
+        },
+        "group_centroid_distance": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "outer_plate_count_per_flange": 1,
+        "inner_plate_count_per_flange": 1,
+        "locked_top_bottom_identical": true
+      },
+      "flange_fastener": {
+        "bolt_diameter": {
+          "value": "12.7",
+          "unit": "mm"
+        },
+        "hole_diameter": {
+          "value": "14.3002",
+          "unit": "mm"
+        },
+        "source_authority_id": "ASTM_F593_17_GROUP_2_316_316L",
+        "thread_condition": "EXCLUDED",
+        "nominal_shear_stress": null
+      },
+      "actions": {
+        "axial_force_l": {
+          "value": "88.96443230521",
+          "unit": "kN"
+        },
+        "major_shear_v": {
+          "value": "-44.482216152605",
+          "unit": "kN"
+        },
+        "major_moment_t": {
+          "value": "11298.48290276167",
+          "unit": "kN-mm"
+        }
+      },
+      "shear_center": {
+        "method": "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+        "explicit_coordinate_t": null,
+        "explicit_provenance": null,
+        "include_rational_comparison": false
+      }
+    },
+    "response": {
+      "api_transport_schema_version": "4.1B-API-RC1",
+      "orchestration_contract_version": "4.1B-RC1",
+      "preview_schema_version": "4.1B-PREVIEW-RC1",
+      "request_id": "stage-4.1b-si",
+      "geometry_status": "VALID",
+      "geometry_invalid_reasons": [],
+      "assembly_status": "NOT_EVALUATED",
+      "ordinary_pass_allowed": false,
+      "resistance_evaluated": false,
+      "design_check_ready": true,
+      "engineering_fingerprint": "927c5fb5f56c3e2f239db05970aab27562281fdeb901531bbdd6765f4109ff4b",
+      "application_fingerprint": "05550a793714b2f94942ab5840a4f5d52a6e76418a08aac4b43f718c4b3c3c55",
+      "result": {
+        "product_id": "CHANNEL_BEAM_MAJOR_AXIS_MOMENT_SPLICE",
+        "contract_version": "4.1B-RC1",
+        "geometry_status": "VALID",
+        "geometry_invalid_reasons": [],
+        "assembly_status": "NOT_EVALUATED",
+        "design_check_ready": true,
+        "slice6_result": {
+          "section_properties": {
+            "channel_centroid_t_absolute": {
+              "value": "1.18333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "in"
+            }
+          },
+          "shear_center": {
+            "method": "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1",
+            "absolute_coordinate_t": {
+              "value": "-1.15625",
+              "unit": "in"
+            },
+            "centroid_to_shear_center": {
+              "value": "2.33958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "in"
+            },
+            "controlling_source_provenance": "PROJECT_CONTROLLED_RATIONAL_THIN_WALL_CHANNEL_GEOMETRY_RC1"
+          },
+          "components": [
+            {
+              "region_id": "TOP_FLANGE",
+              "wrench": {
+                "reference_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "v": {
+                    "value": "3.75",
+                    "unit": "in"
+                  },
+                  "t": {
+                    "value": "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+                    "unit": "in"
+                  }
+                },
+                "force_lvt": {
+                  "l": {
+                    "value": "15.9528023598820058997050147492625368731563421828908554572271386430678466076696165191740412",
+                    "unit": "kip"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip"
+                  },
+                  "t": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "t": {
+                    "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+                    "unit": "kip-in"
+                  }
+                }
+              },
+              "global_minor_moment": {
+                "value": "13.028121927236971484759095378564405113077679449360865290068829891838741396263520157325467",
+                "unit": "kip-in"
+              }
+            },
+            {
+              "region_id": "WEB",
+              "wrench": {
+                "reference_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "t": {
+                    "value": "-0.93333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+                    "unit": "in"
+                  }
+                },
+                "force_lvt": {
+                  "l": {
+                    "value": "9.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+                    "unit": "kip"
+                  },
+                  "v": {
+                    "value": "-10",
+                    "unit": "kip"
+                  },
+                  "t": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment_lvt": {
+                  "l": {
+                    "value": "-14.0625",
+                    "unit": "kip-in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "t": {
+                    "value": "20.2359882005899705014749262536873156342182890855457227138643067846607669616519174041297935",
+                    "unit": "kip-in"
+                  }
+                }
+              },
+              "global_minor_moment": {
+                "value": "-8.71111111111111111111111111111111111111111111111111111111111111111111111111111111111111108",
+                "unit": "kip-in"
+              }
+            },
+            {
+              "region_id": "BOTTOM_FLANGE",
+              "wrench": {
+                "reference_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "in"
+                  },
+                  "v": {
+                    "value": "-3.75",
+                    "unit": "in"
+                  },
+                  "t": {
+                    "value": "0.81666666666666666666666666666666666666666666666666666666666666666666666666666666666666667",
+                    "unit": "in"
+                  }
+                },
+                "force_lvt": {
+                  "l": {
+                    "value": "-5.28613569321533923303834808259587020648967551622418879056047197640117994100294985250737457",
+                    "unit": "kip"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip"
+                  },
+                  "t": {
+                    "value": "0",
+                    "unit": "kip"
+                  }
+                },
+                "moment_lvt": {
+                  "l": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "v": {
+                    "value": "0",
+                    "unit": "kip-in"
+                  },
+                  "t": {
+                    "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+                    "unit": "kip-in"
+                  }
+                }
+              },
+              "global_minor_moment": {
+                "value": "-4.31701081612586037364798426745329400196656833824975417895771878072763028515240904621435592",
+                "unit": "kip-in"
+              }
+            }
+          ],
+          "torsion_diagnostics": {
+            "generated_centroidal_torsion": {
+              "value": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "kip-in"
+            },
+            "web_free_torsion": {
+              "value": "-14.0625",
+              "unit": "kip-in"
+            }
+          },
+          "result_fingerprint": "293fdbdd68ab66e806a875347c606c811886b151ca9f0fc29b15dfb3a0c38b99"
+        },
+        "top_flange": {
+          "flange_id": "TOP",
+          "flange_force": {
+            "value": "15.9528023598820058997050147492625368731563421828908554572271386430678466076696165191740412",
+            "unit": "kip"
+          },
+          "flange_local_moment": {
+            "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+            "unit": "kip-in"
+          },
+          "outer_force": {
+            "value": "8.0353982300884955752212389380530973451327433628318584070796460176991150442477876106194689775",
+            "unit": "kip"
+          },
+          "inner_total_force": {
+            "value": "7.9174041297935103244837758112094395280235988200589970501474926253687315634218289085545722225",
+            "unit": "kip"
+          },
+          "exact_force_equilibrium": true,
+          "exact_local_moment_equilibrium": true
+        },
+        "bottom_flange": {
+          "flange_id": "BOTTOM",
+          "flange_force": {
+            "value": "-5.28613569321533923303834808259587020648967551622418879056047197640117994100294985250737457",
+            "unit": "kip"
+          },
+          "flange_local_moment": {
+            "value": "0.0589970501474926253687315634218289085545722713864306784660766961651917404129793510324483775",
+            "unit": "kip-in"
+          },
+          "outer_force": {
+            "value": "-2.7020648967551622418879056047197640117994100294985250737463126843657817109144542772861356625",
+            "unit": "kip"
+          },
+          "inner_total_force": {
+            "value": "-2.5840707964601769911504424778761061946902654867256637168141592920353982300884955752212389075",
+            "unit": "kip"
+          },
+          "exact_force_equilibrium": true,
+          "exact_local_moment_equilibrium": true
+        },
+        "web_faces": {
+          "back_normal_force": {
+            "value": "4.666666666666666666666666666666666666666666666666666666666666666666666666666666666666666665",
+            "unit": "kip"
+          },
+          "opening_normal_force": {
+            "value": "4.666666666666666666666666666666666666666666666666666666666666666666666666666666666666666665",
+            "unit": "kip"
+          },
+          "back_major_shear": {
+            "value": "-19.0625",
+            "unit": "kip"
+          },
+          "opening_major_shear": {
+            "value": "9.0625",
+            "unit": "kip"
+          },
+          "web_free_torsion": {
+            "value": "-14.0625",
+            "unit": "kip-in"
+          },
+          "exact_normal_force_recovery": true,
+          "exact_major_shear_recovery": true,
+          "exact_local_major_moment_recovery": true,
+          "exact_free_torsion_recovery": true,
+          "blind_equal_shear_assumption_used": false,
+          "method": "RATIONAL_CHANNEL_WEB_FACE_SHEAR_CENTER_COUPLE_DECOMPOSITION_RC1"
+        },
+        "web_group_demands": [
+          {
+            "group_id": "BEAM_A_WEB_BACK"
+          },
+          {
+            "group_id": "BEAM_A_WEB_OPENING"
+          },
+          {
+            "group_id": "BEAM_B_WEB_BACK"
+          },
+          {
+            "group_id": "BEAM_B_WEB_OPENING"
+          }
+        ],
+        "flange_group_demands": [
+          {
+            "group_id": "BEAM_A_TOP_OUTER"
+          },
+          {
+            "group_id": "BEAM_A_TOP_INNER"
+          },
+          {
+            "group_id": "BEAM_A_BOTTOM_OUTER"
+          },
+          {
+            "group_id": "BEAM_A_BOTTOM_INNER"
+          },
+          {
+            "group_id": "BEAM_B_TOP_OUTER"
+          },
+          {
+            "group_id": "BEAM_B_TOP_INNER"
+          },
+          {
+            "group_id": "BEAM_B_BOTTOM_OUTER"
+          },
+          {
+            "group_id": "BEAM_B_BOTTOM_INNER"
+          }
+        ],
+        "equilibrium": {
+          "whole_connection_six_component_exact": true,
+          "beam_a_b_equal_opposite_complete_wrenches": true
+        },
+        "visualization": {
+          "frame_axes": [
+            "L_CH",
+            "V_CH",
+            "T_CH"
+          ],
+          "joint_reference_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "v": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "t": {
+              "value": "0",
+              "unit": "mm"
+            }
+          },
+          "channel_centroid_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "v": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "t": {
+              "value": "30.056666666666666666666666666666666666666666666666666666666666666666666666666666666666666582",
+              "unit": "mm"
+            }
+          },
+          "channel_shear_center_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "v": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "t": {
+              "value": "-29.36875",
+              "unit": "mm"
+            }
+          },
+          "beam_end_planes_l": [
+            {
+              "value": "-6.35",
+              "unit": "mm"
+            },
+            {
+              "value": "6.35",
+              "unit": "mm"
+            }
+          ],
+          "boxes": [
+            {
+              "component_id": "BEAM_A_TOP_FLANGE",
+              "role": "CHANNEL_TOP_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-234.95",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "457.2",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "101.6",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_A_WEB",
+              "role": "CHANNEL_WEB",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-234.95",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "457.2",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "177.8",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "12.7",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_A_BOTTOM_FLANGE",
+              "role": "CHANNEL_BOTTOM_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-234.95",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "457.2",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "101.6",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_B_TOP_FLANGE",
+              "role": "CHANNEL_TOP_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "234.95",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "457.2",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "101.6",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_B_WEB",
+              "role": "CHANNEL_WEB",
+              "center_l_v_t": {
+                "l": {
+                  "value": "234.95",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "457.2",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "177.8",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "12.7",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BEAM_B_BOTTOM_FLANGE",
+              "role": "CHANNEL_BOTTOM_FLANGE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "234.95",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "457.2",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "101.6",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BACK_WEB_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_WEB_SPLICE_PLATE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-6.35",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "406.4",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "12.7",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "OPENING_WEB_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_WEB_SPLICE_PLATE",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "19.05",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "406.4",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "12.7",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "TOP_OUTER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "107.95",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "406.4",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "101.6",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "TOP_INNER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_TOP_INNER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "82.55",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "406.4",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "76.2",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-107.95",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "406.4",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "101.6",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "component_id": "BOTTOM_INNER_FLANGE_SPLICE_PLATE",
+              "role": "FRP_CHANNEL_FLANGE_SPLICE_PLATE_BOTTOM_INNER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "0",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-82.55",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "50.8",
+                  "unit": "mm"
+                }
+              },
+              "size_l_v_t": {
+                "l": {
+                  "value": "406.4",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "12.7",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "76.2",
+                  "unit": "mm"
+                }
+              }
+            }
+          ],
+          "bolts": [
+            {
+              "bolt_id": "BEAM_A_WEB_B1",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_WEB_B2",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_WEB_B3",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_WEB_B4",
+              "group_id": "BEAM_A_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B1",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B2",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B3",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_WEB_B4",
+              "group_id": "BEAM_B_WEB_BACK",
+              "center_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "6.35",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BACK_WEB_SPLICE_PLATE",
+                "CHANNEL_WEB",
+                "OPENING_WEB_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "-12.7",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "38.1",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "25.4",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B1",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B2",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B3",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_TOP_B4",
+              "group_id": "BEAM_A_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B1",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B2",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B3",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_A_BOTTOM_B4",
+              "group_id": "BEAM_A_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "-63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B1",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B2",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B3",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_TOP_B4",
+              "group_id": "BEAM_B_TOP_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "TOP_OUTER_FLANGE_SPLICE_PLATE",
+                "TOP_CHANNEL_FLANGE",
+                "TOP_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B1",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B2",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "31.75",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B3",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "63.5",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            },
+            {
+              "bolt_id": "BEAM_B_BOTTOM_B4",
+              "group_id": "BEAM_B_BOTTOM_OUTER",
+              "center_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-95.25",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "path_layers": [
+                "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+                "BOTTOM_CHANNEL_FLANGE",
+                "BOTTOM_INNER_FLANGE_SPLICE_PLATE"
+              ],
+              "stack_start_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-114.3",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              },
+              "stack_end_l_v_t": {
+                "l": {
+                  "value": "139.7",
+                  "unit": "mm"
+                },
+                "v": {
+                  "value": "-76.2",
+                  "unit": "mm"
+                },
+                "t": {
+                  "value": "69.85",
+                  "unit": "mm"
+                }
+              }
+            }
+          ],
+          "web_bolt_diameter": {
+            "value": "12.7",
+            "unit": "mm"
+          },
+          "web_hole_diameter": {
+            "value": "14.3002",
+            "unit": "mm"
+          },
+          "flange_bolt_diameter": {
+            "value": "12.7",
+            "unit": "mm"
+          },
+          "flange_hole_diameter": {
+            "value": "14.3002",
+            "unit": "mm"
+          },
+          "material_regions": [
+            {
+              "component_id": "BEAM_A_TOP_FLANGE",
+              "region_id": "BEAM_A_TOP_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BEAM_A_WEB",
+              "region_id": "BEAM_A_WEB",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            },
+            {
+              "component_id": "BEAM_A_BOTTOM_FLANGE",
+              "region_id": "BEAM_A_BOTTOM_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BEAM_B_TOP_FLANGE",
+              "region_id": "BEAM_B_TOP_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BEAM_B_WEB",
+              "region_id": "BEAM_B_WEB",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            },
+            {
+              "component_id": "BEAM_B_BOTTOM_FLANGE",
+              "region_id": "BEAM_B_BOTTOM_FLANGE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "-1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BACK_WEB_SPLICE_PLATE",
+              "region_id": "BACK_WEB_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "-1"
+              ]
+            },
+            {
+              "component_id": "OPENING_WEB_SPLICE_PLATE",
+              "region_id": "OPENING_WEB_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "1",
+                "0"
+              ],
+              "tt_axis": [
+                "0",
+                "0",
+                "1"
+              ]
+            },
+            {
+              "component_id": "TOP_OUTER_FLANGE_SPLICE_PLATE",
+              "region_id": "TOP_OUTER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "TOP_INNER_FLANGE_SPLICE_PLATE",
+              "region_id": "TOP_INNER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+              "region_id": "BOTTOM_OUTER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "-1",
+                "0"
+              ]
+            },
+            {
+              "component_id": "BOTTOM_INNER_FLANGE_SPLICE_PLATE",
+              "region_id": "BOTTOM_INNER_FLANGE_SPLICE_PLATE",
+              "lw_axis": [
+                "1",
+                "0",
+                "0"
+              ],
+              "cw_axis": [
+                "0",
+                "0",
+                "1"
+              ],
+              "tt_axis": [
+                "0",
+                "1",
+                "0"
+              ]
+            }
+          ],
+          "action_reference_l_v_t": {
+            "l": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "v": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "t": {
+              "value": "30.056666666666666666666666666666666666666666666666666666666666666666666666666666666666666582",
+              "unit": "mm"
+            }
+          },
+          "applied_force_l_v_t": {
+            "l": {
+              "value": "88.96443230521",
+              "unit": "kN"
+            },
+            "v": {
+              "value": "-44.482216152605",
+              "unit": "kN"
+            },
+            "t": {
+              "value": "0",
+              "unit": "kN"
+            }
+          },
+          "applied_moment_l_v_t": {
+            "l": {
+              "value": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "kip-in"
+            },
+            "v": {
+              "value": "0",
+              "unit": "kN-mm"
+            },
+            "t": {
+              "value": "11298.48290276167",
+              "unit": "kN-mm"
+            }
+          },
+          "generated_centroidal_torsion": {
+            "value": "-23.3958333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+            "unit": "kip-in"
+          },
+          "xray_inner_components": true
+        },
+        "rational_method_engineering_review_required": true,
+        "connection_element_qualification": "REQUIRED_2_3_2",
+        "moment_connection_stiffness_classification": "NOT_EVALUATED",
+        "moment_rotation_capacity": "NOT_EVALUATED",
+        "full_strength_classification": "NOT_EVALUATED",
+        "warping_connection_response": "NOT_EVALUATED",
+        "disclaimer_id": "CHANNEL_MAJOR_AXIS_MOMENT_SPLICE_RATIONAL_DESIGN_DISCLAIMER_RC1",
+        "disclaimer_text": "The Channel major-axis moment splice uses the project-controlled Calculation Slice 6 Channel reference and complete region-resultant decomposition, a rational back/opening web-face shear-center couple decomposition, rational web/flange face-sublayer transfers, Calculation Slice 4 plate strengths, inherited rational plate-body interaction, and actual unequal two-plane common-bolt shear demands. These connection-detail methods are not prescribed directly by ASCE/SEI 74-23. The engineer of record shall review the section, contact and shear-center idealizations, stiffness compatibility, open-section torsion and warping response, out-of-plane deformation, prying, secondary bolt bending, experimental qualification under Section 2.3.2, and all source-pending fastener properties. Connection stiffness, rotation capacity, and full-strength classification are not evaluated.",
+        "engineering_fingerprint": "927c5fb5f56c3e2f239db05970aab27562281fdeb901531bbdd6765f4109ff4b",
+        "application_fingerprint": "05550a793714b2f94942ab5840a4f5d52a6e76418a08aac4b43f718c4b3c3c55"
+      }
+    }
+  }
+}

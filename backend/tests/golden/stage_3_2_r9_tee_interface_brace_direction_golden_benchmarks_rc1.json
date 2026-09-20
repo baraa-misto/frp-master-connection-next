@@ -1,0 +1,150 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_STAGE_3_2_R9_TEE_INTERFACE_BRACE_DIRECTION_GOLDEN_BENCHMARKS_RC1",
+  "version": "RC1",
+  "authority": "Stage 3.2-R9 geometry/orchestration and presentation semantics only; no new resistance values.",
+  "decimal_policy": "Engineering numeric inputs are exact decimal strings. Inclination trigonometry reuses the deterministic R5 authority.",
+  "benchmarks": [
+    {
+      "id": "R9_I1_STEM_2X1_FLANGE_2X2",
+      "description": "Independent physical groups with two Stem bolts and four Flange bolts.",
+      "stem": {
+        "rows": 2,
+        "bolts_per_row": 1,
+        "expected_total_bolts": 2
+      },
+      "flange": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "expected_total_bolts": 4
+      },
+      "expected": {
+        "preview_geometry_can_be_valid_when_finite_bounds_pass": true,
+        "bolt_count_equality_required": false,
+        "stem_edit_mutates_flange_geometry": false,
+        "flange_edit_mutates_stem_geometry": false
+      }
+    },
+    {
+      "id": "R9_I2_STEM_1X2_FLANGE_2X2",
+      "description": "Geometry supports a one-row two-bolt Stem group independently of the four-bolt Flange group; calculation applicability remains separate.",
+      "stem": {
+        "rows": 1,
+        "bolts_per_row": 2,
+        "expected_total_bolts": 2
+      },
+      "flange": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "expected_total_bolts": 4
+      },
+      "expected": {
+        "geometry_identity_independent": true,
+        "new_multirow_distribution_authorized": false,
+        "unsupported_method_must_fail_closed": true
+      }
+    },
+    {
+      "id": "R9_D1_ZERO_INCLINATION_BACKWARD_COMPATIBILITY",
+      "brace_inclination_degrees": "0",
+      "expected": {
+        "legacy_geometry_identity_preserved": true,
+        "legacy_controlled_fingerprints_preserved": true,
+        "default_omitted_equals_explicit_zero": true
+      }
+    },
+    {
+      "id": "R9_D2_POSITIVE_30_DEGREES",
+      "brace_inclination_degrees": "30",
+      "deterministic_trig": {
+        "cos": "0.8660254037844386",
+        "sin": "0.5"
+      },
+      "expected_longitudinal_basis": {
+        "L0_coefficient": "0.8660254037844386",
+        "U0_coefficient": "0.5"
+      },
+      "expected": {
+        "positive_slopes_toward_canonical_up": true,
+        "tee_support_rotation_changes": false,
+        "interface_B_geometry_changes": false
+      }
+    },
+    {
+      "id": "R9_D3_NEGATIVE_30_DEGREES",
+      "brace_inclination_degrees": "-30",
+      "deterministic_trig": {
+        "cos": "0.8660254037844386",
+        "sin": "-0.5"
+      },
+      "expected_longitudinal_basis": {
+        "L0_coefficient": "0.8660254037844386",
+        "U0_coefficient": "-0.5"
+      },
+      "expected": {
+        "negative_slopes_opposite_canonical_up": true,
+        "tee_support_rotation_changes": false,
+        "interface_B_geometry_changes": false
+      }
+    },
+    {
+      "id": "R9_D4_ARBITRARY_27_5_DEGREES",
+      "brace_inclination_degrees": "27.5",
+      "expected": {
+        "accepted_numeric_input": true,
+        "preset_only_control": false,
+        "deterministic_geometry": true,
+        "nonzero_inclination_identity": true
+      }
+    },
+    {
+      "id": "R9_D5_INCLINATION_DOMAIN",
+      "expected": {
+        "minus_90_accepted_subject_to_geometry": true,
+        "plus_90_accepted_subject_to_geometry": true,
+        "below_minus_90_rejected": true,
+        "above_plus_90_rejected": true
+      }
+    },
+    {
+      "id": "R9_H1_SCHEMATIC_FASTENER_PRESENTATION",
+      "presentation_only": true,
+      "ratios_to_nominal_bolt_diameter": {
+        "head_across_flats": "1.50",
+        "head_height": "0.625",
+        "nut_across_flats": "1.50",
+        "nut_thickness": "0.875"
+      },
+      "expected": {
+        "solid_shank": true,
+        "one_head_per_displayed_bolt": true,
+        "one_nut_per_displayed_bolt": true,
+        "head_and_nut_on_opposite_stack_sides": true,
+        "hardware_axis_matches_bolt_axis": true,
+        "presentation_ratios_enter_engineering_fingerprint": false,
+        "washer_geometry_must_use_existing_authority": true
+      }
+    },
+    {
+      "id": "R9_X1_COMBINED_ANGLE_30_INDEPENDENT_GROUPS",
+      "description": "Cross-feature acceptance identity for a valid Angle brace at +30 degrees with two Stem bolts and four Flange bolts.",
+      "connected_profile": "ANGLE",
+      "brace_inclination_degrees": "30",
+      "stem": {
+        "rows": 2,
+        "bolts_per_row": 1,
+        "expected_total_bolts": 2
+      },
+      "flange": {
+        "rows": 2,
+        "bolts_per_row": 2,
+        "expected_total_bolts": 4
+      },
+      "expected": {
+        "groups_independent": true,
+        "brace_and_interface_A_follow_inclination": true,
+        "tee_support_and_interface_B_remain_fixed": true,
+        "complete_hardware_presentation_on_both_interfaces": true
+      }
+    }
+  ]
+}

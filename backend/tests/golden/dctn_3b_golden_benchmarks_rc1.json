@@ -1,0 +1,790 @@
+{
+  "schema_version": "frp-master-connection-dctn3b-golden-rc1",
+  "baseline": {
+    "commit": "dadd0b732074a6a13243b08ba43d82ba3639b030",
+    "count": 137,
+    "tags": 18
+  },
+  "owner_approval": {
+    "date": "2026-09-14",
+    "exact_text": "Approved: DCTN-3B shall use Channel-relative chord-station and member-end-above-lower-web placement with explicit versioned migration; stable P/Qp/Qq storage with dynamic major/minor shear labels and equal-axis p/q labels; exact three-component force/moment demand transport while preserving the current P-only response exactly; fail-closed automatic transverse response unless a server-trusted complete response authority is bound; and the scoped DCTN UI/result/status cleanup described in the DCTN-3B candidate."
+  },
+  "contract": {
+    "historical": "DCTN-2-RC1",
+    "current": "DCTN-3B-RC1",
+    "route": "double-channel-truss-node"
+  },
+  "source_identity": {
+    "dctn3a_audit": "EBE421602923E621BF94C8659AF7B29A4253660B16AAAADC4C68951EE99544D8",
+    "dctn3a_evidence": "E082A0A65D01EA925783E7A805C77FB88E1F3182569D0762E580E73480AFEA43",
+    "dctn3a_successor_candidate": "8C20F2EB50E47198B64B05E387B61B417D162F642315F7C60DE67EAF83F2DFA2"
+  },
+  "positive_cases": [
+    {
+      "id": "P01_D12_RELATIVE_Z",
+      "kind": "placement",
+      "input": {
+        "D": "12",
+        "tf": "0.375",
+        "h": "0.625"
+      },
+      "expected": {
+        "z": "-5"
+      }
+    },
+    {
+      "id": "P02_D10_RELATIVE_Z",
+      "kind": "placement",
+      "input": {
+        "D": "10",
+        "tf": "0.375",
+        "h": "0.625"
+      },
+      "expected": {
+        "z": "-4"
+      }
+    },
+    {
+      "id": "P03_D8_RELATIVE_Z",
+      "kind": "placement",
+      "input": {
+        "D": "8",
+        "tf": "0.375",
+        "h": "0.625"
+      },
+      "expected": {
+        "z": "-3"
+      }
+    },
+    {
+      "id": "P04_D4_RELATIVE_Z",
+      "kind": "placement",
+      "input": {
+        "D": "4",
+        "tf": "0.375",
+        "h": "0.625"
+      },
+      "expected": {
+        "z": "-1",
+        "native_geometry": "INVALID_EXPECTED_FROM_INTEGRATION"
+      }
+    },
+    {
+      "id": "P05_INVERSE_H_D12",
+      "kind": "migration",
+      "input": {
+        "D": "12",
+        "tf": "0.375",
+        "start_z": "-5"
+      },
+      "expected": {
+        "h": "0.625"
+      }
+    },
+    {
+      "id": "P06_LEGACY_MIDGAP_MIGRATION",
+      "kind": "migration",
+      "input": {
+        "start_x": "16",
+        "start_y": "0",
+        "start_z": "-5",
+        "D": "12",
+        "tf": "0.375"
+      },
+      "expected": {
+        "s": "16",
+        "h": "0.625",
+        "migratable": true
+      }
+    },
+    {
+      "id": "P07_TRANSLATED_NODE_DATUM",
+      "kind": "placement",
+      "input": {
+        "O": [
+          "10",
+          "0",
+          "2"
+        ],
+        "s": "-16",
+        "D": "12",
+        "tf": "0.375",
+        "h": "0.625"
+      },
+      "expected": {
+        "A": [
+          "-6",
+          "0",
+          "-3"
+        ]
+      }
+    },
+    {
+      "id": "P08_VERTICAL_P",
+      "kind": "force",
+      "input": {
+        "basis": "V",
+        "P": "10",
+        "Qp": "0",
+        "Qq": "0"
+      },
+      "expected": {
+        "F": [
+          "0",
+          "0",
+          "10"
+        ]
+      }
+    },
+    {
+      "id": "P09_VERTICAL_QP",
+      "kind": "force",
+      "input": {
+        "basis": "V",
+        "P": "0",
+        "Qp": "2",
+        "Qq": "0"
+      },
+      "expected": {
+        "F": [
+          "2",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "P10_VERTICAL_QQ",
+      "kind": "force",
+      "input": {
+        "basis": "V",
+        "P": "0",
+        "Qp": "0",
+        "Qq": "3"
+      },
+      "expected": {
+        "F": [
+          "0",
+          "3",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "P11_VERTICAL_COMBINED",
+      "kind": "force",
+      "input": {
+        "basis": "V",
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3"
+      },
+      "expected": {
+        "F": [
+          "2",
+          "3",
+          "10"
+        ]
+      }
+    },
+    {
+      "id": "P12_RIGHT_345_COMBINED",
+      "kind": "force",
+      "input": {
+        "u": [
+          "3/5",
+          "0",
+          "4/5"
+        ],
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3"
+      },
+      "expected": {
+        "F": [
+          "38/5",
+          "3",
+          "34/5"
+        ]
+      }
+    },
+    {
+      "id": "P13_LEFT_345_COMBINED",
+      "kind": "force",
+      "input": {
+        "u": [
+          "-3/5",
+          "0",
+          "4/5"
+        ],
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3"
+      },
+      "expected": {
+        "F": [
+          "-22/5",
+          "3",
+          "46/5"
+        ]
+      }
+    },
+    {
+      "id": "P14_RIGHT_ELL3_MOMENT",
+      "kind": "transport",
+      "input": {
+        "u": [
+          "3/5",
+          "0",
+          "4/5"
+        ],
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3",
+        "ell": "3"
+      },
+      "expected": {
+        "M": [
+          "36/5",
+          "-6",
+          "-27/5"
+        ]
+      }
+    },
+    {
+      "id": "P15_LEFT_ELL3_MOMENT",
+      "kind": "transport",
+      "input": {
+        "u": [
+          "-3/5",
+          "0",
+          "4/5"
+        ],
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3",
+        "ell": "3"
+      },
+      "expected": {
+        "M": [
+          "36/5",
+          "-6",
+          "27/5"
+        ]
+      }
+    },
+    {
+      "id": "P16_VERTICAL_ELL3_MOMENT",
+      "kind": "transport",
+      "input": {
+        "basis": "V",
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3",
+        "ell": "3"
+      },
+      "expected": {
+        "M": [
+          "9",
+          "-6",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "P17_P_ONLY_DISPATCH",
+      "kind": "response",
+      "input": {
+        "P": "10",
+        "Qp": "0",
+        "Qq": "0"
+      },
+      "expected": {
+        "branch": "HISTORICAL_DCTN2_AXIAL"
+      }
+    },
+    {
+      "id": "P18_QP_FAIL_CLOSED",
+      "kind": "response",
+      "input": {
+        "P": "0",
+        "Qp": "2",
+        "Qq": "0"
+      },
+      "expected": {
+        "demand": "CALCULATED",
+        "response": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P19_QQ_FAIL_CLOSED",
+      "kind": "response",
+      "input": {
+        "P": "0",
+        "Qp": "0",
+        "Qq": "2"
+      },
+      "expected": {
+        "demand": "CALCULATED",
+        "response": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P20_COMBINED_FAIL_CLOSED",
+      "kind": "response",
+      "input": {
+        "P": "10",
+        "Qp": "2",
+        "Qq": "3"
+      },
+      "expected": {
+        "demand": "CALCULATED",
+        "response": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P21_WI_MAJOR_MINOR",
+      "kind": "axis_label",
+      "input": {
+        "form": "W_I"
+      },
+      "expected": {
+        "major_component": "Qq",
+        "minor_component": "Qp"
+      }
+    },
+    {
+      "id": "P22_RHS_4x6_MAJOR_MINOR",
+      "kind": "axis_label",
+      "input": {
+        "form": "RHS",
+        "b": "4",
+        "d": "6",
+        "t": "3/8"
+      },
+      "expected": {
+        "Ip": "33597/1024",
+        "Iq": "17389/1024",
+        "major_component": "Qq",
+        "minor_component": "Qp"
+      }
+    },
+    {
+      "id": "P23_RHS_6x4_MAJOR_MINOR",
+      "kind": "axis_label",
+      "input": {
+        "form": "RHS",
+        "b": "6",
+        "d": "4",
+        "t": "3/8"
+      },
+      "expected": {
+        "Ip": "17389/1024",
+        "Iq": "33597/1024",
+        "major_component": "Qp",
+        "minor_component": "Qq"
+      }
+    },
+    {
+      "id": "P24_RHS_4x4_EQUAL",
+      "kind": "axis_label",
+      "input": {
+        "form": "RHS",
+        "b": "4",
+        "d": "4",
+        "t": "3/8"
+      },
+      "expected": {
+        "Ip": "12325/1024",
+        "Iq": "12325/1024",
+        "labels": [
+          "Shear p (equal axes)",
+          "Shear q (equal axes)"
+        ]
+      }
+    },
+    {
+      "id": "P25_SRS_4x6_MAJOR_MINOR",
+      "kind": "axis_label",
+      "input": {
+        "form": "SRS",
+        "b": "4",
+        "d": "6"
+      },
+      "expected": {
+        "Ip": "72",
+        "Iq": "32",
+        "major_component": "Qq",
+        "minor_component": "Qp"
+      }
+    },
+    {
+      "id": "P26_SRS_6x4_MAJOR_MINOR",
+      "kind": "axis_label",
+      "input": {
+        "form": "SRS",
+        "b": "6",
+        "d": "4"
+      },
+      "expected": {
+        "Ip": "32",
+        "Iq": "72",
+        "major_component": "Qp",
+        "minor_component": "Qq"
+      }
+    },
+    {
+      "id": "P27_SRS_4x4_EQUAL",
+      "kind": "axis_label",
+      "input": {
+        "form": "SRS",
+        "b": "4",
+        "d": "4"
+      },
+      "expected": {
+        "Ip": "64/3",
+        "Iq": "64/3",
+        "labels": [
+          "Shear p (equal axes)",
+          "Shear q (equal axes)"
+        ]
+      }
+    },
+    {
+      "id": "P28_AXIAL_3ROW_PRESERVED",
+      "kind": "legacy",
+      "expected": {
+        "fractions": [
+          "2/5",
+          "1/5",
+          "2/5"
+        ],
+        "solver": "HISTORICAL_AXIAL_NOT_SLICE8"
+      }
+    },
+    {
+      "id": "P29_RELATIVE_UI_FIELDS",
+      "kind": "ui",
+      "expected": {
+        "editable": [
+          "chord_station",
+          "end_center_above_lower_web"
+        ],
+        "derived": [
+          "global_start_x",
+          "global_start_y",
+          "global_start_z"
+        ]
+      }
+    },
+    {
+      "id": "P30_BOLT_ROW_LABELS",
+      "kind": "ui",
+      "expected": {
+        "rows_label": "Bolt rows along member axis",
+        "first_label": "First bolt row from member end"
+      }
+    },
+    {
+      "id": "P31_STATUS_SEPARATION",
+      "kind": "ui",
+      "expected": {
+        "statuses": [
+          "geometry",
+          "demand",
+          "response",
+          "qualification",
+          "design"
+        ]
+      }
+    },
+    {
+      "id": "P32_SELECTED_UNIT_EXACT_TRACE",
+      "kind": "ui",
+      "expected": {
+        "normal_cards": "SELECTED_UNIT_FORMATTER",
+        "exact_trace": true
+      }
+    },
+    {
+      "id": "P33_SECTION_SPECIFIC_FIELDS",
+      "kind": "ui",
+      "expected": {
+        "RHS": [
+          "gap_depth",
+          "width",
+          "wall_thickness"
+        ],
+        "SRS": [
+          "gap_depth",
+          "width"
+        ],
+        "W_I": [
+          "depth",
+          "flange_width",
+          "web_thickness",
+          "flange_thickness",
+          "wi_offset"
+        ]
+      }
+    },
+    {
+      "id": "P34_ADVANCED_SOURCE_CONTROLS",
+      "kind": "ui",
+      "expected": {
+        "collapsible": "Engineering qualification / source authority",
+        "visible_coverage_summary": true
+      }
+    },
+    {
+      "id": "P35_INVENTORY_UNCHANGED",
+      "kind": "inventory",
+      "expected": {
+        "routes": 17,
+        "connector_bodies": 39,
+        "no_body_routes": 4,
+        "workspaces": 16,
+        "cme3_selectors": 13
+      }
+    },
+    {
+      "id": "P36_TRUSTED_RESPONSE_EMPTY_REGISTRY",
+      "kind": "source",
+      "expected": {
+        "production_registry": "EMPTY",
+        "public_text_cannot_activate": true
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "N01_LEGACY_NONZERO_Y",
+      "expected_status": "DCTN_LEGACY_PLACEMENT_NOT_MIGRATABLE"
+    },
+    {
+      "id": "N02_MIXED_GLOBAL_RELATIVE_PLACEMENT",
+      "expected_status": "DCTN_PLACEMENT_CONTRACT_CONFLICT"
+    },
+    {
+      "id": "N03_DCTN3_GLOBAL_START_FIELDS",
+      "expected_status": "DCTN_PLACEMENT_CONTRACT_CONFLICT"
+    },
+    {
+      "id": "N04_UNKNOWN_PLACEMENT_DATUM",
+      "expected_status": "DCTN_PLACEMENT_DATUM_NOT_SUPPORTED"
+    },
+    {
+      "id": "N05_NONFINITE_RELATIVE_COORDINATE",
+      "expected_status": "INVALID_INPUT"
+    },
+    {
+      "id": "N06_CLIENT_DIRECTION_VECTOR_INJECTION",
+      "expected_status": "DCTN_DIRECTION_COMPONENTS_NOT_ACCEPTED"
+    },
+    {
+      "id": "N07_FREE_MOMENT_INPUT",
+      "expected_status": "DCTN_FREE_MOMENT_INPUT_NOT_SUPPORTED"
+    },
+    {
+      "id": "N08_TRANSVERSE_HALF_SHARE_ATTEMPT",
+      "expected_status": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N09_TRANSVERSE_AXIAL_ROW_FRACTION_ATTEMPT",
+      "expected_status": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N10_PUBLIC_TEXT_ACTIVATES_RESPONSE",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_NOT_BOUND"
+    },
+    {
+      "id": "N11_TRUSTED_RESPONSE_GEOMETRY_MISMATCH",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_BINDING_MISMATCH"
+    },
+    {
+      "id": "N12_TRUSTED_RESPONSE_ACTION_MISMATCH",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_BINDING_MISMATCH"
+    },
+    {
+      "id": "N13_TRUSTED_RESPONSE_SIGN_MISMATCH",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_BINDING_MISMATCH"
+    },
+    {
+      "id": "N14_TRUSTED_RESPONSE_HARDWARE_MISMATCH",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_BINDING_MISMATCH"
+    },
+    {
+      "id": "N15_TRUSTED_RESPONSE_MISSING_SHAFT_COVERAGE",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_COVERAGE_INVALID"
+    },
+    {
+      "id": "N16_TRUSTED_RESPONSE_FORCE_CLOSURE_FAIL",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_EQUILIBRIUM_INVALID"
+    },
+    {
+      "id": "N17_TRUSTED_RESPONSE_MOMENT_CLOSURE_FAIL",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_EQUILIBRIUM_INVALID"
+    },
+    {
+      "id": "N18_TRUSTED_RESPONSE_DUPLICATE_SHAFT",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_COVERAGE_INVALID"
+    },
+    {
+      "id": "N19_NEGATIVE_CONTACT_PRESSURE",
+      "expected_status": "DCTN_TRUSTED_RESPONSE_CONTACT_INVALID"
+    },
+    {
+      "id": "N20_MAJOR_MINOR_PHYSICAL_SWAP_ON_DIMENSION_CHANGE",
+      "expected_status": "DCTN_ACTION_COMPONENT_IDENTITY_CHANGED"
+    },
+    {
+      "id": "N21_EQUAL_AXES_MAJOR_LABEL",
+      "expected_status": "DCTN_MAJOR_MINOR_AXIS_NOT_UNIQUE"
+    },
+    {
+      "id": "N22_D4_RELATIVE_GEOMETRY",
+      "expected_status": "INVALID_GEOMETRY"
+    },
+    {
+      "id": "N23_05625_HOLE_SUBSTITUTION",
+      "expected_status": "DCTN_STARTUP_HOLE_DIAMETER_MISMATCH"
+    },
+    {
+      "id": "N24_TRANSVERSE_UNQUALIFIED_PASS",
+      "expected_status": "ENGINEERING_REVIEW_REQUIRED"
+    },
+    {
+      "id": "N25_UNRESOLVED_TRANSVERSE_REPORTED_ZERO",
+      "expected_status": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N26_SLICE8_USED_AS_CHANNEL_SHARE",
+      "expected_status": "DCTN_TRANSVERSE_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N27_SLICE8_REPLACES_P_ONLY_3ROW",
+      "expected_status": "DCTN_P_ONLY_PARENT_RESPONSE_MISMATCH"
+    },
+    {
+      "id": "N28_DCTN_CONNECTOR_BODY_SELECTOR",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"
+    },
+    {
+      "id": "N29_ROUTE_COUNT_CHANGED",
+      "expected_status": "DCTN_SUCCESSOR_INVENTORY_MISMATCH"
+    },
+    {
+      "id": "N30_DISPLAY_ROUNDING_FEEDS_CALCULATION",
+      "expected_status": "DCTN_PRESENTATION_NOT_ENGINEERING_AUTHORITY"
+    },
+    {
+      "id": "N31_EXACT_TRACE_REMOVED",
+      "expected_status": "DCTN_EXACT_TRACE_REQUIRED"
+    },
+    {
+      "id": "N32_INVALID_EDIT_STALE_ARROWS_VISIBLE",
+      "expected_status": "DCTN_STALE_PRESENTATION_INVALID"
+    },
+    {
+      "id": "N33_INVALID_EDIT_DESIGN_ENABLED",
+      "expected_status": "DCTN_STALE_PRESENTATION_INVALID"
+    },
+    {
+      "id": "N34_SOURCE_DETAILS_COLLAPSED_WITHOUT_SUMMARY",
+      "expected_status": "DCTN_VISIBLE_COVERAGE_SUMMARY_REQUIRED"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "text": "DCTN-3B relative placement stores s and h; global START is derived."
+    },
+    {
+      "id": "I02",
+      "text": "Changing Channel depth preserves s and h and reruns all geometry/hardware validators."
+    },
+    {
+      "id": "I03",
+      "text": "The lower usable-web datum is placement geometry only and never an ASCE free edge or Channel centroid/shear center."
+    },
+    {
+      "id": "I04",
+      "text": "DCTN-2 historical payloads are never silently reinterpreted as DCTN-3B."
+    },
+    {
+      "id": "I05",
+      "text": "Nonzero-Y legacy placement is never silently flattened to the mid-gap."
+    },
+    {
+      "id": "I06",
+      "text": "Canonical physical action storage is P/Qp/Qq, independent of changing major/minor labels."
+    },
+    {
+      "id": "I07",
+      "text": "u,p,q remain right-handed and q is the DCTN cross-gap +Y direction."
+    },
+    {
+      "id": "I08",
+      "text": "Exact generated moments from P/Qp/Qq transport are retained."
+    },
+    {
+      "id": "I09",
+      "text": "Qp=Qq=0 dispatches the historical DCTN-2 axial response exactly."
+    },
+    {
+      "id": "I10",
+      "text": "Any nonzero Qp or Qq cannot receive automatic DCTN transverse response without trusted authority."
+    },
+    {
+      "id": "I11",
+      "text": "An unresolved transverse response is never serialized or displayed as zero."
+    },
+    {
+      "id": "I12",
+      "text": "Slice 8 cannot determine Channel sharing and cannot replace historical axial row fractions."
+    },
+    {
+      "id": "I13",
+      "text": "Trusted response is server-bound to exact geometry/actions/material/hardware/source/version and cannot be activated by user text."
+    },
+    {
+      "id": "I14",
+      "text": "A response validator proves closure/coverage but does not solve unknown reactions."
+    },
+    {
+      "id": "I15",
+      "text": "Equal-axis RHS/SRS displays p/q labels and does not invent a major axis."
+    },
+    {
+      "id": "I16",
+      "text": "Changing rectangular proportions may change major/minor labels but never silently swaps stored Qp/Qq."
+    },
+    {
+      "id": "I17",
+      "text": "Normal result formatting is presentation-only; exact native values remain in engineering trace."
+    },
+    {
+      "id": "I18",
+      "text": "Invalid current geometry uses LAST VALID presentation, hides stale action arrows and disables current design."
+    },
+    {
+      "id": "I19",
+      "text": "DCTN remains a no-body route and all C2/CME-3 body-provider isolation is preserved."
+    },
+    {
+      "id": "I20",
+      "text": "No route/body/workspace/selector inventory count changes in DCTN-3B."
+    },
+    {
+      "id": "I21",
+      "text": "All pre-DCTN routes and current DCTN-2 P-only parent responses remain exact per native unit path."
+    },
+    {
+      "id": "I22",
+      "text": "A numerical supported failure still outranks unresolved response/source qualification."
+    }
+  ]
+}

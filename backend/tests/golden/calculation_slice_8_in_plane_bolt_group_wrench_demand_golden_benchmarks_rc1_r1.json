@@ -1,0 +1,761 @@
+{
+  "artifact": "FRP_MASTER_CONNECTION_CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_GOLDEN_BENCHMARKS_RC1_R1",
+  "version": "RC1-R1",
+  "contract": "CALCULATION_SLICE_8_RC1",
+  "method": "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1",
+  "numeric_authority": {
+    "mechanics": "EXACT_RATIONAL_FROM_FINITE_DECIMAL_INPUTS",
+    "decimal_projection": {
+      "precision": 80,
+      "rounding": "ROUND_HALF_EVEN"
+    },
+    "binary_float": false,
+    "epsilon_tolerance": false,
+    "residual_redistribution": false
+  },
+  "benchmarks": [
+    {
+      "id": "G1_CONTRACT",
+      "expected": {
+        "contract": "CALCULATION_SLICE_8_RC1",
+        "method": "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1"
+      }
+    },
+    {
+      "id": "G2_PURPOSE",
+      "expected": {
+        "independent_in_plane_free_moment_supported": true,
+        "stage25a_mutated": false
+      }
+    },
+    {
+      "id": "G3_ASSUMPTION",
+      "expected": {
+        "bolt_in_plane_stiffness": "EQUAL",
+        "nonlinear_clearance": false,
+        "slip_critical_stiffness": false
+      }
+    },
+    {
+      "id": "G4_NUMERIC_AUTHORITY",
+      "expected": {
+        "mechanics": "EXACT_RATIONAL",
+        "decimal_projection_precision": 80,
+        "rounding": "ROUND_HALF_EVEN",
+        "binary_float": false
+      }
+    },
+    {
+      "id": "G5_DEFAULT_COORDINATES",
+      "expected": {
+        "A_B_in": [
+          [
+            "-1.5",
+            "-0.75"
+          ],
+          [
+            "1.5",
+            "-0.75"
+          ],
+          [
+            "-1.5",
+            "0.75"
+          ],
+          [
+            "1.5",
+            "0.75"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "G6_DEFAULT_CENTROID",
+      "expected": {
+        "A_exact": "0",
+        "B_exact": "0"
+      }
+    },
+    {
+      "id": "G7_DEFAULT_DELTAS",
+      "expected": {
+        "A_B_exact": [
+          [
+            "-3/2",
+            "-3/4"
+          ],
+          [
+            "3/2",
+            "-3/4"
+          ],
+          [
+            "-3/2",
+            "3/4"
+          ],
+          [
+            "3/2",
+            "3/4"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "G8_DEFAULT_J",
+      "expected": {
+        "exact": "45/4",
+        "decimal80": "11.25"
+      }
+    },
+    {
+      "id": "G9_WRENCH_TRANSPORT_EQUATION",
+      "expected": {
+        "equation": "M_Cc=M_CR+(A_R-A_c)F_B-(B_R-B_c)F_A"
+      }
+    },
+    {
+      "id": "G10_DIRECT_SHARE_EQUATION",
+      "expected": {
+        "q_A": "F_A/n",
+        "q_B": "F_B/n"
+      }
+    },
+    {
+      "id": "G11_MOMENT_CORRECTION_EQUATION",
+      "expected": {
+        "q_A": "-M_Cc*DeltaB/J",
+        "q_B": "+M_Cc*DeltaA/J"
+      }
+    },
+    {
+      "id": "G12_TOTAL_VECTOR_EQUATION",
+      "expected": {
+        "q_A": "q_A_direct+q_A_moment",
+        "q_B": "q_B_direct+q_B_moment"
+      }
+    },
+    {
+      "id": "G13_EXACT_FORCE_RECOVERY_CONTRACT",
+      "expected": {
+        "A": true,
+        "B": true,
+        "tolerance": false
+      }
+    },
+    {
+      "id": "G14_EXACT_MOMENT_RECOVERY_CONTRACT",
+      "expected": {
+        "centroid": true,
+        "original_reference": true,
+        "tolerance": false
+      }
+    },
+    {
+      "id": "G15_RATIONAL_OUTPUT_CONTRACT",
+      "expected": {
+        "numerator_denominator": true,
+        "normalized": true
+      }
+    },
+    {
+      "id": "G16_DECIMAL_OUTPUT_CONTRACT",
+      "expected": {
+        "local_context": true,
+        "precision": 80,
+        "rounding": "ROUND_HALF_EVEN",
+        "fixed_quantize": false
+      }
+    },
+    {
+      "id": "G17_MAGNITUDE_CONTRACT",
+      "expected": {
+        "squared_magnitude_exact_rational": true,
+        "magnitude_decimal80": true
+      }
+    },
+    {
+      "id": "G18_PURE_MOMENT_SUPPORTED",
+      "expected": {
+        "supported": true,
+        "invent_equivalent_force": false
+      }
+    },
+    {
+      "id": "G19_ECCENTRIC_FORCE_SUPPORTED",
+      "expected": {
+        "supported": true,
+        "generated_centroid_moment": true
+      }
+    },
+    {
+      "id": "G20_FORCE_PLUS_FREE_MOMENT_SUPPORTED",
+      "expected": {
+        "supported": true
+      }
+    },
+    {
+      "id": "G21_ZERO_WRENCH",
+      "expected": {
+        "vectors_all_zero": true,
+        "status": "CALCULATED"
+      }
+    },
+    {
+      "id": "G22_SINGLE_BOLT_FORCE_ONLY",
+      "expected": {
+        "F_A_kip": "7",
+        "F_B_kip": "-3",
+        "M_C_kip_in": "0",
+        "q_A_exact": "7",
+        "q_B_exact": "-3",
+        "status": "CALCULATED"
+      }
+    },
+    {
+      "id": "G23_SINGLE_BOLT_NONZERO_MOMENT",
+      "expected": {
+        "status": "CALCULATION_NOT_SUPPORTED_ZERO_GROUP_POLAR_SUM"
+      }
+    },
+    {
+      "id": "G24_EMPTY_GROUP",
+      "expected": {
+        "status": "INVALID_EMPTY_BOLT_GROUP"
+      }
+    },
+    {
+      "id": "G25_DUPLICATE_COORDINATE",
+      "expected": {
+        "status": "INVALID_DUPLICATE_BOLT_COORDINATE"
+      }
+    },
+    {
+      "id": "G26_NONFINITE_INPUT",
+      "expected": {
+        "status": "INVALID_NONFINITE_INPUT"
+      }
+    },
+    {
+      "id": "G27_BINARY_FLOAT_INPUT",
+      "expected": {
+        "status": "INVALID_NUMERIC_TYPE_BINARY_FLOAT_PROHIBITED"
+      }
+    },
+    {
+      "id": "G28_TRANSLATION_INVARIANCE",
+      "expected": {
+        "vectors_unchanged": true,
+        "J_unchanged": true,
+        "M_Cc_unchanged": true
+      }
+    },
+    {
+      "id": "G29_COMPLETE_SIGN_REVERSAL",
+      "expected": {
+        "all_vector_components_negate": true,
+        "magnitudes_unchanged": true
+      }
+    },
+    {
+      "id": "G30_ORDER_BINDING",
+      "expected": {
+        "result_order": "INPUT_PHYSICAL_BOLT_ORDER",
+        "fingerprint_binds_order": true
+      }
+    },
+    {
+      "id": "G31_STAGE42_POSITIVE_WEB_INPUT",
+      "expected": {
+        "F_A_kip": "5",
+        "F_B_kip": "3.6",
+        "M_C_kip_in": "1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+        "reference_A_B_in": [
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G32_STAGE42_POSITIVE_WEB_MCC",
+      "expected": {
+        "exact": "97097112537018756169792694965449160908193484698914116485686080947680157946693/62500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "decimal80": "1.553553800592300098716683119447186574531095755182625863770977295162882527147088"
+      }
+    },
+    {
+      "id": "G33_STAGE42_POSITIVE_WEB_BOLT_1",
+      "expected": {
+        "q_A_exact": "1268972112537018756169792694965449160908193484698914116485686080947680157946693/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "324777887462981243830207305034550839091806515301085883514313919052319842053307/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "1.3535702533728200065811122079631457716354063836788417242513984863441921684764725",
+        "q_B_decimal80": "0.69285949325435998683777558407370845672918723264231655149720302731161566304705493",
+        "magnitude_squared_exact": "406442585427266366456207505781211476861998364791764319522417847352629050380590331504934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.5205941957696828794331985421281247823554983472481597963601366993434782507678677"
+      }
+    },
+    {
+      "id": "G34_STAGE42_POSITIVE_WEB_BOLT_2",
+      "expected": {
+        "q_A_exact": "1268972112537018756169792694965449160908193484698914116485686080947680157946693/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "518972112537018756169792694965449160908193484698914116485686080947680157946693/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "1.3535702533728200065811122079631457716354063836788417242513984863441921684764725",
+        "q_B_decimal80": "1.1071405067456400131622244159262915432708127673576834485027969726883843369529451",
+        "magnitude_squared_exact": "537523687352241687285427643984567844088059569135298376778094056631997263608625881504934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.7486888037877845090398935854651841106983660384799313129677782327171048826001576"
+      }
+    },
+    {
+      "id": "G35_STAGE42_POSITIVE_WEB_BOLT_3",
+      "expected": {
+        "q_A_exact": "1074777887462981243830207305034550839091806515301085883514313919052319842053307/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "324777887462981243830207305034550839091806515301085883514313919052319842053307/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "1.1464297466271799934188877920368542283645936163211582757486015136558078315235275",
+        "q_B_decimal80": "0.69285949325435998683777558407370845672918723264231655149720302731161566304705493",
+        "magnitude_squared_exact": "315414042423811282547026854251102888510566972886532335317087146464178902305565644004934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.3395355319454384034950283476872558356757818457041043440913142148303015401720084"
+      }
+    },
+    {
+      "id": "G36_STAGE42_POSITIVE_WEB_BOLT_4",
+      "expected": {
+        "q_A_exact": "1074777887462981243830207305034550839091806515301085883514313919052319842053307/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "518972112537018756169792694965449160908193484698914116485686080947680157946693/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "1.1464297466271799934188877920368542283645936163211582757486015136558078315235275",
+        "q_B_decimal80": "1.1071405067456400131622244159262915432708127673576834485027969726883843369529451",
+        "magnitude_squared_exact": "446495144348786603376246992454459255736628177230066392572763355743547115533601194004934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.5937569656721983020582505256711095561006949243811621315003412974093693674302806"
+      }
+    },
+    {
+      "id": "G37_STAGE42_POSITIVE_WEB_FORCE_PROOF",
+      "expected": {
+        "sum_q_A_exact": "5",
+        "sum_q_B_exact": "18/5",
+        "pass": true
+      }
+    },
+    {
+      "id": "G38_STAGE42_POSITIVE_WEB_MOMENT_PROOF",
+      "expected": {
+        "sum_M_C_exact": "97097112537018756169792694965449160908193484698914116485686080947680157946693/62500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "target_exact": "97097112537018756169792694965449160908193484698914116485686080947680157946693/62500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "pass": true
+      }
+    },
+    {
+      "id": "G39_STAGE42_NEGATIVE_WEB_INPUT",
+      "expected": {
+        "F_A_kip": "-5",
+        "F_B_kip": "3.6",
+        "M_C_kip_in": "-1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+        "reference_A_B_in": [
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "G40_STAGE42_NEGATIVE_WEB_MCC",
+      "expected": {
+        "exact": "-97097112537018756169792694965449160908193484698914116485686080947680157946693/62500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "decimal80": "-1.553553800592300098716683119447186574531095755182625863770977295162882527147088"
+      }
+    },
+    {
+      "id": "G41_STAGE42_NEGATIVE_WEB_BOLT_1",
+      "expected": {
+        "q_A_exact": "-1268972112537018756169792694965449160908193484698914116485686080947680157946693/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "518972112537018756169792694965449160908193484698914116485686080947680157946693/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "-1.3535702533728200065811122079631457716354063836788417242513984863441921684764725",
+        "q_B_decimal80": "1.1071405067456400131622244159262915432708127673576834485027969726883843369529451",
+        "magnitude_squared_exact": "537523687352241687285427643984567844088059569135298376778094056631997263608625881504934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.7486888037877845090398935854651841106983660384799313129677782327171048826001576"
+      }
+    },
+    {
+      "id": "G42_STAGE42_NEGATIVE_WEB_BOLT_2",
+      "expected": {
+        "q_A_exact": "-1268972112537018756169792694965449160908193484698914116485686080947680157946693/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "324777887462981243830207305034550839091806515301085883514313919052319842053307/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "-1.3535702533728200065811122079631457716354063836788417242513984863441921684764725",
+        "q_B_decimal80": "0.69285949325435998683777558407370845672918723264231655149720302731161566304705493",
+        "magnitude_squared_exact": "406442585427266366456207505781211476861998364791764319522417847352629050380590331504934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.5205941957696828794331985421281247823554983472481597963601366993434782507678677"
+      }
+    },
+    {
+      "id": "G43_STAGE42_NEGATIVE_WEB_BOLT_3",
+      "expected": {
+        "q_A_exact": "-1074777887462981243830207305034550839091806515301085883514313919052319842053307/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "518972112537018756169792694965449160908193484698914116485686080947680157946693/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "-1.1464297466271799934188877920368542283645936163211582757486015136558078315235275",
+        "q_B_decimal80": "1.1071405067456400131622244159262915432708127673576834485027969726883843369529451",
+        "magnitude_squared_exact": "446495144348786603376246992454459255736628177230066392572763355743547115533601194004934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.5937569656721983020582505256711095561006949243811621315003412974093693674302806"
+      }
+    },
+    {
+      "id": "G44_STAGE42_NEGATIVE_WEB_BOLT_4",
+      "expected": {
+        "q_A_exact": "-1074777887462981243830207305034550839091806515301085883514313919052319842053307/937500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_B_exact": "324777887462981243830207305034550839091806515301085883514313919052319842053307/468750000000000000000000000000000000000000000000000000000000000000000000000000",
+        "q_A_decimal80": "-1.1464297466271799934188877920368542283645936163211582757486015136558078315235275",
+        "q_B_decimal80": "0.69285949325435998683777558407370845672918723264231655149720302731161566304705493",
+        "magnitude_squared_exact": "315414042423811282547026854251102888510566972886532335317087146464178902305565644004934859657619748793814664056310412807247149348694026032748991637829636249/175781250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "magnitude_decimal80": "1.3395355319454384034950283476872558356757818457041043440913142148303015401720084"
+      }
+    },
+    {
+      "id": "G45_STAGE42_NEGATIVE_WEB_FORCE_PROOF",
+      "expected": {
+        "sum_q_A_exact": "-5",
+        "sum_q_B_exact": "18/5",
+        "pass": true
+      }
+    },
+    {
+      "id": "G46_STAGE42_NEGATIVE_WEB_MOMENT_PROOF",
+      "expected": {
+        "sum_M_C_exact": "-97097112537018756169792694965449160908193484698914116485686080947680157946693/62500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "target_exact": "-97097112537018756169792694965449160908193484698914116485686080947680157946693/62500000000000000000000000000000000000000000000000000000000000000000000000000",
+        "pass": true
+      }
+    },
+    {
+      "id": "G47_STAGE42_WEB_MIRROR_RELATION",
+      "expected": {
+        "positive_negative_relationship": "FULL_EXACT_NEGATION_OF_F_A_AND_M_C_WITH_F_B_RETAINED",
+        "negative_M_C_exact": "-1.553553800592300098716683119447186574531095755182625863770977295162882527147088",
+        "no_precision_shortening": true,
+        "exact": true
+      }
+    },
+    {
+      "id": "G48_PURE_MOMENT_INPUT",
+      "expected": {
+        "F_A_kip": "0",
+        "F_B_kip": "0",
+        "M_C_kip_in": "9"
+      }
+    },
+    {
+      "id": "G49_PURE_MOMENT_BOLT_1",
+      "expected": {
+        "q_A_exact": "3/5",
+        "q_B_exact": "-6/5",
+        "q_A_decimal80": "0.6",
+        "q_B_decimal80": "-1.2",
+        "magnitude_decimal80": "1.3416407864998738178455042012387657412643710157669154345625383472463125553826829"
+      }
+    },
+    {
+      "id": "G50_PURE_MOMENT_BOLT_2",
+      "expected": {
+        "q_A_exact": "3/5",
+        "q_B_exact": "6/5",
+        "q_A_decimal80": "0.6",
+        "q_B_decimal80": "1.2",
+        "magnitude_decimal80": "1.3416407864998738178455042012387657412643710157669154345625383472463125553826829"
+      }
+    },
+    {
+      "id": "G51_PURE_MOMENT_BOLT_3",
+      "expected": {
+        "q_A_exact": "-3/5",
+        "q_B_exact": "-6/5",
+        "q_A_decimal80": "-0.6",
+        "q_B_decimal80": "-1.2",
+        "magnitude_decimal80": "1.3416407864998738178455042012387657412643710157669154345625383472463125553826829"
+      }
+    },
+    {
+      "id": "G52_PURE_MOMENT_BOLT_4",
+      "expected": {
+        "q_A_exact": "-3/5",
+        "q_B_exact": "6/5",
+        "q_A_decimal80": "-0.6",
+        "q_B_decimal80": "1.2",
+        "magnitude_decimal80": "1.3416407864998738178455042012387657412643710157669154345625383472463125553826829"
+      }
+    },
+    {
+      "id": "G53_PURE_MOMENT_FORCE_PROOF",
+      "expected": {
+        "sum_q_A_exact": "0",
+        "sum_q_B_exact": "0",
+        "pass": true
+      }
+    },
+    {
+      "id": "G54_PURE_MOMENT_MOMENT_PROOF",
+      "expected": {
+        "sum_M_C_exact": "9",
+        "target_exact": "9",
+        "pass": true
+      }
+    },
+    {
+      "id": "G55_ECCENTRIC_FORCE_INPUT",
+      "expected": {
+        "reference_A_B_in": [
+          "0",
+          "2"
+        ],
+        "F_A_kip": "8",
+        "F_B_kip": "0",
+        "M_C_R_kip_in": "0"
+      }
+    },
+    {
+      "id": "G56_ECCENTRIC_FORCE_TRANSPORT",
+      "expected": {
+        "M_Cc_exact": "-16",
+        "M_Cc_decimal80": "-16"
+      }
+    },
+    {
+      "id": "G57_ECCENTRIC_FORCE_BOLT_1",
+      "expected": {
+        "q_A_exact": "14/15",
+        "q_B_exact": "32/15",
+        "q_A_decimal80": "0.93333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "q_B_decimal80": "2.1333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G58_ECCENTRIC_FORCE_BOLT_2",
+      "expected": {
+        "q_A_exact": "14/15",
+        "q_B_exact": "-32/15",
+        "q_A_decimal80": "0.93333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "q_B_decimal80": "-2.1333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G59_ECCENTRIC_FORCE_BOLT_3",
+      "expected": {
+        "q_A_exact": "46/15",
+        "q_B_exact": "32/15",
+        "q_A_decimal80": "3.0666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "q_B_decimal80": "2.1333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G60_ECCENTRIC_FORCE_BOLT_4",
+      "expected": {
+        "q_A_exact": "46/15",
+        "q_B_exact": "-32/15",
+        "q_A_decimal80": "3.0666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "q_B_decimal80": "-2.1333333333333333333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "G61_ECCENTRIC_FORCE_PROOF",
+      "expected": {
+        "force": true,
+        "moment": true
+      }
+    },
+    {
+      "id": "G62_STAGE25A_COMPATIBILITY",
+      "expected": {
+        "kind": "CROSS_ENGINE_MECHANICS_COMPATIBILITY",
+        "legacy_dependency": "STAGE_2_5A_ACCEPTED_ENGINE",
+        "slice8_method": "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1",
+        "fixture": "G55_G61_ECCENTRIC_FORCE",
+        "required_common_invariants": {
+          "same_physical_group": true,
+          "same_wrench_reference": true,
+          "same_direct_equal_share_force": true,
+          "same_transported_centroid_moment_kip_in": "-16",
+          "same_equal_stiffness_elastic_correction_mechanics": true,
+          "same_force_recovery_target_A_kip": "8",
+          "same_force_recovery_target_B_kip": "0",
+          "same_centroid_moment_recovery_target_kip_in": "-16"
+        },
+        "slice8_exact_rational_lower_row_q_A": "14/15",
+        "slice8_exact_rational_upper_row_q_A": "46/15",
+        "cross_engine_per_bolt_decimal_identity_required": false,
+        "legacy_native_projection_examples": {
+          "lower_row_q_A": "0.933\u202633336",
+          "upper_row_q_A": "3.066\u202666666"
+        },
+        "slice8_decimal80_projection_examples": {
+          "lower_row_q_A": "0.93333333333333333333333333333333333333333333333333333333333333333333333333333333",
+          "upper_row_q_A": "3.0666666666666666666666666666666666666666666666666666666666666666666666666666667"
+        },
+        "projection_difference_classification": "EXPECTED_NATIVE_NUMERIC_PATH_DIFFERENCE",
+        "tolerance_used": false,
+        "legacy_rounding_emulation_in_slice8": false,
+        "stage25a_change": "NONE"
+      }
+    },
+    {
+      "id": "G63_ARBITRARY_REFERENCE_INPUT",
+      "expected": {
+        "reference_A_B_in": [
+          "2",
+          "1"
+        ],
+        "F_A_kip": "4",
+        "F_B_kip": "-2",
+        "M_C_R_kip_in": "3"
+      }
+    },
+    {
+      "id": "G64_ARBITRARY_REFERENCE_CENTROID_MOMENT",
+      "expected": {
+        "M_Cc_exact": "-5",
+        "decimal80": "-5"
+      }
+    },
+    {
+      "id": "G65_ARBITRARY_REFERENCE_BOLT_1",
+      "expected": {
+        "q_A_exact": "2/3",
+        "q_B_exact": "1/6",
+        "q_A_decimal80": "0.66666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "q_B_decimal80": "0.16666666666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G66_ARBITRARY_REFERENCE_BOLT_2",
+      "expected": {
+        "q_A_exact": "2/3",
+        "q_B_exact": "-7/6",
+        "q_A_decimal80": "0.66666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "q_B_decimal80": "-1.1666666666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G67_ARBITRARY_REFERENCE_BOLT_3",
+      "expected": {
+        "q_A_exact": "4/3",
+        "q_B_exact": "1/6",
+        "q_A_decimal80": "1.3333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "q_B_decimal80": "0.16666666666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G68_ARBITRARY_REFERENCE_BOLT_4",
+      "expected": {
+        "q_A_exact": "4/3",
+        "q_B_exact": "-7/6",
+        "q_A_decimal80": "1.3333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "q_B_decimal80": "-1.1666666666666666666666666666666666666666666666666666666666666666666666666666667"
+      }
+    },
+    {
+      "id": "G69_ARBITRARY_REFERENCE_FORCE_PROOF",
+      "expected": {
+        "sum_q_A_exact": "4",
+        "sum_q_B_exact": "-2",
+        "pass": true
+      }
+    },
+    {
+      "id": "G70_ARBITRARY_REFERENCE_MOMENT_PROOF",
+      "expected": {
+        "sum_M_Cc_exact": "-5",
+        "target_exact": "-5",
+        "pass": true
+      }
+    },
+    {
+      "id": "G71_ORIGINAL_REFERENCE_RECOVERY",
+      "expected": {
+        "required": true,
+        "exact_rational": true
+      }
+    },
+    {
+      "id": "G72_DOWNSTREAM_VECTOR_CONTRACT",
+      "expected": {
+        "actual_signed_components": true,
+        "actual_magnitude": true,
+        "stage25b_compatible": true
+      }
+    },
+    {
+      "id": "G73_COMMON_BOLT_PLANE_CONTRACT",
+      "expected": {
+        "per_plane_vector_consumable": true,
+        "rational_asymmetric_two_plane_method_unchanged": true
+      }
+    },
+    {
+      "id": "G74_NO_RESISTANCE_CALCULATION",
+      "expected": {
+        "bolt_capacity": false,
+        "FRP_capacity": false,
+        "anchor_concrete": false
+      }
+    },
+    {
+      "id": "G75_NO_FRONTEND_OR_PUBLIC_API",
+      "expected": {
+        "frontend_production_changes": 0,
+        "new_public_endpoints": 0
+      }
+    },
+    {
+      "id": "G76_NO_DEP_WORKFLOW_TAG_CHANGE",
+      "expected": {
+        "dependencies": 0,
+        "lockfiles": 0,
+        "workflows": 0,
+        "tags": 0
+      }
+    },
+    {
+      "id": "G77_NO_TOLERANCE_OR_RESIDUAL_DUMPING",
+      "expected": {
+        "epsilon": false,
+        "residual_dumping": false,
+        "proof": "EXACT_RATIONAL"
+      }
+    },
+    {
+      "id": "G78_FINGERPRINT",
+      "expected": {
+        "binds_exact_rationals": true,
+        "binds_projection_contract": true,
+        "binds_cross_engine_compatibility_contract": true,
+        "presentation_excluded": true
+      }
+    },
+    {
+      "id": "G79_US_SI_EQUIVALENCE",
+      "expected": {
+        "physical_vectors": true,
+        "dimensionless_relationships": true
+      }
+    },
+    {
+      "id": "G80_FREEZE_AND_STAGE42_BOUNDARY",
+      "expected": {
+        "stage25a": "UNCHANGED",
+        "slice5": "UNCHANGED",
+        "slice7": "UNCHANGED",
+        "all_freezes": "EXACT",
+        "physical_stage42_begun": false,
+        "g39_g46_full_negative_moment_authority": "CORRECTED_R1",
+        "g62_cross_engine_decimal_identity": "NOT_REQUIRED"
+      }
+    }
+  ],
+  "cross_engine_compatibility_contract": {
+    "stage25a": "IMMUTABLE_NATIVE_NUMERIC_AUTHORITY",
+    "slice8": "EXACT_RATIONAL_MECHANICS_WITH_DECIMAL80_PROJECTION",
+    "overlap_claim": "MECHANICS_COMPATIBILITY_NOT_CROSS_ENGINE_DECIMAL_IDENTITY",
+    "required_common_invariants": [
+      "same physical bolt group and wrench reference",
+      "same direct equal-share force model",
+      "same force-line eccentricity centroid moment",
+      "same equal-stiffness elastic correction equations",
+      "same signed force recovery target",
+      "same signed centroid-moment recovery target"
+    ],
+    "per_bolt_decimal_identity_required": false,
+    "tolerance_comparison": false,
+    "legacy_rounding_emulation_in_slice8": false
+  }
+}
