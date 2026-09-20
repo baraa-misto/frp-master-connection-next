@@ -60,12 +60,19 @@ jobs:
       - name: Run strict mypy analysis
         run: python -m mypy --strict src tests
       - name: Run tests with line and branch coverage
+        if: runner.os != 'Windows'
         run: >-
           python -m pytest
           --cov=frp_master_connection
           --cov-branch
           --cov-report=term-missing
           --cov-fail-under=100
+      - name: Run deterministic Windows shards with combined coverage
+        if: runner.os == 'Windows'
+        run: >-
+          python ../scripts/run_backend_windows_shards.py
+          --shards 4
+          --expected-tests 6609
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help
       - name: Check Alembic CLI availability

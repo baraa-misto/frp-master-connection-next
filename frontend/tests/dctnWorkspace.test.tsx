@@ -92,11 +92,11 @@ it("links D1/D2 section on activation without linking placement, force or length
   const { send } = mocks();
   render(<DoubleChannelTrussNodeWorkspace/>); await screen.findByText("CURRENT BACKEND PREVIEW");
   fireEvent.change(screen.getByLabelText("DCTN arrangement"), { target: { value: "ONE_INCLINED" } });
-  await screen.findByText("CURRENT BACKEND PREVIEW");
+  await screen.findByLabelText("D1 section form");
   fireEvent.change(screen.getByLabelText("D1 section form"), { target: { value: "W_I" } });
-  await screen.findByText("CURRENT BACKEND PREVIEW");
+  await screen.findByLabelText("D1 Flange width");
   fireEvent.change(screen.getByLabelText("DCTN arrangement"), { target: { value: "TWO_INCLINED" } });
-  await screen.findByText("CURRENT BACKEND PREVIEW");
+  await screen.findByLabelText("D2 section form");
   expect(screen.getByLabelText("D2 section form")).toHaveValue("W_I");
   expect(screen.queryByLabelText(/direction [XYZ]/i)).toBeNull();
   expect(screen.getByLabelText("D1 Inclination angle (deg)")).toHaveValue("126.86989764584402");
@@ -111,18 +111,26 @@ it("links D1/D2 section on activation without linking placement, force or length
   expect(screen.getByLabelText("D2 Length")).toHaveValue("24");
   fireEvent.change(screen.getByLabelText("D2 Axial P"), { target: { value: "4" } });
   expect(screen.getByLabelText("D1 Axial P")).toHaveValue("1");
-  await screen.findByText("CURRENT BACKEND PREVIEW");
-  expect(send.mock.lastCall?.[1].members.map(m => m.slot)).toEqual(["D1", "D2"]);
-  expect(send.mock.lastCall?.[1].members.map(m => m.inclination_deg)).toEqual(["145", "50"]);
+  await waitFor(() => {
+    expect(send.mock.lastCall?.[1].arrangement).toBe("TWO_INCLINED");
+    expect(send.mock.lastCall?.[1].members.map(m => m.slot)).toEqual(["D1", "D2"]);
+    expect(send.mock.lastCall?.[1].members.map(m => m.inclination_deg)).toEqual(["145", "50"]);
+    expect(send.mock.lastCall?.[1].members.map(m => m.P.value)).toEqual(["1", "4"]);
+  });
   fireEvent.change(screen.getByLabelText("DCTN arrangement"), { target: { value: "VERTICAL_TWO_INCLINED" } });
-  await screen.findByText("CURRENT BACKEND PREVIEW");
+  await waitFor(() => {
+    expect(send.mock.lastCall?.[1].arrangement).toBe("VERTICAL_TWO_INCLINED");
+    expect(send.mock.lastCall?.[1].members.map(m => m.slot)).toEqual(["V", "D1", "D2"]);
+  });
   expect(screen.getByLabelText("D1 Flange width")).toHaveValue("5");
   expect(screen.getByLabelText("D2 Flange width")).toHaveValue("5");
   fireEvent.change(screen.getByLabelText("DCTN arrangement"), { target: { value: "VERTICAL_ONLY" } });
-  await screen.findByText("CURRENT BACKEND PREVIEW");
-  expect(screen.queryByLabelText("D1 Flange width")).toBeNull();
-  expect(screen.queryByLabelText("D2 Flange width")).toBeNull();
-  expect(send.mock.lastCall?.[1].members.map(m => m.slot)).toEqual(["V"]);
+  await waitFor(() => {
+    expect(screen.queryByLabelText("D1 Flange width")).toBeNull();
+    expect(screen.queryByLabelText("D2 Flange width")).toBeNull();
+    expect(send.mock.lastCall?.[1].arrangement).toBe("VERTICAL_ONLY");
+    expect(send.mock.lastCall?.[1].members.map(m => m.slot)).toEqual(["V"]);
+  });
 });
 
 it("clears source bindings on engineering edits, retains explicit source entry, and uses native unit conversion", async () => {

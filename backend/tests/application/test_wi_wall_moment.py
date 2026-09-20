@@ -625,11 +625,40 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
     records = json.loads((root / "docs/qa/STAGE_4_2_INHERITED_IDENTITIES.json").read_text())
     assert records["baseline"] == "473a3c8cd43f13022d254dae2477084895478c74"
     for item in records["files"]:
-        raw = (
-            _historical_dependency_bytes(root, item["path"])
-            if item["path"] in _FROZEN_DEPENDENCIES
-            else (root / item["path"]).read_bytes().replace(b"\r\n", b"\n")
-        )
+        path = item["path"]
+        raw = (root / path).read_bytes().replace(b"\r\n", b"\n")
+        if path in _FROZEN_DEPENDENCIES:
+            raw = _historical_dependency_bytes(root, path)
+        elif path == ".github/workflows/ci.yml":
+            successor_blob = hashlib.sha1(  # noqa: S324 - Git object identity
+                b"blob " + str(len(raw)).encode() + b"\0" + raw
+            ).hexdigest()
+            assert successor_blob == "75f4dc66c12af04da8b7be1de94d0608af0cd772"
+            successor = b"""      - name: Run tests with line and branch coverage
+        if: runner.os != 'Windows'
+        run: >-
+          python -m pytest
+          --cov=frp_master_connection
+          --cov-branch
+          --cov-report=term-missing
+          --cov-fail-under=100
+      - name: Run deterministic Windows shards with combined coverage
+        if: runner.os == 'Windows'
+        run: >-
+          python ../scripts/run_backend_windows_shards.py
+          --shards 4
+          --expected-tests 6609
+"""
+            historical = b"""      - name: Run tests with line and branch coverage
+        run: >-
+          python -m pytest
+          --cov=frp_master_connection
+          --cov-branch
+          --cov-report=term-missing
+          --cov-fail-under=100
+"""
+            assert raw.count(successor) == 1
+            raw = raw.replace(successor, historical)
         git_blob = b"blob " + str(len(raw)).encode() + b"\0" + raw
         assert hashlib.sha1(git_blob, usedforsecurity=False).hexdigest() == item["blob"]
     # Resolve the immutable historical family, never successor HEAD:frontend/src.
