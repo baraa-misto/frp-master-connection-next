@@ -84,7 +84,9 @@ def envelope(route: str) -> dict[str, Any]:
     }
 
 
-@pytest.mark.parametrize("route", tuple(FAMILIES))
+# Preserve this historical cohort exactly; SSMC's FRP-only successor is tested
+# separately in test_ssmc_api, including its mandatory stainless rejection.
+@pytest.mark.parametrize("route", tuple(r for r in FAMILIES if r != "stair-stringer-miter"))
 def test_every_native_family_has_canonical_body_or_explicit_no_body_policy(route: str) -> None:
     request = envelope(route)
     family = FAMILIES[route]

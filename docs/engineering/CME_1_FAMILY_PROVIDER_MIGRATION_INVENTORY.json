@@ -1963,6 +1963,28 @@
       "qualification_policy": "Trusted FRP product/use, actual hardware, full-depth solid and local/cross-group mechanisms remain source-bound; transverse sharing/contact/tension/prying/local resistance not automatically qualified; public source text grants no authority; global chord/truss design is external.",
       "foundation_policy": "NOT_APPLICABLE_NO_FOUNDATION"
     }
+    ,{
+      "route_id": "stair-stringer-miter",
+      "product_id": "STAIR_STRINGER_MITER_CONNECTION",
+      "category": "MOMENT",
+      "disposition": "FRP_ONLY_SOURCE_LIMITED_CONNECTOR_BODY",
+      "native_entry_points": ["frp_master_connection.api.ssmc.map_ssmc_request", "frp_master_connection.application.ssmc.preview_ssmc", "frp_master_connection.application.ssmc.design_ssmc"],
+      "declared_native_modes": {
+        "/$defs/SSMCFastenerDTO/properties/threads/enum": ["INCLUDED", "EXCLUDED"],
+        "/$defs/SSMCPlateDTO/properties/side/enum": ["NEG_Y", "POS_Y"],
+        "/$defs/StringerForm/enum": ["CHANNEL", "W_I"],
+        "/$defs/Unit/enum": ["in", "mm", "in2", "mm2", "in4", "mm4", "lbf", "kip", "N", "kN", "lbf-in", "kip-in", "N-mm", "kN-mm", "psi", "ksi", "MPa", "kip/in", "N/mm", "1"],
+        "/properties/unit_system/enum": ["US", "SI"],
+        "/properties/contract/const": "SSMC-2-RC1"
+      },
+      "stainless": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE",
+      "primary_member_policy": "FRP_ONLY_NATIVE_REGION_LW_CW_TT",
+      "fastener_policy": "INDEPENDENT_NATIVE_AUTHORITY_SHARED_PHYSICAL_ID_ONCE",
+      "demand_policy": "Full serial N/V/M wrench transport; bounded native Slice 8; all single-side secondary moments retained.",
+      "rollout_wave": "SSMC-2_RC1_GEOMETRY_DEMAND_ONLY",
+      "qualification_policy": "Plate-only CW unknown-cut policy. Complete response, polygon resistance, flange-to-web local transfer and combined hardware remain source-required. Production trusted registries empty.",
+      "foundation_policy": "NOT_APPLICABLE_NO_FOUNDATION"
+    }
   ],
   "inventory_contract": "CME-1-RC1",
   "accepted_baseline": "998911ea78872b852ef097dd4e20d666a33a935a",

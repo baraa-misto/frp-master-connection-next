@@ -11,6 +11,7 @@ from frp_master_connection.api.connector_material_native import FAMILIES
 from frp_master_connection.api.dependencies import build_trusted_identity_dependency
 from frp_master_connection.api.schemas import _StrictModel
 from frp_master_connection.application.connector_material_assembly import (
+    FRP_ONLY_BODY_ROUTES,
     NO_BODY_ROUTES,
     canonical_material_assembly,
 )
@@ -127,11 +128,13 @@ def capabilities() -> dict[str, JsonValue]:
                 "category": family.category,
                 "disposition": "NO_CONNECTOR_BODY"
                 if family.route_id in NO_BODY_ROUTES
+                else "FRP_ONLY_SOURCE_LIMITED_CONNECTOR_BODY"
+                if family.route_id in FRP_ONLY_BODY_ROUTES
                 else "CONNECTOR_BODY_CONDITIONAL_ACTIVATION",
                 "native_entry_points": list(family.native_entry_points),
                 "declared_native_modes": mode_contract(family.schema),
                 "stainless": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"
-                if family.route_id in NO_BODY_ROUTES
+                if family.route_id in NO_BODY_ROUTES | FRP_ONLY_BODY_ROUTES
                 else AVAILABLE,
             }
             for family in FAMILIES.values()
@@ -143,6 +146,13 @@ def material_plan(request: MaterialPlanRequestDTO) -> dict[str, JsonValue]:
     family = FAMILIES.get(request.route_id)
     if family is None or family.product_id != request.product_id:
         raise ValueError("Undeclared or inconsistent product/native route identity")
+    if request.route_id in FRP_ONLY_BODY_ROUTES and (
+        (request.apply_all is not None and request.apply_all.family is ConnectorMaterial.SS316)
+        or any(a.material.family is ConnectorMaterial.SS316 for a in request.assignments)
+    ):
+        raise PublicMaterialBoundaryError(
+            "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE", "SSMC-2 connector body is FRP-only"
+        )
     preview = family.preview(request.native_input)
     assembly = canonical_material_assembly(request.route_id, preview)
     # Mode and geometry identity are derived by the native builder, not a

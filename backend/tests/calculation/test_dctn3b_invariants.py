@@ -182,9 +182,10 @@ def test_approved_invariant(case: dict[str, str]) -> None:
         assert unresolved is not None
         assert unresolved.response is None
     elif number == 20:
-        assert len(FAMILIES) == 17
+        historical = set(FAMILIES) - {"stair-stringer-miter"}
+        assert len(historical) == 17
         with pytest.raises(AssertionError, match="DCTN_SUCCESSOR_INVENTORY_MISMATCH"):
-            assert len(FAMILIES) + 1 == 17, "DCTN_SUCCESSOR_INVENTORY_MISMATCH"
+            assert len(historical) + 1 == 17, "DCTN_SUCCESSOR_INVENTORY_MISMATCH"
     elif number == 21:
         for route in PARENT["routes"]:
             assert_old_route_identity(route)

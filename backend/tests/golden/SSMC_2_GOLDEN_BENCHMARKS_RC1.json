@@ -1,0 +1,970 @@
+{
+  "schema_version": "frp-master-connection-ssmc2-golden-rc1",
+  "document_status": "approved bounded engineering benchmark authority for controlled SSMC-2 implementation",
+  "not_complete_moment_capacity_authority": true,
+  "baseline": {
+    "commit": "6894922cee39aaa456be0bc1ba414ff410a94e8f",
+    "count": 4,
+    "continuation_tags": 1
+  },
+  "owner_approval": {
+    "date": "2026-09-20",
+    "exact_text": "Approved: SSMC-2 shall use the bounded Channel/W-I single-sided miter topology with one connected web-following polygon plate and 2x2/3x2 serial bolt groups; full serial N/V/M transport with native Slice-8 demand only for the qualified planar equal-stiffness component and no action halving or axial-row mixing; explicit preservation of all one-sided secondary moments with fail-closed complete response unless a server-trusted qualified response is bound; the plate-only MITER_PLATE_CW_BASIS_UNKNOWN_CUT policy with no LW fallback or fictitious isotropy; fail-closed polygon resistance and member flange-to-web transfer until qualified authority exists; and independent hardware authority with SSMC-2 released only as a geometry+demand/source-ready engineering-review milestone, not a complete moment-capacity PASS."
+  },
+  "source_identity": {
+    "ssmc1_audit_sha256": "79AA566152ECCD3946A4241C0A42BE364FEE5C5DD15AEB6A6921EB56E6541B31",
+    "ssmc1_evidence_sha256": "9316141442A4B2B214D2B19F498D637D9DFA1CCCD59435AC10BC8297CDEC0959",
+    "ssmc1_successor_candidate_sha256": "F4A405B96059BB2837152E260062E9DFE907487C580DACF51648E1F9D0827AD6"
+  },
+  "route": "stair-stringer-miter",
+  "positive_cases": [
+    {
+      "id": "P01_2X2_PURE_M",
+      "kind": "slice8",
+      "input": {
+        "bolts": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ],
+          [
+            -1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "Fx": "0",
+        "Fz": "0",
+        "My": "20"
+      },
+      "expected": {
+        "vectors": [
+          [
+            -2,
+            1
+          ],
+          [
+            -2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        "force": [
+          "0",
+          "0"
+        ],
+        "moment": "20"
+      }
+    },
+    {
+      "id": "P02_2X2_FORCE_M",
+      "kind": "slice8",
+      "input": {
+        "bolts": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ],
+          [
+            -1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "Fx": "8",
+        "Fz": "-4",
+        "My": "20"
+      },
+      "expected": {
+        "vectors": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            -2
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            -2
+          ]
+        ],
+        "force": [
+          "8",
+          "-4"
+        ],
+        "moment": "20"
+      }
+    },
+    {
+      "id": "P03_2X2_FORCE_ONLY",
+      "kind": "slice8",
+      "input": {
+        "bolts": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ],
+          [
+            -1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "Fx": "8",
+        "Fz": "-4",
+        "My": "0"
+      },
+      "expected": {
+        "vectors": [
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        "force": [
+          "8",
+          "-4"
+        ],
+        "moment": "0"
+      }
+    },
+    {
+      "id": "P04_2X2_REVERSAL",
+      "kind": "slice8",
+      "input": {
+        "bolts": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ],
+          [
+            -1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "Fx": "-8",
+        "Fz": "4",
+        "My": "-20"
+      },
+      "expected": {
+        "vectors": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            -4,
+            0
+          ],
+          [
+            -4,
+            2
+          ]
+        ],
+        "force": [
+          "-8",
+          "4"
+        ],
+        "moment": "-20"
+      }
+    },
+    {
+      "id": "P05_3X2_PURE_M",
+      "kind": "slice8",
+      "input": {
+        "bolts": [
+          [
+            -2,
+            -1
+          ],
+          [
+            -2,
+            1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "Fx": "0",
+        "Fz": "0",
+        "My": "20"
+      },
+      "expected": {
+        "J": "22",
+        "vectors": [
+          [
+            "-10/11",
+            "20/11"
+          ],
+          [
+            "10/11",
+            "20/11"
+          ],
+          [
+            "-10/11",
+            "0"
+          ],
+          [
+            "10/11",
+            "0"
+          ],
+          [
+            "-10/11",
+            "-20/11"
+          ],
+          [
+            "10/11",
+            "-20/11"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "P06_3X2_COMBINED",
+      "kind": "slice8",
+      "input": {
+        "bolts": [
+          [
+            -2,
+            -1
+          ],
+          [
+            -2,
+            1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "Fx": "8",
+        "Fz": "4",
+        "My": "-20"
+      },
+      "expected": {
+        "vectors": [
+          [
+            "74/33",
+            "-38/33"
+          ],
+          [
+            "14/33",
+            "-38/33"
+          ],
+          [
+            "74/33",
+            "2/3"
+          ],
+          [
+            "14/33",
+            "2/3"
+          ],
+          [
+            "74/33",
+            "82/33"
+          ],
+          [
+            "14/33",
+            "82/33"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "P07_REFERENCE_SHIFT",
+      "kind": "transport",
+      "input": {
+        "A": [
+          "0",
+          "0",
+          "0"
+        ],
+        "C": [
+          "2",
+          "0",
+          "1"
+        ],
+        "F": [
+          "8",
+          "0",
+          "-4"
+        ],
+        "M_A": [
+          "0",
+          "20",
+          "0"
+        ]
+      },
+      "expected": {
+        "M_C": [
+          "0",
+          "4",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "P08_SIDE_POS",
+      "kind": "transport",
+      "input": {
+        "A": [
+          "0",
+          "0",
+          "0"
+        ],
+        "C": [
+          "0",
+          "1/2",
+          "0"
+        ],
+        "F": [
+          "8",
+          "0",
+          "-4"
+        ],
+        "M_A": [
+          "0",
+          "20",
+          "0"
+        ]
+      },
+      "expected": {
+        "M_C": [
+          "2",
+          "20",
+          "4"
+        ]
+      }
+    },
+    {
+      "id": "P09_SIDE_NEG",
+      "kind": "transport",
+      "input": {
+        "A": [
+          "0",
+          "0",
+          "0"
+        ],
+        "C": [
+          "0",
+          "-1/2",
+          "0"
+        ],
+        "F": [
+          "8",
+          "0",
+          "-4"
+        ],
+        "M_A": [
+          "0",
+          "20",
+          "0"
+        ]
+      },
+      "expected": {
+        "M_C": [
+          "-2",
+          "20",
+          "-4"
+        ]
+      }
+    },
+    {
+      "id": "P10_SERIAL_I",
+      "kind": "transport",
+      "input": {
+        "A": [
+          "0",
+          "0",
+          "0"
+        ],
+        "C": [
+          "4",
+          "0",
+          "-3"
+        ],
+        "F": [
+          "8",
+          "0",
+          "-4"
+        ],
+        "M_A": [
+          "0",
+          "20",
+          "0"
+        ]
+      },
+      "expected": {
+        "M_C": [
+          "0",
+          "28",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "P11_SERIAL_H",
+      "kind": "transport",
+      "input": {
+        "A": [
+          "0",
+          "0",
+          "0"
+        ],
+        "C": [
+          "-4",
+          "0",
+          "0"
+        ],
+        "F": [
+          "-8",
+          "0",
+          "4"
+        ],
+        "M_A": [
+          "0",
+          "-20",
+          "0"
+        ]
+      },
+      "expected": {
+        "M_C": [
+          "0",
+          "-36",
+          "0"
+        ]
+      }
+    },
+    {
+      "id": "P12_SERIAL_NOT_HALF",
+      "kind": "contract",
+      "expected": {
+        "horizontal_group": "FULL_WRENCH",
+        "inclined_group": "FULL_WRENCH",
+        "action_halving": false
+      }
+    },
+    {
+      "id": "P13_ANGLE_30_POS",
+      "kind": "domain",
+      "input": {
+        "theta_deg": 30
+      },
+      "expected": {
+        "eligible": true
+      }
+    },
+    {
+      "id": "P14_ANGLE_45_NEG",
+      "kind": "domain",
+      "input": {
+        "theta_deg": -45
+      },
+      "expected": {
+        "eligible": true
+      }
+    },
+    {
+      "id": "P15_CHANNEL_CHANNEL",
+      "kind": "forms",
+      "input": {
+        "H": "CHANNEL",
+        "I": "CHANNEL"
+      },
+      "expected": {
+        "geometry_demand_eligible": true
+      }
+    },
+    {
+      "id": "P16_CHANNEL_WI",
+      "kind": "forms",
+      "input": {
+        "H": "CHANNEL",
+        "I": "W_I"
+      },
+      "expected": {
+        "geometry_demand_eligible": true
+      }
+    },
+    {
+      "id": "P17_WI_CHANNEL",
+      "kind": "forms",
+      "input": {
+        "H": "W_I",
+        "I": "CHANNEL"
+      },
+      "expected": {
+        "geometry_demand_eligible": true
+      }
+    },
+    {
+      "id": "P18_WI_WI",
+      "kind": "forms",
+      "input": {
+        "H": "W_I",
+        "I": "W_I"
+      },
+      "expected": {
+        "geometry_demand_eligible": true
+      }
+    },
+    {
+      "id": "P19_NEG_Y_SIDE",
+      "kind": "plate_side",
+      "input": {
+        "side": "NEG_Y"
+      },
+      "expected": {
+        "eligible": true
+      }
+    },
+    {
+      "id": "P20_POS_Y_SIDE",
+      "kind": "plate_side",
+      "input": {
+        "side": "POS_Y"
+      },
+      "expected": {
+        "eligible": true
+      }
+    },
+    {
+      "id": "P21_2X2_GROUP",
+      "kind": "group",
+      "input": {
+        "topology": "2x2"
+      },
+      "expected": {
+        "eligible": true
+      }
+    },
+    {
+      "id": "P22_3X2_GROUP",
+      "kind": "group",
+      "input": {
+        "topology": "3x2"
+      },
+      "expected": {
+        "eligible": true
+      }
+    },
+    {
+      "id": "P23_CW_POLICY",
+      "kind": "policy",
+      "expected": {
+        "policy": "MITER_PLATE_CW_BASIS_UNKNOWN_CUT",
+        "lw_strength_credit": false,
+        "isotropic": false
+      }
+    },
+    {
+      "id": "P24_SINGLE_SIDE_STATUS",
+      "kind": "status",
+      "expected": {
+        "complete_response": "SSMC_SINGLE_SIDE_RESPONSE_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P25_POLYGON_STATUS",
+      "kind": "status",
+      "expected": {
+        "plate_resistance": "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P26_MEMBER_TRANSFER_STATUS",
+      "kind": "status",
+      "expected": {
+        "member_transfer": "SSMC_MEMBER_FLANGE_WEB_TRANSFER_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P27_HARDWARE_STATUS",
+      "kind": "status",
+      "expected": {
+        "hardware_combined": "SSMC_HARDWARE_COMBINED_RESPONSE_NOT_QUALIFIED",
+        "design": "ENGINEERING_REVIEW_REQUIRED"
+      }
+    },
+    {
+      "id": "P28_EMPTY_TRUSTED_REGISTRY",
+      "kind": "trusted",
+      "expected": {
+        "production_registry": "EMPTY"
+      }
+    },
+    {
+      "id": "P29_ROUTE_DELTA",
+      "kind": "inventory",
+      "expected": {
+        "routes": 18,
+        "body_bearing_routes": 14,
+        "no_body_routes": 4,
+        "cme3_selectors": 13
+      }
+    },
+    {
+      "id": "P30_ONE_BODY",
+      "kind": "inventory",
+      "expected": {
+        "connector_bodies_per_instance": 1
+      }
+    },
+    {
+      "id": "P31_NO_STARTUP_PASS",
+      "kind": "startup",
+      "expected": {
+        "whole_connection_pass_allowed": false
+      }
+    },
+    {
+      "id": "P32_STATUS_PRECEDENCE",
+      "kind": "status",
+      "expected": {
+        "order": [
+          "FAIL",
+          "ENGINEERING_REVIEW_REQUIRED",
+          "PASS_WITH_COMPLETE_REQUIRED_COVERAGE_ONLY"
+        ]
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "N01_THETA_ZERO_PUBLIC",
+      "expected_status": "SSMC_INCLINATION_OUTSIDE_RC1_DOMAIN"
+    },
+    {
+      "id": "N02_THETA_20",
+      "expected_status": "SSMC_INCLINATION_OUTSIDE_RC1_DOMAIN"
+    },
+    {
+      "id": "N03_THETA_50",
+      "expected_status": "SSMC_INCLINATION_OUTSIDE_RC1_DOMAIN"
+    },
+    {
+      "id": "N04_SECOND_PLATE",
+      "expected_status": "SSMC_TOPOLOGY_NOT_SUPPORTED"
+    },
+    {
+      "id": "N05_SHARED_SHAFT_ACROSS_GROUPS",
+      "expected_status": "SSMC_SHAFT_OWNERSHIP_INVALID"
+    },
+    {
+      "id": "N06_ACTION_HALVED_BETWEEN_GROUPS",
+      "expected_status": "SSMC_SERIAL_ACTION_MISMATCH"
+    },
+    {
+      "id": "N07_AXIAL_ROW_MIXED_WITH_SLICE8",
+      "expected_status": "SSMC_PLANAR_GROUP_METHOD_CONFLICT"
+    },
+    {
+      "id": "N08_SINGLE_BOLT_FREE_MOMENT",
+      "expected_status": "CALCULATION_NOT_SUPPORTED_ZERO_GROUP_POLAR_SUM"
+    },
+    {
+      "id": "N09_1X2_GROUP",
+      "expected_status": "SSMC_GROUP_TOPOLOGY_NOT_SUPPORTED"
+    },
+    {
+      "id": "N10_4X2_GROUP",
+      "expected_status": "SSMC_GROUP_TOPOLOGY_NOT_SUPPORTED"
+    },
+    {
+      "id": "N11_SLOT_HOLE",
+      "expected_status": "SSMC_PLANAR_GROUP_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N12_UNEQUAL_GROUP_BOLT_STIFFNESS",
+      "expected_status": "SSMC_PLANAR_GROUP_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N13_SELF_INTERSECT_POLYGON",
+      "expected_status": "SSMC_POLYGON_INVALID"
+    },
+    {
+      "id": "N14_DISCONNECTED_POLYGON",
+      "expected_status": "SSMC_POLYGON_INVALID"
+    },
+    {
+      "id": "N15_NONPOSITIVE_NECK",
+      "expected_status": "SSMC_POLYGON_INVALID"
+    },
+    {
+      "id": "N16_HOLE_OUTSIDE_POLYGON",
+      "expected_status": "SSMC_POLYGON_HOLE_CONTAINMENT_INVALID"
+    },
+    {
+      "id": "N17_WASHER_OUTSIDE_POLYGON",
+      "expected_status": "SSMC_POLYGON_HARDWARE_CONTAINMENT_INVALID"
+    },
+    {
+      "id": "N18_CONVEX_HULL_AS_AUTHORITY",
+      "expected_status": "SSMC_POLYGON_AUTHORITY_INVALID"
+    },
+    {
+      "id": "N19_BOUNDING_RECTANGLE_AS_RESISTANCE",
+      "expected_status": "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N20_LW_FALLBACK_FOR_MISSING_CW",
+      "expected_status": "SSMC_CW_SOURCE_REQUIRED"
+    },
+    {
+      "id": "N21_FAKE_ISOTROPY",
+      "expected_status": "SSMC_CW_POLICY_INVALID"
+    },
+    {
+      "id": "N22_CW_GREATER_THAN_LW_UNAPPROVED",
+      "expected_status": "SSMC_CW_CONSERVATISM_CONFLICT"
+    },
+    {
+      "id": "N23_MISSING_CW_COMPRESSION",
+      "expected_status": "SSMC_CW_SOURCE_REQUIRED"
+    },
+    {
+      "id": "N24_MISSING_CW_FLEXURE",
+      "expected_status": "SSMC_CW_SOURCE_REQUIRED"
+    },
+    {
+      "id": "N25_PUBLIC_TEXT_ACTIVATES_SOURCE",
+      "expected_status": "SSMC_TRUSTED_AUTHORITY_NOT_BOUND"
+    },
+    {
+      "id": "N26_TRUSTED_GEOMETRY_MISMATCH",
+      "expected_status": "SSMC_TRUSTED_RESPONSE_BINDING_MISMATCH"
+    },
+    {
+      "id": "N27_TRUSTED_ACTION_MISMATCH",
+      "expected_status": "SSMC_TRUSTED_RESPONSE_BINDING_MISMATCH"
+    },
+    {
+      "id": "N28_TRUSTED_SHAFT_COVERAGE_GAP",
+      "expected_status": "SSMC_TRUSTED_RESPONSE_COVERAGE_INVALID"
+    },
+    {
+      "id": "N29_TRUSTED_FORCE_CLOSURE_FAIL",
+      "expected_status": "SSMC_TRUSTED_RESPONSE_EQUILIBRIUM_INVALID"
+    },
+    {
+      "id": "N30_TRUSTED_MOMENT_CLOSURE_FAIL",
+      "expected_status": "SSMC_TRUSTED_RESPONSE_EQUILIBRIUM_INVALID"
+    },
+    {
+      "id": "N31_PRYING_SILENT_ZERO",
+      "expected_status": "SSMC_SINGLE_SIDE_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N32_BOLT_TENSION_SILENT_ZERO",
+      "expected_status": "SSMC_HARDWARE_COMBINED_RESPONSE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N33_MEMBER_FLANGE_TRANSFER_OMITTED",
+      "expected_status": "SSMC_MEMBER_FLANGE_WEB_TRANSFER_NOT_QUALIFIED"
+    },
+    {
+      "id": "N34_POLYGON_CORNER_OMITTED",
+      "expected_status": "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED"
+    },
+    {
+      "id": "N35_MITER_CONTACT_CREDIT",
+      "expected_status": "SSMC_CONTACT_NOT_QUALIFIED"
+    },
+    {
+      "id": "N36_AUTOMATIC_DOUBLE_SHEAR",
+      "expected_status": "SSMC_HARDWARE_RESPONSE_INVALID"
+    },
+    {
+      "id": "N37_CONNECTOR_SS316_SELECTOR",
+      "expected_status": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"
+    },
+    {
+      "id": "N38_ROUTE_COUNT_WRONG",
+      "expected_status": "SSMC_SUCCESSOR_INVENTORY_MISMATCH"
+    },
+    {
+      "id": "N39_COMPLETE_PASS_WITH_BLOCKERS",
+      "expected_status": "ENGINEERING_REVIEW_REQUIRED"
+    },
+    {
+      "id": "N40_DCTN_TAG_CHANGED",
+      "expected_status": "FROZEN_BASELINE_MUTATION"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "text": "SSMC has exactly one physical connector plate per instance."
+    },
+    {
+      "id": "I02",
+      "text": "The two web attachment groups are serial and never halve the connection action."
+    },
+    {
+      "id": "I03",
+      "text": "Global X/Y/Z and signed inclination remain right-handed and backend authoritative."
+    },
+    {
+      "id": "I04",
+      "text": "All six wrench components are retained through reference transport."
+    },
+    {
+      "id": "I05",
+      "text": "Slice 8 is used only for the bounded planar equal-translational-stiffness component."
+    },
+    {
+      "id": "I06",
+      "text": "Inherited axial row fractions are never mixed into the SSMC Slice-8 free-moment solution."
+    },
+    {
+      "id": "I07",
+      "text": "Single-sided plate offsets retain generated secondary moments."
+    },
+    {
+      "id": "I08",
+      "text": "Unknown single-sided response is never represented as zero."
+    },
+    {
+      "id": "I09",
+      "text": "MITER_PLATE_CW_BASIS_UNKNOWN_CUT applies only to the connector plate."
+    },
+    {
+      "id": "I10",
+      "text": "The CW policy removes favorable LW strength credit but never makes the plate isotropic."
+    },
+    {
+      "id": "I11",
+      "text": "Missing CW properties never fall back to LW."
+    },
+    {
+      "id": "I12",
+      "text": "Primary member LW/CW/TT material axes remain unchanged."
+    },
+    {
+      "id": "I13",
+      "text": "Actual polygon edges and holes are geometry authority; convex hull/bounding rectangles are not."
+    },
+    {
+      "id": "I14",
+      "text": "Polygon resistance remains fail-closed absent qualified authority."
+    },
+    {
+      "id": "I15",
+      "text": "Member flange-to-web local transfer remains required local connection scope."
+    },
+    {
+      "id": "I16",
+      "text": "Independent hardware authority remains separate from connector material policy."
+    },
+    {
+      "id": "I17",
+      "text": "No automatic double-shear multiplier is introduced."
+    },
+    {
+      "id": "I18",
+      "text": "Public text/source identifiers cannot create trusted response or material authority."
+    },
+    {
+      "id": "I19",
+      "text": "Supported numerical FAIL outranks unresolved qualification blockers."
+    },
+    {
+      "id": "I20",
+      "text": "PASS requires complete required local response/resistance/source coverage."
+    },
+    {
+      "id": "I21",
+      "text": "SSMC-2 startup cannot imply complete moment-capacity qualification."
+    },
+    {
+      "id": "I22",
+      "text": "Frozen DCTN-3B behavior/tag and all existing route behavior remain unchanged."
+    }
+  ]
+}

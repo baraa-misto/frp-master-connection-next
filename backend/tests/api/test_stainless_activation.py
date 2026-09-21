@@ -49,7 +49,9 @@ def test_unknown_selection_fails_closed(value: str) -> None:
         canonical_material(value)
 
 
-@pytest.mark.parametrize("route", tuple(FAMILIES))
+# Preserve this historical cohort exactly; SSMC's FRP-only successor is tested
+# separately in test_ssmc_api, including its mandatory stainless rejection.
+@pytest.mark.parametrize("route", tuple(r for r in FAMILIES if r != "stair-stringer-miter"))
 def test_public_planning_inventory_is_noncalculating(route: str) -> None:
     payload = envelope(route)
     steel = material_plan(MaterialPlanRequestDTO.model_validate(dict(payload, apply_all=SS)))

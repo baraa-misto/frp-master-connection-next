@@ -1,0 +1,3964 @@
+{
+  "us": {
+    "request": {
+      "request_id": "ssmc-illustrative-unqualified",
+      "unit_system": "US",
+      "horizontal": {
+        "form": "CHANNEL",
+        "length": {
+          "value": "24",
+          "unit": "in"
+        },
+        "depth": {
+          "value": "10",
+          "unit": "in"
+        },
+        "width": {
+          "value": "4",
+          "unit": "in"
+        },
+        "web_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "flange_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        }
+      },
+      "inclined": {
+        "form": "CHANNEL",
+        "length": {
+          "value": "24",
+          "unit": "in"
+        },
+        "depth": {
+          "value": "10",
+          "unit": "in"
+        },
+        "width": {
+          "value": "4",
+          "unit": "in"
+        },
+        "web_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "flange_thickness": {
+          "value": "0.5",
+          "unit": "in"
+        }
+      },
+      "theta_deg": "-35",
+      "plate": {
+        "side": "NEG_Y",
+        "thickness": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "horizontal_overlap": {
+          "value": "8",
+          "unit": "in"
+        },
+        "inclined_overlap": {
+          "value": "8",
+          "unit": "in"
+        },
+        "horizontal_depth": {
+          "value": "4",
+          "unit": "in"
+        },
+        "inclined_depth": {
+          "value": "4",
+          "unit": "in"
+        },
+        "normal_gap": {
+          "value": "0.125",
+          "unit": "in"
+        },
+        "corner_radius": {
+          "value": "0",
+          "unit": "in"
+        },
+        "chamfer": {
+          "value": "0",
+          "unit": "in"
+        }
+      },
+      "horizontal_group": {
+        "rows": 2,
+        "first_from_cut": {
+          "value": "3",
+          "unit": "in"
+        },
+        "pitch": {
+          "value": "2",
+          "unit": "in"
+        },
+        "gauge": {
+          "value": "2",
+          "unit": "in"
+        },
+        "transverse_offset": {
+          "value": "0",
+          "unit": "in"
+        },
+        "ordinary_snug_tight": true,
+        "slots": false,
+        "equal_translational_stiffness": true
+      },
+      "inclined_group": {
+        "rows": 2,
+        "first_from_cut": {
+          "value": "3",
+          "unit": "in"
+        },
+        "pitch": {
+          "value": "2",
+          "unit": "in"
+        },
+        "gauge": {
+          "value": "2",
+          "unit": "in"
+        },
+        "transverse_offset": {
+          "value": "0",
+          "unit": "in"
+        },
+        "ordinary_snug_tight": true,
+        "slots": false,
+        "equal_translational_stiffness": true
+      },
+      "fastener": {
+        "diameter": {
+          "value": "0.5",
+          "unit": "in"
+        },
+        "hole_diameter": {
+          "value": "0.563",
+          "unit": "in"
+        },
+        "hardware": {
+          "washer_diameter": {
+            "value": "1.25",
+            "unit": "in"
+          },
+          "washer_thickness": {
+            "value": "0.125",
+            "unit": "in"
+          },
+          "head_across_flats": {
+            "value": "0.75",
+            "unit": "in"
+          },
+          "head_height": {
+            "value": "0.3125",
+            "unit": "in"
+          },
+          "nut_across_flats": {
+            "value": "0.75",
+            "unit": "in"
+          },
+          "nut_height": {
+            "value": "0.4375",
+            "unit": "in"
+          },
+          "end_extension": {
+            "value": "0.125",
+            "unit": "in"
+          },
+          "geometry_source": "SSMC_ILLUSTRATIVE_GEOMETRY_NOT_STRENGTH_AUTHORITY"
+        },
+        "threads": "EXCLUDED",
+        "source_reference": ""
+      },
+      "N": {
+        "value": "0",
+        "unit": "kip"
+      },
+      "V": {
+        "value": "0",
+        "unit": "kip"
+      },
+      "M": {
+        "value": "0",
+        "unit": "kip-in"
+      },
+      "source_reference": "",
+      "contract": "SSMC-2-RC1"
+    },
+    "response": {
+      "contract": "SSMC-2-RC1",
+      "request_id": "ssmc-illustrative-unqualified",
+      "geometry_status": "VALID",
+      "engineering_fingerprint": "0dc192c99211e245eec4d8e55edbf52824203ff96e828e1031df331d20c69f7d",
+      "whole_connection_status": "ENGINEERING_REVIEW_REQUIRED",
+      "illustrative_geometry_not_qualified_design": true,
+      "result": {
+        "input": {
+          "request_id": "ssmc-illustrative-unqualified",
+          "unit_system": "US",
+          "horizontal": {
+            "form": "CHANNEL",
+            "length": {
+              "value": "24",
+              "unit": "in"
+            },
+            "depth": {
+              "value": "10",
+              "unit": "in"
+            },
+            "width": {
+              "value": "4",
+              "unit": "in"
+            },
+            "web_thickness": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "flange_thickness": {
+              "value": "0.5",
+              "unit": "in"
+            }
+          },
+          "inclined": {
+            "form": "CHANNEL",
+            "length": {
+              "value": "24",
+              "unit": "in"
+            },
+            "depth": {
+              "value": "10",
+              "unit": "in"
+            },
+            "width": {
+              "value": "4",
+              "unit": "in"
+            },
+            "web_thickness": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "flange_thickness": {
+              "value": "0.5",
+              "unit": "in"
+            }
+          },
+          "theta_deg": "-35",
+          "plate": {
+            "side": "NEG_Y",
+            "thickness": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "horizontal_overlap": {
+              "value": "8",
+              "unit": "in"
+            },
+            "inclined_overlap": {
+              "value": "8",
+              "unit": "in"
+            },
+            "horizontal_depth": {
+              "value": "4",
+              "unit": "in"
+            },
+            "inclined_depth": {
+              "value": "4",
+              "unit": "in"
+            },
+            "normal_gap": {
+              "value": "0.125",
+              "unit": "in"
+            },
+            "corner_radius": {
+              "value": "0",
+              "unit": "in"
+            },
+            "chamfer": {
+              "value": "0",
+              "unit": "in"
+            }
+          },
+          "horizontal_group": {
+            "rows": 2,
+            "first_from_cut": {
+              "value": "3",
+              "unit": "in"
+            },
+            "pitch": {
+              "value": "2",
+              "unit": "in"
+            },
+            "gauge": {
+              "value": "2",
+              "unit": "in"
+            },
+            "transverse_offset": {
+              "value": "0",
+              "unit": "in"
+            },
+            "ordinary_snug_tight": true,
+            "slots": false,
+            "equal_translational_stiffness": true
+          },
+          "inclined_group": {
+            "rows": 2,
+            "first_from_cut": {
+              "value": "3",
+              "unit": "in"
+            },
+            "pitch": {
+              "value": "2",
+              "unit": "in"
+            },
+            "gauge": {
+              "value": "2",
+              "unit": "in"
+            },
+            "transverse_offset": {
+              "value": "0",
+              "unit": "in"
+            },
+            "ordinary_snug_tight": true,
+            "slots": false,
+            "equal_translational_stiffness": true
+          },
+          "fastener": {
+            "diameter": {
+              "value": "0.5",
+              "unit": "in"
+            },
+            "hole_diameter": {
+              "value": "0.563",
+              "unit": "in"
+            },
+            "hardware": {
+              "washer_diameter": {
+                "value": "1.25",
+                "unit": "in"
+              },
+              "washer_thickness": {
+                "value": "0.125",
+                "unit": "in"
+              },
+              "head_across_flats": {
+                "value": "0.75",
+                "unit": "in"
+              },
+              "head_height": {
+                "value": "0.3125",
+                "unit": "in"
+              },
+              "nut_across_flats": {
+                "value": "0.75",
+                "unit": "in"
+              },
+              "nut_height": {
+                "value": "0.4375",
+                "unit": "in"
+              },
+              "end_extension": {
+                "value": "0.125",
+                "unit": "in"
+              },
+              "geometry_source": "SSMC_ILLUSTRATIVE_GEOMETRY_NOT_STRENGTH_AUTHORITY"
+            },
+            "threads": "EXCLUDED",
+            "source_reference": ""
+          },
+          "N": {
+            "value": "0",
+            "unit": "kip"
+          },
+          "V": {
+            "value": "0",
+            "unit": "kip"
+          },
+          "M": {
+            "value": "0",
+            "unit": "kip-in"
+          },
+          "source_reference": "",
+          "contract": "SSMC-2-RC1"
+        },
+        "geometry": {
+          "length_unit": "in",
+          "polygon": {
+            "boundary": [
+              [
+                -0.6961306480792676,
+                -2
+              ],
+              [
+                -8.696130648079267,
+                -2
+              ],
+              [
+                -7.4349354925633335,
+                2
+              ],
+              [
+                0.5650645074366663,
+                2
+              ],
+              [
+                0.6842791262801946,
+                1.9624117750619658
+              ],
+              [
+                7.237495480592129,
+                -2.6261997157464023
+              ],
+              [
+                5.9763003250761955,
+                -6.626199715746402
+              ],
+              [
+                -0.5769160292357393,
+                -2.037588224938034
+              ]
+            ],
+            "edge_ids": [
+              "MITER_WEB_PLATE:H_MINUS",
+              "MITER_WEB_PLATE:H_FAR",
+              "MITER_WEB_PLATE:H_PLUS",
+              "MITER_WEB_PLATE:TRANSITION_PLUS",
+              "MITER_WEB_PLATE:I_PLUS",
+              "MITER_WEB_PLATE:I_FAR",
+              "MITER_WEB_PLATE:I_MINUS",
+              "MITER_WEB_PLATE:TRANSITION_MINUS"
+            ],
+            "gross_neck_width": 4.194116500563243,
+            "area": 64.52426456257041
+          },
+          "plate_side": "NEG_Y",
+          "plate_y_interval": [
+            -0.5,
+            0
+          ],
+          "members": [
+            {
+              "owner": "HORIZONTAL_STRINGER",
+              "end_reference": {
+                "x": -0.06553307032130067,
+                "y": 0.25,
+                "z": 0
+              },
+              "material_longitudinal": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+              },
+              "material_depth": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+              },
+              "trimmed": {
+                "component_id": "HORIZONTAL_STRINGER",
+                "cut_plane": {
+                  "id": "HORIZONTAL_STRINGER:MITER",
+                  "origin": {
+                    "x": -0.05960730942176418,
+                    "y": 0,
+                    "z": 0.018794112469017066
+                  },
+                  "normal": {
+                    "x": -0.9537169507482269,
+                    "y": 0,
+                    "z": 0.30070579950427306
+                  }
+                },
+                "solids": [
+                  {
+                    "physical_element_id": "WEB",
+                    "material_region_id": "WEB",
+                    "faces": [
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0.5,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0.5,
+                            "z": -4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.4843776202767263,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0.5,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0.5,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0.5,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -1.484377620276728,
+                            "y": 0.5,
+                            "z": -4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0.5,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.4843776202767263,
+                            "y": 0.5,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.484377620276728,
+                            "y": 0,
+                            "z": -4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0.5,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0.5,
+                            "z": 4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:CUT:HORIZONTAL_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0.5,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -1.484377620276728,
+                            "y": 0.5,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.4843776202767263,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0,
+                            "z": 4.5
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "TOP_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": 5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": 4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.510960874073616,
+                            "y": 0,
+                            "z": 5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": 5
+                          },
+                          {
+                            "x": 1.510960874073616,
+                            "y": 4,
+                            "z": 5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 4,
+                            "z": 4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 4,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0,
+                            "z": 4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": 5
+                          },
+                          {
+                            "x": 1.510960874073616,
+                            "y": 0,
+                            "z": 5
+                          },
+                          {
+                            "x": 1.510960874073616,
+                            "y": 4,
+                            "z": 5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": 5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:CUT:HORIZONTAL_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": 1.510960874073616,
+                            "y": 4,
+                            "z": 5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 4,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.3533114796341241,
+                            "y": 0,
+                            "z": 4.5
+                          },
+                          {
+                            "x": 1.510960874073616,
+                            "y": 0,
+                            "z": 5
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "BOTTOM_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": -5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -5
+                          },
+                          {
+                            "x": -1.64202701471622,
+                            "y": 0,
+                            "z": -5
+                          },
+                          {
+                            "x": -1.484377620276728,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": -5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.4843776202767263,
+                            "y": 4,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.64202701471622,
+                            "y": 4,
+                            "z": -5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": -5
+                          },
+                          {
+                            "x": -1.64202701471622,
+                            "y": 4,
+                            "z": -5
+                          },
+                          {
+                            "x": -1.64202701471622,
+                            "y": 0,
+                            "z": -5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -12,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.4843776202767263,
+                            "y": 0,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.484377620276728,
+                            "y": 4,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -12,
+                            "y": 4,
+                            "z": -4.5
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:CUT:HORIZONTAL_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": -1.4843776202767263,
+                            "y": 4,
+                            "z": -4.5
+                          },
+                          {
+                            "x": -1.64202701471622,
+                            "y": 4,
+                            "z": -5
+                          },
+                          {
+                            "x": -1.64202701471622,
+                            "y": 0,
+                            "z": -5
+                          },
+                          {
+                            "x": -1.484377620276728,
+                            "y": 0,
+                            "z": -4.5
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  }
+                ],
+                "geometry_fingerprint": "e326e0d1ae30c5328f7ca1bbebdb567b027d393c60fbc9ee2f34625b7d498e7d"
+              }
+            },
+            {
+              "owner": "INCLINED_STRINGER",
+              "end_reference": {
+                "x": 0.053681548522227694,
+                "y": 0.25,
+                "z": -0.03758822493803413
+              },
+              "material_longitudinal": {
+                "x": 0.8191520442889918,
+                "y": 0,
+                "z": -0.573576436351046
+              },
+              "material_depth": {
+                "x": 0.573576436351046,
+                "y": 0,
+                "z": 0.8191520442889918
+              },
+              "trimmed": {
+                "component_id": "INCLINED_STRINGER",
+                "cut_plane": {
+                  "id": "INCLINED_STRINGER:MITER",
+                  "origin": {
+                    "x": 0.05960730942176418,
+                    "y": 0,
+                    "z": -0.018794112469017066
+                  },
+                  "normal": {
+                    "x": 0.9537169507482269,
+                    "y": 0,
+                    "z": -0.30070579950427306
+                  }
+                },
+                "solids": [
+                  {
+                    "physical_element_id": "WEB",
+                    "material_region_id": "WEB",
+                    "faces": [
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0.5,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0.5,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0,
+                            "z": -3.1967330369120894
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -1.3651630014331975,
+                            "y": 0,
+                            "z": -4.537588224938035
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0,
+                            "z": 4.462411775061967
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0.5,
+                            "z": 4.462411775061966
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0.5,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0.5,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": -1.3651630014331992,
+                            "y": 0.5,
+                            "z": -4.537588224938034
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -1.3651630014331975,
+                            "y": 0.5,
+                            "z": -4.537588224938035
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0.5,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": -1.3651630014331992,
+                            "y": 0,
+                            "z": -4.537588224938034
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0,
+                            "z": 4.462411775061966
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0.5,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0.5,
+                            "z": 4.462411775061967
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:CUT:INCLINED_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": -1.3651630014331992,
+                            "y": 0.5,
+                            "z": -4.537588224938034
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0.5,
+                            "z": 4.462411775061966
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0,
+                            "z": 4.462411775061967
+                          },
+                          {
+                            "x": -1.3651630014331975,
+                            "y": 0,
+                            "z": -4.537588224938035
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "TOP_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 4,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 12.697706713223132,
+                            "y": 4,
+                            "z": -2.787157014767594
+                          },
+                          {
+                            "x": 12.697706713223132,
+                            "y": 0,
+                            "z": -2.787157014767594
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0,
+                            "z": 4.462411775061966
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 12.697706713223132,
+                            "y": 0,
+                            "z": -2.787157014767594
+                          },
+                          {
+                            "x": 1.6301754929171448,
+                            "y": 0,
+                            "z": 4.962411775061966
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": 1.630175492917144,
+                            "y": 4,
+                            "z": 4.962411775061966
+                          },
+                          {
+                            "x": 12.697706713223132,
+                            "y": 4,
+                            "z": -2.787157014767594
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 4,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 4,
+                            "z": 4.462411775061967
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": 1.472526098477653,
+                            "y": 4,
+                            "z": 4.462411775061966
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 4,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 12.410918495047609,
+                            "y": 0,
+                            "z": -3.1967330369120894
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0,
+                            "z": 4.462411775061967
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": 1.630175492917144,
+                            "y": 0,
+                            "z": 4.962411775061966
+                          },
+                          {
+                            "x": 12.697706713223132,
+                            "y": 0,
+                            "z": -2.787157014767594
+                          },
+                          {
+                            "x": 12.697706713223132,
+                            "y": 4,
+                            "z": -2.787157014767594
+                          },
+                          {
+                            "x": 1.6301754929171448,
+                            "y": 4,
+                            "z": 4.962411775061966
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:CUT:INCLINED_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": 1.472526098477653,
+                            "y": 4,
+                            "z": 4.462411775061967
+                          },
+                          {
+                            "x": 1.630175492917144,
+                            "y": 4,
+                            "z": 4.962411775061966
+                          },
+                          {
+                            "x": 1.6301754929171448,
+                            "y": 0,
+                            "z": 4.962411775061966
+                          },
+                          {
+                            "x": 1.472526098477653,
+                            "y": 0,
+                            "z": 4.462411775061966
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "BOTTOM_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": 6.96194234971267,
+                            "y": 0,
+                            "z": -10.978677457657511
+                          },
+                          {
+                            "x": 6.96194234971267,
+                            "y": 4,
+                            "z": -10.978677457657511
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 4,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0,
+                            "z": -10.569101435513016
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -1.522812395872693,
+                            "y": 0,
+                            "z": -5.037588224938033
+                          },
+                          {
+                            "x": 6.96194234971267,
+                            "y": 0,
+                            "z": -10.978677457657511
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": -1.3651630014331992,
+                            "y": 0,
+                            "z": -4.537588224938034
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -1.3651630014331975,
+                            "y": 4,
+                            "z": -4.537588224938035
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 4,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 6.96194234971267,
+                            "y": 4,
+                            "z": -10.978677457657511
+                          },
+                          {
+                            "x": -1.5228123958726876,
+                            "y": 4,
+                            "z": -5.037588224938034
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -1.522812395872693,
+                            "y": 4,
+                            "z": -5.037588224938033
+                          },
+                          {
+                            "x": 6.96194234971267,
+                            "y": 4,
+                            "z": -10.978677457657511
+                          },
+                          {
+                            "x": 6.96194234971267,
+                            "y": 0,
+                            "z": -10.978677457657511
+                          },
+                          {
+                            "x": -1.5228123958726876,
+                            "y": 0,
+                            "z": -5.037588224938034
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -1.3651630014331975,
+                            "y": 0,
+                            "z": -4.537588224938035
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 0,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": 7.2487305678881935,
+                            "y": 4,
+                            "z": -10.569101435513016
+                          },
+                          {
+                            "x": -1.3651630014331992,
+                            "y": 4,
+                            "z": -4.537588224938034
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:CUT:INCLINED_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": -1.5228123958726876,
+                            "y": 4,
+                            "z": -5.037588224938034
+                          },
+                          {
+                            "x": -1.3651630014331975,
+                            "y": 4,
+                            "z": -4.537588224938035
+                          },
+                          {
+                            "x": -1.3651630014331992,
+                            "y": 0,
+                            "z": -4.537588224938034
+                          },
+                          {
+                            "x": -1.522812395872693,
+                            "y": 0,
+                            "z": -5.037588224938033
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  }
+                ],
+                "geometry_fingerprint": "b76264d29bb84e0c38201ad5a6be53ac9b7c860298b5b2080027724c9e2d0120"
+              }
+            }
+          ],
+          "shafts": [
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_-1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 1,
+              "line": -1,
+              "start": {
+                "x": -3.380831859200284,
+                "y": -0.5,
+                "z": -1
+              },
+              "end": {
+                "x": -3.380831859200284,
+                "y": 0.5,
+                "z": -1
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 1,
+              "line": 1,
+              "start": {
+                "x": -2.7502342814423173,
+                "y": -0.5,
+                "z": 1
+              },
+              "end": {
+                "x": -2.7502342814423173,
+                "y": 0.5,
+                "z": 1
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_-1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 2,
+              "line": -1,
+              "start": {
+                "x": -5.380831859200284,
+                "y": -0.5,
+                "z": -1
+              },
+              "end": {
+                "x": -5.380831859200284,
+                "y": 0.5,
+                "z": -1
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 2,
+              "line": 1,
+              "start": {
+                "x": -4.750234281442317,
+                "y": -0.5,
+                "z": 1
+              },
+              "end": {
+                "x": -4.750234281442317,
+                "y": 0.5,
+                "z": 1
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_1:LINE_-1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 1,
+              "line": -1,
+              "start": {
+                "x": 2.1958388925102192,
+                "y": -0.5,
+                "z": -2.758317533991172
+              },
+              "end": {
+                "x": 2.1958388925102192,
+                "y": 0.5,
+                "z": -2.758317533991172
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_1:LINE_1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 1,
+              "line": 1,
+              "start": {
+                "x": 2.826436470268187,
+                "y": -0.5,
+                "z": -0.7583175339911724
+              },
+              "end": {
+                "x": 2.826436470268187,
+                "y": 0.5,
+                "z": -0.7583175339911724
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_2:LINE_-1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 2,
+              "line": -1,
+              "start": {
+                "x": 3.8341429810882026,
+                "y": -0.5,
+                "z": -3.905470406693264
+              },
+              "end": {
+                "x": 3.8341429810882026,
+                "y": 0.5,
+                "z": -3.905470406693264
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_2:LINE_1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 2,
+              "line": 1,
+              "start": {
+                "x": 4.46474055884617,
+                "y": -0.5,
+                "z": -1.9054704066932642
+              },
+              "end": {
+                "x": 4.46474055884617,
+                "y": 0.5,
+                "z": -1.9054704066932642
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            }
+          ],
+          "polygon_paths": {
+            "holes": [
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_-1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -3.380831859200284,
+                  -1
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -2.7502342814423173,
+                  1
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_-1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -5.380831859200284,
+                  -1
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -4.750234281442317,
+                  1
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_1:LINE_-1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  2.1958388925102192,
+                  -2.758317533991172
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_1:LINE_1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  2.826436470268187,
+                  -0.7583175339911724
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_2:LINE_-1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  3.8341429810882026,
+                  -3.905470406693264
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_2:LINE_1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  4.46474055884617,
+                  -1.9054704066932642
+                ],
+                "radius": 0.2815,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              }
+            ]
+          },
+          "gross_neck_only_not_resistance": true
+        },
+        "groups": [
+          {
+            "group_id": "HORIZONTAL_WEB_GROUP",
+            "member_end_wrench": {
+              "reference": {
+                "x": {
+                  "value": "-0.06553307032130067",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "plate_wrench": {
+              "reference": {
+                "x": {
+                  "value": "-3.06553307032130065",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "-0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "planar_status": "CALCULATED_BOUNDED_PLANAR_DEMAND"
+          },
+          {
+            "group_id": "INCLINED_WEB_GROUP",
+            "member_end_wrench": {
+              "reference": {
+                "x": {
+                  "value": "0.053681548522227694",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "-0.03758822493803413",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "plate_wrench": {
+              "reference": {
+                "x": {
+                  "value": "2.5111376813892031",
+                  "unit": "in"
+                },
+                "y": {
+                  "value": "-0.25",
+                  "unit": "in"
+                },
+                "z": {
+                  "value": "-1.7583175339911722",
+                  "unit": "in"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "planar_status": "CALCULATED_BOUNDED_PLANAR_DEMAND"
+          }
+        ],
+        "engineering_fingerprint": "0dc192c99211e245eec4d8e55edbf52824203ff96e828e1031df331d20c69f7d",
+        "whole_connection_status": "ENGINEERING_REVIEW_REQUIRED",
+        "statuses": [
+          [
+            "Geometry",
+            "VALID"
+          ],
+          [
+            "Demand",
+            "CALCULATED"
+          ],
+          [
+            "Planar group response",
+            "CALCULATED_BOUNDED_PLANAR_DEMAND"
+          ],
+          [
+            "Complete response",
+            "SSMC_SINGLE_SIDE_RESPONSE_NOT_QUALIFIED"
+          ],
+          [
+            "Plate resistance",
+            "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED"
+          ],
+          [
+            "Member local transfer",
+            "SSMC_MEMBER_FLANGE_WEB_TRANSFER_NOT_QUALIFIED"
+          ],
+          [
+            "Hardware",
+            "SSMC_HARDWARE_COMBINED_RESPONSE_NOT_QUALIFIED"
+          ],
+          [
+            "Qualification",
+            "REQUIRED_QUALIFICATION_MISSING"
+          ],
+          [
+            "Design",
+            "ENGINEERING_REVIEW_REQUIRED"
+          ]
+        ],
+        "blockers": [
+          "SSMC_SINGLE_SIDE_RESPONSE_NOT_QUALIFIED",
+          "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED",
+          "SSMC_MEMBER_FLANGE_WEB_TRANSFER_NOT_QUALIFIED",
+          "SSMC_HARDWARE_COMBINED_RESPONSE_NOT_QUALIFIED",
+          "SSMC_CW_SOURCE_REQUIRED"
+        ],
+        "evaluated_failures": [],
+        "complete_moment_capacity_qualified": false,
+        "plate_policy": "MITER_PLATE_CW_BASIS_UNKNOWN_CUT"
+      }
+    }
+  },
+  "si": {
+    "request": {
+      "request_id": "ssmc-illustrative-unqualified",
+      "unit_system": "SI",
+      "horizontal": {
+        "form": "CHANNEL",
+        "length": {
+          "value": "609.6",
+          "unit": "mm"
+        },
+        "depth": {
+          "value": "254.0",
+          "unit": "mm"
+        },
+        "width": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "web_thickness": {
+          "value": "12.70",
+          "unit": "mm"
+        },
+        "flange_thickness": {
+          "value": "12.70",
+          "unit": "mm"
+        }
+      },
+      "inclined": {
+        "form": "CHANNEL",
+        "length": {
+          "value": "609.6",
+          "unit": "mm"
+        },
+        "depth": {
+          "value": "254.0",
+          "unit": "mm"
+        },
+        "width": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "web_thickness": {
+          "value": "12.70",
+          "unit": "mm"
+        },
+        "flange_thickness": {
+          "value": "12.70",
+          "unit": "mm"
+        }
+      },
+      "theta_deg": "-35",
+      "plate": {
+        "side": "NEG_Y",
+        "thickness": {
+          "value": "12.70",
+          "unit": "mm"
+        },
+        "horizontal_overlap": {
+          "value": "203.2",
+          "unit": "mm"
+        },
+        "inclined_overlap": {
+          "value": "203.2",
+          "unit": "mm"
+        },
+        "horizontal_depth": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "inclined_depth": {
+          "value": "101.6",
+          "unit": "mm"
+        },
+        "normal_gap": {
+          "value": "3.1750",
+          "unit": "mm"
+        },
+        "corner_radius": {
+          "value": "0",
+          "unit": "mm"
+        },
+        "chamfer": {
+          "value": "0",
+          "unit": "mm"
+        }
+      },
+      "horizontal_group": {
+        "rows": 2,
+        "first_from_cut": {
+          "value": "76.2",
+          "unit": "mm"
+        },
+        "pitch": {
+          "value": "50.8",
+          "unit": "mm"
+        },
+        "gauge": {
+          "value": "50.8",
+          "unit": "mm"
+        },
+        "transverse_offset": {
+          "value": "0",
+          "unit": "mm"
+        },
+        "ordinary_snug_tight": true,
+        "slots": false,
+        "equal_translational_stiffness": true
+      },
+      "inclined_group": {
+        "rows": 2,
+        "first_from_cut": {
+          "value": "76.2",
+          "unit": "mm"
+        },
+        "pitch": {
+          "value": "50.8",
+          "unit": "mm"
+        },
+        "gauge": {
+          "value": "50.8",
+          "unit": "mm"
+        },
+        "transverse_offset": {
+          "value": "0",
+          "unit": "mm"
+        },
+        "ordinary_snug_tight": true,
+        "slots": false,
+        "equal_translational_stiffness": true
+      },
+      "fastener": {
+        "diameter": {
+          "value": "12.70",
+          "unit": "mm"
+        },
+        "hole_diameter": {
+          "value": "14.3002",
+          "unit": "mm"
+        },
+        "hardware": {
+          "washer_diameter": {
+            "value": "31.750",
+            "unit": "mm"
+          },
+          "washer_thickness": {
+            "value": "3.1750",
+            "unit": "mm"
+          },
+          "head_across_flats": {
+            "value": "19.050",
+            "unit": "mm"
+          },
+          "head_height": {
+            "value": "7.93750",
+            "unit": "mm"
+          },
+          "nut_across_flats": {
+            "value": "19.050",
+            "unit": "mm"
+          },
+          "nut_height": {
+            "value": "11.11250",
+            "unit": "mm"
+          },
+          "end_extension": {
+            "value": "3.1750",
+            "unit": "mm"
+          },
+          "geometry_source": "SSMC_ILLUSTRATIVE_GEOMETRY_NOT_STRENGTH_AUTHORITY"
+        },
+        "threads": "EXCLUDED",
+        "source_reference": ""
+      },
+      "N": {
+        "value": "0",
+        "unit": "kN"
+      },
+      "V": {
+        "value": "0",
+        "unit": "kN"
+      },
+      "M": {
+        "value": "0",
+        "unit": "kN-mm"
+      },
+      "source_reference": "",
+      "contract": "SSMC-2-RC1"
+    },
+    "response": {
+      "contract": "SSMC-2-RC1",
+      "request_id": "ssmc-illustrative-unqualified",
+      "geometry_status": "VALID",
+      "engineering_fingerprint": "f4854e96f3572a7613b9c405b7a85b43026d7bc2d81f642e207940426318f77b",
+      "whole_connection_status": "ENGINEERING_REVIEW_REQUIRED",
+      "illustrative_geometry_not_qualified_design": true,
+      "result": {
+        "input": {
+          "request_id": "ssmc-illustrative-unqualified",
+          "unit_system": "SI",
+          "horizontal": {
+            "form": "CHANNEL",
+            "length": {
+              "value": "609.6",
+              "unit": "mm"
+            },
+            "depth": {
+              "value": "254.0",
+              "unit": "mm"
+            },
+            "width": {
+              "value": "101.6",
+              "unit": "mm"
+            },
+            "web_thickness": {
+              "value": "12.70",
+              "unit": "mm"
+            },
+            "flange_thickness": {
+              "value": "12.70",
+              "unit": "mm"
+            }
+          },
+          "inclined": {
+            "form": "CHANNEL",
+            "length": {
+              "value": "609.6",
+              "unit": "mm"
+            },
+            "depth": {
+              "value": "254.0",
+              "unit": "mm"
+            },
+            "width": {
+              "value": "101.6",
+              "unit": "mm"
+            },
+            "web_thickness": {
+              "value": "12.70",
+              "unit": "mm"
+            },
+            "flange_thickness": {
+              "value": "12.70",
+              "unit": "mm"
+            }
+          },
+          "theta_deg": "-35",
+          "plate": {
+            "side": "NEG_Y",
+            "thickness": {
+              "value": "12.70",
+              "unit": "mm"
+            },
+            "horizontal_overlap": {
+              "value": "203.2",
+              "unit": "mm"
+            },
+            "inclined_overlap": {
+              "value": "203.2",
+              "unit": "mm"
+            },
+            "horizontal_depth": {
+              "value": "101.6",
+              "unit": "mm"
+            },
+            "inclined_depth": {
+              "value": "101.6",
+              "unit": "mm"
+            },
+            "normal_gap": {
+              "value": "3.1750",
+              "unit": "mm"
+            },
+            "corner_radius": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "chamfer": {
+              "value": "0",
+              "unit": "mm"
+            }
+          },
+          "horizontal_group": {
+            "rows": 2,
+            "first_from_cut": {
+              "value": "76.2",
+              "unit": "mm"
+            },
+            "pitch": {
+              "value": "50.8",
+              "unit": "mm"
+            },
+            "gauge": {
+              "value": "50.8",
+              "unit": "mm"
+            },
+            "transverse_offset": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "ordinary_snug_tight": true,
+            "slots": false,
+            "equal_translational_stiffness": true
+          },
+          "inclined_group": {
+            "rows": 2,
+            "first_from_cut": {
+              "value": "76.2",
+              "unit": "mm"
+            },
+            "pitch": {
+              "value": "50.8",
+              "unit": "mm"
+            },
+            "gauge": {
+              "value": "50.8",
+              "unit": "mm"
+            },
+            "transverse_offset": {
+              "value": "0",
+              "unit": "mm"
+            },
+            "ordinary_snug_tight": true,
+            "slots": false,
+            "equal_translational_stiffness": true
+          },
+          "fastener": {
+            "diameter": {
+              "value": "12.70",
+              "unit": "mm"
+            },
+            "hole_diameter": {
+              "value": "14.3002",
+              "unit": "mm"
+            },
+            "hardware": {
+              "washer_diameter": {
+                "value": "31.750",
+                "unit": "mm"
+              },
+              "washer_thickness": {
+                "value": "3.1750",
+                "unit": "mm"
+              },
+              "head_across_flats": {
+                "value": "19.050",
+                "unit": "mm"
+              },
+              "head_height": {
+                "value": "7.93750",
+                "unit": "mm"
+              },
+              "nut_across_flats": {
+                "value": "19.050",
+                "unit": "mm"
+              },
+              "nut_height": {
+                "value": "11.11250",
+                "unit": "mm"
+              },
+              "end_extension": {
+                "value": "3.1750",
+                "unit": "mm"
+              },
+              "geometry_source": "SSMC_ILLUSTRATIVE_GEOMETRY_NOT_STRENGTH_AUTHORITY"
+            },
+            "threads": "EXCLUDED",
+            "source_reference": ""
+          },
+          "N": {
+            "value": "0",
+            "unit": "kN"
+          },
+          "V": {
+            "value": "0",
+            "unit": "kN"
+          },
+          "M": {
+            "value": "0",
+            "unit": "kN-mm"
+          },
+          "source_reference": "",
+          "contract": "SSMC-2-RC1"
+        },
+        "geometry": {
+          "length_unit": "mm",
+          "polygon": {
+            "boundary": [
+              [
+                -17.681718461213393,
+                -50.8
+              ],
+              [
+                -220.88171846121338,
+                -50.8
+              ],
+              [
+                -188.84736151110866,
+                50.8
+              ],
+              [
+                14.352638488891321,
+                50.8
+              ],
+              [
+                17.38068980751694,
+                49.845259086573925
+              ],
+              [
+                183.83238520704006,
+                -66.70547277995863
+              ],
+              [
+                151.79802825693534,
+                -168.30547277995862
+              ],
+              [
+                -14.653667142587777,
+                -51.75474091342606
+              ]
+            ],
+            "edge_ids": [
+              "MITER_WEB_PLATE:H_MINUS",
+              "MITER_WEB_PLATE:H_FAR",
+              "MITER_WEB_PLATE:H_PLUS",
+              "MITER_WEB_PLATE:TRANSITION_PLUS",
+              "MITER_WEB_PLATE:I_PLUS",
+              "MITER_WEB_PLATE:I_FAR",
+              "MITER_WEB_PLATE:I_MINUS",
+              "MITER_WEB_PLATE:TRANSITION_MINUS"
+            ],
+            "gross_neck_width": 106.53055911430636,
+            "area": 41628.47452518792
+          },
+          "plate_side": "NEG_Y",
+          "plate_y_interval": [
+            -12.7,
+            0
+          ],
+          "members": [
+            {
+              "owner": "HORIZONTAL_STRINGER",
+              "end_reference": {
+                "x": -1.6645399861610368,
+                "y": 6.35,
+                "z": 0
+              },
+              "material_longitudinal": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+              },
+              "material_depth": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+              },
+              "trimmed": {
+                "component_id": "HORIZONTAL_STRINGER",
+                "cut_plane": {
+                  "id": "HORIZONTAL_STRINGER:MITER",
+                  "origin": {
+                    "x": -1.51402565931281,
+                    "y": 0,
+                    "z": 0.47737045671303346
+                  },
+                  "normal": {
+                    "x": -0.9537169507482269,
+                    "y": 0,
+                    "z": 0.30070579950427306
+                  }
+                },
+                "solids": [
+                  {
+                    "physical_element_id": "WEB",
+                    "material_region_id": "WEB",
+                    "faces": [
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 12.700000000000003,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 12.700000000000003,
+                            "z": -114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.70319155502881,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 12.700000000000003,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 12.700000000000003,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 12.700000000000003,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -37.703191555028866,
+                            "y": 12.700000000000003,
+                            "z": -114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 12.700000000000003,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.70319155502881,
+                            "y": 12.700000000000003,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.703191555028866,
+                            "y": 0,
+                            "z": -114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 12.700000000000003,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 12.700000000000003,
+                            "z": 114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:CUT:HORIZONTAL_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": 34.374111582706746,
+                            "y": 12.700000000000003,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -37.703191555028866,
+                            "y": 12.700000000000003,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.70319155502881,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 0,
+                            "z": 114.3
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "TOP_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": 127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": 114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 38.37840620146983,
+                            "y": 0,
+                            "z": 127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 127
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": 127
+                          },
+                          {
+                            "x": 38.37840620146994,
+                            "y": 101.6,
+                            "z": 127
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 101.6,
+                            "z": 114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 101.6,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 0,
+                            "z": 114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": 127
+                          },
+                          {
+                            "x": 38.37840620146994,
+                            "y": 0,
+                            "z": 127
+                          },
+                          {
+                            "x": 38.37840620146983,
+                            "y": 101.6,
+                            "z": 127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": 127
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:CUT:HORIZONTAL_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": 38.37840620146994,
+                            "y": 101.6,
+                            "z": 127
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 101.6,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 34.374111582706746,
+                            "y": 0,
+                            "z": 114.3
+                          },
+                          {
+                            "x": 38.37840620146983,
+                            "y": 0,
+                            "z": 127
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "BOTTOM_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": -127
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -127
+                          },
+                          {
+                            "x": -41.70748617379189,
+                            "y": 0,
+                            "z": -127
+                          },
+                          {
+                            "x": -37.703191555028866,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": -127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.70319155502881,
+                            "y": 101.6,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -41.70748617379195,
+                            "y": 101.6,
+                            "z": -127
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -127
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": -127
+                          },
+                          {
+                            "x": -41.70748617379189,
+                            "y": 101.6,
+                            "z": -127
+                          },
+                          {
+                            "x": -41.70748617379195,
+                            "y": 0,
+                            "z": -127
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -304.8,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.70319155502881,
+                            "y": 0,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -37.703191555028866,
+                            "y": 101.6,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -304.8,
+                            "y": 101.6,
+                            "z": -114.3
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:CUT:HORIZONTAL_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": -37.70319155502881,
+                            "y": 101.6,
+                            "z": -114.3
+                          },
+                          {
+                            "x": -41.70748617379195,
+                            "y": 101.6,
+                            "z": -127
+                          },
+                          {
+                            "x": -41.70748617379189,
+                            "y": 0,
+                            "z": -127
+                          },
+                          {
+                            "x": -37.703191555028866,
+                            "y": 0,
+                            "z": -114.3
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  }
+                ],
+                "geometry_fingerprint": "abaa3d548cfaa37c64780596150d58c68312fa48227d270c1e2cd3431f2b2198"
+              }
+            },
+            {
+              "owner": "INCLINED_STRINGER",
+              "end_reference": {
+                "x": 1.3635113324645833,
+                "y": 6.35,
+                "z": -0.954740913426067
+              },
+              "material_longitudinal": {
+                "x": 0.8191520442889918,
+                "y": 0,
+                "z": -0.573576436351046
+              },
+              "material_depth": {
+                "x": 0.573576436351046,
+                "y": 0,
+                "z": 0.8191520442889918
+              },
+              "trimmed": {
+                "component_id": "INCLINED_STRINGER",
+                "cut_plane": {
+                  "id": "INCLINED_STRINGER:MITER",
+                  "origin": {
+                    "x": 1.51402565931281,
+                    "y": 0,
+                    "z": -0.47737045671303346
+                  },
+                  "normal": {
+                    "x": 0.9537169507482269,
+                    "y": 0,
+                    "z": -0.30070579950427306
+                  }
+                },
+                "solids": [
+                  {
+                    "physical_element_id": "WEB",
+                    "material_region_id": "WEB",
+                    "faces": [
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": 184.11775642436015,
+                            "y": 0,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 12.700000000000003,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 12.700000000000003,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 0,
+                            "z": -81.19701913756705
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -34.675140236403195,
+                            "y": 0,
+                            "z": -115.25474091342608
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 0,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 0,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 37.40216290133242,
+                            "y": 0,
+                            "z": 113.34525908657395
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": 37.402162901332446,
+                            "y": 12.700000000000003,
+                            "z": 113.34525908657392
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 12.700000000000003,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 12.700000000000003,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": -34.67514023640322,
+                            "y": 12.700000000000003,
+                            "z": -115.2547409134261
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -34.675140236403195,
+                            "y": 12.700000000000003,
+                            "z": -115.25474091342608
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 12.700000000000003,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 0,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": -34.67514023640322,
+                            "y": 0,
+                            "z": -115.2547409134261
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": 37.402162901332446,
+                            "y": 0,
+                            "z": 113.34525908657392
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 0,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 12.700000000000003,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 37.40216290133242,
+                            "y": 12.700000000000003,
+                            "z": 113.34525908657395
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "WEB:0:CUT:INCLINED_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": -34.67514023640322,
+                            "y": 12.700000000000003,
+                            "z": -115.2547409134261
+                          },
+                          {
+                            "x": 37.402162901332446,
+                            "y": 12.700000000000003,
+                            "z": 113.34525908657392
+                          },
+                          {
+                            "x": 37.40216290133242,
+                            "y": 0,
+                            "z": 113.34525908657395
+                          },
+                          {
+                            "x": -34.675140236403195,
+                            "y": 0,
+                            "z": -115.25474091342608
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "TOP_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": 315.2373297742093,
+                            "y": 0,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 101.6,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 322.5217505158676,
+                            "y": 101.6,
+                            "z": -70.79378817509689
+                          },
+                          {
+                            "x": 322.5217505158676,
+                            "y": 0,
+                            "z": -70.79378817509689
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": 37.402162901332446,
+                            "y": 0,
+                            "z": 113.34525908657392
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 0,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 322.5217505158676,
+                            "y": 0,
+                            "z": -70.79378817509689
+                          },
+                          {
+                            "x": 41.406457520095444,
+                            "y": 0,
+                            "z": 126.04525908657396
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": 41.4064575200955,
+                            "y": 101.6,
+                            "z": 126.0452590865739
+                          },
+                          {
+                            "x": 322.5217505158676,
+                            "y": 101.6,
+                            "z": -70.79378817509689
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 101.6,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 37.40216290133242,
+                            "y": 101.6,
+                            "z": 113.34525908657395
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": 37.402162901332446,
+                            "y": 101.6,
+                            "z": 113.34525908657392
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 101.6,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 315.2373297742093,
+                            "y": 0,
+                            "z": -81.19701913756705
+                          },
+                          {
+                            "x": 37.40216290133242,
+                            "y": 0,
+                            "z": 113.34525908657395
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": 41.4064575200955,
+                            "y": 0,
+                            "z": 126.0452590865739
+                          },
+                          {
+                            "x": 322.5217505158676,
+                            "y": 0,
+                            "z": -70.79378817509689
+                          },
+                          {
+                            "x": 322.5217505158676,
+                            "y": 101.6,
+                            "z": -70.79378817509689
+                          },
+                          {
+                            "x": 41.406457520095444,
+                            "y": 101.6,
+                            "z": 126.04525908657396
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "TOP_FLANGE:0:CUT:INCLINED_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": 37.40216290133242,
+                            "y": 101.6,
+                            "z": 113.34525908657395
+                          },
+                          {
+                            "x": 41.4064575200955,
+                            "y": 101.6,
+                            "z": 126.0452590865739
+                          },
+                          {
+                            "x": 41.406457520095444,
+                            "y": 0,
+                            "z": 126.04525908657396
+                          },
+                          {
+                            "x": 37.402162901332446,
+                            "y": 0,
+                            "z": 113.34525908657392
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  },
+                  {
+                    "physical_element_id": "BOTTOM_FLANGE",
+                    "material_region_id": "FLANGES",
+                    "faces": [
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_X",
+                        "vertices": [
+                          {
+                            "x": 176.8333356827019,
+                            "y": 0,
+                            "z": -278.8584074245008
+                          },
+                          {
+                            "x": 176.8333356827019,
+                            "y": 101.6,
+                            "z": -278.8584074245008
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 101.6,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 0,
+                            "z": -268.45517646203064
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -38.67943485516628,
+                            "y": 0,
+                            "z": -127.95474091342606
+                          },
+                          {
+                            "x": 176.8333356827019,
+                            "y": 0,
+                            "z": -278.8584074245008
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 0,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": -34.67514023640322,
+                            "y": 0,
+                            "z": -115.2547409134261
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Y",
+                        "vertices": [
+                          {
+                            "x": -34.675140236403195,
+                            "y": 101.6,
+                            "z": -115.25474091342608
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 101.6,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 176.8333356827019,
+                            "y": 101.6,
+                            "z": -278.8584074245008
+                          },
+                          {
+                            "x": -38.679434855166306,
+                            "y": 101.6,
+                            "z": -127.95474091342606
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MINIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -38.67943485516628,
+                            "y": 101.6,
+                            "z": -127.95474091342606
+                          },
+                          {
+                            "x": 176.8333356827019,
+                            "y": 101.6,
+                            "z": -278.8584074245008
+                          },
+                          {
+                            "x": 176.8333356827019,
+                            "y": 0,
+                            "z": -278.8584074245008
+                          },
+                          {
+                            "x": -38.679434855166306,
+                            "y": 0,
+                            "z": -127.95474091342606
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:MAXIMUM_LOCAL_Z",
+                        "vertices": [
+                          {
+                            "x": -34.675140236403195,
+                            "y": 0,
+                            "z": -115.25474091342608
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 0,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": 184.11775642436015,
+                            "y": 101.6,
+                            "z": -268.45517646203064
+                          },
+                          {
+                            "x": -34.67514023640322,
+                            "y": 101.6,
+                            "z": -115.2547409134261
+                          }
+                        ],
+                        "is_fabricated_cut": false
+                      },
+                      {
+                        "id": "BOTTOM_FLANGE:0:CUT:INCLINED_STRINGER:MITER",
+                        "vertices": [
+                          {
+                            "x": -38.679434855166306,
+                            "y": 101.6,
+                            "z": -127.95474091342606
+                          },
+                          {
+                            "x": -34.675140236403195,
+                            "y": 101.6,
+                            "z": -115.25474091342608
+                          },
+                          {
+                            "x": -34.67514023640322,
+                            "y": 0,
+                            "z": -115.2547409134261
+                          },
+                          {
+                            "x": -38.67943485516628,
+                            "y": 0,
+                            "z": -127.95474091342606
+                          }
+                        ],
+                        "is_fabricated_cut": true
+                      }
+                    ]
+                  }
+                ],
+                "geometry_fingerprint": "853c9791015c5077b02fc5ed2c9e6f4670000e203abc00177e90229f0b925d9e"
+              }
+            }
+          ],
+          "shafts": [
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_-1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 1,
+              "line": -1,
+              "start": {
+                "x": -85.87312922368722,
+                "y": -12.7,
+                "z": -25.4
+              },
+              "end": {
+                "x": -85.87312922368722,
+                "y": 12.7,
+                "z": -25.4
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 1,
+              "line": 1,
+              "start": {
+                "x": -69.85595074863485,
+                "y": -12.7,
+                "z": 25.4
+              },
+              "end": {
+                "x": -69.85595074863485,
+                "y": 12.7,
+                "z": 25.4
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_-1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 2,
+              "line": -1,
+              "start": {
+                "x": -136.67312922368723,
+                "y": -12.7,
+                "z": -25.4
+              },
+              "end": {
+                "x": -136.67312922368723,
+                "y": 12.7,
+                "z": -25.4
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_1",
+              "group": "HORIZONTAL_WEB_GROUP",
+              "row": 2,
+              "line": 1,
+              "start": {
+                "x": -120.65595074863485,
+                "y": -12.7,
+                "z": 25.4
+              },
+              "end": {
+                "x": -120.65595074863485,
+                "y": 12.7,
+                "z": 25.4
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "HORIZONTAL_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_1:LINE_-1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 1,
+              "line": -1,
+              "start": {
+                "x": 55.774307869759575,
+                "y": -12.7,
+                "z": -70.06126536337577
+              },
+              "end": {
+                "x": 55.774307869759575,
+                "y": 12.7,
+                "z": -70.06126536337577
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_1:LINE_1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 1,
+              "line": 1,
+              "start": {
+                "x": 71.79148634481194,
+                "y": -12.7,
+                "z": -19.261265363375774
+              },
+              "end": {
+                "x": 71.79148634481194,
+                "y": 12.7,
+                "z": -19.261265363375774
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_2:LINE_-1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 2,
+              "line": -1,
+              "start": {
+                "x": 97.38723171964037,
+                "y": -12.7,
+                "z": -99.19894833000892
+              },
+              "end": {
+                "x": 97.38723171964037,
+                "y": 12.7,
+                "z": -99.19894833000892
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            },
+            {
+              "id": "INCLINED_WEB_GROUP:ROW_2:LINE_1",
+              "group": "INCLINED_WEB_GROUP",
+              "row": 2,
+              "line": 1,
+              "start": {
+                "x": 113.40441019469273,
+                "y": -12.7,
+                "z": -48.398948330008906
+              },
+              "end": {
+                "x": 113.40441019469273,
+                "y": 12.7,
+                "z": -48.398948330008906
+              },
+              "layer_owners": [
+                "MITER_WEB_PLATE",
+                "INCLINED_STRINGER"
+              ]
+            }
+          ],
+          "polygon_paths": {
+            "holes": [
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_-1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -85.87312922368722,
+                  -25.4
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_1:LINE_1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -69.85595074863485,
+                  25.4
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_-1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -136.67312922368723,
+                  -25.4
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "HORIZONTAL_WEB_GROUP:ROW_2:LINE_1",
+                "group_id": "HORIZONTAL_WEB_GROUP",
+                "center": [
+                  -120.65595074863485,
+                  25.4
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_1:LINE_-1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  55.774307869759575,
+                  -70.06126536337577
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_1:LINE_1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  71.79148634481194,
+                  -19.261265363375774
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_2:LINE_-1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  97.38723171964037,
+                  -99.19894833000892
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              },
+              {
+                "shaft_id": "INCLINED_WEB_GROUP:ROW_2:LINE_1",
+                "group_id": "INCLINED_WEB_GROUP",
+                "center": [
+                  113.40441019469273,
+                  -48.398948330008906
+                ],
+                "radius": 7.1501,
+                "winding": "OPPOSITE_OUTER_BOUNDARY",
+                "authority": "ANALYTIC_CIRCLE"
+              }
+            ]
+          },
+          "gross_neck_only_not_resistance": true
+        },
+        "groups": [
+          {
+            "group_id": "HORIZONTAL_WEB_GROUP",
+            "member_end_wrench": {
+              "reference": {
+                "x": {
+                  "value": "-1.6645399861610368",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "6.35",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "plate_wrench": {
+              "reference": {
+                "x": {
+                  "value": "-77.864539986161035",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "-6.35",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "planar_status": "CALCULATED_BOUNDED_PLANAR_DEMAND"
+          },
+          {
+            "group_id": "INCLINED_WEB_GROUP",
+            "member_end_wrench": {
+              "reference": {
+                "x": {
+                  "value": "1.3635113324645833",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "6.35",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "-0.954740913426067",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "plate_wrench": {
+              "reference": {
+                "x": {
+                  "value": "63.7828971072857575",
+                  "unit": "mm"
+                },
+                "y": {
+                  "value": "-6.35",
+                  "unit": "mm"
+                },
+                "z": {
+                  "value": "-44.661265363375772",
+                  "unit": "mm"
+                }
+              },
+              "force": {
+                "x": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N"
+                }
+              },
+              "moment": {
+                "x": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "y": {
+                  "value": "0",
+                  "unit": "N-mm"
+                },
+                "z": {
+                  "value": "0",
+                  "unit": "N-mm"
+                }
+              }
+            },
+            "planar_status": "CALCULATED_BOUNDED_PLANAR_DEMAND"
+          }
+        ],
+        "engineering_fingerprint": "f4854e96f3572a7613b9c405b7a85b43026d7bc2d81f642e207940426318f77b",
+        "whole_connection_status": "ENGINEERING_REVIEW_REQUIRED",
+        "statuses": [
+          [
+            "Geometry",
+            "VALID"
+          ],
+          [
+            "Demand",
+            "CALCULATED"
+          ],
+          [
+            "Planar group response",
+            "CALCULATED_BOUNDED_PLANAR_DEMAND"
+          ],
+          [
+            "Complete response",
+            "SSMC_SINGLE_SIDE_RESPONSE_NOT_QUALIFIED"
+          ],
+          [
+            "Plate resistance",
+            "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED"
+          ],
+          [
+            "Member local transfer",
+            "SSMC_MEMBER_FLANGE_WEB_TRANSFER_NOT_QUALIFIED"
+          ],
+          [
+            "Hardware",
+            "SSMC_HARDWARE_COMBINED_RESPONSE_NOT_QUALIFIED"
+          ],
+          [
+            "Qualification",
+            "REQUIRED_QUALIFICATION_MISSING"
+          ],
+          [
+            "Design",
+            "ENGINEERING_REVIEW_REQUIRED"
+          ]
+        ],
+        "blockers": [
+          "SSMC_SINGLE_SIDE_RESPONSE_NOT_QUALIFIED",
+          "SSMC_POLYGON_RESISTANCE_NOT_QUALIFIED",
+          "SSMC_MEMBER_FLANGE_WEB_TRANSFER_NOT_QUALIFIED",
+          "SSMC_HARDWARE_COMBINED_RESPONSE_NOT_QUALIFIED",
+          "SSMC_CW_SOURCE_REQUIRED"
+        ],
+        "evaluated_failures": [],
+        "complete_moment_capacity_qualified": false,
+        "plate_policy": "MITER_PLATE_CW_BASIS_UNKNOWN_CUT"
+      }
+    }
+  }
+}

@@ -60,6 +60,7 @@ from frp_master_connection.api.schemas import (
     SingleBoltEvaluationRequestDTO,
     SingleBoltPreviewRequestDTO,
 )
+from frp_master_connection.api.ssmc import SSMCRequestDTO, map_ssmc_request
 from frp_master_connection.api.tee_mapping import map_tee_connector_request
 from frp_master_connection.api.tee_schemas import TeeConnectorRequestDTO
 from frp_master_connection.api.web_splice_mapping import map_web_splice_request
@@ -116,6 +117,7 @@ from frp_master_connection.application.paired_clip_angle_orchestration import (
     design_check_paired_clip_angle,
     preview_paired_clip_angle,
 )
+from frp_master_connection.application.ssmc import design_ssmc, preview_ssmc
 from frp_master_connection.application.tee_orchestration import (
     design_check_tee_connector,
     preview_tee_connector,
@@ -214,6 +216,15 @@ FAMILIES = MappingProxyType(
     {
         item.route_id: item
         for item in (
+            bind(
+                "stair-stringer-miter",
+                "STAIR_STRINGER_MITER_CONNECTION",
+                "MOMENT",
+                TypeAdapter(SSMCRequestDTO),
+                map_ssmc_request,
+                preview_ssmc,
+                design_ssmc,
+            ),
             replace(
                 bind(
                     "single-bolt",
@@ -394,7 +405,12 @@ def _family_provider(family: NativeFamily) -> ConnectorProvider:
         if family.route_id in {"tee-connector", "multi-member-tee"}
         else "PLATE"
         if family.route_id
-        in {"beam-web-splice", "wi-major-axis-moment-splice", "channel-major-axis-moment-splice"}
+        in {
+            "beam-web-splice",
+            "wi-major-axis-moment-splice",
+            "channel-major-axis-moment-splice",
+            "stair-stringer-miter",
+        }
         else "ANGLE"
     )
 

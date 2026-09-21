@@ -105,6 +105,7 @@ from frp_master_connection.api.schemas import (
     SingleBoltPreviewRequestDTO,
     SingleBoltPreviewResponseDTO,
 )
+from frp_master_connection.api.ssmc import build_ssmc_router
 from frp_master_connection.api.stainless_activation import (
     material_selection,
     stainless_design_response,
@@ -230,6 +231,7 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     router.include_router(build_angle_base_router(identity_resolver))
     router.include_router(build_column_moment_base_router(identity_resolver))
     router.include_router(build_dctn_router(identity_resolver))
+    router.include_router(build_ssmc_router(identity_resolver))
     router.include_router(build_connector_material_router(identity_resolver))
     identity_dependency = build_trusted_identity_dependency(identity_resolver)
 

@@ -27,6 +27,7 @@ from frp_master_connection.application.multirow_orchestration import (
     MultiRowPreviewResult,
     MultiRowVisualizationSnapshot,
 )
+from frp_master_connection.application.ssmc import SSMCPreview
 from frp_master_connection.application.tee_orchestration import (
     TeeConnectorPreviewResult,
     TeeVisualizationSnapshot,
@@ -107,6 +108,7 @@ BEAM_PARTS = {
 NO_BODY_ROUTES = frozenset(
     {"single-bolt", "multi-row", "direct-side-lap-concrete", "double-channel-truss-node"}
 )
+FRP_ONLY_BODY_ROUTES = frozenset({"stair-stringer-miter"})
 
 
 def walk_records(value: object) -> Iterator[object]:
@@ -133,6 +135,25 @@ class MaterialAssembly:
 
 
 def canonical_material_assembly(route: str, preview: object) -> MaterialAssembly:
+    if route == "stair-stringer-miter":
+        if not isinstance(preview, SSMCPreview):
+            raise ValueError("SSMC material roles require the canonical SSMC assembly")
+        components = (
+            *(
+                CanonicalComponent(m.owner, R.PRIMARY_MEMBER, m.profile.family.value, ())
+                for m in preview.geometry.members
+            ),
+            CanonicalComponent("MITER_WEB_PLATE", R.CONNECTOR_BODY, "PLATE", ()),
+            *(
+                CanonicalComponent(
+                    "HARDWARE:" + b.id, R.FASTENER_OR_HARDWARE, "NATIVE_FASTENER_HARDWARE", ()
+                )
+                for b in preview.geometry.shafts
+            ),
+        )
+        return MaterialAssembly(
+            components, preview.engineering_fingerprint, preview.engineering_fingerprint
+        )
     if route == "double-channel-truss-node":
         if (
             not isinstance(preview, DCTNPreview | DCTN3BPreview)

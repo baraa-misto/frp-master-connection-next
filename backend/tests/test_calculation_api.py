@@ -945,6 +945,10 @@ def test_openapi_registers_one_post_and_excludes_client_authority() -> None:
         "/api/v1/calculations/double-channel-truss-node/preview",
         "/api/v1/calculations/double-channel-truss-node/design-check",
         "/api/v1/calculations/double-channel-truss-node/convert-units",
+        "/api/v1/calculations/stair-stringer-miter/defaults",
+        "/api/v1/calculations/stair-stringer-miter/preview",
+        "/api/v1/calculations/stair-stringer-miter/design-check",
+        "/api/v1/calculations/stair-stringer-miter/convert-units",
         ROUTE,
     }
     assert set(schema["paths"][ROUTE]) == {"post"}

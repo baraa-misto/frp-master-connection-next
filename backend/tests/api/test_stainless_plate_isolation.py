@@ -11,7 +11,9 @@ from frp_master_connection.api.connector_material_native import FAMILIES, native
 from frp_master_connection.api.connector_materials import MaterialPlanRequestDTO, material_plan
 
 
-@pytest.mark.parametrize("route", tuple(FAMILIES))
+# Preserve this historical cohort exactly; SSMC's FRP-only successor is tested
+# separately in test_ssmc_api, including its mandatory stainless rejection.
+@pytest.mark.parametrize("route", tuple(r for r in FAMILIES if r != "stair-stringer-miter"))
 def test_isolated_execution_preserves_complete_native_and_public_plans(route: str) -> None:
     payload = envelope(route)
     family = FAMILIES[route]

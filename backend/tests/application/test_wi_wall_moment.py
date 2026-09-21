@@ -633,7 +633,16 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             successor_blob = hashlib.sha1(  # noqa: S324 - Git object identity
                 b"blob " + str(len(raw)).encode() + b"\0" + raw
             ).hexdigest()
-            assert successor_blob == "1f8a0f207617aa154d0fbe3b9810b9d1a9b7dbf8"
+            assert successor_blob == "2169d74e008b597793102c0bba25505d840ebdcb"
+            current_count = b"--expected-tests 7267"
+            historical_count = b"--expected-tests 6609"
+            assert raw.count(current_count) == 1
+            assert raw.count(historical_count) == 0
+            raw = raw.replace(current_count, historical_count)
+            historical_blob = hashlib.sha1(  # noqa: S324 - Git object identity
+                b"blob " + str(len(raw)).encode() + b"\0" + raw
+            ).hexdigest()
+            assert historical_blob == "1f8a0f207617aa154d0fbe3b9810b9d1a9b7dbf8"
             successor = b"""      - name: Run deterministic backend shards with combined coverage
         run: >-
           python ../scripts/run_backend_windows_shards.py

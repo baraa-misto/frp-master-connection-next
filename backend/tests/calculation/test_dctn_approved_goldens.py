@@ -299,9 +299,11 @@ def test_approved_positive(case: dict[str, Any]) -> None:
     elif ordinal == 23:
         from tests.api.test_connector_materials import native_payload
 
+        # Original approved counts and every original route/body remain exact.
+        historical = {r: f for r, f in FAMILIES.items() if r != "stair-stringer-miter"}
         bodies = {
             (route, c.physical_id)
-            for route, family in FAMILIES.items()
+            for route, family in historical.items()
             if route not in NO_BODY_ROUTES
             for c in canonical_material_assembly(
                 route, family.preview(native_payload(route))
@@ -309,10 +311,10 @@ def test_approved_positive(case: dict[str, Any]) -> None:
             if c.role is ComponentRole.CONNECTOR_BODY
         }
         actual = {
-            "routes": len(FAMILIES),
+            "routes": len(historical),
             "connector_bodies": len(bodies),
             "no_body_routes": len(NO_BODY_ROUTES),
-            "ui_workspaces": len({f.product_id for f in FAMILIES.values()}),
+            "ui_workspaces": len({f.product_id for f in historical.values()}),
         }
     else:
         assert ordinal == 24

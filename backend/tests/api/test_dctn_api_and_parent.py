@@ -107,7 +107,9 @@ def test_capability_delta_is_exactly_the_one_new_no_body_route() -> None:
     assert added[0]["disposition"] == "NO_CONNECTOR_BODY"
     assert added[0]["stainless"] == "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"
     current["result"]["families"] = [
-        f for f in current["result"]["families"] if f["route_id"] != "double-channel-truss-node"
+        f
+        for f in current["result"]["families"]
+        if f["route_id"] not in {"double-channel-truss-node", "stair-stringer-miter"}
     ]
     assert current == PARENT["capabilities"]
 

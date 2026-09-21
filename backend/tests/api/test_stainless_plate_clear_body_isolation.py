@@ -11,7 +11,9 @@ from frp_master_connection.api.connector_material_native import FAMILIES, native
 from frp_master_connection.api.connector_materials import MaterialPlanRequestDTO, material_plan
 
 
-@pytest.mark.parametrize("route", tuple(FAMILIES))
+# Preserve this historical cohort exactly; SSMC's FRP-only successor is tested
+# separately in test_ssmc_api, including its mandatory stainless rejection.
+@pytest.mark.parametrize("route", tuple(r for r in FAMILIES if r != "stair-stringer-miter"))
 def test_p2_preserves_native_preview_frp_and_ss_plans(route: str) -> None:
     payload = envelope(route)
     family = FAMILIES[route]
@@ -66,7 +68,7 @@ def test_no_public_import_and_no_frozen_provider_import_or_dynamic_import() -> N
 def test_route_count_and_missing_public_endpoint() -> None:
     # Historical core authority still has exactly its original sixteen routes.
     # DCTN is the one explicitly authorized no-body successor, not a C2 endpoint.
-    historical_routes = set(FAMILIES) - {"double-channel-truss-node"}
+    historical_routes = set(FAMILIES) - {"double-channel-truss-node", "stair-stringer-miter"}
     assert historical_routes == {
         "single-bolt",
         "multi-row",

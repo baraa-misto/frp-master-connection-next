@@ -170,9 +170,11 @@ def test_approved_positive(case: dict[str, Any]) -> None:
             r.row_fraction for r in result.historical_preview.response.rows
         ) == row_fractions(3)
     elif number == 35:
+        # Frozen DCTN inventory, not the later SSMC successor inventory.
+        historical = {r: f for r, f in FAMILIES.items() if r != "stair-stringer-miter"}
         bodies = {
             (route, c.physical_id)
-            for route, family in FAMILIES.items()
+            for route, family in historical.items()
             if route not in NO_BODY_ROUTES
             for c in canonical_material_assembly(
                 route, family.preview(native_payload(route))
@@ -180,11 +182,11 @@ def test_approved_positive(case: dict[str, Any]) -> None:
             if c.role is ComponentRole.CONNECTOR_BODY
         }
         assert {
-            "routes": len(FAMILIES),
+            "routes": len(historical),
             "connector_bodies": len(bodies),
             "no_body_routes": len(NO_BODY_ROUTES),
-            "workspaces": len({f.product_id for f in FAMILIES.values()}),
-            "cme3_selectors": len(FAMILIES) - len(NO_BODY_ROUTES),
+            "workspaces": len({f.product_id for f in historical.values()}),
+            "cme3_selectors": len(historical) - len(NO_BODY_ROUTES),
         } == expected
     else:
         assert number == 36
