@@ -163,22 +163,29 @@ it("edits every physical input without changing the no-body contract", async () 
   render(<DoubleChannelTrussNodeWorkspace/>); await screen.findByText("CURRENT BACKEND PREVIEW");
   fireEvent.change(screen.getByLabelText("V section form"), { target: { value: "W_I" } });
   const labels = ["Channel Length", "Channel Depth", "Channel Flange Width", "Channel Web Thickness", "Channel Flange Thickness", "V Length", "V Depth", "V Flange width", "V Web thickness", "V Flange Thickness", "V Member Horizontal Location", "V Member Vertical Location", "V First bolt row from member end", "V Row pitch", "V W/I transverse offset magnitude", "Bolt Diameter", "Bolt Hole Diameter", "Hardware Washer Diameter", "Hardware Washer Thickness", "Hardware Head Across Flats", "Hardware Head Height", "Hardware Nut Across Flats", "Hardware Nut Height", "Hardware End Extension"];
-  for (const label of labels) {
+  const edits = labels.map((label) => {
     const input = screen.getByLabelText<HTMLInputElement>(label);
-    const raw = String(Number(input.value) + 0.01);
-    fireEvent.change(input, {target:{value:raw}});
-    expect(input).toHaveValue(raw);
-  }
-  fireEvent.change(screen.getByLabelText("DCTN thread location"), {target:{value:"INCLUDED"}});
-  fireEvent.click(screen.getByRole("checkbox", {name:"Snug-tight installation"}));
-  await screen.findByText("CURRENT BACKEND PREVIEW");
-  expect(send.mock.lastCall?.[1].fastener.threads_excluded).toBe(false);
-  expect(send.mock.lastCall?.[1].fastener.snug_tight).toBe(false);
-  expect(send.mock.lastCall?.[1].members[0]?.pattern.wi_offset.value).toBe("1.01");
+    return { input, raw: String(Number(input.value) + 0.01) };
+  });
+  act(() => {
+    for (const { input, raw } of edits) fireEvent.change(input, {target:{value:raw}});
+    fireEvent.change(screen.getByLabelText("DCTN thread location"), {target:{value:"INCLUDED"}});
+    fireEvent.click(screen.getByRole("checkbox", {name:"Snug-tight installation"}));
+  });
+  for (const { input, raw } of edits) expect(input).toHaveValue(raw);
+  await waitFor(() => {
+    const latest = send.mock.lastCall?.[1];
+    expect(latest?.members[0]?.section.form).toBe("W_I");
+    expect(latest?.fastener.threads_excluded).toBe(false);
+    expect(latest?.fastener.snug_tight).toBe(false);
+    expect(latest?.members[0]?.pattern.wi_offset.value).toBe("1.01");
+  });
   fireEvent.change(screen.getByLabelText("V section form"), {target:{value:"SOLID_RECTANGLE"}});
-  expect(screen.queryByLabelText("V Web thickness")).toBeNull();
-  expect(screen.queryByLabelText("V Flange Thickness")).toBeNull();
-  await screen.findByText("CURRENT BACKEND PREVIEW");
+  await waitFor(() => {
+    expect(screen.queryByLabelText("V Web thickness")).toBeNull();
+    expect(screen.queryByLabelText("V Flange Thickness")).toBeNull();
+    expect(send.mock.lastCall?.[1].members[0]?.section.form).toBe("SOLID_RECTANGLE");
+  });
   expect(screen.queryByText("316 Stainless Steel")).toBeNull();
 });
 

@@ -633,17 +633,8 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             successor_blob = hashlib.sha1(  # noqa: S324 - Git object identity
                 b"blob " + str(len(raw)).encode() + b"\0" + raw
             ).hexdigest()
-            assert successor_blob == "75f4dc66c12af04da8b7be1de94d0608af0cd772"
-            successor = b"""      - name: Run tests with line and branch coverage
-        if: runner.os != 'Windows'
-        run: >-
-          python -m pytest
-          --cov=frp_master_connection
-          --cov-branch
-          --cov-report=term-missing
-          --cov-fail-under=100
-      - name: Run deterministic Windows shards with combined coverage
-        if: runner.os == 'Windows'
+            assert successor_blob == "1f8a0f207617aa154d0fbe3b9810b9d1a9b7dbf8"
+            successor = b"""      - name: Run deterministic backend shards with combined coverage
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4

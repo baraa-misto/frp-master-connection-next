@@ -1,7 +1,7 @@
-"""Run the complete backend test authority in deterministic concurrent Windows shards.
+"""Run the complete backend test authority in deterministic concurrent CI shards.
 
-The hosted Windows runner cannot complete the serial coverage run inside the job's
-25-minute ceiling.  This runner collects the canonical pytest node IDs once,
+The hosted runners cannot reliably complete the serial coverage run inside the
+job's 25-minute ceiling.  This runner collects the canonical pytest node IDs once,
 partitions every node exactly once, runs four isolated coverage processes, and
 combines their data before enforcing the repository's 100% coverage requirement.
 """
@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import os
 from pathlib import Path
+import platform
 import subprocess
 import sys
 import tempfile
@@ -26,7 +27,15 @@ def _parse_args() -> argparse.Namespace:
 
 def _collect_node_ids() -> list[str]:
     completed = subprocess.run(
-        [sys.executable, "-m", "pytest", "--collect-only", "-q"],
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-p",
+            "no:cacheprovider",
+            "--collect-only",
+            "-q",
+        ],
         check=False,
         capture_output=True,
         encoding="utf-8",
@@ -71,7 +80,8 @@ def main() -> int:
     print(f"Canonical node-ID SHA-256: {_assignment_digest(node_ids)}")
     print(f"Shard counts: {[len(shard) for shard in assignments]}")
 
-    with tempfile.TemporaryDirectory(prefix="frp-backend-windows-shards-") as temp_name:
+    platform_label = platform.system() or "unknown"
+    with tempfile.TemporaryDirectory(prefix="frp-backend-ci-shards-") as temp_name:
         temp_dir = Path(temp_name)
         processes: list[tuple[int, subprocess.Popen[str], Path]] = []
         for index, shard in enumerate(assignments):
@@ -79,7 +89,7 @@ def main() -> int:
             args_file.write_text("\n".join(shard) + "\n", encoding="utf-8", newline="\n")
             log_file = temp_dir / f"shard-{index}.log"
             environment = os.environ.copy()
-            environment["COVERAGE_FILE"] = str(temp_dir / f".coverage.win-shard-{index}")
+            environment["COVERAGE_FILE"] = str(temp_dir / f".coverage.shard-{index}")
             environment["PYTHONUNBUFFERED"] = "1"
             log_handle = log_file.open("w", encoding="utf-8", newline="\n")
             process = subprocess.Popen(
@@ -87,6 +97,8 @@ def main() -> int:
                     sys.executable,
                     "-m",
                     "pytest",
+                    "-p",
+                    "no:cacheprovider",
                     f"@{args_file}",
                     "--cov=frp_master_connection",
                     "--cov-branch",
@@ -104,12 +116,17 @@ def main() -> int:
         failed = False
         for index, process, log_file in processes:
             return_code = process.wait()
-            print(f"\n===== Windows backend shard {index} (exit {return_code}) =====")
+            print(
+                f"\n===== {platform_label} backend shard {index} "
+                f"(exit {return_code}) ====="
+            )
             print(log_file.read_text(encoding="utf-8", errors="replace"), end="")
             failed = failed or return_code != 0
         if failed:
             return 1
 
+        combined_file = Path(".coverage")
+        combined_file.unlink(missing_ok=True)
         combined = subprocess.run(
             [
                 sys.executable,
