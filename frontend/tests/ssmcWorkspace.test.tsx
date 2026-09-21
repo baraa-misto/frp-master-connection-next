@@ -26,6 +26,21 @@ function mocks() {
 }
 const current = () => screen.findByText("CURRENT BACKEND PREVIEW");
 function edit(label: string, value: string) { fireEvent.change(screen.getByLabelText(new RegExp("^" + label.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&") + "$", "iu")), { target: { value } }); }
+async function renderBeforeInitialPreview() {
+  const { send } = mocks();
+  send.mockImplementationOnce(() => new Promise<SSMCResponse>(() => undefined));
+  render(<StairStringerMiterWorkspace/>);
+  await waitFor(() => { expect(send).toHaveBeenCalledTimes(1); });
+  return send;
+}
+async function awaitCurrentRequest(send: ReturnType<typeof mocks>["send"], check: (request: SSMCRequest) => void) {
+  await waitFor(() => {
+    const request = send.mock.lastCall?.[0];
+    assert(request);
+    check(request);
+  });
+  await current();
+}
 
 it("adds one Moment workspace without changing the initial selection or exposing stainless", async () => {
   mocks(); render(<MomentConnectionsWorkspace/>);
@@ -59,28 +74,63 @@ it("preserves last valid geometry, hides stale arrows/design and recovers throug
   edit("Plate Horizontal overlap", "8"); await current();
 });
 
-it("edits every geometry/hardware field without silently linking groups or repairing inputs", async () => {
-  const { send } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
-  edit("SSMC source reference", "PUBLIC_TEXT"); edit("SSMC hardware source reference", "HARDWARE_TEXT"); await current();
-  expect(send.mock.lastCall?.[0].source_reference).toBe("PUBLIC_TEXT");
-  expect(send.mock.lastCall?.[0].fastener.source_reference).toBe("HARDWARE_TEXT");
+it("edits independent source references and clears both on an engineering edit", async () => {
+  const send = await renderBeforeInitialPreview();
+  edit("SSMC source reference", "PUBLIC_TEXT"); edit("SSMC hardware source reference", "HARDWARE_TEXT");
+  await awaitCurrentRequest(send, request => {
+    expect(request.source_reference).toBe("PUBLIC_TEXT");
+    expect(request.fastener.source_reference).toBe("HARDWARE_TEXT");
+  });
+  edit("N", "8");
+  await awaitCurrentRequest(send, request => {
+    expect(request.N.value).toBe("8");
+    expect(request.source_reference).toBe("");
+    expect(request.fastener.source_reference).toBe("");
+  });
+});
+
+it("edits every member and plate geometry field without linking or repair", async () => {
+  const send = await renderBeforeInitialPreview();
   for (const [label, value] of [
     ["horizontal section form", "W_I"], ["inclined section form", "W_I"], ["Signed inclination (deg)", "35"], ["Plate side", "POS_Y"],
     ["Horizontal Length", "25"], ["Horizontal Depth", "11"], ["Horizontal Width", "5"], ["Horizontal Web thickness", "0.6"], ["Horizontal Flange thickness", "0.6"],
     ["Inclined Length", "26"], ["Inclined Depth", "12"], ["Inclined Width", "6"], ["Inclined Web thickness", "0.7"], ["Inclined Flange thickness", "0.7"],
     ["Plate Thickness", "0.6"], ["Plate Horizontal overlap", "9"], ["Plate Inclined overlap", "10"], ["Plate Horizontal depth", "5"], ["Plate Inclined depth", "6"], ["Plate Normal gap", "0.25"], ["Plate Corner radius", "0.1"], ["Plate Chamfer", "0.2"],
+  ]) { assert(label !== undefined && value !== undefined); edit(label, value); }
+  await awaitCurrentRequest(send, request => {
+    expect(request.theta_deg).toBe("35"); expect(request.plate.side).toBe("POS_Y");
+    expect(request.horizontal.form).toBe("W_I"); expect(request.inclined.form).toBe("W_I");
+    expect([request.horizontal.length.value, request.horizontal.depth.value, request.horizontal.width.value, request.horizontal.web_thickness.value, request.horizontal.flange_thickness.value]).toEqual(["25", "11", "5", "0.6", "0.6"]);
+    expect([request.inclined.length.value, request.inclined.depth.value, request.inclined.width.value, request.inclined.web_thickness.value, request.inclined.flange_thickness.value]).toEqual(["26", "12", "6", "0.7", "0.7"]);
+    expect([request.plate.thickness.value, request.plate.horizontal_overlap.value, request.plate.inclined_overlap.value, request.plate.horizontal_depth.value, request.plate.inclined_depth.value, request.plate.normal_gap.value, request.plate.corner_radius.value, request.plate.chamfer.value]).toEqual(["0.6", "9", "10", "5", "6", "0.25", "0.1", "0.2"]);
+  });
+});
+
+it("edits both bolt groups independently without cross-group linking", async () => {
+  const send = await renderBeforeInitialPreview();
+  for (const [label, value] of [
     ["horizontal_group rows", "3"], ["Horizontal group First from cut", "2"], ["Horizontal group Pitch", "1.5"], ["Horizontal group Gauge", "1.75"], ["Horizontal group Transverse offset", "0.1"],
     ["inclined_group rows", "3"], ["Inclined group First from cut", "2.25"], ["Inclined group Pitch", "1.6"], ["Inclined group Gauge", "1.8"], ["Inclined group Transverse offset", "-0.1"],
+  ]) { assert(label !== undefined && value !== undefined); edit(label, value); }
+  for (const group of ["horizontal_group", "inclined_group"] as const) for (const flag of ["ordinary_snug_tight", "slots", "equal_translational_stiffness"] as const) fireEvent.click(screen.getByLabelText(group + " " + flag));
+  await awaitCurrentRequest(send, request => {
+    expect([request.horizontal_group.rows, request.horizontal_group.first_from_cut.value, request.horizontal_group.pitch.value, request.horizontal_group.gauge.value, request.horizontal_group.transverse_offset.value]).toEqual([3, "2", "1.5", "1.75", "0.1"]);
+    expect([request.inclined_group.rows, request.inclined_group.first_from_cut.value, request.inclined_group.pitch.value, request.inclined_group.gauge.value, request.inclined_group.transverse_offset.value]).toEqual([3, "2.25", "1.6", "1.8", "-0.1"]);
+    for (const group of ["horizontal_group", "inclined_group"] as const) for (const flag of ["ordinary_snug_tight", "slots", "equal_translational_stiffness"] as const) expect(request[group][flag]).toBe(!data.us.request[group][flag]);
+  });
+});
+
+it("edits every hardware and action field without silent repair", async () => {
+  const send = await renderBeforeInitialPreview();
+  for (const [label, value] of [
     ["Bolt Diameter", "0.625"], ["Bolt Hole diameter", "0.688"], ["Hardware Washer diameter", "1.5"], ["Hardware Washer thickness", "0.2"], ["Hardware Head across flats", "0.9"], ["Hardware Head height", "0.4"], ["Hardware Nut across flats", "0.9"], ["Hardware Nut height", "0.6"], ["Hardware End extension", "0.3"], ["Thread location", "INCLUDED"], ["N", "8"], ["V", "4"], ["M", "20"],
   ]) { assert(label !== undefined && value !== undefined); edit(label, value); }
-  for (const group of ["horizontal_group", "inclined_group"]) for (const flag of ["ordinary_snug_tight", "slots", "equal_translational_stiffness"]) fireEvent.click(screen.getByLabelText(group + " " + flag));
-  await current();
-  const r = send.mock.lastCall?.[0]; assert(r);
-  expect(r.source_reference).toBe(""); expect(r.fastener.source_reference).toBe("");
-  expect(r.horizontal.depth.value).toBe("11"); expect(r.inclined.depth.value).toBe("12");
-  expect(r.horizontal_group.first_from_cut.value).toBe("2"); expect(r.inclined_group.first_from_cut.value).toBe("2.25");
-  expect(r.horizontal_group.slots).toBe(true); expect(r.inclined_group.equal_translational_stiffness).toBe(false);
-  expect(r.M.value).toBe("20"); expect(r.plate.chamfer.value).toBe("0.2");
+  await awaitCurrentRequest(send, request => {
+    expect([request.fastener.diameter.value, request.fastener.hole_diameter.value]).toEqual(["0.625", "0.688"]);
+    expect([request.fastener.hardware.washer_diameter.value, request.fastener.hardware.washer_thickness.value, request.fastener.hardware.head_across_flats.value, request.fastener.hardware.head_height.value, request.fastener.hardware.nut_across_flats.value, request.fastener.hardware.nut_height.value, request.fastener.hardware.end_extension.value]).toEqual(["1.5", "0.2", "0.9", "0.4", "0.9", "0.6", "0.3"]);
+    expect(request.fastener.threads).toBe("INCLUDED");
+    expect([request.N.value, request.V.value, request.M.value]).toEqual(["8", "4", "20"]);
+  });
 });
 
 it("converts through the backend and preserves native exact trace rather than formatting inputs", async () => {
