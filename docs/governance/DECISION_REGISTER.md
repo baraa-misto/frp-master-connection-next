@@ -1,5 +1,9 @@
 # Decision Register
 
+## SSMC-2 accepted for geometry/demand scope freeze
+
+Independent acceptance passed as `SSMC_2_ACCEPTANCE_PASSED`. [The freeze record](SSMC_2_STAIR_STRINGER_MITER_DEMAND_FREEZE.md) targets accepted candidate `dfc735f29887edbcdfc6a389c270230d414445ab`, whose only delta from engineering parent `07444a4c88899bab2dc75de3cdea63c657cbfd43` is deterministic frontend-test stabilization. The accepted scope freezes one-piece clarified miter geometry, complete serial N/V/M demand transport, native bounded planar group demand, trace/status/UI behavior and explicit fail-closed qualification boundaries. It is a geometry/demand engineering-review freeze, not complete moment-capacity qualification. Complete single-sided response, polygon combined resistance/stability, local member transfer, combined hardware response and qualified plate properties remain unresolved. The implementation-targeted tag does not move the DCTN tag or recreate any historical archive tag.
+
 ## DCTN-3B accepted for continuation-targeted freeze
 
 Independent continuation acceptance passed as `DCTN_3B_CONTINUATION_ACCEPTANCE_PASSED`. [The freeze record](DCTN_3B_CONTINUATION_FREEZE.md) targets implementation `d556585c1b905532431e4ec9b7be9ab23acabc10` and binds continuation root `27cb9c908ca648566b3b6d3d2e19dd9be1e1df98` to archived source snapshot `5a391ce68cb04fba3df20f5bd3b57a01fd05da19`. Historical P-only response, physical shafts, Channel-relative placement, exact P/Qp/Qq demand transport, native axis naming, UI status/trace behavior, and the empty trusted transverse-response registry are preserved. Nonzero transverse demand remains calculated but not qualified. The first continuation tag is implementation-targeted; no one of the 18 archive tags is recreated.

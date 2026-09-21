@@ -1,5 +1,9 @@
 # Data Versioning and Reproducibility
 
+## SSMC-2 geometry/demand frozen identity
+
+Resolve accepted SSMC-2 RC1 scope at candidate `dfc735f29887edbcdfc6a389c270230d414445ab`, not mutable successor HEAD or engineering parent. Annotated tag `ssmc-2-stair-stringer-miter-demand-freeze`, object `d496fb5dd5c887adce65c96481425aa023e5a11d`, peels to that candidate. [The freeze record](../governance/SSMC_2_STAIR_STRINGER_MITER_DEMAND_FREEZE.md) binds exact-candidate CI, acceptance evidence, test authority, one-piece miter geometry, complete serial N/V/M demand and fail-closed response/resistance boundaries. It expressly does not identify a complete moment-capacity qualification. The prior DCTN tag and all historical archive identities remain immutable.
+
 ## DCTN-3B continuation frozen identity
 
 Resolve accepted DCTN-3B RC1 behavior at continuation implementation `d556585c1b905532431e4ec9b7be9ab23acabc10`, not mutable successor HEAD, continuation root, or archived source SHA. Annotated tag `dctn-3b-double-channel-truss-node-freeze`, object `cf33dd5b939bbed35cb8bb1b770d9fe929e9152e`, peels to that implementation. [The freeze record](../governance/DCTN_3B_CONTINUATION_FREEZE.md) binds the fresh-history provenance, acceptance report, CI, test authority, geometry/shaft/demand contracts, historical P-only response, and transverse fail-closed boundary. The 18 historical tags remain solely in the archived repository and are never imported as continuation identities.

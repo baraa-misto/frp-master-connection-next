@@ -1,5 +1,11 @@
 # Integrated QA and CI
 
+## SSMC-2 acceptance and scope-freeze gates
+
+Accepted candidate `dfc735f29887edbcdfc6a389c270230d414445ab`: exactly 7,267 backend tests across four deterministic shards, canonical node-ID SHA-256 `EB21B4B287DFC4E59AA6BC20151DEFCC0179A995BE4C301DBC966F7EFB48DE08`, 1,052 frontend tests, configured coverage 100%, all static/type/build/dependency checks, and zero full/runtime audit findings. CI run `35659065255`, attempt 1 directly verified the complete Backend Ubuntu/Windows and Frontend Ubuntu/Windows logical gate. Read-only acceptance covered SSMC-2 32/40/22 authority, 2,304 independent geometry fixtures, 102 exact predecessor comparisons, all Channel/W-I ordered pairs, both sides, signed angles, 2x2/3x2 groups, N/V/M transport, U.S./S.I. presentation, LAST VALID recovery, empty complete-response registry and no-SS316 browser experience.
+
+[The freeze record](../governance/SSMC_2_STAIR_STRINGER_MITER_DEMAND_FREEZE.md) binds accepted geometry/demand authority while retaining complete response/resistance and material coverage as fail-closed. Complete post-governance QA, reviewed explicit-path staging, normal main push, explicit single-tag push, clean synchronized refs, and direct exact-governance-SHA hosted success remain mandatory. The SSMC tag must peel to the accepted candidate; the DCTN tag and all archive identities must remain unchanged.
+
 ## DCTN-3B continuation acceptance and freeze gates
 
 Accepted continuation implementation `d556585c1b905532431e4ec9b7be9ab23acabc10`: 6,609 backend tests across four deterministic shards, 1,016 frontend tests, configured coverage 100%, all static/type/build/dependency checks, and zero full/runtime audits. CI run `35548324063`, run number 3, attempt 1 directly verified the complete Backend Ubuntu/Windows and Frontend Ubuntu/Windows logical gate. Read-only acceptance covered DCTN-3B 36/34/22 and DCTN-2 24/26/18 authority, all five arrangements, all three section forms, physical shaft ownership, historical P-only response, nonzero transverse fail-closed behavior, major/minor and equal-axis mapping, both unit paths, LAST VALID recovery, qualification controls, browser scene, network, and console.

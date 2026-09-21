@@ -1,5 +1,9 @@
 # Development Roadmap
 
+## SSMC-2 accepted geometry/demand milestone
+
+Accepted candidate `dfc735f29887edbcdfc6a389c270230d414445ab` passed complete isolated QA, exact-SHA hosted CI, independent browser/runtime review and read-only acceptance. [The frozen scope](../governance/SSMC_2_STAIR_STRINGER_MITER_DEMAND_FREEZE.md) closes SSMC-2 RC1 one-piece miter geometry, complete serial N/V/M demand, bounded planar group demand, status/trace behavior and explicit fail-closed qualification boundaries. It does not qualify complete single-sided response, arbitrary-polygon combined resistance/stability, member flange-to-web transfer, combined hardware response or missing plate properties, and it is not complete moment-capacity qualification. The tag targets the accepted candidate; this governance successor must pass fresh QA and its own exact-SHA hosted CI.
+
 ## DCTN-3B accepted continuation milestone
 
 Continuation implementation `d556585c1b905532431e4ec9b7be9ab23acabc10` passed complete isolated QA, exact-SHA hosted CI, independent browser/runtime review, and read-only acceptance. [The frozen scope](../governance/DCTN_3B_CONTINUATION_FREEZE.md) closes DCTN-3B RC1 relative placement, P/Qp/Qq demand transport, historical P-only response, physical shaft ownership, status/presentation behavior, and the explicit unqualified transverse-response boundary. It does not implement automatic transverse sharing/contact/prying/resistance, add a route/body/material selector, or authorize later DCTN engineering. The tag targets the accepted implementation; this governance successor must pass fresh QA and its own exact-SHA hosted CI.

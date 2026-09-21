@@ -1,5 +1,17 @@
 # Artifact and Version Register
 
+## SSMC-2 geometry/demand scope-freeze authority
+
+- Record: `docs/governance/SSMC_2_STAIR_STRINGER_MITER_DEMAND_FREEZE.md`.
+- Engineering implementation parent: `07444a4c88899bab2dc75de3cdea63c657cbfd43`; accepted green candidate: `dfc735f29887edbcdfc6a389c270230d414445ab` (count 6).
+- Annotated tag: `ssmc-2-stair-stringer-miter-demand-freeze`; object `d496fb5dd5c887adce65c96481425aa023e5a11d`; peeled accepted candidate, not implementation parent or governance successor.
+- Acceptance: `SSMC_2_ACCEPTANCE_PASSED`; external report SHA-256 `9B2E068DD2DA92A342BD0FA5326165B9FCFC71449241FAC8D8CC171B0AD35896`.
+- Exact-candidate CI: run `35659065255`, attempt 1, complete Ubuntu/Windows backend/frontend logical gate PASS.
+- Authority: 7,267 backend / 1,052 frontend tests, configured coverage 100%, SSMC-2 32/40/22, 2,304 independent geometry fixtures, and 102 exact predecessor comparisons with zero differences.
+- Scope: one-piece miter geometry, complete serial N/V/M demand, bounded planar group demand, trace/status/UI contracts and fail-closed qualification boundaries. This is not complete moment-capacity qualification.
+- Governance subject: `chore: record SSMC-2 miter demand freeze`; expected continuation count 7. Fresh governance QA and direct exact-governance-SHA CI remain mandatory and are recorded externally.
+- Existing DCTN continuation tag and all 18 historical archive tag identities remain unchanged; no archive tag is recreated here.
+
 ## DCTN-3B continuation freeze authority
 
 - Record: `docs/governance/DCTN_3B_CONTINUATION_FREEZE.md`.
