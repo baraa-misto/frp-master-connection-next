@@ -1,5 +1,9 @@
 # Decision Register
 
+## DCTN-3B accepted for continuation-targeted freeze
+
+Independent continuation acceptance passed as `DCTN_3B_CONTINUATION_ACCEPTANCE_PASSED`. [The freeze record](DCTN_3B_CONTINUATION_FREEZE.md) targets implementation `d556585c1b905532431e4ec9b7be9ab23acabc10` and binds continuation root `27cb9c908ca648566b3b6d3d2e19dd9be1e1df98` to archived source snapshot `5a391ce68cb04fba3df20f5bd3b57a01fd05da19`. Historical P-only response, physical shafts, Channel-relative placement, exact P/Qp/Qq demand transport, native axis naming, UI status/trace behavior, and the empty trusted transverse-response registry are preserved. Nonzero transverse demand remains calculated but not qualified. The first continuation tag is implementation-targeted; no one of the 18 archive tags is recreated.
+
 ## CME-3 conditional activation accepted for implementation-targeted freeze
 
 The owner-approved combined order's read-only Phase B passed: `CME_3_316SS_PUBLIC_ACTIVATION_ACCEPTANCE_PASSED`. [Freeze record](CME_3_316SS_PUBLIC_ACTIVATION_FREEZE.md) targets implementation `d790aacf643a265a839f8ae39051e70915fe5d54`, preserving all seventeen prior tags. Public SS316 selection is conditional on thirteen body routes, with three no-body routes unchanged and no custom properties/mixed-body selection. Owner I11 clarification preserves frozen unit-specific results; canonical role aggregation retains native non-body failures as governing. No C2 numerical method, FRP member, hardware or foundation authority is changed by this governance freeze.

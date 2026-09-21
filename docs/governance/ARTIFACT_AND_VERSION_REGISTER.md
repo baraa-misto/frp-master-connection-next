@@ -1,5 +1,17 @@
 # Artifact and Version Register
 
+## DCTN-3B continuation freeze authority
+
+- Record: `docs/governance/DCTN_3B_CONTINUATION_FREEZE.md`.
+- Continuation root: `27cb9c908ca648566b3b6d3d2e19dd9be1e1df98`; archived source snapshot: `5a391ce68cb04fba3df20f5bd3b57a01fd05da19`.
+- Accepted continuation implementation: `d556585c1b905532431e4ec9b7be9ab23acabc10` (count 3).
+- Annotated tag: `dctn-3b-double-channel-truss-node-freeze`; object `cf33dd5b939bbed35cb8bb1b770d9fe929e9152e`; peeled implementation target, not governance or archive.
+- Acceptance: `DCTN_3B_CONTINUATION_ACCEPTANCE_PASSED`; external report SHA-256 `752864DD45CF1A74FFD34455F9B0B13D5308D149C395C721F5E16C0627D448A2`.
+- Implementation CI: run `35548324063`, run number 3, attempt 1, exact accepted SHA, complete logical platform gate PASS.
+- Authority: 6,609 backend / 1,016 frontend tests, configured coverage 100%, zero full/runtime audit findings, DCTN-3B 36/34/22 and DCTN-2 24/26/18 cases.
+- Governance subject: `chore: record DCTN-3B continuation freeze`; expected continuation count 4. Fresh governance QA and direct exact-governance-SHA CI remain mandatory and are recorded externally.
+- The continuation repository retains one DCTN tag only. The 18 historical archive tag objects/targets remain remote historical authority and are not recreated here.
+
 ## CME-3 registered conditional activation freeze authority
 
 - Record and five-artifact SHA-256 index: `docs/governance/CME_3_316SS_PUBLIC_ACTIVATION_FREEZE.md`.

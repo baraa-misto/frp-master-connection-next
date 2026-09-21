@@ -1,5 +1,9 @@
 # Data Versioning and Reproducibility
 
+## DCTN-3B continuation frozen identity
+
+Resolve accepted DCTN-3B RC1 behavior at continuation implementation `d556585c1b905532431e4ec9b7be9ab23acabc10`, not mutable successor HEAD, continuation root, or archived source SHA. Annotated tag `dctn-3b-double-channel-truss-node-freeze`, object `cf33dd5b939bbed35cb8bb1b770d9fe929e9152e`, peels to that implementation. [The freeze record](../governance/DCTN_3B_CONTINUATION_FREEZE.md) binds the fresh-history provenance, acceptance report, CI, test authority, geometry/shaft/demand contracts, historical P-only response, and transverse fail-closed boundary. The 18 historical tags remain solely in the archived repository and are never imported as continuation identities.
+
 ## CME-3 conditional activation frozen identity
 
 Resolve public activation at implementation `d790aacf643a265a839f8ae39051e70915fe5d54`, not mutable successor HEAD. Annotated tag `cme-3-316ss-connector-body-activation-freeze`, object `2e7c7b8f4c7fd2482813691f41c8711cd6987aeb`, targets that implementation, never the governance successor. [Freeze record](../governance/CME_3_316SS_PUBLIC_ACTIVATION_FREEZE.md) pins five unchanged artifacts, all thirty-nine body identities and seventeen prior tags. Owner-superseded I11 preserves each independently executed US/SI frozen-native result exactly, including Tee representation differences; only presentation-only activation selection is unit-independent. Native fingerprints are not normalized. Canonical ownership supersedes FRP body resistance only and retains non-body authority once.

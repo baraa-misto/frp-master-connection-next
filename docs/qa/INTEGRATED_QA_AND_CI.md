@@ -1,5 +1,11 @@
 # Integrated QA and CI
 
+## DCTN-3B continuation acceptance and freeze gates
+
+Accepted continuation implementation `d556585c1b905532431e4ec9b7be9ab23acabc10`: 6,609 backend tests across four deterministic shards, 1,016 frontend tests, configured coverage 100%, all static/type/build/dependency checks, and zero full/runtime audits. CI run `35548324063`, run number 3, attempt 1 directly verified the complete Backend Ubuntu/Windows and Frontend Ubuntu/Windows logical gate. Read-only acceptance covered DCTN-3B 36/34/22 and DCTN-2 24/26/18 authority, all five arrangements, all three section forms, physical shaft ownership, historical P-only response, nonzero transverse fail-closed behavior, major/minor and equal-axis mapping, both unit paths, LAST VALID recovery, qualification controls, browser scene, network, and console.
+
+[The freeze record](../governance/DCTN_3B_CONTINUATION_FREEZE.md) binds fresh-history provenance and archive preservation. Complete post-governance QA, reviewed explicit-path staging, normal main push, explicit single-tag push, clean synchronized refs, and direct exact-governance-SHA hosted success remain mandatory. The continuation tag must peel to the accepted implementation; none of the 18 archived tags may be recreated.
+
 ## CME-3 acceptance and fresh governance gates
 
 Implementation `d790aacf643a265a839f8ae39051e70915fe5d54`: 5,931 backend / 896 frontend tests, 100% configured coverage, all static/build/dependency gates and zero full/runtime audits. CI #128 / run 34773389706 / attempt 1 directly verified four SUCCESS. Read-only acceptance passed 602 backend and 48 frontend focused tests, 20/18/18 controlled cases, 50 exact parent responses, expanded 215 configurations/645 exact native responses/40 preserved invalid fixtures, 67 exact frozen C2 results, 104 rejected trust injections and all 15 UI products/16 routes/13 selectors/three no-body experiences. Every canceled browser startup request had its completed replacement; no runtime errors or HTTP 5xx.

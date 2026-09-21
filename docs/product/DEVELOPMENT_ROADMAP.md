@@ -1,5 +1,9 @@
 # Development Roadmap
 
+## DCTN-3B accepted continuation milestone
+
+Continuation implementation `d556585c1b905532431e4ec9b7be9ab23acabc10` passed complete isolated QA, exact-SHA hosted CI, independent browser/runtime review, and read-only acceptance. [The frozen scope](../governance/DCTN_3B_CONTINUATION_FREEZE.md) closes DCTN-3B RC1 relative placement, P/Qp/Qq demand transport, historical P-only response, physical shaft ownership, status/presentation behavior, and the explicit unqualified transverse-response boundary. It does not implement automatic transverse sharing/contact/prying/resistance, add a route/body/material selector, or authorize later DCTN engineering. The tag targets the accepted implementation; this governance successor must pass fresh QA and its own exact-SHA hosted CI.
+
 ## CME-3 accepted conditional public activation milestone
 
 Implementation `d790aacf643a265a839f8ae39051e70915fe5d54` passed full QA, exact-SHA four-job CI and read-only product acceptance. [Frozen scope](../governance/CME_3_316SS_PUBLIC_ACTIVATION_FREEZE.md) closes conditional connector-body selection on thirteen routes, not universal stainless capacity or complete source qualification. Unknown response/contact/prying, unqualified shape/stability/local mechanisms, unsupported C2 applicability and external hardware/foundation design remain explicit. No later engineering-method expansion is authorized; historical exclusions below describe their original milestones. The tag targets implementation, while the governance successor must pass fresh QA and its own hosted CI.
