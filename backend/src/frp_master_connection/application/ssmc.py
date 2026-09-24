@@ -20,6 +20,7 @@ from frp_master_connection.calculation.angle_connector_core import (
 from frp_master_connection.calculation.eccentric_demand import ExactQuantityVector3D
 from frp_master_connection.calculation.in_plane_wrench_demand import (
     InPlaneWrenchRequest,
+    InPlaneWrenchResult,
     WrenchBolt,
     calculate_in_plane_wrench_demand,
 )
@@ -97,7 +98,7 @@ class SSMCGroupDemand:
     member_end_wrench: AngleWrench
     plate_wrench: AngleWrench
     planar_status: str
-    native_slice8: object | None
+    native_slice8: InPlaneWrenchResult | None
     bolt_axis_tension: None = None
     prying: None = None
     shaft_bending: None = None

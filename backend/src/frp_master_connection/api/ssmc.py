@@ -16,7 +16,14 @@ from frp_master_connection.api.wi_frp_support_moment_mapping import _hardware
 from frp_master_connection.api.wi_frp_support_moment_schemas import SupportHardwareDTO
 from frp_master_connection.api.wi_wall_moment_mapping import _q
 from frp_master_connection.application.ssmc import SSMCPreview, preview_ssmc
+from frp_master_connection.calculation.inputs import TimeEffectCategory
 from frp_master_connection.calculation.quantities import Dimension, PhysicalQuantity, Unit
+from frp_master_connection.calculation.ssmc_analytical import (
+    SSMCAnalyticalRequest,
+    SSMCDesignAction,
+    SSMCSingleLapDeclaration,
+    evaluate_ssmc_analytical,
+)
 from frp_master_connection.domain.ssmc import (
     SSMCFastener,
     SSMCGroup,
@@ -83,6 +90,32 @@ class SSMCRequestDTO(_StrictModel):
     M: QuantityDTO
     source_reference: StrictStr = ""
     contract: Literal["SSMC-2-RC1"] = "SSMC-2-RC1"
+
+
+class SSMCDesignActionDTO(_StrictModel):
+    basis: Literal["FACTORED_LRFD"]
+    combination_id: StrictStr
+    combination_source: StrictStr
+    already_factored: StrictBool
+    time_effect_category: TimeEffectCategory
+    time_effect_reference: StrictStr
+
+
+class SSMCSingleLapDTO(_StrictModel):
+    external_actions_at_faying_interface: StrictBool
+    independent_normal_force: QuantityDTO
+    independent_out_of_plane_moment: QuantityDTO
+    imposed_separation: StrictBool
+    non_contact_gap: StrictBool
+    friction_or_preload_credit: StrictBool
+    miter_bearing_credit: StrictBool
+
+
+class SSMCAnalyticalRequestDTO(_StrictModel):
+    physical: SSMCRequestDTO
+    action: SSMCDesignActionDTO
+    single_lap: SSMCSingleLapDTO
+    contract: Literal["SSMC-3-ANALYTICAL-RC1"] = "SSMC-3-ANALYTICAL-RC1"
 
 
 def map_ssmc_request(dto: SSMCRequestDTO) -> SSMCRequest:
@@ -311,6 +344,47 @@ def build_ssmc_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             )
         try:
             return ssmc_response(preview_ssmc(map_ssmc_request(request)))
+        except (ArithmeticError, ValueError) as error:
+            raise HTTPException(
+                status_code=422, detail={"code": "SSMC_INPUT_INVALID", "message": str(error)}
+            ) from error
+
+    @router.post("/analytical-design-check")
+    async def analytical_design_check(
+        request: SSMCAnalyticalRequestDTO,
+        _identity: Annotated[TrustedIdentity, Depends(identity)],
+        material: Annotated[str, Depends(material_selection)],
+    ) -> dict[str, JsonValue]:
+        if material != "FRP":
+            raise HTTPException(
+                status_code=422, detail={"code": "CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE"}
+            )
+        try:
+            physical = map_ssmc_request(request.physical)
+            action = SSMCDesignAction(
+                request.action.basis,
+                request.action.combination_id,
+                request.action.combination_source,
+                request.action.already_factored,
+                request.action.time_effect_category,
+                request.action.time_effect_reference,
+            )
+            lap = SSMCSingleLapDeclaration(
+                request.single_lap.external_actions_at_faying_interface,
+                _q(request.single_lap.independent_normal_force),
+                _q(request.single_lap.independent_out_of_plane_moment),
+                request.single_lap.imposed_separation,
+                request.single_lap.non_contact_gap,
+                request.single_lap.friction_or_preload_credit,
+                request.single_lap.miter_bearing_credit,
+            )
+            result = evaluate_ssmc_analytical(SSMCAnalyticalRequest(physical, action, lap))
+            return {
+                "contract": result.contract,
+                "method": result.method,
+                "whole_connection_status": result.whole_connection_status,
+                "result": serialize_ssmc_value(result),
+            }
         except (ArithmeticError, ValueError) as error:
             raise HTTPException(
                 status_code=422, detail={"code": "SSMC_INPUT_INVALID", "message": str(error)}
