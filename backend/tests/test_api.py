@@ -203,6 +203,7 @@ def test_openapi_product_path_set_is_exact() -> None:
         "/api/v1/calculations/double-channel-truss-node/design-check",
         "/api/v1/calculations/double-channel-truss-node/convert-units",
         "/api/v1/calculations/stair-stringer-miter/defaults",
+        "/api/v1/calculations/stair-stringer-miter/analytical-design-check",
         "/api/v1/calculations/stair-stringer-miter/preview",
         "/api/v1/calculations/stair-stringer-miter/design-check",
         "/api/v1/calculations/stair-stringer-miter/convert-units",
