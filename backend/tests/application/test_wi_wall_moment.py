@@ -624,21 +624,49 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
     root = Path(__file__).resolve().parents[3]
     records = json.loads((root / "docs/qa/STAGE_4_2_INHERITED_IDENTITIES.json").read_text())
     assert records["baseline"] == "473a3c8cd43f13022d254dae2477084895478c74"
+    workflow_identities = {
+        "historical_pre_ssmc_3_main": {
+            "commit": "9a9b4529faa1287e8df8360daceed2687e1e2b57",
+            "blob": "2169d74e008b597793102c0bba25505d840ebdcb",
+            "expected_tests": b"--expected-tests 7267",
+        },
+        "ssmc_3_analytical_successor": {
+            "blob": "89687a8099efdf626f0acb209a6d185a2e58d2dd",
+            "sha256": "01356CD33808B5DBB01FE150BAB79281924681F8BA109F9AA453F096F14BF98A",
+            "expected_tests": b"--expected-tests 7291",
+        },
+    }
+    frozen_ssmc = (root / "backend/src/frp_master_connection/application/ssmc.py").read_bytes()
+    assert hashlib.sha256(frozen_ssmc).hexdigest().upper() == (
+        "54774E036BBA2061361EDAD5E34DF84FA7D9ED59C8E520342411D8131E202765"
+    )
     for item in records["files"]:
         path = item["path"]
         raw = (root / path).read_bytes().replace(b"\r\n", b"\n")
         if path in _FROZEN_DEPENDENCIES:
             raw = _historical_dependency_bytes(root, path)
         elif path == ".github/workflows/ci.yml":
-            successor_blob = hashlib.sha1(  # noqa: S324 - Git object identity
-                b"blob " + str(len(raw)).encode() + b"\0" + raw
+            historical_identity = workflow_identities["historical_pre_ssmc_3_main"]
+            successor_identity = workflow_identities["ssmc_3_analytical_successor"]
+            successor_blob = hashlib.sha1(
+                b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
             ).hexdigest()
-            assert successor_blob == "2169d74e008b597793102c0bba25505d840ebdcb"
-            current_count = b"--expected-tests 7267"
+            assert successor_blob == successor_identity["blob"]
+            assert hashlib.sha256(raw).hexdigest().upper() == successor_identity["sha256"]
+            current_count = successor_identity["expected_tests"]
+            baseline_count = historical_identity["expected_tests"]
             historical_count = b"--expected-tests 6609"
             assert raw.count(current_count) == 1
+            assert raw.count(baseline_count) == 0
             assert raw.count(historical_count) == 0
-            raw = raw.replace(current_count, historical_count)
+            baseline_raw = raw.replace(current_count, baseline_count)
+            baseline_blob = hashlib.sha1(
+                b"blob " + str(len(baseline_raw)).encode() + b"\0" + baseline_raw,
+                usedforsecurity=False,
+            ).hexdigest()
+            assert historical_identity["commit"] == "9a9b4529faa1287e8df8360daceed2687e1e2b57"
+            assert baseline_blob == historical_identity["blob"]
+            raw = baseline_raw.replace(baseline_count, historical_count)
             historical_blob = hashlib.sha1(  # noqa: S324 - Git object identity
                 b"blob " + str(len(raw)).encode() + b"\0" + raw
             ).hexdigest()
