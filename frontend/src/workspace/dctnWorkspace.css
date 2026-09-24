@@ -3,6 +3,7 @@
 .dctn-workspace input, .dctn-workspace select { max-width: 100%; }
 .dctn-workspace .field-control > input, .dctn-workspace .field-control > select { width: 100%; box-sizing: border-box; }
 .dctn-workspace .source-card { min-width: 0; overflow-wrap: anywhere; }
+.ssmc-workspace .persistent-connection-viewer { position: static; }
 .dctn-workspace pre { max-height: 32rem; overflow: auto; white-space: pre-wrap; }
 .dctn-results { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,22rem),1fr)); gap: 1rem; }
 .dctn-workspace table { width: 100%; table-layout: fixed; font-size: .8rem; }

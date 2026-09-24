@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, assert, expect, it, vi } from "vitest";
 import * as client from "../src/api/ssmcClient";
-import type { SSMCRequest, SSMCResponse } from "../src/api/ssmcClient";
+import type { SSMCAnalyticalRequest, SSMCAnalyticalResponse, SSMCRequest, SSMCResponse } from "../src/api/ssmcClient";
 import type { SingleBoltSceneModel } from "../src/visualization/sceneModel";
 import { StairStringerMiterWorkspace } from "../src/workspace/StairStringerMiterWorkspace";
 import { MomentConnectionsWorkspace } from "../src/workspace/MomentConnectionsWorkspace";
@@ -18,14 +18,32 @@ function response(request: SSMCRequest) {
   result.request_id = request.request_id; result.result.input = copy(request);
   return result;
 }
+function analyticalResponse(request: SSMCAnalyticalRequest): SSMCAnalyticalResponse {
+  return {
+    contract: "SSMC-3-ANALYTICAL-RC1", method: "SSMC_3_ANALYTICAL_SINGLE_LAP_RC1", whole_connection_status: "ENGINEERING_REVIEW_REQUIRED",
+    result: {
+      contract: "SSMC-3-ANALYTICAL-RC1", method: "SSMC_3_ANALYTICAL_SINGLE_LAP_RC1", whole_connection_status: "ENGINEERING_REVIEW_REQUIRED",
+      request, existing_demand: response(request.physical).result, applicability_status: "ELIGIBLE", applicability_reasons: [],
+      checks: [{ owner: "MITER_WEB_PLATE", path_id: "HORIZONTAL_WEB_GROUP:PIN", mode: "PIN_BEARING", status: "SOURCE_REQUIRED", reason: "TEST_SOURCE_REQUIRED", demand_N: 1, source_id: null, qualification_id: null }],
+      blockers: ["PLATE_PRODUCT_QUALIFICATION_REQUIRED"], numerical_failures: [], action_reaction: [{ group_id: "HORIZONTAL_WEB_GROUP" }], member_cut_demands: [], cuts: { cuts: [], finite_coverage_proven: false, status: "ENGINEERING_REVIEW_REQUIRED" },
+    },
+  };
+}
 function mocks() {
   const load = vi.spyOn(client, "loadSSMC").mockResolvedValue(copy(data.us.request));
   const send = vi.spyOn(client, "evaluateSSMC").mockImplementation(r => Promise.resolve(response(r)));
   const convert = vi.spyOn(client, "convertSSMC").mockImplementation((_r, si) => Promise.resolve(copy(si ? data.si.request : data.us.request)));
-  return { load, send, convert };
+  const design = vi.spyOn(client, "evaluateSSMCAnalytical").mockImplementation(r => Promise.resolve(analyticalResponse(r)));
+  return { load, send, convert, design };
 }
 const current = () => screen.findByText("CURRENT BACKEND PREVIEW");
 function edit(label: string, value: string) { fireEvent.change(screen.getByLabelText(new RegExp("^" + label.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&") + "$", "iu")), { target: { value } }); }
+function completeDeclaration() {
+  edit("Combination ID", "COMBO-1"); edit("Combination source", "Issued factored schedule"); edit("Actions already factored", "YES");
+  edit("Time-effect category", "OTHER_LIVE"); edit("Time-effect reference", "Issued time schedule");
+  edit("External actions at faying interface", "YES"); edit("Independent bolt-axis force (N)", "0"); edit("Independent out-of-plane moment (N-mm)", "0");
+  for (const label of ["Imposed separation", "Non-contact gap", "Friction or preload credit", "Miter bearing credit"]) edit(label, "NO");
+}
 async function renderBeforeInitialPreview() {
   const { send } = mocks();
   send.mockImplementationOnce(() => new Promise<SSMCResponse>(() => undefined));
@@ -43,24 +61,83 @@ async function awaitCurrentRequest(send: ReturnType<typeof mocks>["send"], check
 }
 
 it("adds one Moment workspace without changing the initial selection or exposing stainless", async () => {
-  mocks(); render(<MomentConnectionsWorkspace/>);
+  const { design } = mocks(); render(<MomentConnectionsWorkspace/>);
   expect(screen.getByText("Unchanged initial moment workspace")).toBeInTheDocument();
+  const selector = screen.getByLabelText("Connection type");
+  expect(within(selector).getByRole("group", { name: "Stair connections" })).toContainElement(screen.getByRole("option", { name: "Stair Stringer Miter Connection" }));
+  expect(within(selector).getByRole("group", { name: "Beam moment connections" })).not.toContainElement(screen.getByRole("option", { name: "Stair Stringer Miter Connection" }));
   fireEvent.change(screen.getByLabelText("Connection type"), { target: { value: "STAIR_STRINGER_MITER_CONNECTION" } });
   await current();
   expect(screen.queryByText("316 Stainless Steel")).toBeNull();
   expect(within(screen.getByLabelText("SSMC unit system")).getAllByRole("option")).toHaveLength(2);
-  expect(screen.getByText(/CW basis — unknown cut/u)).toBeInTheDocument();
+  expect(screen.getByText(/Analytical method accepted/u)).toBeInTheDocument();
   await waitFor(() => { expect(probe.model?.cylinders.filter(c => c.kind === "BOLT")).toHaveLength(8); });
   for (const label of ["Geometry", "Demand", "Planar group response", "Complete response", "Plate resistance", "Member local transfer", "Hardware", "Qualification", "Design"]) expect(screen.getByText(label, { selector: "dt" })).toBeInTheDocument();
   expect(screen.getByText("Required missing coverage / failures")).toBeInTheDocument();
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
+  expect(screen.getByRole("button", { name: "Run Design Check" })).toBeDisabled();
+  completeDeclaration();
   fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
-  await screen.findByText("Current design check: ENGINEERING_REVIEW_REQUIRED");
+  await waitFor(() => { expect(design).toHaveBeenCalledTimes(1); });
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("ENGINEERING_REVIEW_REQUIRED");
+  expect(screen.getByLabelText("Qualification and source blockers")).toHaveTextContent("PLATE_PRODUCT_QUALIFICATION_REQUIRED");
+  expect(screen.getByLabelText("Geometry / Model Status")).toHaveTextContent("VALID");
+  fireEvent.change(selector, { target: { value: "WI_BEAM_MAJOR_AXIS_MOMENT_SPLICE" } });
+  expect(screen.queryByLabelText("SSMC inputs")).toBeNull();
+  expect(screen.getByText("Unchanged initial moment workspace")).toBeInTheDocument();
+});
+
+it.each([
+  ["CHANNEL", "CHANNEL", "-35", "NEG_Y", "2", "2"],
+  ["CHANNEL", "W_I", "35", "POS_Y", "3", "2"],
+  ["W_I", "CHANNEL", "-40", "POS_Y", "2", "3"],
+  ["W_I", "W_I", "40", "NEG_Y", "3", "3"],
+] as const)("sends public %s/%s physical inputs through the analytical route", async (horizontal, inclined, angle, side, horizontalRows, inclinedRows) => {
+  const { send, design } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
+  edit("horizontal section form", horizontal); edit("inclined section form", inclined); edit("Signed inclination (deg)", angle);
+  edit("Plate side", side); edit("horizontal_group rows", horizontalRows); edit("inclined_group rows", inclinedRows);
+  edit("N", "-8"); edit("V", "4"); edit("M", "-20");
+  await current(); completeDeclaration();
+  fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+  await waitFor(() => { expect(design).toHaveBeenCalledTimes(1); });
+  const request = design.mock.lastCall?.[0]; assert(request);
+  expect([request.physical.horizontal.form, request.physical.inclined.form, request.physical.theta_deg, request.physical.plate.side]).toEqual([horizontal, inclined, angle, side]);
+  expect([request.physical.horizontal_group.rows, request.physical.inclined_group.rows]).toEqual([Number(horizontalRows), Number(inclinedRows)]);
+  expect([request.physical.N.value, request.physical.V.value, request.physical.M.value]).toEqual(["-8", "4", "-20"]);
+  expect(request.action).toMatchObject({ basis: "FACTORED_LRFD", combination_id: "COMBO-1", time_effect_category: "OTHER_LIVE", already_factored: true });
+  expect(request.physical.source_reference).toBe(""); expect(request.physical.fastener.source_reference).toBe("");
+  expect(send.mock.calls.every(call => call[1] === "preview")).toBe(true);
+});
+
+it.each(["PASS", "FAIL", "ENGINEERING_REVIEW_REQUIRED", "SOURCE_REQUIRED", "NOT_APPLICABLE"] as const)("renders authoritative %s and mixed child status without client precedence", async status => {
+  const { send, design } = mocks();
+  design.mockImplementation(request => {
+    const result = analyticalResponse(request);
+    result.whole_connection_status = status; result.result.whole_connection_status = status;
+    result.result.checks.push({ owner: "INCLINED_STRINGER", path_id: "I1", mode: "PULL_THROUGH", status: "NOT_APPLICABLE", reason: "SERVER_PROOF", demand_N: 0, source_id: null, qualification_id: null });
+    return Promise.resolve(result);
+  });
+  render(<StairStringerMiterWorkspace/>); await current(); completeDeclaration();
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
+  fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+  await waitFor(() => { expect(screen.getByLabelText("Design Status")).toHaveTextContent(status); });
+  expect(screen.getByLabelText("Qualification and source blockers")).toHaveTextContent("PLATE_PRODUCT_QUALIFICATION_REQUIRED");
+  expect(screen.getByText("SERVER_PROOF")).toBeInTheDocument();
+  expect(screen.getByText("TEST_SOURCE_REQUIRED")).toBeInTheDocument();
+  expect(screen.getByLabelText("Geometry / Model Status")).toHaveTextContent("VALID");
+  fireEvent.click(screen.getByRole("button", { name: "Front" }));
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent(status);
+  const count = send.mock.calls.length;
+  edit("Combination ID", "COMBO-2");
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
+  expect(screen.getByLabelText("Geometry / Model Status")).toHaveTextContent("VALID");
+  expect(send.mock.calls).toHaveLength(count);
 });
 
 it("preserves last valid geometry, hides stale arrows/design and recovers through an awaited preview", async () => {
   const { send } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
   edit("N", "8"); await current(); expect(probe.model?.appliedArrows[0]?.signedValue).toBe(8);
-  fireEvent.click(screen.getByRole("button", { name: "Run Design Check" })); await screen.findByText(/Current design check:/u);
+  completeDeclaration(); fireEvent.click(screen.getByRole("button", { name: "Run Design Check" })); await waitFor(() => { expect(screen.getByLabelText("Design Status")).toHaveTextContent("ENGINEERING_REVIEW_REQUIRED"); });
   const count = send.mock.calls.length;
   edit("N", "");
   expect(screen.getByText("LAST VALID PREVIEW — CURRENT INPUTS UNVERIFIED")).toBeInTheDocument();
@@ -74,13 +151,10 @@ it("preserves last valid geometry, hides stale arrows/design and recovers throug
   edit("Plate Horizontal overlap", "8"); await current();
 });
 
-it("edits independent source references and clears both on an engineering edit", async () => {
+it("does not expose source or strength overrides and clears untrusted references on edit", async () => {
   const send = await renderBeforeInitialPreview();
-  edit("SSMC source reference", "PUBLIC_TEXT"); edit("SSMC hardware source reference", "HARDWARE_TEXT");
-  await awaitCurrentRequest(send, request => {
-    expect(request.source_reference).toBe("PUBLIC_TEXT");
-    expect(request.fastener.source_reference).toBe("HARDWARE_TEXT");
-  });
+  expect(screen.queryByLabelText("SSMC source reference")).toBeNull();
+  expect(screen.queryByLabelText("SSMC hardware source reference")).toBeNull();
   edit("N", "8");
   await awaitCurrentRequest(send, request => {
     expect(request.N.value).toBe("8");
@@ -134,36 +208,56 @@ it("edits every hardware and action field without silent repair", async () => {
 });
 
 it("converts through the backend and preserves native exact trace rather than formatting inputs", async () => {
-  const { convert } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
+  const { convert, design } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
   edit("SSMC unit system", "SI"); await waitFor(() => { expect(screen.getByLabelText("SSMC unit system")).toHaveValue("SI"); }); await current();
   expect(convert.mock.lastCall?.[1]).toBe(true);
   expect(screen.getByLabelText("Bolt Hole Diameter")).toHaveValue("14.3002");
   expect(screen.getByText("Exact engineering trace / references / machine codes")).toBeInTheDocument();
+  completeDeclaration(); fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+  await waitFor(() => { expect(design).toHaveBeenCalledTimes(1); });
+  expect(design.mock.lastCall?.[0].physical).toMatchObject({ unit_system: "SI", N: data.si.request.N, V: data.si.request.V, M: data.si.request.M });
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("ENGINEERING_REVIEW_REQUIRED");
   edit("SSMC unit system", "US"); await waitFor(() => { expect(screen.getByLabelText("SSMC unit system")).toHaveValue("US"); }); await current();
   expect(convert.mock.lastCall?.[1]).toBe(false);
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
 });
 
-it("ignores stale preview and design completions after newer input", async () => {
-  const { send } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
+it("keeps a prior design stale even when edited inputs are restored", async () => {
+  const { design } = mocks(); render(<StairStringerMiterWorkspace/>); await current(); completeDeclaration();
+  fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+  await waitFor(() => { expect(design).toHaveBeenCalledTimes(1); });
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("ENGINEERING_REVIEW_REQUIRED");
+  edit("Combination ID", "TEMP"); edit("Combination ID", "COMBO-1");
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
+  const originalN = data.us.request.N.value;
+  edit("N", "17"); edit("N", originalN); await current();
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
+});
+
+it("ignores stale preview and analytical design completions after newer input", async () => {
+  const { send, design } = mocks(); render(<StairStringerMiterWorkspace/>); await current();
   let resolveOld: ((r: SSMCResponse) => void) | undefined;
   send.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve; }));
   edit("N", "2"); await waitFor(() => { expect(resolveOld).toBeDefined(); });
   edit("N", "3"); await current();
   await act(async () => { resolveOld?.(data.us.response); await Promise.resolve(); });
   expect(probe.model?.appliedArrows[0]?.signedValue).toBe(3);
-  send.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve; }));
+  let resolveOldDesign: ((r: SSMCAnalyticalResponse) => void) | undefined;
+  design.mockImplementationOnce(() => new Promise(resolve => { resolveOldDesign = resolve; }));
+  completeDeclaration();
   fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
   edit("N", "4"); await current();
-  await act(async () => { resolveOld?.(data.us.response); await Promise.resolve(); });
-  expect(screen.queryByText(/Current design check:/u)).toBeNull();
+  const oldRequest = design.mock.lastCall?.[0]; assert(oldRequest);
+  await act(async () => { resolveOldDesign?.(analyticalResponse(oldRequest)); await Promise.resolve(); });
+  expect(screen.getByLabelText("Design Status")).toHaveTextContent("STALE");
   expect(probe.model?.appliedArrows[0]?.signedValue).toBe(4);
 });
 
 it("reports load failures, retries, and reports operation failures without discarding valid geometry", async () => {
-  const { load, send, convert } = mocks(); load.mockRejectedValueOnce(new Error("offline"));
+  const { load, design, convert } = mocks(); load.mockRejectedValueOnce(new Error("offline"));
   render(<StairStringerMiterWorkspace/>); await screen.findByRole("alert");
   fireEvent.click(screen.getByRole("button", { name: "Retry" })); await current();
-  send.mockRejectedValueOnce(new Error("design offline")); fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+  completeDeclaration(); design.mockRejectedValueOnce(new Error("design offline")); fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
   await screen.findByText("Error: design offline");
   convert.mockRejectedValueOnce(new Error("conversion offline")); edit("SSMC unit system", "SI"); await screen.findByText("Error: conversion offline");
   expect(screen.getByLabelText("SSMC unit system")).toHaveValue("US");

@@ -151,6 +151,8 @@ describe("Stage 2.3R application and workspace", () => {
     fireEvent.click(screen.getByRole("button", { name: /Moment Connections/ }));
     expect(await screen.findByRole("heading", { name: "Moment connection — W/I beam moment splice" })).toBeVisible();
     expect(screen.getByRole("option", { name: "W/I Beam Moment Splice" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Stair Stringer Miter Connection" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Stair connections" })).toContainElement(screen.getByRole("option", { name: "Stair Stringer Miter Connection" }));
     expect(screen.getByLabelText("Major-axis moment M_T")).toHaveValue("100");
     expect(screen.getByRole("button", { name: "Run Design Check" })).toBeEnabled();
     expect(mocks.momentPreview).toHaveBeenCalledTimes(1);
@@ -162,6 +164,7 @@ describe("Stage 2.3R application and workspace", () => {
     expect(screen.getByText("Session only")).toBeVisible();
     expect(screen.getByText(/Session only .* not saved/)).toBeVisible();
     expect(screen.getAllByText("Shear Connections").length).toBeGreaterThan(0);
+    expect(screen.queryByRole("option", { name: "Stair Stringer Miter Connection" })).toBeNull();
     for (const label of ["Brace to column flange", "One brace", "One selected bolt", "One row"]) {
       expect(screen.getAllByText(label).length).toBeGreaterThan(0);
     }

@@ -31,6 +31,35 @@ export interface SSMCResponse {
     complete_moment_capacity_qualified: false; plate_policy: string;
   };
 }
+export type SSMCDesignStatus = "PASS" | "FAIL" | "ENGINEERING_REVIEW_REQUIRED" | "SOURCE_REQUIRED" | "NOT_APPLICABLE";
+export type SSMCTimeEffectCategory = "DEAD_ONLY" | "IMPACT" | "STORAGE" | "LONG_TERM_OPERATING" | "OTHER_LIVE" | "SNOW_RAIN_FLOOD_ATMOSPHERIC_ICE" | "WIND_TORNADO_SEISMIC";
+export interface SSMCAnalyticalRequest {
+  physical: SSMCRequest;
+  action: {
+    basis: "FACTORED_LRFD"; combination_id: string; combination_source: string;
+    already_factored: boolean; time_effect_category: SSMCTimeEffectCategory; time_effect_reference: string;
+  };
+  single_lap: {
+    external_actions_at_faying_interface: boolean; independent_normal_force: Q; independent_out_of_plane_moment: Q;
+    imposed_separation: boolean; non_contact_gap: boolean; friction_or_preload_credit: boolean; miter_bearing_credit: boolean;
+  };
+  contract: "SSMC-3-ANALYTICAL-RC1";
+}
+export interface SSMCAnalyticalCheck {
+  owner: string; path_id: string; mode: string; status: SSMCDesignStatus; reason: string;
+  demand_N: number; source_id: string | null; qualification_id: string | null;
+}
+export interface SSMCAnalyticalResponse {
+  contract: "SSMC-3-ANALYTICAL-RC1"; method: "SSMC_3_ANALYTICAL_SINGLE_LAP_RC1"; whole_connection_status: SSMCDesignStatus;
+  result: {
+    contract: "SSMC-3-ANALYTICAL-RC1"; method: "SSMC_3_ANALYTICAL_SINGLE_LAP_RC1";
+    whole_connection_status: SSMCDesignStatus; request: SSMCAnalyticalRequest;
+    existing_demand: SSMCResponse["result"];
+    applicability_status: "ELIGIBLE" | "ENGINEERING_REVIEW_REQUIRED"; applicability_reasons: string[];
+    checks: SSMCAnalyticalCheck[]; blockers: string[]; numerical_failures: string[];
+    action_reaction: unknown[]; member_cut_demands: unknown[]; cuts: { cuts: unknown[]; finite_coverage_proven: boolean; status: string };
+  };
+}
 const q = t.q, text = t.text, arr = t.array, shape = t.shape;
 const number = (v: unknown) => typeof v === "number" && Number.isFinite(v);
 const bool = (v: unknown) => typeof v === "boolean";
@@ -59,8 +88,20 @@ const responseShape = shape({
     }),
   }),
 });
+const designStatus = (v: unknown): v is SSMCDesignStatus => v === "PASS" || v === "FAIL" || v === "ENGINEERING_REVIEW_REQUIRED" || v === "SOURCE_REQUIRED" || v === "NOT_APPLICABLE";
+const analyticalResponseShape = shape({
+  contract: v => v === "SSMC-3-ANALYTICAL-RC1", method: v => v === "SSMC_3_ANALYTICAL_SINGLE_LAP_RC1", whole_connection_status: designStatus,
+  result: shape({
+    contract: v => v === "SSMC-3-ANALYTICAL-RC1", method: v => v === "SSMC_3_ANALYTICAL_SINGLE_LAP_RC1", whole_connection_status: designStatus,
+    request: shape({ physical: isSSMCRequest }), existing_demand: shape({ input: isSSMCRequest, engineering_fingerprint: text }),
+    applicability_status: v => v === "ELIGIBLE" || v === "ENGINEERING_REVIEW_REQUIRED", applicability_reasons: arr(text),
+    checks: arr(shape({ owner: text, path_id: text, mode: text, status: designStatus, reason: text, demand_N: number, source_id: v => v === null || text(v), qualification_id: v => v === null || text(v) })),
+    blockers: arr(text), numerical_failures: arr(text), action_reaction: arr(() => true), member_cut_demands: arr(() => true),
+    cuts: shape({ cuts: arr(() => true), finite_coverage_proven: bool, status: text }),
+  }),
+});
 const endpoint = "/api/v1/calculations/stair-stringer-miter";
-async function exchange(path: string, signal: AbortSignal, request?: SSMCRequest): Promise<unknown> {
+async function exchange(path: string, signal: AbortSignal, request?: SSMCRequest | SSMCAnalyticalRequest): Promise<unknown> {
   let response: Response;
   try { response = await fetch(endpoint + path, { method: request === undefined ? "GET" : "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", signal, ...(request === undefined ? {} : { body: JSON.stringify(request) }) }); }
   catch (error) { if (error instanceof DOMException && error.name === "AbortError") throw error; throw new EvaluationTransportError("NETWORK", null, "SSMC service unavailable.", error); }
@@ -86,5 +127,14 @@ export async function evaluateSSMC(request: SSMCRequest, kind: "preview" | "desi
   if (response.request_id !== request.request_id || response.result.input.request_id !== request.request_id || response.engineering_fingerprint !== response.result.engineering_fingerprint) throw new Error("SSMC response identity mismatch.");
   const shafts = response.result.geometry.shafts;
   if (new Set(shafts.map(s => s.id)).size !== shafts.length || response.result.geometry.members.length !== 2 || response.result.groups.length !== 2) throw new Error("SSMC physical ownership mismatch.");
+  return response;
+}
+export async function evaluateSSMCAnalytical(request: SSMCAnalyticalRequest, signal: AbortSignal): Promise<SSMCAnalyticalResponse> {
+  const value = await exchange("/analytical-design-check", signal, request);
+  if (!analyticalResponseShape(value)) throw new Error("Invalid SSMC analytical response contract.");
+  const response = value as SSMCAnalyticalResponse;
+  if (response.whole_connection_status !== response.result.whole_connection_status ||
+    response.result.request.physical.request_id !== request.physical.request_id ||
+    response.result.existing_demand.input.request_id !== request.physical.request_id) throw new Error("SSMC analytical response identity mismatch.");
   return response;
 }
