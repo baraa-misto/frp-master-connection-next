@@ -635,6 +635,16 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             "sha256": "01356CD33808B5DBB01FE150BAB79281924681F8BA109F9AA453F096F14BF98A",
             "expected_tests": b"--expected-tests 7291",
         },
+        "mat1_material_successor": {
+            "blob": "a5e6c557b0291a45765bb5001b014dad8b2557f4",
+            "sha256": "C3826FC5C61B45BC59DD8F35B781C0AAC52133813D676FA2EB380FEE676CEDE8",
+            "expected_tests": b"--expected-tests 7338",
+        },
+        "mat1_material_complete_successor": {
+            "blob": "3a61ccfc02f11aeb42ac4429d899291c654c7a25",
+            "sha256": "6EA7A2E53937B20D4986F984BB8C569F14E6B1375073EDCEC070D8C2C94D876A",
+            "expected_tests": b"--expected-tests 7385",
+        },
     }
     frozen_ssmc = (root / "backend/src/frp_master_connection/application/ssmc.py").read_bytes()
     assert hashlib.sha256(frozen_ssmc).hexdigest().upper() == (
@@ -645,9 +655,24 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
         raw = (root / path).read_bytes().replace(b"\r\n", b"\n")
         if path in _FROZEN_DEPENDENCIES:
             raw = _historical_dependency_bytes(root, path)
+        elif path == "backend/pyproject.toml":
+            successor_blob = hashlib.sha1(
+                b"blob " + str(len(raw)).encode() + b"\0" + raw,
+                usedforsecurity=False,
+            ).hexdigest()
+            assert successor_blob == "9af757259bf3bb0de1763e3e51e3fd1dda612a5a"
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "FD31F376EB18A56BEB11BC271EC797C20228C74FAA90F581511289356741AFB1"
+            )
+            catalog_data = b'frp_master_connection = ["py.typed", "data/*.json"]'
+            historical_data = b'frp_master_connection = ["py.typed"]'
+            assert raw.count(catalog_data) == 1
+            raw = raw.replace(catalog_data, historical_data)
         elif path == ".github/workflows/ci.yml":
             historical_identity = workflow_identities["historical_pre_ssmc_3_main"]
-            successor_identity = workflow_identities["ssmc_3_analytical_successor"]
+            successor_identity = workflow_identities["mat1_material_complete_successor"]
+            prior_mat1_identity = workflow_identities["mat1_material_successor"]
+            prior_identity = workflow_identities["ssmc_3_analytical_successor"]
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
             ).hexdigest()
@@ -657,9 +682,30 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             baseline_count = historical_identity["expected_tests"]
             historical_count = b"--expected-tests 6609"
             assert raw.count(current_count) == 1
+            assert raw.count(prior_mat1_identity["expected_tests"]) == 0
+            assert raw.count(prior_identity["expected_tests"]) == 0
             assert raw.count(baseline_count) == 0
             assert raw.count(historical_count) == 0
-            baseline_raw = raw.replace(current_count, baseline_count)
+            prior_mat1_raw = raw.replace(current_count, prior_mat1_identity["expected_tests"])
+            prior_mat1_blob = hashlib.sha1(
+                b"blob " + str(len(prior_mat1_raw)).encode() + b"\0" + prior_mat1_raw,
+                usedforsecurity=False,
+            ).hexdigest()
+            assert prior_mat1_blob == prior_mat1_identity["blob"]
+            assert (
+                hashlib.sha256(prior_mat1_raw).hexdigest().upper()
+                == (prior_mat1_identity["sha256"])
+            )
+            prior_raw = prior_mat1_raw.replace(
+                prior_mat1_identity["expected_tests"], prior_identity["expected_tests"]
+            )
+            prior_blob = hashlib.sha1(
+                b"blob " + str(len(prior_raw)).encode() + b"\0" + prior_raw,
+                usedforsecurity=False,
+            ).hexdigest()
+            assert prior_blob == prior_identity["blob"]
+            assert hashlib.sha256(prior_raw).hexdigest().upper() == prior_identity["sha256"]
+            baseline_raw = prior_raw.replace(prior_identity["expected_tests"], baseline_count)
             baseline_blob = hashlib.sha1(
                 b"blob " + str(len(baseline_raw)).encode() + b"\0" + baseline_raw,
                 usedforsecurity=False,

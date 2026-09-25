@@ -1,9 +1,10 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { buildSingleBoltSceneModel } from "../src/visualization/sceneModel";
 import { VisualizationPanel } from "../src/visualization/VisualizationPanel";
-import { ConnectionWorkspaceMain, PersistentConnectionViewer } from "../src/workspace/ConnectionWorkspaceShell";
+import { ConnectionWorkspaceMain, ConnectionWorkspaceShell, PersistentConnectionViewer } from "../src/workspace/ConnectionWorkspaceShell";
+import { acceptMAT1Design, mat1FamilyKey, setMAT1Active, setMAT1Catalog, setMAT1Default } from "../src/state/mat1Session";
 import { UnityRatioIndicator } from "../src/workspace/UnityRatioIndicator";
 import { formatUnityPercent, resolveUnity, unityPhase, viewerUnity, type UnityFamily } from "../src/workspace/unityRatio";
 import { visualizationFixture } from "./fixtures";
@@ -130,6 +131,45 @@ describe("unity result authority", () => {
 });
 
 describe("shared viewer badge", () => {
+  it("keeps a MAT1 result stale until a current source-gated design and never shows an unsupported green UR", () => {
+    setMAT1Active(true);
+    setMAT1Catalog([{ id: "MAT1-TEST", revision: "1", content_digest: "a".repeat(64), display_name: "Synthetic", company: "Test", resin: "VINYL_ESTER", source_kind: "TEST_DATA", missing: [], qualification: "UNQUALIFIED", properties: [] }]);
+    setMAT1Default(null);
+    const unity = resolveUnity({ family: "single-bolt", phase: "current", design: single("0.824") });
+    const mounted = render(<ConnectionWorkspaceShell family="single-bolt" banner={<span>MAT1 viewer</span>}><PersistentConnectionViewer unity={unity}><span>Geometry</span></PersistentConnectionViewer></ConnectionWorkspaceShell>);
+    expect(screen.getByText(/MAT1 connection status: STALE/)).toBeInTheDocument();
+    expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "gray");
+    act(() => {
+      expect(acceptMAT1Design("single-bolt", mat1FamilyKey("single-bolt"), { overall_status: "SOURCE_REQUIRED", native_design: single("0.824"), material_issues: ["TG_REQUIRED"] })).toBe(true);
+    });
+    expect(screen.getByText(/MAT1 connection status: SOURCE_REQUIRED/)).toBeInTheDocument();
+    expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "yellow");
+    expect(mounted.container.textContent).toContain("TG_REQUIRED");
+    act(() => {
+      expect(acceptMAT1Design("single-bolt", mat1FamilyKey("single-bolt"), { client_design: single("1.142") })).toBe(true);
+    });
+    expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "red");
+    expect(mounted.container.textContent).toContain("Material source and qualification remain unresolved.");
+    mounted.unmount();
+    setMAT1Active(false);
+  });
+
+  it("uses an explicitly provided viewer adapter for an unmapped family without changing family-free viewers", () => {
+    setMAT1Active(true);
+    const unity = resolveUnity({ family: "single-bolt", phase: "current", design: single("1.142") });
+    const mapped = render(<ConnectionWorkspaceShell family="synthetic-family" className="mat1-test-shell" banner={<span>Fixture</span>}><PersistentConnectionViewer unity={unity}><span>Viewer</span></PersistentConnectionViewer></ConnectionWorkspaceShell>);
+    act(() => {
+      expect(acceptMAT1Design("synthetic-family", mat1FamilyKey("synthetic-family"), { overall_status: "SOURCE_REQUIRED" })).toBe(true);
+    });
+    expect(mapped.container.querySelector(".mat1-test-shell")).toBeInTheDocument();
+    expect(mapped.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "red");
+    mapped.unmount();
+    const plain = render(<ConnectionWorkspaceShell banner={<span>Plain</span>}><PersistentConnectionViewer unity={unity}><span>Viewer</span></PersistentConnectionViewer></ConnectionWorkspaceShell>);
+    expect(plain.container.querySelector(".mat1-result-gate")).toBeNull();
+    expect(plain.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "red");
+    plain.unmount();
+    setMAT1Active(false);
+  });
   it("keeps a viewer without a design adapter free of a misleading badge", () => {
     const mounted = render(<PersistentConnectionViewer><span>Viewer only</span></PersistentConnectionViewer>);
     expect(screen.getByText("Viewer only")).toBeInTheDocument();

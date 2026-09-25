@@ -115,7 +115,7 @@ function ColumnMomentBaseEditor({initial}:{readonly initial:ColumnMomentBaseRequ
     finally{if(serial===designSequence.current)setBusy(false);}
   };
   const field=(title:string,q:MultiRowQuantity,change:(next:ColumnMomentBaseRequest,v:string)=>void,mode:"engineering"|"view"="engineering")=><label className="field-control"><span>{title}</span><span className="input-with-unit"><input aria-label={title} inputMode="decimal" value={q.value} onChange={e=>{const raw=e.currentTarget.value;update(n=>{change(n,raw);},mode);}}/><small>{q.unit}</small></span></label>;
-  return <ConnectionWorkspaceShell className="column-base45-workspace" banner={<section className="stage-banner"><h2>W/I, RHS and SRS Column Moment Base</h2><p>4.5-RC1 · opposite web/exterior face pairs or four angles · complete response qualification required</p></section>}>
+  return <ConnectionWorkspaceShell family="wi-rhs-srs-column-moment-base" className="column-base45-workspace" banner={<section className="stage-banner"><h2>W/I, RHS and SRS Column Moment Base</h2><p>4.5-RC1 · opposite web/exterior face pairs or four angles · complete response qualification required</p></section>}>
     <ConnectionWorkspaceSidebar ariaLabel="Column moment base inputs">
       <ConnectorBodyMaterialControl material={bodyMaterial.material} onChange={bodyMaterial.choose} />
       <SidebarGroup title="Units / column shape / layout" summary="Independent controls — editable geometry" defaultOpen>

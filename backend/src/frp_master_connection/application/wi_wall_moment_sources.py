@@ -102,7 +102,9 @@ def provider_context(
     *,
     attachment: bool = False,
 ) -> FRPAngleContext:
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner(angle.connector_id, create_locked_ice_material_snapshot())
     shear = next(p for p in material.properties if p.kind is FRPPropertyKind.FSH_LT)
     trace = adjust_frp_property(shear.kind, shear.value, shear.qualification_status, END_USE)
     spec = angle.specification

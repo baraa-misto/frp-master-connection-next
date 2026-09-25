@@ -1,3 +1,4 @@
+import { mat1Fetch } from "./mat1Transport";
 import { EvaluationTransportError } from "./client";
 import type { WIFrpSupportMomentDesign, WIFrpSupportMomentPreview, WIFrpSupportMomentRequest, WIFrpSupportMomentResponse } from "./wiFrpSupportMomentContracts";
 
@@ -41,7 +42,7 @@ const design=shape({preview,status:text,status_reason:text,native_governing_chec
 
 async function post<T>(kind: "preview" | "design-check", request: WIFrpSupportMomentRequest, signal: AbortSignal): Promise<WIFrpSupportMomentResponse<T>> {
   let response: Response;
-  try { response=await fetch(`/api/v1/calculations/wi-beam-frp-support-moment/${kind}`,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},credentials:"same-origin",body:JSON.stringify(request),signal}); }
+  try { response=await mat1Fetch(`/api/v1/calculations/wi-beam-frp-support-moment/${kind}`,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},credentials:"same-origin",body:JSON.stringify(request),signal}); }
   catch(error) { if(error instanceof DOMException&&error.name==="AbortError") throw error; throw new EvaluationTransportError("NETWORK",null,"The FRP-support service could not be reached.",error); }
   let value: unknown;
   try { value=await response.json(); } catch(error) { throw new EvaluationTransportError("RESPONSE",response.status,"The FRP-support service returned unreadable JSON.",error); }

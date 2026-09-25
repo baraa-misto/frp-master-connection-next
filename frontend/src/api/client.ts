@@ -1,3 +1,4 @@
+import { mat1Fetch } from "./mat1Transport";
 import type {
   SingleBoltEvaluationRequest,
   SingleBoltEvaluationResponse,
@@ -141,7 +142,7 @@ export async function evaluateSingleBolt(
 ): Promise<SingleBoltEvaluationResponse> {
   let response: Response;
   try {
-    response = await fetch(SINGLE_BOLT_EVALUATION_PATH, {
+    response = await mat1Fetch(SINGLE_BOLT_EVALUATION_PATH, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
@@ -193,7 +194,7 @@ export async function previewSingleBolt(
 ): Promise<SingleBoltPreviewResponse> {
   let response: Response;
   try {
-    response = await fetch(SINGLE_BOLT_PREVIEW_PATH, {
+    response = await mat1Fetch(SINGLE_BOLT_PREVIEW_PATH, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
@@ -272,7 +273,7 @@ async function postMultiRow(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
@@ -421,7 +422,7 @@ async function postTeeConnector(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
@@ -548,7 +549,7 @@ async function postMultiMemberTee(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(request),
@@ -623,7 +624,7 @@ async function postClipAngle(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),
@@ -787,7 +788,7 @@ async function postBeamConcretePairedAngle(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(request),
@@ -876,7 +877,7 @@ async function postDirectSideLapConcrete(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(request),
@@ -948,7 +949,7 @@ async function postColumnBaseWebAngle(
 ): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await mat1Fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(request),
@@ -1023,7 +1024,7 @@ function isWebSpliceDesign(value: unknown): value is WebSpliceDesignResponse {
 async function postWebSplice(path: string, request: WebSpliceRequest, signal: AbortSignal): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(request), credentials: "same-origin", signal });
+    response = await mat1Fetch(path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(request), credentials: "same-origin", signal });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new EvaluationTransportError("NETWORK", null, "The beam web-splice service could not be reached.", error);
@@ -1070,7 +1071,7 @@ function isWIMomentSpliceDesign(value: unknown): value is WIMomentSpliceDesignRe
 async function postWIMomentSplice(path: string, request: WIMomentSpliceRequest, signal: AbortSignal): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(request), credentials: "same-origin", signal });
+    response = await mat1Fetch(path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(request), credentials: "same-origin", signal });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new EvaluationTransportError("NETWORK", null, "The W/I moment-splice service could not be reached.", error);
@@ -1125,7 +1126,7 @@ function isChannelMomentSpliceDesign(value: unknown): value is ChannelMomentSpli
 async function postChannelMomentSplice(path: string, request: ChannelMomentSpliceRequest, signal: AbortSignal): Promise<unknown> {
   let response: Response;
   try {
-    response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(request), credentials: "same-origin", signal });
+    response = await mat1Fetch(path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(request), credentials: "same-origin", signal });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new EvaluationTransportError("NETWORK", null, "The Channel moment-splice service could not be reached.", error);

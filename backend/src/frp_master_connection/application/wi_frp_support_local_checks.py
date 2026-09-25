@@ -155,7 +155,9 @@ def bearing_and_pull_through(
         direction = _material_direction(
             (lw.canonical_magnitude, cw.canonical_magnitude), (D(1), D(0))
         )
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner("SUPPORT", create_locked_ice_material_snapshot())
     kind = (
         FRPPropertyKind.FBR_L
         if direction is MaterialDirection.LONGITUDINAL

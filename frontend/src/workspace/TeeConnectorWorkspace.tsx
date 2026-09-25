@@ -437,7 +437,7 @@ export function TeeConnectorWorkspace() {
       };
 
   return (
-    <ConnectionWorkspaceShell
+    <ConnectionWorkspaceShell family="tee-connector"
       className="tee-workspace"
       banner={<section className="workspace-banner tee-workspace-banner" aria-labelledby="tee-workspace-title">
         <div><p className="eyebrow">Shear · Brace connection — Tee connector</p><h2 id="tee-workspace-title">{connectionTitle}</h2></div>

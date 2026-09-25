@@ -1,3 +1,4 @@
+import { mat1Fetch } from "./mat1Transport";
 import { EvaluationTransportError } from "./client";
 import type { ColumnMomentBaseRequest, ColumnMomentBaseResponse } from "./columnMomentBaseContracts";
 
@@ -42,7 +43,7 @@ const design=shape({status:text,status_reason:text,failed_check_ids:array(text),
 const endpoint="/api/v1/calculations/wi-rhs-srs-column-moment-base";
 async function exchange(url:string,signal:AbortSignal,request?:ColumnMomentBaseRequest):Promise<unknown> {
   let response:Response;
-  try {response=await fetch(url,{method:request===undefined?"GET":"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},credentials:"same-origin",signal,...(request===undefined?{}:{body:JSON.stringify(request)})});}
+  try {response=await mat1Fetch(url,{method:request===undefined?"GET":"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},credentials:"same-origin",signal,...(request===undefined?{}:{body:JSON.stringify(request)})});}
   catch(error){if(error instanceof DOMException&&error.name==="AbortError")throw error;throw new EvaluationTransportError("NETWORK",null,"The column moment base service could not be reached.",error);}
   let value:unknown;
   try{value=await response.json();}catch(error){throw new EvaluationTransportError("RESPONSE",response.status,"Unreadable column moment base response.",error);}

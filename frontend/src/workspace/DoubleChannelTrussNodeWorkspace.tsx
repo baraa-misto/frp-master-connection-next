@@ -111,7 +111,7 @@ function DCTNEditor({ initial }: { readonly initial: DCTNRequest }) {
     catch (e) { if (serial === sequence.current && !isIntentionalAbort(e)) setError(e instanceof Error ? e.message : "Design unavailable."); }
     finally { if (serial === sequence.current) setBusy(false); }
   };
-  return <ConnectionWorkspaceShell className="dctn-workspace" banner={<section className="stage-banner"><h2>Double-Channel Truss Node</h2><p>DCTN-3B-RC1 · primary FRP members · independent hardware · no connector body</p></section>}>
+  return <ConnectionWorkspaceShell family="double-channel-truss-node" className="dctn-workspace" banner={<section className="stage-banner"><h2>Double-Channel Truss Node</h2><p>DCTN-3B-RC1 · primary FRP members · independent hardware · no connector body</p></section>}>
     <ConnectionWorkspaceSidebar ariaLabel="DCTN inputs">
       <SidebarGroup title="Arrangement / units" summary="Five arrangements, one derived gap" defaultOpen>
         <label className="field-control"><span>Unit system</span><select aria-label="DCTN unit system" disabled={loading} value={request.unit_system} onChange={e => { void reviseConfiguration(null, e.currentTarget.value === "SI"); }}><option value="US">U.S. Units</option><option value="SI">S.I. Units</option></select></label>

@@ -1108,8 +1108,14 @@ def _body_actions(
     )
 
 
-def _adjusted_ice_property(kind: FRPPropertyKind, factors: EndUseFactors) -> EndUsePropertyTrace:
-    material = create_locked_ice_material_snapshot()
+def _adjusted_ice_property(
+    kind: FRPPropertyKind,
+    factors: EndUseFactors,
+    owner_id: str = "POSITIVE_WEB_SPLICE_PLATE",
+) -> EndUsePropertyTrace:
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner(owner_id, create_locked_ice_material_snapshot())
     entry = material.lookup(kind)
     if entry is None:  # pragma: no cover - RC2 calls only declared ICE properties
         raise ValueError(f"Controlled ICE material lacks required property {kind.value}.")
@@ -1120,6 +1126,13 @@ def _evaluate_body_interaction(
     request: WebSpliceRequest,
     preview: WebSpliceRC2PreviewResult,
 ) -> WebSpliceBodyInteractionResult:
+    from frp_master_connection.application.mat1_scope import current_scope
+
+    scope = current_scope()
+    if scope is not None and scope.material("POSITIVE_WEB_SPLICE_PLATE") != scope.material(
+        "NEGATIVE_WEB_SPLICE_PLATE"
+    ):
+        raise ValueError("MAT1_SYMMETRIC_WEB_SPLICE_PLATE_MATERIALS_MUST_MATCH")
     factors = EndUseFactors(
         _ONE,
         _ONE,
@@ -1127,7 +1140,11 @@ def _evaluate_body_interaction(
         "ASCE/SEI 74-23 Section 2.4.4",
         ("STAGE_3_6A_CONTROLLED_UNITY_END_USE_FACTORS",),
     )
-    time_effect = select_time_effect_factor(TimeEffectCategory.WIND_TORNADO_SEISMIC)
+    from frp_master_connection.application.mat1_scope import time_category_for_case
+
+    time_effect = select_time_effect_factor(
+        time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC)
+    )
     thickness = request.splice_plate.thickness
     height = request.splice_plate.height
     length = preview.clear_body_plan.clear_body_length

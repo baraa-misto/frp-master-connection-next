@@ -1,0 +1,264 @@
+{
+  "format": "FRP_MASTER_CONNECTION_OWNER_SUPPLIED_MATERIAL_SEED_RC0",
+  "purpose": "Exact source transcription for the forthcoming shared material library. Not an installed catalog, application API schema, or qualification authorization.",
+  "provenance": {
+    "source_kind": "owner_supplied_application_screenshot_and_explicit_user_instruction",
+    "screenshot_name": "image(20260925-014639).png",
+    "screenshot_sha256": "CE071D5EA339B62BF39665672A037CA141E445BC20A0B7256A889B2CBE1F2305",
+    "screenshot_heading": "ICE LOCKED PULTRUDED FRP",
+    "resin_assignment": "Owner assigns screenshot dataset to isophthalic polyester; vinyl ester changes only longitudinal and transverse tensile strength.",
+    "strength_basis": "Screenshot describes strength and capacity entries as nominal. No independent characteristic-value, manufacturer-certification, or qualification evidence is established by this seed."
+  },
+  "intended_catalog_behavior": {
+    "persistent_predefined_records": true,
+    "ordinary_user_property_editing": "read_only; may copy to a separate session-only custom material",
+    "geometry_catalog_required": false,
+    "dimensions_and_thicknesses": "User-entered, within supported geometry/methods; no invented manufacturer section-size list or thickness limits.",
+    "source_applicability": "Retain any actual documented product/geometry applicability separately. None is invented here.",
+    "design_conditions": "Separate from immutable base properties; not pre-applied to these values.",
+    "resin_is_a_distinct_selection": true
+  },
+  "missing_source_information": {
+    "glass_transition_temperature": null,
+    "transverse_compressive_strength": null,
+    "directional_flexural_strengths_and_moduli": null,
+    "mean_versus_characteristic_modulus_basis": null,
+    "manufacturer_product_document_revision": null,
+    "scope_note": "Missing information is not zero and is not copied from another property. A field is required only where an applicable calculation or eligibility check needs it."
+  },
+  "numeric_encoding": "Decimal strings in source units; no intermediate rounding.",
+  "records": [
+    {
+      "proposed_record_id": "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
+      "display_name": "ICE — Isophthalic polyester",
+      "company": "ICE",
+      "resin": "Isophthalic polyester",
+      "properties": {
+        "tensile_strength_L": {
+          "label": "Longitudinal tensile strength",
+          "symbol": "Ft,L",
+          "value": "33",
+          "unit": "ksi"
+        },
+        "tensile_strength_T": {
+          "label": "Transverse tensile strength",
+          "symbol": "Ft,T",
+          "value": "7.5",
+          "unit": "ksi"
+        },
+        "tensile_modulus_L": {
+          "label": "Longitudinal tensile modulus",
+          "symbol": "Et,L",
+          "value": "3000",
+          "unit": "ksi"
+        },
+        "tensile_modulus_T": {
+          "label": "Transverse tensile modulus",
+          "symbol": "Et,T",
+          "value": "800",
+          "unit": "ksi"
+        },
+        "compressive_strength_L": {
+          "label": "Longitudinal compressive strength",
+          "symbol": "Fc,L",
+          "value": "33",
+          "unit": "ksi"
+        },
+        "compressive_modulus_L": {
+          "label": "Longitudinal compressive modulus",
+          "symbol": "Ec,L",
+          "value": "3000",
+          "unit": "ksi"
+        },
+        "compressive_modulus_T": {
+          "label": "Transverse compressive modulus",
+          "symbol": "Ec,T",
+          "value": "1000",
+          "unit": "ksi"
+        },
+        "in_plane_shear_strength_LT": {
+          "label": "Longitudinal-transverse shear strength",
+          "symbol": "Fv,LT",
+          "value": "8",
+          "unit": "ksi"
+        },
+        "in_plane_shear_modulus_LT": {
+          "label": "In-plane shear modulus",
+          "symbol": "GLT",
+          "value": "420",
+          "unit": "ksi"
+        },
+        "interlaminar_shear_strength": {
+          "label": "Interlaminar shear strength",
+          "symbol": "Fsh,int",
+          "value": "4.5",
+          "unit": "ksi"
+        },
+        "bearing_strength_L": {
+          "label": "Longitudinal bearing strength",
+          "symbol": "Fbr,L",
+          "value": "30",
+          "unit": "ksi"
+        },
+        "bearing_strength_T": {
+          "label": "Transverse bearing strength",
+          "symbol": "Fbr,T",
+          "value": "18",
+          "unit": "ksi"
+        },
+        "pull_through_3_8_as_labeled": {
+          "label": "3/8-in. bolt pull-through capacity",
+          "symbol": "Ppt,3/8",
+          "value": "0.65",
+          "unit": "kip",
+          "source_size_interpretation": "Bolt diameter, as explicitly labeled in the supplied screenshot; not relabeled as FRP thickness.",
+          "source_bolt_diameter_in": "0.375",
+          "tested_frp_thickness_in": null,
+          "washer_test_configuration": null
+        },
+        "pull_through_1_2_as_labeled": {
+          "label": "1/2-in. bolt pull-through capacity",
+          "symbol": "Ppt,1/2",
+          "value": "0.9",
+          "unit": "kip",
+          "source_size_interpretation": "Bolt diameter, as explicitly labeled in the supplied screenshot; not relabeled as FRP thickness.",
+          "source_bolt_diameter_in": "0.5",
+          "tested_frp_thickness_in": null,
+          "washer_test_configuration": null
+        },
+        "pull_through_3_4_as_labeled": {
+          "label": "3/4-in. bolt pull-through capacity",
+          "symbol": "Ppt,3/4",
+          "value": "1.25",
+          "unit": "kip",
+          "source_size_interpretation": "Bolt diameter, as explicitly labeled in the supplied screenshot; not relabeled as FRP thickness.",
+          "source_bolt_diameter_in": "0.75",
+          "tested_frp_thickness_in": null,
+          "washer_test_configuration": null
+        },
+        "major_poisson_ratio_LT": {
+          "label": "Major Poisson ratio",
+          "symbol": "nuLT",
+          "value": "0.3",
+          "unit": "dimensionless"
+        }
+      }
+    },
+    {
+      "proposed_record_id": "ICE_VINYL_ESTER_OWNER_SEED_RC0",
+      "display_name": "ICE — Vinyl ester",
+      "company": "ICE",
+      "resin": "Vinyl ester",
+      "properties": {
+        "tensile_strength_L": {
+          "label": "Longitudinal tensile strength",
+          "symbol": "Ft,L",
+          "value": "37.5",
+          "unit": "ksi"
+        },
+        "tensile_strength_T": {
+          "label": "Transverse tensile strength",
+          "symbol": "Ft,T",
+          "value": "8",
+          "unit": "ksi"
+        },
+        "tensile_modulus_L": {
+          "label": "Longitudinal tensile modulus",
+          "symbol": "Et,L",
+          "value": "3000",
+          "unit": "ksi"
+        },
+        "tensile_modulus_T": {
+          "label": "Transverse tensile modulus",
+          "symbol": "Et,T",
+          "value": "800",
+          "unit": "ksi"
+        },
+        "compressive_strength_L": {
+          "label": "Longitudinal compressive strength",
+          "symbol": "Fc,L",
+          "value": "33",
+          "unit": "ksi"
+        },
+        "compressive_modulus_L": {
+          "label": "Longitudinal compressive modulus",
+          "symbol": "Ec,L",
+          "value": "3000",
+          "unit": "ksi"
+        },
+        "compressive_modulus_T": {
+          "label": "Transverse compressive modulus",
+          "symbol": "Ec,T",
+          "value": "1000",
+          "unit": "ksi"
+        },
+        "in_plane_shear_strength_LT": {
+          "label": "Longitudinal-transverse shear strength",
+          "symbol": "Fv,LT",
+          "value": "8",
+          "unit": "ksi"
+        },
+        "in_plane_shear_modulus_LT": {
+          "label": "In-plane shear modulus",
+          "symbol": "GLT",
+          "value": "420",
+          "unit": "ksi"
+        },
+        "interlaminar_shear_strength": {
+          "label": "Interlaminar shear strength",
+          "symbol": "Fsh,int",
+          "value": "4.5",
+          "unit": "ksi"
+        },
+        "bearing_strength_L": {
+          "label": "Longitudinal bearing strength",
+          "symbol": "Fbr,L",
+          "value": "30",
+          "unit": "ksi"
+        },
+        "bearing_strength_T": {
+          "label": "Transverse bearing strength",
+          "symbol": "Fbr,T",
+          "value": "18",
+          "unit": "ksi"
+        },
+        "pull_through_3_8_as_labeled": {
+          "label": "3/8-in. bolt pull-through capacity",
+          "symbol": "Ppt,3/8",
+          "value": "0.65",
+          "unit": "kip",
+          "source_size_interpretation": "Bolt diameter, as explicitly labeled in the supplied screenshot; not relabeled as FRP thickness.",
+          "source_bolt_diameter_in": "0.375",
+          "tested_frp_thickness_in": null,
+          "washer_test_configuration": null
+        },
+        "pull_through_1_2_as_labeled": {
+          "label": "1/2-in. bolt pull-through capacity",
+          "symbol": "Ppt,1/2",
+          "value": "0.9",
+          "unit": "kip",
+          "source_size_interpretation": "Bolt diameter, as explicitly labeled in the supplied screenshot; not relabeled as FRP thickness.",
+          "source_bolt_diameter_in": "0.5",
+          "tested_frp_thickness_in": null,
+          "washer_test_configuration": null
+        },
+        "pull_through_3_4_as_labeled": {
+          "label": "3/4-in. bolt pull-through capacity",
+          "symbol": "Ppt,3/4",
+          "value": "1.25",
+          "unit": "kip",
+          "source_size_interpretation": "Bolt diameter, as explicitly labeled in the supplied screenshot; not relabeled as FRP thickness.",
+          "source_bolt_diameter_in": "0.75",
+          "tested_frp_thickness_in": null,
+          "washer_test_configuration": null
+        },
+        "major_poisson_ratio_LT": {
+          "label": "Major Poisson ratio",
+          "symbol": "nuLT",
+          "value": "0.3",
+          "unit": "dimensionless"
+        }
+      }
+    }
+  ]
+}

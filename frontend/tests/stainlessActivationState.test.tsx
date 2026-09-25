@@ -4,6 +4,7 @@ import { afterEach, expect, it, vi } from "vitest";
 
 import { ACTIVATION_AUTHORITY, BODY_ROUTES, parseStainlessActivation, type BodyRoute } from "../src/api/stainlessActivation";
 import * as transport from "../src/api/stainlessActivation";
+import { setMAT1Active } from "../src/state/mat1Session";
 import { ConnectorBodyMaterialControl, ConnectorBodyMaterialResult } from "../src/workspace/connectorBodyMaterial";
 import { useConnectorBodyMaterial } from "../src/workspace/useConnectorBodyMaterial";
 
@@ -116,6 +117,9 @@ it("rejects FRP fallback, mismatched route, duplicate bodies and false complete 
 
 it("rejects no-body transport and preserves abort identity without manufacturing an error result", async () => {
   const signal = new AbortController().signal;
+  setMAT1Active(true);
+  await expect(transport.evaluateStainlessActivation("clip-angle", {}, signal)).rejects.toThrow("MAT1 stainless-body member material routing is unavailable");
+  setMAT1Active(false);
   await expect(transport.evaluateStainlessActivation("single-bolt" as BodyRoute, {}, signal)).rejects.toThrow("NOT_APPLICABLE");
   const aborted = new DOMException("cancelled", "AbortError");
   vi.stubGlobal("fetch", vi.fn().mockRejectedValue(aborted));

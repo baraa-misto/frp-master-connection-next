@@ -60,7 +60,9 @@ def connector_context(
         i for i, a in enumerate(preview.geometry.angles) if a.connector_id == transfer.connector_id
     )
     item = preview.input.connectors[index]
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner(transfer.connector_id, create_locked_ice_material_snapshot())
     shear = next(p for p in material.properties if p.kind is FRPPropertyKind.FSH_LT)
     adjusted = adjust_frp_property(shear.kind, shear.value, shear.qualification_status, END_USE)
     binding = (

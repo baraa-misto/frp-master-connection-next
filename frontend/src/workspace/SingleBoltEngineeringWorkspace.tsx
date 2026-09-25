@@ -1134,7 +1134,7 @@ export function SingleBoltEngineeringWorkspace() {
         }));
 
   return (
-    <ConnectionWorkspaceShell banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
+    <ConnectionWorkspaceShell family={singleArrangement ? "single-bolt" : "multi-row"} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
         <div><p className="eyebrow">Shear · Brace to column flange</p><h2 id="workspace-scope-title">Connection engineering workspace</h2></div>
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>

@@ -23,6 +23,12 @@ from frp_master_connection.application.connection_preview import (
     SingleBoltPreviewResult,
     preview_single_bolt_connection,
 )
+from frp_master_connection.application.mat1_multirow import bind_multirow_material
+from frp_master_connection.application.mat1_scope import (
+    current_scope,
+    material_for_owner,
+    time_category_for_case,
+)
 from frp_master_connection.application.member_profile_geometry import (
     create_member_profile_cross_section,
     create_oriented_standard_topology,
@@ -1895,11 +1901,17 @@ def _single_bolt_request(
         group_id,
         bolt_id,
         _LOAD_ID,
-        tuple(_layer_assignment(item, material) for item in path.layers),
+        tuple(
+            _layer_assignment(
+                item,
+                material_for_owner(item.definition.participant.entity_id, material),
+            )
+            for item in path.layers
+        ),
         snapshot,
         bolt_diameter,
         hole_basis,
-        select_time_effect_factor(TimeEffectCategory.WIND_TORNADO_SEISMIC),
+        select_time_effect_factor(time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC)),
         EndUseFactors(
             Decimal(1),
             Decimal(1),
@@ -1935,7 +1947,7 @@ def _multirow_request(
         "ASCE/SEI 74-23 Section 2.4.4",
         ("STAGE_3_2_CONTROLLED_UNITY_END_USE_FACTORS",),
     )
-    return MultiRowOrchestrationRequest(
+    native = MultiRowOrchestrationRequest(
         f"{request.request_id}:{interface_id}",
         f"{_ASSEMBLY_ID}:{interface_id}",
         interface_id,
@@ -1985,7 +1997,7 @@ def _multirow_request(
         ),
         False,
         (),
-        TimeEffectCategory.WIND_TORNADO_SEISMIC,
+        time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC),
         LapConfiguration.SINGLE_LAP,
         FirstRowPlanMethod.ASCE_STANDARD_SIMPLIFIED,
         None,
@@ -1996,6 +2008,13 @@ def _multirow_request(
         automatic_action_source_id=_ACTION_ID,
         single_row_geometry_preview_authorized=layout.row_count == 1,
     )
+    scope = current_scope()
+    if scope is None:
+        return native
+    assigned = tuple(scope.material(component_id) for _, component_id, _, _ in layer_specs)
+    if any(item != assigned[0] for item in assigned[1:]):
+        raise ValueError("MAT1_TEE_LINKED_INTERFACE_LAYER_MATERIAL_REQUIRED")
+    return bind_multirow_material(native, assigned[0])
 
 
 def _effective_layout(

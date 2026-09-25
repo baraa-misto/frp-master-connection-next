@@ -20,6 +20,7 @@ from frp_master_connection.application.calculation_orchestration import (
 from frp_master_connection.application.connection_preview import (
     preview_single_bolt_connection,
 )
+from frp_master_connection.application.mat1_scope import bind_mat1_tee_slot
 from frp_master_connection.application.multirow_orchestration import (
     MultiRowOrchestrationRequest,
     MultiRowOrchestrationResponse,
@@ -829,18 +830,17 @@ def _resolve_node(
     wrench = assemble_support_wrench(
         request.slots, request.support_reference_point, request.unit_system
     )
-    resolved_slots = tuple(
-        (
-            item,
-            resolve_tee_connector_request(
+    resolved_slot_list: list[tuple[MultiMemberTeeSlotRequest, TeeResolvedAssembly]] = []
+    for item in request.slots:
+        with bind_mat1_tee_slot(f"multi-member-tee:{item.slot.slot_id.value.lower()}"):
+            resolved = resolve_tee_connector_request(
                 item.tee_request,
                 connected_member_vertical_offset=item.slot.anchor_v,
                 connected_member_group_anchor_h=item.slot.anchor_h,
                 connected_member_node_roundoff_tolerance=True,
-            ),
-        )
-        for item in request.slots
-    )
+            )
+        resolved_slot_list.append((item, resolved))
+    resolved_slots = tuple(resolved_slot_list)
     first_request = request.slots[0].tee_request
     support_request = replace(
         first_request,
@@ -849,12 +849,13 @@ def _resolve_node(
         global_moment=_semantic_to_world(wrench.moment),
         global_reference_point=_semantic_to_world(request.support_reference_point),
     )
-    resolved_support = resolve_tee_connector_request(
-        support_request,
-        connected_member_vertical_offset=request.slots[0].slot.anchor_v,
-        connected_member_group_anchor_h=request.slots[0].slot.anchor_h,
-        connected_member_node_roundoff_tolerance=True,
-    )
+    with bind_mat1_tee_slot(f"multi-member-tee:{request.slots[0].slot.slot_id.value.lower()}"):
+        resolved_support = resolve_tee_connector_request(
+            support_request,
+            connected_member_vertical_offset=request.slots[0].slot.anchor_v,
+            connected_member_group_anchor_h=request.slots[0].slot.anchor_h,
+            connected_member_node_roundoff_tolerance=True,
+        )
     return resolved_slots, resolved_support, wrench
 
 
@@ -1008,7 +1009,8 @@ def _build_results(
     design_responses: list[MultiRowOrchestrationResponse] = []
     for slot_request, resolved in resolved_slots:
         multirow_request = resolved.interface_a_request
-        response = evaluate_tee_interface(multirow_request) if design else None
+        with bind_mat1_tee_slot(f"multi-member-tee:{slot_request.slot.slot_id.value.lower()}"):
+            response = evaluate_tee_interface(multirow_request) if design else None
         source_request = slot_request.tee_request
         preview = _preview_with_node_demand(
             multirow_request=multirow_request,

@@ -19,7 +19,9 @@ from frp_master_connection.domain.material_architecture import ConnectorMaterial
 def connector_context(
     preview: ColumnMomentPreview, transfer: ColumnMomentTransfer, *, attachment: bool = False
 ) -> FRPAngleContext:
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner(transfer.connector_id, create_locked_ice_material_snapshot())
     shear = next(p for p in material.properties if p.kind is FRPPropertyKind.FSH_LT)
     adjusted = adjust_frp_property(shear.kind, shear.value, shear.qualification_status, END_USE)
     return FRPAngleContext(

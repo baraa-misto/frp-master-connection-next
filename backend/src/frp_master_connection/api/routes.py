@@ -67,6 +67,7 @@ from frp_master_connection.api.direct_side_lap_concrete_schemas import (
     DirectSideLapConcreteRequestDTO,
 )
 from frp_master_connection.api.double_channel_truss_node import build_dctn_router
+from frp_master_connection.api.mat1 import build_mat1_router
 from frp_master_connection.api.multi_member_tee_mapping import (
     map_multi_member_tee_request,
     serialize_multi_member_tee_design,
@@ -232,6 +233,7 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     router.include_router(build_column_moment_base_router(identity_resolver))
     router.include_router(build_dctn_router(identity_resolver))
     router.include_router(build_ssmc_router(identity_resolver))
+    router.include_router(build_mat1_router(identity_resolver))
     router.include_router(build_connector_material_router(identity_resolver))
     identity_dependency = build_trusted_identity_dependency(identity_resolver)
 
