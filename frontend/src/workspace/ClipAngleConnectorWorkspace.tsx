@@ -276,7 +276,7 @@ export function ClipAngleConnectorWorkspace() {
           : "No valid backend preview";
 
   return (
-    <ConnectionWorkspaceShell
+    <ConnectionWorkspaceShell family="clip-angle"
       className="clip-angle-workspace"
       banner={<section className="workspace-banner"><div><p className="eyebrow">Stage 3.3C2 · Single FRP Clip Angle</p><h2>{title}</h2><p>Backend-authoritative geometry preview with independent physical bolt groups.</p></div><div className="benchmark-actions"><button type="button" className="secondary-button" onClick={() => { loadBenchmark("US_CUSTOMARY"); }}>Load G1 U.S.</button><button type="button" className="secondary-button" onClick={() => { loadBenchmark("SI"); }}>Load G1 SI</button></div></section>}
     >

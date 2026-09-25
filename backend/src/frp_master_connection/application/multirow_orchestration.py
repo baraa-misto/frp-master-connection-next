@@ -1128,7 +1128,24 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
     )
     total = _force_magnitude(authority)
     demand_plan = _demand_plan(request, geometry, total)
-    material = create_locked_ice_material_snapshot()
+    legacy_material = create_locked_ice_material_snapshot()
+    mat1_material = getattr(request, "mat1_material", None)
+    from frp_master_connection.application.mat1_scope import (
+        current_scope,
+        time_category_for_case,
+    )
+
+    scope = current_scope()
+    if scope is not None:
+        scoped_materials = tuple(scope.material(layer.component_id) for layer in request.layers)
+        if not scoped_materials or any(
+            item != scoped_materials[0] for item in scoped_materials[1:]
+        ):
+            raise ValueError("MAT1_MULTIROW_LINKED_LAYER_MATERIAL_OR_CONDITIONS_REQUIRED")
+        mat1_material = scoped_materials[0]
+    if mat1_material is not None and not isinstance(mat1_material, MaterialPropertySnapshot):
+        raise TypeError("MAT1 material must be a typed snapshot.")
+    material = legacy_material if mat1_material is None else mat1_material
     layer_contexts = tuple(
         MultiRowLayerExecutionContext(
             layer.layer_id,
@@ -1144,9 +1161,18 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
         for layer in request.layers
     )
     if any(layer.material_id != material.id for layer in request.layers):
-        raise ValueError(
-            "The public Stage 2.4C workflow supports the controlled ICE material only."
-        )
+        if scope is not None and all(
+            layer.material_id == legacy_material.id for layer in request.layers
+        ):
+            pass  # Versioned request envelope replaces the controlled legacy binding.
+        elif mat1_material is None:
+            raise ValueError(
+                "The public Stage 2.4C workflow supports the controlled ICE material only."
+            )
+        else:
+            raise ValueError(
+                "Each layer material identity must match its explicitly resolved snapshot."
+            )
     first_geometries = tuple(
         resolve_first_row_geometry(
             geometry,
@@ -1258,7 +1284,7 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
         )
     )
     factors = MultiRowFactorContext(
-        select_time_effect_factor(request.time_effect_category).value,
+        select_time_effect_factor(time_category_for_case(request.time_effect_category)).value,
         create_lap_factor_plan(request.lap_configuration).applicable_in_plane_frp_factor,
         pitch_trace.pitch_factor_c_delta,
         PitchFactorSource.AUTOMATIC_CONSTANT_PITCH,
@@ -1282,7 +1308,9 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
         warning_values.append("MORE_THAN_THREE_BOLTS_PER_ROW_FIRST_ROW_CHECK_UNSUPPORTED")
     warning_values.extend(
         (
-            "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW",
+            "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"
+            if mat1_material is None
+            else "MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED",
             "F593_TENSILE_SOURCE_DATA_PENDING",
         )
     )

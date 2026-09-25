@@ -903,6 +903,14 @@ def test_route_invokes_orchestration_exactly_once(monkeypatch: pytest.MonkeyPatc
 def test_openapi_registers_one_post_and_excludes_client_authority() -> None:
     schema = _application().openapi()
     assert set(schema["paths"]) == {
+        "/api/v1/frp-materials/catalog",
+        "/api/v1/frp-materials/factor-candidates",
+        "/api/v1/frp-materials/family/owners",
+        "/api/v1/frp-materials/single-bolt/design-check",
+        "/api/v1/frp-materials/multi-row/design-check",
+        "/api/v1/frp-materials/tee-connector/design-check",
+        "/api/v1/frp-materials/family/design-check",
+        "/api/v1/frp-materials/stair-stringer-miter/analytical-design-check",
         "/api/v1/connector-materials/capabilities",
         "/api/v1/connector-materials/plan",
         "/health",

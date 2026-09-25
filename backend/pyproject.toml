@@ -45,7 +45,7 @@ include = ["frp_master_connection*"]
 namespaces = false
 
 [tool.setuptools.package-data]
-frp_master_connection = ["py.typed"]
+frp_master_connection = ["py.typed", "data/*.json"]
 
 [tool.pytest.ini_options]
 minversion = "9.1"

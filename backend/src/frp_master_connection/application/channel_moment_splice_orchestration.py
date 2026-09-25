@@ -10,6 +10,10 @@ from decimal import Decimal, localcontext
 from enum import Enum
 from typing import cast
 
+from frp_master_connection.application.mat1_scope import (
+    material_for_owner,
+    time_category_for_case,
+)
 from frp_master_connection.application.multirow_orchestration import (
     MultiRowDemandSource,
     MultiRowLayerInput,
@@ -75,7 +79,6 @@ from frp_master_connection.calculation.channel_moment_splice_resistance import (
     decompose_channel_web_wrench,
     decompose_flange_wrench,
     evaluate_channel_two_plane_bolt,
-    evaluate_flange_plate_body,
 )
 from frp_master_connection.calculation.eccentric_demand import (
     DemandAnalysisAvailability,
@@ -84,7 +87,11 @@ from frp_master_connection.calculation.eccentric_demand import (
     ExactInterfaceFrame,
     ExactQuantityVector3D,
 )
+from frp_master_connection.calculation.mat1_flange_body import (
+    evaluate_material_flange_plate_body as evaluate_flange_plate_body,
+)
 from frp_master_connection.calculation.multirow import MethodProvenance, RowDistributionBasis
+from frp_master_connection.calculation.properties import create_locked_ice_material_snapshot
 from frp_master_connection.domain.channel_moment_splice import (
     CHANNEL_MOMENT_SPLICE_CONTRACT_VERSION,
     CHANNEL_MOMENT_SPLICE_PRODUCT_ID,
@@ -1293,34 +1300,38 @@ def _web_body(
         "ASCE/SEI 74-23 Section 2.4.4",
         ("STAGE_4_1B_CONTROLLED_UNITY_END_USE_FACTORS",),
     )
-    time_effect = select_time_effect_factor(TimeEffectCategory.WIND_TORNADO_SEISMIC)
+    from frp_master_connection.application.mat1_scope import time_category_for_case
+
+    time_effect = select_time_effect_factor(
+        time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC)
+    )
     thickness = request.web_splice_plate.thickness
     height = request.web_splice_plate.height
     length = preview.web_clear_body_length
     tension = plate_longitudinal_tension_strength(
         thickness,
-        _adjusted_ice_property(FRPPropertyKind.FT_L, factors),
+        _adjusted_ice_property(FRPPropertyKind.FT_L, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
         time_effect,
     )
     compression = plate_longitudinal_compression_strength(
         thickness,
         height,
-        _adjusted_ice_property(FRPPropertyKind.FC_L, factors),
-        _adjusted_ice_property(FRPPropertyKind.ET_L, factors),
-        _adjusted_ice_property(FRPPropertyKind.ET_T, factors),
-        _adjusted_ice_property(FRPPropertyKind.G_LT, factors),
-        _adjusted_ice_property(FRPPropertyKind.NU_LT, factors),
+        _adjusted_ice_property(FRPPropertyKind.FC_L, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.ET_L, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.ET_T, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.G_LT, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.NU_LT, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
         time_effect,
         longitudinal_span=length,
     )
     shear_strength = plate_in_plane_shear_strength(
         thickness,
         height,
-        _adjusted_ice_property(FRPPropertyKind.FSH_LT, factors),
-        _adjusted_ice_property(FRPPropertyKind.ET_L, factors),
-        _adjusted_ice_property(FRPPropertyKind.ET_T, factors),
-        _adjusted_ice_property(FRPPropertyKind.G_LT, factors),
-        _adjusted_ice_property(FRPPropertyKind.NU_LT, factors),
+        _adjusted_ice_property(FRPPropertyKind.FSH_LT, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.ET_L, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.ET_T, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.G_LT, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
+        _adjusted_ice_property(FRPPropertyKind.NU_LT, factors, f"{branch_id}_WEB_SPLICE_PLATE"),
         time_effect,
         longitudinal_span=length,
     )
@@ -1488,6 +1499,11 @@ def design_check_channel_moment_splice(
             width=width,
             thickness=request.flange_geometry.plate_thickness,
             clear_body_length=preview.flange_clear_body_length,
+            material_snapshot=material_for_owner(
+                f"{branch.flange_id}_{branch_id}_FLANGE_SPLICE_PLATE",
+                create_locked_ice_material_snapshot(),
+            ),
+            time_effect_category=time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC),
         )
         for branch in (preview.top_flange, preview.bottom_flange)
         for branch_id, force, width in (

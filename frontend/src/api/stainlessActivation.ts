@@ -1,4 +1,5 @@
 import { EvaluationTransportError } from "./client";
+import { mat1Snapshot } from "../state/mat1Session";
 
 export const ACTIVATION_AUTHORITY = "CME_3_316SS_PUBLIC_CONNECTOR_BODY_ACTIVATION_RC1";
 export const BODY_ROUTES = [
@@ -69,6 +70,9 @@ export function parseStainlessActivation(value: unknown, route: BodyRoute): Stai
 export async function evaluateStainlessActivation(
   route: BodyRoute, request: object, signal: AbortSignal,
 ): Promise<StainlessActivationResponse> {
+  if (mat1Snapshot().active) {
+    throw new Error("MAT1 stainless-body member material routing is unavailable; no legacy FRP material design was run.");
+  }
   if (!(BODY_ROUTES as readonly string[]).includes(route)) {
     throw new Error("CONNECTOR_BODY_MATERIAL_NOT_APPLICABLE_TO_ROUTE");
   }

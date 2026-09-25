@@ -1399,6 +1399,22 @@ td {
 .tee-body-limitation { grid-column: 1 / -1; }
 .profile-dimension-control { display: contents; }
 
+.mat1-material-panel {
+  margin: 0.7rem 1rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #a8b9cb;
+  border-radius: 0.6rem;
+  background: #f5f9fc;
+  color: #23394f;
+}
+.mat1-material-panel > details > summary { cursor: pointer; font-weight: 700; }
+.mat1-material-panel summary small { margin-left: 0.6rem; font-weight: 400; }
+.mat1-material-panel label { display: inline-grid; gap: 0.25rem; margin: 0.45rem 0.7rem 0.45rem 0; min-width: 10rem; }
+.mat1-material-panel input, .mat1-material-panel select { padding: 0.4rem; max-width: 22rem; }
+.mat1-material-panel table { border-collapse: collapse; width: 100%; margin: 0.6rem 0; }
+.mat1-material-panel th, .mat1-material-panel td { padding: 0.35rem 0.5rem; border-bottom: 1px solid #cbd6e0; text-align: left; }
+.mat1-material-panel .mat1-adjustments pre { max-height: 18rem; overflow: auto; white-space: pre-wrap; font-size: 0.73rem; }
+
 @media (max-width: 1120px) {
   .workspace-body { grid-template-columns: 290px minmax(0, 1fr); }
   .compact-results-table table { min-width: 62rem; table-layout: auto; }
@@ -1431,3 +1447,17 @@ td {
   .sidebar-group .field-grid { grid-template-columns: 1fr; }
   .overlay-grid { right: auto; left: 0; width: min(18rem, 88vw); }
 }
+.mat1-result-gate {
+  position: relative;
+  z-index: 4;
+  margin: .5rem;
+  padding: .65rem .85rem;
+  border: 1px solid #9c751e;
+  border-radius: .5rem;
+  background: #fff5d6;
+  color: #493800;
+  font-size: .85rem;
+}
+
+.mat1-result-gate strong { margin-right: .4rem; }
+.mat1-owner-assignment { border-top: 1px solid #d8d8d8; padding: .45rem 0; }

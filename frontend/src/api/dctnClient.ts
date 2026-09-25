@@ -1,3 +1,4 @@
+import { mat1Fetch } from "./mat1Transport";
 import type { DCTN3BRequest, DCTNArrangement, DCTNRequest, DCTNResponse } from "./dctnContracts";
 import { EvaluationTransportError } from "./client";
 
@@ -44,7 +45,7 @@ const design = shape({ checks: array(shape({ check_id: text, owner_id: text, sta
 const endpoint = "/api/v1/calculations/double-channel-truss-node";
 async function exchange(url: string, signal: AbortSignal, request?: DCTNRequest | DCTN3BRequest): Promise<unknown> {
   let response: Response;
-  try { response = await fetch(url, { method: request === undefined ? "GET" : "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", signal, ...(request === undefined ? {} : { body: JSON.stringify(request) }) }); }
+  try { response = await mat1Fetch(url, { method: request === undefined ? "GET" : "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", signal, ...(request === undefined ? {} : { body: JSON.stringify(request) }) }); }
   catch (error) { if (error instanceof DOMException && error.name === "AbortError") throw error; throw new EvaluationTransportError("NETWORK", null, "DCTN service could not be reached.", error); }
   let value: unknown;
   try { value = await response.json(); } catch (error) { throw new EvaluationTransportError("RESPONSE", response.status, "Unreadable DCTN response.", error); }

@@ -159,6 +159,14 @@ def test_openapi_product_path_set_is_exact() -> None:
     application = create_app(settings=AppSettings(environment=ApplicationEnvironment.TEST))
 
     assert set(application.openapi()["paths"]) == {
+        "/api/v1/frp-materials/catalog",
+        "/api/v1/frp-materials/factor-candidates",
+        "/api/v1/frp-materials/family/owners",
+        "/api/v1/frp-materials/single-bolt/design-check",
+        "/api/v1/frp-materials/multi-row/design-check",
+        "/api/v1/frp-materials/tee-connector/design-check",
+        "/api/v1/frp-materials/family/design-check",
+        "/api/v1/frp-materials/stair-stringer-miter/analytical-design-check",
         "/api/v1/connector-materials/capabilities",
         "/api/v1/connector-materials/plan",
         "/health",

@@ -10,6 +10,10 @@ from decimal import Decimal, localcontext
 from enum import Enum
 from typing import cast
 
+from frp_master_connection.application.mat1_scope import (
+    material_for_owner,
+    time_category_for_case,
+)
 from frp_master_connection.application.multirow_orchestration import (
     MultiRowDemandSource,
     MultiRowLayerInput,
@@ -68,7 +72,11 @@ from frp_master_connection.calculation.eccentric_demand import (
     ExactInterfaceFrame,
     ExactQuantityVector3D,
 )
+from frp_master_connection.calculation.mat1_flange_body import (
+    evaluate_material_flange_plate_body as evaluate_flange_plate_body,
+)
 from frp_master_connection.calculation.multirow import MethodProvenance, RowDistributionBasis
+from frp_master_connection.calculation.properties import create_locked_ice_material_snapshot
 from frp_master_connection.calculation.wi_moment_resultants import (
     WIMomentActionInput,
     WIMomentCalculationInput,
@@ -90,7 +98,6 @@ from frp_master_connection.calculation.wi_moment_splice_resistance import (
     FlangePlateBodyResult,
     decompose_flange_wrench,
     evaluate_asymmetric_two_plane_bolt,
-    evaluate_flange_plate_body,
 )
 from frp_master_connection.domain.web_splice import (
     WEB_SPLICE_SUCCESSOR_CONTRACT_VERSION,
@@ -1248,6 +1255,13 @@ def _web_body(
     request: WIMomentSpliceRequest,
     preview: WIMomentSplicePreviewResult,
 ) -> WebSpliceBodyInteractionResult:
+    from frp_master_connection.application.mat1_scope import current_scope
+
+    scope = current_scope()
+    if scope is not None and scope.material("POSITIVE_WEB_SPLICE_PLATE") != scope.material(
+        "NEGATIVE_WEB_SPLICE_PLATE"
+    ):
+        raise ValueError("MAT1_SYMMETRIC_WEB_SPLICE_PLATE_MATERIALS_MUST_MATCH")
     web_component = preview.slice5_result.component(WIMomentRegionId.WEB)
     web_request = _web_request(request, web_component)
     force = web_component.wrench.force_lvt
@@ -1279,7 +1293,11 @@ def _web_body(
         "ASCE/SEI 74-23 Section 2.4.4",
         ("STAGE_4_1A_CONTROLLED_UNITY_END_USE_FACTORS",),
     )
-    time_effect = select_time_effect_factor(TimeEffectCategory.WIND_TORNADO_SEISMIC)
+    from frp_master_connection.application.mat1_scope import time_category_for_case
+
+    time_effect = select_time_effect_factor(
+        time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC)
+    )
     thickness = web_request.splice_plate.thickness
     height = web_request.splice_plate.height
     length = plan.clear_body_length
@@ -1480,6 +1498,8 @@ def design_check_wi_moment_splice(request: WIMomentSpliceRequest) -> WIMomentSpl
             width=body_width,
             thickness=plate_t,
             clear_body_length=clear,
+            material_snapshot=material_for_owner(component, create_locked_ice_material_snapshot()),
+            time_effect_category=time_category_for_case(TimeEffectCategory.WIND_TORNADO_SEISMIC),
         )
         for branch in (top, bottom)
         for component, force, body_width in (

@@ -34,7 +34,12 @@ def member_local_checks(preview: ColumnMomentPreview) -> tuple[SupportLocalCheck
     record = preview.response.response
     if record is None:
         return ()
-    properties = {p.kind: p for p in create_locked_ice_material_snapshot().properties}
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    properties = {
+        p.kind: p
+        for p in material_for_owner("COLUMN", create_locked_ice_material_snapshot()).properties
+    }
     checks = []
     domains = {b.bolt_id: b for b in preview.response_binding.physical_bolts}
     for response in record.bolts:

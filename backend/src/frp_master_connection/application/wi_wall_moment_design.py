@@ -349,7 +349,10 @@ def _bearing(
     *,
     beam_layer: bool,
 ) -> WallMomentBearing:
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    owner_id = "BEAM" if beam_layer else angle.connector_id
+    material = material_for_owner(owner_id, create_locked_ice_material_snapshot())
     with localcontext() as context:
         context.prec = 80  # Existing bearing-axis selection boundary.
         direction = _material_direction(

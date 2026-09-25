@@ -63,7 +63,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7291
+          --expected-tests 7385
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help
       - name: Check Alembic CLI availability

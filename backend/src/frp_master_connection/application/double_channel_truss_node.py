@@ -13,6 +13,7 @@ from frp_master_connection.application.dctn_shared_channel import (
     review_dctn_shared_channels,
 )
 from frp_master_connection.application.double_channel_truss_node_geometry import build_dctn_geometry
+from frp_master_connection.application.mat1_scope import current_scope
 from frp_master_connection.calculation.angle_connector_core import exact_decimal
 from frp_master_connection.calculation.dctn_fingerprint import dctn_fingerprint
 from frp_master_connection.calculation.dctn_local_resistance import (
@@ -21,6 +22,7 @@ from frp_master_connection.calculation.dctn_local_resistance import (
 )
 from frp_master_connection.calculation.dctn_sources import (
     EMPTY_SOURCES,
+    DCTNMaterialSource,
     DCTNSources,
     dctn_binding,
     hardware_source,
@@ -38,6 +40,7 @@ from frp_master_connection.calculation.double_channel_truss_node_response import
 )
 from frp_master_connection.calculation.equations import bolt_shear_resistance_from_nominal_stress
 from frp_master_connection.calculation.geometry_mapping import CodeGeometryIssue
+from frp_master_connection.calculation.inputs import EndUseFactors, select_time_effect_factor
 from frp_master_connection.calculation.multirow_equations import constant_pitch_factor
 from frp_master_connection.calculation.properties import FRPPropertyKind, ThreadStatus
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
@@ -48,6 +51,11 @@ from frp_master_connection.domain.double_channel_truss_node import (
     PRODUCT,
     DCTNForm,
     DCTNRequest,
+)
+from frp_master_connection.domain.material_architecture import (
+    EngineeringPropertySource,
+    EngineeringPropertySourceKind,
+    PropertySourceConfirmation,
 )
 from frp_master_connection.geometry.bolt_paths import ResolvedBoltGroupGeometry
 
@@ -92,6 +100,40 @@ def dctn_material_binding(preview: DCTNPreview, owner: str) -> str:
     return dctn_binding("FRP_PRODUCT_SECTION_USE", owner, preview.geometry, preview.input)
 
 
+def _material_for_design(
+    registry: DCTNSources, reference: str, owner: str, binding: str
+) -> DCTNMaterialSource | None:
+    """Expose pending MAT1 numbers to native checks without minting source authority."""
+
+    scope = current_scope()
+    if scope is None:
+        return material_source(registry, reference, owner, binding)
+    material = scope.material(owner)
+    record = scope.overrides.get(owner, scope.default)[0]
+    return DCTNMaterialSource(
+        reference=f"MAT1:{record.id}:{record.revision}",
+        owner_id=owner,
+        source=EngineeringPropertySource(
+            EngineeringPropertySourceKind.CONTROLLED_PROJECT_DATA,
+            record.id,
+            record.revision,
+            PropertySourceConfirmation.PENDING_CONFIRMATION,
+            (record.content_digest,),
+            True,
+        ),
+        exact_binding=binding,
+        material=material,
+        factors=EndUseFactors(
+            Decimal(1),
+            Decimal(1),
+            Decimal(1),
+            "MAT1 condition coefficients already applied to typed property candidates",
+            ("MAT1_PENDING_SOURCE_NUMERICAL_DIAGNOSTIC_ONLY",),
+        ),
+        lambda_factor=select_time_effect_factor(scope.default[1].time_category).value,
+    )
+
+
 def dctn_hardware_binding(preview: DCTNPreview) -> str:
     return dctn_binding(
         "INDEPENDENT_HARDWARE",
@@ -133,7 +175,7 @@ def _solid_checks(
     for member in request.members:
         if member.section.form is not DCTNForm.SOLID_RECTANGLE:
             continue
-        source = material_source(
+        source = _material_for_design(
             registry,
             member.material_source_reference,
             member.slot,
@@ -220,7 +262,7 @@ def design_check_dctn(value: DCTNRequest, registry: DCTNSources = EMPTY_SOURCES)
                 if plan.owner_id == member.slot
                 else value.channel.material_source_reference
             )
-            source = material_source(
+            source = _material_for_design(
                 registry, reference, plan.owner_id, dctn_material_binding(preview, plan.owner_id)
             )
             if source is None:
@@ -288,7 +330,7 @@ def design_check_dctn(value: DCTNRequest, registry: DCTNSources = EMPTY_SOURCES)
             combined_plan = review.common_force_plan
             if combined_plan is None:
                 continue
-            source = material_source(
+            source = _material_for_design(
                 registry,
                 value.channel.material_source_reference,
                 owner,

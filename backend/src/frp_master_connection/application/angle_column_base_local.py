@@ -69,7 +69,9 @@ def member_local_checks(
     )
     spec = preview.geometry.angles[index].specification
     hw = preview.input.connectors[index].member_hardware
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner("COLUMN", create_locked_ice_material_snapshot())
     properties = {p.kind: p for p in material.properties}
     solution = transfer.in_plane_demand.solution
     delta = None

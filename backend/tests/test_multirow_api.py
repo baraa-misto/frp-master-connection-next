@@ -881,8 +881,11 @@ def test_openapi_documents_exact_two_multirow_operations_and_security() -> None:
     document = _app().openapi()
     assert PREVIEW_ROUTE in document["paths"]
     assert DESIGN_ROUTE in document["paths"]
-    multirow_paths = [path for path in document["paths"] if "multi-row" in path]
+    multirow_paths = [
+        path for path in document["paths"] if path.startswith("/api/v1/calculations/multi-row/")
+    ]
     assert multirow_paths == [PREVIEW_ROUTE, DESIGN_ROUTE]
+    assert "/api/v1/frp-materials/multi-row/design-check" in document["paths"]
     for path in multirow_paths:
         operation = document["paths"][path]["post"]
         schema = operation["requestBody"]["content"]["application/json"]["schema"]

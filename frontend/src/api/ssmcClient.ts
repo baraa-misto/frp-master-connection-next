@@ -1,3 +1,4 @@
+import { mat1Fetch } from "./mat1Transport";
 import { EvaluationTransportError } from "./client";
 import { dctnTransport as t } from "./dctnClient";
 import type { MultiRowQuantity as Q } from "./multirowContracts";
@@ -103,7 +104,7 @@ const analyticalResponseShape = shape({
 const endpoint = "/api/v1/calculations/stair-stringer-miter";
 async function exchange(path: string, signal: AbortSignal, request?: SSMCRequest | SSMCAnalyticalRequest): Promise<unknown> {
   let response: Response;
-  try { response = await fetch(endpoint + path, { method: request === undefined ? "GET" : "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", signal, ...(request === undefined ? {} : { body: JSON.stringify(request) }) }); }
+  try { response = await mat1Fetch(endpoint + path, { method: request === undefined ? "GET" : "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", signal, ...(request === undefined ? {} : { body: JSON.stringify(request) }) }); }
   catch (error) { if (error instanceof DOMException && error.name === "AbortError") throw error; throw new EvaluationTransportError("NETWORK", null, "SSMC service unavailable.", error); }
   let value: unknown;
   try { value = await response.json(); } catch (error) { throw new EvaluationTransportError("RESPONSE", response.status, "Unreadable SSMC response.", error); }

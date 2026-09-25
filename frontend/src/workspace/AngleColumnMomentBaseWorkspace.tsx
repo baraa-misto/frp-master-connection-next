@@ -104,7 +104,7 @@ function AngleBaseEditor({initial}:{readonly initial:AngleBaseRequest}){
       <p className="sidebar-note">Column LW is vertical. Connector LW follows its horizontal extrusion. Geometry equality is not load-sharing authority.</p>
     </SidebarGroup>;
   };
-  return <ConnectionWorkspaceShell className="angle-base44-workspace" banner={<section className="stage-banner"><h2>Angle Column Two-Leg Moment Base</h2><p>4.4-RC1 · one exterior connector on each different column leg · qualified response required</p></section>}>
+  return <ConnectionWorkspaceShell family="angle-column-two-leg-moment-base" className="angle-base44-workspace" banner={<section className="stage-banner"><h2>Angle Column Two-Leg Moment Base</h2><p>4.4-RC1 · one exterior connector on each different column leg · qualified response required</p></section>}>
     <ConnectionWorkspaceSidebar ariaLabel="Angle column two-leg moment base inputs">
       <ConnectorBodyMaterialControl material={bodyMaterial.material} onChange={bodyMaterial.choose} />
       <SidebarGroup title="Constructive presets" summary="Replace inputs — not adequate designs" defaultOpen><div className="base44-preset-grid">{([{unequal:false,system:false},{unequal:false,system:true},{unequal:true,system:false},{unequal:true,system:true}]).map(({unequal,system})=><button key={String(unequal)+String(system)} disabled={presetBusy} onClick={()=>{void load(unequal,system);}}>{unequal?"Unequal":"Equal"} / {system?"SI":"U.S."}</button>)}</div><p className="sidebar-note">Loading a preset replaces inputs and clears sources/results. No stiffness, contact or 50/50 split is inferred.</p></SidebarGroup>

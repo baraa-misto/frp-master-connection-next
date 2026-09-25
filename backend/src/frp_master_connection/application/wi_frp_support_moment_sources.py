@@ -234,7 +234,9 @@ def frp_support_provider_context(
         i for i, t in enumerate(preview.connectors) if t.connector_id == transfer.connector_id
     )
     spec = preview.input.angles[index]
-    material = create_locked_ice_material_snapshot()
+    from frp_master_connection.application.mat1_scope import material_for_owner
+
+    material = material_for_owner(transfer.connector_id, create_locked_ice_material_snapshot())
     shear = next(p for p in material.properties if p.kind is FRPPropertyKind.FSH_LT)
     adjusted = adjust_frp_property(shear.kind, shear.value, shear.qualification_status, END_USE)
     member = (

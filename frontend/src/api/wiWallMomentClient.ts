@@ -1,3 +1,4 @@
+import { mat1Fetch } from "./mat1Transport";
 import { EvaluationTransportError } from "./client";
 import type { WIWallMomentDesign, WIWallMomentPreview, WIWallMomentRequest, WIWallMomentResponse } from "./wiWallMomentContracts";
 
@@ -36,7 +37,7 @@ const designContract = shape({
 });
 async function post<T>(kind: "preview" | "design-check", request: WIWallMomentRequest, signal: AbortSignal): Promise<WIWallMomentResponse<T>> {
   let response: Response;
-  try { response = await fetch(`/api/v1/calculations/wi-beam-concrete-wall-moment/${kind}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", body: JSON.stringify(request), signal }); }
+  try { response = await mat1Fetch(`/api/v1/calculations/wi-beam-concrete-wall-moment/${kind}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, credentials: "same-origin", body: JSON.stringify(request), signal }); }
   catch (error) { if (error instanceof DOMException && error.name === "AbortError") throw error; throw new EvaluationTransportError("NETWORK", null, "The W/I wall-moment service could not be reached.", error); }
   let value: unknown;
   try { value = await response.json(); } catch (error) { throw new EvaluationTransportError("RESPONSE", response.status, "The wall-moment service returned unreadable JSON.", error); }
