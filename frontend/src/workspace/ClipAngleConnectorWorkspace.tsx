@@ -1,3 +1,4 @@
+import { viewerUnity } from "./unityRatio";
 import { ConnectorBodyMaterialControl, ConnectorBodyMaterialResult } from "./connectorBodyMaterial";
 import { useConnectorBodyMaterial } from "./useConnectorBodyMaterial";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -314,7 +315,7 @@ export function ClipAngleConnectorWorkspace() {
       </ConnectionWorkspaceSidebar>
 
       <ConnectionWorkspaceMain><ConnectorBodyMaterialResult state={bodyMaterial} />
-        <PersistentConnectionViewer>
+        <PersistentConnectionViewer unity={viewerUnity("clip-angle", design, { stale, checking: loading, error: designError, previewState: preview.state })}>
           <div className={`tee-preview-state tee-preview-state-${preview.state.toLowerCase()}`} role="status" aria-live="polite"><strong>{previewMessage}</strong>{preview.invalidDetail === null ? null : <span>{preview.invalidDetail}</span>}</div>
           {model === null ? <section className="viewer-prompt"><h3>Canonical clip-angle model unavailable</h3><p>{preview.invalidDetail ?? previewMessage}</p></section> : <VisualizationPanel model={model} title={title} contactSelectionLabel="Selected physical clip-angle contact surface" selection={selection} onSelect={setSelection} appliedActionInputValues={{ FX: request.global_force.x, FY: request.global_force.y, FZ: request.global_force.z, MX: request.global_moment.x, MY: request.global_moment.y, MZ: request.global_moment.z }} onAppliedActionValueChange={(component, value) => { const key = component.slice(1).toLowerCase() as "x" | "y" | "z"; update((next) => { if (component.startsWith("F")) next.global_force[key] = value; else next.global_moment[key] = value; }); }} actionSourceLabel="Canonical clip-angle member-end action" />}
         </PersistentConnectionViewer>

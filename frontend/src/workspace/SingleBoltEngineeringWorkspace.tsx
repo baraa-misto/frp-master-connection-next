@@ -1,3 +1,4 @@
+import { viewerUnity } from "./unityRatio";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import {
@@ -1270,7 +1271,7 @@ export function SingleBoltEngineeringWorkspace() {
         </ConnectionWorkspaceSidebar>
 
         <ConnectionWorkspaceMain>
-          <PersistentConnectionViewer>
+          <PersistentConnectionViewer unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
             {canonicalModel === null ? <section className="viewer-prompt"><h3>Connection viewer</h3><p>The backend-authoritative model appears automatically when current engineering inputs are valid. The browser does not reconstruct calculation geometry.</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={canonicalModel} results={activeResults} resolvedLayers={activeResolvedLayers} selection={selection} onSelect={setSelection} appliedActionInputValues={appliedActionInputValues} onAppliedActionValueChange={setActionComponentValue} actionSourceLabel="Member" selectedBoltChecks={selectedBoltChecks} />}
           </PersistentConnectionViewer>
           {previewPending ? <p className="preview-notice" role="status">Updating model…</p> : null}

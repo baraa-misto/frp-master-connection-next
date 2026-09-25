@@ -1,3 +1,4 @@
+import { viewerUnity } from "./unityRatio";
 import { ConnectorBodyMaterialControl, ConnectorBodyMaterialResult } from "./connectorBodyMaterial";
 import { useConnectorBodyMaterial } from "./useConnectorBodyMaterial";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -512,7 +513,7 @@ export function TeeConnectorWorkspace() {
       </ConnectionWorkspaceSidebar>
 
       <ConnectionWorkspaceMain><ConnectorBodyMaterialResult state={bodyMaterial} />
-        <PersistentConnectionViewer>
+        <PersistentConnectionViewer unity={viewerUnity("tee", design, { stale, checking: loading, error: designError, previewState: preview.state })}>
           {previewStateMessage === null ? null : <div className={`tee-preview-state tee-preview-state-${preview.state.toLowerCase()}`} role="status" aria-live="polite"><strong>{previewStateMessage}</strong>{currentPreviewDetail === null ? null : <span>{currentPreviewDetail}</span>}</div>}
           {model === null ? <section className="viewer-prompt"><h3>Canonical Tee model unavailable</h3><p>{currentPreviewDetail ?? previewStateMessage}</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={model} title={displayedConnectionTitle} contactSelectionLabel="Selected physical Tee connection surface" interfaceHighlight={highlightedInterface} selection={selection} onSelect={setSelection} appliedActionInputValues={{ FX: request.global_force.x, FY: request.global_force.y, FZ: request.global_force.z, MX: request.global_moment.x, MY: request.global_moment.y, MZ: request.global_moment.z }} onAppliedActionValueChange={(component, value) => { const forceKey = component.startsWith("F") ? component.slice(1).toLowerCase() as "x" | "y" | "z" : null; const momentKey = component.startsWith("M") ? component.slice(1).toLowerCase() as "x" | "y" | "z" : null; update((next) => { if (forceKey !== null) next.global_force[forceKey] = value; if (momentKey !== null) next.global_moment[momentKey] = value; }); }} actionSourceLabel="Canonical Tee member-end action" />}
         </PersistentConnectionViewer>

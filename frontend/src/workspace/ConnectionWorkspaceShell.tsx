@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
+import type { UnityView } from "./unityRatio";
+import { UnityRatioIndicator } from "./UnityRatioIndicator";
+import { UnityViewerContext } from "./UnityViewerContext";
 
 interface ConnectionWorkspaceShellProps {
   readonly banner: ReactNode;
@@ -17,6 +20,7 @@ interface ConnectionWorkspaceMainProps {
 
 interface PersistentConnectionViewerProps {
   readonly children: ReactNode;
+  readonly unity?: UnityView;
 }
 
 interface SidebarGroupProps {
@@ -53,8 +57,11 @@ export function ConnectionWorkspaceMain({ children }: ConnectionWorkspaceMainPro
   return <main className="connection-view-column">{children}</main>;
 }
 
-export function PersistentConnectionViewer({ children }: PersistentConnectionViewerProps) {
-  return <div className="persistent-connection-viewer">{children}</div>;
+export function PersistentConnectionViewer({ children, unity }: PersistentConnectionViewerProps) {
+  return <UnityViewerContext.Provider value={unity ?? null}><div className="persistent-connection-viewer">
+    {children}
+    {unity === undefined ? null : <div className="unity-viewer-fallback"><UnityRatioIndicator value={unity} /></div>}
+  </div></UnityViewerContext.Provider>;
 }
 
 export function SidebarGroup({

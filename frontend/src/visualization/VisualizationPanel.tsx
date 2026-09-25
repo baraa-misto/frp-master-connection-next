@@ -1,5 +1,7 @@
 import { lazy, Suspense, useCallback, useRef, useState } from "react";
 import type { RefCallback } from "react";
+import { UnityRatioIndicator } from "../workspace/UnityRatioIndicator";
+import { useUnityViewer } from "../workspace/UnityViewerContext";
 
 import type {
   ActionDirectionSnapshot,
@@ -252,6 +254,11 @@ function referenceLabel(marker: SceneMarker): string {
   return marker.label;
 }
 
+function UnityRatioOverlay() {
+  const unity = useUnityViewer();
+  return unity === null ? null : <div className="unity-canvas-overlay"><UnityRatioIndicator value={unity} /></div>;
+}
+
 export function VisualizationPanel({
   model,
   results = [],
@@ -464,6 +471,7 @@ export function VisualizationPanel({
       {visibility.perBoltDemands ? <ul className="per-bolt-demand-values" aria-label="Per-bolt demand vector values">{model.perBoltDemandArrows.map((arrow) => <li key={arrow.id}><strong>{friendlyIdentifier(arrow.referencePointId)}</strong> {arrow.signedValue === null ? "—" : display(arrow.signedValue)} {arrow.unit}</li>)}</ul> : null}
 
       <div className="canvas-shell">
+        <UnityRatioOverlay />
         <div className="scene-canvas-region" role="img" aria-describedby="canvas-description">
         <Suspense fallback={<div className="canvas-loading">Loading 3D renderer…</div>}>
           <EngineeringScene
