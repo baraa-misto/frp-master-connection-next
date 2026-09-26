@@ -298,6 +298,12 @@ def _restore_historical_security_scope(entries: str) -> str:
     lines = entries.splitlines()
     indexed = {line.split("\t")[1]: line for line in lines}
     assert len(indexed) == len(lines), "duplicate scope path"
+    # REPORT1 adds only exact dependency/workflow reverse-delta checks to this
+    # historical test. Restore its previous blob before checking the old digest.
+    wi_test = "backend/tests/application/test_wi_wall_moment.py"
+    report1_wi_blob = "5eea2dfe514cb47eed7aa23090de6d28cdea295c"
+    if indexed.get(wi_test) == f"100644 blob {report1_wi_blob}\t{wi_test}":
+        indexed[wi_test] = f"100644 blob {_SECURITY_SUCCESSOR_PROTECTED_BLOBS[wi_test]}\t{wi_test}"
     for path, blob in _SECURITY_SUCCESSOR_PROTECTED_BLOBS.items():
         assert indexed.get(path) == f"100644 blob {blob}\t{path}", "protected security successor"
     for path, (historical_blob, timeout_blob) in _TIMEOUT_SUCCESSOR_BLOBS.items():

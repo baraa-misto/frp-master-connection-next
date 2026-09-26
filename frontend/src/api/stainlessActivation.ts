@@ -1,4 +1,5 @@
 import { EvaluationTransportError } from "./client";
+import { mat1Fetch } from "./mat1Transport";
 import { mat1Snapshot } from "../state/mat1Session";
 
 export const ACTIVATION_AUTHORITY = "CME_3_316SS_PUBLIC_CONNECTOR_BODY_ACTIVATION_RC1";
@@ -78,7 +79,7 @@ export async function evaluateStainlessActivation(
   }
   let response: Response;
   try {
-    response = await fetch(`/api/v1/calculations/${route}/design-check?connector_body_material=SS316`, {
+    response = await mat1Fetch(`/api/v1/calculations/${route}/design-check?connector_body_material=SS316`, {
       method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request), signal,
     });

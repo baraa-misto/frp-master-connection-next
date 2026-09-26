@@ -5,6 +5,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { ACTIVATION_AUTHORITY, BODY_ROUTES, parseStainlessActivation, type BodyRoute } from "../src/api/stainlessActivation";
 import * as transport from "../src/api/stainlessActivation";
 import { setMAT1Active } from "../src/state/mat1Session";
+import { currentReportSnapshot } from "../src/state/reportSession";
 import { ConnectorBodyMaterialControl, ConnectorBodyMaterialResult } from "../src/workspace/connectorBodyMaterial";
 import { useConnectorBodyMaterial } from "../src/workspace/useConnectorBodyMaterial";
 
@@ -31,6 +32,15 @@ function Harness({ route = "clip-angle" }: { readonly route?: BodyRoute }) {
 function stainless() { fireEvent.change(screen.getByRole("combobox", { name: "Connector Body Material" }), { target: { value: "SS316" } }); }
 function run() { fireEvent.click(screen.getByRole("button", { name: "Run Design Check" })); }
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); invalidate.mockClear(); });
+
+it("retains the same backend report handle for a conditional stainless calculation", async () => {
+  setMAT1Active(false);
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(response()), {
+    headers: { "X-Report-Handle": "stainless-snapshot-handle" },
+  })));
+  await transport.evaluateStainlessActivation("clip-angle", {}, new AbortController().signal);
+  expect(currentReportSnapshot("clip-angle").token).toBe("stainless-snapshot-handle");
+});
 
 it("defaults FRP; the one connection-wide selector never runs a calculation itself", () => {
   const fetcher = vi.fn(); vi.stubGlobal("fetch", fetcher);

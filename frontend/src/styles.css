@@ -1461,3 +1461,37 @@ td {
 
 .mat1-result-gate strong { margin-right: .4rem; }
 .mat1-owner-assignment { border-top: 1px solid #d8d8d8; padding: .45rem 0; }
+.report-export {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.6rem 1rem;
+}
+
+.report-export-dialog {
+  position: fixed;
+  z-index: 1000;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: 84vh;
+  overflow: auto;
+  padding: 1.25rem;
+  background: #fff;
+  color: #18303d;
+  border: 1px solid #607782;
+  border-radius: 0.5rem;
+  box-shadow: 0 1rem 3rem #102d3a66;
+}
+
+.report-export-dialog label {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.report-export-dialog input,
+.report-export-dialog select {
+  width: 100%;
+}

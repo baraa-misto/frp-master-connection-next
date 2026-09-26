@@ -109,6 +109,8 @@ it("rejects stale responses and preserves backend validation failures", async ()
   expect(store.mat1Snapshot().designTraces["clip-angle"]).toBeUndefined();
   fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({ detail: "invalid" }), { status: 422 }));
   expect((await post("/api/v1/calculations/clip-angle/design-check")).status).toBe(422);
+  fetchMock.mockResolvedValueOnce(new Response("Renderer unavailable", { status: 503 }));
+  expect((await post("/api/v1/calculations/clip-angle/design-check")).status).toBe(503);
   fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({ overall_status: "SOURCE_REQUIRED" }), { status: 200 }));
   await expect(post("/api/v1/calculations/clip-angle/design-check")).rejects.toThrow("omitted its public result");
 });

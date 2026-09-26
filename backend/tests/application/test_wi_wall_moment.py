@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from contextlib import ExitStack
 from dataclasses import replace
 from decimal import ROUND_HALF_EVEN, Context, Decimal, localcontext
@@ -645,6 +646,11 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             "sha256": "6EA7A2E53937B20D4986F984BB8C569F14E6B1375073EDCEC070D8C2C94D876A",
             "expected_tests": b"--expected-tests 7385",
         },
+        "report1_reporting_successor": {
+            "blob": "8f70e985036c7f4afa3653f5ce63a9fa6e2f71c9",
+            "sha256": "545C690B4E64277B4CD6D8F21F7B2B5086B47EEBE68C07F36C1EF57478285CE4",
+            "expected_tests": b"--expected-tests 7624",
+        },
     }
     frozen_ssmc = (root / "backend/src/frp_master_connection/application/ssmc.py").read_bytes()
     assert hashlib.sha256(frozen_ssmc).hexdigest().upper() == (
@@ -660,7 +666,22 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
                 b"blob " + str(len(raw)).encode() + b"\0" + raw,
                 usedforsecurity=False,
             ).hexdigest()
-            assert successor_blob == "9af757259bf3bb0de1763e3e51e3fd1dda612a5a"
+            assert successor_blob == "116a7fa50d06df59ffaa348543dc39c9a87268d7"
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "5E62070013423B89D5715E13F42BE2CCFF96F17BA2618D1EE6CBEDE45D8ACD25"
+            )
+            for addition in (
+                b'  "reportlab==5.0.1",\n',
+                b'  "types-reportlab==5.0.0.20260911",\n  "pypdf==6.19.0",\n',
+                b'"frp_master_connection.reporting" = ["fonts/*.ttf", "fonts/*.txt"]\n',
+            ):
+                assert raw.count(addition) == 1
+                raw = raw.replace(addition, b"")
+            historical_successor_blob = hashlib.sha1(
+                b"blob " + str(len(raw)).encode() + b"\0" + raw,
+                usedforsecurity=False,
+            ).hexdigest()
+            assert historical_successor_blob == "9af757259bf3bb0de1763e3e51e3fd1dda612a5a"
             assert hashlib.sha256(raw).hexdigest().upper() == (
                 "FD31F376EB18A56BEB11BC271EC797C20228C74FAA90F581511289356741AFB1"
             )
@@ -668,11 +689,72 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             historical_data = b'frp_master_connection = ["py.typed"]'
             assert raw.count(catalog_data) == 1
             raw = raw.replace(catalog_data, historical_data)
+        elif path == "backend/requirements/requirements-dev-py314.lock.txt":
+            successor_blob = hashlib.sha1(
+                b"blob " + str(len(raw)).encode() + b"\0" + raw,
+                usedforsecurity=False,
+            ).hexdigest()
+            assert successor_blob == "35ea8ffc02b502767ea34dc8910f252a4d3a1a6a"
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "C1A1B1428B11F0A817653B29E3539DC2CBC06AD63385AA20A602C0B03CF5F3D8"
+            )
+            added_packages = {
+                b"charset-normalizer": (
+                    "C271D6444F32E9BCD7C3CC5144BC2764F48593BE6D3B224A342BA5D7F528F351"
+                ),
+                b"pillow": "FEA208D524C2F0D0C295FEA13A9CF21B5586CF77AF4F9B8B01CAF7ADF0FA254A",
+                b"pypdf": "20F15337ECED0079088AD0DF63968FFA902FC4294D425B26872CE884E0539B5C",
+                b"reportlab": "99BC2F8DB2A2621FF2560DA14BC4AA4AEC338F94826083D4BF2878ED2E4C49BF",
+                b"types-reportlab": (
+                    "55447C22E0B774924CAFD77596F50F4AD08E863E4A99266199C4821087CDAFFE"
+                ),
+            }
+            package_headers = re.compile(rb"(?m)^[a-z][a-z0-9-]+==[^\n]*\n")
+            matches = list(package_headers.finditer(raw))
+            remove_ranges = []
+            for package, digest in added_packages.items():
+                starts = [
+                    i
+                    for i, match in enumerate(matches)
+                    if match.group().startswith(package + b"==")
+                ]
+                assert len(starts) == 1
+                index = starts[0]
+                start = matches[index].start()
+                stop = matches[index + 1].start() if index + 1 < len(matches) else len(raw)
+                block = raw[start:stop]
+                assert hashlib.sha256(block).hexdigest().upper() == digest
+                remove_ranges.append((start, stop))
+            for start, stop in sorted(remove_ranges, reverse=True):
+                raw = raw[:start] + raw[stop:]
+            report1_command = b"--allow-unsafe --upgrade-package pip==26.1.2"
+            historical_command = b"--allow-unsafe --upgrade --upgrade-package pip==26.1.2"
+            assert raw.count(report1_command) == 1
+            raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
             historical_identity = workflow_identities["historical_pre_ssmc_3_main"]
+            report1_identity = workflow_identities["report1_reporting_successor"]
             successor_identity = workflow_identities["mat1_material_complete_successor"]
             prior_mat1_identity = workflow_identities["mat1_material_successor"]
             prior_identity = workflow_identities["ssmc_3_analytical_successor"]
+            successor_blob = hashlib.sha1(
+                b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
+            ).hexdigest()
+            assert successor_blob == report1_identity["blob"]
+            assert hashlib.sha256(raw).hexdigest().upper() == report1_identity["sha256"]
+            report1_step = b"""      - name: Generate real REPORT1 PDFs on this runner
+        run: >-
+          python -m pytest -q -p no:cacheprovider
+          tests/test_report1_pdf.py::test_actual_report_contains_native_results_and_canonical_figure
+          tests/test_report1_pdf.py::test_multirow_real_pdf_has_native_path_inventory_and_input_only_boundary
+          tests/test_report1_pdf.py::test_dctn_3b_transverse_demand_is_reported_without_response_qualification
+          tests/test_report1_pdf_edges.py::test_embedded_font_keeps_common_unicode_metadata_searchable
+"""
+            assert raw.count(report1_step) == 1
+            assert raw.count(report1_identity["expected_tests"]) == 1
+            raw = raw.replace(report1_step, b"").replace(
+                report1_identity["expected_tests"], successor_identity["expected_tests"]
+            )
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
             ).hexdigest()

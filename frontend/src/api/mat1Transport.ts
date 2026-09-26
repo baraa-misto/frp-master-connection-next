@@ -1,5 +1,6 @@
 /** Versioned material request envelope around the existing explicit design actions. */
 import { acceptMAT1Design, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { acceptReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../state/reportSession";
 
 interface MAT1TransportResponse {
   readonly overall_status?: string;
@@ -30,7 +31,22 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
     rememberMAT1Preview(preview[1], init.body);
   }
   const match = routePattern.exec(url);
-  if (!state.active || match === null || init?.method?.toUpperCase() !== "POST") return fetch(input, init);
+  const familyForReport = match?.[1] ?? preview?.[1];
+  if (familyForReport !== undefined && init?.method?.toUpperCase() === "POST") {
+    invalidateReportSnapshot(familyForReport);
+  }
+  const reportGenerationAtStart = familyForReport === undefined ? 0 : reportGeneration(familyForReport);
+  if (!state.active || match === null || init?.method?.toUpperCase() !== "POST") {
+    const response = await fetch(input, init);
+    if ((response.ok || response.status === 422) && familyForReport !== undefined && init?.method?.toUpperCase() === "POST") {
+      acceptReportSnapshot(
+        familyForReport, response.headers.get("X-Report-Handle"),
+        response.headers.get("X-Report-Kind") === "input_only" ? "input_only" :
+          match === null ? "input_only" : "design", reportGenerationAtStart,
+      );
+    }
+    return response;
+  }
   if (url.includes("connector_body_material=SS316")) throw new Error("MAT1_STAINLESS_MEMBER_ADAPTER_UNAVAILABLE");
   const family = String(match[1]); // The route pattern captures one nonempty family segment.
   if (family === "stair-stringer-miter" && match[2] === "design-check") throw new Error("MAT1_SSMC_REQUIRES_ANALYTICAL_DESIGN_ROUTE");
@@ -69,9 +85,15 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
     ...init, headers,
     body: JSON.stringify(request),
   });
-  if (!response.ok) return response;
+  if (!response.ok) {
+    if (response.status === 422) {
+      acceptReportSnapshot(family, response.headers.get("X-Report-Handle"), "input_only", reportGenerationAtStart);
+    }
+    return response;
+  }
   const body = await response.json() as MAT1TransportResponse;
   if (!acceptMAT1Design(family, key, body)) throw new DOMException("Superseded MAT1 design response.", "AbortError");
+  acceptReportSnapshot(family, response.headers.get("X-Report-Handle"), "design", reportGenerationAtStart);
   const client = body.client_design ?? body.native_design;
   if (client === undefined) throw new Error("MAT1 design response omitted its public result.");
   return new Response(JSON.stringify(client), { status: response.status, headers: { "Content-Type": "application/json" } });

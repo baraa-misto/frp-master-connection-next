@@ -6,12 +6,15 @@ import type { UnityFamily, UnityView } from "./unityRatio";
 import { MAT1MaterialsPanel } from "../features/MAT1MaterialsPanel";
 import { UnityRatioIndicator } from "./UnityRatioIndicator";
 import { UnityViewerContext } from "./UnityViewerContext";
+import { ReportExportButton } from "../features/ReportExportButton";
+import { invalidateReportSnapshot } from "../state/reportSession";
 
 interface ConnectionWorkspaceShellProps {
   readonly banner: ReactNode;
   readonly children: ReactNode;
   readonly className?: string;
   readonly family?: string;
+  readonly reportDraft?: unknown;
 }
 
 interface ConnectionWorkspaceSidebarProps {
@@ -58,12 +61,14 @@ export function ConnectionWorkspaceShell({
   children,
   className = "",
   family,
+  reportDraft,
 }: ConnectionWorkspaceShellProps) {
   return (
     <MAT1FamilyContext.Provider value={family ?? null}><div className={`engineering-workspace connection-first-workspace${className === "" ? "" : ` ${className}`}`}>
       {banner}
-      {family === undefined ? null : <MAT1MaterialsPanel family={family} />}
-      <div className="workspace-body">{children}</div>
+      {family === undefined ? null : <ReportExportButton family={family} draft={reportDraft} />}
+      {family === undefined ? null : <div onChangeCapture={() => { invalidateReportSnapshot(family); }} onClickCapture={event => { if (event.target instanceof Element && event.target.closest("button")) invalidateReportSnapshot(family); }}><MAT1MaterialsPanel family={family} /></div>}
+      <div className="workspace-body" onChangeCapture={() => { if (family !== undefined) invalidateReportSnapshot(family); }} onClickCapture={event => { if (family !== undefined && event.target instanceof Element && event.target.closest("button")) invalidateReportSnapshot(family); }}>{children}</div>
     </div></MAT1FamilyContext.Provider>
   );
 }
