@@ -647,9 +647,9 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             "expected_tests": b"--expected-tests 7385",
         },
         "report1_reporting_successor": {
-            "blob": "8f70e985036c7f4afa3653f5ce63a9fa6e2f71c9",
-            "sha256": "545C690B4E64277B4CD6D8F21F7B2B5086B47EEBE68C07F36C1EF57478285CE4",
-            "expected_tests": b"--expected-tests 7624",
+            "blob": "7665ccbef11c86d3f6ff9d00a9b183d985feebd9",
+            "sha256": "A692AC69C7B8EF1752A13604A6AB554E068983E421DEAC46E7A8402CE91613F7",
+            "expected_tests": b"--expected-tests 7626",
         },
     }
     frozen_ssmc = (root / "backend/src/frp_master_connection/application/ssmc.py").read_bytes()

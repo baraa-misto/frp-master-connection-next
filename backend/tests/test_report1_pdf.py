@@ -110,6 +110,66 @@ def test_ordinary_route_response_remains_deterministic_without_report_opt_in() -
     assert b"report_snapshot" not in first
 
 
+def test_snapshot_middleware_rejects_oversize_and_passes_invalid_json_to_validation() -> None:
+    async def run() -> list[httpx.Response]:
+        app = create_app()
+        bodies = (
+            b'{"padding":"' + b"x" * 8_000_000 + b'"}',
+            b"{",
+            b"\xff",
+            b"[]",
+        )
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as client:
+            return [
+                await client.post(
+                    "/api/v1/calculations/single-bolt/evaluate",
+                    content=body,
+                    headers={"Content-Type": "application/json"},
+                )
+                for body in bodies
+            ]
+
+    oversized, invalid_json, invalid_utf8, non_object = asyncio.run(run())
+    assert oversized.status_code == 413
+    assert oversized.json()["detail"] == "REPORT1 request size limit exceeded"
+    for response in (invalid_json, invalid_utf8, non_object):
+        assert response.status_code in {400, 422}
+        assert "X-Report-Handle" not in response.headers
+
+
+def test_snapshot_middleware_reports_signer_failure_without_replacing_native_result(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fail_issue(self: SnapshotSigner, **_: object) -> str:
+        raise SnapshotError("forced snapshot failure")
+
+    monkeypatch.setattr(SnapshotSigner, "issue", fail_issue)
+
+    async def run() -> tuple[httpx.Response, httpx.Response]:
+        app = create_app()
+        payload = build_api_payload("J1-T")
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as client:
+            ordinary = await client.post("/api/v1/calculations/single-bolt/evaluate", json=payload)
+            opted_in = await client.post(
+                "/api/v1/calculations/single-bolt/evaluate?report_snapshot=1", json=payload
+            )
+            return ordinary, opted_in
+
+    ordinary, opted_in = asyncio.run(run())
+    assert ordinary.status_code == opted_in.status_code == 200
+    assert ordinary.headers["X-Report-Error"] == "snapshot-unavailable"
+    assert "X-Report-Handle" not in ordinary.headers
+    assert opted_in.json()["report_snapshot_error"] == "forced snapshot failure"
+    assert "X-Report-Handle" not in opted_in.headers
+    signed = opted_in.json()
+    del signed["report_snapshot_error"]
+    assert signed == ordinary.json()
+
+
 def test_signed_snapshot_opt_in_changes_no_native_calculation_field() -> None:
     payload = build_api_payload("J1-T")
 

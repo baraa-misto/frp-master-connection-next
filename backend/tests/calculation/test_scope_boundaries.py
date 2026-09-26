@@ -301,7 +301,7 @@ def _restore_historical_security_scope(entries: str) -> str:
     # REPORT1 adds only exact dependency/workflow reverse-delta checks to this
     # historical test. Restore its previous blob before checking the old digest.
     wi_test = "backend/tests/application/test_wi_wall_moment.py"
-    report1_wi_blob = "5eea2dfe514cb47eed7aa23090de6d28cdea295c"
+    report1_wi_blob = "bf3e96b0eb74a8cc2fcfac098265c97c83a28875"
     if indexed.get(wi_test) == f"100644 blob {report1_wi_blob}\t{wi_test}":
         indexed[wi_test] = f"100644 blob {_SECURITY_SUCCESSOR_PROTECTED_BLOBS[wi_test]}\t{wi_test}"
     for path, blob in _SECURITY_SUCCESSOR_PROTECTED_BLOBS.items():
