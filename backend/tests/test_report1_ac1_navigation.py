@@ -103,3 +103,10 @@ def test_wi_support_contents_has_no_stranded_final_entry(paper: str) -> None:
     assert "Contents" in (reader.pages[1].extract_text() or "")
     third_page = reader.pages[2].extract_text() or ""
     assert "Scope and connection model" in third_page
+    appendix_page = next(
+        index
+        for index, page in enumerate(reader.pages[3:], start=3)
+        if "Complete native results, traces, materials and limitations"
+        in (page.extract_text() or "")
+    )
+    assert len((reader.pages[appendix_page - 1].extract_text() or "").strip()) >= 500

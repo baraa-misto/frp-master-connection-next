@@ -17,7 +17,7 @@ from typing import Any
 
 from reportlab.graphics.shapes import Circle, Drawing, Line, String
 from reportlab.lib import colors
-from reportlab.platypus import Flowable, KeepTogether
+from reportlab.platypus import CondPageBreak, Flowable, KeepTogether
 
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
 from frp_master_connection.reporting.flatten import flatten_unique
@@ -993,7 +993,12 @@ def _check_matrix(value: object, system: DisplayUnits = "INHERIT") -> list[tuple
 def _schedules(
     story: list[Flowable], title: str, rows: list[tuple[str, str]], styles: dict[str, Any]
 ) -> None:
-    story.append(_paragraph(title, styles["heading"]))
+    # Reserve space for the heading and first rows without binding it to a
+    # complete (often multi-page) native schedule.
+    story.append(CondPageBreak(90))
+    story.append(
+        _paragraph(title, styles["heading"].clone("ReportHeadingSchedule", keepWithNext=0))
+    )
     if not rows:
         story.append(_paragraph("No native records in this section.", styles["body"]))
         return

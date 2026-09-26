@@ -56,6 +56,12 @@ stop export. `test_report1_ac1_method_bindings.py` covers the remaining
 executed-method registry and varied consumed values. The full native appendix
 continues to represent every repeated path and nongoverning result.
 
+Native schedule headings reserve space for the first rows without holding an
+entire multi-page table together. Direct and multi-row renderers omit an empty
+alternate-unit schedule. Real-PDF tests guard sparse section transitions for
+W/I support, Direct and multi-row; the representative page audit separately
+checks every exported page for searchable text and page bounds.
+
 Source-required, not-evaluated and external-design states remain visible as
 native engineering limitations. A missing REPORT1 adapter is a report defect
 and cannot be relabeled as one of those states.

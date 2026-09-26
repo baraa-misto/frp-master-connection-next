@@ -25,6 +25,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import (
     BaseDocTemplate,
+    CondPageBreak,
     Flowable,
     Frame,
     PageBreak,
@@ -1376,17 +1377,20 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
     )
     story.append(_table(_flatten("request", snapshot.request), styles))
     if options.display_units != "INHERIT":
-        story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
-        story.append(
-            _table(converted_quantity_rows(snapshot.request, options.display_units), styles)
-        )
+        input_equivalents = converted_quantity_rows(snapshot.request, options.display_units)
+        if input_equivalents:
+            story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
+            story.append(_table(input_equivalents, styles))
     for heading, key in (
         ("Materials and hardware", "material_assignments"),
         ("Resolved layer geometry", "resolved_layers"),
         ("Load assignment and transport", "source_action_trace"),
         ("Resolved bolt demand", "resolved_demand"),
     ):
-        story.append(_paragraph(heading, styles["heading"]))
+        story.append(CondPageBreak(90))
+        story.append(
+            _paragraph(heading, styles["heading"].clone("ReportHeadingSchedule", keepWithNext=0))
+        )
         story.append(_table(_flatten(key, result.get(key)), styles))
     story.append(_paragraph("Native check results and executed equations", styles["heading"]))
     resolved_layers = result.get("resolved_layers", [])
@@ -1483,7 +1487,6 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
         )
     )
     _append_result_unit_equivalents(story, snapshot, options, styles)
-    story.append(_paragraph("Calculation identity", styles["heading"]))
     if result is not snapshot.result:
         story.append(_paragraph("MAT1 material and condition authority", styles["heading"]))
         story.append(
@@ -1499,6 +1502,7 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                 styles,
             )
         )
+    story.append(_paragraph("Calculation identity", styles["heading"]))
     story.append(
         _table(
             [
@@ -1618,11 +1622,17 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     story.append(_table(_input_source_rows(snapshot), styles))
     story.append(_table(_flatten("request", snapshot.request), styles))
     if options.display_units != "INHERIT":
-        story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
-        story.append(
-            _table(converted_quantity_rows(snapshot.request, options.display_units), styles)
+        input_equivalents = converted_quantity_rows(snapshot.request, options.display_units)
+        if input_equivalents:
+            story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
+            story.append(_table(input_equivalents, styles))
+    story.append(CondPageBreak(90))
+    story.append(
+        _paragraph(
+            "Resolved geometry and load assignment",
+            styles["heading"].clone("ReportHeadingSchedule", keepWithNext=0),
         )
-    story.append(_paragraph("Resolved geometry and load assignment", styles["heading"]))
+    )
     story.append(_table(_flatten("preview", preview), styles))
     for key, title in (
         ("automatic_demand_result", "Automatic demand assignment"),

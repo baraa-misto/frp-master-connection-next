@@ -291,7 +291,10 @@ def test_multirow_si_and_mat1_wrapper_are_printed(
         "client_design": native_reports[1],
         "material_ledgers": [{"record_id": "SYNTHETIC-MAT1-ROW"}],
     }
-    pdf = render_multirow_pdf(_snapshot("multi-row", wrapped), ReportOptions(display_units="SI"))
+    snapshot = ReportSnapshot(
+        "multi-row", "design", {"span": {"value": "2", "unit": "in"}}, wrapped, 1_000, "0" * 64
+    )
+    pdf = render_multirow_pdf(snapshot, ReportOptions(display_units="SI"))
     text = "".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages)
     assert "Alternate display-unit equivalents" in text
     assert "MAT1 material and condition authority" in text
@@ -381,3 +384,54 @@ def test_direct_optional_detail_branch_and_malformed_layer(
     malformed["resolved_layers"] = [None]
     with pytest.raises(ReportingCoverageError, match="physical layer is malformed"):
         render_single_bolt_pdf(_snapshot("single-bolt", malformed), ReportOptions())
+
+
+def test_direct_native_schedule_transition_has_no_sparse_header_page(
+    native_reports: tuple[dict[str, Any], dict[str, Any]],
+) -> None:
+    pdf = render_single_bolt_pdf(
+        _snapshot("single-bolt", native_reports[0]),
+        ReportOptions(display_units="US_CUSTOMARY"),
+    )
+    pages = [page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages]
+    assert "Alternate display-unit equivalents" not in " ".join(pages)
+    geometry_page = next(
+        index
+        for index, text in enumerate(pages[2:], start=2)
+        if "Resolved layer geometry" in text and "Field" in text
+    )
+    assert len(pages[geometry_page - 1].strip()) >= 500
+
+
+def test_multirow_native_schedule_transition_has_no_sparse_input_tail(
+    native_reports: tuple[dict[str, Any], dict[str, Any]],
+) -> None:
+    pdf = render_multirow_pdf(
+        _snapshot("multi-row", native_reports[1]),
+        ReportOptions(display_units="US_CUSTOMARY"),
+    )
+    pages = [page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages]
+    geometry_page = next(
+        index
+        for index, text in enumerate(pages[2:], start=2)
+        if "Resolved geometry and load assignment" in text and "Field" in text
+    )
+    assert len(pages[geometry_page - 1].strip()) >= 500
+
+
+def test_direct_mat1_authority_precedes_calculation_identity(
+    native_reports: tuple[dict[str, Any], dict[str, Any]],
+) -> None:
+    wrapped = {
+        "client_design": native_reports[0],
+        "material_ledgers": [{"record_id": "SYNTHETIC-PRESENTATION-ROW"}],
+    }
+    pdf = render_single_bolt_pdf(_snapshot("single-bolt", wrapped), ReportOptions())
+    pages = [page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages]
+    body = " ".join(pages[2:])
+    assert body.index("MAT1 material and condition authority") < body.index("Calculation identity")
+    identity_page = next(
+        page for page in pages[2:] if "Calculation identity" in page and "Snapshot SHA-256" in page
+    )
+    assert "SYNTHETIC-PRESENTATION-ROW" in body
+    assert "Snapshot SHA-256" in identity_page
