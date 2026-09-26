@@ -1,62 +1,61 @@
-# REPORT1 reporting coverage checklist
+# REPORT1 report coverage checklist
 
-Baseline: `1c9405c0feb4ced8222f4ba9458455ff63d420d9` in the separate
-`frp-master-connection-next` repository. This inventory records the actual
-connection selectors and native families. Every row has a real Windows PDF
-generated through its native route. The shared path includes submitted and
-server-default inputs, native material/condition/load/geometry schedules,
-executed method records, numerical results, and explicit source limits.
-Hosted Ubuntu and exact-SHA CI remain release gates.
+The first REPORT1 implementation was published at
+`eae3374dd0af26e93e8b1bb02265eafecb68e5ec`. Independent review then
+identified the six reporting and evidence defects reproduced in
+`REPORT1_AC1_BASELINE.md`. This checklist records the bounded AC1 correction;
+it does not change native engineering authority or qualify an incomplete design.
 
-| Selector / method | Native family ID | Actual Windows PDF smoke | Release gate |
+`test_report1_ac1_all_modes.py` exports a real authenticated PDF for each of
+the 18 current modes in both U.S. and SI presentation (36 PDFs). It checks
+snapshot export, distinct outline target pages with matching section text,
+figure/dimension markers, method presence and absence of unavailable executed
+factor substitutions. The existing field, provenance, tamper and input-only
+tests continue to check the shared snapshot and report contract.
+
+| Current calculation/report mode | Canonical figure and dimension adapter | Worked method / result source | US/SI and navigation audit |
 | --- | --- | --- | --- |
-| Direct, single bolt | `single-bolt` | Yes | Hosted CI pending |
-| Direct, multi-row | `multi-row` | Yes | Hosted CI pending |
-| Tee connector | `tee-connector` | Yes | Hosted CI pending |
-| Single clip angle | `clip-angle` | Yes | Hosted CI pending |
-| Symmetric paired clip angles | `paired-clip-angle` | Yes | Hosted CI pending |
-| Multi-member Tee | `multi-member-tee` | Yes | Hosted CI pending |
-| Paired clip angles to concrete wall | `beam-concrete-paired-angle` | Yes | Hosted CI pending |
-| Direct side-lap to concrete wall | `direct-side-lap-concrete` | Yes | Hosted CI pending |
-| Column base web angles | `column-base-web-angles` | Yes | Hosted CI pending |
-| Symmetric double web splice | `beam-web-splice` | Yes | Hosted CI pending |
-| W/I moment splice | `wi-major-axis-moment-splice` | Yes | Hosted CI pending |
-| Channel moment splice | `channel-major-axis-moment-splice` | Yes | Hosted CI pending |
-| W/I beam to concrete wall moment | `wi-beam-concrete-wall-moment` | Yes | Hosted CI pending |
-| W/I beam to FRP support moment | `wi-beam-frp-support-moment` | Yes | Hosted CI pending |
-| Two-leg angle column moment base | `angle-column-two-leg-moment-base` | Yes | Hosted CI pending |
-| W/I, RHS, SRS column moment base | `wi-rhs-srs-column-moment-base` | Yes | Hosted CI pending |
-| Double-channel truss node, including 3B | `double-channel-truss-node` | Yes | Hosted CI pending |
-| Stair stringer miter, including analytical design | `stair-stringer-miter` | Yes | Hosted CI pending |
+| Direct, single bolt | Native local boundary witnesses and through-bolt stack | Single-bolt method traces and all native checks | 2 real PDFs |
+| Direct, multi-row | Native plan with end, edge, pitch, gauge, bolt/hole and ply witnesses | Multi-row equation traces and every native check | 2 real PDFs |
+| Tee connector | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Single clip angle | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Paired clip angles | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Multi-member Tee | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Beam to concrete paired angles | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Direct side-lap to concrete | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Column base web angles | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Beam web splice | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| W/I moment splice | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Channel moment splice | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| W/I beam to concrete wall moment | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| W/I beam to FRP support moment | Physical component edges, bolt-row interfaces and bolt-axis stack | Native equation methods and local support checks | 2 real PDFs |
+| Two-leg angle column moment base | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| W/I, RHS, SRS column moment base | Physical component edges and identified bolt-row interfaces | Native equation methods and check records | 2 real PDFs |
+| Double-channel truss node, including 3B | Physical component edges, bolt-row interfaces and bolt-axis stack | Native axial/3B response and explicit limits | 2 real PDFs |
+| Stair stringer miter analytical design | Actual native polygon-face edge witnesses and physical interfaces | Native analytical, finite-cut and source-limited checks | 2 real PDFs |
 
 The selector has 17 connection options; Direct exposes two calculation modes.
-MAT1 supplies a separate material/condition design wrapper for supported families.
+MAT1 wraps supported modes with the selected material and condition record.
 SSMC analytical design is distinct from its historical demand-only endpoint.
-These variants require method-level coverage within their rows.
 
-Existing engineering limitations are report content. Missing REPORT1 adapters for
-executed checks are implementation defects and cannot be labeled source-required.
+The drawing adapters use canonical box, polygon, bolt, layer and interface
+records. Three physical box edges are witnessed per component; each finite
+polygon edge is witnessed when the native face is available. Nested native
+multi-row interfaces carry end, side/edge, pitch, gauge and bolt/hole labels.
+Every figure states **not to scale**. The report never measures geometry from
+rendered pixels. `test_report1_ac1_figures.py` varies native dimensions and
+checks the resulting labels. `test_report1_ac1_all_modes.py` checks the
+per-family figure branch, including nested interface drawings when present.
 
-The actual Windows tests cover all 18 modes, multi-row two/three/four-row
-methods, conditional stainless, DCTN-3B transverse response, MAT1 custom
-session material, SSMC analytical design, and rejected/unrun input-only cases.
-Every executed native check retains its path and exact native values in the
-complete appendix. Recognized methods receive reviewed equation records; a
-missing adapter for an executed method fails export explicitly. Worked records
-include W/I and Channel resultants, flange and web force-line decomposition,
-plate tension, web-panel interaction, connector instep, in-plane wrench,
-support-side bearing, DCTN axial and 3B action transport, and SSMC finite cuts.
+`test_report1_ac1_navigation.py` resolves real PDF outline and internal-link
+destinations on Letter and A4, checks destination headings on the reached
+pages, and guards the W/I contents orphan. `test_report1_ac1_substitutions.py`
+checks U.S./SI native parity and worked first-row and block-shear stages.
+`test_report1_ac1_adapter_fail_closed.py` proves missing executed operands
+stop export. `test_report1_ac1_method_bindings.py` covers the remaining
+executed-method registry and varied consumed values. The full native appendix
+continues to represent every repeated path and nongoverning result.
 
-All 934 pages of five representative Windows PDFs were rasterized and checked
-for blank pages, out-of-bounds text origins, and page-edge contact. Contact
-sheets for every page were inspected. The W/I support sample is 559 pages;
-its searchable complete native appendix is long. Focused backend coverage,
-Ubuntu generation, and hosted exact-SHA CI must be recorded before acceptance.
-
-## Renderer decision
-
-Use one server-side ReportLab 5.0.1 pipeline for controlled vector figures,
-searchable text, schedules, bookmarks, and Letter/A4 pagination. The official
-distribution supports Python 3.14 and carries a BSD license. This avoids a
-browser binary in the calculation service. It does not by itself prove equation
-or input coverage; adapters and page inspection remain required.
+Source-required, not-evaluated and external-design states remain visible as
+native engineering limitations. A missing REPORT1 adapter is a report defect
+and cannot be relabeled as one of those states.

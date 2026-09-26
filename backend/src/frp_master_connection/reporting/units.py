@@ -31,6 +31,53 @@ _TARGET: dict[str, dict[Dimension, Unit]] = {
 }
 
 
+def resolved_display_units(
+    request: dict[str, object], result: dict[str, object], selected: DisplayUnits
+) -> DisplayUnits:
+    """Use the calculation's submitted display system when no override was chosen."""
+
+    if selected != "INHERIT":
+        return selected
+    for source in (request, result):
+        for key in ("display_unit_system", "unit_system"):
+            value = source.get(key)
+            if isinstance(value, str) and value in {"US_CUSTOMARY", "SI"}:
+                return value  # type: ignore[return-value]
+    length = request.get("source_length_unit") or request.get("length_unit")
+    if length == "in":
+        return "US_CUSTOMARY"
+    if length == "mm":
+        return "SI"
+    return "INHERIT"
+
+
+def display_quantity(value: object, system: DisplayUnits) -> str:
+    """Format a native quantity in one engineer-facing report system.
+
+    This changes display bytes only. The signed native quantity remains in the
+    full technical appendix, including its exact value and canonical fields.
+    """
+
+    if not isinstance(value, dict) or "value" not in value:
+        return "Not supplied"
+    magnitude = value["value"]
+    unit = value.get("unit", "")
+    native = f"{magnitude} {unit}".strip()
+    if system == "INHERIT" or not isinstance(unit, str):
+        return native
+    try:
+        source = PhysicalQuantity.of(str(magnitude), Unit(unit))
+        target = _TARGET[system].get(source.dimension)
+        if target is None:
+            return native
+        if target == source.unit:
+            return f"{source.magnitude:.12g} {source.unit.value}"
+        converted = source.to(target)
+        return f"{converted.magnitude:.12g} {target.value}"
+    except InvalidOperation, TypeError, ValueError:
+        return native
+
+
 def converted_quantity_rows(value: object, system: DisplayUnits) -> list[tuple[str, str]]:
     """Keep native values and add labelled equivalents; never alter calculation data."""
 
@@ -71,4 +118,9 @@ def converted_quantity_rows(value: object, system: DisplayUnits) -> list[tuple[s
     return result
 
 
-__all__ = ("DisplayUnits", "converted_quantity_rows")
+__all__ = (
+    "DisplayUnits",
+    "converted_quantity_rows",
+    "display_quantity",
+    "resolved_display_units",
+)

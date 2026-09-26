@@ -88,7 +88,7 @@ def test_actual_report_contains_native_results_and_canonical_figure(
     assert "Isometric - not to scale" in text
     assert "bolt-1" in text
     assert "FRP pin bearing" in text
-    assert "R_n = t(9.5250 mm) x d(12.70 mm)" in text.replace("\n", "")
+    assert "R_n = t(0.375 in) x d(0.5 in)" in text.replace("\n", "")
     assert "Native cleavage branch A substitution" in text
     assert str(body["calculation_fingerprint"]) in text.replace("\n", "")
     assert "0.345679012345679" in text.replace("\n", "")
@@ -280,7 +280,7 @@ def test_axial_single_bolt_pdf_shows_both_executed_pull_through_branches() -> No
         assert check["equation_trace"]["branch_8_4b_nominal"]["value"] in compact
     assert "Native pull-through branch 8-4a" in text
     assert "Native pull-through branch 8-4b" in text
-    assert "D_w(25.4 mm)" in text
+    assert "D_w(1 in)" in text
 
 
 def test_invalid_preview_exports_only_sealed_inputs_and_validation_issues() -> None:
@@ -492,8 +492,9 @@ def test_each_native_family_exports_an_actual_canonical_pdf(family: str) -> None
         assert "Executed equation methods and worked native traces" in text
         assert "R_n = t d F_br C_thread" in text
         layer = native["preview"]["visualization"]["layers"][0]
-        assert f"t({layer['thickness']['canonical_value']} mm)" in text
-        assert "d(12.70 mm)" in text
+        assert f"t({layer['thickness']['value']} in)" in text
+        assert "d(0.5 in)" in text
+        assert f"canonical {layer['thickness']['canonical_value']} mm" in text
         assert "Native bolt-axis stack; schematic, not to scale" in text
         assert "tee-bolt-group-a / B_R1_L1" in text
         demand = native["automatic_demand_result"]

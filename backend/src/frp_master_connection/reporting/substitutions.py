@@ -5,9 +5,25 @@ Values are converted only for display. No equation is evaluated in this module.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
+from frp_master_connection.reporting.units import DisplayUnits, display_quantity
+
+_NATIVE_QUANTITY = re.compile(
+    r"(?<![\w.])(-?\d+(?:\.\d+)?(?:[Ee][+-]?\d+)?) (mm2|mm|MPa|N)(?![\w])"
+)
+
+
+def _display_rows(rows: list[tuple[str, str]], system: DisplayUnits) -> list[tuple[str, str]]:
+    if system == "INHERIT":
+        return rows
+
+    def convert(match: re.Match[str]) -> str:
+        return display_quantity({"value": match.group(1), "unit": match.group(2)}, system)
+
+    return [(name, _NATIVE_QUANTITY.sub(convert, expression)) for name, expression in rows]
 
 
 def _canonical(value: object, target: Unit) -> str:
@@ -29,7 +45,10 @@ def _property(trace: dict[str, Any], key: str) -> str:
 
 
 def single_native_substitutions(
-    check: dict[str, Any], layer: dict[str, Any] | None, fastener: dict[str, Any] | None
+    check: dict[str, Any],
+    layer: dict[str, Any] | None,
+    fastener: dict[str, Any] | None,
+    system: DisplayUnits = "INHERIT",
 ) -> list[tuple[str, str]]:
     """Format actual input quantities beside the native result without recomputing it."""
 
@@ -98,10 +117,10 @@ def single_native_substitutions(
             ]
         )
     if layer is None:
-        return rows
+        return _display_rows(rows, system)
     code = layer.get("code_mapping")
     if not isinstance(code, dict):
-        return rows
+        return _display_rows(rows, system)
     t = _canonical(code.get("layer_thickness"), Unit.MM)
     d = _canonical(code.get("bolt_diameter"), Unit.MM)
     dn = _canonical(code.get("hole_diameter"), Unit.MM)
@@ -195,7 +214,7 @@ def single_native_substitutions(
                 )
             )
             rows.append(("Native selected branch", str(trace.get("governing_branches"))))
-    return rows
+    return _display_rows(rows, system)
 
 
 __all__ = ("single_native_substitutions",)

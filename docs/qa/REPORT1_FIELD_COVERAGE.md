@@ -1,8 +1,9 @@
-# REPORT1 field presentation map (candidate)
+# REPORT1 field presentation map
 
-This map describes what the current candidate prints from the signed backend
-response. It is not a claim that REPORT1 is accepted. The reporting code does
-not invoke engineering equations or assign qualification.
+This map describes what the AC1 correction candidate prints from the sealed
+backend calculation snapshot. It is not a claim that REPORT1 is accepted
+before exact-SHA hosted gates. The reporting code does not invoke engineering
+equations or assign qualification.
 
 | Native record | Printed location | Representation |
 | --- | --- | --- |
@@ -34,3 +35,21 @@ quantity rows retain the original value and unit; alternate display units are
 supplied for supported physical quantities without changing the calculation.
 An unavailable conversion remains in its native unit. These provenance and
 display limits are stated in the PDF.
+
+## AC1 presentation reconciliation
+
+The selected display system now applies to ordinary engineer-facing loads,
+dimensions, demand/resistance comparisons, numerical substitutions, material
+properties and factor-stage schedules. Exact native quantities remain in the
+complete technical appendix and are labeled by their original source paths.
+The report does not change the sealed snapshot digest, native result,
+governing check, utilization, status or qualification when presentation units
+change. `test_report1_ac1_substitutions.py` checks these invariants.
+
+Direct layer witnesses read native boundary mapping, bolt/hole diameters and
+physical stack records. Generic component and polygon witnesses read canonical
+vertices. Nested multi-row interface plans read native boundary and bolt-row
+records. The figures state **not to scale**. A missing required native operand
+for an executed method raises a REPORT1 adapter error; it is not converted to
+an engineering source limitation. `test_report1_ac1_all_modes.py` and
+`test_report1_ac1_method_bindings.py` cover the current method registry.

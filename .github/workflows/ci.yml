@@ -63,7 +63,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7626
+          --expected-tests 7712
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider

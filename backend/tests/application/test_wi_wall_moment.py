@@ -737,6 +737,9 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             successor_identity = workflow_identities["mat1_material_complete_successor"]
             prior_mat1_identity = workflow_identities["mat1_material_successor"]
             prior_identity = workflow_identities["ssmc_3_analytical_successor"]
+            correction_count = b"--expected-tests 7712"
+            assert raw.count(correction_count) == 1
+            raw = raw.replace(correction_count, report1_identity["expected_tests"])
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
             ).hexdigest()

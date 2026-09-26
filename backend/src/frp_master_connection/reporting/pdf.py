@@ -9,17 +9,18 @@ from __future__ import annotations
 import io
 from dataclasses import dataclass
 from decimal import Decimal
+from itertools import pairwise
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, cast
 from xml.sax.saxutils import escape
 
-from reportlab.graphics.shapes import Circle, Drawing, Line, String
+from reportlab.graphics.shapes import Circle, Drawing, Line, Rect, String
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import A4, letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.pdfdoc import PDFString
+from reportlab.pdfbase.pdfdoc import Destination, PDFString
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import (
@@ -33,9 +34,15 @@ from reportlab.platypus import (
     TableStyle,
 )
 
+from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
 from frp_master_connection.reporting.snapshot import ReportSnapshot
 from frp_master_connection.reporting.substitutions import single_native_substitutions
-from frp_master_connection.reporting.units import DisplayUnits, converted_quantity_rows
+from frp_master_connection.reporting.units import (
+    DisplayUnits,
+    converted_quantity_rows,
+    display_quantity,
+    resolved_display_units,
+)
 
 PAPER_SIZES = {"LETTER": letter, "A4": A4}
 MAX_TABLE_ROWS = 15_000
@@ -43,6 +50,19 @@ MAX_TABLE_ROWS = 15_000
 
 class ReportingCoverageError(ValueError):
     """An executed native calculation lacks a faithful REPORT1 adapter."""
+
+
+class _ReportTable(Table):
+    """Retain the final-fragment rule when ReportLab splits a long table again."""
+
+    _cellvalues: list[list[Any]]
+    _rowSplitRange: tuple[int, int] | None
+
+    def onSplit(self, child: Table, byRow: int = 1) -> None:
+        del byRow
+        report_child = cast(_ReportTable, child)
+        if len(report_child._cellvalues) >= 3:
+            report_child._rowSplitRange = (2, -2)
 
 
 @dataclass(frozen=True, slots=True)
@@ -299,6 +319,64 @@ def _projection(point: tuple[float, float, float], view: str) -> tuple[float, fl
     return x, y
 
 
+def _dimension_witness(
+    drawing: Drawing,
+    first: tuple[float, float],
+    second: tuple[float, float],
+    *,
+    axis: Literal["x", "y"],
+    offset: float,
+    label: str,
+) -> None:
+    """Attach a labelled witness to two projected canonical points."""
+
+    ink = colors.HexColor("#374d59")
+    if axis == "x":
+        x0, x1 = first[0], second[0]
+        drawing.add(Line(x0, first[1], x0, offset + 4, strokeColor=ink, strokeWidth=0.4))
+        drawing.add(Line(x1, second[1], x1, offset + 4, strokeColor=ink, strokeWidth=0.4))
+        drawing.add(Line(x0, offset, x1, offset, strokeColor=ink, strokeWidth=0.6))
+        for x in (x0, x1):
+            drawing.add(Line(x - 2, offset - 3, x + 2, offset + 3, strokeColor=ink))
+        drawing.add(
+            String(
+                (x0 + x1) / 2,
+                offset - 11,
+                label,
+                textAnchor="middle",
+                fontName="ReportVera",
+                fontSize=7.5,
+            )
+        )
+    else:
+        y0, y1 = first[1], second[1]
+        drawing.add(Line(first[0], y0, offset - 4, y0, strokeColor=ink, strokeWidth=0.4))
+        drawing.add(Line(second[0], y1, offset - 4, y1, strokeColor=ink, strokeWidth=0.4))
+        drawing.add(Line(offset, y0, offset, y1, strokeColor=ink, strokeWidth=0.6))
+        for y in (y0, y1):
+            drawing.add(Line(offset - 3, y - 2, offset + 3, y + 2, strokeColor=ink))
+        drawing.add(
+            String(offset + 3, (y0 + y1) / 2 + 2, label, fontName="ReportVera", fontSize=7.5)
+        )
+
+
+def _length_label(value: object, source_unit: str, system: DisplayUnits) -> str:
+    return display_quantity({"value": str(value), "unit": source_unit}, system)
+
+
+def _dimension_label(value: object, system: DisplayUnits) -> str:
+    """Readable dimension text; exact native values remain in the appendix."""
+
+    shown = display_quantity(value, system)
+    magnitude, separator, unit = shown.rpartition(" ")
+    if separator:
+        try:
+            return f"{float(Decimal(magnitude)):.8g} {unit}"
+        except ValueError, ArithmeticError:
+            pass
+    return shown
+
+
 def _drawing(visual: dict[str, Any], view: str) -> Drawing:
     primitives = [item for item in visual.get("primitives", []) if item.get("kind") == "BOX"]
     if not primitives:
@@ -456,8 +534,179 @@ def _drawing(visual: dict[str, Any], view: str) -> Drawing:
     return figure
 
 
-def _multirow_drawing(visual: dict[str, Any], view: str) -> Drawing:
-    """Project only the native plate boundary, layer thickness and bolt centers."""
+def _direct_layer_detail(
+    layer: dict[str, Any], bolt: dict[str, Any], system: DisplayUnits
+) -> Drawing:
+    """Witness the native bolt-to-boundary mapping for one physical ply."""
+
+    mapping = layer.get("code_mapping")
+    if not isinstance(mapping, dict):
+        raise ReportingCoverageError("Direct layer lacks its native boundary mapping")
+    required = (
+        "forward_e1",
+        "reverse_end_distance",
+        "effective_e3",
+        "effective_e4",
+        "layer_thickness",
+        "bolt_diameter",
+        "hole_diameter",
+    )
+    if any(not isinstance(mapping.get(key), dict) for key in required):
+        raise ReportingCoverageError("Direct layer boundary mapping lacks a dimension")
+    drawing = Drawing(455, 238)
+    drawing.add(
+        String(
+            8,
+            225,
+            f"{layer.get('layer_id')} / {layer.get('physical_element_id')} "
+            "- native local boundary detail; not to scale",
+            fontName="ReportVeraBold",
+            fontSize=9,
+        )
+    )
+    boundary = Rect(52, 57, 328, 120)
+    boundary.strokeColor = colors.HexColor("#526675")
+    boundary.fillColor = None
+    drawing.add(boundary)
+    drawing.add(Circle(214, 117, 10, strokeColor=colors.HexColor("#526675"), fillColor=None))
+    drawing.add(Circle(214, 117, 7, strokeColor=colors.HexColor("#9b4435"), fillColor=None))
+    drawing.add(
+        String(
+            225, 122, str(bolt.get("bolt_location_id", "Bolt")), fontName="ReportVera", fontSize=8
+        )
+    )
+    _dimension_witness(
+        drawing,
+        (52, 117),
+        (214, 117),
+        axis="x",
+        offset=44,
+        label="reverse end " + _dimension_label(mapping["reverse_end_distance"], system),
+    )
+    _dimension_witness(
+        drawing,
+        (214, 117),
+        (380, 117),
+        axis="x",
+        offset=31,
+        label="forward e1 " + _dimension_label(mapping["forward_e1"], system),
+    )
+    _dimension_witness(
+        drawing,
+        (214, 57),
+        (214, 117),
+        axis="y",
+        offset=28,
+        label="e3 " + _dimension_label(mapping["effective_e3"], system),
+    )
+    _dimension_witness(
+        drawing,
+        (214, 117),
+        (214, 177),
+        axis="y",
+        offset=28,
+        label="e4 " + _dimension_label(mapping["effective_e4"], system),
+    )
+    drawing.add(
+        String(
+            52,
+            200,
+            f"t {display_quantity(mapping['layer_thickness'], system)} | "
+            f"bolt d {display_quantity(mapping['bolt_diameter'], system)} | "
+            f"hole d {display_quantity(mapping['hole_diameter'], system)}",
+            fontName="ReportVera",
+            fontSize=8.5,
+        )
+    )
+    drawing.add(
+        String(
+            52,
+            188,
+            f"Physical surfaces: {layer.get('entry_surface_patch_id')} / "
+            f"{layer.get('exit_surface_patch_id')}",
+            fontName="ReportVera",
+            fontSize=7,
+        )
+    )
+    return drawing
+
+
+def _direct_bolt_axis(
+    visual: dict[str, Any], layers: list[dict[str, Any]], system: DisplayUnits
+) -> Drawing:
+    bolt = visual.get("bolt")
+    if not isinstance(bolt, dict) or not isinstance(bolt.get("holes"), list):
+        raise ReportingCoverageError("Direct bolt-axis stack is unavailable")
+    drawing = Drawing(455, 174)
+    drawing.add(
+        String(
+            8,
+            160,
+            "Native through-bolt and ply stack; not to scale",
+            fontName="ReportVeraBold",
+            fontSize=9,
+        )
+    )
+    count = max(len(layers), 1)
+    cell = 300 / count
+    for index, layer in enumerate(layers):
+        x = 55 + index * cell
+        ply = Rect(x, 69, cell, 45)
+        ply.strokeColor = colors.HexColor("#526675")
+        ply.fillColor = None
+        drawing.add(ply)
+        mapping = layer.get("code_mapping", {})
+        drawing.add(
+            String(
+                x + 3,
+                133,
+                f"{layer.get('layer_id')}: t "
+                f"{display_quantity(mapping.get('layer_thickness'), system)}",
+                fontName="ReportVera",
+                fontSize=8,
+            )
+        )
+        drawing.add(
+            String(
+                x + 3,
+                120,
+                f"hole d {display_quantity(layer.get('hole_diameter'), system)}",
+                fontName="ReportVera",
+                fontSize=8,
+            )
+        )
+    drawing.add(Line(41, 91, 369, 91, strokeColor=colors.HexColor("#9b4435"), strokeWidth=3))
+    unit = str(visual.get("length_unit", ""))
+    drawing.add(
+        String(
+            55,
+            50,
+            f"Bolt d {_length_label(bolt.get('bolt_diameter'), unit, system)}",
+            fontName="ReportVera",
+            fontSize=8,
+        )
+    )
+    washers = bolt.get("washers", [])
+    if isinstance(washers, list):
+        for index, washer in enumerate(washers[:2]):
+            if isinstance(washer, dict):
+                drawing.add(
+                    String(
+                        55,
+                        37 - index * 12,
+                        f"{washer.get('location')} washer OD "
+                        f"{_length_label(washer.get('outside_diameter'), unit, system)}",
+                        fontName="ReportVera",
+                        fontSize=8,
+                    )
+                )
+    return drawing
+
+
+def _multirow_drawing(
+    visual: dict[str, Any], view: str, system: DisplayUnits = "INHERIT"
+) -> Drawing:
+    """Project the native plate and witness its physical row/line dimensions."""
 
     boundary = visual.get("boundary")
     bolts = visual.get("bolts")
@@ -480,11 +729,15 @@ def _multirow_drawing(visual: dict[str, Any], view: str) -> Drawing:
     max_x = max(x for x, _ in projected)
     min_y = min(y for _, y in projected)
     max_y = max(y for _, y in projected)
-    width, height = 455.0, 245.0
-    scale = min((width - 60) / max(max_x - min_x, 0.01), (height - 55) / max(max_y - min_y, 0.01))
+    width = 455.0
+    height = 295.0 if view == "plan" else 180.0 if view == "elevation" else 245.0
+    scale = min(
+        (width - 60) / max(max_x - min_x, 0.01),
+        (height - (100 if view == "plan" else 55)) / max(max_y - min_y, 0.01),
+    )
 
     def paper(point: tuple[float, float]) -> tuple[float, float]:
-        return 25 + (point[0] - min_x) * scale, 30 + (point[1] - min_y) * scale
+        return 38 + (point[0] - min_x) * scale, 42 + (point[1] - min_y) * scale
 
     figure = Drawing(width, height)
     points = [paper(point) for point in projected]
@@ -509,6 +762,17 @@ def _multirow_drawing(visual: dict[str, Any], view: str) -> Drawing:
         center = paper(_projection((x, y, 0), view))
         radius = float(bolt["bolt_diameter"]["value"]) * scale / 2
         if view == "plan":
+            hole_radius = float(bolt["hole_diameter"]["value"]) * scale / 2
+            figure.add(
+                Circle(
+                    center[0],
+                    center[1],
+                    hole_radius,
+                    strokeColor=colors.HexColor("#526675"),
+                    fillColor=None,
+                    strokeWidth=0.55,
+                )
+            )
             figure.add(
                 Circle(
                     center[0],
@@ -522,9 +786,89 @@ def _multirow_drawing(visual: dict[str, Any], view: str) -> Drawing:
             start = paper(_projection((x, y, -thickness / 2), view))
             end = paper(_projection((x, y, thickness / 2), view))
             figure.add(Line(*start, *end, strokeColor=colors.HexColor("#9b4435"), strokeWidth=2))
-        figure.add(String(center[0] + 3, center[1] + 4, bolt_id, fontName="ReportVera", fontSize=9))
+        figure.add(
+            String(
+                center[0] if view == "plan" else center[0] + 3,
+                center[1] - radius - 10 if view == "plan" else center[1] + 4,
+                bolt_id,
+                textAnchor="middle" if view == "plan" else "start",
+                fontName="ReportVera",
+                fontSize=7.5 if view == "plan" else 9,
+            )
+        )
     unit = str(visual.get("source_length_unit", "length units"))
-    if view != "isometric":
+    if view == "plan":
+        row_x = sorted({float(bolt["x"]) for bolt in bolts})
+        line_y = sorted({float(bolt["y"]) for bolt in bolts})
+        x_chain = [x0, *row_x, x1]
+        y_chain = [y0, *line_y, y1]
+        for index, (left_x, right_x) in enumerate(pairwise(x_chain)):
+            native = (
+                visual.get("unloaded_end_e1")
+                if index == 0
+                else visual.get("loaded_boundary_to_row_1_distance")
+                if index == len(x_chain) - 2
+                else visual.get("pitch")
+            )
+            label = (
+                _dimension_label(native, system)
+                if isinstance(native, dict)
+                else _length_label(right_x - left_x, unit, system)
+            )
+            _dimension_witness(
+                figure,
+                paper((left_x, y0)),
+                paper((right_x, y0)),
+                axis="x",
+                offset=25,
+                label=("e1 " if index == 0 else "p " if index < len(x_chain) - 2 else "eL ")
+                + label,
+            )
+        for index, (low_y, high_y) in enumerate(pairwise(y_chain)):
+            native = (
+                visual.get("negative_side_distance")
+                if index == 0
+                else visual.get("positive_side_distance")
+                if index == len(y_chain) - 2
+                else visual.get("gauge")
+            )
+            label = (
+                _dimension_label(native, system)
+                if isinstance(native, dict)
+                else _length_label(high_y - low_y, unit, system)
+            )
+            _dimension_witness(
+                figure,
+                paper((x0, low_y)),
+                paper((x0, high_y)),
+                axis="y",
+                offset=21,
+                label=("s- " if index == 0 else "g " if index < len(y_chain) - 2 else "s+ ")
+                + label,
+            )
+        first_bolt = bolts[0]
+        figure.add(
+            String(
+                235,
+                265,
+                f"Bolt d {display_quantity(first_bolt['bolt_diameter'], system)}; "
+                f"hole d {display_quantity(first_bolt['hole_diameter'], system)}",
+                fontName="ReportVera",
+                fontSize=8,
+            )
+        )
+        for index, layer in enumerate(layers[:3]):
+            figure.add(
+                String(
+                    235,
+                    253 - 11 * index,
+                    f"{layer.get('layer_id')}: t "
+                    f"{display_quantity(layer.get('thickness'), system)}",
+                    fontName="ReportVera",
+                    fontSize=8,
+                )
+            )
+    if view == "elevation":
         figure.add(
             String(
                 15,
@@ -594,17 +938,45 @@ class _NumberedCanvas(Canvas):
     def __init__(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
         super().__init__(*args, **kwargs)
         self._doc.Catalog.Lang = PDFString("en-US")  # type: ignore[attr-defined]
+        self._page_states = []
+        self._pending_bookmarks: dict[int, list[str]] = {}
+
+    def bookmarkPage(
+        self,
+        key: object,
+        fit: str = "Fit",
+        left: object = None,
+        top: object = None,
+        bottom: object = None,
+        right: object = None,
+        zoom: object = None,
+    ) -> Destination:
+        """Bind anchors when buffered pages are finally emitted.
+
+        The page-number footer replays the canvas at save time. ReportLab's
+        document page counter stays at page one during the first pass, so an
+        ordinary bookmarkPage call binds every destination to that page.
+        """
+
+        if (
+            not isinstance(key, str)
+            or fit != "Fit"
+            or any(value is not None for value in (left, top, bottom, right, zoom))
+        ):
+            raise ValueError("REPORT1 section anchors use whole-page destinations")
+        self._pending_bookmarks.setdefault(len(self._page_states) + 1, []).append(key)
+        return cast("Destination", self._bookmarkReference(key))  # type: ignore[attr-defined]
 
     def showPage(self) -> None:
-        if not hasattr(self, "_page_states"):
-            self._page_states = []
         self._page_states.append(dict(self.__dict__))
         self._startPage()  # type: ignore[attr-defined]
 
     def save(self) -> None:
         total = len(self._page_states)
-        for state in self._page_states:
+        for page_number, state in enumerate(self._page_states, start=1):
             self.__dict__.update(state)
+            for key in self._pending_bookmarks.get(page_number, []):
+                super().bookmarkPage(key)
             self.saveState()
             self.setFont("ReportVera", 8)
             self.setFillColor(colors.HexColor("#526674"))
@@ -638,6 +1010,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             leading=15,
             spaceBefore=13,
             spaceAfter=6,
+            keepWithNext=1,
             textColor=colors.HexColor("#153949"),
         ),
         "body": ParagraphStyle(
@@ -680,7 +1053,14 @@ def _table(rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]) -> Ta
         [_paragraph(name, styles["table"]), _paragraph(value, styles["table"])]
         for name, value in rows
     )
-    table = Table(data, colWidths=[190, 295], repeatRows=1, hAlign="LEFT", splitByRow=1)
+    table = _ReportTable(
+        data,
+        colWidths=[190, 295],
+        repeatRows=1,
+        hAlign="LEFT",
+        splitByRow=1,
+        rowSplitRange=(2, -2) if len(data) >= 3 else None,
+    )
     table.setStyle(
         TableStyle(
             [
@@ -698,6 +1078,20 @@ def _table(rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]) -> Ta
     return table
 
 
+def _append_bounded_tables(
+    story: list[Flowable], rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]
+) -> None:
+    """Keep a final schedule chunk from becoming a lone-row continuation."""
+
+    offset = 0
+    while offset < len(rows):
+        end = min(offset + 80, len(rows))
+        if len(rows) - end == 1:
+            end -= 1
+        story.append(_table(rows[offset:end], styles))
+        offset = end
+
+
 def _add_linked_contents(story: list[Flowable], styles: dict[str, ParagraphStyle]) -> None:
     """Link the reader-facing contents to the same numbered PDF outline bookmarks."""
 
@@ -709,13 +1103,29 @@ def _add_linked_contents(story: list[Flowable], styles: dict[str, ParagraphStyle
     if len(headings) < 5:
         return
     contents: list[Flowable] = [PageBreak(), _paragraph("Contents", styles["title"])]
-    contents.extend(
-        Paragraph(
-            f'<link href="#section-{index}">{escape(title)}</link>',
-            styles["small"],
-        )
-        for index, title in enumerate(headings, start=1)
+    entry_style = ParagraphStyle(
+        "ReportContentsEntry", parent=styles["small"], fontSize=8.7, leading=11, spaceAfter=0
     )
+    entries = [
+        Paragraph(f'<link href="#section-{index}">{escape(title)}</link>', entry_style)
+        for index, title in enumerate(headings, start=1)
+    ]
+    rows: list[list[Paragraph | str]] = []
+    for offset in range(0, len(entries), 2):
+        rows.append([entries[offset], entries[offset + 1] if offset + 1 < len(entries) else ""])
+    contents_table = Table(rows, colWidths=[242.5, 242.5], hAlign="LEFT", splitByRow=1)
+    contents_table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 2),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 5),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    contents.append(contents_table)
     contents.append(PageBreak())
     first_figure = next(
         (index for index, flowable in enumerate(story) if isinstance(flowable, Drawing)),
@@ -733,19 +1143,41 @@ def _add_linked_contents(story: list[Flowable], styles: dict[str, ParagraphStyle
     story[insert_at:insert_at] = contents
 
 
-def _quantity(value: object) -> str:
+def _quantity(value: object, system: DisplayUnits = "INHERIT") -> str:
     if isinstance(value, dict) and "value" in value:
-        return f"{value['value']} {value.get('unit', '')}".strip()
+        return display_quantity(value, system)
     return _text(value)
 
 
-def _factor_substitution(trace: object) -> str:
+def _factor_substitution(trace: object, system: DisplayUnits = "INHERIT") -> str:
     """Format the factor multiplication already performed by the native engine."""
 
     if not isinstance(trace, dict):
-        return "No native factor-stage trace supplied"
-    nominal = _quantity(trace.get("nominal_resistance"))
-    design = _quantity(trace.get("design_resistance"))
+        raise ReportingCoverageError("Executed check lacks a native factor trace")
+    if "equation_nominal_resistance" in trace:
+        nominal = _quantity(trace.get("equation_nominal_resistance"), system)
+        adjusted = _quantity(trace.get("connection_adjusted_nominal_resistance"), system)
+        design = _quantity(trace.get("design_resistance"), system)
+        names = (
+            "lap_factor_c_lap",
+            "pitch_factor_c_delta",
+            "resistance_factor_phi",
+            "time_effect_factor_lambda",
+        )
+        if any(name not in trace for name in names) or "Not supplied" in {
+            nominal,
+            adjusted,
+            design,
+        }:
+            raise ReportingCoverageError("Executed check lacks a complete native factor trace")
+        return (
+            f"R_adj = R_n({nominal}) x C_lap({trace['lap_factor_c_lap']}) x "
+            f"C_delta({trace['pitch_factor_c_delta']}) = {adjusted}\n"
+            f"R_d = R_adj({adjusted}) x phi({trace['resistance_factor_phi']}) x "
+            f"lambda({trace['time_effect_factor_lambda']}) = {design}"
+        )
+    nominal = _quantity(trace.get("nominal_resistance"), system)
+    design = _quantity(trace.get("design_resistance"), system)
     factors = [
         (symbol, _text(trace[key]))
         for symbol, key in (
@@ -757,35 +1189,39 @@ def _factor_substitution(trace: object) -> str:
         if key in trace
     ]
     if not factors or nominal == "Not supplied" or design == "Not supplied":
-        return "Native factor-stage substitution unavailable"
+        raise ReportingCoverageError("Executed check lacks a complete native factor trace")
     terms = " x ".join(f"{symbol}({_text(value)})" for symbol, value in factors)
     return f"R_d = ({nominal}) x {terms} = {design}"
 
 
-def _single_factor_substitutions(check: dict[str, Any]) -> list[tuple[str, str]]:
+def _single_factor_substitutions(
+    check: dict[str, Any], system: DisplayUnits = "INHERIT"
+) -> list[tuple[str, str]]:
     trace = check.get("equation_trace")
     if not isinstance(trace, dict):
         return []
     if "factor_trace" in trace:
-        return [("Executed factor substitution", _factor_substitution(trace["factor_trace"]))]
+        return [
+            ("Executed factor substitution", _factor_substitution(trace["factor_trace"], system))
+        ]
     if "branch_a_factor_trace" in trace and "branch_b_factor_trace" in trace:
         return [
             (
                 "Cleavage branch A factor substitution",
-                _factor_substitution(trace["branch_a_factor_trace"]),
+                _factor_substitution(trace["branch_a_factor_trace"], system),
             ),
             (
                 "Cleavage branch B factor substitution",
-                _factor_substitution(trace["branch_b_factor_trace"]),
+                _factor_substitution(trace["branch_b_factor_trace"], system),
             ),
         ]
     if "resistance_factor" in trace:
         return [
             (
                 "Executed bolt factor substitution",
-                f"R_d = ({_quantity(check.get('nominal_resistance'))}) x "
+                f"R_d = ({_quantity(check.get('nominal_resistance'), system)}) x "
                 f"phi({_text(trace['resistance_factor'])}) = "
-                f"{_quantity(check.get('design_resistance'))}",
+                f"{_quantity(check.get('design_resistance'), system)}",
             )
         ]
     return []
@@ -805,8 +1241,7 @@ def _append_result_unit_equivalents(
     if not rows:
         return
     story.append(_paragraph("Calculated result display-unit equivalents", styles["heading"]))
-    for offset in range(0, len(rows), 80):
-        story.append(_table(rows[offset : offset + 80], styles))
+    _append_bounded_tables(story, rows, styles)
 
 
 def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> bytes:
@@ -815,6 +1250,7 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
     if snapshot.family != "single-bolt":
         raise ReportingCoverageError(f"REPORT1 method adapter is missing for {snapshot.family}")
     _font_setup()
+    system = resolved_display_units(snapshot.request, snapshot.result, options.display_units)
     result = snapshot.result.get(
         "client_design", snapshot.result.get("native_design", snapshot.result)
     )
@@ -919,6 +1355,16 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                 styles["caption"],
             )
         )
+    direct_layers = result.get("resolved_layers")
+    if isinstance(direct_layers, list) and isinstance(visual.get("bolt"), dict):
+        story.append(
+            _paragraph("Physical boundary and bolt-axis dimension details", styles["heading"])
+        )
+        for layer in direct_layers:
+            if not isinstance(layer, dict):
+                raise ReportingCoverageError("Direct physical layer is malformed")
+            story.append(_direct_layer_detail(layer, visual["bolt"], system))
+        story.append(_direct_bolt_axis(visual, direct_layers, system))
     story.append(_paragraph("Submitted and resolved input schedule", styles["heading"]))
     story.append(_table(_input_source_rows(snapshot), styles))
     story.append(
@@ -966,6 +1412,24 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
             raise ReportingCoverageError(
                 f"Executed check has no numerical trace: {plan.get('check_id')}"
             )
+        worked_rows = (
+            single_native_substitutions(
+                check,
+                layers_by_id.get(plan.get("layer_id")),
+                result.get("fastener") if isinstance(result.get("fastener"), dict) else None,
+                system,
+            )
+            if evaluated
+            else []
+        )
+        factor_rows = _single_factor_substitutions(check, system) if evaluated else []
+        if evaluated and (
+            not worked_rows
+            or any("unavailable" in value.lower() for _, value in worked_rows + factor_rows)
+        ):
+            raise ReportingCoverageError(
+                f"Executed single-bolt check lacks a faithful substitution: {plan.get('check_id')}"
+            )
         story.append(_paragraph(f"{plan.get('check_id')} - {template.title}", styles["heading"]))
         story.append(_paragraph(template.explanation, styles["body"]))
         story.append(
@@ -977,21 +1441,11 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                         f"{plan.get('source_section', '')} / {plan.get('source_equation', '')}",
                     ),
                     ("Native expression", template.expression if evaluated else "Not executed"),
-                    *(
-                        single_native_substitutions(
-                            check,
-                            layers_by_id.get(plan.get("layer_id")),
-                            result.get("fastener")
-                            if isinstance(result.get("fastener"), dict)
-                            else None,
-                        )
-                        if evaluated
-                        else []
-                    ),
-                    *_single_factor_substitutions(check),
-                    ("Demand", _quantity(check.get("demand"))),
-                    ("Nominal resistance", _quantity(check.get("nominal_resistance"))),
-                    ("Design resistance", _quantity(check.get("design_resistance"))),
+                    *worked_rows,
+                    *factor_rows,
+                    ("Demand", _quantity(check.get("demand"), system)),
+                    ("Nominal resistance", _quantity(check.get("nominal_resistance"), system)),
+                    ("Design resistance", _quantity(check.get("design_resistance"), system)),
                     ("Native utilization", _text(check.get("utilization"))),
                     ("Outcome", _text(check.get("numerical_comparison"))),
                     (
@@ -1083,6 +1537,7 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     if snapshot.family != "multi-row":
         raise ReportingCoverageError(f"REPORT1 method adapter is missing for {snapshot.family}")
     _font_setup()
+    system = resolved_display_units(snapshot.request, snapshot.result, options.display_units)
     result = snapshot.result.get(
         "client_design", snapshot.result.get("native_design", snapshot.result)
     )
@@ -1151,7 +1606,7 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     ]
     visual = preview["visualization"]
     for view in ("isometric", "plan", "elevation"):
-        story.append(_multirow_drawing(visual, view))
+        story.append(_multirow_drawing(visual, view, system))
         story.append(
             _paragraph(
                 f"Canonical multi-row {view} projection. Dimensions and coordinates are listed "
@@ -1185,8 +1640,8 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                     (
                         str(check.get("result_id")),
                         f"{check.get('limit_state')} | {check.get('availability')} | "
-                        f"demand {_quantity(check.get('demand'))} | "
-                        f"R_d {_quantity(check.get('design_resistance'))} | "
+                        f"demand {_quantity(check.get('demand'), system)} | "
+                        f"R_d {_quantity(check.get('design_resistance'), system)} | "
                         f"UR {_text(check.get('utilization'))} | "
                         f"{check.get('numerical_comparison')}",
                     )
@@ -1210,6 +1665,14 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                 raise ReportingCoverageError(
                     f"Executed multi-row check has no native trace: {check.get('result_id')}"
                 )
+            try:
+                executed_substitution = (
+                    multirow_native_substitution(check, visual, system)
+                    if evaluated
+                    else "Not executed"
+                )
+            except ValueError as exc:
+                raise ReportingCoverageError(str(exc)) from exc
             story.append(
                 _paragraph(
                     f"{check.get('result_id')} - {template.title}",
@@ -1223,9 +1686,10 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                         ("Native method", method),
                         ("Source locator", _text(check.get("source_locator"))),
                         ("Expression", template.expression if evaluated else "Not executed"),
+                        ("Executed numerical substitution", executed_substitution),
                         (
                             "Executed factor substitution",
-                            _factor_substitution(check.get("factor_trace"))
+                            _factor_substitution(check.get("factor_trace"), system)
                             if evaluated
                             else "Not executed",
                         ),
@@ -1244,13 +1708,16 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                                 )
                             ),
                         ),
-                        ("Demand", _quantity(check.get("demand"))),
-                        ("Nominal resistance", _quantity(check.get("equation_nominal_resistance"))),
+                        ("Demand", _quantity(check.get("demand"), system)),
+                        (
+                            "Nominal resistance",
+                            _quantity(check.get("equation_nominal_resistance"), system),
+                        ),
                         (
                             "Adjusted resistance",
-                            _quantity(check.get("connection_adjusted_nominal_resistance")),
+                            _quantity(check.get("connection_adjusted_nominal_resistance"), system),
                         ),
-                        ("Design resistance", _quantity(check.get("design_resistance"))),
+                        ("Design resistance", _quantity(check.get("design_resistance"), system)),
                         ("Native utilization", _text(check.get("utilization"))),
                         ("Outcome", _text(check.get("numerical_comparison"))),
                         ("Qualification", _text(check.get("qualification"))),

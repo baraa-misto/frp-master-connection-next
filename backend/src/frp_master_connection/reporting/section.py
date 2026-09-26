@@ -7,8 +7,12 @@ from typing import Any
 from reportlab.graphics.shapes import Drawing, Line, Rect, String
 from reportlab.lib import colors
 
+from frp_master_connection.reporting.units import DisplayUnits, display_quantity
 
-def native_bolt_sections(value: object) -> list[tuple[str, Drawing]]:
+
+def native_bolt_sections(
+    value: object, system: DisplayUnits = "INHERIT"
+) -> list[tuple[str, Drawing]]:
     """One identified view for each distinct native penetration stack and hole set."""
 
     found: list[tuple[str, Drawing]] = []
@@ -63,7 +67,7 @@ def native_bolt_sections(value: object) -> list[tuple[str, Drawing]]:
                             continue
                         seen.add(signature)
                         identity = f"{display.get('bolt_group_id')} / {bolt.get('bolt_id')}"
-                        found.append((identity, _drawing(ids, thicknesses, display)))
+                        found.append((identity, _drawing(ids, thicknesses, display, system)))
             for name, child in item.items():
                 if name != "visualization":
                     visit(child)
@@ -76,7 +80,10 @@ def native_bolt_sections(value: object) -> list[tuple[str, Drawing]]:
 
 
 def _drawing(
-    layer_ids: list[str], thicknesses: tuple[tuple[str, str], ...], display: dict[str, Any]
+    layer_ids: list[str],
+    thicknesses: tuple[tuple[str, str], ...],
+    display: dict[str, Any],
+    system: DisplayUnits,
 ) -> Drawing:
     width, height = 480, 175
     diagram = Drawing(width, height)
@@ -113,7 +120,7 @@ def _drawing(
             String(
                 x + 2,
                 114,
-                f"t = {thickness[0]} {thickness[1]}",
+                f"t = {display_quantity({'value': thickness[0], 'unit': thickness[1]}, system)}",
                 fontName="ReportVera",
                 fontSize=9,
             )
@@ -132,7 +139,10 @@ def _drawing(
         String(
             12,
             48,
-            f"Bolt d = {display.get('bolt_diameter')} {thicknesses[0][1]}",
+            "Bolt d = "
+            + display_quantity(
+                {"value": display.get("bolt_diameter"), "unit": thicknesses[0][1]}, system
+            ),
             fontName="ReportVera",
             fontSize=9,
         )
@@ -140,7 +150,8 @@ def _drawing(
     holes = display.get("holes", [])
     if isinstance(holes, list) and holes:
         labels = ", ".join(
-            f"L{index + 1}={hole.get('diameter')}"
+            f"L{index + 1}="
+            + display_quantity({"value": hole.get("diameter"), "unit": thicknesses[0][1]}, system)
             for index, hole in enumerate(holes)
             if isinstance(hole, dict)
         )
@@ -148,7 +159,7 @@ def _drawing(
             String(
                 12,
                 33,
-                f"Physical hole diameters ({thicknesses[0][1]}): {labels}",
+                f"Physical hole diameters: {labels}",
                 fontName="ReportVera",
                 fontSize=9,
             )

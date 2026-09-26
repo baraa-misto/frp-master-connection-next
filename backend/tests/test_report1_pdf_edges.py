@@ -20,11 +20,16 @@ from frp_master_connection.reporting.pdf import (
     MAX_TABLE_ROWS,
     ReportingCoverageError,
     ReportOptions,
+    _append_bounded_tables,
     _append_result_unit_equivalents,
+    _dimension_label,
+    _direct_bolt_axis,
+    _direct_layer_detail,
     _drawing,
     _factor_substitution,
     _font_setup,
     _multirow_drawing,
+    _NumberedCanvas,
     _paragraph,
     _ReportDocument,
     _single_factor_substitutions,
@@ -240,7 +245,8 @@ def test_direct_bolt_factor_substitution_uses_native_values() -> None:
 
 def test_absent_factor_trace_has_no_substitution() -> None:
     assert _single_factor_substitutions({"equation_trace": {}}) == []
-    assert _factor_substitution(None) == "No native factor-stage trace supplied"
+    with pytest.raises(ReportingCoverageError, match="lacks a native factor trace"):
+        _factor_substitution(None)
 
 
 @pytest.mark.parametrize("bolt", [None, {}])
@@ -298,3 +304,80 @@ def test_empty_renderer_output_is_rejected(
     monkeypatch.setattr(_ReportDocument, "build", lambda *args, **kwargs: None)
     with pytest.raises(RuntimeError, match="did not produce a PDF"):
         render_single_bolt_pdf(_snapshot("single-bolt", native_reports[0]), ReportOptions())
+
+
+def test_dimension_and_direct_native_detail_fail_closed() -> None:
+    assert _dimension_label({"value": "bad", "unit": "mm"}, "SI") == "bad mm"
+    assert _dimension_label({"value": "bad", "unit": ""}, "SI") == "bad"
+    assert _dimension_label({}, "SI") == "Not supplied"
+    with pytest.raises(ReportingCoverageError, match="boundary mapping"):
+        _direct_layer_detail({}, {}, "SI")
+    with pytest.raises(ReportingCoverageError, match="lacks a dimension"):
+        _direct_layer_detail({"code_mapping": {}}, {}, "SI")
+    with pytest.raises(ReportingCoverageError, match="bolt-axis stack"):
+        _direct_bolt_axis({}, [], "SI")
+
+
+def test_direct_washer_rendering_and_numbered_anchor_guards(
+    native_reports: tuple[dict[str, Any], dict[str, Any]],
+) -> None:
+    visual = deepcopy(native_reports[0]["visualization"])
+    visual["bolt"]["washers"] = "not a schedule"
+    assert _direct_bolt_axis(visual, [], "SI").width == 455
+    visual["bolt"]["washers"] = [None]
+    assert _direct_bolt_axis(visual, [], "SI").width == 455
+    with pytest.raises(ValueError, match="whole-page destinations"):
+        _NumberedCanvas(io.BytesIO()).bookmarkPage("invalid", fit="XYZ")
+
+
+def test_bounded_tables_keep_final_chunk_together() -> None:
+    story: list[Any] = []
+    _append_bounded_tables(story, [("path", "value")] * 81, _styles())
+    assert len(story) == 2
+
+
+def test_incomplete_factor_traces_and_absent_equation_trace() -> None:
+    with pytest.raises(ReportingCoverageError, match="complete native factor trace"):
+        _factor_substitution({"equation_nominal_resistance": {"value": "1", "unit": "N"}})
+    with pytest.raises(ReportingCoverageError, match="complete native factor trace"):
+        _factor_substitution({"nominal_resistance": {"value": "1", "unit": "N"}})
+    assert _single_factor_substitutions({"equation_trace": None}) == []
+
+
+def test_executed_direct_substitution_adapter_fails_closed(
+    native_reports: tuple[dict[str, Any], dict[str, Any]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import frp_master_connection.reporting.pdf as pdf_module
+
+    monkeypatch.setattr(pdf_module, "single_native_substitutions", lambda *args: [])
+    with pytest.raises(ReportingCoverageError, match="faithful substitution"):
+        render_single_bolt_pdf(
+            _snapshot("single-bolt", deepcopy(native_reports[0])), ReportOptions()
+        )
+
+
+def test_multirow_native_adapter_error_is_explicit(
+    native_reports: tuple[dict[str, Any], dict[str, Any]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import frp_master_connection.reporting.pdf as pdf_module
+
+    def reject(*args: object) -> str:
+        raise ValueError("Native operand missing")
+
+    monkeypatch.setattr(pdf_module, "multirow_native_substitution", reject)
+    with pytest.raises(ReportingCoverageError, match="Native operand missing"):
+        render_multirow_pdf(_snapshot("multi-row", deepcopy(native_reports[1])), ReportOptions())
+
+
+def test_direct_optional_detail_branch_and_malformed_layer(
+    native_reports: tuple[dict[str, Any], dict[str, Any]],
+) -> None:
+    no_detail = deepcopy(native_reports[0])
+    no_detail["visualization"].pop("bolt", None)
+    assert render_single_bolt_pdf(_snapshot("single-bolt", no_detail), ReportOptions()).startswith(
+        b"%PDF"
+    )
+    malformed = deepcopy(native_reports[0])
+    malformed["resolved_layers"] = [None]
+    with pytest.raises(ReportingCoverageError, match="physical layer is malformed"):
+        render_single_bolt_pdf(_snapshot("single-bolt", malformed), ReportOptions())

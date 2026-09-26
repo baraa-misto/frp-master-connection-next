@@ -16,6 +16,7 @@ from frp_master_connection.reporting.generic import (
     _bearing_substitution,
     _check_matrix,
     _check_summary,
+    _context_substitution_rows,
     _eccentric_demand_example,
     _face_figure,
     _method_example_data,
@@ -132,7 +133,7 @@ def test_native_bearing_substitution_joins_identified_layer_bolt_and_property() 
     assert "t(9.525 mm)" in text
     assert "d(12.70 mm)" in text
     assert "F_br,adjusted(100 MPa)" in text
-    assert "native R_n 10 kN" in text
+    assert "= 10 kN" in text
 
 
 @pytest.mark.parametrize(
@@ -441,5 +442,100 @@ def test_executed_bearing_with_no_joinable_geometry_fails_report_export() -> Non
         1_000,
         "0" * 64,
     )
-    with pytest.raises(ReportingCoverageError, match="identified native substitution"):
+    with pytest.raises(ReportingCoverageError, match="identified canonical interface"):
+        render_generic_pdf(snapshot, ReportOptions())
+
+
+def test_contextual_method_operands_fail_closed_when_native_owners_are_incomplete() -> None:
+    with pytest.raises(ReportingCoverageError, match="source geometry"):
+        _context_substitution_rows(
+            "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1", {}, "", {}, {}, "SI"
+        )
+
+    instep_record: dict[str, Any] = {
+        "length": {"value": "2", "unit": "in"},
+        "factors": {
+            "property_traces": [{"adjusted_property": {"value": "10", "unit": "ksi"}}],
+            "nominal_resistance": {"value": "10", "unit": "kip"},
+        },
+    }
+    instep_result: dict[str, Any] = {
+        "connector_results": [{"core_fingerprint": "actual-core"}],
+        "preview": {
+            "connectors": [
+                {
+                    "core": {
+                        "fingerprint": "actual-core",
+                        "request": {"geometry": {"thickness": {"value": "0.5", "unit": "in"}}},
+                    }
+                }
+            ]
+        },
+    }
+    method = "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1"
+    with pytest.raises(ReportingCoverageError, match="connector identity"):
+        _context_substitution_rows(method, instep_record, "unbound", instep_result, {}, "SI")
+    no_physical = deepcopy(instep_result)
+    no_physical["preview"]["connectors"] = None
+    with pytest.raises(ReportingCoverageError, match="physical connector"):
+        _context_substitution_rows(
+            method, instep_record, "connector_results[0]", no_physical, {}, "SI"
+        )
+    no_match = deepcopy(instep_result)
+    no_match["preview"]["connectors"][0]["core"]["fingerprint"] = "other-core"
+    with pytest.raises(ReportingCoverageError, match="unique native thickness"):
+        _context_substitution_rows(
+            method, instep_record, "connector_results[0]", no_match, {}, "SI"
+        )
+    no_property = deepcopy(instep_record)
+    no_property["factors"]["property_traces"] = []
+    with pytest.raises(ReportingCoverageError, match="adjusted property"):
+        _context_substitution_rows(
+            method, no_property, "connector_results[0]", instep_result, {}, "SI"
+        )
+
+    bearing = {
+        "connector_id": "TOP_FLANGE_ANGLE",
+        "layer_id": "TOP_FLANGE_ANGLE_SUPPORT_LEG",
+        "native_trace": {"bearing_property": {}, "factor_trace": {}},
+    }
+    request: dict[str, Any] = {"top": {"geometry": {}, "support_fastener": {}}}
+    with pytest.raises(ReportingCoverageError, match="connector identity"):
+        _context_substitution_rows("NATIVE_ASCE_8_5", {}, "", {}, request, "SI")
+    wrong_layer = dict(bearing, layer_id="OTHER")
+    with pytest.raises(ReportingCoverageError, match="identified native layer"):
+        _context_substitution_rows("NATIVE_ASCE_8_5", wrong_layer, "", {}, request, "SI")
+    no_geometry: dict[str, Any] = {"top": {"support_fastener": {}}}
+    with pytest.raises(ReportingCoverageError, match="native operands"):
+        _context_substitution_rows("NATIVE_ASCE_8_5", bearing, "", {}, no_geometry, "SI")
+    no_trace = dict(bearing, native_trace={})
+    with pytest.raises(ReportingCoverageError, match="native trace"):
+        _context_substitution_rows("NATIVE_ASCE_8_5", no_trace, "", {}, request, "SI")
+
+
+def test_generic_pdf_surfaces_a_native_multirow_adapter_failure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import frp_master_connection.reporting.generic as generic_module
+
+    request = native_payload("tee-connector")
+
+    async def calculate() -> dict[str, Any]:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=create_app()), base_url="http://test"
+        ) as client:
+            response = await client.post(
+                "/api/v1/calculations/tee-connector/design-check", json=request
+            )
+            assert response.status_code == 200
+            return cast(dict[str, Any], response.json())
+
+    native = asyncio.run(calculate())
+
+    def absent_adapter(*_args: object) -> str:
+        raise ValueError("Executed multi-row trace lacks native operand")
+
+    monkeypatch.setattr(generic_module, "multirow_native_substitution", absent_adapter)
+    snapshot = ReportSnapshot("tee-connector", "design", request, native, 1_000, "0" * 64)
+    with pytest.raises(ReportingCoverageError, match="lacks native operand"):
         render_generic_pdf(snapshot, ReportOptions())

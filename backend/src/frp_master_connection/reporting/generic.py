@@ -9,13 +9,15 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import math
+import re
 from collections import Counter
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from reportlab.graphics.shapes import Circle, Drawing, Line, String
 from reportlab.lib import colors
-from reportlab.platypus import Flowable
+from reportlab.platypus import Flowable, KeepTogether
 
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
 from frp_master_connection.reporting.flatten import flatten_unique
@@ -29,16 +31,20 @@ from frp_master_connection.reporting.geometry import (
     canonical_visual,
 )
 from frp_master_connection.reporting.method_records import EXECUTED_METHODS, executed_records
+from frp_master_connection.reporting.method_substitutions import native_method_substitution
+from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
 from frp_master_connection.reporting.pdf import (
     _MULTIROW_METHODS,
     PAPER_SIZES,
     ReportingCoverageError,
     ReportOptions,
     _add_linked_contents,
+    _append_bounded_tables,
     _factor_substitution,
     _flatten,
     _font_setup,
     _input_source_rows,
+    _multirow_drawing,
     _NumberedCanvas,
     _paragraph,
     _quantity,
@@ -50,6 +56,11 @@ from frp_master_connection.reporting.pdf import (
 )
 from frp_master_connection.reporting.section import native_bolt_sections
 from frp_master_connection.reporting.snapshot import ReportSnapshot
+from frp_master_connection.reporting.units import (
+    DisplayUnits,
+    display_quantity,
+    resolved_display_units,
+)
 
 _FAMILY_MODEL = {
     "tee-connector": (
@@ -156,7 +167,167 @@ def _native_box_unit(visual: dict[str, Any] | None) -> str | None:
     return next(iter(units)) if units else None
 
 
-def _box_figure(boxes: list[BoxFigure], bolts: list[BoltPoint], view: str, unit: str) -> Drawing:
+def _component_dimension_figure(box: BoxFigure, unit: str, system: DisplayUnits) -> Drawing:
+    """Witness three source-box edges; lengths come from native 3-D vertices."""
+
+    points = [_project(vertex, "isometric") for vertex in box.vertices]
+    x0, x1 = min(point[0] for point in points), max(point[0] for point in points)
+    y0, y1 = min(point[1] for point in points), max(point[1] for point in points)
+    scale = min(180 / max(x1 - x0, 0.001), 92 / max(y1 - y0, 0.001))
+
+    def paper(point: tuple[float, float]) -> tuple[float, float]:
+        return 45 + (point[0] - x0) * scale, 28 + (point[1] - y0) * scale
+
+    drawing = Drawing(480, 142)
+    drawing.add(
+        String(
+            8,
+            129,
+            f"{box.identity}: native component edges; not to scale",
+            fontName="ReportVeraBold",
+            fontSize=9,
+        )
+    )
+    edges = (
+        (0, 1),
+        (0, 2),
+        (0, 4),
+        (3, 1),
+        (3, 2),
+        (3, 7),
+        (5, 1),
+        (5, 4),
+        (5, 7),
+        (6, 2),
+        (6, 4),
+        (6, 7),
+    )
+    for first, second in edges:
+        drawing.add(
+            Line(
+                *paper(points[first]),
+                *paper(points[second]),
+                strokeColor=colors.HexColor("#526675"),
+                strokeWidth=0.55,
+            )
+        )
+    for index, target in enumerate((1, 2, 4)):
+        native_length = math.dist(box.vertices[0], box.vertices[target])
+        shown = display_quantity({"value": str(native_length), "unit": unit}, system)
+        origin, endpoint = paper(points[0]), paper(points[target])
+        dy, dx = endpoint[1] - origin[1], endpoint[0] - origin[0]
+        length = math.hypot(dx, dy) or 1
+        shift = (10 * dy / length, -10 * dx / length)
+        p0 = (origin[0] + shift[0], origin[1] + shift[1])
+        p1 = (endpoint[0] + shift[0], endpoint[1] + shift[1])
+        drawing.add(Line(*origin, *p0, strokeColor=colors.HexColor("#374d59")))
+        drawing.add(Line(*endpoint, *p1, strokeColor=colors.HexColor("#374d59")))
+        drawing.add(Line(*p0, *p1, strokeColor=colors.HexColor("#374d59")))
+        drawing.add(
+            String(
+                (p0[0] + p1[0]) / 2 + 3,
+                (p0[1] + p1[1]) / 2 + 3,
+                str(index + 1),
+                fontName="ReportVeraBold",
+                fontSize=8,
+            )
+        )
+        drawing.add(
+            String(
+                260,
+                101 - 23 * index,
+                f"edge {index + 1}: {shown}",
+                fontName="ReportVera",
+                fontSize=8.5,
+            )
+        )
+    return drawing
+
+
+def _face_dimension_figure(face: FaceFigure, unit: str, system: DisplayUnits) -> Drawing:
+    """Witness the actual edges of one native polygon face."""
+
+    spans = [
+        max(vertex[axis] for vertex in face.vertices)
+        - min(vertex[axis] for vertex in face.vertices)
+        for axis in range(3)
+    ]
+    major, minor = sorted(range(3), key=lambda axis: spans[axis], reverse=True)[:2]
+    projected = [(vertex[major], vertex[minor]) for vertex in face.vertices]
+    x0, x1 = min(p[0] for p in projected), max(p[0] for p in projected)
+    y0, y1 = min(p[1] for p in projected), max(p[1] for p in projected)
+    scale = min(180 / max(x1 - x0, 0.001), 90 / max(y1 - y0, 0.001))
+
+    def paper(point: tuple[float, float]) -> tuple[float, float]:
+        return 35 + (point[0] - x0) * scale, 26 + (point[1] - y0) * scale
+
+    drawing = Drawing(480, 145)
+    drawing.add(
+        String(
+            8,
+            132,
+            f"{face.identity}: native polygon edges; not to scale",
+            fontName="ReportVeraBold",
+            fontSize=9,
+        )
+    )
+    for index in range(len(projected)):
+        next_index = (index + 1) % len(projected)
+        first, second = paper(projected[index]), paper(projected[next_index])
+        drawing.add(Line(*first, *second, strokeColor=colors.HexColor("#526675")))
+        middle = ((first[0] + second[0]) / 2, (first[1] + second[1]) / 2)
+        drawing.add(
+            String(
+                middle[0] + 3, middle[1] + 3, str(index + 1), fontName="ReportVeraBold", fontSize=8
+            )
+        )
+        length = math.dist(face.vertices[index], face.vertices[next_index])
+        shown = display_quantity({"value": str(length), "unit": unit}, system)
+        drawing.add(
+            String(
+                260,
+                105 - 22 * index,
+                f"edge {index + 1}: {shown}",
+                fontName="ReportVera",
+                fontSize=8.5,
+            )
+        )
+    return drawing
+
+
+def _native_multirow_visuals(value: object) -> list[tuple[str, dict[str, Any]]]:
+    """Collect distinct physical interface patterns already present in the response."""
+
+    found: list[tuple[str, dict[str, Any]]] = []
+    seen: set[str] = set()
+
+    def visit(item: object, path: str) -> None:
+        if isinstance(item, dict):
+            if all(key in item for key in ("boundary", "bolts", "layers", "row_ids")):
+                digest = hashlib.sha256(
+                    json.dumps(item, sort_keys=True, ensure_ascii=False).encode()
+                ).hexdigest()
+                if digest not in seen:
+                    seen.add(digest)
+                    found.append((path, item))
+                return
+            for key, child in item.items():
+                visit(child, f"{path}.{key}")
+        elif isinstance(item, list):
+            for index, child in enumerate(item):
+                visit(child, f"{path}[{index}]")
+
+    visit(value, "result")
+    return found
+
+
+def _box_figure(
+    boxes: list[BoxFigure],
+    bolts: list[BoltPoint],
+    view: str,
+    unit: str,
+    system: DisplayUnits = "INHERIT",
+) -> Drawing:
     projected = [[_project(vertex, view) for vertex in box.vertices] for box in boxes]
     bolt_projected = [_project(bolt.center, view) for bolt in bolts]
     all_points = [point for vertices in projected for point in vertices] + bolt_projected
@@ -266,7 +437,7 @@ def _box_figure(boxes: list[BoxFigure], bolts: list[BoltPoint], view: str, unit:
             String(
                 (left + right) / 2,
                 7,
-                f"{x1 - x0:.5g} {unit}",
+                display_quantity({"value": str(x1 - x0), "unit": unit}, system),
                 textAnchor="middle",
                 fontName="ReportVera",
                 fontSize=9,
@@ -276,7 +447,7 @@ def _box_figure(boxes: list[BoxFigure], bolts: list[BoltPoint], view: str, unit:
             String(
                 2,
                 min(top + 8, height - 22),
-                f"{y1 - y0:.5g} {unit}",
+                display_quantity({"value": str(y1 - y0), "unit": unit}, system),
                 fontName="ReportVera",
                 fontSize=9,
             )
@@ -293,7 +464,13 @@ def _box_figure(boxes: list[BoxFigure], bolts: list[BoltPoint], view: str, unit:
     return drawing
 
 
-def _face_figure(faces: list[FaceFigure], bolts: list[BoltPoint], view: str, unit: str) -> Drawing:
+def _face_figure(
+    faces: list[FaceFigure],
+    bolts: list[BoltPoint],
+    view: str,
+    unit: str,
+    system: DisplayUnits = "INHERIT",
+) -> Drawing:
     projected = [[_project(vertex, view) for vertex in face.vertices] for face in faces]
     bolt_projected = [_project(bolt.center, view) for bolt in bolts]
     all_points = [point for vertices in projected for point in vertices] + bolt_projected
@@ -366,7 +543,7 @@ def _face_figure(faces: list[FaceFigure], bolts: list[BoltPoint], view: str, uni
             String(
                 (left + right) / 2,
                 7,
-                f"{x1 - x0:.5g} {unit}",
+                display_quantity({"value": str(x1 - x0), "unit": unit}, system),
                 textAnchor="middle",
                 fontName="ReportVera",
                 fontSize=9,
@@ -465,8 +642,51 @@ def _native_equation_examples(value: object) -> dict[str, tuple[str, dict[str, A
     return examples
 
 
+def _visual_for_check(value: object, check: dict[str, Any]) -> dict[str, Any] | None:
+    """Follow native containment to the preview geometry of an executed check."""
+
+    def walk(item: object, nearest: dict[str, Any] | None) -> dict[str, Any] | None:
+        if item is check:
+            return nearest
+        if isinstance(item, dict):
+            direct = item.get("visualization")
+            preview = item.get("preview")
+            if isinstance(direct, dict) and "boundary" in direct:
+                nearest = direct
+            elif isinstance(preview, dict):
+                nested = preview.get("visualization")
+                if isinstance(nested, dict) and "boundary" in nested:
+                    nearest = nested
+            for key, child in item.items():
+                if key not in {"visualization", "geometry"}:
+                    found = walk(child, nearest)
+                    if found is not None:
+                        return found
+        elif isinstance(item, list):
+            for child in item:
+                found = walk(child, nearest)
+                if found is not None:
+                    return found
+        return None
+
+    nearest = walk(value, None)
+    if nearest is not None:
+        return nearest
+    layer_id, bolt_id = check.get("layer_id"), check.get("bolt_id")
+    candidates = [
+        visual
+        for _, visual in _native_multirow_visuals(value)
+        if any(layer.get("layer_id") == layer_id for layer in visual["layers"])
+        and (bolt_id is None or any(bolt.get("bolt_id") == bolt_id for bolt in visual["bolts"]))
+    ]
+    return candidates[0] if len(candidates) == 1 else None
+
+
 def _bearing_substitution(
-    request: dict[str, Any], result: dict[str, Any], check: dict[str, Any]
+    request: dict[str, Any],
+    result: dict[str, Any],
+    check: dict[str, Any],
+    system: DisplayUnits = "INHERIT",
 ) -> str | None:
     """Join a native bearing trace to its identified layer and physical bolt."""
 
@@ -595,9 +815,10 @@ def _bearing_substitution(
     if not isinstance(nominal, dict):
         return None
     return (
-        f"R_n = t({t_display} mm) x d({diameter_mm} mm) x "
-        f"F_br,adjusted({f_br} MPa) x C_thread({trace.get('thread_factor')}) "
-        f"= native R_n {_quantity(nominal)}"
+        f"R_n = t({display_quantity({'value': t_display, 'unit': 'mm'}, system)}) x "
+        f"d({display_quantity({'value': str(diameter_mm), 'unit': 'mm'}, system)}) x "
+        f"F_br,adjusted({display_quantity({'value': str(f_br), 'unit': 'MPa'}, system)}) "
+        f"x C_thread({trace.get('thread_factor')}) = {_quantity(nominal, system)}"
     )
 
 
@@ -682,7 +903,7 @@ def _check_summary(value: object) -> list[tuple[str, str]]:
     ]
 
 
-def _check_matrix(value: object) -> list[tuple[str, str]]:
+def _check_matrix(value: object, system: DisplayUnits = "INHERIT") -> list[tuple[str, str]]:
     """Index every distinct native check without changing its scope or outcome."""
 
     rows: list[tuple[str, str]] = []
@@ -690,7 +911,9 @@ def _check_matrix(value: object) -> list[tuple[str, str]]:
 
     def concise_quantity(item: object) -> str:
         if not isinstance(item, dict):
-            return _quantity(item)
+            return _quantity(item, system)
+        if system != "INHERIT":
+            return _quantity(item, system)
         try:
             magnitude = Decimal(str(item["value"]))
             if not magnitude.is_finite():
@@ -784,8 +1007,7 @@ def _schedules(
                 (f"{path} [part {index + 1}/{len(chunks)}]", chunk)
                 for index, chunk in enumerate(chunks)
             )
-    for offset in range(0, len(expanded), 80):
-        story.append(_table(expanded[offset : offset + 80], styles))
+    _append_bounded_tables(story, expanded, styles)
 
 
 def _method_example_data(method: str, record: dict[str, Any]) -> dict[str, Any]:
@@ -874,7 +1096,9 @@ def _method_example_data(method: str, record: dict[str, Any]) -> dict[str, Any]:
     return record
 
 
-def _method_substitution_rows(method: str, record: dict[str, Any]) -> list[tuple[str, str]]:
+def _method_substitution_rows(
+    method: str, record: dict[str, Any], system: DisplayUnits = "INHERIT"
+) -> list[tuple[str, str]]:
     """Join named native factors to the reviewed expression without recomputation."""
 
     if method == "ASCE74_EQ_7_12_LONGITUDINAL_PLATE_TENSION":
@@ -884,43 +1108,54 @@ def _method_substitution_rows(method: str, record: dict[str, Any]) -> list[tuple
         )
         time = record.get("time_effect_factor")
         return [
-            ("Native A_net,eff", _quantity(record.get("effective_net_area_per_unit_width"))),
-            ("Native adjusted F_t,L", _quantity(adjusted)),
-            ("Native R_n", _quantity(record.get("nominal_strength"))),
+            (
+                "Native A_net,eff",
+                _quantity(record.get("effective_net_area_per_unit_width"), system),
+            ),
+            ("Native adjusted F_t,L", _quantity(adjusted, system)),
+            ("Native R_n", _quantity(record.get("nominal_strength"), system)),
             ("Native phi", _text(record.get("resistance_factor"))),
             ("Native lambda", _text(time.get("value") if isinstance(time, dict) else time)),
-            ("Native R_d", _quantity(record.get("design_strength"))),
+            ("Native R_d", _quantity(record.get("design_strength"), system)),
         ]
     if method == "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1":
         factors = record.get("factors")
         traces = factors.get("property_traces") if isinstance(factors, dict) else None
         trace = traces[0] if isinstance(traces, list) and traces else None
         return [
-            ("Native L_eff", _quantity(record.get("length"))),
+            ("Native L_eff", _quantity(record.get("length"), system)),
             (
                 "Native adjusted F_sh,LT",
-                _quantity(trace.get("adjusted_property") if isinstance(trace, dict) else None),
+                _quantity(
+                    trace.get("adjusted_property") if isinstance(trace, dict) else None, system
+                ),
             ),
             (
                 "Native R_n",
-                _quantity(factors.get("nominal_resistance") if isinstance(factors, dict) else None),
+                _quantity(
+                    factors.get("nominal_resistance") if isinstance(factors, dict) else None, system
+                ),
             ),
             ("Native phi", _text(factors.get("phi") if isinstance(factors, dict) else None)),
             (
                 "Native R_d",
-                _quantity(factors.get("design_resistance") if isinstance(factors, dict) else None),
+                _quantity(
+                    factors.get("design_resistance") if isinstance(factors, dict) else None, system
+                ),
             ),
-            ("Native demand", _quantity(record.get("demand"))),
+            ("Native demand", _quantity(record.get("demand"), system)),
             ("Native U", _text(record.get("utilization"))),
         ]
     if method == "NATIVE_ASCE_8_5":
         trace = record.get("native_trace")
         factors = trace.get("factor_trace") if isinstance(trace, dict) else None
         return [
-            ("Native demand", _quantity(record.get("demand"))),
+            ("Native demand", _quantity(record.get("demand"), system)),
             (
                 "Native nominal",
-                _quantity(factors.get("nominal_resistance") if isinstance(factors, dict) else None),
+                _quantity(
+                    factors.get("nominal_resistance") if isinstance(factors, dict) else None, system
+                ),
             ),
             ("Native phi", _text(factors.get("phi") if isinstance(factors, dict) else None)),
             ("Native C_lap", _text(factors.get("c_lap") if isinstance(factors, dict) else None)),
@@ -932,8 +1167,135 @@ def _method_substitution_rows(method: str, record: dict[str, Any]) -> list[tuple
                 "Native lambda",
                 _text(factors.get("lambda_factor") if isinstance(factors, dict) else None),
             ),
-            ("Native R_d", _quantity(record.get("resistance"))),
+            ("Native R_d", _quantity(record.get("resistance"), system)),
             ("Native outcome", _text(record.get("status"))),
+        ]
+    return []
+
+
+def _native_parent(value: object, target: dict[str, Any]) -> dict[str, Any] | None:
+    """Find the native owner of an identified report method record."""
+
+    def visit(item: object, parent: dict[str, Any] | None) -> dict[str, Any] | None:
+        if item is target:
+            return parent
+        if isinstance(item, dict):
+            for child in item.values():
+                found = visit(child, item)
+                if found is not None:
+                    return found
+        elif isinstance(item, list):
+            for child in item:
+                found = visit(child, parent)
+                if found is not None:
+                    return found
+        return None
+
+    return visit(value, None)
+
+
+def _context_substitution_rows(
+    method: str,
+    record: dict[str, Any],
+    path: str,
+    result: dict[str, Any],
+    request: dict[str, Any],
+    system: DisplayUnits,
+) -> list[tuple[str, str]]:
+    """Join operands held by the method's identified native owner or request."""
+
+    if method == "RATIONAL_THIN_WALL_CHANNEL_SHEAR_CENTER_RC1":
+        owner = _native_parent(result, record)
+        calculation = owner.get("calculation_input") if isinstance(owner, dict) else None
+        geometry = calculation.get("geometry") if isinstance(calculation, dict) else None
+        if not isinstance(geometry, dict) or any(
+            not isinstance(geometry.get(key), dict) for key in ("d", "b_f", "t_w", "t_f")
+        ):
+            raise ReportingCoverageError("Executed shear-center method lacks source geometry")
+        return [
+            (
+                "Source geometry numerical substitution",
+                "; ".join(
+                    f"{key} = {display_quantity(geometry[key], system)}"
+                    for key in ("d", "b_f", "t_w", "t_f")
+                ),
+            )
+        ]
+    if method == "ASCE_74_23_EQ_8_15_CLIP_ANGLE_INSTEP_SHEAR_RC1":
+        match = re.search(r"connector_results\[(\d+)\]", path)
+        connectors = result.get("connector_results")
+        preview = result.get("preview")
+        if not match or not isinstance(connectors, list) or not isinstance(preview, dict):
+            raise ReportingCoverageError("Executed instep method lacks connector identity")
+        owner = connectors[int(match.group(1))]
+        physical = preview.get("connectors")
+        if not isinstance(owner, dict) or not isinstance(physical, list):
+            raise ReportingCoverageError("Executed instep method lacks physical connector")
+        matches = [
+            item["core"]["request"]["geometry"]["thickness"]
+            for item in physical
+            if isinstance(item, dict)
+            and isinstance(item.get("core"), dict)
+            and item["core"].get("fingerprint") == owner.get("core_fingerprint")
+        ]
+        if len(matches) != 1 or not isinstance(matches[0], dict):
+            raise ReportingCoverageError("Executed instep method lacks unique native thickness")
+        factors = record.get("factors")
+        property_traces = factors.get("property_traces") if isinstance(factors, dict) else None
+        if (
+            not isinstance(factors, dict)
+            or not isinstance(property_traces, list)
+            or not property_traces
+            or not isinstance(property_traces[0], dict)
+        ):
+            raise ReportingCoverageError("Executed instep method lacks adjusted property")
+        return [
+            (
+                "Complete executed nominal substitution",
+                f"R_n = L_eff({_quantity(record.get('length'), system)}) x "
+                f"t({display_quantity(matches[0], system)}) x "
+                f"F_sh,LT({_quantity(property_traces[0].get('adjusted_property'), system)}) "
+                f"= {_quantity(factors.get('nominal_resistance'), system)}",
+            )
+        ]
+    if method == "NATIVE_ASCE_8_5":
+        connector_id = record.get("connector_id")
+        if not isinstance(connector_id, str):
+            raise ReportingCoverageError("Executed support bearing lacks connector identity")
+        field = {
+            "TOP_FLANGE_ANGLE": "top",
+            "BOTTOM_FLANGE_ANGLE": "bottom",
+            "POSITIVE_WEB_ANGLE": "positive_web",
+            "NEGATIVE_WEB_ANGLE": "negative_web",
+        }.get(connector_id)
+        connector = request.get(field) if field is not None else None
+        if (
+            not isinstance(connector, dict)
+            or record.get("layer_id") != f"{connector_id}_SUPPORT_LEG"
+        ):
+            raise ReportingCoverageError("Executed support bearing lacks identified native layer")
+        geometry = connector.get("geometry")
+        fastener = connector.get("support_fastener")
+        trace = record.get("native_trace")
+        if (
+            not isinstance(geometry, dict)
+            or not isinstance(fastener, dict)
+            or not isinstance(trace, dict)
+        ):
+            raise ReportingCoverageError("Executed support bearing lacks native operands")
+        bearing = trace.get("bearing_property")
+        factors = trace.get("factor_trace")
+        if not isinstance(bearing, dict) or not isinstance(factors, dict):
+            raise ReportingCoverageError("Executed support bearing lacks native trace")
+        return [
+            (
+                "Complete executed nominal substitution",
+                f"R_n = t({display_quantity(geometry.get('thickness'), system)}) x "
+                f"d({display_quantity(fastener.get('bolt_diameter'), system)}) x "
+                f"F_br({_quantity(bearing.get('adjusted_property'), system)}) x "
+                f"C_thread({trace.get('thread_factor')}) = "
+                f"{_quantity(factors.get('nominal_resistance'), system)}",
+            )
         ]
     return []
 
@@ -942,6 +1304,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
     """Present the complete native record with a navigable summary and figures."""
 
     _font_setup()
+    system = resolved_display_units(snapshot.request, snapshot.result, options.display_units)
     styles = _styles()
     native = snapshot.result.get(
         "client_design", snapshot.result.get("native_design", snapshot.result)
@@ -1038,9 +1401,9 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             )
         )
     if boxes:
-        story.append(_box_figure(boxes, bolts, "isometric", unit))
+        story.append(_box_figure(boxes, bolts, "isometric", unit, system))
     elif faces:
-        story.append(_face_figure(faces, bolts, "isometric", unit))
+        story.append(_face_figure(faces, bolts, "isometric", unit, system))
     draft_only = snapshot.result.get("status") == "INPUT_NOT_EVALUATED"
     story.append(
         _paragraph(
@@ -1062,10 +1425,10 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
     )
     if boxes:
         for view in ("elevation", "plan"):
-            story.append(_box_figure(boxes, bolts, view, unit))
+            story.append(_box_figure(boxes, bolts, view, unit, system))
     elif faces:
         for view in ("elevation", "plan"):
-            story.append(_face_figure(faces, bolts, view, unit))
+            story.append(_face_figure(faces, bolts, view, unit, system))
     else:
         story.append(
             _paragraph(
@@ -1076,7 +1439,36 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 styles["body"],
             )
         )
-    sections = native_bolt_sections(result)
+    if boxes:
+        story.append(_paragraph("Physical component edge dimensions", styles["heading"]))
+        story.append(
+            _paragraph(
+                "Each three-edge witness is read from a canonical physical box. Repeated "
+                "components retain their own location in the overall views and native record.",
+                styles["body"],
+            )
+        )
+        for box in boxes:
+            story.append(_component_dimension_figure(box, unit, system))
+    elif faces:
+        story.append(_paragraph("Physical polygon face edge dimensions", styles["heading"]))
+        seen_faces: set[tuple[str, tuple[str, ...]]] = set()
+        for face in faces:
+            edge_lengths: list[str] = []
+            for index in range(len(face.vertices)):
+                next_vertex = face.vertices[(index + 1) % len(face.vertices)]
+                edge_lengths.append(f"{math.dist(face.vertices[index], next_vertex):.9g}")
+            signature = (face.identity, tuple(edge_lengths))
+            if signature not in seen_faces:
+                seen_faces.add(signature)
+                story.append(_face_dimension_figure(face, unit, system))
+    interface_visuals = _native_multirow_visuals(result)
+    if interface_visuals:
+        story.append(_paragraph("Physical bolt-row interface dimensions", styles["heading"]))
+        for path, interface_visual in interface_visuals:
+            story.append(_paragraph(f"Native interface {path}", styles["small"]))
+            story.append(_multirow_drawing(interface_visual, "plan", system))
+    sections = native_bolt_sections(result, system)
     if sections:
         story.append(_paragraph("Bolt-axis and physical stack details", styles["heading"]))
         for bolt_id, drawing in sections:
@@ -1131,7 +1523,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             styles["small"],
         )
     )
-    _schedules(story, "Native check and outcome matrix", _check_matrix(result), styles)
+    _schedules(story, "Native check and outcome matrix", _check_matrix(result, system), styles)
     eccentric = _eccentric_demand_example(result)
     if eccentric is not None:
         path, group, scenario = eccentric
@@ -1260,29 +1652,45 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 raise ReportingCoverageError(
                     f"Executed method has no native numerical trace: {method} at {path}"
                 )
+            check_visual = _visual_for_check(result, check)
+            if check_visual is None:
+                raise ReportingCoverageError(
+                    f"Executed method has no identified canonical interface: {method} at {path}"
+                )
+            try:
+                numerical_substitution = multirow_native_substitution(check, check_visual, system)
+            except ValueError as exc:
+                raise ReportingCoverageError(str(exc)) from exc
             story.append(_paragraph(f"{method} - {template.title}", styles["heading"]))
-            story.append(_paragraph(template.explanation, styles["body"]))
-            if method == "PIN_BEARING":
-                substitution = _bearing_substitution(snapshot.request, result, check)
-                if substitution is None:
-                    raise ReportingCoverageError(
-                        f"Executed bearing check lacks an identified native substitution: {path}"
-                    )
-                story.append(_paragraph(substitution, styles["body"]))
             story.append(
-                _table(
+                KeepTogether(
                     [
-                        ("Native record", path),
-                        ("Expression", template.expression),
-                        ("Source locator", _text(check.get("source_locator"))),
-                        ("Factor substitution", _factor_substitution(check.get("factor_trace"))),
-                        ("Demand", _quantity(check.get("demand"))),
-                        ("Nominal resistance", _quantity(check.get("equation_nominal_resistance"))),
-                        ("Design resistance", _quantity(check.get("design_resistance"))),
-                        ("Native utilization", _text(check.get("utilization"))),
-                        ("Outcome", _text(check.get("numerical_comparison"))),
-                    ],
-                    styles,
+                        _paragraph(template.explanation, styles["body"]),
+                        _table(
+                            [
+                                ("Native record", path),
+                                ("Expression", template.expression),
+                                ("Executed numerical substitution", numerical_substitution),
+                                ("Source locator", _text(check.get("source_locator"))),
+                                (
+                                    "Factor substitution",
+                                    _factor_substitution(check.get("factor_trace"), system),
+                                ),
+                                ("Demand", _quantity(check.get("demand"), system)),
+                                (
+                                    "Nominal resistance",
+                                    _quantity(check.get("equation_nominal_resistance"), system),
+                                ),
+                                (
+                                    "Design resistance",
+                                    _quantity(check.get("design_resistance"), system),
+                                ),
+                                ("Native utilization", _text(check.get("utilization"))),
+                                ("Outcome", _text(check.get("numerical_comparison"))),
+                            ],
+                            styles,
+                        ),
+                    ]
                 )
             )
             _schedules(
@@ -1315,7 +1723,14 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 [
                     ("Native record", path),
                     ("Expression", other_template.expression),
-                    *_method_substitution_rows(method, record),
+                    (
+                        "Executed numerical substitution",
+                        native_method_substitution(method, record, system),
+                    ),
+                    *_method_substitution_rows(method, record, system),
+                    *_context_substitution_rows(
+                        method, record, path, result, snapshot.request, system
+                    ),
                 ],
                 styles,
             )
