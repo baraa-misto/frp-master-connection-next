@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import io
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 import pytest
@@ -12,9 +12,11 @@ from pypdf import PdfReader
 from reportlab.graphics.shapes import Circle, Line
 
 from frp_master_connection.api.app import create_app
-from frp_master_connection.reporting.generic import _box_figure
+from frp_master_connection.reporting.generic import _box_figure, render_generic_pdf
 from frp_master_connection.reporting.geometry import canonical_bolt_points, canonical_boxes
+from frp_master_connection.reporting.pdf import ReportOptions, _reader_opening, _styles
 from frp_master_connection.reporting.reader_views import colored_view, component_legend
+from frp_master_connection.reporting.snapshot import ReportSnapshot
 from tests.api.test_connector_materials import native_payload
 
 
@@ -109,3 +111,85 @@ def test_beam_pdf_foregrounds_actual_failure_and_keeps_audit(
         == "0.5"
     )
     assert reader.pages[1].get("/Annots")
+
+
+def test_native_hardware_fallback_and_path_upgrade_keep_source_coordinates() -> None:
+    visual: dict[str, Any] = {
+        "web_bolt_diameter": 0.5,
+        "flange_bolt_diameter": 0.625,
+        "external_anchor_geometry": {},
+        "hardware": [
+            {"bolt_id": "F1", "group_id": "TOP_FLANGE", "center": {"x": 1, "y": 2, "z": 3}},
+            {"anchor_id": "A1", "center": {"x": 4, "y": 5, "z": 6}},
+            {"bolt_id": "B1", "center": {"x": 7, "y": 8, "z": 9}},
+            {
+                "bolt_id": "B1",
+                "center": {"x": 7, "y": 8, "z": 9},
+                "start": {"x": 7, "y": 7, "z": 9},
+                "end": {"x": 7, "y": 9, "z": 9},
+            },
+        ],
+    }
+    hardware = canonical_bolt_points(visual)
+    assert [(item.identity, item.diameter) for item in hardware] == [
+        ("F1", 0.625),
+        ("A1", 0.5),
+        ("B1", 0.5),
+    ]
+    assert hardware[2].start == (7, 7, 9)
+    assert hardware[2].end == (7, 9, 9)
+
+
+@pytest.mark.parametrize(
+    ("family", "kind", "status", "expected"),
+    [
+        (
+            "beam-concrete-paired-angle",
+            "design",
+            "SOURCE_REQUIRED",
+            "No anchor path geometry is available",
+        ),
+        (
+            "wi-wall-moment",
+            "input_only",
+            "INPUT_NOT_EVALUATED",
+            "SUBMITTED GEOMETRY — NOT VALIDATED",
+        ),
+    ],
+)
+def test_native_geometry_without_hardware_is_explicitly_limited(
+    family: str, kind: Literal["design", "input_only"], status: str, expected: str
+) -> None:
+    visual = {
+        "physical_boxes": [
+            {
+                "id": "Concrete foundation",
+                "center_l_v_t": {"l": 0, "v": 0, "t": 0},
+                "size_l_v_t": {"l": 4, "v": 4, "t": 4},
+            }
+        ]
+    }
+    boxes = canonical_boxes(visual)
+    assert len(boxes) == 1
+    assert _box_figure(boxes, [], "elevation", "in").contents
+    snapshot = ReportSnapshot(
+        family,
+        kind,
+        {},
+        {"status": status, "preview": {"visualization": visual}},
+        1_000,
+        "0" * 64,
+    )
+    pdf = render_generic_pdf(snapshot, ReportOptions())
+    content = " ".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages)
+    assert expected in content
+    assert "No local numerical check evaluated" in content
+
+
+def test_direct_reader_explains_no_scheduled_numerical_check() -> None:
+    snapshot = ReportSnapshot("single-bolt", "design", {}, {}, 1_000, "0" * 64)
+    story = _reader_opening(snapshot, ReportOptions(), {}, "SOURCE_REQUIRED", "INHERIT", _styles())
+    assert any(
+        "It does not mean the connection is qualified" in getattr(item, "text", "")
+        for item in story
+    )

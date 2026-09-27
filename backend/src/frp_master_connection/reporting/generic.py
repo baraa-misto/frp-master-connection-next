@@ -258,8 +258,14 @@ def _component_dimension_figure(box: BoxFigure, unit: str, system: DisplayUnits)
         drawing.add(Line(*p0, *p1, strokeColor=colors.HexColor("#374d59")))
         drawing.add(
             String(
-                min(245, max(18, (p0[0] + p1[0]) / 2 + 3)),
-                min(113, max(16, (p0[1] + p1[1]) / 2 + 3)),
+                min(
+                    245,
+                    max(18, (p0[0] + p1[0]) / 2 + (12 if index == 1 else -12 if index == 2 else 3)),
+                ),
+                min(
+                    113,
+                    max(16, (p0[1] + p1[1]) / 2 + (-8 if index == 1 else 8 if index == 2 else 3)),
+                ),
                 f"E{index + 1}",
                 fontName="ReportVeraBold",
                 fontSize=7,
@@ -366,7 +372,7 @@ def _box_figure(
     focused_boxes = [
         box
         for box in boxes
-        if not any(token in box.identity.lower() for token in ("concrete", "wall", "foundation"))
+        if not any(token in box.identity.lower() for token in ("concrete", "foundation"))
     ]
     if focused_boxes:
         boxes = focused_boxes
@@ -1889,7 +1895,8 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
         story.append(
             _paragraph(
                 f"The figures project {len(boxes)} native boxes, {len(faces)} faces and "
-                f"{len(bolts)} identified bolt centers. The complete native results appendix "
+                f"{len(bolts)} identified hardware paths or centers. The complete native "
+                "results appendix "
                 "retains every source coordinate, dimension, placement and load-provenance "
                 "path, including nested preview and visualization records.",
                 styles["body"],
@@ -1922,6 +1929,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             if template is not None and check_visual is not None
             else readable_value(native_check["equation_trace"], system)
         )
+        story.append(CondPageBreak(280))
         story.append(_paragraph("GOVERNING FAILURE — worked native calculation", styles["heading"]))
         story.append(
             _paragraph(

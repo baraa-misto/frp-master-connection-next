@@ -45,7 +45,7 @@ def _projection(point: tuple[float, float, float], view: str) -> tuple[float, fl
 
 def _palette(identity: str) -> tuple[str, str]:
     name = identity.lower()
-    if "concrete" in name or "wall" in name or "foundation" in name:
+    if "concrete" in name or "foundation" in name:
         return "#b7bfc4", "Concrete or foundation"
     if any(token in name for token in ("bolt", "anchor", "fastener", "shaft")):
         return "#a84e3b", "Hardware"
@@ -55,7 +55,7 @@ def _palette(identity: str) -> tuple[str, str]:
         return "#326f9b", "Connected member"
     if any(token in name for token in ("angle", "plate", "tee", "connector", "clip")):
         return "#b48748", "Connector"
-    if any(token in name for token in ("support", "column", "chord")):
+    if any(token in name for token in ("support", "column", "chord", "wall")):
         return "#8295a5", "Support member"
     return "#326f9b", "Connected member"
 
@@ -235,7 +235,7 @@ def colored_view(
     focus_points = [
         vertex
         for box in boxes
-        if "concrete" not in box.identity.lower() and "wall" not in box.identity.lower()
+        if "concrete" not in box.identity.lower() and "foundation" not in box.identity.lower()
         for vertex in box.vertices
     ]
     focus_points.extend(vertex for face in faces for vertex in face.vertices)
