@@ -10,9 +10,24 @@ import httpx
 import pytest
 from pypdf import PdfReader
 from reportlab.graphics.shapes import Circle, Line, Polygon
+from reportlab.platypus import Flowable, Paragraph
 
 from frp_master_connection.api.app import create_app
+from frp_master_connection.reporting.generic import (
+    _box_figure,
+    _method_example_data,
+    _schedules,
+    render_generic_pdf,
+)
 from frp_master_connection.reporting.geometry import BoltPoint, BoxFigure, FaceFigure
+from frp_master_connection.reporting.pdf import (
+    ReportOptions,
+    _add_linked_contents,
+    _drawing,
+    _font_setup,
+    _reader_engineering_sections,
+    _styles,
+)
 from frp_master_connection.reporting.reader_data import (
     collect_checks,
     governing,
@@ -29,6 +44,7 @@ from frp_master_connection.reporting.reader_views import (
     miter_plate_faces,
     multirow_physical_geometry,
 )
+from frp_master_connection.reporting.snapshot import ReportSnapshot
 from tests.api.test_connector_materials import native_payload
 
 
@@ -131,6 +147,126 @@ def test_multirow_view_uses_native_boundary_layers_and_bolt_centers() -> None:
     assert plate[0].identity == "MITER_WEB_PLATE"
     assert plate[0].vertices[0] == (0.0, -0.5, 0.0)
     assert plate[1].vertices[-1] == (0.0, 0.0, 1.0)
+
+
+def test_technical_dimension_views_and_empty_audit_schedule_remain_available() -> None:
+    box = BoxFigure(
+        "CONNECTED_MEMBER",
+        tuple((x, y, z) for x in (0.0, 2.0) for y in (0.0, 1.0) for z in (0.0, 1.0)),
+    )
+    bolt = BoltPoint("B1", (1.0, 0.5, 0.5))
+    for camera in ("isometric", "elevation", "plan"):
+        figure = _box_figure([box], [bolt], camera, "in")
+        assert any(isinstance(item, Line) for item in figure.contents)
+    _font_setup()
+    styles = _styles()
+    story: list[Flowable] = []
+    _schedules(story, "Empty native section", [], styles)
+    assert any(
+        isinstance(item, Paragraph) and "No native records" in item.getPlainText() for item in story
+    )
+
+
+def test_worked_method_examples_preserve_each_native_trace_shape() -> None:
+    cases = (
+        (
+            "RATIONAL_ELASTIC_WI_REGION_RESULTANT_DECOMPOSITION_RC1",
+            {"components": [{"id": "C1"}], "equilibrium": {"ok": True}},
+            "first_component",
+        ),
+        (
+            "ANGLE_CONNECTOR_INTERFACE_WRENCH_CORE_RC1",
+            {"request": {"id": "A1"}},
+            "request",
+        ),
+        (
+            "RATIONAL_ELASTIC_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_RC1",
+            {"solution": {"bolts": [{"id": "B1"}]}},
+            "first_bolt",
+        ),
+        (
+            "RATIONAL_LINEAR_ORTHOTROPIC_SPLICE_PLATE_BODY_INTERACTION_RC1",
+            {"critical_sections": [{"id": "S1"}], "tension_strength": "native"},
+            "first_critical_section",
+        ),
+        (
+            "DCTN_AXIAL_SYMMETRIC_HALF_SHARE_RESPONSE_RC1",
+            {"rows": [{"id": "R1"}], "shafts": [{"id": "H1"}]},
+            "first_row",
+        ),
+    )
+    for method, native, retained_key in cases:
+        selected = _method_example_data(method, native)
+        assert selected[retained_key]
+    assert _method_example_data("OTHER_NATIVE_METHOD", {"native": "intact"}) == {"native": "intact"}
+
+
+def test_direct_projection_and_sparse_reader_guards_keep_native_geometry() -> None:
+    primitive = {
+        "kind": "BOX",
+        "physical_element_id": "M1",
+        "parameters": [
+            {"name": "x_start", "value": "0"},
+            {"name": "x_end", "value": "2"},
+            {"name": "min_y", "value": "0"},
+            {"name": "max_y", "value": "1"},
+            {"name": "min_z", "value": "0"},
+            {"name": "max_z", "value": "1"},
+        ],
+        "center": {"x": "0", "y": "0", "z": "0"},
+        "x_axis": {"x": "1", "y": "0", "z": "0"},
+        "y_axis": {"x": "0", "y": "1", "z": "0"},
+        "z_axis": {"x": "0", "y": "0", "z": "1"},
+    }
+    visual = {
+        "primitives": [primitive, primitive],
+        "bolt": {
+            "stack_start": {"x": "0", "y": "0", "z": "0"},
+            "stack_end": {"x": "0", "y": "0", "z": "1"},
+            "center": {"x": "0", "y": "0", "z": "0.5"},
+            "bolt_diameter": "0.5",
+            "bolt_location_id": "B1",
+        },
+        "length_unit": "in",
+    }
+    for camera in ("isometric", "plan", "elevation"):
+        drawing = _drawing(visual, camera)
+        assert any(isinstance(item, Line) for item in drawing.contents)
+    _font_setup()
+    styles = _styles()
+    story: list[Flowable] = []
+    _add_linked_contents(story, styles)
+    assert not story
+    snapshot = ReportSnapshot("single-bolt", "design", {}, {}, 1_000, "0" * 64)
+    sections = _reader_engineering_sections(snapshot, {}, "US_CUSTOMARY", styles)
+    assert any(
+        isinstance(item, Paragraph) and "No native numerical check" in item.getPlainText()
+        for item in sections
+    )
+
+
+def test_input_only_validation_issues_are_prominent_and_do_not_claim_results() -> None:
+    snapshot = ReportSnapshot(
+        "beam-concrete-paired-angle",
+        "input_only",
+        {},
+        {
+            "status": "INPUT_NOT_EVALUATED",
+            "validation_issues": [
+                {"loc": ["beam_depth"], "msg": "Required value missing"},
+                "unstructured native issue",
+            ],
+        },
+        1_000,
+        "0" * 64,
+    )
+    pdf = render_generic_pdf(snapshot, ReportOptions())
+    pages = PdfReader(io.BytesIO(pdf)).pages
+    first_page = pages[0].extract_text()
+    assert "Validation / calculation" in first_page
+    assert "Required value missing" in first_page
+    assert "design not evaluated" in first_page.lower()
+    assert "Validation issue 1" in " ".join(page.extract_text() for page in pages)
 
 
 @pytest.mark.parametrize("paper", ["LETTER", "A4"])
