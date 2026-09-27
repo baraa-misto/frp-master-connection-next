@@ -155,6 +155,12 @@ def test_native_hardware_fallback_and_path_upgrade_keep_source_coordinates() -> 
             "INPUT_NOT_EVALUATED",
             "SUBMITTED GEOMETRY — NOT VALIDATED",
         ),
+        (
+            "angle-column-two-leg-moment-base",
+            "design",
+            "EXTERNAL_ANCHOR_CONCRETE_DESIGN_REQUIRED",
+            "No anchor path geometry is available",
+        ),
     ],
 )
 def test_native_geometry_without_hardware_is_explicitly_limited(

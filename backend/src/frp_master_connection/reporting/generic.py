@@ -1618,7 +1618,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                     styles["small"],
                 )
             )
-        elif "concrete" in snapshot.family or "wall" in snapshot.family:
+        elif any(token in snapshot.family for token in ("concrete", "wall", "column")):
             story.append(
                 _paragraph(
                     "No anchor path geometry is available in this calculation snapshot; "
