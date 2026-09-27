@@ -189,6 +189,20 @@ def _native_box_unit(visual: dict[str, Any] | None) -> str | None:
 def _component_dimension_figure(box: BoxFigure, unit: str, system: DisplayUnits) -> Drawing:
     """Witness three source-box edges; lengths come from native 3-D vertices."""
 
+    from frp_master_connection.reporting.reader_views import _component_name
+
+    identity = box.identity.upper()
+    edge_names = (
+        ("Angle length", "Angle thickness", "Leg width")
+        if "CLIP_ANGLE" in identity and "SUPPORT-LEG" in identity
+        else ("Angle length", "Leg width", "Angle thickness")
+        if "CLIP_ANGLE" in identity and "LEG" in identity
+        else ("Web depth", "Web thickness", "Beam span")
+        if "CLIP-ANGLE-CONNECTED-MEMBER:WEB" in identity
+        else ("Flange thickness", "Flange width", "Beam span")
+        if "CLIP-ANGLE-CONNECTED-MEMBER:" in identity and "FLANGE" in identity
+        else ("Physical edge E1", "Physical edge E2", "Physical edge E3")
+    )
     points = [_project(vertex, "isometric") for vertex in box.vertices]
     x0, x1 = min(point[0] for point in points), max(point[0] for point in points)
     y0, y1 = min(point[1] for point in points), max(point[1] for point in points)
@@ -202,7 +216,7 @@ def _component_dimension_figure(box: BoxFigure, unit: str, system: DisplayUnits)
         String(
             8,
             129,
-            f"{box.identity}: native component edges; not to scale",
+            f"{_component_name(box.identity)}: native component edges; not to scale",
             fontName="ReportVeraBold",
             fontSize=9,
         )
@@ -244,18 +258,18 @@ def _component_dimension_figure(box: BoxFigure, unit: str, system: DisplayUnits)
         drawing.add(Line(*p0, *p1, strokeColor=colors.HexColor("#374d59")))
         drawing.add(
             String(
-                (p0[0] + p1[0]) / 2 + 3,
-                (p0[1] + p1[1]) / 2 + 3,
-                str(index + 1),
+                min(245, max(18, (p0[0] + p1[0]) / 2 + 3)),
+                min(113, max(16, (p0[1] + p1[1]) / 2 + 3)),
+                f"E{index + 1}",
                 fontName="ReportVeraBold",
-                fontSize=8,
+                fontSize=7,
             )
         )
         drawing.add(
             String(
                 260,
                 101 - 23 * index,
-                f"edge {index + 1}: {shown}",
+                f"{edge_names[index]}: {shown}",
                 fontName="ReportVera",
                 fontSize=8.5,
             )
@@ -265,6 +279,8 @@ def _component_dimension_figure(box: BoxFigure, unit: str, system: DisplayUnits)
 
 def _face_dimension_figure(face: FaceFigure, unit: str, system: DisplayUnits) -> Drawing:
     """Witness the actual edges of one native polygon face."""
+
+    from frp_master_connection.reporting.reader_views import _component_name
 
     spans = [
         max(vertex[axis] for vertex in face.vertices)
@@ -285,7 +301,7 @@ def _face_dimension_figure(face: FaceFigure, unit: str, system: DisplayUnits) ->
         String(
             8,
             132,
-            f"{face.identity}: native polygon edges; not to scale",
+            f"{_component_name(face.identity)}: native polygon edges; not to scale",
             fontName="ReportVeraBold",
             fontSize=9,
         )
@@ -306,7 +322,7 @@ def _face_dimension_figure(face: FaceFigure, unit: str, system: DisplayUnits) ->
             String(
                 260,
                 105 - 22 * index,
-                f"edge {index + 1}: {shown}",
+                f"Polygon edge E{index + 1}: {shown}",
                 fontName="ReportVera",
                 fontSize=8.5,
             )
@@ -347,6 +363,13 @@ def _box_figure(
     unit: str,
     system: DisplayUnits = "INHERIT",
 ) -> Drawing:
+    focused_boxes = [
+        box
+        for box in boxes
+        if not any(token in box.identity.lower() for token in ("concrete", "wall", "foundation"))
+    ]
+    if focused_boxes:
+        boxes = focused_boxes
     projected = [[_project(vertex, view) for vertex in box.vertices] for box in boxes]
     bolt_projected = [_project(bolt.center, view) for bolt in bolts]
     all_points = [point for vertices in projected for point in vertices] + bolt_projected
@@ -373,9 +396,10 @@ def _box_figure(
         (6, 4),
         (6, 7),
     )
-    identity_counts = Counter(box.identity for box in boxes)
-    box_labels: set[str] = set()
-    legend_index = 0
+    from frp_master_connection.reporting.reader_views import component_tags
+
+    tags, _ = component_tags(boxes, [], bolts)
+    marked: list[tuple[float, float]] = []
     for box, vertices in zip(boxes, projected, strict=True):
         points = [paper(point) for point in vertices]
         for a, b in edges:
@@ -386,63 +410,44 @@ def _box_figure(
             )
         cx = sum(point[0] for point in points) / 8
         cy = sum(point[1] for point in points) / 8
-        if box.identity not in box_labels and legend_index < 12:
-            label_y = height - 33 - legend_index * 12
-            drawing.add(
-                Line(cx, cy, 336, label_y, strokeColor=colors.HexColor("#a2adb2"), strokeWidth=0.3)
-            )
+        if all(math.dist((cx, cy), previous) > 22 for previous in marked):
             drawing.add(
                 String(
-                    339,
-                    label_y,
-                    f"{box.identity[:18]} ({identity_counts[box.identity]})",
-                    fontName="ReportVera",
-                    fontSize=9,
+                    cx,
+                    cy,
+                    tags[box.identity],
+                    fontName="ReportVeraBold",
+                    fontSize=8,
                     fillColor=colors.HexColor("#203846"),
                 )
             )
-            box_labels.add(box.identity)
-            legend_index += 1
-    for index, (bolt, projected_center) in enumerate(zip(bolts, bolt_projected, strict=True)):
+            marked.append((cx, cy))
+    bolt_marked: list[tuple[float, float]] = []
+    for bolt, projected_center in zip(bolts, bolt_projected, strict=True):
         center = paper(projected_center)
         drawing.add(
             Circle(
-                center[0], center[1], 2.2, strokeColor=colors.HexColor("#9b4435"), fillColor=None
+                center[0], center[1], 3.8, strokeColor=colors.HexColor("#9b4435"), fillColor=None
             )
         )
-        if index < 4 and legend_index < 16:
-            label_y = height - 33 - legend_index * 12
-            drawing.add(
-                Line(
-                    center[0],
-                    center[1],
-                    336,
-                    label_y,
-                    strokeColor=colors.HexColor("#b57369"),
-                    strokeWidth=0.3,
-                )
-            )
+        if len(bolts) <= 4 and all(math.dist(center, previous) > 22 for previous in bolt_marked):
             drawing.add(
                 String(
-                    339,
-                    label_y,
-                    f"B{index + 1}. {bolt.identity[:17]}",
-                    fontName="ReportVera",
-                    fontSize=9,
+                    center[0] + 5,
+                    center[1] + 5,
+                    tags[bolt.identity],
+                    fontName="ReportVeraBold",
+                    fontSize=8,
                     fillColor=colors.HexColor("#7d3a2d"),
                 )
             )
-            legend_index += 1
-    if len(boxes) + len(bolts) > legend_index:
-        drawing.add(
-            String(
-                339,
-                20,
-                f"All {len(boxes)} parts and {len(bolts)} bolts in schedule",
-                fontName="ReportVera",
-                fontSize=9,
-            )
-        )
+            bolt_marked.append(center)
+    drawing.add(
+        String(314, height - 33, "Short tags: component key", fontName="ReportVera", fontSize=8)
+    )
+    drawing.add(
+        String(314, height - 45, "Bolt/anchor IDs: layouts", fontName="ReportVera", fontSize=8)
+    )
     if view != "isometric":
         left, right = paper((x0, y0))[0], paper((x1, y0))[0]
         bottom, top = paper((x0, y0))[1], paper((x0, y1))[1]
@@ -503,6 +508,9 @@ def _face_figure(
 
     drawing = Drawing(width, height)
     seen_edges: set[tuple[tuple[float, float], tuple[float, float]]] = set()
+    from frp_master_connection.reporting.reader_views import component_tags
+
+    tags, _ = component_tags([], faces, bolts)
     labelled: set[str] = set()
     for face, vertices in zip(faces, projected, strict=True):
         points = [paper(point) for point in vertices]
@@ -519,40 +527,31 @@ def _face_figure(
                 String(
                     points[0][0] + 2,
                     points[0][1] + 2,
-                    face.identity[:20],
+                    tags[face.identity],
                     fontName="ReportVera",
                     fontSize=9,
                 )
             )
-    for index, (bolt, projected_center) in enumerate(zip(bolts, bolt_projected, strict=True)):
+    marked: list[tuple[float, float]] = []
+    for bolt, projected_center in zip(bolts, bolt_projected, strict=True):
         center = paper(projected_center)
         drawing.add(
             Circle(
-                center[0], center[1], 2.2, strokeColor=colors.HexColor("#9b4435"), fillColor=None
+                center[0], center[1], 3.8, strokeColor=colors.HexColor("#9b4435"), fillColor=None
             )
         )
-        if index < 16:
-            label_y = height - 33 - index * 12
-            drawing.add(
-                Line(
-                    center[0],
-                    center[1],
-                    336,
-                    label_y,
-                    strokeColor=colors.HexColor("#b57369"),
-                    strokeWidth=0.3,
-                )
-            )
+        if all(math.dist(center, previous) > 15 for previous in marked):
             drawing.add(
                 String(
-                    339,
-                    label_y,
-                    f"B{index + 1}. {bolt.identity[:17]}",
-                    fontName="ReportVera",
-                    fontSize=9,
+                    center[0] + 5,
+                    center[1] + 5,
+                    tags[bolt.identity],
+                    fontName="ReportVeraBold",
+                    fontSize=8,
                     fillColor=colors.HexColor("#7d3a2d"),
                 )
             )
+            marked.append(center)
     if view != "isometric":
         left, right = paper((x0, y0))[0], paper((x1, y0))[0]
         drawing.add(Line(left, 20, right, 20, strokeColor=colors.black, strokeWidth=0.7))
@@ -659,6 +658,32 @@ def _native_equation_examples(value: object) -> dict[str, tuple[str, dict[str, A
 
     walk(value, "result")
     return examples
+
+
+def _native_governing_record(value: object, identity: str) -> tuple[str, dict[str, Any]] | None:
+    """Find the executed record named by the already-selected native check."""
+
+    def walk(item: object, path: str) -> tuple[str, dict[str, Any]] | None:
+        if isinstance(item, dict):
+            if (
+                item.get("result_id") == identity
+                and item.get("availability") == "CALCULATED"
+                and isinstance(item.get("equation_trace"), dict)
+            ):
+                return path, item
+            for name, child in item.items():
+                if name not in {"visualization", "geometry"}:
+                    found = walk(child, f"{path}.{name}")
+                    if found is not None:
+                        return found
+        elif isinstance(item, list):
+            for index, child in enumerate(item):
+                found = walk(child, f"{path}[{index}]")
+                if found is not None:
+                    return found
+        return None
+
+    return walk(value, "result")
 
 
 def _visual_for_check(value: object, check: dict[str, Any]) -> dict[str, Any] | None:
@@ -1411,7 +1436,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                         else humanize(critical.outcome)
                     )
                     if critical and snapshot.kind == "design"
-                    else "Not evaluated",
+                    else "No local numerical check evaluated",
                 ),
                 (
                     "Qualification / authority",
@@ -1426,7 +1451,10 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                     "Report completeness",
                     "Input draft only; no checks run"
                     if snapshot.kind == "input_only"
-                    else f"{len(unevaluated)} required checks unevaluated",
+                    else "No local numerical checks scheduled; see authority and limitations"
+                    if not checks
+                    else f"{len(unevaluated)} scheduled required checks unevaluated"
+                    + ("; no local numerical result" if critical is None else ""),
                 ),
                 (
                     "Governing check",
@@ -1522,16 +1550,76 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 styles["body"],
             )
         )
+    if snapshot.kind == "design" and critical is None:
+        story.append(
+            _paragraph(
+                "The count above describes only checks scheduled in this local calculation. "
+                "It does not mean the connection is qualified; source evidence, engineering "
+                "review, or external design authority may still be required.",
+                styles["body"],
+            )
+        )
     if boxes or faces:
         story.append(_paragraph("2  Physical connection model", styles["heading"]))
+        if snapshot.kind == "input_only":
+            story.append(_paragraph("SUBMITTED GEOMETRY — NOT VALIDATED", styles["body"]))
         story.append(colored_view(boxes, faces, bolts, "isometric"))
         story.append(
             _paragraph(
-                "Colored overview from native physical geometry. Component IDs are listed "
-                "below; color is supplementary to shape and ID.",
+                "Colored overview from native physical geometry. Hardware shafts follow the "
+                "recorded endpoints and diameters; endpoint caps are schematic. The component "
+                "key below uses report tags; exact native IDs remain in the audit appendix.",
                 styles["small"],
             )
         )
+        if snapshot.family == "beam-concrete-paired-angle":
+            connection_bolts = [bolt for bolt in bolts if bolt.role == "bolt"]
+            anchor_count = sum(bolt.role == "anchor" for bolt in bolts)
+            story.append(
+                _paragraph(
+                    f"The red shafts are {len(connection_bolts)} beam through-bolts; the brown "
+                    f"shafts are {anchor_count} separate support anchors. The next two views "
+                    "resolve their positions and groups.",
+                    styles["small"],
+                )
+            )
+            if connection_bolts:
+                story.append(
+                    _paragraph(
+                        "Connection bolt layout — looking along bolt axes", styles["heading"]
+                    )
+                )
+                story.append(
+                    colored_view(boxes, faces, connection_bolts, "bolt_axis", hardware_detail=True)
+                )
+                story.append(
+                    _paragraph(
+                        f"{len(connection_bolts)} distinct through-bolt paths cross the connected "
+                        "beam web and paired angle legs. B tags identify native row and line "
+                        "positions in the component key.",
+                        styles["small"],
+                    )
+                )
+        anchors = [bolt for bolt in bolts if bolt.role == "anchor"]
+        if anchors:
+            story.append(_paragraph("Support-side anchor layout", styles["heading"]))
+            story.append(colored_view(boxes, faces, anchors, "support_face", hardware_detail=True))
+            story.append(
+                _paragraph(
+                    "Anchor shanks follow the native geometry; washer rings are shown where "
+                    "native washer dimensions exist. Anchor resistance remains with the "
+                    "external design authority.",
+                    styles["small"],
+                )
+            )
+        elif "concrete" in snapshot.family or "wall" in snapshot.family:
+            story.append(
+                _paragraph(
+                    "No anchor path geometry is available in this calculation snapshot; "
+                    "support hardware is identified only where the native record provides it.",
+                    styles["small"],
+                )
+            )
         story.append(_table(component_legend(boxes, faces, bolts), styles))
     draft_only = snapshot.result.get("status") == "INPUT_NOT_EVALUATED"
     story.append(
@@ -1719,13 +1807,15 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
         for side in ("positive_group", "negative_group"):
             group = handoff.get(side)
             if isinstance(group, dict):
-                anchors = group.get("anchors")
+                group_anchors = group.get("anchors")
                 handoff_rows.extend(
                     [
                         (f"{humanize(side)} ID", readable_value(group.get("group_id"), system)),
                         (
                             f"{humanize(side)} anchors",
-                            str(len(anchors)) if isinstance(anchors, list) else "Not supplied",
+                            str(len(group_anchors))
+                            if isinstance(group_anchors, list)
+                            else "Not supplied",
                         ),
                         (
                             f"{humanize(side)} centroid H / V / N",
@@ -1734,14 +1824,14 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                     ]
                 )
         if not wall_handoff:
-            anchors = handoff["anchors"]
+            handoff_anchors = handoff["anchors"]
             handoff_rows.extend(
                 [
                     (
                         "Anchor group ID",
                         readable_value(result["preview"].get("anchor_group_id"), system),
                     ),
-                    ("Anchors", str(len(anchors))),
+                    ("Anchors", str(len(handoff_anchors))),
                     (
                         "Anchor centroid L / S / N",
                         readable_value(handoff["anchor_group_centroid_lsn"], system),
@@ -1816,6 +1906,51 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 "factors and outcome in the complete schedule.",
                 styles["small"],
             )
+        )
+    governing_record = (
+        _native_governing_record(result, critical.identity)
+        if critical is not None and critical.outcome == "FAIL"
+        else None
+    )
+    if governing_record is not None and critical is not None:
+        _governing_path, native_check = governing_record
+        method = str(native_check.get("equation_method"))
+        template = _MULTIROW_METHODS.get(method)
+        check_visual = _visual_for_check(result, native_check)
+        substitution = (
+            multirow_native_substitution(native_check, check_visual, system)
+            if template is not None and check_visual is not None
+            else readable_value(native_check["equation_trace"], system)
+        )
+        story.append(_paragraph("GOVERNING FAILURE — worked native calculation", styles["heading"]))
+        story.append(
+            _paragraph(
+                f"{critical.name} at {critical.component}; {critical.location}. This is the "
+                "evaluated check that governs the numerical result. The native trace path "
+                "and exact values remain in the audit appendix.",
+                styles["body"],
+            )
+        )
+        _schedules(
+            story,
+            "Governing executed equation and substitution",
+            [
+                ("Check", critical.identity),
+                ("Method", template.title if template is not None else humanize(method)),
+                (
+                    "Expression",
+                    template.expression if template is not None else "See native equation trace",
+                ),
+                ("Executed numerical substitution", substitution),
+                ("Demand", readable_value(native_check.get("demand"), system)),
+                (
+                    "Design resistance",
+                    readable_value(native_check.get("design_resistance"), system),
+                ),
+                ("Utilization", short_number(critical.utilization, ratio=True)),
+                ("Outcome", humanize(critical.outcome)),
+            ],
+            styles,
         )
     eccentric = _eccentric_demand_example(result)
     if eccentric is not None:
@@ -1970,7 +2105,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 numerical_substitution = multirow_native_substitution(check, check_visual, system)
             except ValueError as exc:
                 raise ReportingCoverageError(str(exc)) from exc
-            story.append(_paragraph(f"{method} - {template.title}", styles["heading"]))
+            story.append(_paragraph(template.title, styles["heading"]))
             story.append(
                 KeepTogether(
                     [
@@ -2021,7 +2156,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 raise ReportingCoverageError(
                     f"Executed method has no REPORT1 report adapter: {method} at {path}"
                 )
-            story.append(_paragraph(f"{method} - {other_template.title}", styles["heading"]))
+            story.append(_paragraph(other_template.title, styles["heading"]))
             story.append(_paragraph(other_template.explanation, styles["body"]))
             _schedules(
                 story,

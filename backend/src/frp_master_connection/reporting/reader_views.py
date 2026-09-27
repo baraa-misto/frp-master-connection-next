@@ -8,6 +8,7 @@ there is no image upload, asset fetch, or engineering geometry inference.
 from __future__ import annotations
 
 import math
+import re
 from collections import Counter
 from typing import Any
 
@@ -35,6 +36,10 @@ def _projection(point: tuple[float, float, float], view: str) -> tuple[float, fl
         return x, z
     if view == "plan":
         return x, y
+    if view == "bolt_axis":
+        return y, z
+    if view == "support_face":
+        return x, z
     raise ValueError(f"Unknown report camera: {view}")
 
 
@@ -45,6 +50,8 @@ def _palette(identity: str) -> tuple[str, str]:
     if any(token in name for token in ("bolt", "anchor", "fastener", "shaft")):
         return "#a84e3b", "Hardware"
     if "connected-member" in name or "connected_member" in name:
+        return "#326f9b", "Connected member"
+    if "angle_column" in name:
         return "#326f9b", "Connected member"
     if any(token in name for token in ("angle", "plate", "tee", "connector", "clip")):
         return "#b48748", "Connector"
@@ -62,26 +69,118 @@ def _shade(hex_color: str, factor: float) -> colors.Color:
     )
 
 
+def _component_name(identity: str) -> str:
+    upper = identity.upper()
+    if "POSITIVE_CLIP_ANGLE" in upper or "NEGATIVE_CLIP_ANGLE" in upper:
+        side = "Positive" if "POSITIVE" in upper else "Negative"
+        leg = "connected leg" if "CONNECTED" in upper else "support leg"
+        return f"{side} clip angle, {leg}"
+    if "CONCRETE" in upper or "FOUNDATION" in upper:
+        return "Concrete support"
+    if "ANGLE_COLUMN" in upper:
+        return "Connected angle column"
+    if "SPLICE_PLATE" in upper:
+        side = "Positive " if "POSITIVE" in upper else "Negative " if "NEGATIVE" in upper else ""
+        part = (
+            "top flange"
+            if "TOP_FLANGE" in upper
+            else "bottom flange"
+            if "BOTTOM_FLANGE" in upper
+            else "web"
+            if "WEB" in upper
+            else "connection"
+        )
+        return f"{side}{part} splice plate".strip().capitalize()
+    if "TOP_FLANGE_ANGLE" in upper:
+        return "Top flange connector angle"
+    if "BOTTOM_FLANGE_ANGLE" in upper:
+        return "Bottom flange connector angle"
+    if "WEB_ANGLE" in upper:
+        return (
+            "Positive web connector angle"
+            if "POSITIVE" in upper
+            else "Negative web connector angle"
+        )
+    if "MITER_WEB_PLATE" in upper:
+        return "Miter web plate"
+    if "TOP_FLANGE" in upper:
+        return "Connected member top flange"
+    if "BOTTOM_FLANGE" in upper:
+        return "Connected member bottom flange"
+    if "WEB" in upper:
+        return "Connected member web"
+    name = identity.split(":")[-1].replace("_", " ").replace("-", " ")
+    return re.sub(r"\s+", " ", name).strip().capitalize()
+
+
+def component_tags(
+    boxes: list[BoxFigure], faces: list[FaceFigure], bolts: list[BoltPoint]
+) -> tuple[dict[str, str], list[tuple[str, str]]]:
+    """Assign stable report-only tags; native IDs remain in the audit record."""
+
+    counts = Counter([box.identity for box in boxes] + [face.identity for face in faces])
+    tags: dict[str, str] = {}
+    totals: Counter[str] = Counter()
+    rows: list[tuple[str, str]] = []
+    for identity, count in counts.items():
+        category = _palette(identity)[1]
+        prefix = (
+            "S"
+            if category in {"Concrete or foundation", "Support member"}
+            else "C"
+            if category == "Connector"
+            else "B"
+            if category == "Hardware"
+            else "M"
+        )
+        totals[prefix] += 1
+        tag = f"{prefix}{totals[prefix]}"
+        tags[identity] = tag
+        rows.append(
+            (tag, f"{_component_name(identity)}" + (f" ({count} parts)" if count > 1 else ""))
+        )
+    for bolt in bolts:
+        if bolt.identity in tags:
+            continue
+        prefix = "A" if bolt.role == "anchor" else "B"
+        totals[prefix] += 1
+        tag = f"{prefix}{totals[prefix]}"
+        tags[bolt.identity] = tag
+        location = ", ".join(
+            item
+            for item in (
+                bolt.row.replace("_", " ").lower() if bolt.row else "",
+                bolt.line.replace("_", " ").lower() if bolt.line else "",
+            )
+            if item
+        )
+        description = "External anchor" if bolt.role == "anchor" else "Connection bolt"
+        if bolt.role == "anchor":
+            side = (
+                "positive"
+                if bolt.identity.upper().startswith("POS")
+                else "negative"
+                if bolt.identity.upper().startswith("NEG")
+                else ""
+            )
+            position = re.search(r"R(\d+)[-_]A(\d+)", bolt.identity.upper())
+            location = ", ".join(
+                item
+                for item in (
+                    side + " support" if side else "",
+                    f"row {position[1]}" if position else "",
+                    f"position {position[2]}" if position else "",
+                )
+                if item
+            )
+        rows.append((tag, description + (f", {location}" if location else "")))
+    return tags, rows
+
+
 def component_legend(
     boxes: list[BoxFigure], faces: list[FaceFigure], bolts: list[BoltPoint]
 ) -> list[tuple[str, str]]:
-    """List every visible native ID once, including multiplicity and class."""
-
-    counts = Counter([box.identity for box in boxes] + [face.identity for face in faces])
-    rows = [
-        (
-            identity,
-            f"{_palette(identity)[1]} ({count} physical primitive{'s' if count != 1 else ''})",
-        )
-        for identity, count in counts.items()
-    ]
-    bolt_counts = Counter(bolt.identity for bolt in bolts)
-    rows.extend(
-        (identity, f"Bolt or anchor ({count} center{'s' if count != 1 else ''})")
-        for identity, count in bolt_counts.items()
-        if identity not in counts
-    )
-    return rows
+    return component_tags(boxes, faces, bolts)[1]
 
 
 def _clip_polygon(
@@ -122,12 +221,15 @@ def colored_view(
     action_force: tuple[float, float, float] | None = None,
     action_reference: tuple[float, float, float] | None = None,
     action_label: str = "Applied force at native reference",
+    hardware_detail: bool = False,
 ) -> Drawing:
-    """Render a fixed, vector report camera from native vertices and bolt centers."""
+    """Render a fixed vector camera from native solids and hardware paths."""
 
     points_3d = [vertex for box in boxes for vertex in box.vertices]
     points_3d.extend(vertex for face in faces for vertex in face.vertices)
-    points_3d.extend(bolt.center for bolt in bolts)
+    points_3d.extend(
+        point for bolt in bolts for point in (bolt.center, bolt.start, bolt.end) if point
+    )
     if not points_3d:
         raise ValueError("Colored report view requires native physical geometry")
     focus_points = [
@@ -137,7 +239,13 @@ def colored_view(
         for vertex in box.vertices
     ]
     focus_points.extend(vertex for face in faces for vertex in face.vertices)
-    focus_points.extend(bolt.center for bolt in bolts)
+    focus_points.extend(
+        point for bolt in bolts for point in (bolt.center, bolt.start, bolt.end) if point
+    )
+    if hardware_detail:
+        focus_points = [
+            point for bolt in bolts for point in (bolt.center, bolt.start, bolt.end) if point
+        ]
     detail_crop = bool(focus_points and len(focus_points) < len(points_3d))
     projected = [_projection(point, view) for point in (focus_points if detail_crop else points_3d)]
     x0, x1 = min(point[0] for point in projected), max(point[0] for point in projected)
@@ -152,7 +260,13 @@ def colored_view(
         return 20 + (x - x0) * scale, 28 + (y - y0) * scale
 
     drawing = Drawing(width, height)
-    view_scope = "connection detail crop" if detail_crop else "native physical geometry"
+    view_scope = (
+        "hardware detail"
+        if hardware_detail
+        else "connection detail crop"
+        if detail_crop
+        else "native physical geometry"
+    )
     drawing.add(
         String(
             9,
@@ -205,18 +319,45 @@ def colored_view(
                 fillColor=_shade(base, shade),
             )
         )
+    tags, _ = component_tags(boxes, faces, bolts)
     for bolt in bolts:
-        x, y = paper(bolt.center)
-        drawing.add(
-            Circle(
-                x,
-                y,
-                3.2,
-                fillColor=colors.HexColor("#a84e3b"),
-                strokeColor=colors.HexColor("#4c251e"),
-                strokeWidth=0.7,
+        color = colors.HexColor("#8b4a25" if bolt.role == "anchor" else "#b43e28")
+        dark = colors.HexColor("#4c251e")
+        radius = min(8.0, max(3.5, (bolt.diameter or 0.0) * scale / 2))
+        if bolt.start is not None and bolt.end is not None:
+            first, last = paper(bolt.start), paper(bolt.end)
+            drawing.add(Line(*first, *last, strokeColor=dark, strokeWidth=radius * 2 + 1.5))
+            drawing.add(Line(*first, *last, strokeColor=color, strokeWidth=radius * 2))
+            for x, y in (first, last):
+                drawing.add(
+                    Circle(x, y, radius * 1.35, fillColor=color, strokeColor=dark, strokeWidth=0.8)
+                )
+            if bolt.washer_diameter is not None:
+                x, y = first
+                washer_radius = min(12.0, max(radius * 1.4, bolt.washer_diameter * scale / 2))
+                drawing.add(
+                    Circle(x, y, washer_radius, fillColor=None, strokeColor=dark, strokeWidth=1.3)
+                )
+        else:
+            x, y = paper(bolt.center)
+            drawing.add(
+                Circle(
+                    x, y, radius * 1.5, fillColor=colors.white, strokeColor=dark, strokeWidth=1.0
+                )
             )
-        )
+            drawing.add(Line(x - radius, y, x + radius, y, strokeColor=color, strokeWidth=1.8))
+        if hardware_detail:
+            x, y = paper(bolt.center)
+            drawing.add(
+                String(
+                    x + radius + 4,
+                    y + radius + 2,
+                    tags[bolt.identity],
+                    fontName="ReportVeraBold",
+                    fontSize=8,
+                    fillColor=dark,
+                )
+            )
     if action_force is not None and action_reference is not None:
         dx, dy = _projection(action_force, view)
         magnitude = math.hypot(dx, dy)
@@ -270,7 +411,13 @@ def multirow_physical_geometry(visual: dict[str, Any]) -> tuple[list[BoxFigure],
         (x, y, z) for x in (x0, x1) for y in (y0, y1) for z in (-thickness / 2, thickness / 2)
     )
     bolts = [
-        BoltPoint(str(bolt["bolt_id"]), (float(bolt["x"]), float(bolt["y"]), 0.0))
+        BoltPoint(
+            str(bolt["bolt_id"]),
+            (float(bolt["x"]), float(bolt["y"]), 0.0),
+            diameter=float(bolt["bolt_diameter"]["value"]) if bolt.get("bolt_diameter") else None,
+            row=str(bolt["row_id"]) if bolt.get("row_id") else None,
+            line=str(bolt["bolt_line_id"]) if bolt.get("bolt_line_id") else None,
+        )
         for bolt in visual["bolts"]
     ]
     return [BoxFigure("Connection plate", vertices)], bolts

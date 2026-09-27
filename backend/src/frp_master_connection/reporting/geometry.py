@@ -23,6 +23,13 @@ class FaceFigure:
 class BoltPoint:
     identity: str
     center: tuple[float, float, float]
+    start: tuple[float, float, float] | None = None
+    end: tuple[float, float, float] | None = None
+    diameter: float | None = None
+    role: str = "bolt"
+    row: str | None = None
+    line: str | None = None
+    washer_diameter: float | None = None
 
 
 def _value(value: Any) -> float:  # noqa: ANN401
@@ -192,10 +199,10 @@ def canonical_faces(visual: dict[str, Any]) -> list[FaceFigure]:
 
 
 def canonical_bolt_points(visual: dict[str, Any]) -> list[BoltPoint]:
-    """Read physical bolt and shaft centers from native visual records."""
+    """Read native hardware paths and centers without deriving new placements."""
 
     found: list[BoltPoint] = []
-    seen: set[tuple[str, tuple[float, float, float]]] = set()
+    seen: dict[tuple[str, tuple[float, float, float]], int] = {}
 
     def coordinate(item: Any) -> float:  # noqa: ANN401
         if isinstance(item, dict) and "numerator" in item and "denominator" in item:
@@ -208,36 +215,126 @@ def canonical_bolt_points(visual: dict[str, Any]) -> list[BoltPoint]:
                 return _xyz(item)
             if all(axis in item for axis in ("l", "v", "t")):
                 return _lvt(item)
+            if all(axis in item for axis in ("s", "t", "longitudinal")):
+                return _value(item["s"]), _value(item["t"]), _value(item["longitudinal"])
+            if all(axis in item for axis in ("h", "v", "n")):
+                return _value(item["h"]), -_value(item["n"]), _value(item["v"])
+            if all(axis in item for axis in ("l", "s", "n")):
+                return _value(item["l"]), -_value(item["n"]), _value(item["s"])
         if isinstance(item, list) and len(item) == 3:
             return coordinate(item[0]), coordinate(item[1]), coordinate(item[2])
         return None
 
+    def first_point(
+        value: dict[str, Any], names: tuple[str, ...]
+    ) -> tuple[float, float, float] | None:
+        for name in names:
+            resolved = point(value.get(name))
+            if resolved is not None:
+                return resolved
+        return None
+
+    def diameter(value: dict[str, Any], role: str) -> float | None:
+        for name in ("diameter", "bolt_diameter"):
+            if value.get(name) is not None:
+                return _value(value[name])
+        if role == "anchor":
+            geometry = visual.get("external_anchor_geometry")
+            if isinstance(geometry, dict) and geometry.get("nominal_diameter") is not None:
+                return _value(geometry["nominal_diameter"])
+        for name in (
+            "common_bolt_diameter",
+            "web_bolt_diameter",
+            "flange_bolt_diameter",
+            "bolt_diameter",
+        ):
+            if visual.get(name) is not None:
+                if name == "web_bolt_diameter" and "FLANGE" in str(value.get("group_id", "")):
+                    continue
+                return _value(visual[name])
+        return None
+
     def visit(value: Any) -> None:  # noqa: ANN401
         if isinstance(value, dict):
-            identity = value.get("bolt_location_id") or value.get("bolt_id")
+            identity = (
+                value.get("anchor_id")
+                or value.get("hardware_id")
+                or value.get("bolt_location_id")
+                or value.get("bolt_id")
+            )
             if identity is None and "layer_owners" in value and "plate_midpoint" in value:
                 identity = value.get("id")
-            center = (
-                value.get("center")
-                or value.get("global_center")
-                or value.get("center_l_v_t")
-                or value.get("plate_midpoint")
+            start = first_point(
+                value,
+                (
+                    "stack_start",
+                    "stack_start_l_v_t",
+                    "stack_start_s_t_l",
+                    "shank_start_hvn",
+                    "shank_start_lsn",
+                    "shank_start_s_t_l",
+                    "start",
+                ),
             )
-            resolved = point(center)
-            if resolved is None and "start" in value and "end" in value:
-                start, end = point(value["start"]), point(value["end"])
-                if start is not None and end is not None:
-                    resolved = (
-                        (start[0] + end[0]) / 2,
-                        (start[1] + end[1]) / 2,
-                        (start[2] + end[2]) / 2,
-                    )
+            end = first_point(
+                value,
+                (
+                    "stack_end",
+                    "stack_end_l_v_t",
+                    "stack_end_s_t_l",
+                    "shank_end_hvn",
+                    "shank_end_lsn",
+                    "shank_end_s_t_l",
+                    "end",
+                ),
+            )
+            resolved = first_point(
+                value,
+                (
+                    "center",
+                    "global_center",
+                    "center_l_v_t",
+                    "coordinate_hvn",
+                    "coordinate_lsn",
+                    "coordinate_s_t_l",
+                    "plate_midpoint",
+                ),
+            )
+            if resolved is None and start is not None and end is not None:
+                resolved = (
+                    (start[0] + end[0]) / 2,
+                    (start[1] + end[1]) / 2,
+                    (start[2] + end[2]) / 2,
+                )
             if isinstance(identity, str) and resolved is not None:
-                marker = BoltPoint(identity, (resolved[0], resolved[1], resolved[2]))
+                role = (
+                    "anchor" if value.get("anchor_id") or "ANCHOR" in identity.upper() else "bolt"
+                )
+                anchor_geometry = visual.get("external_anchor_geometry")
+                washer = (
+                    _value(anchor_geometry["washer_outside_diameter"])
+                    if role == "anchor"
+                    and isinstance(anchor_geometry, dict)
+                    and anchor_geometry.get("washer_outside_diameter") is not None
+                    else None
+                )
+                marker = BoltPoint(
+                    identity,
+                    resolved,
+                    start,
+                    end,
+                    diameter(value, role),
+                    role,
+                    str(value["row_id"]) if value.get("row_id") is not None else None,
+                    str(value["bolt_line_id"]) if value.get("bolt_line_id") is not None else None,
+                    washer,
+                )
                 key = (marker.identity, marker.center)
                 if key not in seen:
-                    seen.add(key)
+                    seen[key] = len(found)
                     found.append(marker)
+                elif marker.start is not None and found[seen[key]].start is None:
+                    found[seen[key]] = marker
             for child in value.values():
                 visit(child)
         elif isinstance(value, list):

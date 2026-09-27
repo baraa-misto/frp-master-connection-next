@@ -12,7 +12,9 @@ from frp_master_connection.reporting.units import DisplayUnits, display_quantity
 
 _KNOWN = {
     "FIRST_ROW_SIMPLIFIED": "First-row net tension",
+    "FIRST_ROW": "First-row net tension",
     "INTERROW_ASCE_EQ_8_12": "Inter-row shear-out",
+    "INTERROW": "Inter-row shear-out",
     "PIN_BEARING": "Pin bearing",
     "BOLT_SHEAR": "Bolt shear",
     "BOLT_TENSION": "Bolt tension",
@@ -20,6 +22,8 @@ _KNOWN = {
     "WEB_POS_FACE": "Positive web face",
     "EXTERNALLY_DESIGNED_BLIND_EMBEDDED_ANCHOR": "Externally designed blind embedded anchor",
     "QUALIFIED_ASCE_PRESCRIPTIVE": "ASCE-prescriptive method qualified",
+    "ASCE_PRESCRIBED": "ASCE-prescriptive method qualified",
+    "RATIONAL_ELASTIC_BOLT_GROUP_ECCENTRICITY": "Rational elastic bolt-group eccentricity method",
     "SOURCE_DATA_PENDING": "Source data pending",
     "ENGINEERING_REVIEW_REQUIRED": "Engineering review required",
     "NOT_EVALUATED": "Not evaluated",
@@ -148,7 +152,13 @@ def grouped_inputs(
             for index, item in enumerate(value, start=1):
                 visit(item, (*path, str(index)))
             return
-        label = " / ".join(humanize(piece) for piece in path[-3:])
+        suffix = path[-3:]
+        if suffix == ("beam_profile", "dimensions", "flange_thickness"):
+            label = "Beam flange thickness"
+        elif path[-2:] == ("common_beam_layout", "gauge"):
+            label = "Bolt gauge"
+        else:
+            label = " / ".join(humanize(piece) for piece in suffix)
         grouped.setdefault(_group(path), []).append((label, readable_value(value, system)))
 
     visit(request, ())

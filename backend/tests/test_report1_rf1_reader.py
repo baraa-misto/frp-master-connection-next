@@ -88,10 +88,12 @@ def test_colored_views_use_native_vertices_and_stable_nonduplicated_ids() -> Non
     face = FaceFigure("MITER_PLATE", ((-1.0, -1.0, 0.0), (1.0, -1.0, 0.0), (1.0, 1.0, 0.0)))
     bolts = [BoltPoint("B1", (0.0, 0.0, 0.0))]
     legend = component_legend([first, first], [face], bolts)
-    assert [identity for identity, _ in legend] == ["CONNECTED_BEAM", "MITER_PLATE", "B1"]
-    assert "2 physical primitives" in legend[0][1]
-    assert component_legend([BoxFigure("BOLT_SHAFT", first.vertices)], [], [])[0][1].startswith(
-        "Hardware"
+    assert [identity for identity, _ in legend] == ["M1", "C1", "B1"]
+    assert "2 parts" in legend[0][1]
+    assert "CONNECTED_BEAM" not in str(legend)
+    assert component_legend([BoxFigure("BOLT_SHAFT", first.vertices)], [], [])[0] == (
+        "B1",
+        "Bolt shaft",
     )
     with pytest.raises(ValueError, match="native physical geometry"):
         colored_view([], [], [], "plan")
@@ -124,9 +126,12 @@ def test_colored_views_use_native_vertices_and_stable_nonduplicated_ids() -> Non
     zero_projection = colored_view(
         [first], [], bolts, "plan", action_force=(0.0, 0.0, 4.0), action_reference=(0, 0, 0)
     )
-    assert not any(isinstance(shape, Line) for shape in zero_projection.contents)
+    baseline_lines = sum(
+        isinstance(shape, Line) for shape in colored_view([first], [], bolts, "plan").contents
+    )
+    assert sum(isinstance(shape, Line) for shape in zero_projection.contents) == baseline_lines
     missing_reference = colored_view([first], [], bolts, "plan", action_force=(1, 0, 0))
-    assert not any(isinstance(shape, Line) for shape in missing_reference.contents)
+    assert sum(isinstance(shape, Line) for shape in missing_reference.contents) == baseline_lines
 
 
 def test_multirow_view_uses_native_boundary_layers_and_bolt_centers() -> None:
@@ -313,7 +318,7 @@ def test_beam_concrete_reader_summary_matches_native_and_audit_remains_complete(
     assert readable_value(critical.demand, "US_CUSTOMARY") in main
     assert readable_value(critical.resistance, "US_CUSTOMARY") in main
     assert short_number(critical.utilization, ratio=True) in main
-    assert "7 required checks unevaluated" in main
+    assert "7 scheduled required checks unevaluated" in main
     assert "external resistance is inferred" in main
     assert "Load path at wall reference" in main
     assert "V = -4 kip" in main

@@ -18,7 +18,7 @@ from frp_master_connection.reporting.generic import (
     _native_equation_examples,
     _native_multirow_visuals,
 )
-from frp_master_connection.reporting.method_records import executed_records
+from frp_master_connection.reporting.method_records import EXECUTED_METHODS, executed_records
 from tests.api.test_connector_materials import native_payload
 from tests.api_fixtures import build_api_payload
 
@@ -122,15 +122,19 @@ def test_all_current_modes_export_navigable_real_pdfs_with_executed_method_adapt
         assert "hole d " in early_text
     elif family == "stair-stringer-miter":
         assert "Physical polygon face edge dimensions" in early_text
-        assert re.search(rf"edge 1:\s*[-+\d.]+\s+{displayed_length}", all_text)
+        assert re.search(rf"Polygon edge E1:\s*[-+\d.]+\s+{displayed_length}", all_text)
     else:
         assert "Physical component edge dimensions" in early_text
-        assert re.search(rf"edge 1:\s*[-+\d.]+\s+{displayed_length}", all_text)
+        assert re.search(
+            rf"(?:Physical edge E1|Angle length|Web depth|Flange thickness):"
+            rf"\s*[-+\d.]+\s+{displayed_length}",
+            all_text,
+        )
         if _native_multirow_visuals(native_result):
             assert "Physical bolt-row interface dimensions" in all_text
     for method in (*_native_equation_examples(native_result), *executed_records(native_result)):
-        if family == "multi-row":
-            assert method in all_text
+        if method in EXECUTED_METHODS and family != "multi-row":
+            assert EXECUTED_METHODS[method].title in outline_titles
         else:
-            assert any(method in title for title in outline_titles)
+            assert method in all_text
     assert "Native factor-stage substitution unavailable" not in all_text

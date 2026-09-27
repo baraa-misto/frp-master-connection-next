@@ -550,7 +550,7 @@ def test_ssmc_analytical_pdf_keeps_its_source_limits_and_native_geometry() -> No
     assert humanize("ENGINEERING_REVIEW_REQUIRED") in cover
     early_text = " ".join(page.extract_text() or "" for page in pdf.pages[:6])
     assert "Canonical isometric" in early_text
-    assert "MITER_WEB_PLATE" in early_text
+    assert "Miter web plate" in early_text
     assert design["whole_connection_status"] == "ENGINEERING_REVIEW_REQUIRED"
     full_text = "".join(page.extract_text() or "" for page in pdf.pages).replace("\n", "")
     assert "ENGINEERING_REVIEW_REQUIRED" in full_text

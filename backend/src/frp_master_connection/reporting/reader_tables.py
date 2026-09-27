@@ -10,6 +10,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 
 from frp_master_connection.reporting.reader_data import (
     CheckView,
+    governing,
     humanize,
     readable_value,
     short_number,
@@ -47,6 +48,7 @@ def _matrix(rows: list[list[str]], widths: list[float]) -> Table:
 
 
 def results_matrix(checks: list[CheckView], system: DisplayUnits) -> Table:
+    critical = governing(checks)
     rows = [
         [
             "Check",
@@ -61,7 +63,7 @@ def results_matrix(checks: list[CheckView], system: DisplayUnits) -> Table:
     ]
     rows.extend(
         [
-            check.name,
+            f"GOVERNING — {check.name}" if check is critical else check.name,
             check.component,
             check.location,
             readable_value(check.demand, system),
@@ -74,7 +76,19 @@ def results_matrix(checks: list[CheckView], system: DisplayUnits) -> Table:
         ]
         for check in checks
     )
-    return _matrix(rows, [77, 61, 54, 54, 60, 65, 45, 69])
+    table = _matrix(rows, [77, 61, 54, 54, 60, 65, 45, 69])
+    if critical is not None:
+        row = checks.index(critical) + 1
+        table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, row), (-1, row), colors.HexColor("#fff0e7")),
+                    ("LINEBEFORE", (0, row), (0, row), 3, colors.HexColor("#a43c20")),
+                    ("LINEBELOW", (0, row), (-1, row), 0.7, colors.HexColor("#a43c20")),
+                ]
+            )
+        )
+    return table
 
 
 def limitations_matrix(checks: list[CheckView]) -> Table:

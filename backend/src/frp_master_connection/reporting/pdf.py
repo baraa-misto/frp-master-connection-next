@@ -1064,7 +1064,7 @@ def _styles() -> dict[str, ParagraphStyle]:
 def _table(rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]) -> Table:
     if len(rows) > MAX_TABLE_ROWS:
         raise ReportingCoverageError("REPORT1 table exceeds the configured row limit")
-    data = [[_paragraph("Field", styles["table"]), _paragraph("Native value", styles["table"])]]
+    data = [[_paragraph("Parameter", styles["table"]), _paragraph("Value", styles["table"])]]
     data.extend(
         [_paragraph(name, styles["table"]), _paragraph(value, styles["table"])]
         for name, value in rows
@@ -1324,7 +1324,7 @@ def _reader_opening(
                         else humanize(critical.outcome)
                     )
                     if critical and snapshot.kind == "design"
-                    else "Not evaluated",
+                    else "No local numerical check evaluated",
                 ),
                 (
                     "Qualification / authority",
@@ -1334,7 +1334,10 @@ def _reader_opening(
                     "Report completeness",
                     "Input draft only; no checks run"
                     if snapshot.kind == "input_only"
-                    else f"{missing} required checks unevaluated",
+                    else "No local numerical checks scheduled; see authority and limitations"
+                    if not checks
+                    else f"{missing} scheduled required checks unevaluated"
+                    + ("; no local numerical result" if critical is None else ""),
                 ),
                 (
                     "Governing check",
@@ -1363,6 +1366,15 @@ def _reader_opening(
             styles,
         ),
     ]
+    if snapshot.kind == "design" and critical is None:
+        story.append(
+            _paragraph(
+                "The count above describes only checks scheduled in this local calculation. "
+                "It does not mean the connection is qualified; source evidence, engineering "
+                "review, or external design authority may still be required.",
+                styles["body"],
+            )
+        )
     if multirow_visual is None:
         native_visual = canonical_visual(result)
         boxes = canonical_boxes(native_visual) if native_visual is not None else []
@@ -1382,7 +1394,9 @@ def _reader_opening(
         story.append(
             _paragraph(
                 "Fixed camera views of physical geometry in the authenticated backend "
-                "snapshot. Color supplements native component IDs and shapes.",
+                "snapshot. Shaft paths are drawn where native endpoints exist; an outlined "
+                "hardware symbol marks a native center when only a plan position is available. "
+                "The report tags below map to exact native identities in the audit appendix.",
                 styles["small"],
             )
         )

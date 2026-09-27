@@ -398,7 +398,7 @@ def test_direct_native_schedule_transition_has_no_sparse_header_page(
     audit_page = next(
         index
         for index, text in enumerate(pages[2:], start=2)
-        if "Appendix B" in text and "Complete native result" in text and "Field" in text
+        if "Appendix B" in text and "Complete native result" in text and "Parameter" in text
     )
     assert len(pages[audit_page - 1].strip()) >= 500
 
@@ -414,7 +414,7 @@ def test_multirow_native_schedule_transition_has_no_sparse_input_tail(
     audit_page = next(
         index
         for index, text in enumerate(pages[2:], start=2)
-        if "Appendix B" in text and "Complete native result" in text and "Field" in text
+        if "Appendix B" in text and "Complete native result" in text and "Parameter" in text
     )
     assert len(pages[audit_page - 1].strip()) >= 500
 
