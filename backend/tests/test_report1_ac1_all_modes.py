@@ -89,9 +89,15 @@ def test_all_current_modes_export_navigable_real_pdfs_with_executed_method_adapt
     assert reader.outline
     destination_pages = []
     outline_titles = []
-    for entry in reader.outline:
-        if isinstance(entry, list):
-            continue
+
+    def destinations(entries: list[Any]) -> list[Any]:
+        return [
+            item
+            for entry in entries
+            for item in (destinations(entry) if isinstance(entry, list) else [entry])
+        ]
+
+    for entry in destinations(reader.outline):
         page_number = reader.get_destination_page_number(entry)
         assert page_number is not None
         assert entry.title is not None
@@ -102,6 +108,11 @@ def test_all_current_modes_export_navigable_real_pdfs_with_executed_method_adapt
     assert len(set(destination_pages)) >= 3
     all_text = " ".join(page.extract_text() or "" for page in reader.pages)
     early_text = " ".join(page.extract_text() or "" for page in reader.pages[:12])
+    assert "Canonical isometric" in all_text
+    assert "Engineering inputs and design basis" in all_text
+    assert "Engineering results" in all_text
+    assert "Unevaluated checks and design limitations" in all_text
+    assert "TECHNICAL AUDIT APPENDIX" in all_text
     native_result = native.get("result", native)
     displayed_length = "in" if system == "US_CUSTOMARY" else "mm"
     if family == "single-bolt":

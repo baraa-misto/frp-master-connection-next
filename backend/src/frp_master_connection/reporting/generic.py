@@ -12,12 +12,13 @@ import json
 import math
 import re
 from collections import Counter
+from datetime import UTC, datetime
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from reportlab.graphics.shapes import Circle, Drawing, Line, String
 from reportlab.lib import colors
-from reportlab.platypus import CondPageBreak, Flowable, KeepTogether
+from reportlab.platypus import CondPageBreak, Flowable, KeepTogether, PageBreak
 
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
 from frp_master_connection.reporting.flatten import flatten_unique
@@ -41,7 +42,6 @@ from frp_master_connection.reporting.pdf import (
     _add_linked_contents,
     _append_bounded_tables,
     _factor_substitution,
-    _flatten,
     _font_setup,
     _input_source_rows,
     _multirow_drawing,
@@ -54,6 +54,21 @@ from frp_master_connection.reporting.pdf import (
     _table,
     _text,
 )
+from frp_master_connection.reporting.reader_data import (
+    collect_checks,
+    governing,
+    grouped_inputs,
+    humanize,
+    load_vectors,
+    readable_value,
+    short_number,
+)
+from frp_master_connection.reporting.reader_tables import (
+    limitations_matrix,
+    loads_matrix,
+    results_matrix,
+)
+from frp_master_connection.reporting.reader_views import colored_view, component_legend
 from frp_master_connection.reporting.section import native_bolt_sections
 from frp_master_connection.reporting.snapshot import ReportSnapshot
 from frp_master_connection.reporting.units import (
@@ -1149,7 +1164,7 @@ def _method_substitution_rows(
                 ),
             ),
             ("Native demand", _quantity(record.get("demand"), system)),
-            ("Native U", _text(record.get("utilization"))),
+            ("Utilization (display)", short_number(record.get("utilization"), ratio=True)),
         ]
     if method == "NATIVE_ASCE_8_5":
         trace = record.get("native_trace")
@@ -1342,6 +1357,14 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
         or "native length units"
     )
     methods, method_records = _method_inventory(result)
+    checks = collect_checks(result)
+    critical = governing(checks)
+    unevaluated = [
+        check
+        for check in checks
+        if check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
+    ]
+    issued = datetime.fromtimestamp(snapshot.issued_at, tz=UTC).strftime("%Y-%m-%d %H:%M UTC")
     title = (
         "Submitted inputs - design not evaluated"
         if snapshot.result.get("status") == "INPUT_NOT_EVALUATED"
@@ -1351,18 +1374,85 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
     )
     story: list[Flowable] = [
         _paragraph(title, styles["title"]),
-        _paragraph(f"{snapshot.family} | Native status: {status}", styles["body"]),
+        _paragraph("1  Executive engineering summary", styles["heading"]),
         _table(
             [
                 ("Project", options.project_name),
                 ("Project number", options.project_number),
                 ("Connection ID", options.connection_id),
                 ("Revision", options.revision),
-                ("Native status", status),
-                ("Connector body material", _text(snapshot.result.get("connector_body_material"))),
-                ("Report kind", snapshot.kind),
-                ("Snapshot", snapshot.digest[:16]),
-                *_check_summary(result),
+                ("Connection family", humanize(snapshot.family)),
+                *(
+                    [
+                        (
+                            "Validation / calculation",
+                            readable_value(
+                                snapshot.result.get("reason")
+                                or snapshot.result.get("validation_issues"),
+                                system,
+                            ),
+                        )
+                    ]
+                    if snapshot.kind == "input_only"
+                    else []
+                ),
+                ("Native connection status", humanize(status)),
+                (
+                    "Numerical design status",
+                    (
+                        f"{humanize(critical.outcome)} (evaluated checks only)"
+                        if status not in {"PASS", "FAIL"}
+                        else humanize(critical.outcome)
+                    )
+                    if critical and snapshot.kind == "design"
+                    else "Not evaluated",
+                ),
+                (
+                    "Qualification / authority",
+                    humanize(status) if status not in {"PASS", "FAIL"} else "See limitations",
+                ),
+                *(
+                    [("Connector body material", _text(snapshot.result["connector_body_material"]))]
+                    if snapshot.result.get("connector_body_material")
+                    else []
+                ),
+                (
+                    "Report completeness",
+                    "Input draft only; no checks run"
+                    if snapshot.kind == "input_only"
+                    else f"{len(unevaluated)} required checks unevaluated",
+                ),
+                (
+                    "Governing check",
+                    f"{critical.name} — {critical.component}"
+                    if critical
+                    else "No evaluated numerical check",
+                ),
+                (
+                    "Governing demand",
+                    readable_value(critical.demand, system) if critical else "Not evaluated",
+                ),
+                (
+                    "Design resistance",
+                    readable_value(critical.resistance, system) if critical else "Not evaluated",
+                ),
+                (
+                    "Utilization",
+                    short_number(critical.utilization, ratio=True)
+                    if critical and critical.utilization is not None
+                    else "Not evaluated",
+                ),
+                ("Governing outcome", humanize(critical.outcome) if critical else "Not evaluated"),
+                (
+                    "External authority",
+                    "Not evaluated"
+                    if snapshot.kind == "input_only"
+                    else "Required"
+                    if snapshot.result.get("external_design_required")
+                    else "See limitation schedule",
+                ),
+                ("Calculated at", issued),
+                ("Snapshot ID", snapshot.digest[:12]),
             ],
             styles,
         ),
@@ -1375,6 +1465,27 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             styles["body"],
         )
     )
+    if snapshot.kind == "input_only":
+        issues = snapshot.result.get("validation_issues")
+        if isinstance(issues, list) and issues:
+            for index, issue in enumerate(issues[:3], start=1):
+                if isinstance(issue, dict):
+                    location = issue.get("loc")
+                    message = issue.get("msg")
+                    story.append(
+                        _paragraph(
+                            f"Validation issue {index}: {readable_value(location)} — "
+                            f"{readable_value(message)}",
+                            styles["body"],
+                        )
+                    )
+        elif snapshot.result.get("reason"):
+            story.append(
+                _paragraph(
+                    f"Validation and calculation: {readable_value(snapshot.result['reason'])}.",
+                    styles["body"],
+                )
+            )
     if snapshot.kind == "input_only":
         story.append(
             _paragraph(
@@ -1405,10 +1516,17 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 styles["body"],
             )
         )
-    if boxes:
-        story.append(_box_figure(boxes, bolts, "isometric", unit, system))
-    elif faces:
-        story.append(_face_figure(faces, bolts, "isometric", unit, system))
+    if boxes or faces:
+        story.append(_paragraph("2  Physical connection model", styles["heading"]))
+        story.append(colored_view(boxes, faces, bolts, "isometric"))
+        story.append(
+            _paragraph(
+                "Colored overview from native physical geometry. Component IDs are listed "
+                "below; color is supplementary to shape and ID.",
+                styles["small"],
+            )
+        )
+        story.append(_table(component_legend(boxes, faces, bolts), styles))
     draft_only = snapshot.result.get("status") == "INPUT_NOT_EVALUATED"
     story.append(
         _paragraph(
@@ -1430,9 +1548,11 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
     )
     if boxes:
         for view in ("elevation", "plan"):
+            story.append(colored_view(boxes, faces, bolts, view))
             story.append(_box_figure(boxes, bolts, view, unit, system))
     elif faces:
         for view in ("elevation", "plan"):
+            story.append(colored_view(boxes, faces, bolts, view))
             story.append(_face_figure(faces, bolts, view, unit, system))
     else:
         story.append(
@@ -1470,8 +1590,16 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
     interface_visuals = _native_multirow_visuals(result)
     if interface_visuals:
         story.append(_paragraph("Physical bolt-row interface dimensions", styles["heading"]))
-        for path, interface_visual in interface_visuals:
-            story.append(_paragraph(f"Native interface {path}", styles["small"]))
+        story.append(
+            _paragraph(
+                "Dimension key: e1 = loaded end distance; p = bolt pitch; g = gauge; "
+                "s+ and s- = side edge distances; hole d = hole diameter. "
+                "The plotted layout is not to scale.",
+                styles["small"],
+            )
+        )
+        for _path, interface_visual in interface_visuals:
+            story.append(_paragraph("Dimensioned physical bolt-row interface", styles["small"]))
             story.append(_multirow_drawing(interface_visual, "plan", system))
     sections = native_bolt_sections(result, system)
     if sections:
@@ -1479,33 +1607,185 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
         for bolt_id, drawing in sections:
             story.append(_paragraph(f"Native representative bolt {bolt_id}", styles["small"]))
             story.append(drawing)
-    _schedules(
-        story,
-        "Native outcome and completeness",
-        [
-            ("Location", options.location),
-            ("Prepared by", options.prepared_by),
-            ("Checked by", options.checked_by),
-            ("Distinct native methods", str(len(methods))),
-            *_key_summary(snapshot.result),
-            *_key_summary(result),
-        ],
-        styles,
-    )
-    _schedules(
-        story,
-        "Submitted engineering inputs",
-        [
-            *_input_source_rows(snapshot),
-            *flatten_unique(
-                "request",
-                snapshot.request,
-                minimum_alias_leaves=1,
-                display_units=options.display_units,
+    input_groups = grouped_inputs(snapshot.request, system)
+    story.append(_paragraph("3  Engineering inputs and design basis", styles["heading"]))
+    for index, input_group in enumerate(
+        (
+            "Connection configuration",
+            "Connected member",
+            "Support and external handoff",
+            "Connector",
+            "Bolt, hole and hardware",
+            "Bolt pattern",
+            "Materials",
+            "Environment and conditions",
+        ),
+        start=1,
+    ):
+        if input_groups.get(input_group):
+            _schedules(
+                story,
+                f"3.{index}  {input_group}",
+                input_groups[input_group],
+                styles,
+            )
+    if input_groups.get("Loads and moments"):
+        vectors = load_vectors(snapshot.request, system)
+        story.append(_paragraph("4  Submitted loads and moments", styles["heading"]))
+        if vectors:
+            story.append(loads_matrix(vectors))
+        vector_names = {name for name, *_ in vectors}
+        other_loads = [
+            (label, value)
+            for label, value in input_groups["Loads and moments"]
+            if not any(label == name or label.startswith(f"{name} /") for name in vector_names)
+        ]
+        if other_loads:
+            _schedules(story, "Additional submitted load inputs", other_loads, styles)
+    preview = result.get("preview")
+    handoff = preview.get("external_anchor_handoff") if isinstance(preview, dict) else None
+    if isinstance(handoff, dict):
+        wall_handoff = "combined_wall_wrench" in handoff
+        wrench = handoff["combined_wall_wrench"] if wall_handoff else handoff["anchor_group_wrench"]
+        axes = ("h", "v", "n") if wall_handoff else ("l", "s", "n")
+        axis_a, axis_b, axis_c = axes
+        force_key = "force_hvn" if wall_handoff else "force_lsn"
+        reference_key = "reference_hvn" if wall_handoff else "reference_lsn"
+        moment_key = "moment_hvn" if wall_handoff else "moment_lsn"
+        force = wrench[force_key]
+        reference = wrench[reference_key]
+
+        def report_coordinate(axis: str) -> float:
+            native = reference[axis]
+            quantity = PhysicalQuantity.of(str(native["value"]), Unit(native["unit"]))
+            return float(quantity.to(Unit(unit)).magnitude)
+
+        story.append(
+            _paragraph(
+                "Load path at wall reference"
+                if wall_handoff
+                else "Load path at anchor-group reference",
+                styles["heading"],
+            )
+        )
+        story.append(
+            colored_view(
+                boxes,
+                faces,
+                bolts,
+                "isometric",
+                action_force=(
+                    float(force[axis_a]["value"]),
+                    float(force[axis_b]["value"]),
+                    float(force[axis_c]["value"]),
+                ),
+                action_reference=(
+                    report_coordinate(axis_a),
+                    report_coordinate(axis_b),
+                    report_coordinate(axis_c),
+                ),
+                action_label=(
+                    "Applied force at wall reference"
+                    if wall_handoff
+                    else "Transferred force at anchor-group reference"
+                ),
+            )
+        )
+        story.append(
+            _paragraph(
+                "Arrow length is schematic; native signed force, moment and reference "
+                "values are listed below. No external resistance is calculated here.",
+                styles["small"],
+            )
+        )
+        handoff_rows = [
+            (
+                "Load case",
+                readable_value(handoff.get("load_case_id") or handoff.get("request_id"), system),
             ),
-        ],
-        styles,
-    )
+            ("Reference point " + " / ".join(axes).upper(), readable_value(reference, system)),
+            ("Force " + " / ".join(axes).upper(), readable_value(force, system)),
+            ("Moment " + " / ".join(axes).upper(), readable_value(wrench[moment_key], system)),
+            ("Demand provenance", readable_value(wrench.get("provenance"), system)),
+        ]
+        if handoff.get("load_status"):
+            handoff_rows.insert(1, ("Load status", readable_value(handoff["load_status"], system)))
+        for side in ("positive_group", "negative_group"):
+            group = handoff.get(side)
+            if isinstance(group, dict):
+                anchors = group.get("anchors")
+                handoff_rows.extend(
+                    [
+                        (f"{humanize(side)} ID", readable_value(group.get("group_id"), system)),
+                        (
+                            f"{humanize(side)} anchors",
+                            str(len(anchors)) if isinstance(anchors, list) else "Not supplied",
+                        ),
+                        (
+                            f"{humanize(side)} centroid H / V / N",
+                            readable_value(group.get("centroid_hvn"), system),
+                        ),
+                    ]
+                )
+        if not wall_handoff:
+            anchors = handoff["anchors"]
+            handoff_rows.extend(
+                [
+                    (
+                        "Anchor group ID",
+                        readable_value(result["preview"].get("anchor_group_id"), system),
+                    ),
+                    ("Anchors", str(len(anchors))),
+                    (
+                        "Anchor centroid L / S / N",
+                        readable_value(handoff["anchor_group_centroid_lsn"], system),
+                    ),
+                ]
+            )
+        story.append(CondPageBreak(235))
+        story.append(_paragraph("External concrete and anchor design handoff", styles["heading"]))
+        story.append(
+            _paragraph(
+                "Factored demand and physical anchor configuration are handed to a separate "
+                "concrete and anchor authority. Resistance is not evaluated by this report.",
+                styles["body"],
+            )
+        )
+        _append_bounded_tables(story, handoff_rows, styles)
+    if snapshot.kind != "input_only":
+        story.append(_paragraph("5  Engineering results", styles["heading"]))
+        story.append(
+            _paragraph(
+                "Each row refers to one native check. Values are shortened for reading; "
+                "exact values, method traces and source paths remain in the audit appendix.",
+                styles["small"],
+            )
+        )
+        if checks:
+            story.append(results_matrix(checks, system))
+        else:
+            story.append(_paragraph("No native check was evaluated.", styles["body"]))
+        story.append(_paragraph("6  Unevaluated checks and design limitations", styles["heading"]))
+        story.append(limitations_matrix(checks))
+        if snapshot.result.get("external_design_required"):
+            story.append(
+                _paragraph(
+                    "Concrete, anchor or other external resistance is outside this calculation. "
+                    "The native handoff records below provide demand only; no external "
+                    "resistance is inferred.",
+                    styles["body"],
+                )
+            )
+        if isinstance(snapshot.result.get("blockers"), list) and snapshot.result["blockers"]:
+            _schedules(
+                story,
+                "Native blockers requiring separate authority",
+                [
+                    (str(index), humanize(blocker))
+                    for index, blocker in enumerate(snapshot.result["blockers"], start=1)
+                ],
+                styles,
+            )
     if visual is not None:
         story.append(
             _paragraph("Canonical geometry and resolved preview records", styles["heading"])
@@ -1519,19 +1799,21 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 styles["body"],
             )
         )
-    _schedules(story, "Method and check inventory", method_records, styles)
-    story.append(
-        _paragraph(
-            "The matrix rounds values for navigation and labels the side of the exact 1.0 "
-            "limit. The listed native path leads to the full-precision demand, resistance, "
-            "factors and outcome in the complete schedule.",
-            styles["small"],
+    if snapshot.kind != "input_only":
+        story.append(
+            _paragraph("7  Executed calculation methods and substitutions", styles["heading"])
         )
-    )
-    _schedules(story, "Native check and outcome matrix", _check_matrix(result, system), styles)
+        story.append(
+            _paragraph(
+                "The matrix rounds values for navigation and labels the side of the exact 1.0 "
+                "limit. The listed native path leads to the full-precision demand, resistance, "
+                "factors and outcome in the complete schedule.",
+                styles["small"],
+            )
+        )
     eccentric = _eccentric_demand_example(result)
     if eccentric is not None:
-        path, group, scenario = eccentric
+        _path, group, scenario = eccentric
         bolt = scenario["per_bolt"][0]
         moment_force = bolt.get("moment_force")
         moment_u = (
@@ -1560,7 +1842,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             story,
             "Method identity and moment balance",
             [
-                ("Native group record", path),
+                ("Method trace ID", _text(scenario.get("scenario_id"))),
                 ("Scenario", _text(scenario.get("scenario_id"))),
                 ("Method", _text(scenario.get("method"))),
                 ("Expression", "M_ext=(x_ref-x_c)F_v-(y_ref-y_c)F_u"),
@@ -1613,6 +1895,9 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                     styles["body"],
                 )
             )
+            first_member = members[0]
+            member_end = first_member["at_member_end"]
+            first_transport = first_member["transported"][0]
             _schedules(
                 story,
                 "Executed expression and first member substitution",
@@ -1623,12 +1908,25 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                         "F_target=F_member; M_target=M_member+(r_member-r_target) cross F",
                     ),
                     ("Native demand status", _text(node_demand.get("status"))),
-                    ("First member", _text(members[0].get("member_id"))),
-                    *flatten_unique(
-                        "member",
-                        members[0],
-                        minimum_alias_leaves=1,
-                        display_units=options.display_units,
+                    ("First member", _text(first_member.get("member_id"))),
+                    ("Local u axis", readable_value(first_member["u"], system)),
+                    ("Local p axis", readable_value(first_member["p"], system)),
+                    ("Local q axis", readable_value(first_member["q"], system)),
+                    (
+                        "Native P / Qp / Qq components",
+                        readable_value(first_member["action_components_N"], system),
+                    ),
+                    ("Member-end reference", readable_value(member_end["reference"], system)),
+                    ("Member-end force", readable_value(member_end["force"], system)),
+                    ("Member-end moment", readable_value(member_end["moment"], system)),
+                    ("Transport target", readable_value(first_transport["reference_id"], system)),
+                    (
+                        "Force at target",
+                        readable_value(first_transport["wrench"]["force"], system),
+                    ),
+                    (
+                        "Moment at target",
+                        readable_value(first_transport["wrench"]["moment"], system),
                     ),
                 ],
                 styles,
@@ -1673,7 +1971,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                         _paragraph(template.explanation, styles["body"]),
                         _table(
                             [
-                                ("Native record", path),
+                                ("Check trace ID", _text(check.get("result_id"))),
                                 ("Expression", template.expression),
                                 ("Executed numerical substitution", numerical_substitution),
                                 ("Source locator", _text(check.get("source_locator"))),
@@ -1690,19 +1988,16 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                                     "Design resistance",
                                     _quantity(check.get("design_resistance"), system),
                                 ),
-                                ("Native utilization", _text(check.get("utilization"))),
+                                (
+                                    "Utilization (display)",
+                                    short_number(check.get("utilization"), ratio=True),
+                                ),
                                 ("Outcome", _text(check.get("numerical_comparison"))),
                             ],
                             styles,
                         ),
                     ]
                 )
-            )
-            _schedules(
-                story,
-                "Executed input and intermediate substitution",
-                _flatten("trace", trace),
-                styles,
             )
     other_methods = executed_records(result)
     if other_methods:
@@ -1726,7 +2021,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 story,
                 "Executed expression and native substitution",
                 [
-                    ("Native record", path),
+                    ("Method trace ID", method),
                     ("Expression", other_template.expression),
                     (
                         "Executed numerical substitution",
@@ -1739,17 +2034,45 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
                 ],
                 styles,
             )
-            _schedules(
-                story,
-                "Worked native inputs, intermediate values and result",
-                flatten_unique(
-                    "example",
-                    _method_example_data(method, record),
-                    minimum_alias_leaves=1,
-                    display_units=options.display_units,
-                ),
-                styles,
-            )
+    story.append(PageBreak())
+    story.append(_paragraph("TECHNICAL AUDIT APPENDIX — COMPLETE NATIVE RECORD", styles["heading"]))
+    story.append(
+        _paragraph(
+            "The schedules below retain exact native paths, submitted values, complete "
+            "calculation traces, source and qualification records, and full calculation identity.",
+            styles["body"],
+        )
+    )
+    _schedules(
+        story,
+        "Appendix A — Submitted request and input provenance",
+        [
+            *_input_source_rows(snapshot),
+            *flatten_unique(
+                "request",
+                snapshot.request,
+                minimum_alias_leaves=1,
+                display_units=options.display_units,
+            ),
+        ],
+        styles,
+    )
+    _schedules(
+        story,
+        "Appendix B — Native outcome and method inventory",
+        [
+            ("Location", options.location),
+            ("Prepared by", options.prepared_by),
+            ("Checked by", options.checked_by),
+            ("Distinct native methods", str(len(methods))),
+            *_key_summary(snapshot.result),
+            *_key_summary(result),
+            *_check_summary(result),
+            *method_records,
+            *_check_matrix(result, system),
+        ],
+        styles,
+    )
     _schedules(
         story,
         "Complete native results, traces, materials and limitations",
@@ -1777,28 +2100,33 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             ),
             styles,
         )
-    _schedules(
-        story,
-        "Calculation identity",
-        [
-            ("Snapshot SHA-256", snapshot.digest),
-            ("Calculation time (UTC epoch)", str(snapshot.issued_at)),
-            ("Report preparation notes", options.notes),
-        ],
-        styles,
+    story.append(
+        KeepTogether(
+            [
+                _paragraph("Calculation identity", styles["heading"]),
+                _table(
+                    [
+                        ("Snapshot SHA-256", snapshot.digest),
+                        ("Calculation time (UTC epoch)", str(snapshot.issued_at)),
+                        ("Report preparation notes", options.notes),
+                    ],
+                    styles,
+                ),
+            ]
+        )
     )
     stream = io.BytesIO()
     document = _ReportDocument(
         stream,
         pagesize=PAPER_SIZES[options.paper],
         footer=f"{options.connection_id or snapshot.family} | {options.revision or 'No revision'} "
-        f"| {status} | {snapshot.digest[:12]}",
+        f"| {humanize(status)} | {snapshot.digest[:12]}",
     )
     document.title = title
     document.author = options.prepared_by or "FRP Master Connection"
     document.subject = f"{snapshot.family}: native result and explicit design limits"
     _add_linked_contents(story, styles)
-    document.build(story, canvasmaker=_NumberedCanvas)
+    document.multiBuild(story, canvasmaker=_NumberedCanvas)
     return stream.getvalue()
 
 

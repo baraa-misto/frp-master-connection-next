@@ -15,6 +15,7 @@ from frp_master_connection.api.app import create_app
 from frp_master_connection.api.connector_material_native import FAMILIES
 from frp_master_connection.api.ssmc import illustrative_ssmc
 from frp_master_connection.config import ApplicationEnvironment, AppSettings
+from frp_master_connection.reporting.reader_data import humanize
 from frp_master_connection.reporting.snapshot import SnapshotError, SnapshotSigner
 from frp_master_connection.security import TrustedIdentity
 from tests.api.test_connector_materials import native_payload
@@ -476,9 +477,7 @@ def test_each_native_family_exports_an_actual_canonical_pdf(family: str) -> None
     assert len(pdf.pages) > 1
     first = pdf.pages[0].extract_text() or ""
     assert family in first
-    assert "Canonical isometric" in first or "Canonical isometric" in (
-        pdf.pages[1].extract_text() or ""
-    )
+    assert "Canonical isometric" in " ".join(page.extract_text() or "" for page in pdf.pages[:6])
     assert design.headers["X-Report-Kind"] == "design"
     if family == "tee-connector":
         # Tee resistance lives in a nested design under the preview envelope.
@@ -549,7 +548,7 @@ def test_ssmc_analytical_pdf_keeps_its_source_limits_and_native_geometry() -> No
     pdf = PdfReader(io.BytesIO(report.content))
     cover = pdf.pages[0].extract_text() or ""
     assert "ENGINEERING_REVIEW_REQUIRED" in cover
-    assert "Canonical isometric" in cover
+    assert "Canonical isometric" in " ".join(page.extract_text() or "" for page in pdf.pages[:6])
     assert design["whole_connection_status"] == "ENGINEERING_REVIEW_REQUIRED"
     full_text = "".join(page.extract_text() or "" for page in pdf.pages).replace("\n", "")
     first_cut = design["result"]["cuts"]["cuts"][0]
@@ -582,7 +581,9 @@ def test_conditional_stainless_pdf_uses_its_native_status_and_selection() -> Non
     assert report.status_code == 200
     pdf = PdfReader(io.BytesIO(report.content))
     cover = pdf.pages[0].extract_text() or ""
-    assert f"Native status: {native['status']}" in cover
+    assert "Numerical design status" in cover
+    assert isinstance(native["status"], str)
+    assert humanize(native["status"]) in cover
     assert "SS316" in cover
     report_text = "".join(page.extract_text() or "" for page in pdf.pages)
     assert "_calculation_query_parameters.connector_body_material" in report_text.replace("\n", "")
@@ -829,6 +830,10 @@ def test_unrun_client_draft_exports_as_unvalidated_input_only_pdf(family: str) -
     assert "Submitted inputs - design not evaluated" in text
     assert "INPUT_NOT_EVALUATED" in text
     assert "unvalidated user draft" in text
+    assert "Client draft captured without native validation or calculation" in (
+        PdfReader(io.BytesIO(report.content)).pages[0].extract_text() or ""
+    )
+    assert "7  Executed calculation methods and substitutions" not in text
     assert "result.client_draft" not in text
     assert "request.client_draft.connected_length" in text
     assert "No native geometry was calculated" in text

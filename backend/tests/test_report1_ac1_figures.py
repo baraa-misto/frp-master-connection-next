@@ -15,12 +15,9 @@ from tests.test_report1_ac1_navigation import _direct_pdf
 
 def test_direct_physical_boundary_and_bolt_axis_views_show_native_witnesses() -> None:
     reader = _direct_pdf("LETTER")
-    detail = " ".join(
-        page.extract_text() or ""
-        for page in reader.pages
-        if "native local boundary detail" in (page.extract_text() or "")
-    )
+    detail = " ".join(page.extract_text() or "" for page in reader.pages[:12])
     for witness in (
+        "native local boundary detail",
         "reverse end 2 in",
         "forward e1 2 in",
         "e3 1.5 in",
@@ -54,7 +51,7 @@ def test_multirow_plan_witnesses_track_changed_native_pitch_and_gauge() -> None:
             return report.content
 
     reader = PdfReader(io.BytesIO(asyncio.run(run())))
-    drawing = " ".join((reader.pages[index].extract_text() or "") for index in (2, 3))
+    drawing = " ".join(page.extract_text() or "" for page in reader.pages[2:8])
     for witness in (
         "e1 2 in",
         "p 1.75 in",

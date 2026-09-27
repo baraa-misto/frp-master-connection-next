@@ -280,7 +280,7 @@ def test_direct_summary_does_not_round_a_small_exceedance_to_100_percent(
     calculated["utilization"] = "1.0000000000001"
     pdf = render_single_bolt_pdf(_snapshot("single-bolt", result), ReportOptions())
     text = "".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages)
-    assert "100.000% (above 1.0; exact native U in check detail)" in text.replace("\n", "")
+    assert "1.0000000000001 (exceeds 1.0)" in text.replace("\n", "")
     assert "1.0000000000001" in text.replace("\n", "")
 
 
@@ -304,7 +304,7 @@ def test_multirow_si_and_mat1_wrapper_are_printed(
 def test_empty_renderer_output_is_rejected(
     native_reports: tuple[dict[str, Any], dict[str, Any]], monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(_ReportDocument, "build", lambda *args, **kwargs: None)
+    monkeypatch.setattr(_ReportDocument, "multiBuild", lambda *args, **kwargs: None)
     with pytest.raises(RuntimeError, match="did not produce a PDF"):
         render_single_bolt_pdf(_snapshot("single-bolt", native_reports[0]), ReportOptions())
 
@@ -395,12 +395,12 @@ def test_direct_native_schedule_transition_has_no_sparse_header_page(
     )
     pages = [page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages]
     assert "Alternate display-unit equivalents" not in " ".join(pages)
-    geometry_page = next(
+    audit_page = next(
         index
         for index, text in enumerate(pages[2:], start=2)
-        if "Resolved layer geometry" in text and "Field" in text
+        if "Appendix B" in text and "Complete native result" in text and "Field" in text
     )
-    assert len(pages[geometry_page - 1].strip()) >= 500
+    assert len(pages[audit_page - 1].strip()) >= 500
 
 
 def test_multirow_native_schedule_transition_has_no_sparse_input_tail(
@@ -411,12 +411,12 @@ def test_multirow_native_schedule_transition_has_no_sparse_input_tail(
         ReportOptions(display_units="US_CUSTOMARY"),
     )
     pages = [page.extract_text() or "" for page in PdfReader(io.BytesIO(pdf)).pages]
-    geometry_page = next(
+    audit_page = next(
         index
         for index, text in enumerate(pages[2:], start=2)
-        if "Resolved geometry and load assignment" in text and "Field" in text
+        if "Appendix B" in text and "Complete native result" in text and "Field" in text
     )
-    assert len(pages[geometry_page - 1].strip()) >= 500
+    assert len(pages[audit_page - 1].strip()) >= 500
 
 
 def test_direct_mat1_authority_precedes_calculation_identity(

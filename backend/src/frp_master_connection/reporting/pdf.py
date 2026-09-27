@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import io
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from decimal import Decimal
 from itertools import pairwise
 from pathlib import Path
@@ -25,7 +26,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import (
     BaseDocTemplate,
-    CondPageBreak,
     Flowable,
     Frame,
     PageBreak,
@@ -34,8 +34,10 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+from reportlab.platypus.tableofcontents import TableOfContents
 
 from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
+from frp_master_connection.reporting.reader_data import humanize, readable_value, short_number
 from frp_master_connection.reporting.snapshot import ReportSnapshot
 from frp_master_connection.reporting.substitutions import single_native_substitutions
 from frp_master_connection.reporting.units import (
@@ -217,6 +219,10 @@ def _text(value: object) -> str:
         return "Yes" if value else "No"
     if isinstance(value, str):
         return value if value else "Not supplied"
+    if isinstance(value, dict | list):
+        from frp_master_connection.reporting.reader_data import readable_value
+
+        return readable_value(value)
     return str(value)
 
 
@@ -900,6 +906,9 @@ class _ReportDocument(BaseDocTemplate):
         frame = Frame(48, 46, pagesize[0] - 96, pagesize[1] - 100, id="normal")
         self.addPageTemplates(PageTemplate(id="report", frames=[frame], onPage=self._on_page))
 
+    def beforeDocument(self) -> None:
+        self._outline_count = 0
+
     def _on_page(self, canvas: Canvas, document: BaseDocTemplate) -> None:
         canvas.saveState()
         canvas.setFont("ReportVera", 8)
@@ -924,7 +933,11 @@ class _ReportDocument(BaseDocTemplate):
             self._outline_count += 1
             key = f"section-{self._outline_count}"
             self.canv.bookmarkPage(key)
-            self.canv.addOutlineEntry(flowable.getPlainText(), key, level=0)
+            title = flowable.getPlainText()
+            first_word = title.split(" ", 1)[0]
+            level = 0 if first_word.isdigit() or title.startswith(("Appendix", "TECHNICAL")) else 1
+            self.canv.addOutlineEntry(title, key, level=level)
+            self.notify("TOCEntry", (level, escape(title), self.page, key))
 
     def afterPage(self) -> None:
         if self.page > MAX_REPORT_PAGES:
@@ -1094,7 +1107,7 @@ def _append_bounded_tables(
 
 
 def _add_linked_contents(story: list[Flowable], styles: dict[str, ParagraphStyle]) -> None:
-    """Link the reader-facing contents to the same numbered PDF outline bookmarks."""
+    """Insert an indexed, linked contents with actual page numbers."""
 
     headings = [
         flowable.getPlainText()
@@ -1103,45 +1116,46 @@ def _add_linked_contents(story: list[Flowable], styles: dict[str, ParagraphStyle
     ]
     if len(headings) < 5:
         return
-    contents: list[Flowable] = [PageBreak(), _paragraph("Contents", styles["title"])]
-    entry_style = ParagraphStyle(
-        "ReportContentsEntry", parent=styles["small"], fontSize=8.7, leading=11, spaceAfter=0
+    major = ParagraphStyle(
+        "ReportContentsMajor",
+        parent=styles["small"],
+        fontName="ReportVeraBold",
+        fontSize=8.6,
+        leading=10,
+        leftIndent=0,
+        rightIndent=35,
+        spaceBefore=1,
     )
-    entries = [
-        Paragraph(f'<link href="#section-{index}">{escape(title)}</link>', entry_style)
-        for index, title in enumerate(headings, start=1)
-    ]
-    rows: list[list[Paragraph | str]] = []
-    for offset in range(0, len(entries), 2):
-        rows.append([entries[offset], entries[offset + 1] if offset + 1 < len(entries) else ""])
-    contents_table = Table(rows, colWidths=[242.5, 242.5], hAlign="LEFT", splitByRow=1)
-    contents_table.setStyle(
-        TableStyle(
+    minor = ParagraphStyle(
+        "ReportContentsMinor",
+        parent=styles["small"],
+        fontSize=8,
+        leading=9.5,
+        leftIndent=18,
+        rightIndent=35,
+        spaceBefore=0,
+    )
+    contents = TableOfContents(
+        levelStyles=[major, minor],
+        dotsMinLevel=1,
+        tableStyle=TableStyle(
             [
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 2),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 5),
-                ("TOPPADDING", (0, 0), (-1, -1), 3),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 1),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
             ]
-        )
-    )
-    contents.append(contents_table)
-    contents.append(PageBreak())
-    first_figure = next(
-        (index for index, flowable in enumerate(story) if isinstance(flowable, Drawing)),
-        None,
-    )
-    first_heading = next(
-        (
-            index
-            for index, flowable in enumerate(story)
-            if isinstance(flowable, Paragraph) and flowable.style.name.startswith("ReportHeading")
         ),
-        len(story),
     )
-    insert_at = first_figure + 1 if first_figure is not None else first_heading
-    story[insert_at:insert_at] = contents
+    cover_table = next(
+        (index for index, flowable in enumerate(story) if isinstance(flowable, Table)), 0
+    )
+    story[cover_table + 1 : cover_table + 1] = [
+        PageBreak(),
+        _paragraph("Contents", styles["title"]),
+        contents,
+        PageBreak(),
+    ]
 
 
 def _quantity(value: object, system: DisplayUnits = "INHERIT") -> str:
@@ -1245,6 +1259,189 @@ def _append_result_unit_equivalents(
     _append_bounded_tables(story, rows, styles)
 
 
+def _reader_opening(
+    snapshot: ReportSnapshot,
+    options: ReportOptions,
+    result: dict[str, Any],
+    status: str,
+    system: DisplayUnits,
+    styles: dict[str, ParagraphStyle],
+    *,
+    multirow_visual: dict[str, Any] | None = None,
+) -> list[Flowable]:
+    """Shared engineer-readable front matter for the specialized Direct modes."""
+
+    from frp_master_connection.reporting.geometry import (
+        canonical_bolt_points,
+        canonical_boxes,
+        canonical_faces,
+        canonical_visual,
+    )
+    from frp_master_connection.reporting.reader_data import (
+        collect_checks,
+        governing,
+        humanize,
+        readable_value,
+        short_number,
+    )
+    from frp_master_connection.reporting.reader_views import (
+        colored_view,
+        component_legend,
+        multirow_physical_geometry,
+    )
+
+    checks = collect_checks(result)
+    critical = governing(checks)
+    missing = sum(
+        check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
+        for check in checks
+    )
+    issued = datetime.fromtimestamp(snapshot.issued_at, tz=UTC).strftime("%Y-%m-%d %H:%M UTC")
+    story: list[Flowable] = [
+        _paragraph(
+            "Inputs and model report — design not evaluated"
+            if snapshot.kind == "input_only"
+            else "Connection calculation report",
+            styles["title"],
+        ),
+        _paragraph(f"Status: {humanize(status)}", styles["small"]),
+        _paragraph("1  Executive engineering summary", styles["heading"]),
+        _table(
+            [
+                ("Project", options.project_name),
+                ("Project number", options.project_number),
+                ("Connection ID", options.connection_id or _text(result.get("connection_id"))),
+                ("Revision", options.revision),
+                ("Connection family", humanize(snapshot.family)),
+                ("Native connection status", humanize(status)),
+                (
+                    "Numerical design status",
+                    (
+                        f"{humanize(critical.outcome)} (evaluated checks only)"
+                        if status not in {"PASS", "FAIL"}
+                        else humanize(critical.outcome)
+                    )
+                    if critical and snapshot.kind == "design"
+                    else "Not evaluated",
+                ),
+                (
+                    "Qualification / authority",
+                    humanize(status) if status not in {"PASS", "FAIL"} else "See limitations",
+                ),
+                (
+                    "Report completeness",
+                    "Input draft only; no checks run"
+                    if snapshot.kind == "input_only"
+                    else f"{missing} required checks unevaluated",
+                ),
+                (
+                    "Governing check",
+                    f"{critical.name} — {critical.component}"
+                    if critical
+                    else "No evaluated numerical check",
+                ),
+                (
+                    "Governing demand",
+                    readable_value(critical.demand, system) if critical else "Not evaluated",
+                ),
+                (
+                    "Design resistance",
+                    readable_value(critical.resistance, system) if critical else "Not evaluated",
+                ),
+                (
+                    "Utilization",
+                    short_number(critical.utilization, ratio=True)
+                    if critical and critical.utilization is not None
+                    else "Not evaluated",
+                ),
+                ("Governing outcome", humanize(critical.outcome) if critical else "Not evaluated"),
+                ("Calculated at", issued),
+                ("Snapshot ID", snapshot.digest[:12]),
+            ],
+            styles,
+        ),
+    ]
+    if multirow_visual is None:
+        native_visual = canonical_visual(result)
+        boxes = canonical_boxes(native_visual) if native_visual is not None else []
+        faces = canonical_faces(native_visual) if native_visual is not None else []
+        bolts = canonical_bolt_points(native_visual) if native_visual is not None else []
+    else:
+        boxes, bolts = multirow_physical_geometry(multirow_visual)
+        faces = []
+    story.append(_paragraph("2  Physical connection model", styles["heading"]))
+    if snapshot.kind == "input_only":
+        story.append(_paragraph("SUBMITTED GEOMETRY — NOT VALIDATED", styles["body"]))
+    if boxes or faces:
+        for view in ("isometric", "elevation", "plan"):
+            story.append(colored_view(boxes, faces, bolts, view))
+            if view == "isometric":
+                story.append(_paragraph("Isometric - not to scale", styles["caption"]))
+        story.append(
+            _paragraph(
+                "Fixed camera views of physical geometry in the authenticated backend "
+                "snapshot. Color supplements native component IDs and shapes.",
+                styles["small"],
+            )
+        )
+        story.append(_table(component_legend(boxes, faces, bolts), styles))
+    return story
+
+
+def _reader_engineering_sections(
+    snapshot: ReportSnapshot,
+    result: dict[str, Any],
+    system: DisplayUnits,
+    styles: dict[str, ParagraphStyle],
+) -> list[Flowable]:
+    from frp_master_connection.reporting.reader_data import (
+        collect_checks,
+        grouped_inputs,
+        load_vectors,
+    )
+    from frp_master_connection.reporting.reader_tables import (
+        limitations_matrix,
+        loads_matrix,
+        results_matrix,
+    )
+
+    story: list[Flowable] = []
+    checks = collect_checks(result)
+    groups = grouped_inputs(snapshot.request, system)
+    story.append(_paragraph("3  Engineering inputs and design basis", styles["heading"]))
+    for index, group in enumerate(
+        (
+            "Connection configuration",
+            "Connected member",
+            "Support and external handoff",
+            "Connector",
+            "Bolt, hole and hardware",
+            "Bolt pattern",
+            "Materials",
+            "Environment and conditions",
+        ),
+        start=1,
+    ):
+        if groups.get(group):
+            story.append(_paragraph(f"3.{index}  {group}", styles["heading"]))
+            _append_bounded_tables(story, groups[group], styles)
+    if groups.get("Loads and moments"):
+        story.append(_paragraph("4  Submitted loads and moments", styles["heading"]))
+        vectors = load_vectors(snapshot.request, system)
+        if vectors:
+            story.append(loads_matrix(vectors))
+        _append_bounded_tables(story, groups["Loads and moments"], styles)
+    if snapshot.kind != "input_only":
+        story.append(_paragraph("5  Engineering results", styles["heading"]))
+        if checks:
+            story.append(results_matrix(checks, system))
+        else:
+            story.append(_paragraph("No native numerical check was evaluated.", styles["body"]))
+        story.append(_paragraph("6  Unevaluated checks and design limitations", styles["heading"]))
+        story.append(limitations_matrix(checks))
+    return story
+
+
 def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> bytes:
     """Render all native single-bolt inputs, check traces and canonical views."""
 
@@ -1258,83 +1455,19 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
     if not isinstance(result, dict):
         raise ReportingCoverageError("Native single-bolt result is unavailable")
     styles = _styles()
-    story: list[Flowable] = []
     status = _text(snapshot.result.get("overall_status", result.get("aggregate_status")))
     checks = result.get("results", [])
     if not isinstance(checks, list):
         raise ReportingCoverageError("Native check inventory is malformed")
-    calculated = [
-        check
-        for check in checks
-        if isinstance(check, dict) and check.get("availability") == "CALCULATED"
-    ]
-    ratios = [
-        (Decimal(str(check["utilization"])), str(check["plan"]["check_id"]))
-        for check in calculated
-        if check.get("utilization") is not None
-    ]
-    max_ratio = max(ratios, default=None)
     title = (
         "Inputs and model report - design not evaluated"
         if snapshot.kind == "input_only"
         else "Connection calculation report"
     )
-    story.append(_paragraph(title, styles["title"]))
-    story.append(_paragraph(f"Single-bolt direct connection | Status: {status}", styles["body"]))
-    story.append(
-        _table(
-            [
-                ("Calculated checks", str(len(calculated))),
-                (
-                    "Required checks not evaluated",
-                    str(
-                        sum(
-                            bool(check.get("plan", {}).get("required"))
-                            and check.get("availability") != "CALCULATED"
-                            for check in checks
-                            if isinstance(check, dict)
-                        )
-                    ),
-                ),
-                (
-                    "Highest calculated utilization",
-                    (
-                        f"{max_ratio[0] * 100:.3f}% ({_ratio_side(max_ratio[0])}; "
-                        f"exact native U in check detail) - {max_ratio[1]}"
-                        if max_ratio is not None
-                        else "None; no resistance evaluated"
-                    ),
-                ),
-                ("Calculation case", _text(result.get("load_combination_id"))),
-            ],
-            styles,
-        )
-    )
-    if status not in {"PASS", "FAIL"}:
-        story.append(
-            _paragraph(
-                "Incomplete design - engineering review and source evidence may be required. "
-                "This report records the identified calculation only.",
-                styles["body"],
-            )
-        )
-    story.append(
-        _table(
-            [
-                ("Project", options.project_name),
-                ("Project number", options.project_number),
-                ("Connection ID", options.connection_id),
-                ("Location", options.location),
-                ("Revision", options.revision),
-                ("Prepared by", options.prepared_by),
-                ("Checked by", options.checked_by),
-            ],
-            styles,
-        )
-    )
+    story = _reader_opening(snapshot, options, result, status, system, styles)
     if options.notes:
         story.append(_paragraph(f"Project notes: {options.notes}", styles["small"]))
-    story.append(_paragraph("Scope and geometry", styles["heading"]))
+    story.append(_paragraph("Scope and dimensioned geometry", styles["heading"]))
     story.append(
         _paragraph(
             "The direct connection transfers the submitted action through the selected bolt "
@@ -1347,15 +1480,6 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
     visual = result.get("visualization")
     if not isinstance(visual, dict):
         raise ReportingCoverageError("Canonical native visualization is missing")
-    for view in ("isometric", "elevation", "plan"):
-        story.append(_drawing(visual, view))
-        story.append(
-            _paragraph(
-                f"Canonical {view} projection; overall extent is derived from backend box "
-                "geometry. Deferred heel/junction features are listed in the input schedule.",
-                styles["caption"],
-            )
-        )
     direct_layers = result.get("resolved_layers")
     if isinstance(direct_layers, list) and isinstance(visual.get("bolt"), dict):
         story.append(
@@ -1366,33 +1490,8 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                 raise ReportingCoverageError("Direct physical layer is malformed")
             story.append(_direct_layer_detail(layer, visual["bolt"], system))
         story.append(_direct_bolt_axis(visual, direct_layers, system))
-    story.append(_paragraph("Submitted and resolved input schedule", styles["heading"]))
-    story.append(_table(_input_source_rows(snapshot), styles))
-    story.append(
-        _paragraph(
-            "Every scalar submitted field is shown with its request path. Blank values mean "
-            "not supplied; geometry and design values are not inferred from the drawing.",
-            styles["small"],
-        )
-    )
-    story.append(_table(_flatten("request", snapshot.request), styles))
-    if options.display_units != "INHERIT":
-        input_equivalents = converted_quantity_rows(snapshot.request, options.display_units)
-        if input_equivalents:
-            story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
-            story.append(_table(input_equivalents, styles))
-    for heading, key in (
-        ("Materials and hardware", "material_assignments"),
-        ("Resolved layer geometry", "resolved_layers"),
-        ("Load assignment and transport", "source_action_trace"),
-        ("Resolved bolt demand", "resolved_demand"),
-    ):
-        story.append(CondPageBreak(90))
-        story.append(
-            _paragraph(heading, styles["heading"].clone("ReportHeadingSchedule", keepWithNext=0))
-        )
-        story.append(_table(_flatten(key, result.get(key)), styles))
-    story.append(_paragraph("Native check results and executed equations", styles["heading"]))
+    story.extend(_reader_engineering_sections(snapshot, result, system, styles))
+    story.append(_paragraph("7  Native check equations and substitutions", styles["heading"]))
     resolved_layers = result.get("resolved_layers", [])
     layers_by_id = (
         {
@@ -1447,11 +1546,16 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                     ("Native expression", template.expression if evaluated else "Not executed"),
                     *worked_rows,
                     *factor_rows,
-                    ("Demand", _quantity(check.get("demand"), system)),
-                    ("Nominal resistance", _quantity(check.get("nominal_resistance"), system)),
-                    ("Design resistance", _quantity(check.get("design_resistance"), system)),
-                    ("Native utilization", _text(check.get("utilization"))),
-                    ("Outcome", _text(check.get("numerical_comparison"))),
+                    ("Demand", readable_value(check.get("demand"), system)),
+                    ("Nominal resistance", readable_value(check.get("nominal_resistance"), system)),
+                    ("Design resistance", readable_value(check.get("design_resistance"), system)),
+                    (
+                        "Utilization (display)",
+                        short_number(check.get("utilization"), ratio=True)
+                        if evaluated
+                        else "Not evaluated",
+                    ),
+                    ("Outcome", humanize(check.get("numerical_comparison"))),
                     (
                         "Reason codes",
                         ", ".join(str(x) for x in plan.get("applicability_reason_codes", [])),
@@ -1460,13 +1564,6 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                 styles,
             )
         )
-        if evaluated:
-            story.append(
-                _paragraph(
-                    "Executed numerical substitution and intermediate trace", styles["small"]
-                )
-            )
-            story.append(_table(_flatten("trace", check["equation_trace"]), styles))
     story.append(_paragraph("Coverage and limitations", styles["heading"]))
     story.append(
         _table(
@@ -1481,11 +1578,31 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
                     ", ".join(str(x) for x in result.get("qualification_flags", [])),
                 ),
                 ("Warnings", ", ".join(str(x) for x in result.get("warnings", []))),
-                ("Issues", "; ".join(str(x) for x in result.get("issues", []))),
+                ("Issues", readable_value(result.get("issues", []), system)),
             ],
             styles,
         )
     )
+    story.append(PageBreak())
+    story.append(_paragraph("TECHNICAL AUDIT APPENDIX — COMPLETE NATIVE RECORD", styles["heading"]))
+    story.append(
+        _paragraph(
+            "Exact submitted paths, native calculation records, source state and full "
+            "precision are retained below.",
+            styles["body"],
+        )
+    )
+    story.append(_paragraph("Appendix A — Submitted request and provenance", styles["heading"]))
+    _append_bounded_tables(
+        story, [*_input_source_rows(snapshot), *_flatten("request", snapshot.request)], styles
+    )
+    story.append(_paragraph("Appendix B — Complete native result", styles["heading"]))
+    _append_bounded_tables(story, _flatten("result", result), styles)
+    if options.display_units != "INHERIT":
+        input_equivalents = converted_quantity_rows(snapshot.request, options.display_units)
+        if input_equivalents:
+            story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
+            _append_bounded_tables(story, input_equivalents, styles)
     _append_result_unit_equivalents(story, snapshot, options, styles)
     if result is not snapshot.result:
         story.append(_paragraph("MAT1 material and condition authority", styles["heading"]))
@@ -1521,14 +1638,14 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
         pagesize=PAPER_SIZES[options.paper],
         footer=(
             f"{options.connection_id or 'Connection'} | "
-            f"{options.revision or 'No revision'} | {status} | {snapshot.digest[:12]}"
+            f"{options.revision or 'No revision'} | {humanize(status)} | {snapshot.digest[:12]}"
         ),
     )
     document.title = title
     document.author = options.prepared_by or "FRP Master Connection"
     document.subject = "Native connection calculation with explicit design limits"
     _add_linked_contents(story, styles)
-    document.build(story, canvasmaker=_NumberedCanvas)
+    document.multiBuild(story, canvasmaker=_NumberedCanvas)
     output = stream.getvalue()
     if not output.startswith(b"%PDF-"):
         raise RuntimeError("REPORT1 renderer did not produce a PDF")
@@ -1565,50 +1682,20 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         )
     )
     styles = _styles()
-    story: list[Flowable] = [
-        _paragraph(
-            "Inputs and model report - design not evaluated"
-            if snapshot.kind == "input_only"
-            else "Connection calculation report",
-            styles["title"],
-        ),
-        _paragraph(f"Direct multi-row connection | Status: {status}", styles["body"]),
-        _table(
-            [
-                ("Project", options.project_name),
-                ("Project number", options.project_number),
-                ("Connection ID", options.connection_id or _text(result.get("connection_id"))),
-                ("Revision", options.revision),
-                (
-                    "Evaluation",
-                    "None" if snapshot.kind == "input_only" else "Native multi-row design",
-                ),
-                (
-                    "Calculated check count",
-                    str(len(calculation.get("calculated_check_ids", [])))
-                    if isinstance(calculation, dict)
-                    else "0",
-                ),
-                (
-                    "Incomplete check IDs",
-                    ", ".join(calculation.get("incomplete_check_ids", []))
-                    if isinstance(calculation, dict)
-                    else "Design not run",
-                ),
-            ],
-            styles,
-        ),
-        _paragraph("Load path and canonical geometry", styles["heading"]),
-        _paragraph(
-            "The submitted connection actions are assigned to the physical rows, bolt lines "
-            "and FRP layers by the native distribution method recorded below. Local bolt, "
-            "bearing, net-tension, inter-row and block paths are represented only where "
-            "the backend executed or explicitly classified them. Whole-member and source "
-            "qualification limitations remain visible.",
-            styles["body"],
-        ),
-    ]
     visual = preview["visualization"]
+    story = _reader_opening(
+        snapshot, options, result, status, system, styles, multirow_visual=visual
+    )
+    story.append(_paragraph("Native dimensioned bolt layout", styles["heading"]))
+    story.append(
+        _paragraph(
+            "The following witnesses identify the native boundary, row, gauge, bolt and "
+            "hole dimensions. e1 is loaded end distance; p is bolt pitch; g is gauge; "
+            "s+ and s- are side edge distances; hole d is hole diameter. "
+            "All figures are not to scale.",
+            styles["body"],
+        )
+    )
     for view in ("isometric", "plan", "elevation"):
         story.append(_multirow_drawing(visual, view, system))
         story.append(
@@ -1618,49 +1705,9 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                 styles["caption"],
             )
         )
-    story.append(_paragraph("Submitted inputs and selected conditions", styles["heading"]))
-    story.append(_table(_input_source_rows(snapshot), styles))
-    story.append(_table(_flatten("request", snapshot.request), styles))
-    if options.display_units != "INHERIT":
-        input_equivalents = converted_quantity_rows(snapshot.request, options.display_units)
-        if input_equivalents:
-            story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
-            story.append(_table(input_equivalents, styles))
-    story.append(CondPageBreak(90))
-    story.append(
-        _paragraph(
-            "Resolved geometry and load assignment",
-            styles["heading"].clone("ReportHeadingSchedule", keepWithNext=0),
-        )
-    )
-    story.append(_table(_flatten("preview", preview), styles))
-    for key, title in (
-        ("automatic_demand_result", "Automatic demand assignment"),
-        ("automatic_handoff_results", "Bolt and layer handoff"),
-        ("automatic_group_mode_integration", "Group-mode integration"),
-    ):
-        if result.get(key) is not None:
-            story.append(_paragraph(title, styles["heading"]))
-            story.append(_table(_flatten(key, result[key]), styles))
+    story.extend(_reader_engineering_sections(snapshot, result, system, styles))
     if isinstance(calculation, dict):
-        story.append(_paragraph("Complete native check matrix", styles["heading"]))
-        story.append(
-            _table(
-                [
-                    (
-                        str(check.get("result_id")),
-                        f"{check.get('limit_state')} | {check.get('availability')} | "
-                        f"demand {_quantity(check.get('demand'), system)} | "
-                        f"R_d {_quantity(check.get('design_resistance'), system)} | "
-                        f"UR {_text(check.get('utilization'))} | "
-                        f"{check.get('numerical_comparison')}",
-                    )
-                    for check in checks
-                    if isinstance(check, dict)
-                ],
-                styles,
-            )
-        )
+        story.append(_paragraph("7  Native check equations and substitutions", styles["heading"]))
         for check in checks:
             if not isinstance(check, dict):
                 raise ReportingCoverageError("Multi-row native check record is malformed")
@@ -1718,39 +1765,54 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                                 )
                             ),
                         ),
-                        ("Demand", _quantity(check.get("demand"), system)),
+                        ("Demand", readable_value(check.get("demand"), system)),
                         (
                             "Nominal resistance",
-                            _quantity(check.get("equation_nominal_resistance"), system),
+                            readable_value(check.get("equation_nominal_resistance"), system),
                         ),
                         (
                             "Adjusted resistance",
-                            _quantity(check.get("connection_adjusted_nominal_resistance"), system),
+                            readable_value(
+                                check.get("connection_adjusted_nominal_resistance"), system
+                            ),
                         ),
-                        ("Design resistance", _quantity(check.get("design_resistance"), system)),
-                        ("Native utilization", _text(check.get("utilization"))),
-                        ("Outcome", _text(check.get("numerical_comparison"))),
-                        ("Qualification", _text(check.get("qualification"))),
+                        (
+                            "Design resistance",
+                            readable_value(check.get("design_resistance"), system),
+                        ),
+                        (
+                            "Utilization (display)",
+                            short_number(check.get("utilization"), ratio=True)
+                            if evaluated
+                            else "Not evaluated",
+                        ),
+                        ("Outcome", humanize(check.get("numerical_comparison"))),
+                        ("Qualification", humanize(check.get("qualification"))),
                         ("Warnings", _text(check.get("warnings"))),
                     ],
                     styles,
                 )
             )
-            if evaluated:
-                story.append(
-                    _paragraph("Executed numerical inputs and intermediate values", styles["small"])
-                )
-                story.append(_table(_flatten("trace", check["equation_trace"]), styles))
-        story.append(_paragraph("Coverage and limitations", styles["heading"]))
-        story.append(
-            _table(
-                _flatten(
-                    "calculation",
-                    {key: value for key, value in calculation.items() if key != "results"},
-                ),
-                styles,
-            )
+    story.append(PageBreak())
+    story.append(_paragraph("TECHNICAL AUDIT APPENDIX — COMPLETE NATIVE RECORD", styles["heading"]))
+    story.append(
+        _paragraph(
+            "Exact submitted paths, native calculation records, source state and full "
+            "precision are retained below.",
+            styles["body"],
         )
+    )
+    story.append(_paragraph("Appendix A — Submitted request and provenance", styles["heading"]))
+    _append_bounded_tables(
+        story, [*_input_source_rows(snapshot), *_flatten("request", snapshot.request)], styles
+    )
+    story.append(_paragraph("Appendix B — Complete native result", styles["heading"]))
+    _append_bounded_tables(story, _flatten("result", result), styles)
+    if options.display_units != "INHERIT":
+        input_equivalents = converted_quantity_rows(snapshot.request, options.display_units)
+        if input_equivalents:
+            story.append(_paragraph("Alternate display-unit equivalents", styles["heading"]))
+            _append_bounded_tables(story, input_equivalents, styles)
     if result is not snapshot.result:
         story.append(_paragraph("MAT1 material and condition authority", styles["heading"]))
         story.append(
@@ -1788,14 +1850,14 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         pagesize=PAPER_SIZES[options.paper],
         footer=(
             f"{options.connection_id or 'Connection'} | "
-            f"{options.revision or 'No revision'} | {status} | {snapshot.digest[:12]}"
+            f"{options.revision or 'No revision'} | {humanize(status)} | {snapshot.digest[:12]}"
         ),
     )
     document.title = "Multi-row connection calculation report"
     document.author = options.prepared_by or "FRP Master Connection"
     document.subject = "Native multi-row calculation with explicit design limits"
     _add_linked_contents(story, styles)
-    document.build(story, canvasmaker=_NumberedCanvas)
+    document.multiBuild(story, canvasmaker=_NumberedCanvas)
     return stream.getvalue()
 
 

@@ -101,8 +101,8 @@ def test_wi_support_contents_has_no_stranded_final_entry(paper: str) -> None:
 
     reader = PdfReader(io.BytesIO(asyncio.run(run())))
     assert "Contents" in (reader.pages[1].extract_text() or "")
-    third_page = reader.pages[2].extract_text() or ""
-    assert "Scope and connection model" in third_page
+    early_reader_pages = " ".join(page.extract_text() or "" for page in reader.pages[2:7])
+    assert "Scope and connection model" in early_reader_pages
     appendix_page = next(
         index
         for index, page in enumerate(reader.pages[3:], start=3)
