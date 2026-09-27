@@ -547,10 +547,13 @@ def test_ssmc_analytical_pdf_keeps_its_source_limits_and_native_geometry() -> No
     assert report.status_code == 200
     pdf = PdfReader(io.BytesIO(report.content))
     cover = pdf.pages[0].extract_text() or ""
-    assert "ENGINEERING_REVIEW_REQUIRED" in cover
-    assert "Canonical isometric" in " ".join(page.extract_text() or "" for page in pdf.pages[:6])
+    assert humanize("ENGINEERING_REVIEW_REQUIRED") in cover
+    early_text = " ".join(page.extract_text() or "" for page in pdf.pages[:6])
+    assert "Canonical isometric" in early_text
+    assert "MITER_WEB_PLATE" in early_text
     assert design["whole_connection_status"] == "ENGINEERING_REVIEW_REQUIRED"
     full_text = "".join(page.extract_text() or "" for page in pdf.pages).replace("\n", "")
+    assert "ENGINEERING_REVIEW_REQUIRED" in full_text
     first_cut = design["result"]["cuts"]["cuts"][0]
     assert "SSMC_ACTUAL_POLYGON_CUT_FREE_BODY_RC1" in full_text
     assert "sigma_edge=N/A_net+M(y_edge-y_c)/I_net" in full_text

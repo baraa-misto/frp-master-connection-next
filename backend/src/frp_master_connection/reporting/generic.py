@@ -68,7 +68,11 @@ from frp_master_connection.reporting.reader_tables import (
     loads_matrix,
     results_matrix,
 )
-from frp_master_connection.reporting.reader_views import colored_view, component_legend
+from frp_master_connection.reporting.reader_views import (
+    colored_view,
+    component_legend,
+    miter_plate_faces,
+)
 from frp_master_connection.reporting.section import native_bolt_sections
 from frp_master_connection.reporting.snapshot import ReportSnapshot
 from frp_master_connection.reporting.units import (
@@ -1347,7 +1351,9 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
     visual = canonical_visual(native)
     boxes = canonical_boxes(visual) if visual is not None else []
     bolts = canonical_bolt_points(visual) if visual is not None else []
-    faces = canonical_faces(visual) if visual is not None and not boxes else []
+    faces = canonical_faces(visual) if visual is not None else []
+    if snapshot.family == "stair-stringer-miter" and visual is not None:
+        faces.extend(miter_plate_faces(visual))
     unit = _text(
         snapshot.request.get("length_unit")
         or snapshot.request.get("source_length_unit")
@@ -2073,6 +2079,21 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
         ],
         styles,
     )
+    identity_block = KeepTogether(
+        [
+            _paragraph("Calculation identity", styles["heading"]),
+            _table(
+                [
+                    ("Snapshot SHA-256", snapshot.digest),
+                    ("Calculation time (UTC epoch)", str(snapshot.issued_at)),
+                    ("Report preparation notes", options.notes),
+                ],
+                styles,
+            ),
+        ]
+    )
+    if native is snapshot.result:
+        story.append(identity_block)
     _schedules(
         story,
         "Complete native results, traces, materials and limitations",
@@ -2100,21 +2121,7 @@ def render_generic_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byte
             ),
             styles,
         )
-    story.append(
-        KeepTogether(
-            [
-                _paragraph("Calculation identity", styles["heading"]),
-                _table(
-                    [
-                        ("Snapshot SHA-256", snapshot.digest),
-                        ("Calculation time (UTC epoch)", str(snapshot.issued_at)),
-                        ("Report preparation notes", options.notes),
-                    ],
-                    styles,
-                ),
-            ]
-        )
-    )
+        story.append(identity_block)
     stream = io.BytesIO()
     document = _ReportDocument(
         stream,

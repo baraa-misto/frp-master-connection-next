@@ -274,3 +274,17 @@ def multirow_physical_geometry(visual: dict[str, Any]) -> tuple[list[BoxFigure],
         for bolt in visual["bolts"]
     ]
     return [BoxFigure("Connection plate", vertices)], bolts
+
+
+def miter_plate_faces(visual: dict[str, Any]) -> list[FaceFigure]:
+    """Show the SSMC plate from its native polygon and native thickness interval."""
+
+    boundary = visual["polygon"]["boundary"]
+    first, second = visual["plate_y_interval"]
+    return [
+        FaceFigure(
+            "MITER_WEB_PLATE",
+            tuple((float(x), float(y), float(z)) for x, z in boundary),
+        )
+        for y in (first, second)
+    ]

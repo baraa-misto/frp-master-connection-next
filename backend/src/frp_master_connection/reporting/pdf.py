@@ -64,7 +64,9 @@ class _ReportTable(Table):
     def onSplit(self, child: Table, byRow: int = 1) -> None:
         del byRow
         report_child = cast(_ReportTable, child)
-        if len(report_child._cellvalues) >= 3:
+        if len(report_child._cellvalues) >= 8:
+            report_child._rowSplitRange = (2, -5)
+        elif len(report_child._cellvalues) >= 3:
             report_child._rowSplitRange = (2, -2)
 
 
@@ -1073,7 +1075,7 @@ def _table(rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]) -> Ta
         repeatRows=1,
         hAlign="LEFT",
         splitByRow=1,
-        rowSplitRange=(2, -2) if len(data) >= 3 else None,
+        rowSplitRange=(2, -5) if len(data) >= 8 else (2, -2) if len(data) >= 3 else None,
     )
     table.setStyle(
         TableStyle(

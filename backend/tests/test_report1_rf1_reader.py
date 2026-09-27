@@ -26,6 +26,7 @@ from frp_master_connection.reporting.reader_data import (
 from frp_master_connection.reporting.reader_views import (
     colored_view,
     component_legend,
+    miter_plate_faces,
     multirow_physical_geometry,
 )
 from tests.api.test_connector_materials import native_payload
@@ -121,6 +122,15 @@ def test_multirow_view_uses_native_boundary_layers_and_bolt_centers() -> None:
     boxes, bolts = multirow_physical_geometry(visual)
     assert boxes[0].vertices[0] == (0.0, -2.0, -0.25)
     assert bolts == [BoltPoint("B_R1_L1", (3.0, 1.0, 0.0))]
+    plate = miter_plate_faces(
+        {
+            "polygon": {"boundary": [[0, 0], [2, 0], [2, 1], [0, 1]]},
+            "plate_y_interval": [-0.5, 0],
+        }
+    )
+    assert plate[0].identity == "MITER_WEB_PLATE"
+    assert plate[0].vertices[0] == (0.0, -0.5, 0.0)
+    assert plate[1].vertices[-1] == (0.0, 0.0, 1.0)
 
 
 @pytest.mark.parametrize("paper", ["LETTER", "A4"])
