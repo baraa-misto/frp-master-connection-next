@@ -169,6 +169,25 @@ it("downloads the exact snapshot with safe metadata and presentation choices", a
   expect(click).toHaveBeenCalledOnce();
 });
 
+it("offers the Direct full audit from the same current snapshot", async () => {
+  const id = "multi-row";
+  authorize(id);
+  const fetchMock = vi.fn<typeof fetch>(() => Promise.resolve(pdfResponse()));
+  vi.stubGlobal("fetch", fetchMock);
+  Object.defineProperty(URL, "createObjectURL", { configurable: true, value: vi.fn(() => "blob:direct-audit") });
+  Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
+  vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
+  render(<ReportExportButton family={id} draft={{ direct_finalization_contract_version: "SHEAR01-DIRECT-F1" }} />);
+  fireEvent.click(button("Export PDF Report"));
+  fireEvent.change(screen.getByLabelText("Report detail"), { target: { value: "FULL_TECHNICAL_AUDIT" } });
+  fireEvent.click(button("Download PDF"));
+  await waitFor(() => { expect(fetchMock).toHaveBeenCalledOnce(); });
+  expect(JSON.parse(fetchMock.mock.calls[0]?.[1]?.body as string)).toMatchObject({
+    report_handle: `handle-${id}`,
+    mode: "FULL_TECHNICAL_AUDIT",
+  });
+});
+
 it("shows an expired-snapshot error without downloading a partial file", async () => {
   const id = family();
   authorize(id);

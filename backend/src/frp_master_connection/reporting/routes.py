@@ -37,6 +37,7 @@ class ExportRequest(BaseModel):
     report_handle: str | None = Field(default=None, min_length=32, max_length=80)
     paper: Literal["LETTER", "A4"] = "LETTER"
     display_units: Literal["INHERIT", "US_CUSTOMARY", "SI"] = "INHERIT"
+    mode: Literal["ENGINEER_REPORT", "FULL_TECHNICAL_AUDIT"] = "ENGINEER_REPORT"
     project_name: str = Field(default="", max_length=150)
     project_number: str = Field(default="", max_length=80)
     connection_id: str = Field(default="", max_length=80)
@@ -68,7 +69,8 @@ def _filename(request: ExportRequest) -> str:
         for value in parts
         if value.strip()
     )
-    return f"{stem or 'connection-report'}.pdf"
+    suffix = "_technical-audit" if request.mode == "FULL_TECHNICAL_AUDIT" else ""
+    return f"{stem or 'connection-report'}{suffix}.pdf"
 
 
 def build_report_router(

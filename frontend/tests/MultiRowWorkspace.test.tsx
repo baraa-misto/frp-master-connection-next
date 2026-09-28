@@ -14,7 +14,6 @@ import { PREVIEW_DEBOUNCE_MS } from "../src/workspace/previewWorkflow";
 import * as benchmarks from "../src/fixtures/j1Benchmarks";
 import {
   previewResponseFixture,
-  responseFixture,
   visualizationFixture,
 } from "./fixtures";
 
@@ -147,7 +146,7 @@ function multirowPreviewFixture(
       force_reference: "bolt-1-center",
       global_axes: [["X", ["1", "0"]], ["Y", ["0", "1"]]],
       local_axes: [["u", ["1", "0"]], ["v", ["0", "1"]]],
-      layers: [{ layer_id: "layer-A", component_id: "member-a", material_id: "ICE_LOCKED_PULTRUDED_FRP", material_axis_angle_degrees: "0", material_direction: "LONGITUDINAL", thickness: { value: ".375", unit: "in" } }],
+      layers: [{ layer_id: "layer-A", component_id: "member-a", material_id: "ICE_LOCKED_PULTRUDED_FRP", material_axis_angle_degrees: "0", material_direction: "LONGITUDINAL", thickness: { value: ".375", unit: "in" } }, { layer_id: "layer-B", component_id: "member-b", material_id: "ICE_LOCKED_PULTRUDED_FRP", material_axis_angle_degrees: "90", material_direction: "TRANSVERSE", thickness: { value: ".375", unit: "in" } }],
       block_paths: [{ path_id: "BLOCK-L", family: "L_LEFT", accepted: true, points: [["0", "-1"], ["4", "-1"], ["4", "-2.5"]] }],
       physical_connection: physical,
       physical_bolts: bolts,
@@ -389,7 +388,7 @@ function automaticDesignFixture(): MultiRowDesignResponse {
 
 async function openUnifiedMultirow(rows = 2, lines = 2) {
   render(<ShearConnectionsWorkspace />);
-  await screen.findByRole("heading", { name: "Brace-to-column connection" });
+  await screen.findByRole("heading", { name: "Connection engineering workspace" });
   fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
   mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
     Promise.resolve(multirowPreviewFixture(request.row_count, request.bolts_per_row)),
@@ -419,15 +418,26 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     vi.useRealTimers();
   });
 
-  it("starts at 1 x 1 in the one connection workspace and accepted single-bolt route", async () => {
+  it("starts at 1 x 1 on the Direct F1 route without a legacy preview", async () => {
     render(<ShearConnectionsWorkspace />);
     expect(screen.getByRole("heading", { name: "Connection engineering workspace" })).toBeVisible();
     expect(screen.queryByRole("button", { name: "Multi-row bolt group" })).not.toBeInTheDocument();
     expect(screen.getByLabelText("Row count")).toHaveValue(1);
     expect(screen.getByLabelText("Bolts per row")).toHaveValue(1);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
-    expect(mocks.singlePreview).toHaveBeenCalledTimes(1);
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
+    expect(mocks.singlePreview).not.toHaveBeenCalled();
     expect(mocks.multiPreview).not.toHaveBeenCalled();
+    mocks.multiPreview.mockResolvedValue(multirowPreviewFixture(1, 1));
+    fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
+    await waitFor(() => { expect(mocks.multiPreview).toHaveBeenCalled(); });
+    const submitted = mocks.multiPreview.mock.calls.at(-1)?.[0] as MultiRowConnectionRequest;
+    expect(submitted).toMatchObject({
+      row_count: 1, bolts_per_row: 1,
+      demand_source: "AUTOMATIC_MEMBER_END_FORCE",
+      lap_configuration: "SINGLE_LAP",
+      direct_finalization_contract_version: "SHEAR01-DIRECT-F1",
+      physical_connection: { lap_configuration: "SINGLE_LAP" },
+    });
   });
 
   it("changes 1 x 1 to 2 x 1 and 2 x 2 in the same canonical 3D scene", async () => {
@@ -441,6 +451,12 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     const request = mocks.multiPreview.mock.calls.at(-1)?.[0] as MultiRowConnectionRequest;
     expect(request.row_count).toBe(2);
     expect(request.bolts_per_row).toBe(2);
+    expect(request.direct_finalization_contract_version).toBe("SHEAR01-DIRECT-F1");
+    expect(request.material_pair).toBe("FRP_FRP");
+    expect(request.layers.map((layer) => [layer.layer_id, layer.component_id])).toEqual([
+      ["layer-A", "member-a"],
+      ["layer-B", "member-b"],
+    ]);
     expect(request.physical_connection?.geometry_template?.brace_to_column_directed_angle_deg).toBe("45");
     fireEvent.click(screen.getByText("Bolt / Interface", { exact: true }));
     expect(screen.getByText(/Standard physical hole/)).toBeVisible();
@@ -521,14 +537,32 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByText("Loaded boundary")).toBeVisible();
   });
 
-  it("fails closed for one row with multiple bolts", async () => {
+  it("routes Direct 1 x 2 and 1 x 3 through canonical automatic demand", async () => {
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
-    mocks.multiPreview.mockClear();
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
+    fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
+    mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
+      Promise.resolve(multirowPreviewFixture(request.row_count, request.bolts_per_row)),
+    );
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
-    expect(screen.getAllByText(/One row with multiple bolts/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Direct one-row checks require automatic member-end-force demand/).length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "Run Design Check" })).toBeDisabled();
-    expect(mocks.multiPreview).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
+    await waitFor(() => {
+      expect(mocks.multiPreview.mock.calls.at(-1)?.[0]).toMatchObject({
+        row_count: 1, bolts_per_row: 2, demand_source: "AUTOMATIC_MEMBER_END_FORCE",
+      });
+    });
+    await waitFor(() => { expect(screen.getByRole("button", { name: "Run Design Check" })).toBeEnabled(); });
+    mocks.multiEvaluate.mockResolvedValue(multirowDesignFixture(1, 2));
+    fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+    await waitFor(() => { expect(mocks.multiEvaluate).toHaveBeenCalledTimes(1); });
+    fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "3" } });
+    await waitFor(() => {
+      expect(mocks.multiPreview.mock.calls.at(-1)?.[0]).toMatchObject({
+        row_count: 1, bolts_per_row: 3, demand_source: "AUTOMATIC_MEMBER_END_FORCE",
+      });
+    });
   });
 
   it("runs multi-row design only on command and stales it after engineering edits", async () => {
@@ -581,9 +615,14 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await screen.findByRole("heading", { name: /Engineering review required/i });
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "1" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "1" } });
-    await waitFor(() => { expect(mocks.singlePreview.mock.calls.length).toBeGreaterThan(1); });
+    fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
+    await waitFor(() => {
+      const latest = mocks.multiPreview.mock.calls.at(-1)?.[0] as MultiRowConnectionRequest;
+      expect(latest).toMatchObject({ row_count: 1, bolts_per_row: 1 });
+    });
     expect(screen.getByLabelText("Case label")).toHaveValue("Shared connection case");
-    expect(screen.getByTestId("mock-engineering-scene")).toHaveAttribute("data-bolt-count", "1");
+    await waitFor(() => { expect(screen.getByTestId("mock-engineering-scene")).toHaveAttribute("data-bolt-count", "1"); });
+    expect(mocks.singlePreview).not.toHaveBeenCalled();
     expect(screen.queryByRole("heading", { name: /Engineering review required/i })).not.toBeInTheDocument();
   });
 
@@ -618,7 +657,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
   it("keeps invalid physical geometry visible and design fail closed", async () => {
     mocks.multiPreview.mockResolvedValue(multirowPreviewFixture(2, 2, "INVALID_GEOMETRY"));
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
@@ -626,16 +665,22 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect((await screen.findAllByText(/Invalid multi-row geometry/i)).length).toBeGreaterThan(0);
   });
 
-  it("shows more-than-three-row qualification without an ordinary PASS", async () => {
-    await openUnifiedMultirow(4, 2);
-    expect(screen.getAllByText(/More than three rows requires Section 2 3 2 qualification/i).length).toBeGreaterThan(0);
+  it("blocks more than three Direct rows before ordinary design", async () => {
+    render(<ShearConnectionsWorkspace />);
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
+    fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
+    fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "4" } });
+    fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
+    expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
+      "title", "The Direct Chapter 8 route allows at most three rows and three bolts per row.",
+    );
     expect(screen.queryByText(/^Pass$/i)).not.toBeInTheDocument();
   });
 
   it("handles multi-row preview and design transport failures without invented results", async () => {
     mocks.multiPreview.mockRejectedValue(new EvaluationTransportError("NETWORK", null, "offline"));
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     await screen.findByText("offline");
@@ -656,7 +701,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
 
   it("preserves SI common state in the multi-row request", async () => {
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — SI" }));
     mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
       Promise.resolve(multirowPreviewFixture(request.row_count, request.bolts_per_row)),
@@ -682,17 +727,20 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.queryByRole("heading", { name: /Engineering review required/i })).not.toBeInTheDocument();
   });
 
-  it("keeps the existing 1 x 1 design result meaning", async () => {
-    mocks.singleEvaluate.mockResolvedValue(responseFixture());
+  it("runs Direct 1 x 1 through the same F1 design and status route", async () => {
+    mocks.multiPreview.mockResolvedValue(multirowPreviewFixture(1, 1));
+    mocks.multiEvaluate.mockResolvedValue(automaticDesignFixture());
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
+    fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
     const button = screen.getByRole("button", { name: "Run Design Check" });
     await waitFor(() => { expect(button).toBeEnabled(); });
     fireEvent.click(button);
-    await screen.findByRole("heading", { name: /Section 2.3.2 qualification required/i });
-    expect(mocks.singleEvaluate).toHaveBeenCalledTimes(1);
-    expect(mocks.multiEvaluate).not.toHaveBeenCalled();
+    await waitFor(() => { expect(mocks.multiEvaluate).toHaveBeenCalledTimes(1); });
+    const submitted = mocks.multiEvaluate.mock.calls[0]?.[0] as MultiRowConnectionRequest;
+    expect(submitted).toMatchObject({ row_count: 1, bolts_per_row: 1, lap_configuration: "SINGLE_LAP" });
+    expect(mocks.singleEvaluate).not.toHaveBeenCalled();
   });
 
   it("edits every multi-row-specific group control in the unified sidebar", async () => {
@@ -700,8 +748,9 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     fireEvent.change(screen.getByLabelText("Loaded boundary to Row 1"), { target: { value: "2.1" } });
     fireEvent.change(screen.getByLabelText("Negative side distance"), { target: { value: "1.6" } });
     fireEvent.change(screen.getByLabelText("Positive side distance"), { target: { value: "1.7" } });
-    fireEvent.change(screen.getByLabelText("Connected material pair"), { target: { value: "FRP_STEEL" } });
-    fireEvent.change(screen.getByLabelText("FRP LW-axis angle"), { target: { value: "30" } });
+    expect(screen.queryByLabelText("Connected material pair")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("FRP LW-axis angle")).not.toBeInTheDocument();
+    expect(screen.getByText(/Angle LEG_1 and W TOP_FLANGE are both FRP resistance layers/)).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Source calculation"), { target: { value: "Engineer sheet E-42" } });
     fireEvent.change(screen.getByLabelText("Force-line offset"), { target: { value: ".25" } });
 
@@ -726,12 +775,20 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     });
     fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
 
-    expect(screen.getByLabelText("Connected material pair")).toHaveValue("FRP_STEEL");
-    expect(screen.getByLabelText("FRP LW-axis angle")).toHaveValue("30");
     expect(screen.getByLabelText("First-row method")).toHaveValue("ASCE_COMMENTARY_FULL");
     expect(screen.getByLabelText("Prescribed Lbr")).toHaveValue("1.1");
     expect(screen.getByLabelText("Bolt-axis tension required")).not.toBeChecked();
   }, 15000);
+
+  it("keeps axis-tension input empty while the Direct preview is pending", async () => {
+    mocks.multiPreview.mockImplementation(() => new Promise(() => undefined));
+    render(<ShearConnectionsWorkspace />);
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
+    fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
+    fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
+    expect(screen.getByLabelText("Bolt-axis tension required")).toBeChecked();
+    expect(screen.queryByLabelText("Bolt · Row 1 · Line 1 axis tension")).not.toBeInTheDocument();
+  });
 
   it("fails closed for invalid multi-row counts, dimensions, demand, and factors", async () => {
     await openUnifiedMultirow(2, 2);
@@ -767,7 +824,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "1" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "1" } });
     await waitFor(() => {
-      expect(button).toHaveAttribute("title", "Select finite CM, CT, and CCH factors.");
+      expect(button).toHaveAttribute("title", "Direct one-row checks require automatic member-end-force demand.");
     });
   });
 
@@ -803,7 +860,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
 
   it("uses member-action units for automatic multi-row inputs without frontend force transforms", async () => {
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
     fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
@@ -813,8 +870,6 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     });
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "3" } });
     expect(screen.getByLabelText("Row 3 direct force")).toHaveValue("0");
-    fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
-    expect(screen.queryByLabelText("Bolt · Row 1 · Line 1 axis tension")).not.toBeInTheDocument();
     await waitFor(() => {
       const submitted = mocks.multiPreview.mock.calls.at(-1)?.[0] as MultiRowConnectionRequest;
       expect(submitted.demand_source).toBe("AUTOMATIC_MEMBER_END_FORCE");
@@ -822,6 +877,37 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
       expect(submitted.signed_force_x).toBeUndefined();
       expect(submitted.engineer_allocations[2]?.direct_force?.unit).toBe("kip");
     });
+    fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
+    expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
+      "title", "Bolt-axis tension and prying need a separate supported Direct load path.",
+    );
+  });
+
+  it("labels an explicitly complete backend QA fixture GREEN", async () => {
+    const complete = automaticDesignFixture();
+    const integration = complete.automatic_group_mode_integration;
+    if (integration === null) throw new Error("Automatic integration fixture is required.");
+    integration.required_check_ids = integration.scenario_results[0]?.supported_results.map((item) => item.result_id) ?? [];
+    integration.unsupported_required_check_ids = [];
+    integration.incomplete_required_check_ids = [];
+    integration.failed_check_ids = [];
+    integration.qualification = "QUALIFIED_ASCE_PRESCRIPTIVE";
+    integration.numerical_comparison = "PASS";
+    integration.overall_disposition = "PASS";
+    mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
+      Promise.resolve(request.demand_source === "AUTOMATIC_MEMBER_END_FORCE" ? automaticPreviewFixture() : multirowPreviewFixture(request.row_count, request.bolts_per_row)),
+    );
+    mocks.multiEvaluate.mockResolvedValue(complete);
+    render(<ShearConnectionsWorkspace />);
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
+    fireEvent.click(screen.getByRole("button", { name: /Load verified J1 .* U\.S\./u }));
+    fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
+    fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
+    fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
+    const button = screen.getByRole("button", { name: "Run Design Check" });
+    await waitFor(() => { expect(button).toBeEnabled(); });
+    fireEvent.click(button);
+    expect((await screen.findAllByText("GREEN — complete pass")).length).toBeGreaterThan(0);
   });
 
   it("renders backend automatic vectors and fail-closed handoff results only on command", async () => {
@@ -834,7 +920,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     );
     mocks.multiEvaluate.mockResolvedValue(automaticDesignFixture());
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: /Load verified J1 .* U\.S\./u }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
@@ -854,6 +940,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await waitFor(() => { expect(button).toBeEnabled(); });
     fireEvent.click(button);
     await screen.findByRole("heading", { name: "Not Evaluated" });
+    expect(screen.getAllByText("YELLOW — blocked").length).toBeGreaterThan(0);
     expect(screen.getByText("Calculated supported checks")).toBeVisible();
     expect(screen.getByRole("heading", { name: "Eccentric group-mode checks" })).toBeVisible();
     expect(screen.getByText(/Authorized scalar 0\.35 kip/u)).toBeVisible();
@@ -907,6 +994,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
 
     fireEvent.change(screen.getByLabelText("P / Fx"), { target: { value: ".8" } });
     expect(screen.getByText(/Design results are stale/u)).toBeVisible();
+    expect(screen.getAllByText("GRAY — stale calculation").length).toBeGreaterThan(0);
     await waitFor(() => {
       expect(mocks.multiPreview.mock.calls.at(-1)?.[0]).toMatchObject({
         demand_source: "AUTOMATIC_MEMBER_END_FORCE",
@@ -970,7 +1058,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
       bolt_line_id: "BOLT_LINE_EXEMPT",
       check_id: null,
       handoff_status: "NOT_REQUIRED_PARENT_EXEMPTION" as const,
-      warnings: [],
+      warnings: [{ code: "ECCENTRIC_SHEAROUT_LINE_RESULTANT_NOT_PARALLEL_TO_CONNECTION_FORCE", trace: [] }],
     };
     const inheritedLine = {
       ...supportedLine,
@@ -1062,7 +1150,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     );
     mocks.multiEvaluate.mockResolvedValue(design);
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: /Load verified J1 .* U\.S\./u }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
@@ -1080,6 +1168,75 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByText("Inherited legacy Stage 2.4B")).toBeVisible();
     expect(screen.getByText(/parallel_n:-444\.8/u)).toBeVisible();
     expect(screen.getByText(/Eccentric first-row net tension is not supported/u)).toBeVisible();
+  });
+
+  it("renders a nested Direct one-row native result with RED precedence and separate blockers", async () => {
+    const design = automaticDesignFixture();
+    const integration = design.automatic_group_mode_integration;
+    if (integration === null) throw new Error("Automatic integration fixture is required.");
+    integration.direct_single_row_result = {
+      contract_version: "SHEAR01-DIRECT-F1-R1-SINGLE-ROW",
+      source_scenario_id: "FULL_ROW_ROW_1",
+      checks: [{
+        result_id: "SINGLE_ROW_NET_TENSION:layer-A",
+        limit_state: "SINGLE_ROW_NET_TENSION",
+        equation_method: "ASCE_EQ_8_7A_8_7C",
+        source_locator: "ASCE/SEI 74-23 Section 8.3.2",
+        layer_id: "layer-A",
+        bolt_id: null,
+        bolt_line_id: null,
+        demand: { value: "7", unit: "kip" },
+        design_resistance: { value: "3", unit: "kip" },
+        utilization: "2.33333333333333333333333333333333",
+        numerical_comparison: "FAIL",
+        availability: "CALCULATED",
+        qualification: "ENGINEERING_REVIEW_REQUIRED",
+        required: true,
+        reason: "Numerical check executed; qualification is separate",
+        equation_trace: { knt: "0.325" },
+      }, {
+        result_id: "SINGLE_ROW_SHEAR_OUT:layer-B:BOLT_LINE_1",
+        limit_state: "SINGLE_ROW_SHEAR_OUT",
+        equation_method: "ASCE_EQ_8_8",
+        source_locator: "ASCE/SEI 74-23 Section 8.3.2",
+        layer_id: "layer-B",
+        bolt_id: "B_R1_L1",
+        bolt_line_id: "BOLT_LINE_1",
+        demand: null,
+        design_resistance: null,
+        utilization: null,
+        numerical_comparison: "NOT_EVALUATED",
+        availability: "CALCULATION_NOT_SUPPORTED",
+        qualification: "ENGINEERING_REVIEW_REQUIRED",
+        required: true,
+        reason: "Residual moment requires an accepted section demand",
+        equation_trace: null,
+      }],
+      required_check_ids: ["SINGLE_ROW_NET_TENSION:layer-A", "SINGLE_ROW_SHEAR_OUT:layer-B:BOLT_LINE_1"],
+      incomplete_required_check_ids: ["SINGLE_ROW_SHEAR_OUT:layer-B:BOLT_LINE_1"],
+      failed_check_ids: ["SINGLE_ROW_NET_TENSION:layer-A"],
+      numerical_comparison: "FAIL",
+      overall_disposition: "FAIL",
+      result_fingerprint: "4".repeat(64),
+    };
+    mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
+      Promise.resolve(request.demand_source === "AUTOMATIC_MEMBER_END_FORCE"
+        ? automaticPreviewFixture()
+        : multirowPreviewFixture(request.row_count, request.bolts_per_row)),
+    );
+    mocks.multiEvaluate.mockResolvedValue(design);
+    render(<ShearConnectionsWorkspace />);
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
+    fireEvent.click(screen.getByRole("button", { name: /Load verified J1 .* U\.S\./u }));
+    fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
+    fireEvent.click(screen.getByRole("button", { name: "Automatic from member-end force" }));
+    const button = screen.getByRole("button", { name: "Run Design Check" });
+    await waitFor(() => { expect(button).toBeEnabled(); });
+    fireEvent.click(button);
+    expect(await screen.findByRole("heading", { name: "Angle and W flange checks" })).toBeVisible();
+    expect(screen.getAllByText("Fail").length).toBeGreaterThan(0);
+    expect(screen.getByText(/Residual moment requires an accepted section demand/u)).toBeVisible();
+    expect(screen.getByText(/Ordinary whole-connection PASS is prohibited/u)).toBeVisible();
   });
 
   it("keeps zero-residual automatic presentation on the inherited legacy result", async () => {
@@ -1118,7 +1275,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     );
     mocks.multiEvaluate.mockResolvedValue(design);
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: /Load verified J1 .* U\.S\./u }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
@@ -1162,10 +1319,10 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     mocks.multiPreview.mockResolvedValue(automaticPreviewFixture());
     try {
       render(<ShearConnectionsWorkspace />);
-      await screen.findByRole("heading", { name: "Brace-to-column connection" });
+      await screen.findByRole("heading", { name: "Connection engineering workspace" });
       expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
         "title",
-        "Backend design readiness is incomplete.",
+        "Direct one-row checks require automatic member-end-force demand.",
       );
       fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
       expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
@@ -1177,12 +1334,15 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
         target: { value: "DIRECT_ROW_FORCES" },
       });
       fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "3" } });
-      fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
       await waitFor(() => {
         const submitted = mocks.multiPreview.mock.calls.at(-1)?.[0] as MultiRowConnectionRequest;
         expect(submitted.provenance.reference_point).toBe("EXPLICIT_POINT:action-1");
         expect(submitted.engineer_allocations[2]?.direct_force?.unit).toBe("kip");
       });
+      fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
+      expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
+        "title", "Bolt-axis tension and prying need a separate supported Direct load path.",
+      );
     } finally {
       benchmark.mockRestore();
     }
@@ -1193,7 +1353,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     response.design_check_ready = false;
     mocks.multiPreview.mockResolvedValue(response);
     render(<ShearConnectionsWorkspace />);
-    await screen.findByRole("heading", { name: "Brace-to-column connection" });
+    await screen.findByRole("heading", { name: "Connection engineering workspace" });
     fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     await waitFor(() => {

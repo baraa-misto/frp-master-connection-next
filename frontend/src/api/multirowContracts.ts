@@ -1,4 +1,4 @@
-import type { SingleBoltPreviewRequest, VisualizationSnapshot } from "./contracts";
+import type { JsonValue, SingleBoltPreviewRequest, VisualizationSnapshot } from "./contracts";
 
 export interface MultiRowQuantity {
   value: string;
@@ -7,6 +7,7 @@ export interface MultiRowQuantity {
 
 export interface MultiRowConnectionRequest {
   orchestration_contract_version: "2.5C-RC1";
+  direct_finalization_contract_version?: "SHEAR01-DIRECT-F1";
   request_id: string;
   connection_id: string;
   interface_id: string;
@@ -253,6 +254,36 @@ export interface AutomaticGroupModeIntegrationResult {
     "RESISTANCE_CALCULATION",
     "APPLICATION_INTEGRATION",
   ];
+  result_fingerprint: string;
+  direct_single_row_result?: DirectSingleRowResult;
+}
+
+export interface DirectSingleRowResult {
+  contract_version: string;
+  source_scenario_id: string;
+  checks: {
+    result_id: string;
+    limit_state: string;
+    equation_method: string;
+    source_locator: string;
+    layer_id: string;
+    bolt_id: string | null;
+    bolt_line_id: string | null;
+    demand: MultiRowQuantity | null;
+    design_resistance: MultiRowQuantity | null;
+    utilization: string | null;
+    numerical_comparison: string;
+    availability: string;
+    qualification: string;
+    required: boolean;
+    reason: string;
+    equation_trace: JsonValue;
+  }[];
+  required_check_ids: string[];
+  incomplete_required_check_ids: string[];
+  failed_check_ids: string[];
+  numerical_comparison: string;
+  overall_disposition: string;
   result_fingerprint: string;
 }
 

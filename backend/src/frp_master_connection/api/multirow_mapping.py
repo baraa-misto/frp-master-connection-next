@@ -26,6 +26,7 @@ from frp_master_connection.application import (
     MultiRowOrchestrationResponse,
     MultiRowPreviewResult,
 )
+from frp_master_connection.application.direct_physical import is_direct_angle_w
 from frp_master_connection.calculation import (
     EndUseFactors,
     MethodProvenance,
@@ -92,6 +93,9 @@ def map_multirow_request(request: MultiRowConnectionRequestDTO) -> MultiRowOrche
         if request.physical_connection is None
         else map_connection_view_extents(request.physical_connection)
     )
+    direct_requested = request.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
+    if direct_requested and not is_direct_angle_w(physical_request):
+        raise ValueError("The Direct F1 route requires the physical FRP angle/W family.")
     return MultiRowOrchestrationRequest(
         request.request_id,
         request.connection_id,
@@ -133,6 +137,8 @@ def map_multirow_request(request: MultiRowConnectionRequestDTO) -> MultiRowOrche
         view_extents,
         request.demand_source,
         request.automatic_action_source_id,
+        single_row_geometry_preview_authorized=direct_requested and request.row_count == 1,
+        direct_finalization_mode=direct_requested,
     )
 
 
@@ -155,6 +161,23 @@ def _serialize(value: object) -> object:
     if isinstance(value, tuple):
         return [_serialize(item) for item in value]
     return value
+
+
+def _serialize_direct_trace(value: object) -> object:
+    """Serialize nested Direct-only equation operands without changing legacy DTOs."""
+
+    if isinstance(value, PhysicalQuantity):
+        return _serialize(value)
+    if is_dataclass(value):
+        return {
+            field.name: _serialize_direct_trace(getattr(value, field.name))
+            for field in fields(value)
+        }
+    if isinstance(value, dict):
+        return {str(key): _serialize_direct_trace(item) for key, item in value.items()}
+    if isinstance(value, tuple | list):
+        return [_serialize_direct_trace(item) for item in value]
+    return _serialize(value)
 
 
 def serialize_multirow_preview(
@@ -224,7 +247,20 @@ def serialize_multirow_design(
                 if response.automatic_group_mode_integration is None
                 else cast(
                     dict[str, object],
-                    _serialize(response.automatic_group_mode_integration),
+                    {
+                        **cast(
+                            dict[str, object], _serialize(response.automatic_group_mode_integration)
+                        ),
+                        **(
+                            {
+                                "direct_single_row_result": _serialize_direct_trace(
+                                    getattr(response, "direct_single_row_result", None)
+                                )
+                            }
+                            if getattr(response, "direct_single_row_result", None) is not None
+                            else {}
+                        ),
+                    },
                 )
             ),
         }

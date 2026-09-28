@@ -15,6 +15,21 @@ import { wiMomentSpliceDesignFixture, wiMomentSplicePreviewFixture } from "./wiM
 const mocks = vi.hoisted(() => ({ evaluate: vi.fn(), preview: vi.fn(), momentDesign: vi.fn(), momentPreview: vi.fn() }));
 const HOSTED_WINDOWS_COVERAGE_UI_TIMEOUT_MS = 20_000;
 
+// Historical single-bolt UI tests exercise a synthetic non-Direct family.
+// The real FRP angle/W benchmark is covered by the unified Direct F1 tests.
+vi.mock("../src/fixtures/j1Benchmarks", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../src/fixtures/j1Benchmarks")>();
+  return {
+    ...actual,
+    loadJ1Benchmark: (unitSystem: "US_CUSTOMARY" | "SI") => {
+      const request = actual.loadJ1Benchmark(unitSystem);
+      const support = request.joint_assembly.members[1];
+      if (support !== undefined) support.material_kind = "STEEL";
+      return request;
+    },
+  };
+});
+
 vi.mock("../src/api/client", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../src/api/client")>();
   return {
@@ -292,6 +307,20 @@ describe("Stage 2.3R application and workspace", () => {
     expect(screen.getByLabelText("In-plane Fx")).toBeInTheDocument();
   });
 
+  it("keeps the historical non-Direct one-bolt route closed when its preview is not design-ready", async () => {
+    const blocked = previewResponseFixture();
+    blocked.design_check_ready = false;
+    blocked.design_check_blocking_reasons = ["BACKEND_RESISTANCE_INPUT_INCOMPLETE"];
+    mocks.preview.mockResolvedValueOnce(blocked);
+    openShear();
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
+        "title", "BACKEND_RESISTANCE_INPUT_INCOMPLETE",
+      );
+    });
+    expect(mocks.evaluate).not.toHaveBeenCalled();
+  });
+
   it("submits explicit orientation semantics, updates the angle layer, and marks results stale", async () => {
     openShear();
     fireEvent.click(screen.getByText("Connection Orientation / Geometry"));
@@ -511,18 +540,19 @@ describe("Stage 2.3R application and workspace", () => {
     expect(screen.getByText(/FX:/)).toBeInTheDocument();
   });
 
-  it("retains but clearly stales design results only after engineering input changes", async () => {
+  it("segregates stale design results only after engineering input changes", async () => {
     openShear();
     await evaluateWith();
     fireEvent.change(screen.getByLabelText("Bolt diameter"), { target: { value: "0.52" } });
     expect(screen.getByText("Design results are stale — run Design Check to update.")).toBeVisible();
-    expect(screen.getByRole("heading", { name: /Section 2.3.2 qualification required/i })).toBeVisible();
+    expect(screen.queryByRole("heading", { name: /Section 2.3.2 qualification required/i })).not.toBeInTheDocument();
+    expect(screen.getByText("Previous calculation belongs to earlier inputs. Run Design Check for current results.")).toBeVisible();
     await evaluateWith();
     fireEvent.change(screen.getByLabelText("Case label"), { target: { value: "Changed label" } });
     expect(screen.queryByText("Design results are stale — run Design Check to update.")).not.toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "60" } });
     expect(screen.getByText("Design results are stale — run Design Check to update.")).toBeVisible();
-    expect(screen.getByRole("heading", { name: /Section 2.3.2 Qualification Required/i })).toBeVisible();
+    expect(screen.queryByRole("heading", { name: /Section 2.3.2 Qualification Required/i })).not.toBeInTheDocument();
   });
 
   it("previews 4, 5, 8, and 12 inch view extents without staling current design", { timeout: HOSTED_WINDOWS_COVERAGE_UI_TIMEOUT_MS }, async () => {
