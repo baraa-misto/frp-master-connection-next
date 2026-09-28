@@ -63,7 +63,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7749
+          --expected-tests 7764
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider
@@ -71,6 +71,14 @@ jobs:
           tests/test_report1_pdf.py::test_multirow_real_pdf_has_native_path_inventory_and_input_only_boundary
           tests/test_report1_pdf.py::test_dctn_3b_transverse_demand_is_reported_without_response_qualification
           tests/test_report1_pdf_edges.py::test_embedded_font_keeps_common_unicode_metadata_searchable
+      - name: Generate signed-snapshot Direct F1 review PDFs
+        run: python ../scripts/generate_direct_f1_ci_pdfs.py --output direct-f1-review-pdfs
+      - name: Upload Direct F1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f1-pdfs-${{ matrix.os }}
+          path: backend/direct-f1-review-pdfs/
+          if-no-files-found: error
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help
       - name: Check Alembic CLI availability

@@ -732,12 +732,23 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            direct_qa_steps = b"""      - name: Generate signed-snapshot Direct F1 review PDFs
+        run: python ../scripts/generate_direct_f1_ci_pdfs.py --output direct-f1-review-pdfs
+      - name: Upload Direct F1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f1-pdfs-${{ matrix.os }}
+          path: backend/direct-f1-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(direct_qa_steps) == 1
+            raw = raw.replace(direct_qa_steps, b"")
             historical_identity = workflow_identities["historical_pre_ssmc_3_main"]
             report1_identity = workflow_identities["report1_reporting_successor"]
             successor_identity = workflow_identities["mat1_material_complete_successor"]
             prior_mat1_identity = workflow_identities["mat1_material_successor"]
             prior_identity = workflow_identities["ssmc_3_analytical_successor"]
-            correction_count = b"--expected-tests 7749"
+            correction_count = b"--expected-tests 7764"
             assert raw.count(correction_count) == 1
             raw = raw.replace(correction_count, report1_identity["expected_tests"])
             successor_blob = hashlib.sha1(
