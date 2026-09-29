@@ -1148,6 +1148,36 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     );
   });
 
+  it("renders both physical layers when backend scenarios share a method ID", async () => {
+    const design = automaticDesignFixture();
+    const integration = design.automatic_group_mode_integration;
+    const first = integration?.scenario_results[0];
+    if (integration === null || first === undefined) throw new Error("Group-mode fixture is required.");
+    integration.scenario_results.push({
+      ...first,
+      input_fingerprint: "4".repeat(64),
+      result_fingerprint: "5".repeat(64),
+    });
+    mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
+      Promise.resolve(request.demand_source === "AUTOMATIC_MEMBER_END_FORCE"
+        ? automaticPreviewFixture() : multirowPreviewFixture(request.row_count, request.bolts_per_row)),
+    );
+    mocks.multiEvaluate.mockResolvedValue(design);
+    const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      render(<ShearConnectionsWorkspace />);
+      await screen.findByRole("heading", { name: "Connection engineering workspace" });
+      fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "3" } });
+      fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
+      await waitFor(() => { expect(screen.getByRole("button", { name: "Run Design Check" })).toBeEnabled(); });
+      fireEvent.click(screen.getByRole("button", { name: "Run Design Check" }));
+      await waitFor(() => { expect(screen.getAllByRole("heading", { name: "Asce Prescribed" })).toHaveLength(2); });
+      expect(error.mock.calls.some(([message]) => String(message).includes("same key"))).toBe(false);
+    } finally {
+      error.mockRestore();
+    }
+  });
+
   it("presents known group-mode failure and every structured line state", async () => {
     const design = automaticDesignFixture();
     const integration = design.automatic_group_mode_integration;

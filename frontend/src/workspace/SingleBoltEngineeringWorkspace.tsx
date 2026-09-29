@@ -416,8 +416,8 @@ function EccentricGroupModeResults({
   return (
     <section className="results-panel" aria-labelledby="eccentric-group-mode-title">
       <div className="panel-heading"><div><p className="eyebrow">Stage 2.6A backend-authoritative compatibility and resistance</p><h3 id="eccentric-group-mode-title">Eccentric group-mode checks</h3></div></div>
-      {integration.scenario_results.map((scenario) => (
-        <article className="group-mode-scenario" key={scenario.scenario_id}>
+      {integration.scenario_results.map((scenario, index) => (
+        <article className="group-mode-scenario" key={`${scenario.scenario_id}:${String(index)}`}>
           <h4>{friendlyEnum(scenario.scenario_id)}</h4>
           <div className="table-scroll compact-results-table">
             <table>

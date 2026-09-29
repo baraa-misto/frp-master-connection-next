@@ -732,6 +732,29 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # Reconstruct the exact Direct F1 predecessor before auditing the
+            # older reporting and material CI identities below. OR1 adds only
+            # this build gate, platform PDF artifact, and test-count increase.
+            or1_build_step = b"""      - name: Build source and wheel distributions
+        run: python -m build --no-isolation --sdist --wheel --outdir dist
+"""
+            or1_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR1 review PDFs
+        run: python ../scripts/generate_direct_or1_ci_pdfs.py --output direct-or1-review-pdfs
+      - name: Upload Direct OR1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or1-pdfs-${{ matrix.os }}
+          path: backend/direct-or1-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(or1_build_step) == 1
+            assert raw.count(or1_pdf_steps) == 1
+            assert raw.count(b"--expected-tests 7776") == 1
+            raw = raw.replace(or1_build_step, b"").replace(or1_pdf_steps, b"")
+            raw = raw.replace(b"--expected-tests 7776", b"--expected-tests 7764")
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "13FF24CA8C2EB9E92E5B45DD5A9807150A8B20512705D14E03760AF1807A8CFD"
+            )
             direct_qa_steps = b"""      - name: Generate signed-snapshot Direct F1 review PDFs
         run: python ../scripts/generate_direct_f1_ci_pdfs.py --output direct-f1-review-pdfs
       - name: Upload Direct F1 review PDFs

@@ -179,6 +179,24 @@ _SECURITY_DEPENDENCY_SHA256 = {
         "5F195B77E2749DBDD78C8D94718EA5A794E566AD123D83EDCCBF3EEA9B15F766"
     ),
 }
+# OR1-R1 updates only the transitive dev-only undici lock entry from 8.10.0
+# to 8.11.2. Keep the Stage 4.3 successor pin above and reconstruct it by one
+# exact reverse delta before checking the immutable Stage 2.3 bytes.
+_OR1_UNDICI_LOCK_SHA256 = "5879698FBCDDF7EA6EE94B3B7E22A730F8A60DA1D231DFCD516FAE511103FF73"
+_OR1_UNDICI_SUCCESSOR_BLOCK = (
+    b'    "node_modules/undici": {\n'
+    b'      "version": "8.11.2",\n'
+    b'      "resolved": "https://registry.npmjs.org/undici/-/undici-8.11.2.tgz",\n'
+    b'      "integrity": "sha512-u4UB2/IrKdU6lFxumHmmo1a3fCQO5tzQllRorfoRS63tx'
+    b'hrB7xTpSn1PftwC4qEHkOaqP95fCWW4lJzwErwzhQ==",\n'
+)
+_OR1_UNDICI_STAGE43_BLOCK = (
+    b'    "node_modules/undici": {\n'
+    b'      "version": "8.10.0",\n'
+    b'      "resolved": "https://registry.npmjs.org/undici/-/undici-8.10.0.tgz",\n'
+    b'      "integrity": "sha512-HvltHd7avK13QIw/oLe4qoOLyoVSoafqJ2jYOrtMRBk'
+    b'bYT31eiBQ8O0ehRKZiEZCMEyLFQNIADpgCWC5fALvYQ==",\n'
+)
 _SECURITY_REVERSE_DELTA = (
     (b"4.1.11", b"4.1.10"),
     (
@@ -245,6 +263,11 @@ def _assert_frozen_dependency_bytes(path: str, raw: bytes) -> None:
 
 def _restore_frozen_dependency_bytes(path: str, raw: bytes) -> bytes:
     digest = hashlib.sha256(raw).hexdigest().upper()
+    if path == "frontend/package-lock.json" and digest == _OR1_UNDICI_LOCK_SHA256:
+        assert raw.count(_OR1_UNDICI_SUCCESSOR_BLOCK) == 1, "undici successor block"
+        raw = raw.replace(_OR1_UNDICI_SUCCESSOR_BLOCK, _OR1_UNDICI_STAGE43_BLOCK)
+        digest = hashlib.sha256(raw).hexdigest().upper()
+        assert digest == _SECURITY_DEPENDENCY_SHA256[path], "Stage 4.3 dependency successor"
     if digest != _FROZEN_DEPENDENCIES[path][1]:
         assert digest == _SECURITY_DEPENDENCY_SHA256[path], "unauthorized dependency successor"
         for successor, historical in _SECURITY_REVERSE_DELTA:
@@ -278,7 +301,12 @@ def _assert_security_dependencies(repository_root: Path) -> None:
     for path in _FROZEN_DEPENDENCIES:
         # Git-aware text checkout normalization; the authoritative pins are LF blobs.
         raw = (repository_root / path).read_text(encoding="utf-8").encode()
-        assert hashlib.sha256(raw).hexdigest().upper() == _SECURITY_DEPENDENCY_SHA256[path]
+        expected = (
+            _OR1_UNDICI_LOCK_SHA256
+            if path == "frontend/package-lock.json"
+            else _SECURITY_DEPENDENCY_SHA256[path]
+        )
+        assert hashlib.sha256(raw).hexdigest().upper() == expected
         _restore_frozen_dependency_bytes(path, raw)
 
 
