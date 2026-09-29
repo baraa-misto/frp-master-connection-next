@@ -4,17 +4,40 @@ from __future__ import annotations
 
 import io
 from copy import deepcopy
+from dataclasses import replace
 from decimal import Decimal
 from typing import Any, cast
 
+import pytest
+from pydantic import ValidationError
 from pypdf import PdfReader
 from tests.api.test_mat1_routes import call, condition, selection
 from tests.api_fixtures import build_api_payload
-from tests.application.test_direct_f1_safety import _direct_payload, _one_row_payload
+from tests.application.test_direct_f1_safety import _direct_payload, _one_row_payload, _request
 
+from frp_master_connection.api.fasteners import (
+    SessionFastenerSelectionDTO,
+    resolve_fastener_selection,
+)
+from frp_master_connection.application.mat1_multirow import bind_multirow_material
+from frp_master_connection.application.multirow_orchestration import _resolve
+from frp_master_connection.calculation import (
+    FastenerSnapshot,
+    PhysicalQuantity,
+    QualificationStatus,
+    SourceClassification,
+    Unit,
+    create_locked_f593_fastener_snapshot,
+    create_locked_ice_material_snapshot,
+)
 from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
-from frp_master_connection.reporting.pdf import ReportOptions, render_report_pdf
-from frp_master_connection.reporting.snapshot import SnapshotSigner
+from frp_master_connection.reporting.pdf import (
+    ReportOptions,
+    _direct_selected_material_label,
+    _mat1_reader_rows,
+    render_report_pdf,
+)
+from frp_master_connection.reporting.snapshot import ReportSnapshot, SnapshotSigner
 
 
 def _body() -> dict[str, Any]:
@@ -144,6 +167,96 @@ def test_custom_cannot_impersonate_f593_or_claim_qualification() -> None:
     session["snapshot"]["fnt_qualification_status"] = "DEVELOPMENT_ONLY"
     session["fnt_source_basis"] = ""
     assert call("POST", "/api/v1/frp-materials/multi-row/design-check", body).status_code == 422
+
+
+def test_session_fastener_missing_and_declared_fnt_source_states() -> None:
+    session = _session()
+    session["snapshot"]["locked"] = True
+    with pytest.raises(ValidationError, match="cannot claim locked"):
+        SessionFastenerSelectionDTO.model_validate(session)
+
+    session["snapshot"]["locked"] = False
+    session["snapshot"]["fnt"] = None
+    session["snapshot"]["fnt_source_classification"] = "SOURCE_PENDING"
+    session["snapshot"]["fnt_qualification_status"] = "SOURCE_PENDING"
+    session["fnt_source_basis"] = ""
+    pending = SessionFastenerSelectionDTO.model_validate(session)
+    assert resolve_fastener_selection(pending) is not None
+    session["snapshot"]["fnt_qualification_status"] = "DEVELOPMENT_ONLY"
+    with pytest.raises(ValidationError, match="must remain source pending"):
+        SessionFastenerSelectionDTO.model_validate(session)
+    session["snapshot"]["fnt_qualification_status"] = "SOURCE_PENDING"
+    session["snapshot"]["fnt_source_classification"] = "USER_DEFINED"
+    with pytest.raises(ValidationError):
+        SessionFastenerSelectionDTO.model_validate(session)
+
+    session = _session()
+    session["snapshot"]["fnt_source_classification"] = "SOURCE_PENDING"
+    with pytest.raises(ValidationError, match="numerical user data"):
+        SessionFastenerSelectionDTO.model_validate(session)
+    session["snapshot"]["fnt_source_classification"] = "USER_DEFINED"
+    session["snapshot"]["fnt_qualification_status"] = "SOURCE_PENDING"
+    with pytest.raises(ValidationError, match="numerical user data"):
+        SessionFastenerSelectionDTO.model_validate(session)
+
+
+def test_native_direct_guard_rejects_untrusted_fastener_snapshots() -> None:
+    legacy = _request(_direct_payload())
+    material = create_locked_ice_material_snapshot()
+    preset = create_locked_f593_fastener_snapshot()
+
+    def check(candidate: FastenerSnapshot) -> None:
+        with pytest.raises(ValueError, match=r"OR1 fastener|source pending|numerical user data"):
+            _resolve(bind_multirow_material(legacy, material, candidate))
+
+    check(preset)
+    check(cast(FastenerSnapshot, object()))
+    pending = replace(preset, id="QA-PENDING", locked=False)
+    resolved = _resolve(bind_multirow_material(legacy, material, pending))
+    assert resolved.preview_fingerprint
+    check(replace(pending, fnt_qualification_status=QualificationStatus.DEVELOPMENT_ONLY))
+    corrupt = replace(pending)
+    object.__setattr__(corrupt, "fnt_source_classification", SourceClassification.USER_DEFINED)
+    check(corrupt)
+    declared = replace(
+        pending,
+        fnt=PhysicalQuantity.of("75", Unit.KSI),
+        fnt_source_classification=SourceClassification.USER_DEFINED,
+        fnt_qualification_status=QualificationStatus.DEVELOPMENT_ONLY,
+    )
+    check(replace(declared, fnt_source_classification=SourceClassification.SOURCE_PENDING))
+    check(replace(declared, fnt_qualification_status=QualificationStatus.QUALIFIED))
+
+
+def test_report_only_material_fallbacks_do_not_invent_source_or_factor() -> None:
+    record = {
+        "id": "SESSION:QA-COUPON",
+        "revision": "1",
+        "company": "Lab",
+        "display_name": "Coupon",
+        "resin": "VINYL_ESTER",
+    }
+    snapshot = ReportSnapshot(
+        family="multi-row",
+        kind="design",
+        request={"mat1_assignments": {}, "physical_connection": {}},
+        result={
+            "material_sources": {"default": record},
+            "material_ledgers": [None, {"property_id": None}],
+        },
+        issued_at=0,
+        digest="qa-report-only",
+    )
+    rows = dict(_mat1_reader_rows(snapshot))
+    assert rows["Selected FRP"] == "Lab — Coupon (Vinyl Ester)"
+    assert "Strength adjustment candidates" not in rows
+    assert "Unresolved" not in rows["Selected FRP"]
+    malformed = replace(snapshot, result={**snapshot.result, "material_ledgers": "malformed"})
+    assert "Strength adjustment candidates" not in dict(_mat1_reader_rows(malformed))
+    absent = replace(snapshot, result={"material_sources": {"default": None}})
+    assert _direct_selected_material_label(absent, {"display_name": "Native adapter"}) == (
+        "Native adapter"
+    )
 
 
 def test_direct_engineer_pdf_uses_signed_selected_material_and_fastener() -> None:
