@@ -15,18 +15,17 @@ export function AppShell() {
           <p className="product-kicker">Masters Engineering Solutions</p>
           <h1>FRP Master Connection</h1>
         </div>
-        <p className="stage-badge">Stage 2.6B · Eccentric group-mode integration</p>
+        <p className="stage-badge">Engineering design workspace</p>
       </header>
 
       <aside className="safety-notice" aria-labelledby="safety-title">
         <div className="safety-marker" aria-hidden="true">!</div>
         <div>
-          <h2 id="safety-title">Engineering scope boundary</h2>
+          <h2 id="safety-title">Design completeness</h2>
           <p>
-            This development workspace exposes the verified single-bolt slice and the controlled
-            rectangular multi-row workflow. It is not a complete connection design, qualification,
-            or report. Server-returned review, source-pending, unsupported, and Section 2.3.2
-            statuses remain mandatory engineering limits.
+            Each workspace identifies the checks it can execute and the evidence still needed for
+            a complete design. Reports are available for evaluated and partial designs; the result
+            keeps source, qualification, geometry, and unsupported-method limits visible.
           </p>
         </div>
       </aside>
@@ -37,7 +36,7 @@ export function AppShell() {
             <p className="section-number">01</p>
             <div>
               <h2 id="category-title">Choose a primary design category</h2>
-              <p>Select the implemented Shear workspace or inspect the deferred Moment scope.</p>
+              <p>Select a connection family to start a design.</p>
             </div>
           </div>
           <CategorySelector selectedCategory={selectedCategory} onSelect={setSelectedCategory} />

@@ -46,6 +46,7 @@ from frp_master_connection.calculation import (
     ExactInterfaceFrame,
     ExactQuantityVector3D,
     ExplicitBoltAxisDemand,
+    FastenerSnapshot,
     FirstRowNetTensionPlan,
     FirstRowPlanMethod,
     FRPPropertyKind,
@@ -83,8 +84,10 @@ from frp_master_connection.calculation import (
     PublishedCodeUnitBasis,
     PultrudedElementClassification,
     QualificationDisposition,
+    QualificationStatus,
     RowDistributionBasis,
     Slice2VersionContext,
+    SourceClassification,
     StandardHoleDefinition,
     ThreadStatus,
     ThreadStatusAssignment,
@@ -1376,11 +1379,31 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
         tuple(all_block_plans), DeferredExecutionStatus.DEFERRED_STAGE_2_4B
     )
     fastener_source = create_locked_f593_fastener_snapshot()
+    if request.direct_finalization_mode and mat1_material is not None:
+        selected = getattr(request, "or1_fastener", None)
+        if selected is not None:
+            if not isinstance(selected, FastenerSnapshot) or selected.locked:
+                raise ValueError("OR1 fastener assignment must be an unlocked typed snapshot.")
+            if selected.fnt is None:
+                if (
+                    selected.fnt_source_classification is not SourceClassification.SOURCE_PENDING
+                    or selected.fnt_qualification_status is not QualificationStatus.SOURCE_PENDING
+                ):
+                    raise ValueError("Custom fastener without Fnt must remain source pending.")
+            elif (
+                selected.fnt_source_classification is not SourceClassification.USER_DEFINED
+                or selected.fnt_qualification_status is not QualificationStatus.DEVELOPMENT_ONLY
+            ):
+                raise ValueError("Custom Fnt is numerical user data, not qualified F593 source.")
+            fastener_source = selected
+    shear_status = (
+        fastener_source.shear_plane_thread_statuses[0].status
+        if fastener_source.shear_plane_thread_statuses
+        else ThreadStatus.EXCLUDED
+    )
     fastener = replace(
         fastener_source,
-        shear_plane_thread_statuses=(
-            ThreadStatusAssignment("SHEAR_PLANE_1", ThreadStatus.EXCLUDED),
-        ),
+        shear_plane_thread_statuses=(ThreadStatusAssignment("SHEAR_PLANE_1", shear_status),),
         bearing_layer_thread_statuses=tuple(
             ThreadStatusAssignment(layer.layer_id, layer.bearing_thread_status)
             for layer in layer_contexts
@@ -1406,7 +1429,7 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             bolt.id,
             request.bolt_diameter,
             fastener,
-            ThreadStatus.EXCLUDED,
+            shear_status,
             demand_lookup.get(bolt.id, zero_force),
             tension_lookup.get(bolt.id),
             axis_demand_required,
@@ -1471,7 +1494,13 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"
             if mat1_material is None
             else "MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED",
-            "F593_TENSILE_SOURCE_DATA_PENDING",
+            (
+                "F593_TENSILE_SOURCE_DATA_PENDING"
+                if fastener.locked
+                else "CUSTOM_FASTENER_TENSILE_SOURCE_DATA_PENDING"
+                if fastener.fnt is None
+                else "CUSTOM_FASTENER_FNT_IS_NUMERICAL_USER_DATA_NOT_QUALIFIED_F593"
+            ),
         )
     )
     warnings = tuple(dict.fromkeys(warning_values))
@@ -1597,7 +1626,7 @@ def _preview_from_resolved(
                 *(
                     "DIRECT_PHYSICAL_CONTAINMENT:"
                     f"{issue.bolt_id}:{issue.component_id}:{issue.physical_element_id}:"
-                    f"{issue.detail}"
+                    f"{issue.detail} unit={request.source_length_unit.value}."
                     for issue in containment
                 ),
             )
@@ -1711,6 +1740,12 @@ def _execution_bundle(
     qualification = applicability.qualification
     checks: list[MultiRowExecutableCheck] = []
     for bolt in resolved.bolt_contexts:
+        bolt_strength_available = bolt.fastener.fnt is not None
+        bolt_qualification = (
+            QualificationDisposition.ENGINEERING_REVIEW_REQUIRED
+            if bolt_strength_available and not bolt.fastener.locked
+            else qualification
+        )
         checks.append(
             _check(
                 f"BOLT_SHEAR:{bolt.bolt_id}",
@@ -1718,14 +1753,22 @@ def _execution_bundle(
                 MultiRowEquationMethod.BOLT_SHEAR,
                 bolt.in_plane_demand,
                 method,
-                qualification,
-                PlanAvailability.SOURCE_DATA_PENDING,
+                bolt_qualification,
+                (
+                    PlanAvailability.READY
+                    if bolt_strength_available
+                    else PlanAvailability.SOURCE_DATA_PENDING
+                ),
                 bolt_id=bolt.bolt_id,
             )
         )
         if bolt.bolt_axis_tension_required:
             tension_availability = (
-                PlanAvailability.SOURCE_DATA_PENDING
+                (
+                    PlanAvailability.READY
+                    if bolt_strength_available
+                    else PlanAvailability.SOURCE_DATA_PENDING
+                )
                 if bolt.bolt_axis_tension_demand is not None
                 else PlanAvailability.INCOMPLETE_INPUT
             )
@@ -1743,7 +1786,7 @@ def _execution_bundle(
                         equation,
                         bolt.bolt_axis_tension_demand,
                         method,
-                        qualification,
+                        bolt_qualification,
                         tension_availability,
                         bolt_id=bolt.bolt_id,
                     )

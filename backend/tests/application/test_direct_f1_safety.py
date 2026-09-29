@@ -24,7 +24,11 @@ from frp_master_connection.application import (
 )
 from frp_master_connection.calculation import GeometryStatus, MaterialDirection
 from frp_master_connection.calculation.inputs import LapConfiguration, create_lap_factor_plan
-from frp_master_connection.reporting.pdf import ReportOptions, render_multirow_pdf
+from frp_master_connection.reporting.pdf import (
+    ReportOptions,
+    render_multirow_pdf,
+    render_report_pdf,
+)
 from frp_master_connection.reporting.reader_views import multirow_physical_geometry
 from frp_master_connection.reporting.snapshot import SnapshotSigner
 from tests.test_multirow_api import DESIGN_ROUTE, PREVIEW_ROUTE, _automatic_payload, _post, _q
@@ -235,6 +239,11 @@ def test_direct_historical_two_by_two_fixture_is_physically_invalid() -> None:
         "DIRECT_PHYSICAL_CONTAINMENT:B_R" in item and ":member-b:TOP_FLANGE" in item
         for item in preview.warnings
     )
+    assert all(
+        "unit=in" in item
+        for item in preview.warnings
+        if item.startswith("DIRECT_PHYSICAL_CONTAINMENT:")
+    )
     assert evaluate_multirow_connection(request).calculation_result is None
 
 
@@ -422,6 +431,52 @@ def test_direct_pdf_reads_native_snapshot_without_mutating_engineering_state() -
     assert "SUBMITTED GEOMETRY — NOT VALIDATED" in "\n".join(
         page.extract_text() or "" for page in PdfReader(io.BytesIO(invalid_pdf)).pages
     )
+
+
+def test_direct_mat1_envelope_pdf_uses_signed_native_geometry_and_keeps_assignments() -> None:
+    payload = _direct_payload()
+    native = serialize_multirow_design(evaluate_multirow_connection(_request(payload))).model_dump()
+    request = {
+        "contract": "MAT1-MULTI-ROW-RC0",
+        "legacy_request": payload,
+        "assignments": {"default_material": {"id": "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0"}},
+    }
+    response = {
+        "contract": "MAT1-MULTI-ROW-RC0",
+        "native_design": native,
+        "overall_status": "SOURCE_REQUIRED",
+        "material_sources": {
+            "default": {
+                "id": "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
+                "revision": "RC0",
+                "company": "ICE",
+                "display_name": "ICE Isophthalic Polyester",
+                "resin": "ISOPHTHALIC_POLYESTER",
+            }
+        },
+        "material_ledgers": [],
+    }
+    signer = SnapshotSigner(b"direct-mat1-envelope-report-key-32bytes")
+    token = signer.issue(
+        family="multi-row",
+        kind="design",
+        request=request,
+        result=response,
+        account_id="direct-mat1-report-test",
+    )
+    snapshot = signer.verify(token, account_id="direct-mat1-report-test")
+    original_request = deepcopy(snapshot.request)
+    original_result = deepcopy(snapshot.result)
+    report = render_report_pdf(snapshot, ReportOptions())
+    text = "\n".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(report)).pages)
+    assert "Direct angle-to-W connection" in text
+    assert "2 rows x 2 bolts per row" in text
+    assert "Materials, conditions and design basis" in text
+    assert "ICE Isophthalic Polyester" in text
+    assert "ASTM F593-17 Group 2 316/316L" in text
+    assert "Controlled source required" in text
+    assert snapshot.request == original_request
+    assert snapshot.result == original_result
 
 
 def test_direct_one_row_pdf_uses_same_native_result_in_engineer_and_audit_modes() -> None:

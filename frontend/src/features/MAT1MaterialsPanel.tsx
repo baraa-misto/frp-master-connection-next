@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { inspectMAT1Factors, loadMAT1Owners } from "../api/mat1Service";
+import { workspaceCapability } from "../domain/workspaceCapabilities";
 
 import {
   applyMAT1ToOwners,
@@ -7,9 +9,6 @@ import {
   deleteMAT1Session,
   editMAT1Session,
   mat1FamilyKey,
-  setMAT1Active,
-  setMAT1Catalog,
-  setMAT1CatalogError,
   setMAT1Conditions,
   setMAT1ConditionOverride,
   setMAT1Default,
@@ -25,47 +24,36 @@ import type {
 } from "../state/mat1Session";
 
 const readable = (text: string): string => text.replaceAll("_", " ");
-const linkedFamilies = new Set([
-  "multi-row", "tee-connector", "clip-angle", "paired-clip-angle",
-  "multi-member-tee", "beam-concrete-paired-angle",
-]);
-
+const convertTemperature = (value: string, unit: "degF" | "degC"): string => {
+  if (value.trim() === "") return "";
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return value;
+  return String(Number((unit === "degC" ? (parsed - 32) * 5 / 9 : parsed * 9 / 5 + 32).toFixed(6)));
+};
+const loadClassifications = [
+  ["DEAD_ONLY", "Dead load only", ""],
+  ["IMPACT", "Live — impact", "IMPACT"],
+  ["STORAGE", "Live — storage", "STORAGE"],
+  ["LONG_TERM_OPERATING", "Live — long-term operating", "LONG_TERM_OPERATING"],
+  ["OTHER_LIVE", "Live — other", "OTHER_LIVE"],
+  ["SNOW_RAIN_FLOOD_ATMOSPHERIC_ICE", "Snow, rain, flood, or atmospheric ice", ""],
+  ["WIND_TORNADO_SEISMIC", "Wind, tornado, or seismic", ""],
+] as const;
 export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
   const state = useMAT1();
+  const linkedMaterial = workspaceCapability(family)?.material_assignment_mode === "LINKED";
   const [message, setMessage] = useState("");
   const [showProperties, setShowProperties] = useState(false);
-  const [showConditions, setShowConditions] = useState(false);
+  const [showConditions, setShowConditions] = useState(true);
   const [showAdjustments, setShowAdjustments] = useState(false);
   const [candidate, setCandidate] = useState<unknown>(null);
-
-  useEffect(() => {
-    if (!state.active || state.catalog.length > 0 || state.catalogError !== null) return;
-    const controller = new AbortController();
-    void fetch("/api/v1/frp-materials/catalog", { signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error(`Material catalog HTTP ${String(response.status)}`);
-        const body = await response.json() as { records?: MAT1CatalogRecord[] };
-        if (!Array.isArray(body.records)) throw new Error("Material catalog response is invalid.");
-        setMAT1Catalog(body.records);
-      })
-      .catch((error: unknown) => {
-        if (!controller.signal.aborted) setMAT1CatalogError(String(error));
-      });
-    return () => { controller.abort(); };
-  }, [state.active, state.catalog.length, state.catalogError]);
 
   const previewInput = state.previewInputs[family];
   useEffect(() => {
     if (!state.active || previewInput === undefined || state.previewOwnerKeys[family] === previewInput) return;
     const controller = new AbortController();
-    void fetch("/api/v1/frp-materials/family/owners", {
-      method: "POST", headers: { "Content-Type": "application/json" }, signal: controller.signal,
-      body: JSON.stringify({ contract: "MAT1-OWNER-PREVIEW-RC0", family_id: family, legacy_request: JSON.parse(previewInput) as unknown }),
-    }).then(async (response) => {
-      if (!response.ok) throw new Error(`Material owner preview HTTP ${String(response.status)}`);
-      const result = await response.json() as { owners?: string[]; design_check_performed?: boolean };
-      if (!Array.isArray(result.owners) || result.design_check_performed !== false) throw new Error("Invalid material owner preview.");
-      setMAT1PreviewOwners(family, previewInput, result.owners);
+    void loadMAT1Owners(family, JSON.parse(previewInput) as unknown, controller.signal).then((owners) => {
+      setMAT1PreviewOwners(family, previewInput, owners);
     }).catch((error: unknown) => { if (!controller.signal.aborted) setMessage(String(error)); });
     return () => { controller.abort(); };
   }, [family, previewInput, state.active, state.previewOwnerKeys]);
@@ -81,6 +69,16 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
   ])).sort();
   const current = state.designKeys[family] === mat1FamilyKey(family);
   const ledgers = current ? trace?.material_ledgers ?? [] : [];
+  const factorRows = Array.from(new Map(ledgers.map((ledger) => {
+    const property = typeof ledger.property_id === "string" ? ledger.property_id : "Property";
+    const role = property.includes("modulus") ? "Modulus" : property.includes("strength") ? "Strength" : property;
+    const key = [role, ledger.cm, ledger.ct, ledger.cch, ledger.lambda_factor].join(":");
+    return [key, { role, cm: ledger.cm, ct: ledger.ct, cch: ledger.cch, lambda: role === "Modulus" ? "Not applicable to modulus" : ledger.lambda_factor }] as const;
+  })).values());
+  const factorText = (value: unknown): string =>
+    typeof value === "string" || typeof value === "number" || typeof value === "boolean"
+      ? String(value)
+      : "Source required";
   const displayedProperties: readonly MAT1Property[] = selectedCatalog?.properties
     ?? Object.entries(selectedSession?.properties ?? {}).map(([id, property]) => ({
       id, label: property.label, symbol: property.symbol, original: property.value,
@@ -101,19 +99,14 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
       return;
     }
     const material = "kind" in selected ? selected : {
-      kind: "CATALOG", id: selected.id, revision: selected.revision,
+      kind: "CATALOG" as const, id: selected.id, revision: selected.revision,
       content_digest: selected.content_digest,
     };
     try {
-      const response = await fetch("/api/v1/frp-materials/factor-candidates", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contract: "MAT1-FACTOR-RC0", material, conditions: state.conditions,
-          component_id: family, property_ids: displayedProperties.map((item) => item.id),
-        }),
-      });
-      const body = await response.json() as unknown;
-      if (!response.ok) throw new Error(`Factor inspection HTTP ${String(response.status)}`);
+      const body = await inspectMAT1Factors({
+        material, conditions: state.conditions,
+        component_id: family, property_ids: displayedProperties.map((item) => item.id),
+      }, new AbortController().signal);
       setCandidate(body);
       setShowAdjustments(true);
       setMessage("Numerical candidates only; source and qualification gates remain open.");
@@ -121,10 +114,10 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
   }
 
   return <section className="mat1-material-panel" aria-label="FRP Materials and Design Conditions">
-    <details>
-      <summary>FRP Materials &amp; Design Conditions <small>{state.active ? selected?.display_name ?? "Unassigned" : "Legacy compatibility"}</small></summary>
+    <details open>
+      <summary>Materials and project conditions <small>{selected?.display_name ?? "Material unavailable"}</small></summary>
       <p>Predefined values are read-only owner-supplied data. Session materials disappear on reload, tab close, or Clear session materials.</p>
-      <label>Material mode <select value={state.active ? "MAT1" : "LEGACY"} onChange={(event) => { setMAT1Active(event.currentTarget.value === "MAT1"); }}><option value="LEGACY">Legacy controlled material</option><option value="MAT1">Versioned material selection</option></select></label>
+      <p>Selected material: <strong>{selected?.company ?? "Unavailable"} · {selected === undefined ? "Unknown resin" : readable(selected.resin)}</strong>. Select a documented material and enter actual service conditions before checking.</p>
       {state.catalogError === null ? null : <p role="alert">{state.catalogError}</p>}
       {state.active ? <>
         <label>Connection default material <select value={state.defaultId ?? ""} onChange={(event) => { setMAT1Default(event.currentTarget.value || null); setCandidate(null); }}>
@@ -157,19 +150,22 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
           const changed: MAT1SessionProperty = { label: item.label, symbol: item.symbol, value: item.original, unit: item.unit, basis: event.currentTarget.value };
           editMAT1Session(selectedSession.id, { properties: { ...selectedSession.properties, [item.id]: changed } });
         }}><option value="UNKNOWN">Unknown</option><option value="NOMINAL_AS_SUPPLIED">Nominal as supplied</option><option value="BASIS_UNSPECIFIED">Basis unspecified</option><option value="MEAN">Mean</option><option value="CHARACTERISTIC">Characteristic</option><option value="ALLOWABLE">Allowable</option><option value="ALREADY_ADJUSTED">Already adjusted</option></select>}</td></tr>)}</tbody></table> : null}
-        <details open={showConditions} onToggle={(event) => { setShowConditions(event.currentTarget.open); }}><summary>Design Conditions</summary>
+        <details open={showConditions} onToggle={(event) => { setShowConditions(event.currentTarget.open); }}><summary>Project conditions and load case</summary>
           <label>Sustained material temperature <input value={state.conditions.sustained_temperature.value} onChange={(event) => {
             const value = event.currentTarget.value;
             updateConditions({ sustained_temperature: { ...state.conditions.sustained_temperature, value }, maximum_temperature: state.conditions.maximum_temperature.value === state.conditions.sustained_temperature.value ? { ...state.conditions.maximum_temperature, value } : state.conditions.maximum_temperature });
           }} /></label>
-          <label>Temperature unit <select value={state.conditions.sustained_temperature.unit} onChange={(event) => { const unit = event.currentTarget.value as "degF" | "degC"; updateConditions({ sustained_temperature: { value: "", unit }, maximum_temperature: { value: "", unit }, glass_transition_temperature: null }); setMessage("Re-enter temperatures in the selected unit."); }}><option value="degF">°F</option><option value="degC">°C</option></select></label>
+          <label>Temperature unit <select value={state.conditions.sustained_temperature.unit} onChange={(event) => { const unit = event.currentTarget.value as "degF" | "degC"; updateConditions({ sustained_temperature: { value: convertTemperature(state.conditions.sustained_temperature.value, unit), unit }, maximum_temperature: { value: convertTemperature(state.conditions.maximum_temperature.value, unit), unit }, glass_transition_temperature: state.conditions.glass_transition_temperature === null ? null : { value: convertTemperature(state.conditions.glass_transition_temperature.value, unit), unit } }); }}><option value="degF">°F</option><option value="degC">°C</option></select></label>
           <label>Maximum material temperature <input value={state.conditions.maximum_temperature.value} onChange={(event) => { updateConditions({ maximum_temperature: { ...state.conditions.maximum_temperature, value: event.currentTarget.value } }); }} /></label>
-          <label>Glass transition temperature (Tg; optional evidence) <input value={state.conditions.glass_transition_temperature?.value ?? ""} onChange={(event) => { updateConditions({ glass_transition_temperature: event.currentTarget.value === "" ? null : { value: event.currentTarget.value, unit: state.conditions.sustained_temperature.unit } }); }} /></label>
+          <p>Material glass-transition temperature is source evidence. It is unavailable in the current ICE records, so the thermal applicability limit remains visible in the result.</p>
           <label>Moisture <select value={state.conditions.moisture} onChange={(event) => { updateConditions({ moisture: event.currentTarget.value as MAT1Conditions["moisture"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Reference condition</option><option value="SUSTAINED_MOISTURE">Sustained moisture</option><option value="OTHER">Other documented condition</option></select></label>
           <label>Chemical exposure <select value={state.conditions.chemical} onChange={(event) => { updateConditions({ chemical: event.currentTarget.value as MAT1Conditions["chemical"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label>
           <label>Load case name <input value={state.conditions.load_case_name} onChange={(event) => { updateConditions({ load_case_name: event.currentTarget.value }); }} /></label>
-          <label>Time effect category <select value={state.conditions.time_effect_category} onChange={(event) => { updateConditions({ time_effect_category: event.currentTarget.value }); }}><option value="">Select category</option><option value="DEAD_ONLY">Dead only</option><option value="IMPACT">Impact</option><option value="STORAGE">Storage</option><option value="LONG_TERM_OPERATING">Long-term operating</option><option value="OTHER_LIVE">Other live</option><option value="SNOW_RAIN_FLOOD_ATMOSPHERIC_ICE">Snow / rain / flood / atmospheric ice</option><option value="WIND_TORNADO_SEISMIC">Wind / tornado / seismic</option></select></label>
-          <label>Source reference condition <select value={state.conditions.source_reference_condition} onChange={(event) => { updateConditions({ source_reference_condition: event.currentTarget.value as MAT1Conditions["source_reference_condition"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Reference</option><option value="ALREADY_ADJUSTED">Already adjusted</option></select></label>
+          <label>Load present in this submitted combination <select value={state.conditions.time_effect_category} onChange={(event) => { const category = event.currentTarget.value; const selectedClass = loadClassifications.find(([id]) => id === category); updateConditions({ time_effect_category: category, live_load_subtype: selectedClass?.[2] ?? "" }); }}><option value="">Select the load classification</option>{loadClassifications.map(([id, label]) => <option value={id} key={id}>{label}</option>)}</select></label>
+          {state.conditions.time_effect_category === "LONG_TERM_OPERATING" ? <label>Full nominal operating amplitude <select value={state.conditions.full_amplitude_duration} onChange={(event) => { updateConditions({ full_amplitude_duration: event.currentTarget.value }); }}><option value="">Select documented duration</option><option value="MORE_THAN_ONE_YEAR">More than one year</option><option value="ONE_YEAR_OR_LESS">One year or less — choose another live classification</option></select></label> : null}
+          <p>Enter one already-factored member-end load combination at a time. This selection determines its time-effect factor; the app does not generate building loads or combine nominal cases.</p>
+          <details><summary>Advanced material source evidence and exposure notes</summary>
+          <label>Source reference condition <select value={state.conditions.source_reference_condition} onChange={(event) => { updateConditions({ source_reference_condition: event.currentTarget.value as MAT1Conditions["source_reference_condition"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Documented reference condition</option><option value="ALREADY_ADJUSTED">Documented already adjusted</option></select></label>
           {state.conditions.chemical === "SPECIFIED" ? <div className="mat1-chemical-details">
             <label>Substance <input value={state.conditions.chemical_substance} onChange={(event) => { updateConditions({ chemical_substance: event.currentTarget.value }); }} /></label>
             <label>Concentration <input value={state.conditions.chemical_concentration} onChange={(event) => { updateConditions({ chemical_concentration: event.currentTarget.value }); }} /></label>
@@ -181,23 +177,29 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
           <label>Protective measures <input value={state.conditions.protective_measures} onChange={(event) => { updateConditions({ protective_measures: event.currentTarget.value }); }} /></label>
           <label>Exposure notes <textarea value={state.conditions.exposure_notes} onChange={(event) => { updateConditions({ exposure_notes: event.currentTarget.value }); }} /></label>
           <label>Action provenance <input value={state.conditions.action_provenance} onChange={(event) => { updateConditions({ action_provenance: event.currentTarget.value }); }} /></label>
-          <label>Live-load subtype <input value={state.conditions.live_load_subtype} onChange={(event) => { updateConditions({ live_load_subtype: event.currentTarget.value }); }} /></label>
-          <label>Full-amplitude operating duration <input value={state.conditions.full_amplitude_duration} onChange={(event) => { updateConditions({ full_amplitude_duration: event.currentTarget.value }); }} /></label>
           <label>Design period <input value={state.conditions.design_period} onChange={(event) => { updateConditions({ design_period: event.currentTarget.value }); }} /></label>
           <label>Service period <input value={state.conditions.service_period} onChange={(event) => { updateConditions({ service_period: event.currentTarget.value }); }} /></label>
           <label>Fatigue cycles <input value={state.conditions.fatigue_cycles} onChange={(event) => { updateConditions({ fatigue_cycles: event.currentTarget.value }); }} /></label>
           <p>Exposure, fatigue and service-period entries are recorded only until an applicable source-bound check evaluates them.</p>
+          </details>
         </details>
+        <section aria-label="Calculated factors and design basis">
+          <h4>Calculated factors / Design basis</h4>
+          {factorRows.length === 0 ? <p>Run Design Check to see the backend factors for the selected material and this load combination.</p>
+            : <><p>Read-only factors from the last current calculation. The time factor applies to strength checks in this submitted load combination.</p>
+              <div className="table-scroll"><table><thead><tr><th>Property role</th><th>Moisture C<sub>M</sub></th><th>Temperature C<sub>T</sub></th><th>Chemical C<sub>CH</sub></th><th>Time λ</th></tr></thead><tbody>{factorRows.map((row) => <tr key={[row.role, row.cm, row.ct, row.cch, row.lambda].join(":")}><th>{row.role}</th><td>{factorText(row.cm)}</td><td>{factorText(row.ct)}</td><td>{factorText(row.cch)}</td><td>{factorText(row.lambda)}</td></tr>)}</tbody></table></div>
+              <p>Numerical factors do not establish the source or qualification of the selected material.</p></>}
+        </section>
         <section aria-label="Physical FRP component assignments">
           <h4>FRP component assignments</h4>
           {owners.length === 0 ? <p>Canonical physical owners load from the backend preview. Until then all FRP owners use the connection default.</p> : null}
-          {linkedFamilies.has(family) ? <p>Linked-material method: the existing native interface assumes the same material and conditions for its FRP layers. Change the connection default for this group; independent overrides require a different qualified method.</p> : null}
+          {linkedMaterial ? <p>Linked-material method: the existing native interface assumes the same material and conditions for its FRP layers. Change the connection default for this group; independent overrides require a different qualified method.</p> : null}
           {owners.map((owner) => {
             const override = state.conditionOverrides[family]?.[owner];
             const effective = override ?? state.conditions;
             return <div key={owner} className="mat1-owner-assignment">
-              <label>{owner}<select disabled={linkedFamilies.has(family)} value={state.overrides[family]?.[owner] === null ? "__UNASSIGNED" : state.overrides[family]?.[owner] ?? ""} onChange={(event) => { const value = event.currentTarget.value; setMAT1Override(family, owner, value === "" ? undefined : value === "__UNASSIGNED" ? null : value); }}><option value="">Uses connection default</option><option value="__UNASSIGNED">Unassigned — design unavailable</option>{state.catalog.map((item) => <option value={item.id} key={item.id}>{item.display_name}</option>)}{Object.values(state.custom).map((item) => <option value={item.id} key={item.id}>{item.display_name}</option>)}</select></label>
-              {!linkedFamilies.has(family) ? <details><summary>{override === undefined ? "Use connection design conditions" : "Component condition override"}</summary>
+              <label>{owner}<select disabled={linkedMaterial} value={state.overrides[family]?.[owner] === null ? "__UNASSIGNED" : state.overrides[family]?.[owner] ?? ""} onChange={(event) => { const value = event.currentTarget.value; setMAT1Override(family, owner, value === "" ? undefined : value === "__UNASSIGNED" ? null : value); }}><option value="">Uses connection default</option><option value="__UNASSIGNED">Unassigned — design unavailable</option>{state.catalog.map((item) => <option value={item.id} key={item.id}>{item.display_name}</option>)}{Object.values(state.custom).map((item) => <option value={item.id} key={item.id}>{item.display_name}</option>)}</select></label>
+              {!linkedMaterial ? <details><summary>{override === undefined ? "Use connection design conditions" : "Component condition override"}</summary>
                 <label><input type="checkbox" checked={override !== undefined} onChange={(event) => { setMAT1ConditionOverride(family, owner, event.currentTarget.checked ? state.conditions : null); }} /> Override conditions for {owner}</label>
                 {override === undefined ? null : <div>
                   <label>Sustained material temperature ({effective.sustained_temperature.unit}) <input value={effective.sustained_temperature.value} onChange={(event) => { updateOwnerConditions(owner, effective, { sustained_temperature: { ...effective.sustained_temperature, value: event.currentTarget.value } }); }} /></label>

@@ -152,7 +152,8 @@ describe("Stage 2.3R application and workspace", () => {
   it("renders exactly the two governed categories with no default selection", () => {
     render(<App />);
     expect(screen.getByRole("heading", { level: 1, name: "FRP Master Connection" })).toBeVisible();
-    expect(screen.getByText(/Stage 2\.6B/)).toBeVisible();
+    // OR1-08: the normal product header no longer exposes an internal stage identifier.
+    expect(screen.getByText("Engineering design workspace")).toBeVisible();
     const controls = within(screen.getByLabelText("Primary design categories")).getAllByRole("button");
     expect(controls).toHaveLength(2);
     expect(controls.every((value) => value.getAttribute("aria-pressed") === "false")).toBe(true);
@@ -180,20 +181,19 @@ describe("Stage 2.3R application and workspace", () => {
     expect(screen.getByText(/Session only .* not saved/)).toBeVisible();
     expect(screen.getAllByText("Shear Connections").length).toBeGreaterThan(0);
     expect(screen.queryByRole("option", { name: "Stair Stringer Miter Connection" })).toBeNull();
+    // This synthetic historical one-bolt route remains available for regression coverage.
     for (const label of ["Brace to column flange", "One brace", "One selected bolt", "One row"]) {
       expect(screen.getAllByText(label).length).toBeGreaterThan(0);
     }
     expect(screen.getByText("Angle brace")).toBeVisible();
     expect(screen.getByText("W column")).toBeVisible();
-    fireEvent.click(screen.getByText("Materials"));
-    expect(screen.getByRole("heading", { name: "ICE Locked Pultruded FRP" })).toBeVisible();
-    for (const property of ["Ft,L", "Ft,T", "Fbr,L", "Fbr,T", "Fsh,LT"]) {
-      expect(screen.getByText(property)).toBeVisible();
-    }
-    expect(screen.queryByText("Fc,T")).not.toBeInTheDocument();
+    // OR1-09: the legacy ICE card was removed; the authenticated MAT1 panel
+    // presents the selected record in the mounted product workflow.
+    expect(screen.queryByRole("heading", { name: "ICE Locked Pultruded FRP" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByText("Fastener"));
-    expect(screen.getByRole("heading", { name: "316/316L stainless fastener" })).toBeVisible();
-    expect(screen.getByText(/Fnt source pending/)).toBeVisible();
+    // OR1-10: the technical card names the selected source record.
+    expect(screen.getByRole("heading", { name: "316/316L Stainless-Steel Fastener System" })).toBeVisible();
+    expect(screen.getByText(/ASTM F593 tensile-strength source is required/)).toBeVisible();
     expect(screen.getByRole("heading", { name: "Connection viewer" })).toBeVisible();
     expect(screen.getByText(/browser does not reconstruct calculation geometry/)).toBeVisible();
   });

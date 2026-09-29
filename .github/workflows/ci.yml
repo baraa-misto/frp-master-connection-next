@@ -59,11 +59,13 @@ jobs:
         run: python -m ruff check .
       - name: Run strict mypy analysis
         run: python -m mypy --strict src tests
+      - name: Build source and wheel distributions
+        run: python -m build --no-isolation --sdist --wheel --outdir dist
       - name: Run deterministic backend shards with combined coverage
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7764
+          --expected-tests 7776
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider
@@ -78,6 +80,14 @@ jobs:
         with:
           name: direct-f1-pdfs-${{ matrix.os }}
           path: backend/direct-f1-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed-snapshot Direct OR1 review PDFs
+        run: python ../scripts/generate_direct_or1_ci_pdfs.py --output direct-or1-review-pdfs
+      - name: Upload Direct OR1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or1-pdfs-${{ matrix.os }}
+          path: backend/direct-or1-review-pdfs/
           if-no-files-found: error
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help

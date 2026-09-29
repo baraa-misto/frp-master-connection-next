@@ -36,6 +36,13 @@ from frp_master_connection.api.direct_side_lap_concrete_mapping import (
     serialize_direct_side_lap_concrete_design,
 )
 from frp_master_connection.api.double_channel_truss_node import dctn_response
+from frp_master_connection.api.fasteners import (
+    F593_REVISION,
+    DefaultFastenerSelectionDTO,
+    FastenerSelectionDTO,
+    fastener_source_record,
+    resolve_fastener_selection,
+)
 from frp_master_connection.api.multi_member_tee_mapping import (
     serialize_multi_member_tee_design,
 )
@@ -189,6 +196,27 @@ class MaterialConditionsDTO(_StrictModel):
             raise ValueError("MAT1 maximum material temperature is below sustained temperature.")
         if not self.load_case_name.strip():
             raise ValueError("MAT1 load case name must be nonempty.")
+        live_categories = {
+            TimeEffectCategory.IMPACT,
+            TimeEffectCategory.STORAGE,
+            TimeEffectCategory.LONG_TERM_OPERATING,
+            TimeEffectCategory.OTHER_LIVE,
+        }
+        if self.live_load_subtype and (
+            self.time_effect_category not in live_categories
+            or self.live_load_subtype != self.time_effect_category.value
+        ):
+            raise ValueError(
+                "MAT1 live-load classification conflicts with the selected load category."
+            )
+        if (
+            self.time_effect_category is TimeEffectCategory.LONG_TERM_OPERATING
+            and self.full_amplitude_duration != "MORE_THAN_ONE_YEAR"
+        ):
+            raise ValueError(
+                "Long-term operating classification requires documented full nominal "
+                "amplitude for more than one year."
+            )
         return self
 
 
@@ -225,6 +253,11 @@ class MultiRowMAT1RequestDTO(_StrictModel):
     contract: Literal["MAT1-MULTI-ROW-RC0"]
     legacy_request: MultiRowConnectionRequestDTO
     assignments: MaterialAssignmentsDTO
+    fastener: FastenerSelectionDTO = Field(
+        default_factory=lambda: DefaultFastenerSelectionDTO(
+            kind="DEFAULT", contract="FASTENER-OR1-RC1", revision=F593_REVISION
+        )
+    )
 
 
 class TeeMAT1RequestDTO(_StrictModel):
@@ -349,6 +382,18 @@ def _json_value(value: object) -> object:
     if isinstance(value, dict):
         return {key: _json_value(item) for key, item in value.items()}
     return value
+
+
+def _material_source_snapshot(assignments: MaterialAssignmentsDTO) -> dict[str, object]:
+    """Keep resolved source records in the same response as the native result."""
+
+    return {
+        "default": _json_value(asdict(resolve_material(assignments.default_material))),
+        "overrides": {
+            owner: _json_value(asdict(resolve_material(selection)))
+            for owner, selection in assignments.material_overrides.items()
+        },
+    }
 
 
 def _quantity(value: QuantityDTO) -> PhysicalQuantity:
@@ -522,6 +567,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "contract": "MAT1-SINGLE-BOLT-RC0",
             "overall_status": "SOURCE_REQUIRED",
             "native_design": serialized.model_dump(mode="json"),
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in ledgers],
             "material_issues": sorted(set(issues)),
             "design_check_performed": True,
@@ -589,7 +635,9 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 for layer_id, record, condition in per_layer
             ]
             canonical = bind_multirow_material(
-                map_multirow_request(legacy), adapters[0].adjusted_snapshot
+                map_multirow_request(legacy),
+                adapters[0].adjusted_snapshot,
+                resolve_fastener_selection(request.fastener),
             )
             native = serialize_multirow_design(evaluate_multirow_connection(canonical))
         except (ArithmeticError, KeyError, TypeError, ValueError) as error:
@@ -598,6 +646,8 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "contract": "MAT1-MULTI-ROW-RC0",
             "overall_status": "SOURCE_REQUIRED",
             "native_design": native.model_dump(mode="json"),
+            "material_sources": _material_source_snapshot(request.assignments),
+            "fastener_source": fastener_source_record(request.fastener),
             "material_ledgers": [
                 _json_value(asdict(ledger)) for adapter in adapters for ledger in adapter.ledgers
             ],
@@ -637,6 +687,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "contract": "MAT1-TEE-RC0",
             "overall_status": "SOURCE_REQUIRED",
             "native_design": serialized.model_dump(mode="json"),
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in scope.ledgers],
             "material_issues": sorted(set(scope.issues)),
             "design_check_performed": True,
@@ -678,6 +729,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "family_id": request.family_id,
             "overall_status": "SOURCE_REQUIRED",
             "client_design": client_design,
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in scope.ledgers],
             "material_issues": sorted(set(scope.issues)),
             "design_check_performed": True,
@@ -737,6 +789,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 "whole_connection_status": native.whole_connection_status,
                 "result": serialize_ssmc_value(native),
             },
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in scope.ledgers],
             "material_issues": sorted(
                 {*scope.issues, "SSMC_EXACT_PLATE_AND_MEMBER_PATH_SOURCE_BINDINGS_REQUIRED"}

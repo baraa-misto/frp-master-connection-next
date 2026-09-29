@@ -1,4 +1,16 @@
 import { useSyncExternalStore } from "react";
+import type { SingleBoltEvaluationRequest } from "../api/contracts";
+
+export const F593_FASTENER_REVISION = "ASTM-F593-17-G2-316-316L-SOURCE-PENDING-RC0";
+export type FastenerSelection =
+  | { readonly kind: "DEFAULT"; readonly contract: "FASTENER-OR1-RC1"; readonly revision: typeof F593_FASTENER_REVISION }
+  | { readonly kind: "SESSION"; readonly contract: "FASTENER-OR1-RC1"; readonly revision: string;
+      readonly source_label: string; readonly fnt_source_basis: string;
+      readonly snapshot: SingleBoltEvaluationRequest["fastener_snapshot"] };
+
+export const defaultFastenerSelection: FastenerSelection = {
+  kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION,
+};
 
 export interface MAT1Property {
   readonly id: string;
@@ -80,6 +92,7 @@ interface MAT1State {
   readonly previewInputs: Readonly<Record<string, string>>;
   readonly previewOwners: Readonly<Record<string, readonly string[]>>;
   readonly previewOwnerKeys: Readonly<Record<string, string>>;
+  readonly fastenerSelections: Readonly<Record<string, FastenerSelection>>;
 }
 
 const initialConditions: MAT1Conditions = {
@@ -98,10 +111,12 @@ const initialConditions: MAT1Conditions = {
 };
 
 let current: MAT1State = {
-  catalog: [], catalogError: null, active: false, defaultId: null,
+  catalog: [], catalogError: null, active: false,
+  defaultId: "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
   custom: {}, overrides: {}, conditions: initialConditions, conditionOverrides: {},
   designKeys: {}, designTraces: {},
   previewInputs: {}, previewOwners: {}, previewOwnerKeys: {},
+  fastenerSelections: {},
 };
 const listeners = new Set<() => void>();
 const notify = (next: MAT1State): void => { current = next; listeners.forEach((listener) => { listener(); }); };
@@ -124,6 +139,10 @@ export function setMAT1Active(active: boolean): void {
 
 export function setMAT1Default(id: string | null): void {
   notify({ ...current, active: true, defaultId: id });
+}
+
+export function setFastenerSelection(family: string, selection: FastenerSelection): void {
+  notify({ ...current, fastenerSelections: { ...current.fastenerSelections, [family]: selection } });
 }
 
 export function setMAT1Conditions(conditions: MAT1Conditions): void {
@@ -239,6 +258,7 @@ export function mat1FamilyKey(family: string): string {
     overrides: Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, materialSelection(id)])),
     conditions: current.conditions, conditionOverrides: current.conditionOverrides[family] ?? {},
     previewInput: current.previewInputs[family] ?? null,
+    fastener: family === "multi-row" ? current.fastenerSelections[family] ?? defaultFastenerSelection : undefined,
   });
 }
 

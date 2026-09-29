@@ -347,16 +347,19 @@ it("invalidates the workspace snapshot on edited fields and action buttons", () 
     display_name: "Synthetic", company: "Test", resin: "VINYL_ESTER", source_kind: "TEST_DATA",
     missing: [], qualification: "UNQUALIFIED", properties: [] }]);
   setMAT1Active(true);
-  const panel = render(<ConnectionWorkspaceShell family={id} banner={<span>Fixture</span>}><span>Body</span></ConnectionWorkspaceShell>);
-  act(() => { authorize(id); });
-  fireEvent.click(screen.getByText("FRP Materials & Design Conditions"));
-  fireEvent.change(screen.getByLabelText("Material mode"), { target: { value: "LEGACY" } });
-  expect(currentReportSnapshot(id).dirty).toBe(true);
-  act(() => { authorize(id); });
-  fireEvent.change(screen.getByLabelText("Material mode"), { target: { value: "MAT1" } });
-  act(() => { authorize(id); });
+  // OR1-09: the shared MAT1 panel is bound only to a real capability family;
+  // the legacy material-mode switch was removed with the single material authority.
+  const panelId = "multi-row";
+  const panel = render(<ConnectionWorkspaceShell family={panelId} banner={<span>Fixture</span>}><span>Body</span></ConnectionWorkspaceShell>);
+  act(() => { authorize(panelId); });
+  fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: "M" } });
+  expect(currentReportSnapshot(panelId).dirty).toBe(true);
+  act(() => { authorize(panelId); });
   fireEvent.click(screen.getByRole("button", { name: "New session material" }));
-  expect(currentReportSnapshot(id).dirty).toBe(true);
+  expect(currentReportSnapshot(panelId).dirty).toBe(true);
+  act(() => { authorize(panelId); });
+  fireEvent.click(screen.getByText(/Predefined values are read-only owner-supplied data/));
+  expect(currentReportSnapshot(panelId).dirty).toBe(false);
   panel.unmount();
   const plain = render(<ConnectionWorkspaceShell banner={<span>Fixture</span>}>
     <input aria-label="Plain field" /><button type="button">Plain action</button>

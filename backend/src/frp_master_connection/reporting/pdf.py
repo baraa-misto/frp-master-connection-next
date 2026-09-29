@@ -303,6 +303,154 @@ def _input_source_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
     return rows
 
 
+def _direct_selected_material_label(
+    snapshot: ReportSnapshot, native_material: dict[str, object]
+) -> str:
+    """Present the selected MAT1 source; the native material ID is an internal adapter."""
+
+    sources = snapshot.result.get("material_sources")
+    if not isinstance(sources, dict):
+        return str(native_material.get("display_name", "Unresolved"))
+    records: list[dict[str, object]] = []
+    default = sources.get("default")
+    if isinstance(default, dict):
+        records.append(default)
+    overrides = sources.get("overrides")
+    if isinstance(overrides, dict):
+        records.extend(item for item in overrides.values() if isinstance(item, dict))
+    labels = sorted({str(record.get("display_name", "Unresolved")) for record in records})
+    return ", ".join(labels) if labels else str(native_material.get("display_name", "Unresolved"))
+
+
+def _direct_selected_fastener(snapshot: ReportSnapshot) -> dict[str, object]:
+    source = snapshot.result.get("fastener_source")
+    if not isinstance(source, dict):
+        return {}
+    selected = source.get("snapshot") if source.get("kind") == "SESSION" else source
+    return selected if isinstance(selected, dict) else {}
+
+
+def _direct_selected_fastener_label(snapshot: ReportSnapshot, fallback: str) -> str:
+    selected = _direct_selected_fastener(snapshot)
+    return str(selected.get("display_name", fallback))
+
+
+def _direct_selected_fastener_fnt(snapshot: ReportSnapshot) -> str:
+    selected = _direct_selected_fastener(snapshot)
+    fnt = selected.get("fnt")
+    return "Controlled source required" if fnt is None else readable_value(fnt, "US_CUSTOMARY")
+
+
+def _mat1_factor_label(role: str, key: str, ledger: dict[str, object]) -> str:
+    if role == "Modulus" and key == "lambda_factor":
+        return "Not applicable to modulus"
+    value = ledger.get(key)
+    return str(value) if value is not None else "source required"
+
+
+def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
+    """Read selected MAT1 facts from the signed response, without recalculation."""
+
+    sources = snapshot.result.get("material_sources")
+    if not isinstance(sources, dict) or not isinstance(sources.get("default"), dict):
+        return []
+    record = sources["default"]
+    assignments = snapshot.request.get("mat1_assignments", {})
+    conditions = assignments.get("default_conditions", {}) if isinstance(assignments, dict) else {}
+    conditions = conditions if isinstance(conditions, dict) else {}
+
+    def quantity(name: str) -> str:
+        item = conditions.get(name, {})
+        return (
+            f"{item.get('value', 'unspecified')} {item.get('unit', '')}"
+            if isinstance(item, dict)
+            else "Unspecified"
+        )
+
+    physical = snapshot.request.get("physical_connection", {})
+    hardware = physical.get("fastener_snapshot", {}) if isinstance(physical, dict) else {}
+    hardware = hardware if isinstance(hardware, dict) else {}
+    hardware_id = hardware.get("id", "Unknown")
+    hardware_label = (
+        "ASTM F593-17 Group 2 316/316L cold-worked; ASTM F594-15 nut"
+        if hardware_id == "ASTM_F593_17_GROUP_2_316_316L"
+        else str(hardware.get("display_name", hardware_id))
+    )
+    hardware_label = _direct_selected_fastener_label(snapshot, hardware_label)
+    ledgers = snapshot.result.get("material_ledgers", [])
+    factors: dict[str, str] = {}
+    if isinstance(ledgers, list):
+        for item in ledgers:
+            if not isinstance(item, dict):
+                continue
+            property_id = item.get("property_id")
+            if not isinstance(property_id, str):
+                continue
+            role = "Modulus" if "modulus" in property_id else "Strength"
+            if role not in factors:
+                factors[role] = ", ".join(
+                    f"{label}={_mat1_factor_label(role, key, item)}"
+                    for label, key in (
+                        ("CM", "cm"),
+                        ("CT", "ct"),
+                        ("CCH", "cch"),
+                        ("lambda", "lambda_factor"),
+                    )
+                )
+    resin = str(record.get("resin", "UNKNOWN")).replace("_", " ").title()
+    moisture = str(conditions.get("moisture", "UNKNOWN")).replace("_", " ").title()
+    chemical = str(conditions.get("chemical", "UNKNOWN")).replace("_", " ").title()
+    load_class = str(conditions.get("time_effect_category", "UNKNOWN")).replace("_", " ").title()
+    company = str(record.get("company", "Unknown"))
+    display_name = str(record.get("display_name", "Unknown"))
+    material_label = (
+        display_name
+        if display_name.casefold().startswith(f"{company} — ".casefold())
+        else f"{company} — {display_name}"
+    )
+    if resin.casefold() not in material_label.casefold():
+        material_label += f" ({resin})"
+    rows = [
+        (
+            "Selected FRP",
+            material_label,
+        ),
+        (
+            "Material source",
+            f"{record.get('id', 'Unknown')} · revision {record.get('revision', 'Unknown')}",
+        ),
+        (
+            "Fastener",
+            hardware_label,
+        ),
+        (
+            "Fastener Fnt",
+            _direct_selected_fastener_fnt(snapshot),
+        ),
+        (
+            "Sustained / maximum temperature",
+            f"{quantity('sustained_temperature')} / {quantity('maximum_temperature')}",
+        ),
+        (
+            "Moisture / chemical exposure",
+            f"{moisture} / {chemical}",
+        ),
+        (
+            "Load case and classification",
+            f"{conditions.get('load_case_name', 'Unspecified')} · {load_class}",
+        ),
+    ]
+    rows.extend((f"{role} adjustment candidates", value) for role, value in factors.items())
+    rows.append(
+        (
+            "Source and qualification",
+            "Open; numerical factors and checks do not establish complete "
+            "material or hardware authority.",
+        )
+    )
+    return rows
+
+
 def _number(point: dict[str, object], axis: str) -> float:
     return float(str(point[axis]))
 
@@ -1582,13 +1730,21 @@ def _direct_reader_engineering_sections(
                         visual.get("negative_side_distance"), visual.get("positive_side_distance")
                     ),
                 ),
-                ("FRP material", str(material.get("display_name", "Unresolved"))),
+                (
+                    "FRP material",
+                    _direct_selected_material_label(snapshot, material),
+                ),
                 (
                     "FRP qualification",
                     readable_value(material.get("qualification_statuses"), system),
                 ),
-                ("Fastener", str(fastener.get("id", "Unresolved"))),
-                ("Fastener Fnt", "Controlled source pending"),
+                (
+                    "Fastener",
+                    _direct_selected_fastener_label(
+                        snapshot, str(fastener.get("id", "Unresolved"))
+                    ),
+                ),
+                ("Fastener Fnt", _direct_selected_fastener_fnt(snapshot)),
             ],
             styles,
         )
@@ -1716,7 +1872,10 @@ def _direct_reader_engineering_sections(
                             "Demand / design resistance",
                             paired(native.get("demand"), native.get("design_resistance")),
                         ),
-                        ("Exact utilization", str(native.get("utilization"))),
+                        (
+                            "Utilization (rounded)",
+                            short_number(native.get("utilization"), ratio=True),
+                        ),
                     ],
                     styles,
                 )
@@ -1726,9 +1885,12 @@ def _direct_reader_engineering_sections(
         story.append(limitations_matrix(checks))
     warnings = result.get("preview", {}).get("warnings", [])
     if isinstance(warnings, list) and warnings:
-        story.append(_paragraph("Geometry, source and demand notices", styles["small"]))
-        _append_bounded_tables(
-            story, [(str(index + 1), str(item)) for index, item in enumerate(warnings)], styles
+        story.append(
+            _paragraph(
+                "Full native geometry, source and demand notices are retained in the "
+                "Full Technical Audit appendix.",
+                styles["small"],
+            )
         )
     return story
 
@@ -2092,6 +2254,10 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         multirow_visual=visual,
         primary_blocker=primary_blocker,
     )
+    mat1_rows = _mat1_reader_rows(snapshot)
+    if mat1_rows:
+        story.append(_paragraph("Materials, conditions and design basis", styles["heading"]))
+        story.append(_table(mat1_rows, styles))
     story.append(
         _paragraph(
             "Native dimensioned bolt layout" if not direct else "Canonical bolt layout diagnostic",
@@ -2174,7 +2340,12 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                         ("Executed numerical substitution", executed_substitution),
                         (
                             "Executed factor substitution",
-                            _factor_substitution(check.get("factor_trace"), system)
+                            _factor_substitution(
+                                check.get("equation_trace")
+                                if method == "BOLT_SHEAR"
+                                else check.get("factor_trace"),
+                                system,
+                            )
                             if evaluated
                             else "Not executed",
                         ),
@@ -2230,6 +2401,16 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             styles["body"],
         )
     )
+    if isinstance(snapshot.result.get("material_sources"), dict):
+        story.append(
+            _paragraph(
+                "The native ICE_LOCKED_PULTRUDED_FRP token in this appendix is an internal "
+                "compatibility adapter. The selected MAT1 source record and its digest in the "
+                "signed material authority control the FRP properties used by the calculation; "
+                "the adapter is not a second material selection.",
+                styles["body"],
+            )
+        )
     story.append(_paragraph("Appendix A — Submitted request and provenance", styles["heading"]))
     _append_bounded_tables(
         story, [*_input_source_rows(snapshot), *_flatten("request", snapshot.request)], styles
@@ -2301,6 +2482,23 @@ def _finish_multirow_pdf(
 
 def render_report_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> bytes:
     """Dispatch the native response through the shared ReportLab pipeline."""
+
+    # MAT1 captures the submitted native request inside a signed assignment
+    # envelope. Present that native geometry/load shape to the existing report
+    # adapters, while retaining the exact material assignment in the audit.
+    # This transformation is presentation-only: the signed response and every
+    # engineering result remain the ones returned by the design endpoint.
+    legacy_request = snapshot.request.get("legacy_request")
+    if isinstance(legacy_request, dict) and "assignments" in snapshot.request:
+        snapshot = replace(
+            snapshot,
+            request={
+                **legacy_request,
+                "mat1_contract": snapshot.request.get("contract"),
+                "mat1_assignments": snapshot.request["assignments"],
+                "fastener_assignment": snapshot.request.get("fastener"),
+            },
+        )
 
     if snapshot.kind == "input_only" and snapshot.result.get("status") in {
         "INPUT_VALIDATION_FAILED",
