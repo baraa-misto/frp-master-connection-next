@@ -749,6 +749,8 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
 """
             assert raw.count(or1_build_step) == 1
             assert raw.count(or1_pdf_steps) == 1
+            assert raw.count(b"--expected-tests 7780") == 1
+            raw = raw.replace(b"--expected-tests 7780", b"--expected-tests 7779")
             assert raw.count(b"--expected-tests 7779") == 1
             raw = raw.replace(b"--expected-tests 7779", b"--expected-tests 7776")
             assert raw.count(b"--expected-tests 7776") == 1
