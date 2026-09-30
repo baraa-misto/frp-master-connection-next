@@ -732,6 +732,16 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # Hosted Windows completed coverage but hit the 25-minute job
+            # limit during report generation. Candidate PR checkout now uses
+            # the exact head SHA on both platforms.
+            exact_head_ref = (
+                b"          ref: ${{ github.event.pull_request.head.sha || github.sha }}\n"
+            )
+            assert raw.count(exact_head_ref) == 2
+            raw = raw.replace(exact_head_ref, b"")
+            assert raw.count(b"    timeout-minutes: 40") == 1
+            raw = raw.replace(b"    timeout-minutes: 40", b"    timeout-minutes: 25")
             # Reconstruct the exact Direct F1 predecessor before auditing the
             # older reporting and material CI identities below. OR1 adds only
             # this build gate, platform PDF artifact, and test-count increase.
