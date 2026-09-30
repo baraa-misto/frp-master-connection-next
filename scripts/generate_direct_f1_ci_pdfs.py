@@ -22,8 +22,9 @@ sys.path.insert(0, str(ROOT / "backend"))
 
 from frp_master_connection.api.multirow_mapping import (
     serialize_multirow_design,
+    serialize_multirow_preview,
 )
-from frp_master_connection.application import evaluate_multirow_connection
+from frp_master_connection.application import evaluate_multirow_connection, preview_multirow_connection
 from frp_master_connection.reporting.pdf import (
     ReportOptions,
     render_multirow_pdf,
@@ -129,6 +130,41 @@ def main() -> None:
             print(f"{filename}: {len(reader.pages)} pages")
         assert result == original
         assert snapshot.result == signed_original
+
+    # An edited design exports its current geometry as input-only authority.
+    # A prior design result is deliberately absent from this signed snapshot.
+    edited = _direct_payload()
+    pitch = edited["pitch"]
+    assert isinstance(pitch, dict)
+    pitch["value"] = "3"
+    preview = serialize_multirow_preview(preview_multirow_connection(_request(edited))).model_dump()
+    token = signer.issue(
+        family="multi-row", kind="input_only", request=edited, result=preview, account_id="qa"
+    )
+    snapshot = signer.verify(token, account_id="qa")
+    pdf = render_multirow_pdf(snapshot, ReportOptions(mode="ENGINEER_REPORT"))
+    reader = PdfReader(io.BytesIO(pdf))
+    report_text = "\n".join(page.extract_text() or "" for page in reader.pages)
+    assert "design not evaluated" in report_text.lower()
+    assert "Direct angle-to-W connection" in report_text
+    assert "0.131226" not in report_text
+    filename = "direct-f1-r2-edited-input-only-us_customary-engineer_report.pdf"
+    (output / filename).write_bytes(pdf)
+    records.append(
+        {
+            "candidate_sha": commit,
+            "case": "edited-input-only",
+            "display_units": "US_CUSTOMARY",
+            "mode": "ENGINEER_REPORT",
+            "filename": filename,
+            "pages": len(reader.pages),
+            "bytes": len(pdf),
+            "sha256": hashlib.sha256(pdf).hexdigest(),
+            "signed_snapshot_digest": snapshot.digest,
+            "geometry_status": preview["geometry_status"],
+        }
+    )
+    print(f"{filename}: {len(reader.pages)} pages")
     (output / "DIRECT_F1_PLATFORM_PDF_QA.json").write_text(
         json.dumps(records, indent=2), encoding="utf-8"
     )
