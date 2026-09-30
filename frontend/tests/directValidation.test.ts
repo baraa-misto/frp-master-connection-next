@@ -40,3 +40,22 @@ it("rejects a malformed Direct starter instead of displaying a mismatched physic
     source.mockRestore();
   }
 });
+
+it.each([
+  ["US_CUSTOMARY", "8", "16", "6", "4", "in"],
+  ["SI", "203.2", "406.4", "152.4", "101.6", "mm"],
+] as const)("builds a contained %s Direct starter without modifying historical J1", (unit, leg, flange, end, boundary, lengthUnit) => {
+  const legacyBefore = JSON.stringify(benchmarks.loadJ1Benchmark(unit));
+  const starter = directStartingExample(unit);
+  const built = buildMultirowRequest(starter, benchmarks.loadJ1ViewExtents(unit), initialBoltGroupState(unit, true), "AUTOMATIC_MEMBER_END_FORCE");
+  expect(built.direct_finalization_contract_version).toBe("SHEAR01-DIRECT-F1");
+  expect(built.row_count).toBe(2);
+  expect(built.bolts_per_row).toBe(1);
+  expect(built.source_length_unit).toBe(lengthUnit);
+  expect(built.physical_connection?.joint_assembly.members[0]?.section.leg_y?.value).toBe(leg);
+  expect(built.physical_connection?.joint_assembly.members[1]?.section.flange_width?.value).toBe(flange);
+  expect(built.unloaded_end_e1.value).toBe(end);
+  expect(built.loaded_boundary_to_row_1_distance.value).toBe(boundary);
+  expect(JSON.stringify(benchmarks.loadJ1Benchmark(unit))).toBe(legacyBefore);
+  expect(starter.geometry_template?.brace_to_column_directed_angle_deg).toBe("135");
+});

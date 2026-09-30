@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { mat1FamilyKey, useMAT1 } from "../state/mat1Session";
@@ -65,12 +65,20 @@ export function ConnectionWorkspaceShell({
   reportDraft,
 }: ConnectionWorkspaceShellProps) {
   const mat1 = useMAT1();
+  const inputKey = family === undefined ? null : JSON.stringify([reportDraft, mat1FamilyKey(family)]);
+  const priorInputKey = useRef(inputKey);
+  useEffect(() => {
+    if (family !== undefined && priorInputKey.current !== inputKey) {
+      invalidateReportSnapshot(family);
+    }
+    priorInputKey.current = inputKey;
+  }, [family, inputKey]);
   return (
     <MAT1FamilyContext.Provider value={family ?? null}><div className={`engineering-workspace connection-first-workspace${className === "" ? "" : ` ${className}`}`}>
       {banner}
       {family === undefined ? null : <ReportExportButton family={family} draft={reportDraft} />}
-      {family === undefined || !mat1.active || !workspaceSupports(family, "frp_material_selection") ? null : <div onChangeCapture={() => { invalidateReportSnapshot(family); }} onClickCapture={event => { if (event.target instanceof Element && event.target.closest("button")) invalidateReportSnapshot(family); }}><MAT1MaterialsPanel family={family} /></div>}
-      <div className="workspace-body" onChangeCapture={() => { if (family !== undefined) invalidateReportSnapshot(family); }} onClickCapture={event => { if (family !== undefined && event.target instanceof Element && event.target.closest("button")) invalidateReportSnapshot(family); }}>{children}</div>
+      {family === undefined || !mat1.active || !workspaceSupports(family, "frp_material_selection") ? null : <div><MAT1MaterialsPanel family={family} /></div>}
+      <div className="workspace-body">{children}</div>
     </div></MAT1FamilyContext.Provider>
   );
 }
@@ -91,12 +99,12 @@ export function PersistentConnectionViewer({ children, unity }: PersistentConnec
   const mat1 = useMAT1();
   const gateTrace = family === null ? undefined : mat1.designTraces[family] as { overall_status?: string } | undefined;
   const gateStatus = family !== null && mat1.designKeys[family] === mat1FamilyKey(family)
-    ? gateTrace?.overall_status ?? "SOURCE_REQUIRED" : "STALE";
+    ? gateTrace?.overall_status ?? "SOURCE_REQUIRED" : gateTrace === undefined ? "Not calculated" : "Recalculation needed";
   let presented = unity;
   if (unity !== undefined && family !== null && mat1.active) {
     const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[] } | undefined;
     if (mat1.designKeys[family] !== mat1FamilyKey(family) || trace === undefined) {
-      presented = { tone: "gray", ratio: null, ratioText: "—", status: "STALE", governing: null, explanation: "FRP material or design conditions changed. Run Design Check." };
+      presented = { tone: "gray", ratio: null, ratioText: "—", status: trace === undefined ? "Not calculated" : "Recalculation needed", governing: null, explanation: trace === undefined ? "Run Design Check to calculate the connection." : "FRP material or design conditions changed. Run Design Check." };
     } else {
       const mapped = unityFamily[family];
       const inspected = mapped === undefined ? unity : viewerUnity(mapped, trace.client_design ?? trace.native_design);
@@ -110,8 +118,8 @@ export function PersistentConnectionViewer({ children, unity }: PersistentConnec
   }
   return <UnityViewerContext.Provider value={presented ?? null}><div className="persistent-connection-viewer">
     {family !== null && mat1.active ? <div className="mat1-result-gate" role="status">
-      <strong>MAT1 connection status: {gateStatus}</strong>
-      <span> Detailed native checks are numerical diagnostics on declared material data. Source and qualification gates govern the connection status.</span>
+      <strong>Design completeness status: {gateStatus}</strong>
+      <span> Material source and qualification requirements still govern the connection result.</span>
     </div> : null}
     {children}
     {presented === undefined ? null : <div className="unity-viewer-fallback"><UnityRatioIndicator value={presented} /></div>}

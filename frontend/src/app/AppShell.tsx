@@ -43,7 +43,7 @@ export function AppShell() {
         </section>
 
         <WorkspacePreview selectedCategory={selectedCategory} />
-        <ConnectorMaterialReadiness />
+        {selectedCategory === "shear" ? null : <ConnectorMaterialReadiness />}
       </main>
 
       <footer className="product-footer">

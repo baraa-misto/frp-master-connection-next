@@ -10,6 +10,8 @@ import { DirectSideLapConcreteWorkspace } from "./DirectSideLapConcreteWorkspace
 import { ColumnBaseWebAngleWorkspace } from "./ColumnBaseWebAngleWorkspace";
 import { WebSpliceWorkspace } from "./WebSpliceWorkspace";
 import { DoubleChannelTrussNodeWorkspace } from "./DoubleChannelTrussNodeWorkspace";
+import { ConnectorMaterialReadiness } from "../features/ConnectorMaterialReadiness";
+import { workspaceSupports } from "../domain/workspaceCapabilities";
 
 type ConnectionTemplate = "DIRECT_REFERENCE" | "FRP_TEE" | "SINGLE_CLIP_ANGLE" | "SYMMETRIC_PAIRED_CLIP_ANGLES" | "MULTI_MEMBER_TEE" | "BEAM_CONCRETE_PAIRED_ANGLE" | "DIRECT_SIDE_LAP_CONCRETE" | "COLUMN_BASE_WEB_ANGLES_CONCRETE" | "SYMMETRIC_DOUBLE_WEB_SPLICE" | "DOUBLE_CHANNEL_TRUSS_NODE_CONNECTION";
 
@@ -54,6 +56,7 @@ export function ShearConnectionsWorkspace() {
       {template === "COLUMN_BASE_WEB_ANGLES_CONCRETE" ? <ColumnBaseWebAngleWorkspace /> : null}
       {template === "SYMMETRIC_DOUBLE_WEB_SPLICE" ? <WebSpliceWorkspace /> : null}
       {template === "DOUBLE_CHANNEL_TRUSS_NODE_CONNECTION" ? <DoubleChannelTrussNodeWorkspace /> : null}
+      {template === "DIRECT_REFERENCE" && workspaceSupports("multi-row", "force_only_shear") ? <details className="selection-panel"><summary>Material and source readiness</summary><p>Direct uses an FRP angle brace, supporting FRP W member, and metallic fastener. FRP material qualification, ASTM F593 tensile-strength source, and whole-connection qualification remain required for a complete design.</p></details> : <ConnectorMaterialReadiness />}
     </>
   );
 }

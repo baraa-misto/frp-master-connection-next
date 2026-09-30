@@ -44,7 +44,10 @@ async function requestJson(path: string, init: RequestInit): Promise<unknown> {
     if (init.signal?.aborted) throw error;
     throw new Error("MAT1 service could not be reached.", { cause: error });
   }
-  if (!response.ok) throw new Error(`MAT1 service HTTP ${String(response.status)}`);
+  if (!response.ok) {
+    if (response.status === 422) throw new Error("Check the required material and project condition fields, then try again.", { cause: `MAT1 service HTTP ${String(response.status)}` });
+    throw new Error("Unable to complete the material request. Try again or open Advanced Engineering Diagnostics for technical details.", { cause: `MAT1 service HTTP ${String(response.status)}` });
+  }
   try {
     return await response.json() as unknown;
   } catch (error) {

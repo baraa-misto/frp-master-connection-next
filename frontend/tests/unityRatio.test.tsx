@@ -137,12 +137,12 @@ describe("shared viewer badge", () => {
     setMAT1Default(null);
     const unity = resolveUnity({ family: "single-bolt", phase: "current", design: single("0.824") });
     const mounted = render(<ConnectionWorkspaceShell family="single-bolt" banner={<span>MAT1 viewer</span>}><PersistentConnectionViewer unity={unity}><span>Geometry</span></PersistentConnectionViewer></ConnectionWorkspaceShell>);
-    expect(screen.getByText(/MAT1 connection status: STALE/)).toBeInTheDocument();
+    expect(screen.getByText(/Design completeness status: Not calculated/)).toBeInTheDocument();
     expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "gray");
     act(() => {
       expect(acceptMAT1Design("single-bolt", mat1FamilyKey("single-bolt"), { overall_status: "SOURCE_REQUIRED", native_design: single("0.824"), material_issues: ["TG_REQUIRED"] })).toBe(true);
     });
-    expect(screen.getByText(/MAT1 connection status: SOURCE_REQUIRED/)).toBeInTheDocument();
+    expect(screen.getByText(/Design completeness status: SOURCE_REQUIRED/)).toBeInTheDocument();
     expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "yellow");
     expect(mounted.container.textContent).toContain("TG_REQUIRED");
     act(() => {
@@ -150,6 +150,10 @@ describe("shared viewer badge", () => {
     });
     expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "red");
     expect(mounted.container.textContent).toContain("Material source and qualification remain unresolved.");
+    act(() => { setMAT1Default("MAT1-TEST"); });
+    expect(screen.getByText(/Design completeness status: Recalculation needed/)).toBeInTheDocument();
+    expect(mounted.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "gray");
+    expect(mounted.container.textContent).toContain("FRP material or design conditions changed");
     mounted.unmount();
     setMAT1Active(false);
   });
@@ -159,8 +163,9 @@ describe("shared viewer badge", () => {
     const unity = resolveUnity({ family: "single-bolt", phase: "current", design: single("1.142") });
     const mapped = render(<ConnectionWorkspaceShell family="synthetic-family" className="mat1-test-shell" banner={<span>Fixture</span>}><PersistentConnectionViewer unity={unity}><span>Viewer</span></PersistentConnectionViewer></ConnectionWorkspaceShell>);
     act(() => {
-      expect(acceptMAT1Design("synthetic-family", mat1FamilyKey("synthetic-family"), { overall_status: "SOURCE_REQUIRED" })).toBe(true);
+      expect(acceptMAT1Design("synthetic-family", mat1FamilyKey("synthetic-family"), {})).toBe(true);
     });
+    expect(screen.getByText(/Design completeness status: SOURCE_REQUIRED/)).toBeInTheDocument();
     expect(mapped.container.querySelector(".mat1-test-shell")).toBeInTheDocument();
     expect(mapped.container.querySelector(".unity-indicator")).toHaveAttribute("data-unity-tone", "red");
     mapped.unmount();

@@ -71,7 +71,7 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
   const ledgers = current ? trace?.material_ledgers ?? [] : [];
   const factorRows = Array.from(new Map(ledgers.map((ledger) => {
     const property = typeof ledger.property_id === "string" ? ledger.property_id : "Property";
-    const role = property.includes("modulus") ? "Modulus" : property.includes("strength") ? "Strength" : property;
+    const role = property.includes("modulus") ? "Modulus" : property.includes("strength") ? "Strength" : readable(property);
     const key = [role, ledger.cm, ledger.ct, ledger.cch, ledger.lambda_factor].join(":");
     return [key, { role, cm: ledger.cm, ct: ledger.ct, cch: ledger.cch, lambda: role === "Modulus" ? "Not applicable to modulus" : ledger.lambda_factor }] as const;
   })).values());
@@ -95,7 +95,7 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
 
   async function inspectFactors(): Promise<void> {
     if (selected === undefined || !completeConditions(state.conditions) || displayedProperties.length === 0) {
-      setMessage("Select a material, complete the conditions, and enter at least one property.");
+      setMessage(state.conditions.load_case_name.trim() === "" ? "Enter a load-case name before viewing calculated factors." : "Select a material, complete the project conditions, and enter at least one property before viewing calculated factors.");
       return;
     }
     const material = "kind" in selected ? selected : {
@@ -129,8 +129,8 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
         <div className="benchmark-actions">
           <button type="button" onClick={() => { const id = createMAT1Session(); setMAT1Default(id); setShowProperties(true); }}>New session material</button>
           <button type="button" disabled={selected === undefined} onClick={selected === undefined ? undefined : () => { const id = createMAT1Session(selected); setMAT1Default(id); setShowProperties(true); }}>Copy as session material</button>
-          <button type="button" onClick={() => { clearMAT1Sessions(); setMessage("Session materials cleared. Affected assignments are unassigned and stale."); }}>Clear session materials</button>
-          {Object.values(state.custom).map((item) => <button key={item.id} type="button" onClick={() => { setMessage(deleteMAT1Session(item.id) ? "Session material deleted." : "Reassign components before deleting this material."); }}>Delete {item.display_name}</button>)}
+          <details><summary>Advanced Engineering Diagnostics · session management</summary><button type="button" onClick={() => { clearMAT1Sessions(); setMessage("Session materials cleared. Affected assignments are unassigned and stale."); }}>Clear session materials</button>
+          {Object.values(state.custom).map((item) => <button key={item.id} type="button" onClick={() => { setMessage(deleteMAT1Session(item.id) ? "Session material deleted." : "Reassign components before deleting this material."); }}>Delete {item.display_name}</button>)}</details>
         </div>
         {selectedSession === undefined ? null : <div className="mat1-session-editor">
           <label>Session material name <input value={selectedSession.display_name} onChange={(event) => { editMAT1Session(selectedSession.id, { display_name: event.currentTarget.value }); }} /></label>
@@ -160,7 +160,8 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
           <p>Material glass-transition temperature is source evidence. It is unavailable in the current ICE records, so the thermal applicability limit remains visible in the result.</p>
           <label>Moisture <select value={state.conditions.moisture} onChange={(event) => { updateConditions({ moisture: event.currentTarget.value as MAT1Conditions["moisture"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Reference condition</option><option value="SUSTAINED_MOISTURE">Sustained moisture</option><option value="OTHER">Other documented condition</option></select></label>
           <label>Chemical exposure <select value={state.conditions.chemical} onChange={(event) => { updateConditions({ chemical: event.currentTarget.value as MAT1Conditions["chemical"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label>
-          <label>Load case name <input value={state.conditions.load_case_name} onChange={(event) => { updateConditions({ load_case_name: event.currentTarget.value }); }} /></label>
+          <label>Load case name (required) <input required aria-invalid={state.conditions.load_case_name.trim() === ""} value={state.conditions.load_case_name} onChange={(event) => { updateConditions({ load_case_name: event.currentTarget.value }); }} /></label>
+          {state.conditions.load_case_name.trim() === "" ? <p role="alert">Enter a load-case name before running Design Check or viewing calculated factors.</p> : null}
           <label>Load present in this submitted combination <select value={state.conditions.time_effect_category} onChange={(event) => { const category = event.currentTarget.value; const selectedClass = loadClassifications.find(([id]) => id === category); updateConditions({ time_effect_category: category, live_load_subtype: selectedClass?.[2] ?? "" }); }}><option value="">Select the load classification</option>{loadClassifications.map(([id, label]) => <option value={id} key={id}>{label}</option>)}</select></label>
           {state.conditions.time_effect_category === "LONG_TERM_OPERATING" ? <label>Full nominal operating amplitude <select value={state.conditions.full_amplitude_duration} onChange={(event) => { updateConditions({ full_amplitude_duration: event.currentTarget.value }); }}><option value="">Select documented duration</option><option value="MORE_THAN_ONE_YEAR">More than one year</option><option value="ONE_YEAR_OR_LESS">One year or less — choose another live classification</option></select></label> : null}
           <p>Enter one already-factored member-end load combination at a time. This selection determines its time-effect factor; the app does not generate building loads or combine nominal cases.</p>
@@ -190,7 +191,8 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
               <div className="table-scroll"><table><thead><tr><th>Property role</th><th>Moisture C<sub>M</sub></th><th>Temperature C<sub>T</sub></th><th>Chemical C<sub>CH</sub></th><th>Time λ</th></tr></thead><tbody>{factorRows.map((row) => <tr key={[row.role, row.cm, row.ct, row.cch, row.lambda].join(":")}><th>{row.role}</th><td>{factorText(row.cm)}</td><td>{factorText(row.ct)}</td><td>{factorText(row.cch)}</td><td>{factorText(row.lambda)}</td></tr>)}</tbody></table></div>
               <p>Numerical factors do not establish the source or qualification of the selected material.</p></>}
         </section>
-        <section aria-label="Physical FRP component assignments">
+        {linkedMaterial ? <p>Selected FRP material applies to the angle brace and supporting W member.</p> : null}
+        <details><summary>Advanced Engineering Diagnostics · FRP component assignments and factor trace</summary><section aria-label="Physical FRP component assignments">
           <h4>FRP component assignments</h4>
           {owners.length === 0 ? <p>Canonical physical owners load from the backend preview. Until then all FRP owners use the connection default.</p> : null}
           {linkedMaterial ? <p>Linked-material method: the existing native interface assumes the same material and conditions for its FRP layers. Change the connection default for this group; independent overrides require a different qualified method.</p> : null}
@@ -212,11 +214,11 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
             </div>;
           })}
           <p>Compatible FRP targets: {owners.join(", ") || "pending preview"}</p>
-          <button type="button" disabled={selected === undefined || owners.length === 0} onClick={selected === undefined ? undefined : () => { applyMAT1ToOwners(family, owners, selected.id); }}>Apply selected material to compatible FRP components</button>
+          {linkedMaterial ? null : <button type="button" disabled={selected === undefined || owners.length === 0} onClick={selected === undefined ? undefined : () => { applyMAT1ToOwners(family, owners, selected.id); }}>Apply selected material to compatible FRP components</button>}
         </section>
-        <button type="button" onClick={() => { void inspectFactors(); }}>Inspect factor candidates</button>
+        <button type="button" onClick={() => { void inspectFactors(); }}>View calculated factors</button>
         <button type="button" onClick={() => { setShowAdjustments(!showAdjustments); }}>Material adjustment trace</button>
-        {showAdjustments ? <div className="mat1-adjustments"><p>{current ? `Design status: ${trace?.overall_status ?? "SOURCE_REQUIRED"}` : "Design result stale or not run."}</p><p>Computed candidates are diagnostic until source and applicability gates are resolved.</p><pre>{JSON.stringify(current ? ledgers : candidate, null, 2)}</pre></div> : null}
+        {showAdjustments ? <div className="mat1-adjustments"><p>{current ? `Design status: ${trace?.overall_status ?? "SOURCE_REQUIRED"}` : "Design result stale or not run."}</p><p>Computed candidates are diagnostic until source and applicability gates are resolved.</p><pre>{JSON.stringify(current ? ledgers : candidate, null, 2)}</pre></div> : null}</details>
       </> : null}
       {message === "" ? null : <p role="status">{message}</p>}
     </details>

@@ -20,11 +20,14 @@ function selected(): FastenerSelection {
 it("keeps F593 strength source pending and creates an unlocked user-defined session record", () => {
   render(<ControlledSelector />);
   expect(screen.getByText(/ASTM F593 tensile-strength source is required/)).toBeVisible();
-  fireEvent.change(screen.getByLabelText("Fastener source"), { target: { value: "SESSION" } });
+  fireEvent.change(screen.getByLabelText("Fastener"), { target: { value: "SESSION" } });
   expect(selected()).toMatchObject({ kind: "SESSION", snapshot: {
     locked: false, bolt_specification: "USER_DEFINED", fnt: null,
     fnt_source_classification: "SOURCE_PENDING", fnt_qualification_status: "SOURCE_PENDING",
   } });
+  expect(screen.getByLabelText(/Fnt \(/)).not.toBeVisible();
+  fireEvent.click(screen.getByText("Fastener technical details"));
+  expect(screen.getByLabelText(/Fnt \(/)).toBeVisible();
   fireEvent.change(screen.getByLabelText(/Fnt \(/), { target: { value: "75" } });
   fireEvent.change(screen.getByLabelText("Fnt source basis"), { target: { value: "QA-only supplied value" } });
   expect(selected()).toMatchObject({ kind: "SESSION", fnt_source_basis: "QA-only supplied value", snapshot: {
@@ -35,20 +38,21 @@ it("keeps F593 strength source pending and creates an unlocked user-defined sess
   expect(selected()).toMatchObject({ kind: "SESSION", snapshot: {
     fnt: null, fnt_source_classification: "SOURCE_PENDING", fnt_qualification_status: "SOURCE_PENDING",
   } });
-  fireEvent.change(screen.getByLabelText("Fastener source"), { target: { value: "DEFAULT" } });
+  fireEvent.change(screen.getByLabelText("Fastener"), { target: { value: "DEFAULT" } });
   expect(selected()).toEqual(defaultFastenerSelection);
 });
 
 it("keeps an absent custom washer geometry explicit instead of inventing one", () => {
   render(<ControlledSelector defaultSnapshot={{ ...preset, washer_geometry: null }} />);
-  fireEvent.change(screen.getByLabelText("Fastener source"), { target: { value: "SESSION" } });
+  fireEvent.change(screen.getByLabelText("Fastener"), { target: { value: "SESSION" } });
   expect(selected()).toMatchObject({ kind: "SESSION", snapshot: { washer_geometry: null } });
   expect(screen.queryByLabelText(/Washer outside diameter/)).not.toBeInTheDocument();
 });
 
 it("copies known geometry without copying strength and edits all session hardware fields", () => {
   render(<ControlledSelector />);
-  fireEvent.click(screen.getByRole("button", { name: "Copy default as custom" }));
+  fireEvent.click(screen.getByRole("button", { name: "Copy as custom" }));
+  fireEvent.click(screen.getByText("Fastener technical details"));
   expect(selected()).toMatchObject({ kind: "SESSION", snapshot: {
     bolt_specification: preset.bolt_specification, fnt: null, locked: false,
   } });

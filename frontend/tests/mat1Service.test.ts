@@ -55,7 +55,7 @@ it("rejects malformed owner and factor replies", async () => {
 
 it("distinguishes HTTP, invalid JSON, network and cancellation failures", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({}, 503)));
-  await expect(loadMAT1Catalog(signal)).rejects.toThrow("MAT1 service HTTP 503");
+  await expect(loadMAT1Catalog(signal)).rejects.toThrow("Unable to complete the material request");
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("{broken", { status: 200 })));
   await expect(loadMAT1Catalog(signal)).rejects.toThrow("MAT1 service returned invalid JSON.");
   vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));

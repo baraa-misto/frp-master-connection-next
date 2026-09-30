@@ -135,15 +135,17 @@ export function ReportExportButton({ family, draft }: { readonly family: string;
   const directReport = family === "multi-row" && typeof draft === "object" && draft !== null &&
     "direct_finalization_contract_version" in draft &&
     draft.direct_finalization_contract_version === "SHEAR01-DIRECT-F1";
+  const currentDesign = snapshot.token !== null && !snapshot.dirty && snapshot.kind === "design";
   return <div className="report-export">
     <button type="button" onClick={() => {
       const current = currentReportSnapshot(family);
       setMode(current.token !== null && !current.dirty ? "design" : "draft");
       setOpen(true);
     }} disabled={(snapshot.token === null || snapshot.dirty) && draft === undefined}>
-      Export PDF Report
+      {currentDesign ? "Export Engineer Report" : "Export Input / Geometry Report"}
     </button>
-    {snapshot.dirty ? <span aria-live="polite">Inputs changed. Export submitted inputs only, or run Design Check for a current calculation report.</span> : null}
+    {snapshot.dirty ? <span aria-live="polite">Inputs changed. Export will document the current inputs and geometry.</span> : null}
+    {!snapshot.dirty && draft !== undefined ? <span aria-live="polite">{currentDesign ? "Engineer Report reflects the latest Design Check." : "No current design result. Export will document submitted inputs and geometry."}</span> : null}
     {snapshot.token === null && !snapshot.dirty && draft === undefined ? <span aria-live="polite">Run a preview or design check to create a report snapshot.</span> : null}
     {open ? <div role="dialog" aria-modal="true" aria-label="Export PDF Report" className="report-export-dialog">
       <h2>{mode === "draft" ? "Submitted inputs report" : snapshot.kind === "input_only" ? "Inputs and model report" : "Full calculation report"}</h2>

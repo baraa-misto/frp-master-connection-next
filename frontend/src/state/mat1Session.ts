@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import type { SingleBoltEvaluationRequest } from "../api/contracts";
+import { WORKSPACE_CAPABILITIES } from "../domain/workspaceCapabilities";
 
 export const F593_FASTENER_REVISION = "ASTM-F593-17-G2-316-316L-SOURCE-PENDING-RC0";
 export type FastenerSelection =
@@ -101,7 +102,7 @@ const initialConditions: MAT1Conditions = {
   glass_transition_temperature: null,
   moisture: "UNKNOWN",
   chemical: "UNKNOWN",
-  load_case_name: "",
+  load_case_name: "LC-1",
   time_effect_category: "",
   source_reference_condition: "UNKNOWN",
   chemical_substance: "", chemical_concentration: "", chemical_contact_form: "", chemical_duration: "",
@@ -138,7 +139,12 @@ export function setMAT1Active(active: boolean): void {
 }
 
 export function setMAT1Default(id: string | null): void {
-  notify({ ...current, active: true, defaultId: id });
+  // A linked family's old component override cannot survive a new selection.
+  const linkedOverrides = Object.fromEntries(Object.values(WORKSPACE_CAPABILITIES)
+    .filter((capability) => capability.material_assignment_mode === "LINKED")
+    .map((capability) => [capability.route_id, {}]));
+  notify({ ...current, active: true, defaultId: id,
+    overrides: { ...current.overrides, ...linkedOverrides } });
 }
 
 export function setFastenerSelection(family: string, selection: FastenerSelection): void {

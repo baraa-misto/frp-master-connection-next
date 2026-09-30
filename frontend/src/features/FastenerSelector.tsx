@@ -43,13 +43,13 @@ export function FastenerSelector({ defaultSnapshot, selection, onSelect }: {
   };
   const custom = selection.kind === "SESSION" ? selection : null;
   return <section className="fastener-selection" aria-label="Selected fastener">
-    <label>Fastener source <select value={selection.kind} onChange={(event) => {
+    <label>Fastener <select value={selection.kind} onChange={(event) => {
       onSelect(event.currentTarget.value === "DEFAULT" ? defaultFastenerSelection : createSessionFastener(defaultSnapshot, false));
     }}><option value="DEFAULT">ASTM F593-17 Group 2 — 316/316L (Fnt source pending)</option><option value="SESSION">User-defined fastener</option></select></label>
-    <div className="benchmark-actions"><button type="button" onClick={() => { onSelect(createSessionFastener(defaultSnapshot, true)); }}>Copy default as custom</button></div>
+    <div className="benchmark-actions"><button type="button" onClick={() => { onSelect(createSessionFastener(defaultSnapshot, true)); }}>Copy as custom</button></div>
     {custom === null ? <p>ASTM F593 tensile-strength source is required for the selected alloy/condition. The matching F594 nut, washer basis, installation state and geometry remain recorded.</p> : <>
       <p>Custom Fnt enables numerical bolt checks only. It does not qualify this fastener as ASTM F593.</p>
-      <div className="field-grid">
+      <details><summary>Fastener technical details</summary><div className="field-grid">
         <label>Fastener name <input value={custom.snapshot.display_name} onChange={(event) => { update(custom, { display_name: event.currentTarget.value }); }} /></label>
         <label>Source / manufacturer <input value={custom.source_label} onChange={(event) => { update(custom, {}, { source_label: event.currentTarget.value }); }} /></label>
         <label>Specification / grade <input value={custom.snapshot.bolt_specification} onChange={(event) => { update(custom, { bolt_specification: event.currentTarget.value }); }} /></label>
@@ -79,7 +79,7 @@ export function FastenerSelector({ defaultSnapshot, selection, onSelect }: {
         })()}
         <label>Installation condition <input value={custom.snapshot.installation_condition} onChange={(event) => { update(custom, { installation_condition: event.currentTarget.value }); }} /></label>
         <label>Revision notes <textarea value={custom.snapshot.source_notes.join("\n")} onChange={(event) => { update(custom, { source_notes: event.currentTarget.value.split("\n") }); }} /></label>
-      </div>
+      </div></details>
     </>}
   </section>;
 }

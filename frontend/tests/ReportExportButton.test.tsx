@@ -1,5 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
+import { useState } from "react";
 import { ReportExportButton } from "../src/features/ReportExportButton";
 import { setMAT1Active, setMAT1Catalog } from "../src/state/mat1Session";
 import { acceptReportSnapshot, currentReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../src/state/reportSession";
@@ -17,7 +18,7 @@ function authorize(id: string, kind: "design" | "input_only" = "design"): void {
 }
 
 function button(name: string): HTMLButtonElement {
-  const element = screen.getByRole("button", { name });
+  const element = screen.getByRole("button", { name: name === "Export Engineer Report" ? /Export (Engineer|Input \/ Geometry) Report/ : name });
   if (!(element instanceof HTMLButtonElement)) throw new Error("Expected a button");
   return element;
 }
@@ -42,17 +43,30 @@ afterEach(() => {
 it("requires a current backend snapshot and distinguishes input-only state", () => {
   const id = family();
   const view = render(<ReportExportButton family={id} />);
-  expect(button("Export PDF Report").disabled).toBe(true);
+  expect(button("Export Input / Geometry Report")).toBeDisabled();
+  expect(button("Export Engineer Report").disabled).toBe(true);
   expect(screen.getByText(/Run a preview or design check/)).toBeTruthy();
   act(() => { authorize(id, "input_only"); });
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  expect(button("Export Input / Geometry Report")).toBeEnabled();
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   expect(screen.getByRole("heading", { name: "Inputs and model report" })).toBeTruthy();
   expect(screen.getByText(/Inputs and model only/)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
   act(() => { invalidateReportSnapshot(id); });
-  expect(button("Export PDF Report").disabled).toBe(true);
+  expect(button("Export Input / Geometry Report")).toBeDisabled();
+  expect(button("Export Engineer Report").disabled).toBe(true);
   expect(screen.getByText(/Inputs changed/)).toBeTruthy();
   view.unmount();
+});
+
+it("labels only a current calculated snapshot as an Engineer Report", () => {
+  const id = family();
+  render(<ReportExportButton family={id} draft={{ geometry: "current" }} />);
+  expect(button("Export Input / Geometry Report")).toBeEnabled();
+  act(() => { authorize(id); });
+  expect(button("Export Engineer Report")).toBeEnabled();
+  act(() => { invalidateReportSnapshot(id); });
+  expect(button("Export Input / Geometry Report")).toBeEnabled();
 });
 
 it("seals an unrun workspace draft before downloading an input-only PDF", async () => {
@@ -65,8 +79,8 @@ it("seals an unrun workspace draft before downloading an input-only PDF", async 
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} draft={{ length: { value: "-1", unit: "in" } }} />);
-  expect(button("Export PDF Report").disabled).toBe(false);
-  fireEvent.click(button("Export PDF Report"));
+  expect(button("Export Engineer Report").disabled).toBe(false);
+  fireEvent.click(button("Export Engineer Report"));
   expect(screen.getByText("Submitted inputs report")).toBeTruthy();
   fireEvent.click(button("Download PDF"));
   await waitFor(() => { expect(click).toHaveBeenCalledOnce(); });
@@ -85,7 +99,7 @@ it("discards a draft export if its source changes during snapshot capture", asyn
   const fetchMock = vi.fn<typeof fetch>(() => new Promise<Response>(resolve => { resolveCapture = resolve; }));
   vi.stubGlobal("fetch", fetchMock);
   const view = render(<ReportExportButton family={id} draft={{ length: "1" }} />);
-  fireEvent.click(button("Export PDF Report"));
+  fireEvent.click(button("Export Engineer Report"));
   fireEvent.click(button("Download PDF"));
   view.rerender(<ReportExportButton family={id} draft={{ length: "2" }} />);
   act(() => { resolveCapture(new Response(JSON.stringify({ report_handle: "old-draft" }), { status: 201 })); });
@@ -104,7 +118,7 @@ it("includes only the active family's MAT1 assignment in an unrun input draft", 
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} draft={{ length: "1" }} />);
-  fireEvent.click(button("Export PDF Report"));
+  fireEvent.click(button("Export Engineer Report"));
   fireEvent.click(button("Download PDF"));
   await waitFor(() => { expect(fetchMock).toHaveBeenCalledTimes(2); });
   const captured = JSON.parse(fetchMock.mock.calls[0]?.[1]?.body as string) as {
@@ -119,7 +133,7 @@ it("does not send a vanished draft after opening the input-only dialog", () => {
   const fetchMock = vi.fn();
   vi.stubGlobal("fetch", fetchMock);
   const view = render(<ReportExportButton family={id} draft={{ length: "1" }} />);
-  fireEvent.click(button("Export PDF Report"));
+  fireEvent.click(button("Export Engineer Report"));
   view.rerender(<ReportExportButton family={id} />);
   fireEvent.click(button("Download PDF"));
   expect(fetchMock).not.toHaveBeenCalled();
@@ -134,7 +148,7 @@ it("shows draft-capture validation and malformed-response errors without downloa
   vi.stubGlobal("fetch", fetchMock);
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} draft={{ length: "1" }} />);
-  fireEvent.click(button("Export PDF Report"));
+  fireEvent.click(button("Export Engineer Report"));
   fireEvent.click(button("Download PDF"));
   expect(await screen.findByRole("alert")).toHaveProperty("textContent", "Draft too large");
   fireEvent.click(button("Download PDF"));
@@ -155,7 +169,7 @@ it("downloads the exact snapshot with safe metadata and presentation choices", a
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.change(screen.getByLabelText("Project name"), { target: { value: "Project" } });
   fireEvent.change(screen.getByLabelText("Paper size"), { target: { value: "A4" } });
   fireEvent.change(screen.getByLabelText("Display units"), { target: { value: "SI" } });
@@ -178,7 +192,7 @@ it("offers the Direct full audit from the same current snapshot", async () => {
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} draft={{ direct_finalization_contract_version: "SHEAR01-DIRECT-F1" }} />);
-  fireEvent.click(button("Export PDF Report"));
+  fireEvent.click(button("Export Engineer Report"));
   fireEvent.change(screen.getByLabelText("Report detail"), { target: { value: "FULL_TECHNICAL_AUDIT" } });
   fireEvent.click(button("Download PDF"));
   await waitFor(() => { expect(fetchMock).toHaveBeenCalledOnce(); });
@@ -196,7 +210,7 @@ it("shows an expired-snapshot error without downloading a partial file", async (
   }))));
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   expect(await screen.findByRole("alert")).toHaveProperty("textContent", "Snapshot expired");
   expect(click).not.toHaveBeenCalled();
@@ -207,7 +221,7 @@ it("rejects a non-PDF success response", async () => {
   authorize(id);
   vi.stubGlobal("fetch", vi.fn(() => Promise.resolve(new Response("not a pdf", { status: 200 }))));
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   expect(await screen.findByRole("alert")).toHaveProperty("textContent", "Server returned a non-PDF response.");
 });
@@ -217,7 +231,7 @@ it("shows a recoverable message for a plain-text renderer failure", async () => 
   authorize(id);
   vi.stubGlobal("fetch", vi.fn(() => Promise.resolve(new Response("Service unavailable", { status: 503 }))));
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   expect(await screen.findByRole("alert")).toHaveProperty("textContent", "PDF export failed.");
 });
@@ -229,7 +243,7 @@ it("discards an old export when inputs change during rendering", async () => {
   vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>(resolve => { resolveResponse = resolve; })));
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   expect(button("Creating PDF…").disabled).toBe(true);
   act(() => { invalidateReportSnapshot(id); });
@@ -247,12 +261,12 @@ it("cancels an in-flight export without downloading its late response", async ()
   vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>(resolve => { resolveResponse = resolve; })));
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
   expect(screen.queryByRole("dialog")).toBeNull();
   act(() => { resolveResponse(pdfResponse()); });
-  await waitFor(() => { expect(button("Export PDF Report").disabled).toBe(false); });
+  await waitFor(() => { expect(button("Export Engineer Report").disabled).toBe(false); });
   expect(click).not.toHaveBeenCalled();
 });
 
@@ -264,7 +278,7 @@ it("times out an export and rejects a late PDF response", async () => {
   const timer = vi.spyOn(window, "setTimeout");
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   const abortTimer = timer.mock.calls.find(([, delay]) => delay === 120_000)?.[0];
   if (typeof abortTimer !== "function") throw new Error("Missing report timeout");
@@ -281,7 +295,7 @@ it("rejects a stale action even before React has repainted the disabled button",
   const fetchMock = vi.fn();
   vi.stubGlobal("fetch", fetchMock);
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   invalidateReportSnapshot(id);
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   expect(fetchMock).not.toHaveBeenCalled();
@@ -297,7 +311,7 @@ it("uses a safe fallback filename and revokes the downloaded object URL", async 
   const anchor = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(vi.fn());
   const timeout = vi.spyOn(window, "setTimeout");
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   await waitFor(() => { expect(anchor).toHaveBeenCalledOnce(); });
   const revokeTimer = timeout.mock.calls.find(([, delay]) => delay === 60_000)?.[0];
@@ -314,7 +328,7 @@ it("uses a generic error for malformed server detail and unexpected thrown value
   })));
   vi.stubGlobal("fetch", fetchMock);
   render(<ReportExportButton family={id} />);
-  fireEvent.click(screen.getByRole("button", { name: "Export PDF Report" }));
+  fireEvent.click(screen.getByRole("button", { name: /Export (Engineer|Input \/ Geometry) Report/ }));
   fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
   await waitFor(() => { expect(screen.getByRole("alert").textContent).toBe("PDF export failed."); });
   // The renderer boundary must also handle a non-Error rejection.
@@ -325,14 +339,18 @@ it("uses a generic error for malformed server detail and unexpected thrown value
   expect(screen.getByRole("alert").textContent).toBe("PDF export failed.");
 });
 
-it("invalidates the workspace snapshot on edited fields and action buttons", () => {
+it("invalidates a snapshot only when submitted inputs change", () => {
   const id = family();
   setMAT1Active(false);
-  const mounted = render(<ConnectionWorkspaceShell family={id} banner={<span>Fixture</span>}>
-    <input aria-label="Editable dimension" defaultValue="1" />
-    <button type="button">Apply preset</button>
-    <span>Diagram</span>
-  </ConnectionWorkspaceShell>);
+  function Fixture() {
+    const [dimension, setDimension] = useState("1");
+    return <ConnectionWorkspaceShell family={id} reportDraft={{ dimension }} banner={<span>Fixture</span>}>
+      <input aria-label="Editable dimension" value={dimension} onChange={(event) => { setDimension(event.currentTarget.value); }} />
+      <button type="button" onClick={() => { setDimension("3"); }}>Apply preset</button>
+      <button type="button">View properties</button>
+    </ConnectionWorkspaceShell>;
+  }
+  const mounted = render(<Fixture />);
   act(() => { authorize(id); });
   fireEvent.change(screen.getByLabelText("Editable dimension"), { target: { value: "2" } });
   expect(currentReportSnapshot(id).dirty).toBe(true);
@@ -340,7 +358,7 @@ it("invalidates the workspace snapshot on edited fields and action buttons", () 
   fireEvent.click(screen.getByRole("button", { name: "Apply preset" }));
   expect(currentReportSnapshot(id).dirty).toBe(true);
   act(() => { authorize(id); });
-  fireEvent.click(screen.getByText("Diagram"));
+  fireEvent.click(screen.getByRole("button", { name: "View properties" }));
   expect(currentReportSnapshot(id).dirty).toBe(false);
   mounted.unmount();
   setMAT1Catalog([{ id: "M", revision: "1", content_digest: "a".repeat(64),

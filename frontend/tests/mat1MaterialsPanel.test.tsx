@@ -4,7 +4,7 @@ import { MAT1MaterialsPanel } from "../src/features/MAT1MaterialsPanel";
 import {
   acceptMAT1Design, clearMAT1Sessions, mat1FamilyKey, mat1Snapshot, rememberMAT1Preview,
   setMAT1Active, setMAT1Catalog, setMAT1CatalogError, setMAT1Conditions, setMAT1Default,
-  setMAT1PreviewOwners,
+  setMAT1PreviewOwners, setMAT1Override,
 } from "../src/state/mat1Session";
 import type { MAT1CatalogRecord } from "../src/state/mat1Session";
 
@@ -64,7 +64,9 @@ it("exposes catalog, session copy, physical owners, conditions and stale trace w
   for (const [label, value] of [["Substance", "salt"], ["Concentration", "5%"], ["Contact form", "spray"], ["Duration", "one year"]] as const) {
     fireEvent.change(screen.getByLabelText(label), { target: { value } });
   }
-  fireEvent.change(screen.getByLabelText("Load case name"), { target: { value: "LC-1" } });
+  fireEvent.change(screen.getByLabelText("Load case name (required)"), { target: { value: "" } });
+  expect(screen.getByRole("alert")).toHaveTextContent("Enter a load-case name");
+  fireEvent.change(screen.getByLabelText("Load case name (required)"), { target: { value: "LC-1" } });
   fireEvent.change(screen.getByLabelText("Load present in this submitted combination"), { target: { value: "WIND_TORNADO_SEISMIC" } });
   fireEvent.change(screen.getByLabelText("Source reference condition"), { target: { value: "REFERENCE" } });
   fireEvent.change(screen.getByLabelText("UV / weathering"), { target: { value: "SPECIFIED" } });
@@ -72,7 +74,7 @@ it("exposes catalog, session copy, physical owners, conditions and stale trace w
   for (const [label, value] of [["Protective measures", "coated"], ["Exposure notes", "outside"], ["Action provenance", "factored"], ["Design period", "30 y"], ["Service period", "20 y"], ["Fatigue cycles", "1000"]] as const) {
     fireEvent.change(screen.getByLabelText(label), { target: { value } });
   }
-  fireEvent.click(screen.getByText("Inspect factor candidates"));
+  fireEvent.click(screen.getByText("View calculated factors"));
   await waitFor(() => { expect(fetchMock).toHaveBeenCalledTimes(2); });
   const ownerA = screen.getByText("FRP-A").closest(".mat1-owner-assignment");
   expect(ownerA).not.toBeNull();
@@ -120,15 +122,15 @@ it("reports catalog and owner preview failures and keeps unreferenced session de
   await waitFor(() => { expect(screen.getByRole("alert").textContent).toContain("Material catalog unavailable"); });
   setMAT1Catalog([record]);
   rememberMAT1Preview("paired-clip-angle", '{"id":1}');
-  await waitFor(() => { expect(screen.getByRole("status").textContent).toContain("MAT1 service HTTP 422"); });
+  await waitFor(() => { expect(screen.getByRole("status").textContent).toContain("Check the required material and project condition fields"); });
   rememberMAT1Preview("paired-clip-angle", '{"id":2}');
   await waitFor(() => { expect(screen.getByRole("status").textContent).toContain("MAT1 owner preview contract is invalid"); });
   setMAT1PreviewOwners("paired-clip-angle", '{"id":2}', ["POSITIVE_CLIP_ANGLE"]);
   fireEvent.click(screen.getByText("New session material"));
   expect(screen.getByText(/Linked-material method/)).toBeTruthy();
   fireEvent.change(screen.getByLabelText("Add property"), { target: { value: "" } });
-  fireEvent.click(screen.getByText("Inspect factor candidates"));
-  expect(screen.getByRole("status").textContent).toContain("complete the conditions");
+  fireEvent.click(screen.getByText("View calculated factors"));
+  expect(screen.getByRole("status").textContent).toContain("complete the project conditions");
   fireEvent.change(screen.getByLabelText("Add property"), { target: { value: "tensile_strength_L" } });
   expect(screen.getByLabelText("Tensile L value")).toBeTruthy();
   fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: record.id } });
@@ -164,7 +166,7 @@ it("reports factor transport errors and keeps aborted owner requests silent", as
 
   vi.stubGlobal("fetch", vi.fn(() => Promise.resolve(new Response("{}", { status: 503 }))));
   render(<MAT1MaterialsPanel family="beam-web-splice" />);
-  fireEvent.click(screen.getByText("Inspect factor candidates"));
+  fireEvent.click(screen.getByText("View calculated factors"));
   expect(screen.getByRole("status").textContent).toContain("Select a material");
   fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: record.id } });
   setMAT1Conditions({
@@ -174,8 +176,8 @@ it("reports factor transport errors and keeps aborted owner requests silent", as
     load_case_name: "LC-1",
     time_effect_category: "WIND_TORNADO_SEISMIC",
   });
-  fireEvent.click(screen.getByText("Inspect factor candidates"));
-  await waitFor(() => { expect(screen.getByRole("status").textContent).toContain("MAT1 service HTTP 503"); });
+  fireEvent.click(screen.getByText("View calculated factors"));
+  await waitFor(() => { expect(screen.getByRole("status").textContent).toContain("Unable to complete the material request"); });
 });
 
 it("preserves blank and invalid temperature evidence during unit changes", () => {
@@ -226,4 +228,24 @@ it("offers no invented property seeds when the controlled catalog is unavailable
   render(<MAT1MaterialsPanel family="beam-web-splice" />);
   fireEvent.click(screen.getByRole("button", { name: "New session material" }));
   expect(screen.getByLabelText("Add property").querySelectorAll("option")).toHaveLength(1);
+});
+
+it("binds a new linked Direct material automatically and catches an empty load-case name before a factor request", () => {
+  setMAT1Catalog([record]); setMAT1Default(record.id); setMAT1Active(true);
+  setMAT1Override("multi-row", "member-a", record.id);
+  setMAT1Override("multi-row", "member-b", record.id);
+  const fetchMock = vi.fn();
+  vi.stubGlobal("fetch", fetchMock);
+  render(<MAT1MaterialsPanel family="multi-row" />);
+  expect(screen.getByText(/Selected FRP material applies to the angle brace and supporting W member/)).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Apply selected material to compatible FRP components" })).not.toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: "" } });
+  fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: record.id } });
+  expect(mat1Snapshot().overrides["multi-row"]).toEqual({});
+  act(() => { setMAT1Conditions({ ...mat1Snapshot().conditions, load_case_name: "" }); });
+  expect(screen.getByRole("alert")).toHaveTextContent("Enter a load-case name");
+  fireEvent.click(screen.getByText("Advanced Engineering Diagnostics · FRP component assignments and factor trace"));
+  fireEvent.click(screen.getByText("View calculated factors"));
+  expect(screen.getByRole("status")).toHaveTextContent("Enter a load-case name");
+  expect(fetchMock).not.toHaveBeenCalled();
 });

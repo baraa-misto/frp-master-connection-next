@@ -487,16 +487,18 @@ function AutomaticMultirowResults({
       <section className="result-summary" aria-labelledby="automatic-result-summary-title">
         <div className="summary-status"><span className="large-status-icon" aria-hidden="true">{statusIcon(numericalComparison)}</span><div><p className="eyebrow">Automatic member-end-force demand</p><h3 id="automatic-result-summary-title">{friendlyEnum(overallDisposition)}</h3></div></div>
         <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>Comparison:</strong> {friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {governing.map(friendlyIdentifier).join(", ") || "None"}</span></div>
-        {limitations.length === 0 ? null : <div className="qualification-banner"><span aria-hidden="true">!</span> Ordinary whole-connection PASS is prohibited while required checks remain unsupported or incomplete.<ul>{limitations.map((value) => <li key={value}>{value}</li>)}</ul></div>}
-        {handoff.parent_action_transfer_warnings.map((warning) => <p className="unsupported-note" key={warning.code}><span aria-hidden="true">!</span> {friendlyEnum(warning.code)}{warning.trace.length === 0 ? "" : ` — ${warning.trace.join(", ")}`}</p>)}
+        {limitations.length === 0 ? null : <div className="qualification-banner"><span aria-hidden="true">!</span> Ordinary whole-connection PASS is prohibited while {limitations.length} required checks remain unsupported or incomplete.<details><summary>Advanced Engineering Diagnostics · required-check inventory</summary><ul>{limitations.map((value) => <li key={value}>{value}</li>)}</ul></details></div>}
       </section>
       <section className="results-panel" aria-labelledby="automatic-checks-title">
-        <div className="panel-heading"><div><p className="eyebrow">Stage 2.5B supported resistance handoff</p><h3 id="automatic-checks-title">Calculated supported checks</h3></div></div>
+        <div className="panel-heading"><div><p className="eyebrow">Current Design Check</p><h3 id="automatic-checks-title">Calculated supported checks</h3></div></div>
         <div className="table-scroll compact-results-table"><table><thead><tr><th>Check</th><th>Critical identity</th><th>Status</th><th>Demand</th><th>Design resistance</th><th>Utilization</th><th>Trace</th></tr></thead><tbody>{handoff.supported_results.map((check) => <tr key={check.result_id}><td>{friendlyEnum(check.limit_state)}</td><td>{[check.layer_id, check.bolt_id, check.row_id, check.bolt_line_id, check.path_id].filter((value): value is string => value !== null).map(friendlyIdentifier).join(" · ") || "Connection"}</td><td>{friendlyEnum(check.numerical_comparison === "NOT_EVALUATED" ? check.availability : check.numerical_comparison)}</td><td>{formatDisplayQuantity(check.demand, displayUnitSystem)}</td><td>{formatDisplayQuantity(check.design_resistance, displayUnitSystem)}</td><td>{formatUtilization(check.utilization)}</td><td><MultirowCheckDetails result={check} /></td></tr>)}</tbody></table></div>
-        <dl className="diagnostic-list"><div><dt>Demand fingerprint</dt><dd>{demandFingerprint}</dd></div><div><dt>Handoff fingerprint</dt><dd>{handoff.result_fingerprint}</dd></div><div><dt>Group-mode integration fingerprint</dt><dd>{integration.result_fingerprint}</dd></div><div><dt>Display units</dt><dd>{displayUnitSystem}</dd></div></dl>
       </section>
       {singleRow === undefined ? null : <section className="results-panel" aria-labelledby="direct-single-row-checks-title"><div className="panel-heading"><div><p className="eyebrow">Direct one-row source methods</p><h3 id="direct-single-row-checks-title">Angle and W flange checks</h3></div></div><div className="table-scroll compact-results-table"><table><thead><tr><th>Check</th><th>Layer / line</th><th>Status</th><th>Demand</th><th>Design resistance</th><th>Utilization</th><th>Reason</th></tr></thead><tbody>{singleRow.checks.map((check) => <tr key={check.result_id}><td>{friendlyEnum(check.limit_state)}<br /><small>{friendlyEnum(check.equation_method)}</small></td><td>{[check.layer_id, check.bolt_line_id].filter((value): value is string => value !== null).map(friendlyIdentifier).join(" · ")}</td><td>{friendlyEnum(check.numerical_comparison === "NOT_EVALUATED" ? check.availability : check.numerical_comparison)}</td><td>{formatDisplayQuantity(check.demand, displayUnitSystem)}</td><td>{formatDisplayQuantity(check.design_resistance, displayUnitSystem)}</td><td>{formatUtilization(check.utilization)}</td><td>{check.reason}</td></tr>)}</tbody></table></div></section>}
-      {legacyOnly ? null : <EccentricGroupModeResults integration={integration} displayUnitSystem={displayUnitSystem} />}
+      <details className="results-technical-audit"><summary>Advanced Engineering Diagnostics</summary>
+        <dl className="diagnostic-list"><div><dt>Demand fingerprint</dt><dd>{demandFingerprint}</dd></div><div><dt>Handoff fingerprint</dt><dd>{handoff.result_fingerprint}</dd></div><div><dt>Group-mode integration fingerprint</dt><dd>{integration.result_fingerprint}</dd></div><div><dt>Display units</dt><dd>{displayUnitSystem}</dd></div></dl>
+        {handoff.parent_action_transfer_warnings.map((warning) => <p className="unsupported-note" key={warning.code}><span aria-hidden="true">!</span> {friendlyEnum(warning.code)}{warning.trace.length === 0 ? "" : ` — ${warning.trace.join(", ")}`}</p>)}
+        {legacyOnly ? null : <EccentricGroupModeResults integration={integration} displayUnitSystem={displayUnitSystem} />}
+      </details>
     </>
   );
 }
@@ -1024,6 +1026,7 @@ export function SingleBoltEngineeringWorkspace() {
   };
 
   const loadBenchmark = (unitSystem: BenchmarkUnitSystem) => { loadProfile(unitSystem, true); };
+  const loadDirectExample = (unitSystem: BenchmarkUnitSystem) => { loadProfile(unitSystem, false); };
 
   const changeUnitSystem = (unitSystem: BenchmarkUnitSystem) => {
     if (unitSystem === request.joint_assembly.unit_system) return;
@@ -1179,28 +1182,32 @@ export function SingleBoltEngineeringWorkspace() {
     preview.currentRevision === previewInput.revision;
   const localDesignBlocker = designValidationMessage(request);
   const multirowBlocker = multirowValidationMessage(request, groupState, demandMode);
-  const designButtonBlocker = singleArrangement && demandMode === "AUTOMATIC_MEMBER_END_FORCE"
+  const designButtonBlocker = mat1.active && mat1.conditions.load_case_name.trim() === ""
+    ? "Enter a load-case name in Materials and project conditions before running Design Check."
+    : mat1.active && (mat1.conditions.sustained_temperature.value.trim() === "" || mat1.conditions.maximum_temperature.value.trim() === "" || mat1.conditions.time_effect_category === "")
+      ? "Complete material temperatures and load classification in Materials and project conditions before running Design Check."
+    : singleArrangement && demandMode === "AUTOMATIC_MEMBER_END_FORCE"
     ? "Automatic member-end-force demand is available for the accepted multi-row workflow."
     : supportedMultirowArrangement
       ? multirowBlocker ?? (previewPending
-        ? "Updating the canonical multi-row model."
+        ? "Connection model is updating. Design Check will be available when the model is current."
         : multirowPreview.state === "CURRENT_INVALID"
-          ? "Invalid geometry must be corrected before design check."
+          ? "Correct the geometry issues above before running Design Check."
           : multirowPreview.state !== "CURRENT_VALID"
-            ? "A current canonical multi-row preview is required."
+            ? "Connection model is updating. Design Check will be available when the model is current."
             : multirowPreview.response?.design_check_ready !== true
-              ? "The backend has not marked this multi-row arrangement design-ready."
+              ? "Correct the geometry issues above before running Design Check."
               : null)
       : previewPending
-    ? "Updating the canonical model."
+    ? "Connection model is updating. Design Check will be available when the model is current."
     : preview.state === "CURRENT_INVALID"
-      ? "Invalid geometry must be corrected before design check."
+      ? "Correct the geometry issues above before running Design Check."
       : preview.state === "CURRENT_INCOMPLETE"
-        ? "Waiting for complete valid preview inputs."
+        ? "Complete the required inputs before running Design Check."
         : preview.state === "PREVIEW_ERROR"
-          ? "Preview unavailable — current inputs not validated."
+          ? "Connection model could not be updated. Retry after checking the inputs."
           : !previewCurrent
-            ? "A current canonical preview is required."
+            ? "Connection model is updating. Design Check will be available when the model is current."
             : preview.response?.design_check_ready !== true
               ? requiredValue(preview.response, "Canonical preview response").design_check_blocking_reasons.join(", ")
               : localDesignBlocker;
@@ -1208,7 +1215,7 @@ export function SingleBoltEngineeringWorkspace() {
     ? multirowPreview.response?.visualization?.physical_connection?.connection_orientation ?? null
     : preview.response?.visualization?.connection_orientation ?? null;
   const singleModelStatusLabel = previewPending
-    ? "Updating model…"
+    ? "Updating connection model…"
     : preview.state === "CURRENT_VALID"
       ? "Valid geometry"
       : preview.state === "CURRENT_INVALID"
@@ -1217,16 +1224,16 @@ export function SingleBoltEngineeringWorkspace() {
           ? "Waiting for valid input"
           : preview.state === "PREVIEW_ERROR"
             ? "Preview unavailable"
-            : "Awaiting preview";
+          : "Updating connection model…";
 
   const modelStatusLabel = supportedMultirowArrangement
     ? previewPending
-      ? "Updating multi-row model…"
+      ? "Updating connection model…"
       : multirowPreview.state === "CURRENT_VALID"
-        ? "Valid multi-row geometry"
+        ? "Connection model ready"
         : multirowPreview.state === "CURRENT_INVALID"
-          ? "Invalid multi-row geometry"
-          : multirowBlocker ?? "Awaiting multi-row preview"
+          ? "Geometry must be corrected before Design Check"
+          : multirowBlocker ?? "Updating connection model…"
     : singleModelStatusLabel;
   const directWarnings = directF1Family
     ? (multirowPreview.response?.warnings ?? []).map(describeDirectWarning) : [];
@@ -1240,7 +1247,7 @@ export function SingleBoltEngineeringWorkspace() {
   const directDisposition = directSingleRow?.overall_disposition
     ?? automaticGroupModeIntegration?.overall_disposition;
   const directMultirowStatus = stale
-    ? "GRAY — stale calculation"
+    ? "Results need to be recalculated"
     : automaticGroupModeIntegration === null
       ? multirowDesign === null ? "GRAY — not calculated" : "YELLOW — blocked"
       : failedDirectChecks.length > 0
@@ -1293,20 +1300,21 @@ export function SingleBoltEngineeringWorkspace() {
 
   return (
     <ConnectionWorkspaceShell family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
-        <div><p className="eyebrow">Shear · Brace to column flange</p><h2 id="workspace-scope-title">Connection engineering workspace</h2></div>
+        <div><p className="eyebrow">Shear · Brace/beam connection — Direct</p><h2 id="workspace-scope-title">Direct angle-to-W connection</h2></div>
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>
         <ConnectionWorkspaceSidebar ariaLabel="Connection properties">
           <SidebarGroup title="General / Case" summary={request.joint_assembly.unit_system} defaultOpen>
-            <div className="benchmark-buttons"><button type="button" onClick={() => { loadBenchmark("US_CUSTOMARY"); }}>Load verified J1 — U.S.</button><button type="button" onClick={() => { loadBenchmark("SI"); }}>Load verified J1 — SI</button></div>
+            <div className="benchmark-buttons"><button type="button" onClick={() => { loadDirectExample("US_CUSTOMARY"); }}>Load Direct example — U.S.</button><button type="button" onClick={() => { loadDirectExample("SI"); }}>Load Direct example — SI</button></div>
+            <details><summary>Advanced Engineering Diagnostics · regression fixtures</summary><p>The historical J1 regression fixture may not satisfy current Direct physical-validation rules. It is not a qualified design.</p><div className="benchmark-buttons"><button type="button" onClick={() => { loadBenchmark("US_CUSTOMARY"); }}>Legacy J1 regression fixture — U.S.</button><button type="button" onClick={() => { loadBenchmark("SI"); }}>Legacy J1 regression fixture — SI</button></div></details>
             <label className="field-control"><span>Case label</span><input type="text" value={caseLabel} placeholder="Project-facing label" onChange={(event) => { setCaseLabel(event.currentTarget.value); setEdited(true); }} /></label>
             <label className="field-control"><span>Unit system</span><select value={request.joint_assembly.unit_system} onChange={(event) => { changeUnitSystem(event.currentTarget.value as BenchmarkUnitSystem); }}><option value="US_CUSTOMARY">U.S. customary</option><option value="SI">SI</option></select></label>
             <ReadOnlyValue label="Storage">Session only · not saved</ReadOnlyValue>
           </SidebarGroup>
 
           <SidebarGroup title="Connection" summary={`${String(groupState.rowCount)} × ${String(groupState.boltsPerRow)} rectangular group`} defaultOpen>
-            <ul className="classification-strip"><li>Brace to column flange</li><li>In-place rectangular bolt group</li><li>{request.lap_configuration === "SINGLE_LAP" ? "Single lap" : "Double lap"}</li></ul>
-            <ReadOnlyValue label="Selected interface">Brace-to-column interface</ReadOnlyValue>
+            <ul className="classification-strip"><li>Direct angle-to-W connection</li><li>Rectangular bolt group</li><li>{request.lap_configuration === "SINGLE_LAP" ? "Single lap" : "Double lap"}</li></ul>
+            <ReadOnlyValue label="Connection interface">Angle brace to supporting W flange</ReadOnlyValue>
             <div className="field-grid arrangement-fields">
               <label className="field-control"><span>Row count</span><input aria-label="Row count" type="number" min="1" max="3" value={groupState.rowCount} onChange={(event) => { setGroupCount("rowCount", event.currentTarget.value); }} /></label>
               <label className="field-control"><span>Bolts per row</span><input aria-label="Bolts per row" type="number" min="1" max="3" value={groupState.boltsPerRow} onChange={(event) => { setGroupCount("boltsPerRow", event.currentTarget.value); }} /></label>
@@ -1316,14 +1324,14 @@ export function SingleBoltEngineeringWorkspace() {
 
           <SidebarGroup
             title="Members"
-            summary="Angle + W column"
+            summary="Angle brace + supporting W member"
             defaultOpen
             selected={selection.kind === "MEMBER"}
             onSelect={() => { setSelection((current) => current.kind === "MEMBER" ? current : { kind: "MEMBER", id: "member-a" }); }}
           >
             <h4 className="sidebar-subheading">Angle brace</h4>
             <div className="field-grid"><DecimalInput label="Leg y" value={sectionValue(brace.section, "leg_y")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(0, "leg_y", value); }} /><DecimalInput label="Leg z" value={sectionValue(brace.section, "leg_z")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(0, "leg_z", value); }} /><DecimalInput label="Thickness" value={sectionValue(brace.section, "thickness")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(0, "thickness", value); }} /></div>
-            <h4 className="sidebar-subheading">W column</h4>
+            <h4 className="sidebar-subheading">Supporting W member</h4>
             <div className="field-grid"><DecimalInput label="d" value={sectionValue(support.section, "overall_depth")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(1, "overall_depth", value); }} /><DecimalInput label="bf" value={sectionValue(support.section, "flange_width")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(1, "flange_width", value); }} /><DecimalInput label="tw" value={sectionValue(support.section, "web_thickness")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(1, "web_thickness", value); }} /><DecimalInput label="tf" value={sectionValue(support.section, "flange_thickness")} unit={lengthUnit} onChange={(value) => { setSectionQuantity(1, "flange_thickness", value); }} /></div>
           </SidebarGroup>
 
@@ -1333,21 +1341,21 @@ export function SingleBoltEngineeringWorkspace() {
             selected={selection.kind === "CONTACT"}
             onSelect={() => { setSelection({ kind: "CONTACT", id: preview.response?.visualization?.connection_orientation?.selected_flange_surface_id ?? "TOP_FLANGE" }); }}
           >
-            <label className="field-control"><span>W column flange connection face</span><select value={geometryTemplate.column_flange_connection_side} onChange={(event) => { const value = event.currentTarget.value as "EXTERIOR" | "WEB_SIDE"; updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").column_flange_connection_side = value; }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE"); }}><option value="EXTERIOR">Exterior face</option><option value="WEB_SIDE">Interior / web-side face</option></select></label>
+            <label className="field-control"><span>Supporting W member flange connection face</span><select value={geometryTemplate.column_flange_connection_side} onChange={(event) => { const value = event.currentTarget.value as "EXTERIOR" | "WEB_SIDE"; updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").column_flange_connection_side = value; }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE"); }}><option value="EXTERIOR">Exterior face</option><option value="WEB_SIDE">Interior / web-side face</option></select></label>
             <label className="field-control"><span>Connected angle leg</span><select value={geometryTemplate.angle_connected_leg} onChange={(event) => { const value = event.currentTarget.value as "LEG_1" | "LEG_2"; updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").angle_connected_leg = value; const assignment = requiredValue(next.material_assignments.find((item) => item.participant_id === "member-a"), "Angle material assignment"); assignment.physical_element_id = value; assignment.material_region_id = value; }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE"); }}><option value="LEG_1">Leg 1</option><option value="LEG_2">Leg 2</option></select></label>
             <label className="field-control"><span>Outstanding angle leg</span><select value={geometryTemplate.outstanding_leg_side} onChange={(event) => { const value = event.currentTarget.value as "POSITIVE_INTERFACE_Z" | "NEGATIVE_INTERFACE_Z"; updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").outstanding_leg_side = value; }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE"); }}><option value="POSITIVE_INTERFACE_Z">+ interface side</option><option value="NEGATIVE_INTERFACE_Z">− interface side</option></select></label>
-            <ReadOnlyValue label="Column orientation">Local +x = Global +Z; role Supporting column</ReadOnlyValue>
+            <ReadOnlyValue label="Supporting W member orientation">Local +x = Global +Z; role Supporting column</ReadOnlyValue>
             <p className="sidebar-note">View extents change only the backend-authored local display context. They do not change member end planes, code distances, capacities, or the design fingerprint.</p>
             <div className="field-grid">
-              <DecimalInput label="Column view extent below connection" value={viewExtents.column_view_extent_below.value} unit={viewExtents.column_view_extent_below.unit} onChange={(value) => { updateViewExtent("column_view_extent_below", value); }} />
-              <DecimalInput label="Column view extent above connection" value={viewExtents.column_view_extent_above.value} unit={viewExtents.column_view_extent_above.unit} onChange={(value) => { updateViewExtent("column_view_extent_above", value); }} />
-              <DecimalInput label="Brace-to-column angle" value={geometryTemplate.brace_to_column_directed_angle_deg} unit="degrees" onChange={(value) => { updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").brace_to_column_directed_angle_deg = value; }); }} />
+              <DecimalInput label="Supporting W member view extent below connection" value={viewExtents.column_view_extent_below.value} unit={viewExtents.column_view_extent_below.unit} onChange={(value) => { updateViewExtent("column_view_extent_below", value); }} />
+              <DecimalInput label="Supporting W member view extent above connection" value={viewExtents.column_view_extent_above.value} unit={viewExtents.column_view_extent_above.unit} onChange={(value) => { updateViewExtent("column_view_extent_above", value); }} />
+              <DecimalInput label="Angle-to-W orientation" value={geometryTemplate.brace_to_column_directed_angle_deg} unit="degrees" onChange={(value) => { updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").brace_to_column_directed_angle_deg = value; }); }} />
               <DecimalInput label="Brace view length" value={viewExtents.brace_view_length.value} unit={viewExtents.brace_view_length.unit} onChange={(value) => { updateViewExtent("brace_view_length", value); }} />
             </div>
             <p className="sidebar-note">Directed geometry angle in the current vertical plane. Values above 90° reverse the brace slope relative to the column axis while preserving the selected connection side.</p>
             <ReadOnlyValue label="Brace orientation">diagonal in current vertical plane</ReadOnlyValue>
             <p className="sidebar-note">Out-of-plane / plan angle: 0° — fixed in current verified slice.</p>
-            <ReadOnlyValue label="Connected elements">Angle {friendlyIdentifier(geometryTemplate.angle_connected_leg)} + W Column Flange</ReadOnlyValue>
+            <ReadOnlyValue label="Connected elements">Angle {friendlyIdentifier(geometryTemplate.angle_connected_leg)} + supporting W flange</ReadOnlyValue>
             <ReadOnlyValue label="Selected contact surface">Backend-resolved by current preview; stable internal patch ID retained in inspector</ReadOnlyValue>
             <ReadOnlyValue label="Geometry angle">{formatDecimal(geometryTemplate.brace_to_column_directed_angle_deg, 1)}° directed</ReadOnlyValue>
             <ReadOnlyValue label="Material relationship">{materialRelationship}</ReadOnlyValue>
@@ -1359,7 +1367,7 @@ export function SingleBoltEngineeringWorkspace() {
             <ReadOnlyValue label="Bolt center">Backend-resolved selected station</ReadOnlyValue>
             <details className="advanced-demand bolt-group-layout" open={supportedMultirowArrangement || undefined}>
               <summary>Bolt-group layout</summary>
-              <p className="sidebar-note">The backend places every bolt and hole on the canonical physical connection. The browser does not derive bolt coordinates.</p>
+              <p className="sidebar-note">The connection model places each bolt and hole from the selected geometry.</p>
               <div className="field-grid">
                 {groupState.rowCount > 1 ? <DecimalInput label="Spacing between rows" value={groupState.pitch} unit={lengthUnit} onChange={(value) => { updateGroup({ pitch: value }); }} /> : null}
                 {groupState.boltsPerRow > 1 ? <DecimalInput label="Gauge" value={groupState.gauge} unit={lengthUnit} onChange={(value) => { updateGroup({ gauge: value }); }} /> : null}
@@ -1369,13 +1377,13 @@ export function SingleBoltEngineeringWorkspace() {
               </div>
             </details>
             {directF1Family ? <div className="layout-suggestion">
-              <button type="button" onClick={() => { void suggestContainedLayout(); }}>Suggest compatible layout</button>
+              <button type="button" onClick={() => { void suggestContainedLayout(); }}>Suggest compatible geometry</button>
               {layoutSuggestion === null ? null : <div role="status"><p>Proposed geometry for the current {groupState.rowCount} × {groupState.boltsPerRow} arrangement: angle legs at least {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 0, "Proposed brace").section.leg_y, "Proposed leg").value} × {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 0, "Proposed brace").section.leg_z, "Proposed leg").value} {lengthUnit}, W flange at least {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 1, "Proposed support").section.flange_width, "Proposed flange").value} {lengthUnit}, end distance {requiredValue(layoutSuggestion.request.geometry_template, "Proposed geometry").bolt_to_brace_end_distance.value} {lengthUnit}, loaded boundary {layoutSuggestion.group.loadedBoundaryToRow1} {lengthUnit}, brace angle {requiredValue(layoutSuggestion.request.geometry_template, "Proposed geometry").brace_to_column_directed_angle_deg}°. Spacing and side distances are increased only if needed. Loads and material selections stay as entered. The backend preview found this geometry contained; other method and source limits may remain.</p><button type="button" onClick={applyContainedLayout}>Apply proposed geometry</button><button type="button" onClick={() => { setLayoutSuggestion(null); }}>Dismiss proposal</button></div>}
               {layoutSuggestionError === "" ? null : <p role="status">{layoutSuggestionError}</p>}
             </div> : null}
             {directF1Family ? <ReadOnlyValue label="Lap configuration">Single lap · physical angle LEG_1 to W TOP_FLANGE</ReadOnlyValue> : <label className="field-control"><span>Lap configuration</span><select value={request.lap_configuration} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { next.lap_configuration = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="SINGLE_LAP">Single lap</option><option value="DOUBLE_LAP">Double lap</option></select></label>}
-            {request.material_assignments.map((assignment, index) => <label className="field-control" key={`${assignment.participant_id}:${assignment.physical_element_id}`}><span>Bearing threads · {friendlyIdentifier(assignment.participant_id === "member-a" ? "layer-A" : "layer-B")}</span><select value={assignment.bearing_thread_status} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { requiredAt(next.material_assignments, index, "Material assignment").bearing_thread_status = value; requiredAt(next.fastener_snapshot.bearing_layer_thread_statuses, index, "Bearing-layer thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label>)}
-            <label className="field-control"><span>Shear-plane threads</span><select value={shearPlaneStatus.status} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { requiredAt(next.fastener_snapshot.shear_plane_thread_statuses, 0, "Shear-plane thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label>
+            <details><summary>Thread location relative to shear plane: {shearPlaneStatus.status === "UNKNOWN" || request.material_assignments.some((assignment) => assignment.bearing_thread_status === "UNKNOWN") ? "Requires confirmation" : "Recorded — verify against fastener and grip"}</summary><p className="sidebar-note">The available fastener record does not establish thread length relative to every physical plane. Confirm actual hardware before relying on the recorded status.</p>{request.material_assignments.map((assignment, index) => <label className="field-control" key={`${assignment.participant_id}:${assignment.physical_element_id}`}><span>Bearing threads · {friendlyIdentifier(assignment.participant_id === "member-a" ? "layer-A" : "layer-B")}</span><select value={assignment.bearing_thread_status} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { requiredAt(next.material_assignments, index, "Material assignment").bearing_thread_status = value; requiredAt(next.fastener_snapshot.bearing_layer_thread_statuses, index, "Bearing-layer thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label>)}
+            <label className="field-control"><span>Shear-plane threads</span><select value={shearPlaneStatus.status} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { requiredAt(next.fastener_snapshot.shear_plane_thread_statuses, 0, "Shear-plane thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label></details>
           </SidebarGroup>
 
           <SidebarGroup title="Fastener" summary={directF1Family ? "Selected hardware and source" : "F593 source pending"} defaultOpen={directF1Family}>
@@ -1408,7 +1416,7 @@ export function SingleBoltEngineeringWorkspace() {
 
           <SidebarGroup title="Model / Geometry Status" summary={modelStatusLabel} defaultOpen>
             <strong>{modelStatusLabel}</strong>
-            {orientation === null ? null : <dl className="diagnostic-list"><div><dt>Contact</dt><dd>W Column Flange — {orientation.connection_side === "EXTERIOR" ? "Exterior" : "Interior / web-side"}</dd></div><div><dt>Connected leg</dt><dd>{friendlyIdentifier(orientation.connected_leg)}</dd></div><div><dt>Outstanding leg</dt><dd>{orientation.outstanding_leg_side === "POSITIVE_INTERFACE_Z" ? "+ interface side" : "− interface side"}</dd></div><div><dt>Geometry angle</dt><dd>{formatDecimal(orientation.brace_to_column_directed_angle_degrees, 1)}° directed</dd></div><div><dt>Bolt path</dt><dd>Angle Connected Leg → W Column Flange</dd></div><div><dt>Material relationship</dt><dd>{materialRelationship}</dd></div></dl>}
+            {orientation === null ? null : <dl className="diagnostic-list"><div><dt>Contact</dt><dd>supporting W flange — {orientation.connection_side === "EXTERIOR" ? "Exterior" : "Interior / web-side"}</dd></div><div><dt>Connected leg</dt><dd>{friendlyIdentifier(orientation.connected_leg)}</dd></div><div><dt>Outstanding leg</dt><dd>{orientation.outstanding_leg_side === "POSITIVE_INTERFACE_Z" ? "+ interface side" : "− interface side"}</dd></div><div><dt>Geometry angle</dt><dd>{formatDecimal(orientation.brace_to_column_directed_angle_degrees, 1)}° directed</dd></div><div><dt>Bolt path</dt><dd>Angle Connected Leg → supporting W flange</dd></div><div><dt>Material relationship</dt><dd>{materialRelationship}</dd></div></dl>}
             {supportedMultirowArrangement || preview.response?.geometry_issues.length === 0 || preview.response === null ? null : <ul className="issue-list">{preview.response.geometry_issues.map((issue) => <li key={`${issue.code}:${issue.identities.join(":")}`}>{issue.message}</li>)}</ul>}
             {directF1Family ? ([
               ["geometry", "Geometry / input blockers"],
@@ -1422,22 +1430,22 @@ export function SingleBoltEngineeringWorkspace() {
                 return <li key={`${item.text}:${String(index)}`}>{boltId === undefined ? item.text : <button type="button" onClick={() => { setSelection({ kind: "BOLT", id: boltId }); }}>{item.text} Select bolt and layout inputs</button>}</li>;
               })}</ul></section>;
             }) : supportedMultirowArrangement ? multirowPreview.response?.warnings.map((warning) => <p className="unsupported-note" key={warning}>{friendlyEnum(warning)}</p>) : null}
-            {(supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated) ? <p className="stale-notice" role="status">Last canonical preview is outdated.</p> : null}
+            {(supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated) ? <p className="stale-notice" role="status">Updating connection model…</p> : null}
           </SidebarGroup>
 
-          <SidebarGroup title="Design Results" summary={stale ? "Stale" : activeDesignSummary} defaultOpen>
+          <SidebarGroup title="Design Results" summary={stale ? "Results need to be recalculated" : activeDesignSummary} defaultOpen>
             {supportedMultirowArrangement
               ? automaticHandoff !== null && automaticGroupModeIntegration !== null
                 ? <><strong>{directMultirowStatus}</strong><p className="sidebar-note">{friendlyEnum(automaticHandoff.coverage)} · {automaticGroupModeIntegration.governing_supported_check_ids.length} governing supported check(s)</p>{stale ? null : <p className="sidebar-note">{(directSingleRow?.incomplete_required_check_ids.length ?? (automaticGroupModeIntegration.unsupported_required_check_ids.length + automaticGroupModeIntegration.incomplete_required_check_ids.length))} required checks remain blocked. ICE material, F593 strength and Section 2.3.2 qualification require controlled evidence.</p>}</>
                 : multirowResult === null
                 ? <p className="sidebar-note">{directMultirowStatus}</p>
-                : <><strong>{stale ? "STALE — previous explicit run" : friendlyEnum(multirowResult.overall_disposition)}</strong><p className="sidebar-note">{multirowResult.governing_result_ids.length} governing / co-governing check(s)</p></>
+                : <><strong>{stale ? "Results need to be recalculated" : friendlyEnum(multirowResult.overall_disposition)}</strong><p className="sidebar-note">{multirowResult.governing_result_ids.length} governing / co-governing check(s)</p></>
               : response === null
                 ? <p className="sidebar-note">No design run.</p>
-                : <><strong>{stale ? "STALE — previous explicit run" : resultHeadline(response)}</strong><p className="sidebar-note">{response.governing_check_ids.length} governing / co-governing check(s)</p></>}
+                : <><strong>{stale ? "Results need to be recalculated" : resultHeadline(response)}</strong><p className="sidebar-note">{response.governing_check_ids.length} governing / co-governing check(s)</p></>}
           </SidebarGroup>
 
-          <SidebarGroup title="Advanced / Diagnostics" summary="Stable IDs and versions">
+          <SidebarGroup title="Advanced Engineering Diagnostics" summary="Source IDs and calculation versions">
             <dl className="diagnostic-list"><div><dt>Assembly</dt><dd>{request.joint_assembly.id}</dd></div><div><dt>Interface</dt><dd>{request.interface_id}</dd></div><div><dt>Bolt group</dt><dd>{request.bolt_group_id}</dd></div><div><dt>Bolt</dt><dd>{request.bolt_location_id}</dd></div>{response === null ? null : <><div><dt>Fingerprint</dt><dd>{response.calculation_fingerprint ?? "Not available"}</dd></div><div><dt>Engine</dt><dd>{response.calculation_engine_version}</dd></div><div><dt>Rule set</dt><dd>{response.engineering_rule_set_version}</dd></div><div><dt>Contract</dt><dd>{response.calculation_contract_version}</dd></div></>}</dl>
           </SidebarGroup>
 
@@ -1446,17 +1454,17 @@ export function SingleBoltEngineeringWorkspace() {
 
         <ConnectionWorkspaceMain>
           <PersistentConnectionViewer unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
-            {canonicalModel === null ? <section className="viewer-prompt"><h3>Connection viewer</h3><p>The backend-authoritative model appears automatically when current engineering inputs are valid. The browser does not reconstruct calculation geometry.</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={canonicalModel} results={activeResults} resolvedLayers={activeResolvedLayers} selection={selection} onSelect={setSelection} {...(directF1Family ? {} : { appliedActionInputValues, onAppliedActionValueChange: setActionComponentValue })} actionSourceLabel="Member" selectedBoltChecks={selectedBoltChecks} />}
+            {canonicalModel === null ? <section className="viewer-prompt"><h3>Direct angle-to-W connection viewer</h3><p>The connection model updates automatically when the current inputs are valid.</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={canonicalModel} results={activeResults} resolvedLayers={activeResolvedLayers} selection={selection} onSelect={setSelection} {...(directF1Family ? {} : { appliedActionInputValues, onAppliedActionValueChange: setActionComponentValue })} actionSourceLabel="Member" selectedBoltChecks={selectedBoltChecks} title="Direct angle-to-W connection viewer" contactSelectionLabel="Supporting W flange contact face" />}
           </PersistentConnectionViewer>
-          {previewPending ? <p className="preview-notice" role="status">Updating model…</p> : null}
-          {!supportedMultirowArrangement && preview.state === "PREVIEW_ERROR" ? <div className="transport-error" role="alert"><strong>Preview unavailable — current inputs not validated.</strong><p>{requiredValue(preview.error, "Preview error").message}</p><button type="button" onClick={preview.retry}>Retry preview</button></div> : null}
-          {stale ? <p className="stale-notice" role="status">Design results are stale — run Design Check to update.</p> : null}
-          {supportedMultirowArrangement && activePreviewError !== null ? <div className="transport-error" role="alert"><strong>Preview unavailable — current inputs not validated.</strong><p>{activePreviewError.message}</p><button type="button" onClick={activePreviewRetry}>Retry preview</button></div> : null}
-          {error === null ? null : <div className="transport-error" role="alert"><strong>{error.kind} {error.status === null ? "" : `HTTP ${String(error.status)}`}</strong><p>{actionableErrorDetail(error.detail) ?? error.message}</p></div>}
-          {multirowDesignError === null ? null : <div className="transport-error" role="alert"><strong>{multirowDesignError.kind} {multirowDesignError.status === null ? "" : `HTTP ${String(multirowDesignError.status)}`}</strong><p>{actionableErrorDetail(multirowDesignError.detail) ?? multirowDesignError.message}</p></div>}
+          {previewPending ? <p className="preview-notice" role="status">Updating connection model…</p> : null}
+          {!supportedMultirowArrangement && preview.state === "PREVIEW_ERROR" ? <div className="transport-error" role="alert"><strong>Connection model could not be updated.</strong><p>Check the inputs, then retry.</p><button type="button" onClick={preview.retry}>Retry</button><details><summary>Advanced Engineering Diagnostics</summary><p>{requiredValue(preview.error, "Preview error").message}</p></details></div> : null}
+          {stale ? <p className="stale-notice" role="status">Results need to be recalculated. Run Design Check after the model updates.</p> : null}
+          {supportedMultirowArrangement && activePreviewError !== null ? <div className="transport-error" role="alert"><strong>Connection model could not be updated.</strong><p>Check the inputs, then retry.</p><button type="button" onClick={activePreviewRetry}>Retry</button><details><summary>Advanced Engineering Diagnostics</summary><p>{activePreviewError.message}</p></details></div> : null}
+          {error === null ? null : <div className="transport-error" role="alert"><strong>Unable to complete Design Check.</strong><p>{actionableErrorDetail(error.detail) ?? "Review the inputs and try again."}</p><details><summary>Advanced Engineering Diagnostics</summary><p>{error.kind} {error.status === null ? "" : `HTTP ${String(error.status)}`} · {error.message}</p></details></div>}
+          {multirowDesignError === null ? null : <div className="transport-error" role="alert"><strong>Unable to complete Design Check.</strong><p>{actionableErrorDetail(multirowDesignError.detail) ?? "Review the inputs and try again."}</p><details><summary>Advanced Engineering Diagnostics</summary><p>{multirowDesignError.kind} {multirowDesignError.status === null ? "" : `HTTP ${String(multirowDesignError.status)}`} · {multirowDesignError.message}</p></details></div>}
           {supportedMultirowArrangement && multirowPreview.response?.visualization !== null && multirowPreview.response?.visualization !== undefined ? <details className="layout-diagnostic"><summary>Bolt layout — optional 2D diagnostic</summary><p>The canonical 3D connection above remains primary. This backend-authored interface-plane diagram is a secondary layout and block-path diagnostic.</p><label className="checkbox-control"><input type="checkbox" checked={groupState.showBlockPaths} onChange={(event) => { updateGroup({ showBlockPaths: event.currentTarget.checked }, false); }} /> Show accepted block paths</label><MultiRowVisualizationPanel snapshot={multirowPreview.response.visualization} showBlockPaths={groupState.showBlockPaths} displayUnitSystem={request.joint_assembly.unit_system} /></details> : null}
           <details className={`results-drawer${stale ? " stale-design-results" : ""}`} open={resultsOpen} onToggle={(event) => { setResultsOpen(event.currentTarget.open); }}>
-            <summary><span>Design results &amp; calculation details</span><small>{activeDesignSummary === "No design run" ? "Run Design Check to populate" : stale ? "STALE" : activeDesignSummary}</small></summary>
+            <summary><span>Design results &amp; calculation details</span><small>{activeDesignSummary === "No design run" ? "Run Design Check to populate" : stale ? "Recalculation needed" : activeDesignSummary}</small></summary>
             <div className="results-drawer-body">{stale ? <p>Previous calculation belongs to earlier inputs. Run Design Check for current results.</p> : supportedMultirowArrangement ? automaticHandoff !== null && automaticGroupModeIntegration !== null && multirowDesign?.automatic_demand_result !== null && multirowDesign?.automatic_demand_result !== undefined ? <AutomaticMultirowResults handoff={automaticHandoff} integration={automaticGroupModeIntegration} demandFingerprint={multirowDesign.automatic_demand_result.result_fingerprint} displayUnitSystem={request.joint_assembly.unit_system} /> : multirowResult === null ? <p>No multi-row design run.</p> : <MultirowResults result={multirowResult} displayUnitSystem={request.joint_assembly.unit_system} /> : response === null ? <p>No design run.</p> : <><ResultSummary response={response} /><ResultTable response={response} /></>}</div>
           </details>
         </ConnectionWorkspaceMain>
