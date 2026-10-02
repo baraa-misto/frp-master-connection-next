@@ -441,6 +441,19 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
         ),
     ]
     rows.extend((f"{role} adjustment candidates", value) for role, value in factors.items())
+    if isinstance(ledgers, list) and any(
+        isinstance(item, dict)
+        and "strength" in str(item.get("property_id"))
+        and item.get("adjusted_candidate") is None
+        for item in ledgers
+    ):
+        rows.append(
+            (
+                "Diagnostic resistance boundary",
+                "Diagnostic only — adjusted resistance unavailable. Original declared values "
+                "are retained only for partial numerical diagnostics; final GREEN is unavailable.",
+            )
+        )
     rows.append(
         (
             "Source and qualification",
@@ -1666,6 +1679,10 @@ def _direct_reader_engineering_sections(
     material = materials[0] if materials and isinstance(materials[0], dict) else {}
     fastener = physical_request.get("fastener_snapshot", {})
     fastener = fastener if isinstance(fastener, dict) else {}
+    sections = {
+        member.get("role"): member.get("section", {})
+        for member in physical_request.get("joint_assembly", {}).get("members", [])
+    }
     layers = visual.get("layers", [])
     layers = layers if isinstance(layers, list) else []
     checks = [
@@ -1683,10 +1700,43 @@ def _direct_reader_engineering_sections(
         return f"{readable_value(first, system)} / {readable_value(second, system)}"
 
     story: list[Flowable] = [_paragraph("3  Direct assembly and design basis", styles["heading"])]
+    if snapshot.kind == "input_only":
+        story.append(
+            _paragraph(
+                "Input / geometry report — no engineering design check performed. "
+                "Supply actual sustained and maximum material temperatures, load classification "
+                "and load-case name, and correct any native geometry issues before Design Check.",
+                styles["body"],
+            )
+        )
+        story.append(
+            _table(
+                [
+                    (
+                        "Submitted project conditions",
+                        readable_value(
+                            snapshot.request.get("mat1_assignments", {}).get("default_conditions"),
+                            system,
+                        ),
+                    ),
+                ],
+                styles,
+            )
+        )
     story.append(
         _table(
             [
                 ("Physical members", "Pultruded FRP angle LEG_1 to FRP W TOP_FLANGE"),
+                ("Angle dimensions", readable_value(sections.get("BRACE"), system)),
+                ("W dimensions", readable_value(sections.get("COLUMN"), system)),
+                (
+                    "Orientation / selected faces",
+                    readable_value(physical_request.get("geometry_template"), system),
+                ),
+                (
+                    "Washer dimensions / placement",
+                    readable_value(fastener.get("washer_geometry"), system),
+                ),
                 (
                     "Bolt layout",
                     f"{len(visual.get('row_ids', []))} "
@@ -1788,12 +1838,33 @@ def _direct_reader_engineering_sections(
         story.append(results_matrix(checks, system))
     else:
         story.append(_paragraph("No required resistance has been evaluated.", styles["body"]))
+    evaluated = sum(check.availability == "CALCULATED" for check in checks)
+    unresolved = sum(
+        check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
+        for check in checks
+    )
+    completeness = (
+        "not assessed — no design calculation performed"
+        if snapshot.kind == "input_only"
+        else f"{unresolved} required checks/evidence items unresolved"
+    )
+    story.append(
+        _paragraph(
+            f"NUMERICAL CHECKS: {evaluated} supported checks evaluated. "
+            f"DESIGN COMPLETENESS: {completeness}. "
+            "Source, qualification and method requirements are unevaluated; "
+            "numerical FAIL remains RED.",
+            styles["body"],
+        )
+    )
     critical = governing(checks)
     if critical is not None:
+        integration = result.get("automatic_group_mode_integration", {})
+        scenarios = integration.get("scenario_results", []) if isinstance(integration, dict) else []
         native = next(
             (
                 item
-                for handoff in result.get("automatic_handoff_results", [])
+                for handoff in [*scenarios, *result.get("automatic_handoff_results", [])]
                 if isinstance(handoff, dict)
                 for item in handoff.get("supported_results", [])
                 if isinstance(item, dict) and item.get("result_id") == critical.identity

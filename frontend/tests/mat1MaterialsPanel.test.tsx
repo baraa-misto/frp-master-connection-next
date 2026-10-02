@@ -169,13 +169,13 @@ it("reports factor transport errors and keeps aborted owner requests silent", as
   fireEvent.click(screen.getByText("View calculated factors"));
   expect(screen.getByRole("status").textContent).toContain("Select a material");
   fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: record.id } });
-  setMAT1Conditions({
+  act(() => { setMAT1Conditions({
     ...mat1Snapshot().conditions,
     sustained_temperature: { value: "90", unit: "degF" },
     maximum_temperature: { value: "90", unit: "degF" },
     load_case_name: "LC-1",
     time_effect_category: "WIND_TORNADO_SEISMIC",
-  });
+  }); });
   fireEvent.click(screen.getByText("View calculated factors"));
   await waitFor(() => { expect(screen.getByRole("status").textContent).toContain("Unable to complete the material request"); });
 });
@@ -248,4 +248,32 @@ it("binds a new linked Direct material automatically and catches an empty load-c
   fireEvent.click(screen.getByText("View calculated factors"));
   expect(screen.getByRole("status")).toHaveTextContent("Enter a load-case name");
   expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it("clears obsolete material errors after current calculation and labels unknown adjustments", async () => {
+  setMAT1Catalog([record]); setMAT1Default(record.id); setMAT1Active(true);
+  setMAT1Conditions({ ...mat1Snapshot().conditions, sustained_temperature: { value: "70", unit: "degF" }, maximum_temperature: { value: "70", unit: "degF" }, time_effect_category: "WIND_TORNADO_SEISMIC", load_case_name: "OR2-QA" });
+  rememberMAT1Preview("paired-clip-angle", '{"id":"current-error"}');
+  setMAT1PreviewOwners("paired-clip-angle", '{"id":"current-error"}', []);
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("{}", { status: 422 })));
+  render(<MAT1MaterialsPanel family="paired-clip-angle" />);
+  fireEvent.click(screen.getByText("Advanced Engineering Diagnostics · FRP component assignments and factor trace"));
+  fireEvent.click(screen.getByRole("button", { name: "View calculated factors" }));
+  expect(await screen.findByText("Error: Check the required material and project condition fields, then try again.")).toBeVisible();
+  act(() => { acceptMAT1Design("paired-clip-angle", mat1FamilyKey("paired-clip-angle"), { overall_status: "SOURCE_REQUIRED", material_ledgers: [{ property_id: "tensile_strength_L", adjusted_candidate: null }] }); });
+  expect(screen.queryByText("Error: Check the required material and project condition fields, then try again.")).not.toBeInTheDocument();
+  expect(screen.getByText("Diagnostic only — adjusted resistance unavailable.")).toBeVisible();
+});
+
+it("ignores a successful owner response after its preview is aborted", async () => {
+  setMAT1Active(true);
+  rememberMAT1Preview("paired-clip-angle", '{"id":"late-owner-success"}');
+  let resolveResponse: ((value: Response) => void) | undefined;
+  const fetchMock = vi.fn(() => new Promise<Response>((resolve) => { resolveResponse = resolve; }));
+  vi.stubGlobal("fetch", fetchMock);
+  const view = render(<MAT1MaterialsPanel family="paired-clip-angle" />);
+  await waitFor(() => { expect(fetchMock).toHaveBeenCalledTimes(1); });
+  view.unmount();
+  await act(async () => { resolveResponse?.(new Response(JSON.stringify({ contract: "MAT1-OWNER-PREVIEW-RC0", family_id: "paired-clip-angle", owners: ["late"], design_check_performed: false }))); await Promise.resolve(); });
+  expect(mat1Snapshot().previewOwnerKeys["paired-clip-angle"]).not.toBe('{"id":"late-owner-success"}');
 });

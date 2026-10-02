@@ -732,6 +732,20 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # OR2 adds only its signed platform PDF evidence and exact count.
+            or2_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 review PDFs
+        run: python ../scripts/generate_direct_or2_ci_pdfs.py --output direct-or2-review-pdfs
+      - name: Upload Direct OR2 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(or2_pdf_steps) == 1
+            raw = raw.replace(or2_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7833") == 1
+            raw = raw.replace(b"--expected-tests 7833", b"--expected-tests 7797")
             # Hosted Windows completed coverage but hit the 25-minute job
             # limit during report generation. Candidate PR checkout now uses
             # the exact head SHA on both platforms.

@@ -642,9 +642,21 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             native = serialize_multirow_design(evaluate_multirow_connection(canonical))
         except (ArithmeticError, KeyError, TypeError, ValueError) as error:
             raise HTTPException(status_code=422, detail={"code": str(error)}) from error
+        integration = native.automatic_group_mode_integration
+        single_row = (
+            integration.get("direct_single_row_result") if integration is not None else None
+        )
+        numerical_fail = (
+            legacy.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
+            and integration is not None
+            and (
+                bool(integration.get("failed_check_ids"))
+                or (isinstance(single_row, dict) and bool(single_row.get("failed_check_ids")))
+            )
+        )
         return {
             "contract": "MAT1-MULTI-ROW-RC0",
-            "overall_status": "SOURCE_REQUIRED",
+            "overall_status": "FAIL" if numerical_fail else "SOURCE_REQUIRED",
             "native_design": native.model_dump(mode="json"),
             "material_sources": _material_source_snapshot(request.assignments),
             "fastener_source": fastener_source_record(request.fastener),

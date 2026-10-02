@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef } from "react";
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { mat1FamilyKey, useMAT1 } from "../state/mat1Session";
 import { viewerUnity } from "./unityRatio";
@@ -38,7 +38,7 @@ interface SidebarGroupProps {
   readonly children: ReactNode;
   readonly defaultOpen?: boolean;
   readonly selected?: boolean;
-  readonly onSelect?: (() => void) | undefined;
+  readonly onSelect?: ((event: MouseEvent<HTMLElement>) => void) | undefined;
   readonly onFocusCapture?: (() => void) | undefined;
 }
 
@@ -141,7 +141,7 @@ export function SidebarGroup({
       open={defaultOpen || selected || undefined}
       onFocusCapture={onFocusCapture}
     >
-      <summary onClick={() => { onSelect?.(); }}>
+      <summary onClick={(event) => { onSelect?.(event); }}>
         <span>{title}</span>
         <small>{summary}</small>
       </summary>

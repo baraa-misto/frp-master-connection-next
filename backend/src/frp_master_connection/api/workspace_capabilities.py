@@ -78,4 +78,16 @@ def build_workspace_capability_router(identity_resolver: TrustedIdentityResolver
     async def capabilities() -> dict[str, object]:
         return workspace_capabilities()
 
+    @router.get("/direct-shapes", dependencies=[Depends(identity)])
+    async def direct_shapes() -> dict[str, object]:
+        """Advertise only accepted Direct pair/surface adapters, never roadmap enums."""
+        return cast(
+            dict[str, object],
+            json.loads(
+                files("frp_master_connection")
+                .joinpath("data/direct_shape_capabilities.json")
+                .read_text(encoding="utf-8")
+            ),
+        )
+
     return router

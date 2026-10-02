@@ -161,6 +161,7 @@ def test_openapi_product_path_set_is_exact() -> None:
     assert set(application.openapi()["paths"]) == {
         "/api/v1/fasteners/catalog",
         "/api/v1/workspaces/capabilities",
+        "/api/v1/workspaces/direct-shapes",
         "/api/v1/frp-materials/catalog",
         "/api/v1/frp-materials/factor-candidates",
         "/api/v1/frp-materials/family/owners",

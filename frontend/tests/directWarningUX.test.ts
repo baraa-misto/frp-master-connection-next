@@ -13,7 +13,15 @@ it("separates physical clearance, source, method and information warnings", () =
   expect(otherGeometry).toMatchObject({ group: "geometry", boltId: "B_R3_L1" });
   expect(otherGeometry.text).toContain("outside member");
   expect(describeDirectWarning("F593_TENSILE_SOURCE_DATA_PENDING")).toMatchObject({ group: "source" });
-  expect(describeDirectWarning("CONTROLLED_ICE_DEVELOPMENT_MATERIAL")).toMatchObject({ group: "source" });
+  expect(describeDirectWarning("CONTROLLED_ICE_DEVELOPMENT_MATERIAL")).toMatchObject({ group: "qualification" });
   expect(describeDirectWarning("OUT_OF_PLANE_MOMENT_UNSUPPORTED")).toMatchObject({ group: "method" });
   expect(describeDirectWarning("EXTRA_INFORMATION")).toMatchObject({ group: "information" });
+});
+
+it("classifies action and whole-connection qualification independently of geometry", () => {
+  expect(describeDirectWarning("DIRECT_INDEPENDENT_MEMBER_END_MOMENT_NOT_SUPPORTED").group).toBe("action");
+  expect(describeDirectWarning("DIRECT_BOLT_AXIS_FORCE_UNSUPPORTED").group).toBe("action");
+  expect(describeDirectWarning("DIRECT_DEMAND_PLAN_NOT_READY").group).toBe("action");
+  expect(describeDirectWarning("SECTION_2_3_2_WHOLE_CONNECTION_QUALIFICATION_REQUIRED").group).toBe("qualification");
+  expect(describeDirectWarning("INVALID_PHYSICAL_CONNECTION_GEOMETRY").group).toBe("geometry");
 });

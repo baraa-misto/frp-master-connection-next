@@ -1660,3 +1660,7 @@ This governance commit changes no production, engineering, tests, dependencies, 
 ## CME-2C C2-P2 isolated implementation
 
 Additive internal clear-plate E3/F9/H2 provider from baseline `20fabefa90247dd3470d4698edda1b22d017e7c6` (128). See `docs/architecture/CME_2C_ISOLATED_CLEAR_PLATE_PROVIDER.md` for trusted pre-resolved frozen C2-M/P1 snapshots, the owner-approved raw-traced E3 Fy cap, native numerical authority, fail-closed boundaries and publication gates. Frozen production/tests and all fifteen tags remain unchanged; no public API, frontend, hardware or family material activation. One implementation commit is expected at count 129; exact-SHA hosted four-job verification is recorded externally after normal push. No new freeze tag or later-stage work.
+
+## Direct Owner Round 2 F1 candidate
+
+The bounded Angle/W owner starter, run-versus-completeness blockers, Direct-only governed axial-frame representation correction, and publication gates are recorded in [the OR2 F1 QA contract](docs/qa/SHEAR01_DIRECT_OR2_F1.md). Current capabilities are available at GET /api/v1/workspaces/direct-shapes. Only Angle to WIDE_FLANGE is enabled; source and qualification requirements remain open.

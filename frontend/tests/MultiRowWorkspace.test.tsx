@@ -446,7 +446,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByLabelText<HTMLSelectElement>("Unit system").value).toBe("US_CUSTOMARY");
     fireEvent.click(screen.getByRole("button", { name: "Load Direct example — SI" }));
     expect(screen.getByLabelText<HTMLSelectElement>("Unit system").value).toBe("SI");
-    expect(screen.getByLabelText<HTMLInputElement>("Leg y").value).toBe("203.2");
+    expect(screen.getByLabelText<HTMLInputElement>("Leg y").value).toBe("101.6");
     expect(screen.getByText(/historical J1 regression fixture may not satisfy current Direct physical-validation rules/)).not.toBeVisible();
   });
 
@@ -456,13 +456,13 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     render(<ShearConnectionsWorkspace />);
     await screen.findByRole("heading", { name: "Direct angle-to-W connection" });
     expect(screen.getByRole("button", { name: "Run Design Check" })).toBeDisabled();
-    expect(screen.getByText(/Enter a load-case name in Materials and project conditions/)).toBeVisible();
+    expect(screen.getAllByText(/Enter a load-case name/)[0]).toBeVisible();
     act(() => { setMAT1Conditions({ ...mat1Snapshot().conditions, load_case_name: "LC-1", sustained_temperature: { value: "", unit: "degF" } }); });
-    expect(screen.getByText(/Complete material temperatures and load classification/)).toBeVisible();
+    expect(screen.getAllByText(/Select the load classification/)[0]).toBeVisible();
     act(() => { setMAT1Conditions({ ...mat1Snapshot().conditions, sustained_temperature: { value: "72", unit: "degF" }, maximum_temperature: { value: "", unit: "degF" } }); });
-    expect(screen.getByText(/Complete material temperatures and load classification/)).toBeVisible();
+    expect(screen.getAllByText(/Select the load classification/)[0]).toBeVisible();
     act(() => { setMAT1Conditions({ ...mat1Snapshot().conditions, maximum_temperature: { value: "72", unit: "degF" } }); });
-    expect(screen.getByText(/Complete material temperatures and load classification/)).toBeVisible();
+    expect(screen.getAllByText(/Select the load classification/)[0]).toBeVisible();
     expect(mocks.multiEvaluate).not.toHaveBeenCalled();
   });
 
@@ -480,7 +480,66 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole("button", { name: "Apply proposed geometry" }));
     expect(screen.queryByText(/Proposed geometry for the current/)).not.toBeInTheDocument();
-    expect(Number(screen.getByLabelText<HTMLInputElement>("Leg y").value)).toBeGreaterThanOrEqual(8);
+    expect(screen.getByLabelText<HTMLInputElement>("Leg y").value).toBe(original);
+  });
+
+  it("separates a necessary SI member resize from placement and requires explicit acceptance", async () => {
+    render(<ShearConnectionsWorkspace />);
+    fireEvent.change(screen.getByLabelText("Unit system"), { target: { value: "SI" } });
+    fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "3" } });
+    const invalid = multirowPreviewFixture(3, 1, "INVALID_GEOMETRY");
+    const valid = multirowPreviewFixture(3, 1);
+    const fetchMock = vi.fn().mockImplementationOnce(() => Promise.resolve(new Response(JSON.stringify(invalid))))
+      .mockImplementationOnce(() => Promise.resolve(new Response(JSON.stringify(invalid))))
+      .mockImplementationOnce(() => Promise.resolve(new Response(JSON.stringify(invalid))))
+      .mockImplementation(() => Promise.resolve(new Response(JSON.stringify(valid))));
+    vi.stubGlobal("fetch", fetchMock);
+    fireEvent.click(screen.getByRole("button", { name: "Suggest compatible geometry" }));
+    await screen.findByText("Member size change required");
+    expect(screen.getByLabelText("Leg y")).toHaveValue("101.6");
+    fireEvent.click(screen.getByRole("button", { name: "Accept member size change and apply" }));
+    expect(screen.getByLabelText("Leg y")).toHaveValue("203.2");
+    expect(screen.queryByText("Member size change required")).not.toBeInTheDocument();
+  });
+
+  it("turns network failure into an actionable suggestion message", async () => {
+    await openUnifiedMultirow();
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
+    fireEvent.click(screen.getByRole("button", { name: "Suggest compatible geometry" }));
+    expect(await screen.findByText(/Confirm the local backend is running, then try again/)).toHaveTextContent("Unable to preview a compatible layout");
+  });
+
+  it("identifies the current unsupported action at the design button", async () => {
+    const preview = multirowPreviewFixture();
+    preview.design_check_ready = false;
+    preview.warnings = ["DIRECT_INDEPENDENT_MEMBER_END_MOMENT_NOT_SUPPORTED"];
+    mocks.multiPreview.mockResolvedValue(preview);
+    render(<ShearConnectionsWorkspace />);
+    activateNormalAutomaticDemand();
+    await waitFor(() => { expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute("title", expect.stringContaining("independent member-end moment")); });
+    expect(screen.getByRole("region", { name: "UNSUPPORTED ACTION" })).toBeVisible();
+  });
+
+  it("uses final checks with separate source and qualification evidence", async () => {
+    const design = automaticDesignFixture();
+    const integration = design.automatic_group_mode_integration;
+    if (integration === null) throw new Error("Integration required");
+    integration.incomplete_required_check_ids = ["MATERIAL_SOURCE:layer-A", "SECTION_2_3_2", "BOLT_SHEAR:B_R1_L1"];
+    const scenario = integration.scenario_results[0];
+    const check = scenario?.supported_results[0];
+    if (scenario === undefined || check === undefined) throw new Error("Final check required");
+    scenario.supported_results.push({ ...check, result_id: "SOURCE_PENDING", layer_id: null, bolt_id: null, row_id: null, bolt_line_id: null, path_id: null, numerical_comparison: "NOT_EVALUATED", availability: "SOURCE_DATA_PENDING" });
+    mocks.multiPreview.mockResolvedValue(automaticPreviewFixture());
+    mocks.multiEvaluate.mockResolvedValue(design);
+    render(<ShearConnectionsWorkspace />);
+    activateNormalAutomaticDemand();
+    const button = screen.getByRole("button", { name: "Run Design Check" });
+    await waitFor(() => { expect(button).toBeEnabled(); });
+    fireEvent.click(button);
+    await screen.findByRole("heading", { name: "Calculated supported checks" });
+    expect(screen.getByRole("region", { name: "QUALIFICATION REQUIRED" })).toHaveTextContent("MATERIAL_SOURCE:layer-A");
+    expect(screen.getByRole("region", { name: "SOURCE REQUIRED" })).toHaveTextContent("BOLT_SHEAR:B_R1_L1");
+    expect(screen.getAllByText("Connection").length).toBeGreaterThan(0);
   });
 
   it("keeps Direct geometry unchanged when a proposed layout is dismissed", async () => {
@@ -518,7 +577,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     const fetchMock = vi.fn().mockImplementation(() => Promise.resolve(new Response(JSON.stringify(invalid), { status: 200 })));
     vi.stubGlobal("fetch", fetchMock);
     fireEvent.click(screen.getByRole("button", { name: "Suggest compatible geometry" }));
-    await waitFor(() => { expect(fetchMock).toHaveBeenCalledTimes(10); });
+    await waitFor(() => { expect(fetchMock).toHaveBeenCalledTimes(16); });
     expect(screen.getByText(/No contained layout found in the bounded/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Apply proposed geometry" })).not.toBeInTheDocument();
   });
@@ -535,7 +594,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await openUnifiedMultirow();
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue("offline"));
     fireEvent.click(screen.getByRole("button", { name: "Suggest compatible geometry" }));
-    expect(await screen.findByText("Unable to preview a compatible layout.")).toBeInTheDocument();
+    expect(await screen.findByText("Unable to preview a compatible layout. Confirm the local backend is running, then try again.")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Apply proposed geometry" })).not.toBeInTheDocument();
   });
 
@@ -549,7 +608,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     fireEvent.click(screen.getByRole("button", { name: "Suggest compatible geometry" }));
     await screen.findByText(/Proposed geometry for the current/);
     const si = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string) as MultiRowConnectionRequest;
-    expect(si.loaded_boundary_to_row_1_distance.value).toBe("101.6");
+    expect(si.loaded_boundary_to_row_1_distance.value).toBe("76.2");
     fireEvent.change(screen.getByLabelText("Unit system"), { target: { value: "US_CUSTOMARY" } });
     expect(screen.getByLabelText("Case label")).toHaveValue("Direct layout example — U.S.");
     view.unmount();
@@ -562,7 +621,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     fireEvent.click(screen.getByRole("button", { name: "Suggest compatible geometry" }));
     await screen.findByText(/Proposed geometry for the current/);
     const us = JSON.parse((usFetch.mock.calls[0]?.[1] as RequestInit).body as string) as MultiRowConnectionRequest;
-    expect(us.loaded_boundary_to_row_1_distance.value).toBe("5");
+    expect(us.loaded_boundary_to_row_1_distance.value).toBe("3");
   });
 
   it("groups physical, method, source, and informational Direct warnings and selects the affected bolt", async () => {
@@ -579,10 +638,10 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     mocks.multiPreview.mockResolvedValue(preview);
     fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
     fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
-    expect(await screen.findByRole("region", { name: "Geometry / input blockers" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Unsupported action or method" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Source and qualification limits" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Information" })).toBeInTheDocument();
+    expect(await screen.findByRole("region", { name: "GEOMETRY" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "METHOD REQUIRED" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "SOURCE REQUIRED" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "INFORMATION" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Bolt B_R2_L1.*Select bolt and layout inputs/u }));
     expect(screen.getByText("Bolt / Interface", { exact: true })).toBeInTheDocument();
   });
@@ -600,7 +659,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(await screen.findByText(/Proposed geometry for the current/)).toBeInTheDocument();
     const submitted = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string) as MultiRowConnectionRequest;
     expect(submitted).toMatchObject({ row_count: 3, source_length_unit: "mm" });
-    expect(submitted.loaded_boundary_to_row_1_distance.value).toBe("127");
+    expect(submitted.loaded_boundary_to_row_1_distance.value).toBe("76.2");
   });
 
   it("starts with the contained 2 x 1 Direct layout without a legacy preview", async () => {
@@ -1118,7 +1177,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await waitFor(() => { expect(button).toBeEnabled(); });
     fireEvent.click(button);
     await screen.findByRole("heading", { name: "Not Evaluated" });
-    expect(screen.getAllByText("YELLOW — blocked").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("YELLOW — incomplete design").length).toBeGreaterThan(0);
     expect(screen.getByText("Calculated supported checks")).toBeVisible();
     fireEvent.click(requiredElement(document.querySelector(".results-technical-audit > summary")));
     expect(screen.getByRole("heading", { name: "Eccentric group-mode checks" })).toBeVisible();
@@ -1556,7 +1615,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
         "title",
-        "Correct the geometry issues above before running Design Check.",
+        "The current action cannot be calculated. Review the model warnings above.",
       );
     });
   });

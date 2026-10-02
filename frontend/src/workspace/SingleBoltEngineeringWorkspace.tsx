@@ -2,6 +2,9 @@ import { viewerUnity } from "./unityRatio";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
 import { workspaceSupports } from "../domain/workspaceCapabilities";
+import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
+import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
+import { materialConditionBlocker } from "../features/materialConditionValidation";
 import { defaultFastenerSelection, setFastenerSelection, useMAT1 } from "../state/mat1Session";
 import type { FastenerSelection } from "../state/mat1Session";
 
@@ -71,6 +74,7 @@ import {
 import { useMultiRowPreview } from "./multirowWorkflow";
 import { describeDirectWarning } from "./directWarning";
 import { actionableErrorDetail } from "./actionableError";
+import { finalDirectChecks } from "./directResults";
 
 type DemandMode = MultiRowConnectionRequest["demand_source"];
 type SectionQuantityName = "leg_y" | "leg_z" | "thickness" | "overall_depth" | "flange_width" | "web_thickness" | "flange_thickness";
@@ -103,14 +107,15 @@ interface BoltGroupState {
 // eslint-disable-next-line react-refresh/only-export-components -- pure request builder is also a focused regression seam
 export function initialBoltGroupState(unitSystem: BenchmarkUnitSystem, starter = false): BoltGroupState {
   const si = unitSystem === "SI";
+  const owner = ownerStarter.units[unitSystem];
   return {
     rowCount: starter ? 2 : 1,
     boltsPerRow: 1,
     pitch: si ? "50.8" : "2",
     gauge: si ? "50.8" : "2",
-    loadedBoundaryToRow1: starter ? (si ? "101.6" : "4") : (si ? "50.8" : "2"),
-    negativeSideDistance: si ? "38.1" : "1.5",
-    positiveSideDistance: si ? "38.1" : "1.5",
+    loadedBoundaryToRow1: starter ? owner.loaded_boundary : (si ? "50.8" : "2"),
+    negativeSideDistance: starter ? owner.negative_side : (si ? "38.1" : "1.5"),
+    positiveSideDistance: starter ? owner.positive_side : (si ? "38.1" : "1.5"),
     distribution: "ASCE_PRESCRIBED",
     engineerAllocations: [],
     firstRowMethod: "ASCE_STANDARD_SIMPLIFIED",
@@ -130,19 +135,28 @@ function multirowQuantity(value: string, unit: string): MultiRowQuantity {
 // eslint-disable-next-line react-refresh/only-export-components -- governed starter validation is tested without mounting the UI
 export function directStartingExample(unitSystem: BenchmarkUnitSystem): SingleBoltEvaluationRequest {
   const request = loadJ1Benchmark(unitSystem);
-  const si = unitSystem === "SI";
+  const owner = ownerStarter.units[unitSystem];
   const brace = requiredAt(request.joint_assembly.members, 0, "Angle brace");
   const support = requiredAt(request.joint_assembly.members, 1, "W column");
   if (brace.section.kind !== "ANGLE" || support.section.kind !== "WIDE_FLANGE") {
     throw new Error("The Direct starting example requires an angle and W column.");
   }
-  requiredValue(brace.section.leg_y, "Angle leg y").value = si ? "203.2" : "8";
-  requiredValue(brace.section.leg_z, "Angle leg z").value = si ? "203.2" : "8";
-  requiredValue(support.section.flange_width, "W flange width").value = si ? "406.4" : "16";
+  for (const [key, value] of Object.entries(owner.brace)) requiredValue(brace.section[key as SectionQuantityName], key).value = value;
+  for (const [key, value] of Object.entries(owner.support)) requiredValue(support.section[key as SectionQuantityName], key).value = value;
+  request.bolt_diameter.value = owner.bolt_diameter;
+  request.published_code_unit_basis = ownerStarter.hole_basis;
+  const washer = requiredValue(request.fastener_snapshot.washer_geometry, "Washer geometry");
+  washer.outside_diameter.value = owner.washer_diameter;
+  washer.thickness.value = owner.washer_thickness;
   const geometry = requiredValue(request.geometry_template, "Direct geometry");
-  geometry.brace_to_column_directed_angle_deg = "135";
-  geometry.bolt_to_brace_end_distance.value = si ? "152.4" : "6";
+  geometry.brace_to_column_directed_angle_deg = ownerStarter.orientation_degrees;
+  geometry.bolt_to_brace_end_distance.value = owner.e1;
+  geometry.hole_diameter.value = owner.hole_diameter;
+  geometry.angle_connected_leg = "LEG_1";
+  geometry.outstanding_leg_side = "POSITIVE_INTERFACE_Z";
+  geometry.column_flange_connection_side = "EXTERIOR";
   const action = requiredAt(request.joint_assembly.member_end_actions, 0, "Brace action");
+  action.force.x = owner.example_axial_force;
   action.moment.x = "0";
   action.moment.y = "0";
   action.moment.z = "0";
@@ -461,37 +475,27 @@ function AutomaticMultirowResults({
     )
   );
   const singleRow = integration.direct_single_row_result;
-  const overallDisposition = singleRow?.overall_disposition ?? (legacyOnly
-    ? handoff.overall_disposition
-    : integration.overall_disposition);
-  const numericalComparison = singleRow?.numerical_comparison ?? (legacyOnly
-    ? handoff.numerical_comparison
-    : integration.numerical_comparison);
-  const qualification = legacyOnly ? handoff.qualification : integration.qualification;
-  const governing = legacyOnly
-    ? handoff.governing_supported_check_ids
-    : integration.governing_supported_check_ids;
+  const finalChecks = finalDirectChecks(integration);
+  const overallDisposition = singleRow?.overall_disposition ?? integration.overall_disposition;
+  const numericalComparison = singleRow?.numerical_comparison ?? integration.numerical_comparison;
+  const qualification = integration.qualification;
+  const governing = integration.governing_supported_check_ids;
   const limitations = singleRow === undefined
     ? [
-    ...(legacyOnly
-      ? handoff.unsupported_required_check_ids
-      : integration.unsupported_required_check_ids
-    ).map((value) => `Unsupported: ${friendlyIdentifier(value)}`),
-    ...(legacyOnly
-      ? handoff.incomplete_required_check_ids
-      : integration.incomplete_required_check_ids
-    ).map((value) => `Incomplete: ${friendlyIdentifier(value)}`),
-  ] : singleRow.incomplete_required_check_ids.map((value) => `Incomplete: ${friendlyIdentifier(value)}`);
+      ...integration.unsupported_required_check_ids.map((value) => `Unsupported: ${friendlyIdentifier(value)}`),
+      ...integration.incomplete_required_check_ids.map((value) => `Incomplete: ${friendlyIdentifier(value)}`),
+    ] : singleRow.incomplete_required_check_ids.map((value) => `Incomplete: ${friendlyIdentifier(value)}`);
+
   return (
     <>
       <section className="result-summary" aria-labelledby="automatic-result-summary-title">
         <div className="summary-status"><span className="large-status-icon" aria-hidden="true">{statusIcon(numericalComparison)}</span><div><p className="eyebrow">Automatic member-end-force demand</p><h3 id="automatic-result-summary-title">{friendlyEnum(overallDisposition)}</h3></div></div>
-        <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>Comparison:</strong> {friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {governing.map(friendlyIdentifier).join(", ") || "None"}</span></div>
+        <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>NUMERICAL CHECKS:</strong> {finalChecks.length + (singleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</span><span><strong>DESIGN COMPLETENESS:</strong> {limitations.length} required checks/evidence items unresolved</span><span><strong>Comparison:</strong> {friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {governing.map(friendlyIdentifier).join(", ") || "None"}</span></div>
         {limitations.length === 0 ? null : <div className="qualification-banner"><span aria-hidden="true">!</span> Ordinary whole-connection PASS is prohibited while {limitations.length} required checks remain unsupported or incomplete.<details><summary>Advanced Engineering Diagnostics · required-check inventory</summary><ul>{limitations.map((value) => <li key={value}>{value}</li>)}</ul></details></div>}
       </section>
       <section className="results-panel" aria-labelledby="automatic-checks-title">
         <div className="panel-heading"><div><p className="eyebrow">Current Design Check</p><h3 id="automatic-checks-title">Calculated supported checks</h3></div></div>
-        <div className="table-scroll compact-results-table"><table><thead><tr><th>Check</th><th>Critical identity</th><th>Status</th><th>Demand</th><th>Design resistance</th><th>Utilization</th><th>Trace</th></tr></thead><tbody>{handoff.supported_results.map((check) => <tr key={check.result_id}><td>{friendlyEnum(check.limit_state)}</td><td>{[check.layer_id, check.bolt_id, check.row_id, check.bolt_line_id, check.path_id].filter((value): value is string => value !== null).map(friendlyIdentifier).join(" · ") || "Connection"}</td><td>{friendlyEnum(check.numerical_comparison === "NOT_EVALUATED" ? check.availability : check.numerical_comparison)}</td><td>{formatDisplayQuantity(check.demand, displayUnitSystem)}</td><td>{formatDisplayQuantity(check.design_resistance, displayUnitSystem)}</td><td>{formatUtilization(check.utilization)}</td><td><MultirowCheckDetails result={check} /></td></tr>)}</tbody></table></div>
+        <div className="table-scroll compact-results-table"><table><thead><tr><th>Check</th><th>Critical identity</th><th>Status</th><th>Demand</th><th>Design resistance</th><th>Utilization</th><th>Trace</th></tr></thead><tbody>{finalChecks.map((check, index) => <tr key={`${check.result_id}:${String(index)}`}><td>{friendlyEnum(check.limit_state)}</td><td>{[check.layer_id, check.bolt_id, check.row_id, check.bolt_line_id, check.path_id].filter((value): value is string => value !== null).map(friendlyIdentifier).join(" · ") || "Connection"}</td><td>{friendlyEnum(check.numerical_comparison === "NOT_EVALUATED" ? check.availability : check.numerical_comparison)}</td><td>{formatDisplayQuantity(check.demand, displayUnitSystem)}</td><td>{formatDisplayQuantity(check.design_resistance, displayUnitSystem)}</td><td>{formatUtilization(check.utilization)}</td><td><MultirowCheckDetails result={check} /></td></tr>)}</tbody></table></div>
       </section>
       {singleRow === undefined ? null : <section className="results-panel" aria-labelledby="direct-single-row-checks-title"><div className="panel-heading"><div><p className="eyebrow">Direct one-row source methods</p><h3 id="direct-single-row-checks-title">Angle and W flange checks</h3></div></div><div className="table-scroll compact-results-table"><table><thead><tr><th>Check</th><th>Layer / line</th><th>Status</th><th>Demand</th><th>Design resistance</th><th>Utilization</th><th>Reason</th></tr></thead><tbody>{singleRow.checks.map((check) => <tr key={check.result_id}><td>{friendlyEnum(check.limit_state)}<br /><small>{friendlyEnum(check.equation_method)}</small></td><td>{[check.layer_id, check.bolt_line_id].filter((value): value is string => value !== null).map(friendlyIdentifier).join(" · ")}</td><td>{friendlyEnum(check.numerical_comparison === "NOT_EVALUATED" ? check.availability : check.numerical_comparison)}</td><td>{formatDisplayQuantity(check.demand, displayUnitSystem)}</td><td>{formatDisplayQuantity(check.design_resistance, displayUnitSystem)}</td><td>{formatUtilization(check.utilization)}</td><td>{check.reason}</td></tr>)}</tbody></table></div></section>}
       <details className="results-technical-audit"><summary>Advanced Engineering Diagnostics</summary>
@@ -803,7 +807,7 @@ export function SingleBoltEngineeringWorkspace() {
   const [stale, setStale] = useState(false);
   const [resultsOpen, setResultsOpen] = useState(false);
   const [selection, setSelection] = useState<SceneSelection>({ kind: "MEMBER", id: "member-a" });
-  const [layoutSuggestion, setLayoutSuggestion] = useState<{ request: SingleBoltEvaluationRequest; group: BoltGroupState; revision: number } | null>(null);
+  const [layoutSuggestion, setLayoutSuggestion] = useState<{ request: SingleBoltEvaluationRequest; group: BoltGroupState; revision: number; memberSizeChange: boolean } | null>(null);
   const [layoutSuggestionError, setLayoutSuggestionError] = useState("");
   const designAbortController = useRef<AbortController | null>(null);
   const singlePreviewInput = useMemo(() => directF1Family
@@ -929,46 +933,62 @@ export function SingleBoltEngineeringWorkspace() {
     const supportSection = requiredAt(candidate.joint_assembly.members, 1, "Support").section;
     /* v8 ignore next -- the helper is only rendered for an ANGLE/W Direct request */
     if (braceSection.kind !== "ANGLE" || supportSection.kind !== "WIDE_FLANGE") return;
-    requiredValue(braceSection.leg_y, "Angle leg y").value = ensureAtLeast(requiredValue(braceSection.leg_y, "Angle leg y").value, si ? 203.2 : 8);
-    requiredValue(braceSection.leg_z, "Angle leg z").value = ensureAtLeast(requiredValue(braceSection.leg_z, "Angle leg z").value, si ? 203.2 : 8);
-    requiredValue(supportSection.flange_width, "Flange width").value = ensureAtLeast(requiredValue(supportSection.flange_width, "Flange width").value, si ? 406.4 : 16);
     const geometry = requiredValue(candidate.geometry_template, "Geometry");
-    geometry.bolt_to_brace_end_distance.value = ensureAtLeast(geometry.bolt_to_brace_end_distance.value, si ? 152.4 : 6);
-    suggestedGroup.loadedBoundaryToRow1 = ensureAtLeast(suggestedGroup.loadedBoundaryToRow1, si ? (suggestedGroup.rowCount === 3 ? 127 : 101.6) : (suggestedGroup.rowCount === 3 ? 5 : 4));
-    suggestedGroup.negativeSideDistance = ensureAtLeast(suggestedGroup.negativeSideDistance, si ? 38.1 : 1.5);
-    suggestedGroup.positiveSideDistance = ensureAtLeast(suggestedGroup.positiveSideDistance, si ? 38.1 : 1.5);
-    suggestedGroup.pitch = ensureAtLeast(suggestedGroup.pitch, si ? 50.8 : 2);
-    suggestedGroup.gauge = ensureAtLeast(suggestedGroup.gauge, si ? 50.8 : 2);
     try {
       let conflicts: readonly string[] = [];
+      const previewProposal = async (memberSizeChange: boolean): Promise<boolean> => {
+        const candidateRequest = buildMultirowRequest(candidate, viewExtentsRef.current, suggestedGroup, demandMode);
+        const response = await fetch("/api/v1/calculations/multi-row/preview", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(candidateRequest), credentials: "same-origin",
+        });
+        if (!response.ok) throw new Error(`The proposed layout was rejected (HTTP ${String(response.status)}). Review the layout inputs and confirm the local backend is running.`);
+        const previewCandidate = await response.json() as MultiRowPreviewResponse;
+        if (suggestionRevision !== engineeringRevisionRef.current) throw new Error("Inputs changed after the layout preview. Request a new suggestion.");
+        if (previewCandidate.geometry_status === "VALID") {
+          setLayoutSuggestion({ request: structuredClone(candidate), group: { ...suggestedGroup }, revision: suggestionRevision, memberSizeChange });
+          return true;
+        }
+        conflicts = previewCandidate.warnings.filter((warning) => warning.startsWith("DIRECT_PHYSICAL_CONTAINMENT:"));
+        return false;
+      };
+      // First search placement within the selected members. Every proposal is backend validated.
+      const scale = si ? 25.4 : 1;
+      for (const angle of Array.from(new Set([geometry.brace_to_column_directed_angle_deg, "135"]))) {
+        geometry.brace_to_column_directed_angle_deg = angle;
+        for (const distances of [null, [3, 3, 1, 1], [2, 2, 1, 1]]) {
+          if (distances !== null) {
+            geometry.bolt_to_brace_end_distance.value = String(requiredAt(distances, 0, "End distance") * scale);
+            suggestedGroup.loadedBoundaryToRow1 = String(requiredAt(distances, 1, "Loaded boundary") * scale);
+            suggestedGroup.negativeSideDistance = String(requiredAt(distances, 2, "Negative side") * scale);
+            suggestedGroup.positiveSideDistance = String(requiredAt(distances, 3, "Positive side") * scale);
+            suggestedGroup.pitch = String(2 * scale);
+            suggestedGroup.gauge = String(2 * scale);
+          }
+          if (await previewProposal(false)) return;
+        }
+      }
+      // Resizing is a separate proposal, requiring the explicit member-size acceptance control.
+      requiredValue(braceSection.leg_y, "Angle leg y").value = ensureAtLeast(requiredValue(braceSection.leg_y, "Angle leg y").value, 8 * scale);
+      requiredValue(braceSection.leg_z, "Angle leg z").value = ensureAtLeast(requiredValue(braceSection.leg_z, "Angle leg z").value, 8 * scale);
+      requiredValue(supportSection.flange_width, "Flange width").value = ensureAtLeast(requiredValue(supportSection.flange_width, "Flange width").value, 16 * scale);
+      geometry.bolt_to_brace_end_distance.value = String(6 * scale);
+      suggestedGroup.loadedBoundaryToRow1 = String((suggestedGroup.rowCount === 3 ? 5 : 4) * scale);
+      suggestedGroup.negativeSideDistance = String(1.5 * scale);
+      suggestedGroup.positiveSideDistance = String(1.5 * scale);
       const baseWidth = requiredValue(supportSection.flange_width, "Flange width").value;
-      const initialAngle = geometry.brace_to_column_directed_angle_deg;
+      const initialAngle = requiredValue(requestRef.current.geometry_template, "Original geometry").brace_to_column_directed_angle_deg;
       for (const angle of Array.from(new Set([initialAngle, "135"]))) {
         geometry.brace_to_column_directed_angle_deg = angle;
         requiredValue(supportSection.flange_width, "Flange width").value = baseWidth;
         for (const width of (si ? [406.4, 508, 609.6, 812.8, 1016] : [16, 20, 24, 32, 40])) {
           requiredValue(supportSection.flange_width, "Flange width").value = ensureAtLeast(requiredValue(supportSection.flange_width, "Flange width").value, width);
-          const candidateRequest = buildMultirowRequest(candidate, viewExtentsRef.current, suggestedGroup, demandMode);
-          const response = await fetch("/api/v1/calculations/multi-row/preview", {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(candidateRequest), credentials: "same-origin",
-          });
-          if (!response.ok) throw new Error(`The proposed layout was rejected (HTTP ${String(response.status)}).`);
-          const previewCandidate = await response.json() as MultiRowPreviewResponse;
-          if (suggestionRevision !== engineeringRevisionRef.current) {
-            setLayoutSuggestionError("Inputs changed after the layout preview. Request a new suggestion.");
-            return;
-          }
-          if (previewCandidate.geometry_status === "VALID") {
-            setLayoutSuggestion({ request: candidate, group: suggestedGroup, revision: suggestionRevision });
-            return;
-          }
-          conflicts = previewCandidate.warnings.filter((warning) => warning.startsWith("DIRECT_PHYSICAL_CONTAINMENT:"));
+          if (await previewProposal(true)) return;
         }
       }
       setLayoutSuggestionError(`No contained layout found in the bounded 16–40 in (406–1016 mm) flange and current/135° orientation envelope. ${conflicts.slice(0, 2).map((warning) => describeDirectWarning(warning).text).join(" ")}`);
     } catch (error) {
-      setLayoutSuggestionError(error instanceof Error ? error.message : "Unable to preview a compatible layout.");
+      setLayoutSuggestionError(error instanceof Error && error.message !== "Failed to fetch" ? error.message : "Unable to preview a compatible layout. Confirm the local backend is running, then try again.");
     }
   };
 
@@ -1182,10 +1202,8 @@ export function SingleBoltEngineeringWorkspace() {
     preview.currentRevision === previewInput.revision;
   const localDesignBlocker = designValidationMessage(request);
   const multirowBlocker = multirowValidationMessage(request, groupState, demandMode);
-  const designButtonBlocker = mat1.active && mat1.conditions.load_case_name.trim() === ""
-    ? "Enter a load-case name in Materials and project conditions before running Design Check."
-    : mat1.active && (mat1.conditions.sustained_temperature.value.trim() === "" || mat1.conditions.maximum_temperature.value.trim() === "" || mat1.conditions.time_effect_category === "")
-      ? "Complete material temperatures and load classification in Materials and project conditions before running Design Check."
+  const designButtonBlocker = mat1.active && materialConditionBlocker(mat1.conditions) !== null
+    ? materialConditionBlocker(mat1.conditions)
     : singleArrangement && demandMode === "AUTOMATIC_MEMBER_END_FORCE"
     ? "Automatic member-end-force demand is available for the accepted multi-row workflow."
     : supportedMultirowArrangement
@@ -1196,7 +1214,7 @@ export function SingleBoltEngineeringWorkspace() {
           : multirowPreview.state !== "CURRENT_VALID"
             ? "Connection model is updating. Design Check will be available when the model is current."
             : multirowPreview.response?.design_check_ready !== true
-              ? "Correct the geometry issues above before running Design Check."
+              ? multirowPreview.response?.warnings.map(describeDirectWarning).find((item) => item.group === "action")?.text ?? "The current action cannot be calculated. Review the model warnings above."
               : null)
       : previewPending
     ? "Connection model is updating. Design Check will be available when the model is current."
@@ -1235,12 +1253,17 @@ export function SingleBoltEngineeringWorkspace() {
           ? "Geometry must be corrected before Design Check"
           : multirowBlocker ?? "Updating connection model…"
     : singleModelStatusLabel;
-  const directWarnings = directF1Family
-    ? (multirowPreview.response?.warnings ?? []).map(describeDirectWarning) : [];
   const multirowResult = multirowDesign?.calculation_result ?? null;
   const automaticHandoff = multirowDesign?.automatic_handoff_results[0] ?? null;
   const automaticGroupModeIntegration =
     multirowDesign?.automatic_group_mode_integration ?? null;
+  const directWarnings: ReturnType<typeof describeDirectWarning>[] = directF1Family ? [
+    ...(multirowPreview.response?.warnings ?? []).map(describeDirectWarning),
+    ...(!stale && automaticGroupModeIntegration !== null ? [
+      ...automaticGroupModeIntegration.unsupported_required_check_ids.map((id) => ({ group: "method" as const, text: `Required check not evaluated: ${friendlyIdentifier(id)}.` })),
+      ...automaticGroupModeIntegration.incomplete_required_check_ids.map((id) => ({ group: id.includes("MATERIAL") || id.includes("SECTION_2_3_2") ? "qualification" as const : "source" as const, text: `Required evidence unresolved: ${friendlyIdentifier(id)}.` })),
+    ] : []),
+  ] : [];
   const directSingleRow = automaticGroupModeIntegration?.direct_single_row_result;
   const failedDirectChecks = directSingleRow?.failed_check_ids
     ?? automaticGroupModeIntegration?.failed_check_ids ?? [];
@@ -1249,12 +1272,12 @@ export function SingleBoltEngineeringWorkspace() {
   const directMultirowStatus = stale
     ? "Results need to be recalculated"
     : automaticGroupModeIntegration === null
-      ? multirowDesign === null ? "GRAY — not calculated" : "YELLOW — blocked"
+      ? multirowDesign === null ? "GRAY — not calculated" : "YELLOW — incomplete design"
       : failedDirectChecks.length > 0
         ? "RED — numerical failure"
         : directDisposition === "PASS"
           ? "GREEN — complete pass"
-          : "YELLOW — blocked";
+          : "YELLOW — incomplete design";
   const activeDesignSummary = supportedMultirowArrangement
     ? directMultirowStatus
     : response === null
@@ -1277,7 +1300,7 @@ export function SingleBoltEngineeringWorkspace() {
         (bolt) => bolt.bolt_id === selection.id,
       ) ?? null
     : null;
-  const multirowChecks = automaticHandoff?.supported_results ?? multirowResult?.results ?? [];
+  const multirowChecks = automaticGroupModeIntegration === null ? multirowResult?.results ?? [] : finalDirectChecks(automaticGroupModeIntegration);
   const selectedBoltChecks = selectedPhysicalBolt === null || stale
     ? []
     : multirowChecks
@@ -1300,7 +1323,7 @@ export function SingleBoltEngineeringWorkspace() {
 
   return (
     <ConnectionWorkspaceShell family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
-        <div><p className="eyebrow">Shear · Brace/beam connection — Direct</p><h2 id="workspace-scope-title">Direct angle-to-W connection</h2></div>
+        <div><p className="eyebrow">Shear · Brace/beam connection — Direct</p><h2 id="workspace-scope-title">{DIRECT_SHAPE_CAPABILITIES.current_variant}</h2></div>
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>
         <ConnectionWorkspaceSidebar ariaLabel="Connection properties">
@@ -1339,7 +1362,7 @@ export function SingleBoltEngineeringWorkspace() {
             title="Connection Orientation / Geometry"
             summary={geometryTemplate.column_flange_connection_side === "EXTERIOR" ? "Exterior face" : "Interior / web-side"}
             selected={selection.kind === "CONTACT"}
-            onSelect={() => { setSelection({ kind: "CONTACT", id: preview.response?.visualization?.connection_orientation?.selected_flange_surface_id ?? "TOP_FLANGE" }); }}
+            onSelect={(event) => { if (selection.kind !== "CONTACT") event.preventDefault(); setSelection({ kind: "CONTACT", id: preview.response?.visualization?.connection_orientation?.selected_flange_surface_id ?? "TOP_FLANGE" }); }}
           >
             <label className="field-control"><span>Supporting W member flange connection face</span><select value={geometryTemplate.column_flange_connection_side} onChange={(event) => { const value = event.currentTarget.value as "EXTERIOR" | "WEB_SIDE"; updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").column_flange_connection_side = value; }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE"); }}><option value="EXTERIOR">Exterior face</option><option value="WEB_SIDE">Interior / web-side face</option></select></label>
             <label className="field-control"><span>Connected angle leg</span><select value={geometryTemplate.angle_connected_leg} onChange={(event) => { const value = event.currentTarget.value as "LEG_1" | "LEG_2"; updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").angle_connected_leg = value; const assignment = requiredValue(next.material_assignments.find((item) => item.participant_id === "member-a"), "Angle material assignment"); assignment.physical_element_id = value; assignment.material_region_id = value; }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE"); }}><option value="LEG_1">Leg 1</option><option value="LEG_2">Leg 2</option></select></label>
@@ -1361,10 +1384,10 @@ export function SingleBoltEngineeringWorkspace() {
             <ReadOnlyValue label="Material relationship">{materialRelationship}</ReadOnlyValue>
           </SidebarGroup>
 
-          <SidebarGroup title="Bolt / Interface" summary="Selected bolt and group layout" selected={selection.kind === "BOLT"} onSelect={() => { setSelection({ kind: "BOLT", id: multirowPreview.response?.visualization?.physical_bolts?.[0]?.bolt_id ?? request.bolt_location_id }); }}>
+          <SidebarGroup title="Bolt / Interface" summary="Selected bolt and group layout" selected={selection.kind === "BOLT"} onSelect={(event) => { if (selection.kind !== "BOLT") event.preventDefault(); setSelection({ kind: "BOLT", id: multirowPreview.response?.visualization?.physical_bolts?.[0]?.bolt_id ?? request.bolt_location_id }); }}>
             <div className="field-grid"><DecimalInput label="Bolt-to-brace-end distance e1" value={geometryTemplate.bolt_to_brace_end_distance.value} unit={geometryTemplate.bolt_to_brace_end_distance.unit} onChange={(value) => { updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").bolt_to_brace_end_distance.value = value; }); }} /><DecimalInput label="Bolt diameter" value={request.bolt_diameter.value} unit={request.bolt_diameter.unit} onChange={(value) => { updateRequest((next) => { next.bolt_diameter.value = value; }); }} />{supportedMultirowArrangement ? <ReadOnlyValue label="Standard physical hole">{formatDisplayQuantity(resolvedMultirowHole, request.joint_assembly.unit_system)} · backend-resolved from {friendlyEnum(request.published_code_unit_basis)}</ReadOnlyValue> : <DecimalInput label="Standard hole display" value={geometryTemplate.hole_diameter.value} unit={geometryTemplate.hole_diameter.unit} onChange={(value) => { updateRequest((next) => { requiredValue(next.geometry_template, "Template geometry").hole_diameter.value = value; }); }} />}{directF1Family ? <><ReadOnlyValue label="Washer outside diameter">{formatDisplayQuantity(washerGeometry.outside_diameter, request.joint_assembly.unit_system)}</ReadOnlyValue><ReadOnlyValue label="Washer thickness">{formatDisplayQuantity(washerGeometry.thickness, request.joint_assembly.unit_system)}</ReadOnlyValue></> : <><DecimalInput label="Washer outside diameter" value={washerGeometry.outside_diameter.value} unit={washerGeometry.outside_diameter.unit} onChange={(value) => { updateRequest((next) => { requiredValue(next.fastener_snapshot.washer_geometry, "Washer geometry").outside_diameter.value = value; }); }} /><DecimalInput label="Washer thickness" value={washerGeometry.thickness.value} unit={washerGeometry.thickness.unit} onChange={(value) => { updateRequest((next) => { requiredValue(next.fastener_snapshot.washer_geometry, "Washer geometry").thickness.value = value; }); }} /></>}</div>
             <p className="sidebar-note">Engineering end distance from the connected brace end to Bolt 1. This affects connection design.</p>
-            <ReadOnlyValue label="Bolt center">Backend-resolved selected station</ReadOnlyValue>
+            <ReadOnlyValue label="Bolt center">{selectedPhysicalBolt === null ? "Pending current bolt selection" : `${friendlyIdentifier(selectedPhysicalBolt.row_id)} · ${friendlyIdentifier(selectedPhysicalBolt.bolt_line_id)}`}</ReadOnlyValue>
             <details className="advanced-demand bolt-group-layout" open={supportedMultirowArrangement || undefined}>
               <summary>Bolt-group layout</summary>
               <p className="sidebar-note">The connection model places each bolt and hole from the selected geometry.</p>
@@ -1378,7 +1401,7 @@ export function SingleBoltEngineeringWorkspace() {
             </details>
             {directF1Family ? <div className="layout-suggestion">
               <button type="button" onClick={() => { void suggestContainedLayout(); }}>Suggest compatible geometry</button>
-              {layoutSuggestion === null ? null : <div role="status"><p>Proposed geometry for the current {groupState.rowCount} × {groupState.boltsPerRow} arrangement: angle legs at least {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 0, "Proposed brace").section.leg_y, "Proposed leg").value} × {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 0, "Proposed brace").section.leg_z, "Proposed leg").value} {lengthUnit}, W flange at least {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 1, "Proposed support").section.flange_width, "Proposed flange").value} {lengthUnit}, end distance {requiredValue(layoutSuggestion.request.geometry_template, "Proposed geometry").bolt_to_brace_end_distance.value} {lengthUnit}, loaded boundary {layoutSuggestion.group.loadedBoundaryToRow1} {lengthUnit}, brace angle {requiredValue(layoutSuggestion.request.geometry_template, "Proposed geometry").brace_to_column_directed_angle_deg}°. Spacing and side distances are increased only if needed. Loads and material selections stay as entered. The backend preview found this geometry contained; other method and source limits may remain.</p><button type="button" onClick={applyContainedLayout}>Apply proposed geometry</button><button type="button" onClick={() => { setLayoutSuggestion(null); }}>Dismiss proposal</button></div>}
+              {layoutSuggestion === null ? null : <div role="status"><p><strong>{layoutSuggestion.memberSizeChange ? "Member size change required" : "Compatible placement within current members"}</strong>. Proposed geometry for the current {groupState.rowCount} × {groupState.boltsPerRow} arrangement: angle legs at least {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 0, "Proposed brace").section.leg_y, "Proposed leg").value} × {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 0, "Proposed brace").section.leg_z, "Proposed leg").value} {lengthUnit}, W flange at least {requiredValue(requiredAt(layoutSuggestion.request.joint_assembly.members, 1, "Proposed support").section.flange_width, "Proposed flange").value} {lengthUnit}, end distance {requiredValue(layoutSuggestion.request.geometry_template, "Proposed geometry").bolt_to_brace_end_distance.value} {lengthUnit}, loaded boundary {layoutSuggestion.group.loadedBoundaryToRow1} {lengthUnit}, brace angle {requiredValue(layoutSuggestion.request.geometry_template, "Proposed geometry").brace_to_column_directed_angle_deg}°. Review the proposed placement and spacing before accepting. Loads and material selections stay as entered. The backend preview found this geometry contained; other method and source limits may remain.</p><button type="button" onClick={applyContainedLayout}>{layoutSuggestion.memberSizeChange ? "Accept member size change and apply" : "Apply proposed geometry"}</button><button type="button" onClick={() => { setLayoutSuggestion(null); }}>Dismiss proposal</button></div>}
               {layoutSuggestionError === "" ? null : <p role="status">{layoutSuggestionError}</p>}
             </div> : null}
             {directF1Family ? <ReadOnlyValue label="Lap configuration">Single lap · physical angle LEG_1 to W TOP_FLANGE</ReadOnlyValue> : <label className="field-control"><span>Lap configuration</span><select value={request.lap_configuration} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { next.lap_configuration = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="SINGLE_LAP">Single lap</option><option value="DOUBLE_LAP">Double lap</option></select></label>}
@@ -1419,10 +1442,13 @@ export function SingleBoltEngineeringWorkspace() {
             {orientation === null ? null : <dl className="diagnostic-list"><div><dt>Contact</dt><dd>supporting W flange — {orientation.connection_side === "EXTERIOR" ? "Exterior" : "Interior / web-side"}</dd></div><div><dt>Connected leg</dt><dd>{friendlyIdentifier(orientation.connected_leg)}</dd></div><div><dt>Outstanding leg</dt><dd>{orientation.outstanding_leg_side === "POSITIVE_INTERFACE_Z" ? "+ interface side" : "− interface side"}</dd></div><div><dt>Geometry angle</dt><dd>{formatDecimal(orientation.brace_to_column_directed_angle_degrees, 1)}° directed</dd></div><div><dt>Bolt path</dt><dd>Angle Connected Leg → supporting W flange</dd></div><div><dt>Material relationship</dt><dd>{materialRelationship}</dd></div></dl>}
             {supportedMultirowArrangement || preview.response?.geometry_issues.length === 0 || preview.response === null ? null : <ul className="issue-list">{preview.response.geometry_issues.map((issue) => <li key={`${issue.code}:${issue.identities.join(":")}`}>{issue.message}</li>)}</ul>}
             {directF1Family ? ([
-              ["geometry", "Geometry / input blockers"],
-              ["method", "Unsupported action or method"],
-              ["source", "Source and qualification limits"],
-              ["information", "Information"],
+              ["input", "INPUTS NEEDED"],
+              ["geometry", "GEOMETRY"],
+              ["action", "UNSUPPORTED ACTION"],
+              ["source", "SOURCE REQUIRED"],
+              ["qualification", "QUALIFICATION REQUIRED"],
+              ["method", "METHOD REQUIRED"],
+              ["information", "INFORMATION"],
             ] as const).map(([group, heading]) => {
               const items = directWarnings.filter((item) => item.group === group);
               return items.length === 0 ? null : <section key={group} aria-label={heading}><h4>{heading}</h4><ul className="issue-list">{items.map((item, index) => {
@@ -1436,7 +1462,7 @@ export function SingleBoltEngineeringWorkspace() {
           <SidebarGroup title="Design Results" summary={stale ? "Results need to be recalculated" : activeDesignSummary} defaultOpen>
             {supportedMultirowArrangement
               ? automaticHandoff !== null && automaticGroupModeIntegration !== null
-                ? <><strong>{directMultirowStatus}</strong><p className="sidebar-note">{friendlyEnum(automaticHandoff.coverage)} · {automaticGroupModeIntegration.governing_supported_check_ids.length} governing supported check(s)</p>{stale ? null : <p className="sidebar-note">{(directSingleRow?.incomplete_required_check_ids.length ?? (automaticGroupModeIntegration.unsupported_required_check_ids.length + automaticGroupModeIntegration.incomplete_required_check_ids.length))} required checks remain blocked. ICE material, F593 strength and Section 2.3.2 qualification require controlled evidence.</p>}</>
+                ? <><strong>{directMultirowStatus}</strong><p className="sidebar-note">{friendlyEnum(automaticHandoff.coverage)} · {automaticGroupModeIntegration.governing_supported_check_ids.length} governing supported check(s)</p><p><strong>NUMERICAL CHECKS:</strong> {finalDirectChecks(automaticGroupModeIntegration).length + (directSingleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</p>{stale ? null : <p className="sidebar-note">{(directSingleRow?.incomplete_required_check_ids.length ?? (automaticGroupModeIntegration.unsupported_required_check_ids.length + automaticGroupModeIntegration.incomplete_required_check_ids.length))} required checks/evidence items remain unresolved. Supported numerical checks are shown separately. Final GREEN still requires the listed method, source and qualification evidence.</p>}</>
                 : multirowResult === null
                 ? <p className="sidebar-note">{directMultirowStatus}</p>
                 : <><strong>{stale ? "Results need to be recalculated" : friendlyEnum(multirowResult.overall_disposition)}</strong><p className="sidebar-note">{multirowResult.governing_result_ids.length} governing / co-governing check(s)</p></>

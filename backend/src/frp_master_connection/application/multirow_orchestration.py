@@ -142,6 +142,7 @@ from .calculation_orchestration import (
     SingleBoltOrchestrationRequest,
 )
 from .connection_preview import PreviewGeometryStatus, preview_single_bolt_connection
+from .direct_frame import direct_axial_frame_input
 from .direct_group_mode import evaluate_direct_layered_group_modes
 from .direct_single_row import DirectSingleRowResult, evaluate_direct_single_row
 from .visualization import (
@@ -2292,7 +2293,19 @@ def _automatic_demand(
     resolved: _ResolvedMultiRow,
     bundle: MultiRowExecutionBundle,
 ) -> EccentricDemandResult:
-    return calculate_eccentric_bolt_group_demand(_automatic_demand_input(request, resolved, bundle))
+    original_input = _automatic_demand_input(request, resolved, bundle)
+    raw = calculate_eccentric_bolt_group_demand(original_input)
+    if not request.direct_finalization_mode or request.bolts_per_row != 1:
+        return raw
+    physical = cast(SingleBoltOrchestrationRequest, request.physical_connection_request)
+    axes = _exact_template_group_axes(physical)
+    # _automatic_demand_input already rejects a missing resolved action.
+    action = cast(ResolvedManualMemberEndAction, resolved.authority.resolved_action)
+    if axes is None:
+        return raw
+    _, force_unit, _ = _force_units(action.unit_system)
+    canonical = direct_axial_frame_input(original_input, raw, action, axes, force_unit)
+    return raw if canonical is None else calculate_eccentric_bolt_group_demand(canonical)
 
 
 def _handoff_bundle_for_scenario(

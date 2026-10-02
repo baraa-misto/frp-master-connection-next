@@ -42,12 +42,31 @@ it("rejects a malformed Direct starter instead of displaying a mismatched physic
 });
 
 it.each([
-  ["US_CUSTOMARY", "8", "16", "6", "4", "in"],
-  ["SI", "203.2", "406.4", "152.4", "101.6", "mm"],
+  ["US_CUSTOMARY", "4", "8", "3", "3", "in"],
+  ["SI", "101.6", "203.2", "76.2", "76.2", "mm"],
 ] as const)("builds a contained %s Direct starter without modifying historical J1", (unit, leg, flange, end, boundary, lengthUnit) => {
   const legacyBefore = JSON.stringify(benchmarks.loadJ1Benchmark(unit));
   const starter = directStartingExample(unit);
   const built = buildMultirowRequest(starter, benchmarks.loadJ1ViewExtents(unit), initialBoltGroupState(unit, true), "AUTOMATIC_MEMBER_END_FORCE");
+  const scale = unit === "SI" ? 25.4 : 1;
+  expect(starter.joint_assembly.member_end_actions[0]?.force.x).toBe(unit === "SI" ? "3.11375513068235" : "0.7");
+  const brace = built.physical_connection?.joint_assembly.members[0]?.section;
+  const support = built.physical_connection?.joint_assembly.members[1]?.section;
+  expect(Number(brace?.leg_z?.value)).toBe(4 * scale);
+  expect(Number(brace?.thickness.value)).toBe(0.5 * scale);
+  expect(Number(support?.overall_depth?.value)).toBe(8 * scale);
+  expect(Number(support?.web_thickness?.value)).toBe(0.5 * scale);
+  expect(Number(support?.flange_thickness?.value)).toBe(0.5 * scale);
+  expect(built.hole_basis).toBe("US_CUSTOMARY_PRINTED");
+  expect(Number(built.physical_connection?.geometry_template?.hole_diameter.value)).toBeCloseTo(0.563 * scale, 12);
+  expect(Number(starter.fastener_snapshot.washer_geometry?.outside_diameter.value)).toBe(1 * scale);
+  expect(Number(starter.fastener_snapshot.washer_geometry?.thickness.value)).toBeCloseTo(0.051 * scale, 12);
+  expect(Number(built.pitch.value)).toBe(2 * scale);
+  expect(Number(built.gauge.value)).toBe(2 * scale);
+  expect(Number(built.negative_side_distance.value)).toBe(1 * scale);
+  expect(Number(built.positive_side_distance.value)).toBe(1 * scale);
+  expect(built.lap_configuration).toBe("SINGLE_LAP");
+  expect(built.physical_connection?.geometry_template).toMatchObject({ angle_connected_leg: "LEG_1", outstanding_leg_side: "POSITIVE_INTERFACE_Z", column_flange_connection_side: "EXTERIOR" });
   expect(built.direct_finalization_contract_version).toBe("SHEAR01-DIRECT-F1");
   expect(built.row_count).toBe(2);
   expect(built.bolts_per_row).toBe(1);
