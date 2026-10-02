@@ -2,17 +2,17 @@ import type { QuantityResult } from "../api/contracts";
 
 const FRIENDLY_ID_LABELS: Readonly<Record<string, string>> = {
   "member-a": "Angle brace",
-  "member-b": "W column",
+  "member-b": "Supporting W member",
   "layer-A": "Angle Connected Leg",
-  "layer-B": "W Column Flange",
+  "layer-B": "Supporting W Flange",
   "bolt-1": "Selected bolt",
-  "interface-1": "Brace-to-column interface",
+  "interface-1": "Direct angle-to-W interface",
   "bolt-group-1": "One-bolt group",
   LEG_1: "Angle Connected Leg",
   LEG_2: "Angle return leg",
-  TOP_FLANGE: "W Column Flange",
-  BOTTOM_FLANGE: "W Column Opposite Flange",
-  WEB: "W Column Web",
+  TOP_FLANGE: "Supporting W Flange",
+  BOTTOM_FLANGE: "Opposite W Flange",
+  WEB: "Supporting W Web",
 };
 
 export function friendlyIdentifier(value: string | null): string {

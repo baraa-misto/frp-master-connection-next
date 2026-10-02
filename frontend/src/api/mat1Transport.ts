@@ -1,5 +1,5 @@
 /** Versioned material request envelope around the existing explicit design actions. */
-import { acceptMAT1Design, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { acceptMAT1Design, defaultFastenerSelection, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
 import { acceptReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../state/reportSession";
 
 interface MAT1TransportResponse {
@@ -64,7 +64,38 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
   }
   if (typeof init.body !== "string") throw new Error("MAT1 design transport requires a JSON request body.");
   const legacy = JSON.parse(init.body) as Record<string, unknown>;
-  if (family === "single-bolt" || family === "multi-row") legacy.time_effect_category = conditions.time_effect_category;
+  if (family === "single-bolt" || family === "multi-row") {
+    // The native engines still accept the historical factor fields. The MAT1
+    // successor supplies adjusted properties, so their legacy multipliers must
+    // be neutral to avoid applying the same end-use factors twice.
+    legacy.time_effect_category = conditions.time_effect_category;
+    if (family === "single-bolt") {
+      const factors = legacy.end_use_factors as Record<string, unknown> | undefined;
+      if (factors !== undefined && [factors.cm, factors.ct, factors.cch].some((value) => Number(value) !== 1)) {
+        throw new Error("This imported design contains manual end-use factors. Remove its expert factors before checking with calculated MAT1 factors.");
+      }
+      legacy.end_use_factors = {
+        ...(factors ?? {}), cm: "1", ct: "1", cch: "1",
+        source_reference: "MAT1-adjusted properties; native factor interface neutralized",
+        approval_metadata: ["No second end-use adjustment applied"],
+      };
+    } else if (Array.isArray(legacy.layers)) {
+      for (const layer of legacy.layers as Record<string, unknown>[]) {
+        const factors = layer.end_use_factors as Record<string, unknown> | undefined;
+        if (factors !== undefined && [factors.cm, factors.ct, factors.cch].some((value) => Number(value) !== 1)) {
+          throw new Error("This imported design contains manual end-use factors. Remove its expert factors before checking with calculated MAT1 factors.");
+        }
+      }
+      legacy.layers = legacy.layers.map((layer: Record<string, unknown>) => ({
+        ...layer, end_use_factors: {
+          ...((layer.end_use_factors as Record<string, unknown> | undefined) ?? {}),
+          cm: "1", ct: "1", cch: "1",
+          source_reference: "MAT1-adjusted properties; native factor interface neutralized",
+          approval_metadata: ["No second end-use adjustment applied"],
+        },
+      }));
+    }
+  }
   if (family === "stair-stringer-miter" && typeof legacy.action === "object" && legacy.action !== null) {
     legacy.action = { ...legacy.action, time_effect_category: conditions.time_effect_category };
   }
@@ -78,6 +109,7 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
       default_material: selected, material_overrides: overrides,
       default_conditions: conditions, condition_overrides: state.conditionOverrides[family] ?? {},
     },
+    ...(family === "multi-row" ? { fastener: state.fastenerSelections[family] ?? defaultFastenerSelection } : {}),
   };
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");

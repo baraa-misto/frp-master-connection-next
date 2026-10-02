@@ -179,6 +179,71 @@ _SECURITY_DEPENDENCY_SHA256 = {
         "5F195B77E2749DBDD78C8D94718EA5A794E566AD123D83EDCCBF3EEA9B15F766"
     ),
 }
+# OR1-R1 updates only the transitive dev-only undici lock entry from 8.10.0
+# to 8.11.2. Keep the Stage 4.3 successor pin above and reconstruct it by one
+# exact reverse delta before checking the immutable Stage 2.3 bytes.
+_OR1_UNDICI_LOCK_SHA256 = "5879698FBCDDF7EA6EE94B3B7E22A730F8A60DA1D231DFCD516FAE511103FF73"
+_OR1_UNDICI_SUCCESSOR_BLOCK = (
+    b'    "node_modules/undici": {\n'
+    b'      "version": "8.11.2",\n'
+    b'      "resolved": "https://registry.npmjs.org/undici/-/undici-8.11.2.tgz",\n'
+    b'      "integrity": "sha512-u4UB2/IrKdU6lFxumHmmo1a3fCQO5tzQllRorfoRS63tx'
+    b'hrB7xTpSn1PftwC4qEHkOaqP95fCWW4lJzwErwzhQ==",\n'
+)
+_OR1_UNDICI_STAGE43_BLOCK = (
+    b'    "node_modules/undici": {\n'
+    b'      "version": "8.10.0",\n'
+    b'      "resolved": "https://registry.npmjs.org/undici/-/undici-8.10.0.tgz",\n'
+    b'      "integrity": "sha512-HvltHd7avK13QIw/oLe4qoOLyoVSoafqJ2jYOrtMRBk'
+    b'bYT31eiBQ8O0ehRKZiEZCMEyLFQNIADpgCWC5fALvYQ==",\n'
+)
+# CI #34 exposed a brace-expansion advisory. G1 registers only the two exact
+# dev-only lock records; runtime dependencies and Direct engineering are unchanged.
+# Reverse them to the immutable OR1-R1 undici state before the existing chain.
+_OR1_BRACE_LOCK_BLOB = "02dbd03b5b44bcd3090bb034d11259ab9fbd2e8f"
+_OR1_BRACE_LOCK_SHA256 = "CD2F2E8AEA14FC7A7B9112928EC9187976640D8DD1F2B0A6E079647A04A7AA87"
+_OR1_UNDICI_LOCK_BLOB = "9da44695518fb5756c0f93fac3469586df9b34dd"
+_OR1_BRACE_REVERSE_DELTA = (
+    (
+        (
+            b'    "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expans'
+            b'ion": {\n'
+            b'      "version": "5.0.12",\n'
+            b'      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-'
+            b'5.0.12.tgz",\n'
+            b'      "integrity": "sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sC'
+            b'oIoI942iuLZTHWogWktgwVDhU09iNEimQ==",\n'
+        ),
+        (
+            b'    "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expans'
+            b'ion": {\n'
+            b'      "version": "5.0.9",\n'
+            b'      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-'
+            b'5.0.9.tgz",\n'
+            b'      "integrity": "sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1'
+            b'dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==",\n'
+        ),
+    ),
+    (
+        (
+            b'    "node_modules/brace-expansion": {\n'
+            b'      "version": "1.1.21",\n'
+            b'      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-'
+            b'1.1.21.tgz",\n'
+            b'      "integrity": "sha512-9zeA+KLZNNzglF2TPKRQEDyx6Yby7daAkuy8MiPzpXPsYDWi/DRM8'
+            b'jmwUDxokQjYqBpv5DgPiwD4h4ZZSy1Ujw==",\n'
+        ),
+        (
+            b'    "node_modules/brace-expansion": {\n'
+            b'      "version": "1.1.18",\n'
+            b'      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-'
+            b'1.1.18.tgz",\n'
+            b'      "integrity": "sha512-Edep/X9fGqVNmzKBVsDYIOtD+z1tuezV70LBjdCst9Tqu76lsnvRi'
+            b'Z6oTic1n+/BIwX6QDGAO94PN4N2SADvtw==",\n'
+        ),
+    ),
+)
+
 _SECURITY_REVERSE_DELTA = (
     (b"4.1.11", b"4.1.10"),
     (
@@ -243,8 +308,42 @@ def _assert_frozen_dependency_bytes(path: str, raw: bytes) -> None:
     ), "historical Git blob"
 
 
+def _reverse_or1_brace_expansion(raw: bytes) -> bytes:
+    assert hashlib.sha256(raw).hexdigest().upper() == _OR1_BRACE_LOCK_SHA256, (
+        "brace-expansion successor SHA-256"
+    )
+    assert (
+        hashlib.sha1(
+            b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
+        ).hexdigest()
+        == _OR1_BRACE_LOCK_BLOB
+    ), "brace-expansion successor Git blob"
+    for successor, historical in _OR1_BRACE_REVERSE_DELTA:
+        assert raw.count(successor) == 1, "exact brace-expansion successor block"
+        assert raw.count(historical) == 0, "historical brace-expansion block in successor"
+        raw = raw.replace(successor, historical, 1)
+    assert hashlib.sha256(raw).hexdigest().upper() == _OR1_UNDICI_LOCK_SHA256, (
+        "exact prior OR1-R1 undici successor"
+    )
+    assert (
+        hashlib.sha1(
+            b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
+        ).hexdigest()
+        == _OR1_UNDICI_LOCK_BLOB
+    ), "prior OR1-R1 Git blob"
+    return raw
+
+
 def _restore_frozen_dependency_bytes(path: str, raw: bytes) -> bytes:
     digest = hashlib.sha256(raw).hexdigest().upper()
+    if path == "frontend/package-lock.json" and digest == _OR1_BRACE_LOCK_SHA256:
+        raw = _reverse_or1_brace_expansion(raw)
+        digest = hashlib.sha256(raw).hexdigest().upper()
+    if path == "frontend/package-lock.json" and digest == _OR1_UNDICI_LOCK_SHA256:
+        assert raw.count(_OR1_UNDICI_SUCCESSOR_BLOCK) == 1, "undici successor block"
+        raw = raw.replace(_OR1_UNDICI_SUCCESSOR_BLOCK, _OR1_UNDICI_STAGE43_BLOCK)
+        digest = hashlib.sha256(raw).hexdigest().upper()
+        assert digest == _SECURITY_DEPENDENCY_SHA256[path], "Stage 4.3 dependency successor"
     if digest != _FROZEN_DEPENDENCIES[path][1]:
         assert digest == _SECURITY_DEPENDENCY_SHA256[path], "unauthorized dependency successor"
         for successor, historical in _SECURITY_REVERSE_DELTA:
@@ -278,7 +377,12 @@ def _assert_security_dependencies(repository_root: Path) -> None:
     for path in _FROZEN_DEPENDENCIES:
         # Git-aware text checkout normalization; the authoritative pins are LF blobs.
         raw = (repository_root / path).read_text(encoding="utf-8").encode()
-        assert hashlib.sha256(raw).hexdigest().upper() == _SECURITY_DEPENDENCY_SHA256[path]
+        expected = (
+            _OR1_BRACE_LOCK_SHA256
+            if path == "frontend/package-lock.json"
+            else _SECURITY_DEPENDENCY_SHA256[path]
+        )
+        assert hashlib.sha256(raw).hexdigest().upper() == expected
         _restore_frozen_dependency_bytes(path, raw)
 
 
@@ -1579,3 +1683,102 @@ def test_stage_2_4a_pure_modules_have_no_io_time_or_randomness_imports() -> None
             ):
                 findings.append(f"{source.name}:{node.lineno}:{node.module}")
     assert findings == []
+
+
+def test_g1_current_lock_is_exact_brace_expansion_successor() -> None:
+    root = Path(__file__).parents[3]
+    raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    prior = _reverse_or1_brace_expansion(raw)
+    assert _git_blob_id(root, raw) == _OR1_BRACE_LOCK_BLOB
+    assert _git_blob_id(root, prior) == _OR1_UNDICI_LOCK_BLOB
+    current, predecessor = json.loads(raw), json.loads(prior)
+    for successor, historical in _OR1_BRACE_REVERSE_DELTA:
+        assert raw.count(successor) == prior.count(historical) == 1
+    changed = [
+        path
+        for path in current["packages"]
+        if current["packages"][path] != predecessor["packages"][path]
+    ]
+    assert changed == [
+        "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion",
+        "node_modules/brace-expansion",
+    ]
+    for path, version in zip(changed, ("5.0.12", "1.1.21"), strict=True):
+        assert current["packages"][path]["version"] == version
+        assert current["packages"][path]["dev"] is True
+    _assert_security_dependencies(root)
+
+
+def test_g1_reverse_chain_preserves_all_frozen_dependency_identities() -> None:
+    root = Path(__file__).parents[3]
+    raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    prior = _reverse_or1_brace_expansion(raw)
+    stage43 = prior.replace(_OR1_UNDICI_SUCCESSOR_BLOCK, _OR1_UNDICI_STAGE43_BLOCK, 1)
+    assert (
+        hashlib.sha256(stage43).hexdigest().upper()
+        == _SECURITY_DEPENDENCY_SHA256["frontend/package-lock.json"]
+    )
+    assert (
+        _git_blob_id(root, stage43)
+        == _SECURITY_SUCCESSOR_PROTECTED_BLOBS["frontend/package-lock.json"]
+    )
+    frozen = _restore_frozen_dependency_bytes("frontend/package-lock.json", raw)
+    assert frozen == _restore_frozen_dependency_bytes("frontend/package-lock.json", prior)
+    assert frozen == _restore_frozen_dependency_bytes("frontend/package-lock.json", stage43)
+    _assert_frozen_dependency_bytes("frontend/package-lock.json", frozen)
+    original = _verify_nanoid_security_successor_transition(root, frozen)
+    assert _git_blob_id(root, original) == STAGE_2_3_R8_FROZEN_PACKAGE_LOCK_BLOB
+
+
+@pytest.mark.parametrize("block_index", range(2))
+@pytest.mark.parametrize("mutation", ["version", "url", "integrity", "missing", "duplicated"])
+def test_g1_brace_successor_rejects_changed_or_ambiguous_block(
+    block_index: int, mutation: str
+) -> None:
+    raw = (
+        (Path(__file__).parents[3] / "frontend/package-lock.json")
+        .read_text(encoding="utf-8")
+        .encode()
+    )
+    block = _OR1_BRACE_REVERSE_DELTA[block_index][0]
+    assert raw.count(block) == 1
+    if mutation == "missing":
+        wrong = b""
+    elif mutation == "duplicated":
+        wrong = block * 2
+    else:
+        lines = block.splitlines(keepends=True)
+        index, replacement = {
+            "version": (1, b'      "version": "99.0.0",\n'),
+            "url": (2, b'      "resolved": "https://example.invalid/incorrect.tgz",\n'),
+            "integrity": (3, b'      "integrity": "sha512-wrong",\n'),
+        }[mutation]
+        lines[index] = replacement
+        wrong = b"".join(lines)
+    with pytest.raises(AssertionError, match="brace-expansion successor SHA-256"):
+        _reverse_or1_brace_expansion(raw.replace(block, wrong, 1))
+    with pytest.raises(AssertionError):
+        _restore_frozen_dependency_bytes("frontend/package-lock.json", raw.replace(block, wrong, 1))
+
+
+@pytest.mark.parametrize(
+    "mutation", ["unrelated", "extra-package", "whitespace", "append", "truncate"]
+)
+def test_g1_brace_successor_rejects_other_byte_changes(mutation: str) -> None:
+    raw = (
+        (Path(__file__).parents[3] / "frontend/package-lock.json")
+        .read_text(encoding="utf-8")
+        .encode()
+    )
+    mutated = {
+        "unrelated": raw.replace(b'"name": "frp-master-connection-web"', b'"name": "changed"', 1),
+        "extra-package": raw.replace(b'"packages": {', b'"packages": {"unapproved": {},', 1),
+        "whitespace": raw.replace(b'"lockfileVersion": 3', b'"lockfileVersion" : 3', 1),
+        "append": raw + b" ",
+        "truncate": raw[:-1],
+    }[mutation]
+    assert mutated != raw
+    with pytest.raises(AssertionError, match="brace-expansion successor SHA-256"):
+        _reverse_or1_brace_expansion(mutated)
+    with pytest.raises(AssertionError):
+        _restore_frozen_dependency_bytes("frontend/package-lock.json", mutated)

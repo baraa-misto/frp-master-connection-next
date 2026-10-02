@@ -128,6 +128,7 @@ class MultiRowBoltAxisTensionDTO(_StrictModel):
 
 class MultiRowConnectionRequestDTO(_StrictModel):
     orchestration_contract_version: Literal["2.5C-RC1"] = "2.5C-RC1"
+    direct_finalization_contract_version: Literal["SHEAR01-DIRECT-F1"] | None = None
     request_id: Identifier
     connection_id: Identifier
     interface_id: Identifier
@@ -169,8 +170,8 @@ class MultiRowConnectionRequestDTO(_StrictModel):
 
     @model_validator(mode="after")
     def validate_public_shape(self) -> MultiRowConnectionRequestDTO:
-        if self.row_count < 2:
-            raise ValueError("row_count must be at least two.")
+        if self.row_count < 2 and self.direct_finalization_contract_version is None:
+            raise ValueError("row_count must be at least two outside the Direct F1 route.")
         if self.source_length_unit not in {Unit.IN, Unit.MM}:
             raise ValueError("source_length_unit must be in or mm.")
         automatic = self.demand_source is MultiRowDemandSource.AUTOMATIC_MEMBER_END_FORCE

@@ -732,12 +732,77 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # OR2 adds only its signed platform PDF evidence and exact count.
+            or2_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 review PDFs
+        run: python ../scripts/generate_direct_or2_ci_pdfs.py --output direct-or2-review-pdfs
+      - name: Upload Direct OR2 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(or2_pdf_steps) == 1
+            raw = raw.replace(or2_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7833") == 1
+            raw = raw.replace(b"--expected-tests 7833", b"--expected-tests 7797")
+            # Hosted Windows completed coverage but hit the 25-minute job
+            # limit during report generation. Candidate PR checkout now uses
+            # the exact head SHA on both platforms.
+            exact_head_ref = (
+                b"          ref: ${{ github.event.pull_request.head.sha || github.sha }}\n"
+            )
+            assert raw.count(exact_head_ref) == 2
+            raw = raw.replace(exact_head_ref, b"")
+            assert raw.count(b"    timeout-minutes: 40") == 1
+            raw = raw.replace(b"    timeout-minutes: 40", b"    timeout-minutes: 25")
+            # Reconstruct the exact Direct F1 predecessor before auditing the
+            # older reporting and material CI identities below. OR1 adds only
+            # this build gate, platform PDF artifact, and test-count increase.
+            or1_build_step = b"""      - name: Build source and wheel distributions
+        run: python -m build --no-isolation --sdist --wheel --outdir dist
+"""
+            or1_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR1 review PDFs
+        run: python ../scripts/generate_direct_or1_ci_pdfs.py --output direct-or1-review-pdfs
+      - name: Upload Direct OR1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or1-pdfs-${{ matrix.os }}
+          path: backend/direct-or1-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(or1_build_step) == 1
+            assert raw.count(or1_pdf_steps) == 1
+            # G1 adds seventeen exact successor/tamper cases; preserve prior CI bytes.
+            assert raw.count(b"--expected-tests 7797") == 1
+            raw = raw.replace(b"--expected-tests 7797", b"--expected-tests 7780")
+            assert raw.count(b"--expected-tests 7780") == 1
+            raw = raw.replace(b"--expected-tests 7780", b"--expected-tests 7779")
+            assert raw.count(b"--expected-tests 7779") == 1
+            raw = raw.replace(b"--expected-tests 7779", b"--expected-tests 7776")
+            assert raw.count(b"--expected-tests 7776") == 1
+            raw = raw.replace(or1_build_step, b"").replace(or1_pdf_steps, b"")
+            raw = raw.replace(b"--expected-tests 7776", b"--expected-tests 7764")
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "13FF24CA8C2EB9E92E5B45DD5A9807150A8B20512705D14E03760AF1807A8CFD"
+            )
+            direct_qa_steps = b"""      - name: Generate signed-snapshot Direct F1 review PDFs
+        run: python ../scripts/generate_direct_f1_ci_pdfs.py --output direct-f1-review-pdfs
+      - name: Upload Direct F1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f1-pdfs-${{ matrix.os }}
+          path: backend/direct-f1-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(direct_qa_steps) == 1
+            raw = raw.replace(direct_qa_steps, b"")
             historical_identity = workflow_identities["historical_pre_ssmc_3_main"]
             report1_identity = workflow_identities["report1_reporting_successor"]
             successor_identity = workflow_identities["mat1_material_complete_successor"]
             prior_mat1_identity = workflow_identities["mat1_material_successor"]
             prior_identity = workflow_identities["ssmc_3_analytical_successor"]
-            correction_count = b"--expected-tests 7731"
+            correction_count = b"--expected-tests 7764"
             assert raw.count(correction_count) == 1
             raw = raw.replace(correction_count, report1_identity["expected_tests"])
             successor_blob = hashlib.sha1(

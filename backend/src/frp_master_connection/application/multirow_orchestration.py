@@ -14,6 +14,12 @@ from frp_master_connection.actions import (
     ResolvedManualMemberEndAction,
     resolve_manual_member_end_action,
 )
+from frp_master_connection.application.direct_physical import (
+    direct_bolt_containment_issues,
+    direct_material_axis_angle,
+    direct_material_force_angle,
+    is_direct_angle_w,
+)
 from frp_master_connection.calculation import (
     DEMAND_FRAME_TOLERANCE,
     BlockPathPlanStatus,
@@ -40,6 +46,7 @@ from frp_master_connection.calculation import (
     ExactInterfaceFrame,
     ExactQuantityVector3D,
     ExplicitBoltAxisDemand,
+    FastenerSnapshot,
     FirstRowNetTensionPlan,
     FirstRowPlanMethod,
     FRPPropertyKind,
@@ -77,8 +84,10 @@ from frp_master_connection.calculation import (
     PublishedCodeUnitBasis,
     PultrudedElementClassification,
     QualificationDisposition,
+    QualificationStatus,
     RowDistributionBasis,
     Slice2VersionContext,
+    SourceClassification,
     StandardHoleDefinition,
     ThreadStatus,
     ThreadStatusAssignment,
@@ -133,6 +142,9 @@ from .calculation_orchestration import (
     SingleBoltOrchestrationRequest,
 )
 from .connection_preview import PreviewGeometryStatus, preview_single_bolt_connection
+from .direct_frame import direct_axial_frame_input
+from .direct_group_mode import evaluate_direct_layered_group_modes
+from .direct_single_row import DirectSingleRowResult, evaluate_direct_single_row
 from .visualization import (
     BoltDisplaySnapshot,
     ConnectionViewExtents,
@@ -266,6 +278,7 @@ class MultiRowOrchestrationRequest:
     demand_source: MultiRowDemandSource = MultiRowDemandSource.EXPLICIT_RESOLVED_CONNECTION_DEMAND
     automatic_action_source_id: str | None = None
     single_row_geometry_preview_authorized: bool = False
+    direct_finalization_mode: bool = False
 
     def __post_init__(self) -> None:
         identities = (
@@ -287,6 +300,22 @@ class MultiRowOrchestrationRequest:
                 raise ValueError(f"{name} must be a positive non-Boolean integer.")
         if not isinstance(self.single_row_geometry_preview_authorized, bool):
             raise TypeError("single_row_geometry_preview_authorized must be Boolean.")
+        if not isinstance(self.direct_finalization_mode, bool):
+            raise TypeError("direct_finalization_mode must be Boolean.")
+        if self.direct_finalization_mode and not is_direct_angle_w(
+            self.physical_connection_request
+        ):
+            raise ValueError("Direct finalization requires the physical FRP angle/W family.")
+        if self.direct_finalization_mode:
+            physical = cast(SingleBoltOrchestrationRequest, self.physical_connection_request)
+            if (
+                physical.lap_configuration is not LapConfiguration.SINGLE_LAP
+                or self.lap_configuration is not LapConfiguration.SINGLE_LAP
+            ):
+                raise ValueError(
+                    "DIRECT_PHYSICAL_LAP_CONTRACT: the angle LEG_1 to W TOP_FLANGE "
+                    "assembly and calculation must both be SINGLE_LAP."
+                )
         if self.row_count < 2 and not self.single_row_geometry_preview_authorized:
             raise ValueError("The public multi-row workflow requires at least two rows.")
         positive_lengths = (
@@ -509,12 +538,22 @@ class AutomaticGroupModeIntegrationResult:
     result_fingerprint: str
 
     def __post_init__(self) -> None:
+        self._validate(allow_layered=False)
+
+    def _validate(self, *, allow_layered: bool) -> None:
         if self.integration_contract_version != AUTOMATIC_GROUP_MODE_INTEGRATION_CONTRACT_VERSION:
             raise ValueError("Automatic group-mode integration must use the approved identity.")
         if not self.scenario_results:
             raise ValueError("Automatic group-mode integration requires at least one scenario.")
         scenario_ids = tuple(item.scenario_id for item in self.scenario_results)
-        if len(scenario_ids) != len(set(scenario_ids)):
+        if allow_layered:
+            identities = tuple(
+                (item.scenario_id, item.parent_resistance_input_fingerprint)
+                for item in self.scenario_results
+            )
+            if len(identities) != len(set(identities)):
+                raise ValueError("Direct scenario/layer identities must be unique.")
+        elif len(scenario_ids) != len(set(scenario_ids)):
             raise ValueError("Automatic group-mode scenario identities must be unique.")
         for name in (
             "required_check_ids",
@@ -536,6 +575,14 @@ class AutomaticGroupModeIntegrationResult:
 
 
 @dataclass(frozen=True, slots=True)
+class DirectLayeredGroupModeIntegrationResult(AutomaticGroupModeIntegrationResult):
+    """Direct-specific repeated demand scenario with one trace per physical layer."""
+
+    def __post_init__(self) -> None:
+        self._validate(allow_layered=True)
+
+
+@dataclass(frozen=True, slots=True)
 class MultiRowOrchestrationResponse:
     request_id: str
     connection_id: str
@@ -546,6 +593,13 @@ class MultiRowOrchestrationResponse:
     automatic_demand_result: EccentricDemandResult | None = None
     automatic_handoff_results: tuple[EccentricResistanceHandoffResult, ...] = ()
     automatic_group_mode_integration: AutomaticGroupModeIntegrationResult | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class DirectSingleRowOrchestrationResponse(MultiRowOrchestrationResponse):
+    """Carry the Direct one-row trace without changing inherited response identity."""
+
+    direct_single_row_result: DirectSingleRowResult | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -578,6 +632,7 @@ class _ResolvedMultiRow:
     preview_fingerprint: str
     warnings: tuple[str, ...]
     authority: _DemandAuthority
+    direct_layer_axes: tuple[Decimal, ...] | None = None
 
 
 def _force_units(unit_system: EngineeringUnitSystem) -> tuple[Unit, Unit, Unit]:
@@ -745,6 +800,26 @@ def _build_geometry(
         force_vector,
         MultiRowGeometryTolerance(float(tolerance.magnitude)),
     )
+    if request.direct_finalization_mode:
+        # Direct bolt IDs describe the canonical force-directed row and line,
+        # not the temporary coordinate order used to construct the rectangle.
+        row_by_bolt = {bolt.bolt.id: row.ordinal for row in geometry.rows for bolt in row.bolts}
+        line_by_bolt = {
+            bolt.bolt.id: line.ordinal for line in geometry.bolt_lines for bolt in line.bolts
+        }
+        canonical_bolts = tuple(
+            replace(
+                bolt,
+                id=f"B_R{row_by_bolt[bolt.id]}_L{line_by_bolt[bolt.id]}",
+            )
+            for bolt in geometry.group.bolts
+        )
+        geometry = resolve_multirow_geometry(
+            replace(group, bolts=canonical_bolts),
+            boundary,
+            force_vector,
+            MultiRowGeometryTolerance(float(tolerance.magnitude)),
+        )
     return geometry, hole
 
 
@@ -773,15 +848,20 @@ def _demand_plan(
                 )
                 for row in geometry.rows
             )
+    basis = (
+        RowDistributionBasis.CONSERVATIVE_FULL_ROW_ENVELOPE
+        if request.direct_finalization_mode
+        and request.row_count == 1
+        and request.row_distribution_basis is RowDistributionBasis.ASCE_PRESCRIBED
+        else request.row_distribution_basis
+    )
     return plan_row_demands(
         geometry,
         total,
-        request.row_distribution_basis,
+        basis,
         request.provenance,
         connected_materials=(
-            request.material_pair
-            if request.row_distribution_basis is RowDistributionBasis.ASCE_PRESCRIBED
-            else None
+            request.material_pair if basis is RowDistributionBasis.ASCE_PRESCRIBED else None
         ),
         engineer_fractions=fractions,
         engineer_forces=forces,
@@ -969,6 +1049,7 @@ def _snapshot(
     end_distances: MultiRowEndDistanceContext,
     layer_contexts: tuple[MultiRowLayerExecutionContext, ...],
     authority: _DemandAuthority,
+    direct_layer_axes: tuple[Decimal, ...] | None = None,
 ) -> MultiRowVisualizationSnapshot:
     row_by_bolt = {bolt.bolt.id: row.id for row in geometry.rows for bolt in row.bolts}
     line_by_bolt = {bolt.bolt.id: line.id for line in geometry.bolt_lines for bolt in line.bolts}
@@ -1004,11 +1085,15 @@ def _snapshot(
             source.layer_id,
             source.component_id,
             source.material_id,
-            source.material_axis_angle_degrees,
+            (
+                source.material_axis_angle_degrees
+                if direct_layer_axes is None
+                else direct_layer_axes[index]
+            ),
             context.material_direction,
             source.thickness,
         )
-        for source, context in zip(request.layers, layer_contexts, strict=True)
+        for index, (source, context) in enumerate(zip(request.layers, layer_contexts, strict=True))
     )
     boundary = geometry.boundary
     boundary_values = cast(
@@ -1081,6 +1166,7 @@ def _canonical(value: object) -> object:
             field.name: _canonical(getattr(value, field.name))
             for field in fields(value)
             if field.name != "display_unit_system"
+            and not (field.name == "direct_finalization_mode" and not getattr(value, field.name))
             and not (
                 field.name == "single_row_geometry_preview_authorized"
                 and not getattr(value, field.name)
@@ -1116,8 +1202,75 @@ def _property_value(material: MaterialPropertySnapshot, kind: FRPPropertyKind) -
     return entry.value
 
 
+def _direct_physical_axes(
+    request: MultiRowOrchestrationRequest,
+    authority: _DemandAuthority,
+) -> tuple[tuple[Decimal, MaterialDirection], ...]:
+    """Bind Direct resistance layers to the two actual penetrated FRP plies."""
+
+    physical = cast(SingleBoltOrchestrationRequest, request.physical_connection_request)
+    if request.material_pair is not ConnectedMaterialPair.FRP_FRP:
+        raise ValueError("DIRECT_FRP_STEEL_VARIANT_UNSUPPORTED")
+    if request.row_count > 3 or request.bolts_per_row > 3:
+        raise ValueError("DIRECT_CHAPTER_8_MAXIMUM_THREE_ROWS_AND_THREE_BOLTS_PER_ROW")
+    preview = preview_single_bolt_connection(physical, request.connection_view_extents)
+    snapshot = preview.visualization
+    if snapshot is None or len(snapshot.bolt.holes) != 2:
+        raise ValueError("DIRECT_TWO_PHYSICAL_FRP_LAYERS_REQUIRED")
+    holes = snapshot.bolt.holes
+    if (
+        holes[0].physical_element_id != "LEG_1"
+        or holes[1].physical_element_id != "TOP_FLANGE"
+        or tuple(layer.component_id for layer in request.layers)
+        != tuple(hole.participant_id for hole in holes)
+    ):
+        raise ValueError("DIRECT_RESISTANCE_LAYERS_MUST_MATCH_ANGLE_LEG_1_AND_W_TOP_FLANGE")
+    frame = next(
+        (
+            item.frame
+            for item in snapshot.frames
+            if item.kind.value == "BOLT_GROUP_LOCAL" and item.owner_id == snapshot.bolt_group_id
+        ),
+        None,
+    )
+    if frame is None:
+        raise ValueError("DIRECT_BOLT_GROUP_FRAME_UNRESOLVED")
+    u = float(authority.force_u.canonical_magnitude)
+    v = float(authority.force_v.canonical_magnitude)
+    force_global = (
+        frame.y_axis.x * u + frame.z_axis.x * v,
+        frame.y_axis.y * u + frame.z_axis.y * v,
+        frame.y_axis.z * u + frame.z_axis.z * v,
+    )
+    axes: list[tuple[Decimal, MaterialDirection]] = []
+    for layer, hole in zip(request.layers, holes, strict=True):
+        separation = math.dist(
+            (hole.start.x, hole.start.y, hole.start.z),
+            (hole.end.x, hole.end.y, hole.end.z),
+        )
+        thickness = float(layer.thickness.to(request.source_length_unit).magnitude)
+        if abs(separation - thickness) > 1e-6:
+            raise ValueError(f"DIRECT_LAYER_THICKNESS_MISMATCH:{layer.layer_id}")
+        angle = direct_material_axis_angle(snapshot, hole.participant_id, hole.physical_element_id)
+        force_angle = direct_material_force_angle(
+            snapshot, hole.participant_id, hole.physical_element_id, force_global
+        )
+        axes.append(
+            (
+                Decimal(str(angle)),
+                MaterialDirection.LONGITUDINAL
+                if force_angle <= 5.0 + 1e-9
+                else MaterialDirection.TRANSVERSE,
+            )
+        )
+    return tuple(axes)
+
+
 def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
     authority = _resolve_demand_authority(request)
+    direct_axes = (
+        _direct_physical_axes(request, authority) if request.direct_finalization_mode else None
+    )
     geometry, hole = _build_geometry(request, authority)
     end_distances = resolve_multirow_end_distances(
         geometry,
@@ -1152,13 +1305,17 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             layer.component_id,
             material,
             layer.thickness,
-            _material_direction(layer.material_axis_angle_degrees, authority),
+            (
+                direct_axes[index][1]
+                if direct_axes is not None
+                else _material_direction(layer.material_axis_angle_degrees, authority)
+            ),
             layer.element_classification,
             layer.end_use_factors,
             layer.bearing_thread_status,
             (geometry.group.id, geometry.boundary.id),
         )
-        for layer in request.layers
+        for index, layer in enumerate(request.layers)
     )
     if any(layer.material_id != material.id for layer in request.layers):
         if scope is not None and all(
@@ -1223,11 +1380,31 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
         tuple(all_block_plans), DeferredExecutionStatus.DEFERRED_STAGE_2_4B
     )
     fastener_source = create_locked_f593_fastener_snapshot()
+    if request.direct_finalization_mode and mat1_material is not None:
+        selected = getattr(request, "or1_fastener", None)
+        if selected is not None:
+            if not isinstance(selected, FastenerSnapshot) or selected.locked:
+                raise ValueError("OR1 fastener assignment must be an unlocked typed snapshot.")
+            if selected.fnt is None:
+                if (
+                    selected.fnt_source_classification is not SourceClassification.SOURCE_PENDING
+                    or selected.fnt_qualification_status is not QualificationStatus.SOURCE_PENDING
+                ):
+                    raise ValueError("Custom fastener without Fnt must remain source pending.")
+            elif (
+                selected.fnt_source_classification is not SourceClassification.USER_DEFINED
+                or selected.fnt_qualification_status is not QualificationStatus.DEVELOPMENT_ONLY
+            ):
+                raise ValueError("Custom Fnt is numerical user data, not qualified F593 source.")
+            fastener_source = selected
+    shear_status = (
+        fastener_source.shear_plane_thread_statuses[0].status
+        if fastener_source.shear_plane_thread_statuses
+        else ThreadStatus.EXCLUDED
+    )
     fastener = replace(
         fastener_source,
-        shear_plane_thread_statuses=(
-            ThreadStatusAssignment("SHEAR_PLANE_1", ThreadStatus.EXCLUDED),
-        ),
+        shear_plane_thread_statuses=(ThreadStatusAssignment("SHEAR_PLANE_1", shear_status),),
         bearing_layer_thread_statuses=tuple(
             ThreadStatusAssignment(layer.layer_id, layer.bearing_thread_status)
             for layer in layer_contexts
@@ -1253,7 +1430,7 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             bolt.id,
             request.bolt_diameter,
             fastener,
-            ThreadStatus.EXCLUDED,
+            shear_status,
             demand_lookup.get(bolt.id, zero_force),
             tension_lookup.get(bolt.id),
             axis_demand_required,
@@ -1298,7 +1475,14 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             request.force_line_offset, request.eccentricity_tolerance
         ),
     )
-    visualization = _snapshot(request, geometry, end_distances, layer_contexts, authority)
+    visualization = _snapshot(
+        request,
+        geometry,
+        end_distances,
+        layer_contexts,
+        authority,
+        None if direct_axes is None else tuple(item[0] for item in direct_axes),
+    )
     fingerprint = _preview_fingerprint(request, visualization)
     warning_values = [
         *(item.code.value for item in first_applicability.warnings),
@@ -1311,7 +1495,13 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"
             if mat1_material is None
             else "MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED",
-            "F593_TENSILE_SOURCE_DATA_PENDING",
+            (
+                "F593_TENSILE_SOURCE_DATA_PENDING"
+                if fastener.locked
+                else "CUSTOM_FASTENER_TENSILE_SOURCE_DATA_PENDING"
+                if fastener.fnt is None
+                else "CUSTOM_FASTENER_FNT_IS_NUMERICAL_USER_DATA_NOT_QUALIFIED_F593"
+            ),
         )
     )
     warnings = tuple(dict.fromkeys(warning_values))
@@ -1334,6 +1524,7 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
         fingerprint,
         warnings,
         authority,
+        None if direct_axes is None else tuple(item[0] for item in direct_axes),
     )
 
 
@@ -1363,6 +1554,37 @@ def _invalid_preview(request: MultiRowOrchestrationRequest, message: str) -> Mul
     )
 
 
+def _direct_load_blockers(
+    request: MultiRowOrchestrationRequest,
+    authority: _DemandAuthority,
+) -> tuple[str, ...]:
+    if not request.direct_finalization_mode:
+        return ()
+    physical = cast(SingleBoltOrchestrationRequest, request.physical_connection_request)
+    blockers: list[str] = []
+    action = next(
+        (
+            item
+            for item in physical.assembly.member_end_actions
+            if item.id == physical.source_action_id
+        ),
+        None,
+    )
+    if action is not None and any(
+        abs(value) > 1e-9 for value in (action.moment.mx, action.moment.my, action.moment.mz)
+    ):
+        blockers.append("DIRECT_INDEPENDENT_MEMBER_END_MOMENT_NOT_SUPPORTED")
+    if authority.force_n is not None and abs(authority.force_n.canonical_magnitude) > Decimal(
+        "0.000001"
+    ):
+        blockers.append("DIRECT_BOLT_AXIS_FORCE_OR_PRYING_NOT_SUPPORTED")
+    if request.bolt_axis_tension_required or any(
+        item.demand.magnitude > 0 for item in request.bolt_axis_tensions
+    ):
+        blockers.append("DIRECT_BOLT_AXIS_TENSION_OR_PRYING_NOT_SUPPORTED")
+    return tuple(blockers)
+
+
 def _preview_from_resolved(
     request: MultiRowOrchestrationRequest,
     resolved: _ResolvedMultiRow,
@@ -1390,6 +1612,25 @@ def _preview_from_resolved(
     physical_orientation = None if physical is None else physical.connection_orientation
     physical_geometry_valid = physical_orientation is None or physical_orientation.geometry_valid
     physical_warnings = tuple(dict.fromkeys(warnings))
+    load_blockers = _direct_load_blockers(request, resolved.authority)
+    physical_warnings = (*physical_warnings, *load_blockers)
+    if request.direct_finalization_mode:
+        if physical is None:
+            raise ValueError("DIRECT_PHYSICAL_SNAPSHOT_REQUIRED")
+        containment = direct_bolt_containment_issues(
+            physical, tuple(item.display for item in visualization.physical_bolts)
+        )
+        if containment:
+            physical_geometry_valid = False
+            physical_warnings = (
+                *physical_warnings,
+                *(
+                    "DIRECT_PHYSICAL_CONTAINMENT:"
+                    f"{issue.bolt_id}:{issue.component_id}:{issue.physical_element_id}:"
+                    f"{issue.detail} unit={request.source_length_unit.value}."
+                    for issue in containment
+                ),
+            )
     if physical_orientation is not None and not physical_orientation.geometry_valid:
         participants = ",".join(physical_orientation.interference_participant_ids)
         physical_warnings = (
@@ -1405,7 +1646,11 @@ def _preview_from_resolved(
         GeometryStatus.VALID if physical_geometry_valid else GeometryStatus.INVALID_GEOMETRY,
         (
             PlanAvailability.CALCULATION_NOT_SUPPORTED
-            if request.single_row_geometry_preview_authorized
+            if (
+                request.single_row_geometry_preview_authorized
+                and not request.direct_finalization_mode
+            )
+            or load_blockers
             else (
                 applicability.availability
                 if physical_geometry_valid
@@ -1418,6 +1663,7 @@ def _preview_from_resolved(
         preview_fingerprint,
         False,
         physical_geometry_valid
+        and not load_blockers
         and resolved.demand_plan.availability is PlanAvailability.READY
         and (
             automatic_demand is None
@@ -1489,11 +1735,18 @@ def _check(
 def _execution_bundle(
     request: MultiRowOrchestrationRequest, resolved: _ResolvedMultiRow
 ) -> MultiRowExecutionBundle:
+    direct = request.direct_finalization_mode
     applicability = resolved.applicability
     method = applicability.method_applicability
     qualification = applicability.qualification
     checks: list[MultiRowExecutableCheck] = []
     for bolt in resolved.bolt_contexts:
+        bolt_strength_available = bolt.fastener.fnt is not None
+        bolt_qualification = (
+            QualificationDisposition.ENGINEERING_REVIEW_REQUIRED
+            if bolt_strength_available and not bolt.fastener.locked
+            else qualification
+        )
         checks.append(
             _check(
                 f"BOLT_SHEAR:{bolt.bolt_id}",
@@ -1501,14 +1754,22 @@ def _execution_bundle(
                 MultiRowEquationMethod.BOLT_SHEAR,
                 bolt.in_plane_demand,
                 method,
-                qualification,
-                PlanAvailability.SOURCE_DATA_PENDING,
+                bolt_qualification,
+                (
+                    PlanAvailability.READY
+                    if bolt_strength_available
+                    else PlanAvailability.SOURCE_DATA_PENDING
+                ),
                 bolt_id=bolt.bolt_id,
             )
         )
         if bolt.bolt_axis_tension_required:
             tension_availability = (
-                PlanAvailability.SOURCE_DATA_PENDING
+                (
+                    PlanAvailability.READY
+                    if bolt_strength_available
+                    else PlanAvailability.SOURCE_DATA_PENDING
+                )
                 if bolt.bolt_axis_tension_demand is not None
                 else PlanAvailability.INCOMPLETE_INPUT
             )
@@ -1526,7 +1787,7 @@ def _execution_bundle(
                         equation,
                         bolt.bolt_axis_tension_demand,
                         method,
-                        qualification,
+                        bolt_qualification,
                         tension_availability,
                         bolt_id=bolt.bolt_id,
                     )
@@ -1637,7 +1898,7 @@ def _execution_bundle(
         layer_id = block_plan.path_id.split(":", 1)[0]
         layer = next(item for item in resolved.layer_contexts if item.layer_id == layer_id)
         if block_plan.path_status is BlockPathPlanStatus.ACCEPTED and (
-            layer.material_direction is MaterialDirection.LONGITUDINAL
+            direct or layer.material_direction is MaterialDirection.LONGITUDINAL
         ):
             block_method = (
                 MultiRowEquationMethod.BLOCK_SHEAR_ASCE_EQ_8_14A
@@ -1653,12 +1914,41 @@ def _execution_bundle(
                     resolved.total_demand,
                     method,
                     qualification,
-                    block_plan.availability,
+                    (
+                        PlanAvailability.CALCULATION_NOT_SUPPORTED
+                        if direct and layer.material_direction is not MaterialDirection.LONGITUDINAL
+                        else block_plan.availability
+                    ),
                     layer_id=layer_id,
                     path_id=block_plan.path_id,
                     block_plan=block_plan,
                 )
             )
+    if direct:
+        checks.append(
+            _check(
+                "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION",
+                MultiRowCheckFamily.QUALIFICATION,
+                MultiRowEquationMethod.STATUS_ONLY,
+                None,
+                method,
+                QualificationDisposition.SECTION_2_3_2_QUALIFICATION_REQUIRED,
+                PlanAvailability.SECTION_2_3_2_QUALIFICATION_REQUIRED,
+            )
+        )
+    if direct and request.row_count == 1:
+        # Equations 8-10 through 8-14 belong to the two/three-row route.
+        # Direct single-row local limits are evaluated by their own adapter.
+        checks = [
+            check
+            for check in checks
+            if check.family
+            not in {
+                MultiRowCheckFamily.FIRST_ROW_NET_TENSION,
+                MultiRowCheckFamily.INTERROW_SHEAR_OUT,
+                MultiRowCheckFamily.BLOCK_SHEAR,
+            }
+        ]
     planning = MultiRowCalculationPlanSet(
         resolved.demand_plan,
         resolved.applicability,
@@ -2003,7 +2293,19 @@ def _automatic_demand(
     resolved: _ResolvedMultiRow,
     bundle: MultiRowExecutionBundle,
 ) -> EccentricDemandResult:
-    return calculate_eccentric_bolt_group_demand(_automatic_demand_input(request, resolved, bundle))
+    original_input = _automatic_demand_input(request, resolved, bundle)
+    raw = calculate_eccentric_bolt_group_demand(original_input)
+    if not request.direct_finalization_mode or request.bolts_per_row != 1:
+        return raw
+    physical = cast(SingleBoltOrchestrationRequest, request.physical_connection_request)
+    axes = _exact_template_group_axes(physical)
+    # _automatic_demand_input already rejects a missing resolved action.
+    action = cast(ResolvedManualMemberEndAction, resolved.authority.resolved_action)
+    if axes is None:
+        return raw
+    _, force_unit, _ = _force_units(action.unit_system)
+    canonical = direct_axial_frame_input(original_input, raw, action, axes, force_unit)
+    return raw if canonical is None else calculate_eccentric_bolt_group_demand(canonical)
 
 
 def _handoff_bundle_for_scenario(
@@ -2045,6 +2347,8 @@ def _group_mode_qualification(
 
 def _integrate_group_mode_results(
     results: tuple[EccentricGroupModeCompatibilityResult, ...],
+    *,
+    complete_inventory: bool = False,
 ) -> AutomaticGroupModeIntegrationResult:
     if not results:
         raise ValueError("Automatic design requires at least one Stage 2.6A scenario result.")
@@ -2052,6 +2356,14 @@ def _integrate_group_mode_results(
     not_required = _merged_group_mode_ids(results, "not_required_check_ids")
     unsupported = _merged_group_mode_ids(results, "unsupported_required_check_ids")
     incomplete = _merged_group_mode_ids(results, "incomplete_required_check_ids")
+    if complete_inventory:
+        evaluated = {
+            check.result_id for scenario in results for check in scenario.supported_results
+        }
+        classified = evaluated | set(not_required) | set(unsupported) | set(incomplete)
+        incomplete = tuple(
+            dict.fromkeys((*incomplete, *(item for item in required if item not in classified)))
+        )
     failed = _merged_group_mode_ids(results, "failed_check_ids")
     governing = _merged_group_mode_ids(results, "governing_supported_check_ids")
     qualification = _group_mode_qualification(results)
@@ -2079,33 +2391,41 @@ def _integrate_group_mode_results(
     else:
         numerical = NumericalComparison.PASS
         overall = MultiRowOverallDisposition.PASS
+    fingerprint_payload: dict[str, object] = {
+        "integration_contract_version": AUTOMATIC_GROUP_MODE_INTEGRATION_CONTRACT_VERSION,
+        "scenario_results": [
+            {
+                "scenario_id": item.scenario_id,
+                "input_fingerprint": item.input_fingerprint,
+                "result_fingerprint": item.result_fingerprint,
+            }
+            for item in results
+        ],
+        "required_check_ids": required,
+        "not_required_check_ids": not_required,
+        "unsupported_required_check_ids": unsupported,
+        "incomplete_required_check_ids": incomplete,
+        "failed_check_ids": failed,
+        "qualification": qualification.value,
+        "numerical_comparison": numerical.value,
+        "governing_supported_check_ids": governing,
+        "overall_disposition": overall.value,
+        "trace_layers": AUTOMATIC_GROUP_MODE_TRACE_LAYERS,
+    }
+    if complete_inventory:
+        fingerprint_payload["direct_layered_scenarios"] = True
     payload = json.dumps(
-        {
-            "integration_contract_version": AUTOMATIC_GROUP_MODE_INTEGRATION_CONTRACT_VERSION,
-            "scenario_results": [
-                {
-                    "scenario_id": item.scenario_id,
-                    "input_fingerprint": item.input_fingerprint,
-                    "result_fingerprint": item.result_fingerprint,
-                }
-                for item in results
-            ],
-            "required_check_ids": required,
-            "not_required_check_ids": not_required,
-            "unsupported_required_check_ids": unsupported,
-            "incomplete_required_check_ids": incomplete,
-            "failed_check_ids": failed,
-            "qualification": qualification.value,
-            "numerical_comparison": numerical.value,
-            "governing_supported_check_ids": governing,
-            "overall_disposition": overall.value,
-            "trace_layers": AUTOMATIC_GROUP_MODE_TRACE_LAYERS,
-        },
+        fingerprint_payload,
         ensure_ascii=True,
         separators=(",", ":"),
         sort_keys=True,
     )
-    return AutomaticGroupModeIntegrationResult(
+    result_type = (
+        DirectLayeredGroupModeIntegrationResult
+        if complete_inventory
+        else AutomaticGroupModeIntegrationResult
+    )
+    return result_type(
         AUTOMATIC_GROUP_MODE_INTEGRATION_CONTRACT_VERSION,
         results,
         required,
@@ -2127,7 +2447,7 @@ def evaluate_multirow_connection(
 ) -> MultiRowOrchestrationResponse:
     """Evaluate explicit demand or the accepted automatic 2.5A/2.5B/2.6A chain."""
 
-    if request.single_row_geometry_preview_authorized:
+    if request.single_row_geometry_preview_authorized and not request.direct_finalization_mode:
         preview = preview_multirow_connection(request)
         return MultiRowOrchestrationResponse(
             request.request_id,
@@ -2154,7 +2474,9 @@ def evaluate_multirow_connection(
     if request.demand_source is MultiRowDemandSource.AUTOMATIC_MEMBER_END_FORCE:
         demand = _automatic_demand(request, resolved, bundle)
         preview = _preview_from_resolved(request, resolved, demand)
-        if preview.geometry_status is GeometryStatus.INVALID_GEOMETRY:
+        if preview.geometry_status is GeometryStatus.INVALID_GEOMETRY or (
+            request.direct_finalization_mode and not preview.design_check_ready
+        ):
             return MultiRowOrchestrationResponse(
                 request.request_id,
                 request.connection_id,
@@ -2167,10 +2489,14 @@ def evaluate_multirow_connection(
         axes = tuple(
             LayerBearingAxisContext(
                 layer.layer_id,
-                _layer_axis(source.material_axis_angle_degrees),
+                _layer_axis(
+                    source.material_axis_angle_degrees
+                    if resolved.direct_layer_axes is None
+                    else resolved.direct_layer_axes[index]
+                ),
                 layer.source_geometry_ids,
             )
-            for source, layer in zip(request.layers, bundle.layers, strict=True)
+            for index, (source, layer) in enumerate(zip(request.layers, bundle.layers, strict=True))
         )
         explicit_axis = tuple(
             ExplicitBoltAxisDemand(
@@ -2198,23 +2524,61 @@ def evaluate_multirow_connection(
             )
             for scenario in demand.scenarios
         )
-        handoffs = tuple(calculate_eccentric_resistance_handoff(item) for item in handoff_inputs)
-        group_modes = tuple(
-            calculate_eccentric_group_mode_compatibility(
-                EccentricGroupModeCompatibilityInput(
-                    handoff_input,
-                    handoff_result,
-                    AUTOMATIC_GROUP_MODE_TRACE_LAYERS,
+        if request.direct_finalization_mode:
+            pairs = tuple(
+                pair
+                for item in handoff_inputs
+                for pair in evaluate_direct_layered_group_modes(
+                    item, AUTOMATIC_GROUP_MODE_TRACE_LAYERS
                 )
             )
-            for handoff_input, handoff_result in zip(handoff_inputs, handoffs, strict=True)
+            handoffs = tuple(item[0] for item in pairs)
+            group_modes = tuple(item[1] for item in pairs)
+        else:
+            handoffs = tuple(
+                calculate_eccentric_resistance_handoff(item) for item in handoff_inputs
+            )
+            group_modes = tuple(
+                calculate_eccentric_group_mode_compatibility(
+                    EccentricGroupModeCompatibilityInput(
+                        handoff_input,
+                        handoff_result,
+                        AUTOMATIC_GROUP_MODE_TRACE_LAYERS,
+                    )
+                )
+                for handoff_input, handoff_result in zip(handoff_inputs, handoffs, strict=True)
+            )
+        integration = _integrate_group_mode_results(
+            group_modes, complete_inventory=request.direct_finalization_mode
         )
-        integration = _integrate_group_mode_results(group_modes)
+        single_row = (
+            evaluate_direct_single_row(
+                resolved.geometry,
+                resolved.first_plans_by_layer,
+                resolved.layer_contexts,
+                resolved.factors,
+                demand,
+                request.bolt_diameter,
+                resolved.hole_definition.hole_diameter,
+                resolved.total_demand,
+                integration.required_check_ids,
+                integration.incomplete_required_check_ids,
+                integration.failed_check_ids,
+                integration.result_fingerprint,
+            )
+            if request.direct_finalization_mode and request.row_count == 1
+            else None
+        )
         legacy = next(
             (item.legacy_result for item in handoffs if item.legacy_result is not None),
             None,
         )
-        return MultiRowOrchestrationResponse(
+        response_type = (
+            DirectSingleRowOrchestrationResponse
+            if single_row is not None
+            else MultiRowOrchestrationResponse
+        )
+        return response_type(
             request.request_id,
             request.connection_id,
             MULTIROW_ORCHESTRATION_CONTRACT_VERSION,
@@ -2224,9 +2588,12 @@ def evaluate_multirow_connection(
             demand,
             handoffs,
             integration,
+            *(() if single_row is None else (single_row,)),
         )
     preview = _preview_from_resolved(request, resolved, None)
-    if preview.geometry_status is GeometryStatus.INVALID_GEOMETRY:
+    if preview.geometry_status is GeometryStatus.INVALID_GEOMETRY or (
+        request.direct_finalization_mode and not preview.design_check_ready
+    ):
         return MultiRowOrchestrationResponse(
             request.request_id,
             request.connection_id,

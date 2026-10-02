@@ -111,6 +111,15 @@ def test_capability_delta_is_exactly_the_one_new_no_body_route() -> None:
         for f in current["result"]["families"]
         if f["route_id"] not in {"double-channel-truss-node", "stair-stringer-miter"}
     ]
+    direct_route = next(
+        family for family in current["result"]["families"] if family["route_id"] == "multi-row"
+    )
+    assert (
+        direct_route["declared_native_modes"].pop(
+            "/properties/direct_finalization_contract_version/anyOf/0/const"
+        )
+        == "SHEAR01-DIRECT-F1"
+    )
     assert current == PARENT["capabilities"]
 
 
