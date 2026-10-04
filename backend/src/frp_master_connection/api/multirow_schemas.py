@@ -228,6 +228,9 @@ class MultiRowConnectionRequestDTO(_StrictModel):
 
 
 class MultiRowPreviewResponseDTO(_StrictModel):
+    direct_clearance_provenance: list[dict[str, JsonValue]] = Field(
+        default_factory=list, exclude_if=lambda value: not value
+    )
     api_transport_schema_version: Literal["0.3.0-draft"]
     orchestration_contract_version: Literal["2.5C-RC1"]
     preview_schema_version: Literal["0.2.0-draft"]

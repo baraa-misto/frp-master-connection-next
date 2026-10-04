@@ -19,7 +19,7 @@ function selected(): FastenerSelection {
 
 it("keeps F593 strength source pending and creates an unlocked user-defined session record", () => {
   render(<ControlledSelector />);
-  expect(screen.getByText(/ASTM F593 tensile-strength source is required/)).toBeVisible();
+  expect(screen.getByText(/Catalog source-data gap: the controlled ASTM F593-17/)).toBeVisible();
   fireEvent.change(screen.getByLabelText("Fastener"), { target: { value: "SESSION" } });
   expect(selected()).toMatchObject({ kind: "SESSION", snapshot: {
     locked: false, bolt_specification: "USER_DEFINED", fnt: null,

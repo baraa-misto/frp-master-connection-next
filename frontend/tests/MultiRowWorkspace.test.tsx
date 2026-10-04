@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { EvaluationTransportError } from "../src/api/client";
+import { clearanceWitness } from "./directGeometryIssueFixtures";
 import type { VisualizationSnapshot } from "../src/api/contracts";
 import type {
   MultiRowConnectionRequest,
@@ -624,13 +625,21 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(us.loaded_boundary_to_row_1_distance.value).toBe("3");
   });
 
-  it("groups physical, method, source, and informational Direct warnings and selects the affected bolt", async () => {
+  it.each(["in", "mm"] as const)("groups Direct statuses and selects the canonical geometry issue (%s)", async (unit) => {
     render(<ShearConnectionsWorkspace />);
     await screen.findByRole("heading", { name: "Direct angle-to-W connection" });
     fireEvent.click(screen.getByRole("button", { name: "Legacy J1 regression fixture — U.S." }));
-    const preview = multirowPreviewFixture(2, 2, "INVALID_GEOMETRY");
+    const basePreview = multirowPreviewFixture(2, 2, "INVALID_GEOMETRY");
+    const witness = unit === "in" ? clearanceWitness : JSON.parse(JSON.stringify(clearanceWitness, (_key, value: unknown) => typeof value === "string" && /^[+-]?(?:\d*\.)?\d+$/u.test(value) ? String(Number(value) * 25.4) : value)) as typeof clearanceWitness;
+    if (basePreview.visualization === null) throw new Error("Canonical fixture required");
+    basePreview.visualization.source_length_unit = unit;
+    const preview = { ...basePreview, direct_clearance_provenance: [
+      { ...witness, valid: true },
+      { ...witness, bolt_id: "B_R1_L1" },
+      witness,
+    ] };
     preview.warnings = [
-      "DIRECT_PHYSICAL_CONTAINMENT:B_R2_L1:member-a:TOP_FLANGE:available=0.5; required=1; plane=X. unit=in",
+      `DIRECT_PHYSICAL_CONTAINMENT:B_R2_L1:member-a:TOP_FLANGE:available=${witness.center_to_boundary}; required=${witness.validator_minimum}; plane=0. unit=${unit}`,
       "UNSUPPORTED_MEMBER_MOMENT",
       "F593_TENSILE_SOURCE_DATA_PENDING",
       "EXTRA_DOCUMENTATION_NOTE",
@@ -642,7 +651,9 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByRole("region", { name: "METHOD REQUIRED" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "SOURCE REQUIRED" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "INFORMATION" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Bolt B_R2_L1.*Select bolt and layout inputs/u }));
+    expect(screen.getByRole("region", { name: "INFORMATION" })).toHaveClass("information-status");
+    fireEvent.click(screen.getByRole("button", { name: /Bolt B_R2_L1.*Show geometry issue/u }));
+    expect(screen.getByRole("region", { name: "Canonical geometry issue" })).toBeInTheDocument();
     expect(screen.getByText("Bolt / Interface", { exact: true })).toBeInTheDocument();
   });
 
@@ -1627,15 +1638,18 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     if (member === undefined) throw new Error("A member fixture is required.");
     member.material_kind = "STAINLESS_STEEL";
     const benchmark = vi.spyOn(benchmarks, "loadJ1Benchmark").mockImplementation(() => structuredClone(nonDirect));
-    mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) =>
-      Promise.resolve(multirowPreviewFixture(request.row_count, request.bolts_per_row)));
+    mocks.multiPreview.mockImplementation((request: MultiRowConnectionRequest) => {
+      const value = multirowPreviewFixture(request.row_count, request.bolts_per_row);
+      value.warnings.push("RATIONAL_ELASTIC_BOLT_GROUP_ECCENTRICITY_USED");
+      return Promise.resolve(value);
+    });
     try {
       render(<ShearConnectionsWorkspace />);
       await screen.findByRole("heading", { name: "Direct angle-to-W connection" });
       fireEvent.change(screen.getByLabelText("Row count"), { target: { value: "2" } });
       fireEvent.change(screen.getByLabelText("Bolts per row"), { target: { value: "2" } });
       await waitFor(() => { expect(mocks.multiPreview).toHaveBeenCalled(); });
-      expect(screen.getAllByText(/F593 Tensile Source Data Pending/u).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/controlled ASTM F593 catalog tensile-strength table/u).length).toBeGreaterThan(0);
       expect(screen.getByLabelText("T / Mx")).toBeInTheDocument();
       expect(screen.getByLabelText("CM")).toBeInTheDocument();
       fireEvent.change(screen.getByLabelText("CM"), { target: { value: "" } });

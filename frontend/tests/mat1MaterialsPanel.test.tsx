@@ -17,6 +17,22 @@ const record: MAT1CatalogRecord = {
 
 afterEach(() => { vi.unstubAllGlobals(); });
 
+it("keeps catalog basis and entered Tg comparison separate from procurement conformance", () => {
+  const qualifiedDisplayRecord = { ...record, property_basis: "MANUFACTURER_CHARACTERISTIC" };
+  setMAT1Catalog([qualifiedDisplayRecord]); setMAT1Default(record.id); setMAT1Active(true);
+  const view = render(<MAT1MaterialsPanel family="paired-clip-angle" />);
+  expect(screen.getByText("MANUFACTURER_CHARACTERISTIC")).toBeVisible();
+  expect(screen.queryByText(/Material basis needed: the current ICE seed/)).not.toBeInTheDocument();
+  expect(screen.getByRole("region", { name: "Specification / procurement notes" })).toHaveClass("information-status");
+  act(() => { acceptMAT1Design("paired-clip-angle", mat1FamilyKey("paired-clip-angle"), { material_sources: { temperature_applicability: { default: "PASS", tg_evidence: "USER_SUPPLIED" } } }); });
+  expect(screen.getByLabelText("Tg applicability")).toHaveTextContent("Tg applicability: PASS");
+  expect(screen.getByLabelText("Tg applicability")).toHaveTextContent("controlled product evidence is still required");
+  act(() => { setMAT1Catalog([{ ...record, property_basis: "DEVELOPMENT_NOMINAL" }]); });
+  expect(screen.getByText("DEVELOPMENT_NOMINAL")).toBeVisible();
+  expect(screen.getByText(/Material basis needed/)).toBeVisible();
+  view.unmount();
+});
+
 it("exposes catalog, session copy, physical owners, conditions and stale trace without design on preview", async () => {
   // OR1-09: the product bootstrap owns catalog transport; this panel consumes its resolved record.
   setMAT1Catalog([record]); setMAT1Default(record.id); setMAT1Active(true);
@@ -52,12 +68,12 @@ it("exposes catalog, session copy, physical owners, conditions and stale trace w
   if (conditionDetails === null) throw new Error("Project conditions details missing");
   conditionDetails.open = true;
   fireEvent(conditionDetails, new Event("toggle"));
-  fireEvent.change(screen.getByLabelText("Sustained material temperature"), { target: { value: "90" } });
-  fireEvent.change(screen.getByLabelText("Maximum material temperature"), { target: { value: "100" } });
-  fireEvent.change(screen.getByLabelText("Sustained material temperature"), { target: { value: "95" } });
+  fireEvent.change(screen.getByLabelText("Sustained operating material temperature"), { target: { value: "90" } });
+  fireEvent.change(screen.getByLabelText("Maximum expected material temperature"), { target: { value: "100" } });
+  fireEvent.change(screen.getByLabelText("Sustained operating material temperature"), { target: { value: "95" } });
   fireEvent.change(screen.getByLabelText("Temperature unit"), { target: { value: "degC" } });
-  fireEvent.change(screen.getByLabelText("Sustained material temperature"), { target: { value: "30" } });
-  fireEvent.change(screen.getByLabelText("Maximum material temperature"), { target: { value: "40" } });
+  fireEvent.change(screen.getByLabelText("Sustained operating material temperature"), { target: { value: "30" } });
+  fireEvent.change(screen.getByLabelText("Maximum expected material temperature"), { target: { value: "40" } });
   expect(screen.queryByLabelText("Glass transition temperature (Tg; optional evidence)")).toBeNull();
   fireEvent.change(screen.getByLabelText("Moisture"), { target: { value: "SUSTAINED_MOISTURE" } });
   fireEvent.change(screen.getByLabelText("Chemical exposure"), { target: { value: "SPECIFIED" } });
@@ -80,8 +96,8 @@ it("exposes catalog, session copy, physical owners, conditions and stale trace w
   expect(ownerA).not.toBeNull();
   fireEvent.change(within(ownerA as HTMLElement).getByLabelText("FRP-A"), { target: { value: record.id } });
   fireEvent.click(within(ownerA as HTMLElement).getByLabelText("Override conditions for FRP-A"));
-  fireEvent.change(within(ownerA as HTMLElement).getByLabelText(/Sustained material temperature/), { target: { value: "35" } });
-  fireEvent.change(within(ownerA as HTMLElement).getByLabelText(/Maximum material temperature/), { target: { value: "45" } });
+  fireEvent.change(within(ownerA as HTMLElement).getByLabelText(/Sustained operating material temperature/), { target: { value: "35" } });
+  fireEvent.change(within(ownerA as HTMLElement).getByLabelText(/Maximum expected material temperature/), { target: { value: "45" } });
   fireEvent.change(within(ownerA as HTMLElement).getByLabelText("Moisture"), { target: { value: "OTHER" } });
   fireEvent.change(within(ownerA as HTMLElement).getByLabelText("Chemical exposure"), { target: { value: "NONE_DECLARED" } });
   fireEvent.change(within(ownerA as HTMLElement).getByLabelText("Source reference condition"), { target: { value: "UNKNOWN" } });

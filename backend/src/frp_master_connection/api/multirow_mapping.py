@@ -26,7 +26,10 @@ from frp_master_connection.application import (
     MultiRowOrchestrationResponse,
     MultiRowPreviewResult,
 )
-from frp_master_connection.application.direct_physical import is_direct_angle_w
+from frp_master_connection.application.direct_physical import (
+    direct_face_clearance_provenance,
+    is_direct_angle_w,
+)
 from frp_master_connection.calculation import (
     EndUseFactors,
     MethodProvenance,
@@ -180,8 +183,23 @@ def _serialize_direct_trace(value: object) -> object:
     return _serialize(value)
 
 
+def _direct_clearance(response: MultiRowPreviewResult) -> object:
+    """Transport-only witnesses; never part of frozen native result fingerprints."""
+
+    visual = response.visualization
+    if visual is None or visual.physical_connection is None:
+        return []
+    return _serialize(
+        direct_face_clearance_provenance(
+            visual.physical_connection, tuple(item.display for item in visual.physical_bolts)
+        )
+    )
+
+
 def serialize_multirow_preview(
     response: MultiRowPreviewResult,
+    *,
+    include_direct_clearance: bool = False,
 ) -> MultiRowPreviewResponseDTO:
     visualization = (
         None
@@ -211,13 +229,21 @@ def serialize_multirow_preview(
                 if response.automatic_demand_result is None
                 else _serialize(response.automatic_demand_result)
             ),
+            "direct_clearance_provenance": _direct_clearance(response)
+            if include_direct_clearance
+            else [],
         }
     )
 
 
 def serialize_multirow_design(
     response: MultiRowOrchestrationResponse,
+    *,
+    include_direct_clearance: bool = False,
 ) -> MultiRowDesignResponseDTO:
+    preview = cast(dict[str, object], _serialize(response.preview))
+    if include_direct_clearance:
+        preview["direct_clearance_provenance"] = _direct_clearance(response.preview)
     return MultiRowDesignResponseDTO.model_validate(
         {
             "api_transport_schema_version": MULTIROW_API_TRANSPORT_SCHEMA_VERSION,
@@ -226,7 +252,7 @@ def serialize_multirow_design(
             "visualization_schema_version": response.preview.visualization_schema_version,
             "request_id": response.request_id,
             "connection_id": response.connection_id,
-            "preview": cast(dict[str, object], _serialize(response.preview)),
+            "preview": preview,
             "calculation_result": (
                 None
                 if response.calculation_result is None

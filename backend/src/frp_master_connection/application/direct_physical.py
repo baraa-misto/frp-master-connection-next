@@ -34,6 +34,47 @@ class DirectContainmentIssue:
     detail: str
 
 
+@dataclass(frozen=True, slots=True)
+class DirectBoundaryDistance:
+    boundary_id: str
+    start_global: tuple[float, float, float]
+    end_global: tuple[float, float, float]
+    start_local: tuple[float, float]
+    end_local: tuple[float, float]
+    distance: float
+    dimension_end_local: tuple[float, float]
+
+
+@dataclass(frozen=True, slots=True)
+class DirectFaceClearance:
+    """Display/audit witnesses of the existing validator; no new engineering rule."""
+
+    bolt_id: str
+    component_id: str
+    physical_element_id: str
+    surface_id: str
+    bolt_center_global: tuple[float, float, float]
+    face_point_global: tuple[float, float, float]
+    face_point_local: tuple[float, float]
+    origin_global: tuple[float, float, float]
+    axis_u: tuple[float, float, float]
+    axis_v: tuple[float, float, float]
+    normal: tuple[float, float, float]
+    boundary_vertices: tuple[tuple[float, float, float], ...]
+    boundaries: tuple[DirectBoundaryDistance, ...]
+    controlling_boundary_id: str
+    center_to_boundary: float
+    bolt_radius: float
+    hole_radius: float
+    washer_radius: float
+    chapter_8_minimum: float
+    validator_minimum: float
+    hole_ligament: float
+    washer_ligament: float
+    plane_offset: float
+    valid: bool
+
+
 def _coords(point: PositionVector3D) -> tuple[float, float, float]:
     return point.x, point.y, point.z
 
@@ -170,6 +211,129 @@ def direct_bolt_containment_issues(
                     )
                 )
     return tuple(issues)
+
+
+def direct_face_clearance_provenance(
+    snapshot: SingleBoltVisualizationSnapshot,
+    bolts: Sequence[BoltDisplaySnapshot],
+) -> tuple[DirectFaceClearance, ...]:
+    """Record all four signed patch-boundary distances using existing exact geometry.
+
+    Contact patches can be subfaces: their boundaries must not be mislabeled as
+    physical free member edges. Camera and display-extension solids are unused.
+    Missing faces/hardware remain the existing validator's explicit issues.
+    """
+
+    records: list[DirectFaceClearance] = []
+    members = {item.id: item for item in snapshot.components}
+    for bolt in bolts:
+        if len(bolt.holes) != 2:
+            continue
+        for index, hole in enumerate(bolt.holes):
+            member = members.get(hole.participant_id)
+            zones = tuple(
+                zone
+                for zone in snapshot.interface_zones
+                if zone.participant_id == hole.participant_id
+                and zone.patch_id.startswith(f"{hole.physical_element_id}:")
+            )
+            washer = next(
+                (
+                    item
+                    for item in bolt.washers
+                    if item.location == ("UNDER_HEAD" if index == 0 else "UNDER_NUT")
+                ),
+                None,
+            )
+            if (
+                member is None
+                or member.material_kind is not ComponentMaterialKind.PULTRUDED_FRP
+                or len(zones) != 1
+                or washer is None
+            ):
+                continue
+            zone = zones[0]
+            (plane, minimum), point = min(
+                ((_edge_clearance(zone, point), point) for point in (hole.start, hole.end)),
+                key=lambda item: item[0][0],
+            )
+            corners = tuple(_coords(item) for item in zone.corners)
+            origin = corners[0]
+            edge_u = _subtract(corners[1], origin)
+            edge_v = _subtract(corners[3], origin)
+            length_u = math.sqrt(_dot(edge_u, edge_u))
+            length_v = math.sqrt(_dot(edge_v, edge_v))
+            axis_u = (edge_u[0] / length_u, edge_u[1] / length_u, edge_u[2] / length_u)
+            axis_v = (edge_v[0] / length_v, edge_v[1] / length_v, edge_v[2] / length_v)
+            normal = (zone.normal.x, zone.normal.y, zone.normal.z)
+
+            def local(
+                value: tuple[float, float, float],
+                face_origin: tuple[float, float, float] = origin,
+                face_u: tuple[float, float, float] = axis_u,
+                face_v: tuple[float, float, float] = axis_v,
+            ) -> tuple[float, float]:
+                delta = _subtract(value, face_origin)
+                return _dot(delta, face_u), _dot(delta, face_v)
+
+            actual = _coords(point)
+            center = _coords(zone.center)
+            boundaries: list[DirectBoundaryDistance] = []
+            for ordinal, start in enumerate(corners):
+                end = corners[(ordinal + 1) % 4]
+                edge = _subtract(end, start)
+                length = math.sqrt(_dot(edge, edge))
+                sign = 1 if _dot(_cross(edge, _subtract(center, start)), normal) > 0 else -1
+                distance = _dot(_cross(edge, _subtract(actual, start)), normal) / length * sign
+                fraction = _dot(_subtract(actual, start), edge) / (length * length)
+                foot = (
+                    start[0] + fraction * edge[0],
+                    start[1] + fraction * edge[1],
+                    start[2] + fraction * edge[2],
+                )
+                boundaries.append(
+                    DirectBoundaryDistance(
+                        f"{zone.patch_id}:E{ordinal + 1}",
+                        start,
+                        end,
+                        local(start),
+                        local(end),
+                        distance,
+                        local(foot),
+                    )
+                )
+            governing = min(boundaries, key=lambda item: item.distance)
+            chapter = 1.5 * bolt.bolt_diameter
+            required = max(chapter, hole.diameter / 2, washer.outside_diameter / 2)
+            records.append(
+                DirectFaceClearance(
+                    bolt.bolt_location_id,
+                    hole.participant_id,
+                    hole.physical_element_id,
+                    zone.patch_id,
+                    _coords(bolt.center),
+                    actual,
+                    local(actual),
+                    origin,
+                    axis_u,
+                    axis_v,
+                    normal,
+                    corners,
+                    tuple(boundaries),
+                    governing.boundary_id,
+                    minimum,
+                    bolt.bolt_diameter / 2,
+                    hole.diameter / 2,
+                    washer.outside_diameter / 2,
+                    chapter,
+                    required,
+                    minimum - hole.diameter / 2,
+                    minimum - washer.outside_diameter / 2,
+                    plane,
+                    plane <= 1e-6 and minimum + 1e-9 >= required,
+                )
+            )
+    return tuple(records)
 
 
 def direct_material_force_angle(

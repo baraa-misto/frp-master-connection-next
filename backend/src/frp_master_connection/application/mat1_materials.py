@@ -221,6 +221,16 @@ def catalog_record(identifier: str, revision: str, digest: str) -> MaterialRecor
     raise ValueError("MAT1_CATALOG_IDENTITY_OR_REVISION_MISMATCH")
 
 
+def catalog_property_basis(record: MaterialRecord) -> str:
+    """State the actual stored authority; never promote a nominal catalog by selection."""
+
+    return (
+        "USER_DEFINED"
+        if record.source_kind == "USER_SUPPLIED_SESSION_DATA"
+        else "DEVELOPMENT_NOMINAL"
+    )
+
+
 def session_record(
     identifier: str,
     revision: str,
@@ -403,6 +413,18 @@ class DesignConditions:
     design_period: str = ""
     service_period: str = ""
     fatigue_cycles: str = ""
+
+
+def temperature_applicability(conditions: DesignConditions) -> str:
+    """Separate Tmax/Tg arithmetic from CT and its stricter factor boundary.
+
+    A numerical PASS on entered Tg does not create controlled product evidence.
+    Existing thermal/qualification gates continue to govern design completeness.
+    """
+
+    if conditions.tg_f is None:
+        return "NOT_CONFIRMED"
+    return "FAIL" if conditions.maximum_f > conditions.tg_f - Decimal(40) else "PASS"
 
 
 @dataclass(frozen=True, slots=True)

@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { afterEach, expect, it, vi } from "vitest";
 import { useState } from "react";
 import { ReportExportButton } from "../src/features/ReportExportButton";
-import { setMAT1Active, setMAT1Catalog } from "../src/state/mat1Session";
+import { rememberMAT1Preview, setMAT1Active, setMAT1Catalog } from "../src/state/mat1Session";
 import { acceptReportSnapshot, currentReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../src/state/reportSession";
 import { ConnectionWorkspaceShell } from "../src/workspace/ConnectionWorkspaceShell";
 
@@ -369,6 +369,14 @@ it("invalidates a snapshot only when submitted inputs change", () => {
   // the legacy material-mode switch was removed with the single material authority.
   const panelId = "multi-row";
   const panel = render(<ConnectionWorkspaceShell family={panelId} banner={<span>Fixture</span>}><span>Body</span></ConnectionWorkspaceShell>);
+  // Preview bookkeeping can arrive while the signed preview response is in flight.
+  // It must preserve its report generation; actual material inputs still invalidate it.
+  act(() => { invalidateReportSnapshot(panelId); });
+  const pendingGeneration = reportGeneration(panelId);
+  act(() => { rememberMAT1Preview(panelId, '{"dimension":3}'); });
+  expect(reportGeneration(panelId)).toBe(pendingGeneration);
+  act(() => { acceptReportSnapshot(panelId, "current-preview", "input_only", pendingGeneration); });
+  expect(currentReportSnapshot(panelId)).toMatchObject({ dirty: false, token: "current-preview" });
   act(() => { authorize(panelId); });
   fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: "M" } });
   expect(currentReportSnapshot(panelId).dirty).toBe(true);

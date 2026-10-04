@@ -1,6 +1,7 @@
 import { viewerUnity } from "./unityRatio";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
+import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
 import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
@@ -1265,6 +1266,9 @@ export function SingleBoltEngineeringWorkspace() {
     ] : []),
   ] : [];
   const directSingleRow = automaticGroupModeIntegration?.direct_single_row_result;
+  const selectedGeometryIssue = multirowPreview.response?.direct_clearance_provenance?.find(
+    (record) => !record.valid && selection.kind === "BOLT" && record.bolt_id === selection.id,
+  );
   const failedDirectChecks = directSingleRow?.failed_check_ids
     ?? automaticGroupModeIntegration?.failed_check_ids ?? [];
   const directDisposition = directSingleRow?.overall_disposition
@@ -1451,11 +1455,12 @@ export function SingleBoltEngineeringWorkspace() {
               ["information", "INFORMATION"],
             ] as const).map(([group, heading]) => {
               const items = directWarnings.filter((item) => item.group === group);
-              return items.length === 0 ? null : <section key={group} aria-label={heading}><h4>{heading}</h4><ul className="issue-list">{items.map((item, index) => {
+              return items.length === 0 ? null : <section key={group} className={group === "information" ? "information-status" : group === "geometry" ? "geometry-status" : undefined} aria-label={heading}><h4>{heading}</h4><ul className="issue-list">{items.map((item, index) => {
                 const boltId = item.boltId;
-                return <li key={`${item.text}:${String(index)}`}>{boltId === undefined ? item.text : <button type="button" onClick={() => { setSelection({ kind: "BOLT", id: boltId }); }}>{item.text} Select bolt and layout inputs</button>}</li>;
+                return <li key={`${item.text}:${String(index)}`}>{boltId === undefined ? item.text : <button type="button" onClick={() => { setSelection({ kind: "BOLT", id: boltId }); }}>{item.text} Show geometry issue</button>}</li>;
               })}</ul></section>;
-            }) : supportedMultirowArrangement ? multirowPreview.response?.warnings.map((warning) => <p className="unsupported-note" key={warning}>{friendlyEnum(warning)}</p>) : null}
+            }) : supportedMultirowArrangement ? multirowPreview.response?.warnings.map((warning) => <p className={describeDirectWarning(warning).group === "information" ? "information-status" : "unsupported-note"} key={warning}>{describeDirectWarning(warning).text}</p>) : null}
+            {selectedGeometryIssue === undefined ? null : <DirectGeometryIssue record={selectedGeometryIssue} unit={multirowPreview.response?.visualization?.source_length_unit === "mm" ? "mm" : "in"} />}
             {(supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated) ? <p className="stale-notice" role="status">Updating connection model…</p> : null}
           </SidebarGroup>
 

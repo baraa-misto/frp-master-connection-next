@@ -428,8 +428,37 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
             _direct_selected_fastener_fnt(snapshot),
         ),
         (
-            "Sustained / maximum temperature",
-            f"{quantity('sustained_temperature')} / {quantity('maximum_temperature')}",
+            "Sustained operating material temperature",
+            quantity("sustained_temperature"),
+        ),
+        (
+            "Maximum expected material temperature",
+            quantity("maximum_temperature"),
+        ),
+        (
+            "Tg applicability",
+            (
+                str(sources["temperature_applicability"].get("default", "NOT_CONFIRMED")).replace(
+                    "_", " "
+                )
+                + "; entered Tg is not controlled product qualification"
+                if isinstance(sources.get("temperature_applicability"), dict)
+                else "NOT CONFIRMED; Tg evidence unavailable"
+            ),
+        ),
+        (
+            "Catalog property basis",
+            str(record.get("property_basis", "Not established")),
+        ),
+        (
+            "Temperature roles",
+            "Sustained temperature controls backend CT; maximum expected temperature "
+            "controls Tg applicability. Missing Tg does not erase calculable CT.",
+        ),
+        (
+            "Specification / procurement notes",
+            "Project FRP and hardware shall conform to their selected specifications. "
+            "Per-connection supplier certification is not the catalog design-source requirement.",
         ),
         (
             "Moisture / chemical exposure",
@@ -2283,7 +2312,7 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         preview_warnings = preview.get("warnings", [])
         if preview.get("geometry_status") == "INVALID_GEOMETRY":
             primary_blocker = (
-                "Bolt, hole or washer is outside a penetrated FRP layer; see geometry notices"
+                "Bolt center does not meet selected contact-patch containment; see geometry notices"
                 if isinstance(preview_warnings, list)
                 and any(
                     isinstance(item, str) and item.startswith("DIRECT_PHYSICAL_CONTAINMENT:")
@@ -2326,6 +2355,51 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         primary_blocker=primary_blocker,
     )
     mat1_rows = _mat1_reader_rows(snapshot)
+    if direct and isinstance(preview.get("direct_clearance_provenance"), list):
+        for witness in preview["direct_clearance_provenance"]:
+            if not isinstance(witness, dict) or witness.get("valid") is not False:
+                continue
+            unit = str(visual.get("source_length_unit", ""))
+            story.append(
+                _paragraph("Geometry issue — canonical contact-patch boundary", styles["heading"])
+            )
+            story.append(
+                _table(
+                    [
+                        (
+                            "Affected bolt / member / element",
+                            f"{witness['bolt_id']} / {witness['component_id']} / "
+                            f"{witness['physical_element_id']}",
+                        ),
+                        ("Controlling boundary", str(witness["controlling_boundary_id"])),
+                        (
+                            "Actual center-to-boundary distance",
+                            f"{witness['center_to_boundary']} {unit}",
+                        ),
+                        ("Validator minimum", f"{witness['validator_minimum']} {unit}"),
+                        (
+                            "Separate Chapter 8 center-distance minimum",
+                            f"{witness['chapter_8_minimum']} {unit}",
+                        ),
+                        (
+                            "Bolt / hole / washer radii",
+                            f"{witness['bolt_radius']} / {witness['hole_radius']} / "
+                            f"{witness['washer_radius']} {unit}",
+                        ),
+                        ("Plane offset", f"{witness['plane_offset']} {unit}"),
+                    ],
+                    styles,
+                )
+            )
+            story.append(
+                _paragraph(
+                    "This is distance to the selected contact patch, which can be a subface; "
+                    "its boundary is not automatically a physical free member edge. Adjust "
+                    "placement within current members first. All individual boundary distances, "
+                    "vertices and axes remain in Full Technical Audit.",
+                    styles["body"],
+                )
+            )
     if mat1_rows:
         story.append(_paragraph("Materials, conditions and design basis", styles["heading"]))
         story.append(_table(mat1_rows, styles))

@@ -1064,6 +1064,40 @@ td {
   padding-left: 1.2rem;
 }
 
+.information-status,
+.information-status .issue-list {
+  color: #214768;
+  background: #edf5fb;
+  border-left: 4px solid #5684a8;
+  padding: 0.75rem;
+}
+
+.geometry-status .issue-list {
+  color: #7b2020;
+  background: #fff0f0;
+  border-left-color: #ba3b3b;
+}
+
+.geometry-status {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.geometry-status table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.geometry-status th {
+  white-space: normal;
+}
+
+.stale-notice {
+  color: #52606e;
+  background: #f1f3f5;
+  border-color: #a6aeb6;
+}
+
 .not-implemented-panel {
   display: flex;
   align-items: center;

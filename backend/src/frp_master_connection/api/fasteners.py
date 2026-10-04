@@ -103,6 +103,12 @@ def fastener_source_record(selection: FastenerSelectionDTO) -> dict[str, object]
             "fnt": None,
             "fnt_state": "SOURCE_PENDING",
             "qualification": "SOURCE_PENDING",
+            "source_requirement": (
+                "Catalog source-data gap: controlled ASTM F593-17 mechanical-property table "
+                "for Group 2 316/316L, cold-worked condition and selected diameter is missing. "
+                "Per-connection supplier certification is not required by this workflow."
+            ),
+            "specification_note": "Specified hardware shall conform to ASTM F593 Group 2 316/316L.",
         }
     return {
         "kind": "SESSION",

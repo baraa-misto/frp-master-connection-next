@@ -30,6 +30,7 @@ export interface MAT1CatalogRecord {
   readonly company: string;
   readonly resin: "ISOPHTHALIC_POLYESTER" | "VINYL_ESTER" | "OTHER";
   readonly source_kind: string;
+  readonly property_basis?: string;
   readonly missing: readonly string[];
   readonly properties: readonly MAT1Property[];
   readonly qualification: string;
@@ -256,14 +257,14 @@ export function materialSelection(id: string | null): object | null {
   };
 }
 
-export function mat1FamilyKey(family: string): string {
+export function mat1FamilyKey(family: string, includePreviewInput = true): string {
   if (!current.active) return "LEGACY";
   const owners = current.overrides[family] ?? {};
   return JSON.stringify({
     family, defaultMaterial: materialSelection(current.defaultId),
     overrides: Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, materialSelection(id)])),
     conditions: current.conditions, conditionOverrides: current.conditionOverrides[family] ?? {},
-    previewInput: current.previewInputs[family] ?? null,
+    previewInput: includePreviewInput ? current.previewInputs[family] ?? null : undefined,
     fastener: family === "multi-row" ? current.fastenerSelections[family] ?? defaultFastenerSelection : undefined,
   });
 }

@@ -91,11 +91,13 @@ from frp_master_connection.application.mat1_materials import (
     MaterialRecord,
     PropertyLedger,
     Resin,
+    catalog_property_basis,
     catalog_record,
     decimal_input,
     predefined_catalog,
     property_ledger,
     session_record,
+    temperature_applicability,
     temperature_fahrenheit,
 )
 from frp_master_connection.application.mat1_multirow import bind_multirow_material
@@ -388,10 +390,34 @@ def _material_source_snapshot(assignments: MaterialAssignmentsDTO) -> dict[str, 
     """Keep resolved source records in the same response as the native result."""
 
     return {
-        "default": _json_value(asdict(resolve_material(assignments.default_material))),
+        "default": _json_value(
+            {
+                **asdict(resolve_material(assignments.default_material)),
+                "property_basis": catalog_property_basis(
+                    resolve_material(assignments.default_material)
+                ),
+            }
+        ),
         "overrides": {
-            owner: _json_value(asdict(resolve_material(selection)))
+            owner: _json_value(
+                {
+                    **asdict(resolve_material(selection)),
+                    "property_basis": catalog_property_basis(resolve_material(selection)),
+                }
+            )
             for owner, selection in assignments.material_overrides.items()
+        },
+        "temperature_applicability": {
+            "default": temperature_applicability(
+                resolve_conditions(assignments.default_conditions)
+            ),
+            "overrides": {
+                owner: temperature_applicability(resolve_conditions(conditions))
+                for owner, conditions in assignments.condition_overrides.items()
+            },
+            "tg_evidence": "USER_SUPPLIED"
+            if assignments.default_conditions.glass_transition_temperature is not None
+            else "MISSING",
         },
     }
 
@@ -416,6 +442,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 _json_value(
                     {
                         **asdict(record),
+                        "property_basis": catalog_property_basis(record),
                         "qualification": "OWNER_OR_CATALOG_DATA_NOT_SERVER_QUALIFIED",
                     }
                 )
@@ -639,7 +666,10 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 adapters[0].adjusted_snapshot,
                 resolve_fastener_selection(request.fastener),
             )
-            native = serialize_multirow_design(evaluate_multirow_connection(canonical))
+            native = serialize_multirow_design(
+                evaluate_multirow_connection(canonical),
+                include_direct_clearance=canonical.direct_finalization_mode,
+            )
         except (ArithmeticError, KeyError, TypeError, ValueError) as error:
             raise HTTPException(status_code=422, detail={"code": str(error)}) from error
         integration = native.automatic_group_mode_integration

@@ -605,7 +605,10 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail={"code": "CANONICAL_MAPPING_INVALID", "message": str(error)},
             ) from error
-        return serialize_multirow_preview(preview_multirow_connection(canonical_request))
+        return serialize_multirow_preview(
+            preview_multirow_connection(canonical_request),
+            include_direct_clearance=canonical_request.direct_finalization_mode,
+        )
 
     @router.post(
         "/api/v1/calculations/multi-row/design-check",
@@ -631,7 +634,10 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail={"code": "CANONICAL_MAPPING_INVALID", "message": str(error)},
             ) from error
-        return serialize_multirow_design(evaluate_multirow_connection(canonical_request))
+        return serialize_multirow_design(
+            evaluate_multirow_connection(canonical_request),
+            include_direct_clearance=canonical_request.direct_finalization_mode,
+        )
 
     @router.post(
         "/api/v1/calculations/multi-member-tee/preview",

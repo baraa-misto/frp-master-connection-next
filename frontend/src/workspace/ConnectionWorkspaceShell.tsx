@@ -65,7 +65,9 @@ export function ConnectionWorkspaceShell({
   reportDraft,
 }: ConnectionWorkspaceShellProps) {
   const mat1 = useMAT1();
-  const inputKey = family === undefined ? null : JSON.stringify([reportDraft, mat1FamilyKey(family)]);
+  // reportDraft already binds geometry. Preview bookkeeping must not invalidate
+  // the signed response to that same request while it is in flight.
+  const inputKey = family === undefined ? null : JSON.stringify([reportDraft, mat1FamilyKey(family, false)]);
   const priorInputKey = useRef(inputKey);
   useEffect(() => {
     if (family !== undefined && priorInputKey.current !== inputKey) {

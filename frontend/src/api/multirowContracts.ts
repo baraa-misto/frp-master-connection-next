@@ -5,6 +5,32 @@ export interface MultiRowQuantity {
   unit: string;
 }
 
+export interface DirectFaceClearance {
+  readonly bolt_id: string;
+  readonly component_id: string;
+  readonly physical_element_id: string;
+  readonly surface_id: string;
+  readonly face_point_local: readonly [string, string];
+  readonly boundaries: readonly {
+    readonly boundary_id: string;
+    readonly start_local: readonly [string, string];
+    readonly end_local: readonly [string, string];
+    readonly distance: string;
+    readonly dimension_end_local: readonly [string, string];
+  }[];
+  readonly controlling_boundary_id: string;
+  readonly center_to_boundary: string;
+  readonly bolt_radius: string;
+  readonly hole_radius: string;
+  readonly washer_radius: string;
+  readonly chapter_8_minimum: string;
+  readonly validator_minimum: string;
+  readonly hole_ligament: string;
+  readonly washer_ligament: string;
+  readonly plane_offset: string;
+  readonly valid: boolean;
+}
+
 export interface MultiRowConnectionRequest {
   orchestration_contract_version: "2.5C-RC1";
   direct_finalization_contract_version?: "SHEAR01-DIRECT-F1";
@@ -288,6 +314,7 @@ export interface DirectSingleRowResult {
 }
 
 export interface MultiRowPreviewResponse {
+  readonly direct_clearance_provenance?: readonly DirectFaceClearance[];
   api_transport_schema_version: "0.3.0-draft";
   orchestration_contract_version: "2.5C-RC1";
   preview_schema_version: "0.2.0-draft";

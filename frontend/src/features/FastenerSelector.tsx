@@ -47,7 +47,7 @@ export function FastenerSelector({ defaultSnapshot, selection, onSelect }: {
       onSelect(event.currentTarget.value === "DEFAULT" ? defaultFastenerSelection : createSessionFastener(defaultSnapshot, false));
     }}><option value="DEFAULT">ASTM F593-17 Group 2 — 316/316L (Fnt source pending)</option><option value="SESSION">User-defined fastener</option></select></label>
     <div className="benchmark-actions"><button type="button" onClick={() => { onSelect(createSessionFastener(defaultSnapshot, true)); }}>Copy as custom</button></div>
-    {custom === null ? <p>ASTM F593 tensile-strength source is required for the selected alloy/condition. The matching F594 nut, washer basis, installation state and geometry remain recorded.</p> : <>
+    {custom === null ? <><p>Catalog source-data gap: the controlled ASTM F593-17 tensile-strength table for Group 2 316/316L, cold-worked condition and selected diameter is missing. Bolt strength remains unevaluated. Per-connection supplier certification is not required by this workflow.</p><section className="information-status" aria-label="Fastener specification / procurement notes"><h4>Specification / procurement notes</h4><p>Specified fastener shall conform to ASTM F593 Group 2 316/316L. Matching F594 nut, washer basis, installation state and geometry remain recorded.</p></section></> : <>
       <p>Custom Fnt enables numerical bolt checks only. It does not qualify this fastener as ASTM F593.</p>
       <details><summary>Fastener technical details</summary><div className="field-grid">
         <label>Fastener name <input value={custom.snapshot.display_name} onChange={(event) => { update(custom, { display_name: event.currentTarget.value }); }} /></label>
