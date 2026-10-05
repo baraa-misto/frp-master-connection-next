@@ -12,6 +12,7 @@ from typing import Any
 import pytest
 from pypdf import PdfReader
 from tests.api.test_mat1_routes import call
+from tests.application.test_direct_f1_safety import _direct_payload
 from tests.direct_or2_fixtures import owner_body, owner_request
 
 from frp_master_connection.api.mat1 import MaterialConditionsDTO, resolve_conditions
@@ -238,3 +239,39 @@ def test_signed_report_reads_temperature_and_geometry_witnesses_without_recalcul
         assert "Tg applicability" in text
         assert "NOT CONFIRMED" in text
     assert (snapshot.request, snapshot.result) == original
+    if case == "near":
+        # The legacy OR1 case has seven invalid faces; report evidence must fit
+        # the existing ten-page gate without losing any face measurements.
+        body["legacy_request"] = _direct_payload(physically_contained=False)
+        result = call("POST", DESIGN, body).json()
+        snapshot = signer.verify(
+            signer.issue(
+                family="multi-row", kind="design", request=body, result=result, account_id="f2"
+            ),
+            account_id="f2",
+        )
+        original = deepcopy((snapshot.request, snapshot.result))
+        reader = PdfReader(
+            io.BytesIO(render_report_pdf(snapshot, ReportOptions(mode="ENGINEER_REPORT")))
+        )
+        assert len(reader.pages) <= 10
+        text = "".join("".join(p.extract_text() or "" for p in reader.pages).split())
+        invalid = [
+            item
+            for item in result["native_design"]["preview"]["direct_clearance_provenance"]
+            if not item["valid"]
+        ]
+        assert len(invalid) == 7
+        for witness in invalid:
+            assert witness["controlling_boundary_id"] in text
+            for key in (
+                "center_to_boundary",
+                "validator_minimum",
+                "chapter_8_minimum",
+                "bolt_radius",
+                "hole_radius",
+                "washer_radius",
+                "plane_offset",
+            ):
+                assert str(witness[key]) in text
+        assert (snapshot.request, snapshot.result) == original

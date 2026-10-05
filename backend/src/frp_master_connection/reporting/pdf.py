@@ -2356,50 +2356,41 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     )
     mat1_rows = _mat1_reader_rows(snapshot)
     if direct and isinstance(preview.get("direct_clearance_provenance"), list):
+        clearance_rows = []
+        unit = str(visual.get("source_length_unit", ""))
         for witness in preview["direct_clearance_provenance"]:
             if not isinstance(witness, dict) or witness.get("valid") is not False:
                 continue
-            unit = str(visual.get("source_length_unit", ""))
+            clearance_rows.append(
+                (
+                    f"{witness['bolt_id']} / {witness['component_id']} / "
+                    f"{witness['physical_element_id']}",
+                    f"Boundary: {witness['controlling_boundary_id']}; "
+                    f"actual: {witness['center_to_boundary']} {unit}; "
+                    f"validator: {witness['validator_minimum']} {unit}; "
+                    f"Chapter 8: {witness['chapter_8_minimum']} {unit}; "
+                    f"bolt / hole / washer radii: {witness['bolt_radius']} / "
+                    f"{witness['hole_radius']} / {witness['washer_radius']} {unit}; "
+                    f"plane offset: {witness['plane_offset']} {unit}",
+                )
+            )
+        if clearance_rows:
             story.append(
                 _paragraph("Geometry issue — canonical contact-patch boundary", styles["heading"])
             )
             story.append(
-                _table(
-                    [
-                        (
-                            "Affected bolt / member / element",
-                            f"{witness['bolt_id']} / {witness['component_id']} / "
-                            f"{witness['physical_element_id']}",
-                        ),
-                        ("Controlling boundary", str(witness["controlling_boundary_id"])),
-                        (
-                            "Actual center-to-boundary distance",
-                            f"{witness['center_to_boundary']} {unit}",
-                        ),
-                        ("Validator minimum", f"{witness['validator_minimum']} {unit}"),
-                        (
-                            "Separate Chapter 8 center-distance minimum",
-                            f"{witness['chapter_8_minimum']} {unit}",
-                        ),
-                        (
-                            "Bolt / hole / washer radii",
-                            f"{witness['bolt_radius']} / {witness['hole_radius']} / "
-                            f"{witness['washer_radius']} {unit}",
-                        ),
-                        ("Plane offset", f"{witness['plane_offset']} {unit}"),
-                    ],
-                    styles,
-                )
-            )
-            story.append(
                 _paragraph(
-                    "This is distance to the selected contact patch, which can be a subface; "
-                    "its boundary is not automatically a physical free member edge. Adjust "
-                    "placement within current members first. All individual boundary distances, "
-                    "vertices and axes remain in Full Technical Audit.",
+                    "Each row identifies the affected bolt / member / element and its "
+                    "Controlling boundary. Actual center-to-boundary distance, Validator minimum "
+                    "and the separate Chapter 8 center-distance minimum are followed by the "
+                    "Bolt / hole / washer radii and Plane offset. The selected contact patch "
+                    "can be a subface; its boundary is not automatically a physical free member "
+                    "edge. Adjust placement within current members first. All individual "
+                    "boundary distances, vertices and axes remain in Full Technical Audit.",
                     styles["body"],
                 )
             )
+            story.append(_table(clearance_rows, styles))
     if mat1_rows:
         story.append(_paragraph("Materials, conditions and design basis", styles["heading"]))
         story.append(_table(mat1_rows, styles))
