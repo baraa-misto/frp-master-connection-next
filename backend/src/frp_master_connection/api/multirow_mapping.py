@@ -17,7 +17,7 @@ from frp_master_connection.api.multirow_schemas import (
     MultiRowDesignResponseDTO,
     MultiRowPreviewResponseDTO,
 )
-from frp_master_connection.api.schemas import QuantityDTO
+from frp_master_connection.api.schemas import QuantityDTO, SingleBoltPreviewRequestDTO
 from frp_master_connection.application import (
     BoltAxisTensionInput,
     EngineerRowAllocationInput,
@@ -30,10 +30,12 @@ from frp_master_connection.application.direct_physical import (
     direct_face_clearance_provenance,
     is_direct_angle_w,
 )
+from frp_master_connection.application.multirow_orchestration import DirectMultiRowPreviewResult
 from frp_master_connection.calculation import (
     EndUseFactors,
     MethodProvenance,
     PhysicalQuantity,
+    Unit,
     canonical_decimal_string,
     decimal_from_finite_real,
 )
@@ -99,6 +101,26 @@ def map_multirow_request(request: MultiRowConnectionRequestDTO) -> MultiRowOrche
     direct_requested = request.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
     if direct_requested and not is_direct_angle_w(physical_request):
         raise ValueError("The Direct F1 route requires the physical FRP angle/W family.")
+    if direct_requested:
+        direct_physical = cast(SingleBoltPreviewRequestDTO, request.physical_connection)
+        unit = request.source_length_unit
+        # Same native rule as _rectangular_geometry: the loaded boundary is
+        # independent of presentation extents and the entered loaded distance.
+        physical_length = (
+            2 * _quantity(request.unloaded_end_e1).to(unit).magnitude
+            + (request.row_count - 1) * _quantity(request.pitch).to(unit).magnitude
+        )
+        physical_unit = (
+            Unit.IN
+            if direct_physical.joint_assembly.unit_system.value == "US_CUSTOMARY"
+            else Unit.MM
+        )
+        physical_request = map_single_bolt_preview_request(
+            direct_physical,
+            direct_brace_physical_length=float(
+                PhysicalQuantity.of(physical_length, unit).to(physical_unit).magnitude
+            ),
+        )
     return MultiRowOrchestrationRequest(
         request.request_id,
         request.connection_id,
@@ -231,6 +253,9 @@ def serialize_multirow_preview(
             ),
             "direct_clearance_provenance": _direct_clearance(response)
             if include_direct_clearance
+            else [],
+            "direct_engineering_geometry": _serialize(response.direct_engineering_geometry)
+            if include_direct_clearance and isinstance(response, DirectMultiRowPreviewResult)
             else [],
         }
     )

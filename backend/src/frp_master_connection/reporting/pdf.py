@@ -2312,7 +2312,8 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         preview_warnings = preview.get("warnings", [])
         if preview.get("geometry_status") == "INVALID_GEOMETRY":
             primary_blocker = (
-                "Bolt center does not meet selected contact-patch containment; see geometry notices"
+                "Physical edge/end distance, hole containment or hardware fit fails; "
+                "see physical geometry checks"
                 if isinstance(preview_warnings, list)
                 and any(
                     isinstance(item, str) and item.startswith("DIRECT_PHYSICAL_CONTAINMENT:")
@@ -2355,7 +2356,55 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         primary_blocker=primary_blocker,
     )
     mat1_rows = _mat1_reader_rows(snapshot)
-    if direct and isinstance(preview.get("direct_clearance_provenance"), list):
+    engineering_faces = preview.get("direct_engineering_geometry")
+    if direct and isinstance(engineering_faces, list):
+        names = {
+            "CHAPTER_8_EDGE_DISTANCE": "Chapter 8 physical free-edge distance",
+            "CHAPTER_8_END_DISTANCE": "Chapter 8 loaded-end distance",
+            "HOLE_PHYSICAL_CONTAINMENT": "Physical hole containment",
+            "WASHER_SEATING": "Washer seating / hardware clearance",
+            "COMPONENT_INTERFERENCE": "Physical component interference",
+        }
+        failures = []
+        for face in engineering_faces:
+            if not isinstance(face, dict):
+                continue
+            for check in face.get("checks", []):
+                if not isinstance(check, dict) or check.get("pass_fail") != "FAIL":
+                    continue
+                actual = _dimension_label(
+                    {"value": check["actual_distance"], "unit": check["unit"]}, system
+                )
+                required = _dimension_label(
+                    {"value": check["required_distance"], "unit": check["unit"]}, system
+                )
+                failures.append(
+                    (
+                        f"{check['bolt_id']} / {check['component_id']} / "
+                        f"{check['physical_element_id']}",
+                        f"{names.get(str(check['check_kind']), 'Physical geometry')}: "
+                        f"{check['boundary_label']}; actual "
+                        f"{actual}; required {required}; FAIL",
+                    )
+                )
+        if failures:
+            story.append(_paragraph("Physical engineering geometry checks", styles["heading"]))
+            story.append(_table(failures, styles))
+        story.append(
+            _paragraph(
+                "Chapter 8 uses physical member ends and free side edges. Hole containment "
+                "and washer seating are evaluated separately. Full Technical Audit retains "
+                "all physical boundary coordinates and COMPUTATIONAL CONTACT-PATCH BOUNDARY "
+                "witnesses — NOT AN ENGINEERING EDGE UNLESS MAPPED. Nut/head envelopes and "
+                "unresolved heel/fillet shapes are not supplied; checks use represented geometry.",
+                styles["body"],
+            )
+        )
+    if (
+        direct
+        and engineering_faces is None
+        and isinstance(preview.get("direct_clearance_provenance"), list)
+    ):
         clearance_rows = []
         unit = str(visual.get("source_length_unit", ""))
         for witness in preview["direct_clearance_provenance"]:

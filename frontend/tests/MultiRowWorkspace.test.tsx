@@ -3,9 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { EvaluationTransportError } from "../src/api/client";
 import { clearanceWitness } from "./directGeometryIssueFixtures";
+import f3Faces from "./fixtures/directF3EngineeringFaces.json";
 import type { VisualizationSnapshot } from "../src/api/contracts";
 import type {
   MultiRowConnectionRequest,
+  DirectEngineeringFace,
   MultiRowDesignResponse,
   MultiRowPreviewResponse,
 } from "../src/api/multirowContracts";
@@ -633,7 +635,11 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     const witness = unit === "in" ? clearanceWitness : JSON.parse(JSON.stringify(clearanceWitness, (_key, value: unknown) => typeof value === "string" && /^[+-]?(?:\d*\.)?\d+$/u.test(value) ? String(Number(value) * 25.4) : value)) as typeof clearanceWitness;
     if (basePreview.visualization === null) throw new Error("Canonical fixture required");
     basePreview.visualization.source_length_unit = unit;
-    const preview = { ...basePreview, direct_clearance_provenance: [
+    const physicalFace = (unit === "in" ? f3Faces.free : JSON.parse(JSON.stringify(f3Faces.free, (_key, value: unknown) => typeof value === "string" && /^[+-]?(?:\d*\.)?\d+$/u.test(value) ? String(Number(value) * 25.4) : value))) as unknown as DirectEngineeringFace;
+    const preview = { ...basePreview, direct_engineering_geometry: [
+      { ...physicalFace, bolt_id: "B_R1_L1" },
+      { ...physicalFace, bolt_id: "B_R2_L1" },
+    ], direct_clearance_provenance: [
       { ...witness, valid: true },
       { ...witness, bolt_id: "B_R1_L1" },
       witness,
@@ -653,6 +659,8 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByRole("region", { name: "INFORMATION" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "INFORMATION" })).toHaveClass("information-status");
     fireEvent.click(screen.getByRole("button", { name: /Bolt B_R2_L1.*Show geometry issue/u }));
+    expect(screen.getByRole("region", { name: "Physical engineering geometry" })).toBeVisible();
+    fireEvent.click(screen.getByText("Advanced Engineering Diagnostics — computational contact patch"));
     expect(screen.getByRole("region", { name: "Canonical geometry issue" })).toBeInTheDocument();
     expect(screen.getByText("Bolt / Interface", { exact: true })).toBeInTheDocument();
   });

@@ -229,9 +229,9 @@ def test_signed_report_reads_temperature_and_geometry_witnesses_without_recalcul
         " ".join(p.extract_text() or "" for p in PdfReader(io.BytesIO(pdf)).pages).split()
     )
     if case == "near":
-        assert "Controlling boundary" in text
-        assert ":E1" in text
-        assert "Actual center-to-boundary distance" in text
+        assert "Chapter 8 physical free-edge distance" in text
+        assert "negative physical free side edge" in text
+        assert ":E1" not in text
         assert "0.086" in text
     else:
         assert "Sustained operating material temperature" in text
@@ -262,8 +262,14 @@ def test_signed_report_reads_temperature_and_geometry_witnesses_without_recalcul
             if not item["valid"]
         ]
         assert len(invalid) == 7
+        # Exhaustive computational/native evidence belongs to the technical
+        # appendix after F3, rather than the normal engineering explanation.
+        audit_reader = PdfReader(
+            io.BytesIO(render_report_pdf(snapshot, ReportOptions(mode="FULL_TECHNICAL_AUDIT")))
+        )
+        audit_text = "".join("".join(p.extract_text() or "" for p in audit_reader.pages).split())
         for witness in invalid:
-            assert witness["controlling_boundary_id"] in text
+            assert witness["controlling_boundary_id"] in audit_text
             for key in (
                 "center_to_boundary",
                 "validator_minimum",
@@ -273,5 +279,5 @@ def test_signed_report_reads_temperature_and_geometry_witnesses_without_recalcul
                 "washer_radius",
                 "plane_offset",
             ):
-                assert str(witness[key]) in text
+                assert str(witness[key]) in audit_text
         assert (snapshot.request, snapshot.result) == original

@@ -31,6 +31,36 @@ export interface DirectFaceClearance {
   readonly valid: boolean;
 }
 
+export interface DirectEngineeringCheck {
+  readonly check_kind: string;
+  readonly engineering_boundary_id: string;
+  readonly engineering_boundary_role: string;
+  readonly actual_distance: string;
+  readonly required_distance: string;
+  readonly pass_fail: string;
+  readonly boundary_label: string;
+  readonly source_rule: string;
+}
+
+export interface DirectEngineeringFace {
+  readonly bolt_id: string;
+  readonly component_id: string;
+  readonly physical_element_id: string;
+  readonly bolt_center_member_local: readonly [string, string, string];
+  readonly transverse_axis: number;
+  readonly face_vertices_local: readonly (readonly [string, string, string])[];
+  readonly boundaries: readonly {
+    readonly boundary_id: string;
+    readonly start_local: readonly [string, string, string];
+    readonly end_local: readonly [string, string, string];
+    readonly dimension_end_local: readonly [string, string, string];
+  }[];
+  readonly checks: readonly DirectEngineeringCheck[];
+  readonly hole_radius: string;
+  readonly washer_radius: string;
+  readonly limitations: readonly string[];
+}
+
 export interface MultiRowConnectionRequest {
   orchestration_contract_version: "2.5C-RC1";
   direct_finalization_contract_version?: "SHEAR01-DIRECT-F1";
@@ -315,6 +345,7 @@ export interface DirectSingleRowResult {
 
 export interface MultiRowPreviewResponse {
   readonly direct_clearance_provenance?: readonly DirectFaceClearance[];
+  readonly direct_engineering_geometry?: readonly DirectEngineeringFace[];
   api_transport_schema_version: "0.3.0-draft";
   orchestration_contract_version: "2.5C-RC1";
   preview_schema_version: "0.2.0-draft";

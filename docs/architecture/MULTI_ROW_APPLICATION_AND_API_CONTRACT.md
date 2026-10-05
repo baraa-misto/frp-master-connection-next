@@ -97,3 +97,28 @@ Preview returns no Stage 2.6A result and executes zero Stage 2.6A or Stage 2.4B
 resistance. The explicit resolved-demand design path remains byte-for-byte separate and
 returns no automatic integration object. The API maps application objects only; it
 contains no engineering reduction or calculation entry-point import.
+
+## Direct OR2 F3 physical engineering geometry extension
+
+The Direct Angle-to-W adapter adds server-authored `direct_engineering_geometry`
+to Direct previews and their authenticated design snapshots. Each bolt and
+penetrated element records physical ends, free side edges, internal junctions,
+represented obstructions, exact coordinates, physical-source identities,
+eligibility, separate evaluated checks and explicit model limitations. The
+ordinary Chapter 8 e2 minimum remains 1.5d. Hole and washer radii are separate
+physical checks. Selected contact patches retain interface/penetration identity;
+their subdivision boundaries supply no engineering limit without a physical
+mapping. Raw patch witnesses remain under `direct_clearance_provenance` and are
+explicitly computational diagnostics.
+
+The owner-authorized Direct reconciliation rebuilds the Angle's physical length
+from its existing native bolt-layout boundary rule while retaining the exact
+frame and bolt anchors. The owner 135-degree 2 × 1 case has submitted, native,
+physical and Chapter 8 loaded-end distance 3 in / 76.2 mm. Presentation extents
+remain separate. The additional application metadata uses a Direct-only preview
+subclass; other families keep their original serialization and fingerprints.
+Clients cannot submit physical-check results. The report renderer reads the
+signed snapshot and supplies no geometry or resistance authority.
+
+See `docs/qa/SHEAR01_DIRECT_OR2_F3.md` for the bounded cases and QA gates. This
+successor activates no engineering source, qualification or missing method.

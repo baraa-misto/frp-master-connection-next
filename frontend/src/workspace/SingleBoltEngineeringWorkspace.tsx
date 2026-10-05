@@ -2,6 +2,7 @@ import { viewerUnity } from "./unityRatio";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
 import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
+import { DirectEngineeringGeometryIssue } from "../features/DirectEngineeringGeometryIssue";
 import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
@@ -1269,6 +1270,9 @@ export function SingleBoltEngineeringWorkspace() {
   const selectedGeometryIssue = multirowPreview.response?.direct_clearance_provenance?.find(
     (record) => !record.valid && selection.kind === "BOLT" && record.bolt_id === selection.id,
   );
+  const selectedEngineeringFaces = multirowPreview.response?.direct_engineering_geometry?.filter(
+    (record) => selection.kind === "BOLT" && record.bolt_id === selection.id,
+  ) ?? [];
   const failedDirectChecks = directSingleRow?.failed_check_ids
     ?? automaticGroupModeIntegration?.failed_check_ids ?? [];
   const directDisposition = directSingleRow?.overall_disposition
@@ -1460,7 +1464,8 @@ export function SingleBoltEngineeringWorkspace() {
                 return <li key={`${item.text}:${String(index)}`}>{boltId === undefined ? item.text : <button type="button" onClick={() => { setSelection({ kind: "BOLT", id: boltId }); }}>{item.text} Show geometry issue</button>}</li>;
               })}</ul></section>;
             }) : supportedMultirowArrangement ? multirowPreview.response?.warnings.map((warning) => <p className={describeDirectWarning(warning).group === "information" ? "information-status" : "unsupported-note"} key={warning}>{describeDirectWarning(warning).text}</p>) : null}
-            {selectedGeometryIssue === undefined ? null : <DirectGeometryIssue record={selectedGeometryIssue} unit={multirowPreview.response?.visualization?.source_length_unit === "mm" ? "mm" : "in"} />}
+            {selectedEngineeringFaces.map((record) => <DirectEngineeringGeometryIssue key={`${record.component_id}:${record.physical_element_id}`} record={record} unit={multirowPreview.response?.visualization?.source_length_unit === "mm" ? "mm" : "in"} />)}
+            {selectedGeometryIssue === undefined ? null : <details><summary>Advanced Engineering Diagnostics — computational contact patch</summary><p>COMPUTATIONAL CONTACT-PATCH BOUNDARY — NOT AN ENGINEERING EDGE UNLESS MAPPED. Historical rectangle comparisons are retained for audit; current physical checks govern.</p><DirectGeometryIssue record={selectedGeometryIssue} unit={multirowPreview.response?.visualization?.source_length_unit === "mm" ? "mm" : "in"} /></details>}
             {(supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated) ? <p className="stale-notice" role="status">Updating connection model…</p> : null}
           </SidebarGroup>
 

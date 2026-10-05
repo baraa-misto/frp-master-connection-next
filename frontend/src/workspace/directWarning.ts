@@ -6,6 +6,12 @@ export function describeDirectWarning(raw: string): { group: WarningGroup; text:
   const containment = /^DIRECT_PHYSICAL_CONTAINMENT:([^:]+):([^:]+):([^:]+):(.+)$/u.exec(raw);
   if (containment !== null) {
     const [, boltId, memberId, face, detail] = containment as unknown as [string, string, string, string, string];
+    const physical = /^(CHAPTER_8_EDGE_DISTANCE|CHAPTER_8_END_DISTANCE|HOLE_PHYSICAL_CONTAINMENT|WASHER_SEATING|COMPONENT_INTERFERENCE) — (.+): available=([^;]+); required=([^;]+)\. unit=(in|mm)\./u.exec(detail);
+    if (physical !== null) {
+      const names = { CHAPTER_8_EDGE_DISTANCE: "Chapter 8 physical free-edge distance", CHAPTER_8_END_DISTANCE: "Chapter 8 loaded-end distance", HOLE_PHYSICAL_CONTAINMENT: "Physical hole containment", WASHER_SEATING: "Washer seating / hardware clearance", COMPONENT_INTERFERENCE: "Physical component interference" };
+      const [, kind, feature, actual, required, unit] = physical as unknown as [string, keyof typeof names, string, string, string, string];
+      return { group: "geometry", boltId, text: `Bolt ${boltId} on ${friendlyIdentifier(memberId)} ${friendlyIdentifier(face)}: ${names[kind]} to ${feature}; actual ${formatDecimal(actual, 3)} ${unit}, required ${formatDecimal(required, 3)} ${unit}. Adjust the actual bolt location or physical hardware clearance.` };
+    }
     const clearance = /available=([^;]+); required=([^;]+); plane=([^;]+)\. unit=(in|mm)/u.exec(detail);
     if (clearance !== null) {
       const [, available, required, , unit] = clearance as unknown as [string, string, string, string, string];

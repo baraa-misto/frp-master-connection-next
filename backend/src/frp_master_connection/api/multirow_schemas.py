@@ -228,6 +228,9 @@ class MultiRowConnectionRequestDTO(_StrictModel):
 
 
 class MultiRowPreviewResponseDTO(_StrictModel):
+    direct_engineering_geometry: list[dict[str, JsonValue]] = Field(
+        default_factory=list, exclude_if=lambda value: not value
+    )
     direct_clearance_provenance: list[dict[str, JsonValue]] = Field(
         default_factory=list, exclude_if=lambda value: not value
     )

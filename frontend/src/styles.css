@@ -1209,6 +1209,7 @@ td {
 .sidebar-group > summary small,
 .results-drawer > summary small { color: #687584; font-size: 0.64rem; font-weight: 650; text-align: right; }
 .sidebar-group-body { display: grid; gap: 0.65rem; padding: 0 0.75rem 0.8rem; }
+.sidebar-group-body:has(> .direct-engineering-geometry) { grid-template-columns: minmax(0, 1fr); }
 .sidebar-group .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.55rem; }
 .sidebar-group .field-control input,
 .sidebar-group .field-control select { min-height: 2.2rem; padding-block: 0.4rem; }

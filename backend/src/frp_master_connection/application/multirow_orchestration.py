@@ -14,8 +14,12 @@ from frp_master_connection.actions import (
     ResolvedManualMemberEndAction,
     resolve_manual_member_end_action,
 )
+from frp_master_connection.application.direct_engineering_geometry import (
+    DirectEngineeringFace,
+    direct_engineering_geometry,
+    direct_engineering_issues,
+)
 from frp_master_connection.application.direct_physical import (
-    direct_bolt_containment_issues,
     direct_material_axis_angle,
     direct_material_force_angle,
     is_direct_angle_w,
@@ -519,6 +523,13 @@ class MultiRowPreviewResult:
     visualization: MultiRowVisualizationSnapshot | None
     demand_source: MultiRowDemandSource
     automatic_demand_result: EccentricDemandResult | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class DirectMultiRowPreviewResult(MultiRowPreviewResult):
+    """Direct-only provenance; other families retain the exact native base contract."""
+
+    direct_engineering_geometry: tuple[DirectEngineeringFace, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -1614,12 +1625,21 @@ def _preview_from_resolved(
     physical_warnings = tuple(dict.fromkeys(warnings))
     load_blockers = _direct_load_blockers(request, resolved.authority)
     physical_warnings = (*physical_warnings, *load_blockers)
+    engineering_faces: tuple[DirectEngineeringFace, ...] = ()
     if request.direct_finalization_mode:
         if physical is None:
             raise ValueError("DIRECT_PHYSICAL_SNAPSHOT_REQUIRED")
-        containment = direct_bolt_containment_issues(
-            physical, tuple(item.display for item in visualization.physical_bolts)
+        demand = visualization.connection_demand
+        if demand is None:
+            raise ValueError("DIRECT_PHYSICAL_FORCE_DIRECTION_REQUIRED")
+        engineering_faces = direct_engineering_geometry(
+            physical,
+            tuple(item.display for item in visualization.physical_bolts),
+            row_count=request.row_count,
+            force_global=(demand.axis.x, demand.axis.y, demand.axis.z),
+            brace_local_x={item.bolt_id: item.x for item in visualization.bolts},
         )
+        containment = direct_engineering_issues(engineering_faces)
         if containment:
             physical_geometry_valid = False
             physical_warnings = (
@@ -1637,7 +1657,7 @@ def _preview_from_resolved(
             *physical_warnings,
             f"INVALID_PHYSICAL_CONNECTION_GEOMETRY:{participants}",
         )
-    return MultiRowPreviewResult(
+    preview = MultiRowPreviewResult(
         request.request_id,
         request.connection_id,
         MULTIROW_ORCHESTRATION_CONTRACT_VERSION,
@@ -1673,6 +1693,12 @@ def _preview_from_resolved(
         request.demand_source,
         automatic_demand,
     )
+    if request.direct_finalization_mode:
+        return DirectMultiRowPreviewResult(
+            **{field.name: getattr(preview, field.name) for field in fields(preview)},
+            direct_engineering_geometry=engineering_faces,
+        )
+    return preview
 
 
 def preview_multirow_connection(request: MultiRowOrchestrationRequest) -> MultiRowPreviewResult:

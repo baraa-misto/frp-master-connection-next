@@ -732,6 +732,21 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # F3 adds only signed physical-edge PDFs and 50 focused cases.
+            # Remove those exact additions before auditing the sealed predecessor.
+            f3_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 F3 review PDFs
+        run: python ../scripts/generate_direct_or2_f3_ci_pdfs.py --output direct-or2-f3-review-pdfs
+      - name: Upload Direct OR2 F3 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-f3-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-f3-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f3_pdf_steps) == 1
+            raw = raw.replace(f3_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7897") == 1
+            raw = raw.replace(b"--expected-tests 7897", b"--expected-tests 7847")
             # F2 adds only signed platform evidence and its fourteen exact tests.
             f2_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 F2 review PDFs
         run: python ../scripts/generate_direct_or2_f2_ci_pdfs.py --output direct-or2-f2-review-pdfs

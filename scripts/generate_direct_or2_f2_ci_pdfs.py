@@ -89,7 +89,7 @@ def main() -> None:
             assert len(reader.pages) <= 10 if mode == "ENGINEER_REPORT" else len(reader.pages) > 100
             if input_only:
                 assert "design not evaluated" in text.lower()
-                assert "Controlling boundary" in text and ":E1" in text and "0.086" in text
+                assert "Chapter 8 physical free-edge distance" in text and "0.086" in text
             else:
                 assert "Sustained operating material temperature" in text
                 assert "Maximum expected material temperature" in text

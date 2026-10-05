@@ -43,6 +43,9 @@ class DirectBoundaryDistance:
     end_local: tuple[float, float]
     distance: float
     dimension_end_local: tuple[float, float]
+    semantic_role: str = "COMPUTATIONAL_SUBFACE_BOUNDARY"
+    computational_only: bool = True
+    engineering_edge_authority: bool = False
 
 
 @dataclass(frozen=True, slots=True)

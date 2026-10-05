@@ -66,7 +66,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7847
+          --expected-tests 7897
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider
@@ -105,6 +105,14 @@ jobs:
         with:
           name: direct-or2-f2-pdfs-${{ matrix.os }}
           path: backend/direct-or2-f2-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed-snapshot Direct OR2 F3 review PDFs
+        run: python ../scripts/generate_direct_or2_f3_ci_pdfs.py --output direct-or2-f3-review-pdfs
+      - name: Upload Direct OR2 F3 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-f3-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-f3-review-pdfs/
           if-no-files-found: error
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help

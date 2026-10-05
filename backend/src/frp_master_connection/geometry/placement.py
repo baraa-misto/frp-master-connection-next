@@ -724,6 +724,28 @@ def place_member(
     )
 
 
+def place_member_with_physical_length(
+    placed: PlacedComponentGeometry3D,
+    length: float,
+) -> PlacedComponentGeometry3D:
+    """Rebuild a member's physical extent while retaining its exact resolved frame.
+
+    This explicit builder is used by Direct's engineering-boundary reconciliation.
+    Reconstructing START/END and normalizing them again would perturb the approved
+    load frame. The section, datum, start and axes are retained without rounding.
+    """
+    if not isinstance(placed.component, AssemblyMember):
+        raise ValueError("Physical member length requires a placed member.")
+    return PlacedComponentGeometry3D(
+        placed.component,
+        placed.global_frame,
+        LongitudinalExtent(0.0, length),
+        placed.section_offset,
+        placed.cross_section,
+        _construction_key=_CONTROLLED_CONSTRUCTION_KEY,
+    )
+
+
 def place_connector(
     connector: ConnectorComponent,
     cross_section: CrossSectionGeometry2D,
