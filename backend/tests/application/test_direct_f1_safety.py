@@ -31,12 +31,14 @@ from frp_master_connection.reporting.pdf import (
 )
 from frp_master_connection.reporting.reader_views import multirow_physical_geometry
 from frp_master_connection.reporting.snapshot import SnapshotSigner
+from tests.direct_or2_fixtures import historical_support_ends
 from tests.test_multirow_api import DESIGN_ROUTE, PREVIEW_ROUTE, _automatic_payload, _post, _q
 
 
 def _direct_payload(*, physically_contained: bool = True) -> dict[str, object]:
     payload = _automatic_payload(zero_moments=True)
     payload["direct_finalization_contract_version"] = "SHEAR01-DIRECT-F1"
+    payload["supporting_w_longitudinal_ends"] = historical_support_ends()
     payload["lap_configuration"] = "SINGLE_LAP"
     legacy_layer = cast(dict[str, object], cast(list[object], payload["layers"])[0])
     payload["layers"] = [
@@ -140,7 +142,10 @@ def test_direct_single_lap_reduces_each_executed_frp_resistance_and_not_steel() 
         )
         checks = cast(list[dict[str, object]], local["checks"])
         evaluated = [check for check in checks if check["availability"] == "CALCULATED"]
-        assert {check["layer_id"] for check in evaluated} == {"layer-A", "layer-B"}
+        assert {check["layer_id"] for check in evaluated} == {"layer-A"}
+        assert all(
+            check["design_resistance"] is None for check in checks if check["layer_id"] == "layer-B"
+        )
         assert {check["limit_state"] for check in evaluated} >= {
             "SINGLE_ROW_NET_TENSION",
             "SINGLE_ROW_SHEAR_OUT",
@@ -260,7 +265,7 @@ def test_direct_bolt_ids_follow_canonical_force_directed_rows() -> None:
             assert bolt.bolt_id.split("_L", 1)[0].replace("B_R", "ROW_") == bolt.row_id
 
 
-def test_direct_one_row_variants_evaluate_source_methods_for_both_physical_layers() -> None:
+def test_direct_one_row_variants_preserve_angle_methods_and_require_independent_w_paths() -> None:
     for count in (1, 2, 3):
         design = evaluate_multirow_connection(_request(_one_row_payload(count)))
         assert design.preview.geometry_status is GeometryStatus.VALID
@@ -273,7 +278,14 @@ def test_direct_one_row_variants_evaluate_source_methods_for_both_physical_layer
         )
         assert {item.layer_id for item in local.checks} == {"layer-A", "layer-B"}
         assert all(
-            item.availability.value == "CALCULATED" for item in local.checks if item.required
+            item.availability.value == "CALCULATED"
+            for item in local.checks
+            if item.required and item.layer_id == "layer-A"
+        )
+        assert all(
+            item.availability.value == "CALCULATION_NOT_SUPPORTED"
+            for item in local.checks
+            if item.required and item.layer_id == "layer-B"
         )
         assert any(
             item.layer_id == "layer-B" and item.availability.value == "NOT_APPLICABLE"
@@ -283,7 +295,7 @@ def test_direct_one_row_variants_evaluate_source_methods_for_both_physical_layer
         assert all(
             item.equation_method == expected_net_method
             for item in local.checks
-            if item.limit_state == "SINGLE_ROW_NET_TENSION"
+            if item.limit_state == "SINGLE_ROW_NET_TENSION" and item.layer_id == "layer-A"
         )
         serialized = serialize_multirow_design(design).model_dump()
         integration = cast(dict[str, object], serialized["automatic_group_mode_integration"])

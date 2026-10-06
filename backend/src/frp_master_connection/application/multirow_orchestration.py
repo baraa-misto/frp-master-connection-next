@@ -149,6 +149,12 @@ from .connection_preview import PreviewGeometryStatus, preview_single_bolt_conne
 from .direct_frame import direct_axial_frame_input
 from .direct_group_mode import evaluate_direct_layered_group_modes
 from .direct_single_row import DirectSingleRowResult, evaluate_direct_single_row
+from .direct_support_ends import (
+    DirectSupportEndAuthority,
+    DirectSupportEndCondition,
+    DirectSupportEndInput,
+    resolve_direct_support_ends,
+)
 from .visualization import (
     BoltDisplaySnapshot,
     ConnectionViewExtents,
@@ -283,6 +289,7 @@ class MultiRowOrchestrationRequest:
     automatic_action_source_id: str | None = None
     single_row_geometry_preview_authorized: bool = False
     direct_finalization_mode: bool = False
+    supporting_w_longitudinal_ends: DirectSupportEndInput | None = None
 
     def __post_init__(self) -> None:
         identities = (
@@ -311,6 +318,8 @@ class MultiRowOrchestrationRequest:
         ):
             raise ValueError("Direct finalization requires the physical FRP angle/W family.")
         if self.direct_finalization_mode:
+            if self.supporting_w_longitudinal_ends is None:
+                object.__setattr__(self, "supporting_w_longitudinal_ends", DirectSupportEndInput())
             physical = cast(SingleBoltOrchestrationRequest, self.physical_connection_request)
             if (
                 physical.lap_configuration is not LapConfiguration.SINGLE_LAP
@@ -530,6 +539,7 @@ class DirectMultiRowPreviewResult(MultiRowPreviewResult):
     """Direct-only provenance; other families retain the exact native base contract."""
 
     direct_engineering_geometry: tuple[DirectEngineeringFace, ...] = ()
+    direct_support_end_authority: DirectSupportEndAuthority | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -1177,6 +1187,10 @@ def _canonical(value: object) -> object:
             field.name: _canonical(getattr(value, field.name))
             for field in fields(value)
             if field.name != "display_unit_system"
+            and not (
+                field.name == "supporting_w_longitudinal_ends"
+                and getattr(value, field.name) is None
+            )
             and not (field.name == "direct_finalization_mode" and not getattr(value, field.name))
             and not (
                 field.name == "single_row_geometry_preview_authorized"
@@ -1203,6 +1217,15 @@ def _canonical_multirow_preview_json(
     """Expose deterministic pre-hash content to focused internal tests."""
 
     payload = {"request": _canonical(request), "visualization": _canonical(snapshot)}
+    if request.direct_finalization_mode:
+        # The frozen display-only contract also applies to the Direct group
+        # preview fingerprint. Real support ends stay in the signed request.
+        request_payload = cast(dict[str, object], payload["request"])
+        request_payload.pop("connection_view_extents", None)
+        visual_payload = cast(dict[str, object], payload["visualization"])
+        physical_payload = visual_payload.get("physical_connection")
+        if isinstance(physical_payload, dict):
+            physical_payload.pop("view_extension_primitives", None)
     return json.dumps(payload, ensure_ascii=True, separators=(",", ":"), sort_keys=True)
 
 
@@ -1626,18 +1649,44 @@ def _preview_from_resolved(
     load_blockers = _direct_load_blockers(request, resolved.authority)
     physical_warnings = (*physical_warnings, *load_blockers)
     engineering_faces: tuple[DirectEngineeringFace, ...] = ()
+    support_end_authority = None
     if request.direct_finalization_mode:
         if physical is None:
             raise ValueError("DIRECT_PHYSICAL_SNAPSHOT_REQUIRED")
         demand = visualization.connection_demand
         if demand is None:
             raise ValueError("DIRECT_PHYSICAL_FORCE_DIRECTION_REQUIRED")
+        template_axes = _exact_template_group_axes(
+            cast(SingleBoltOrchestrationRequest, request.physical_connection_request)
+        )
+        if template_axes is None:
+            raise ValueError("DIRECT_SUPPORT_END_CANONICAL_TEMPLATE_REQUIRED")
+        support_end_authority = resolve_direct_support_ends(
+            cast(DirectSupportEndInput, request.supporting_w_longitudinal_ends),
+            physical,
+            tuple(item.display for item in visualization.physical_bolts),
+            interface_id=cast(
+                SingleBoltOrchestrationRequest, request.physical_connection_request
+            ).interface_id,
+            anchor_x=request.unloaded_end_e1.to(request.source_length_unit).magnitude,
+            native_centers={item.bolt_id: (item.x, item.y) for item in visualization.bolts},
+            template_axes=template_axes,
+            force_global=(demand.axis.x, demand.axis.y, demand.axis.z),
+        )
+        if support_end_authority.condition is DirectSupportEndCondition.UNSPECIFIED:
+            load_blockers = (
+                *load_blockers,
+                "INPUT_NEEDED: Specify whether the supporting W continues through the connection "
+                "or has a nearby member end.",
+            )
+            physical_warnings = (*physical_warnings, load_blockers[-1])
         engineering_faces = direct_engineering_geometry(
             physical,
             tuple(item.display for item in visualization.physical_bolts),
             row_count=request.row_count,
             force_global=(demand.axis.x, demand.axis.y, demand.axis.z),
             brace_local_x={item.bolt_id: item.x for item in visualization.bolts},
+            support_end_authority=support_end_authority,
         )
         containment = direct_engineering_issues(engineering_faces)
         if containment:
@@ -1697,6 +1746,7 @@ def _preview_from_resolved(
         return DirectMultiRowPreviewResult(
             **{field.name: getattr(preview, field.name) for field in fields(preview)},
             direct_engineering_geometry=engineering_faces,
+            direct_support_end_authority=support_end_authority,
         )
     return preview
 
@@ -2555,7 +2605,9 @@ def evaluate_multirow_connection(
                 pair
                 for item in handoff_inputs
                 for pair in evaluate_direct_layered_group_modes(
-                    item, AUTOMATIC_GROUP_MODE_TRACE_LAYERS
+                    item,
+                    AUTOMATIC_GROUP_MODE_TRACE_LAYERS,
+                    cast(DirectMultiRowPreviewResult, preview).direct_support_end_authority,
                 )
             )
             handoffs = tuple(item[0] for item in pairs)
@@ -2591,6 +2643,7 @@ def evaluate_multirow_connection(
                 integration.incomplete_required_check_ids,
                 integration.failed_check_ids,
                 integration.result_fingerprint,
+                cast(DirectMultiRowPreviewResult, preview).direct_support_end_authority,
             )
             if request.direct_finalization_mode and request.row_count == 1
             else None

@@ -3,6 +3,8 @@ import { useMemo, useRef, useState, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
 import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
 import { DirectEngineeringGeometryIssue } from "../features/DirectEngineeringGeometryIssue";
+import { DirectSupportEnds, DirectSupportViewerCue, supportEndValidation } from "../features/DirectSupportEnds";
+import type { DirectSupportEndInput } from "../api/multirowContracts";
 import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
@@ -592,6 +594,7 @@ export function buildMultirowRequest(
   viewExtents: ConnectionViewExtentsDTO,
   group: BoltGroupState,
   demandMode: DemandMode,
+  supportEnds: DirectSupportEndInput = { condition: "UNSPECIFIED" },
 ): MultiRowConnectionRequest {
   const lengthUnit = sourceLengthUnit(request);
   const brace = requiredAt(request.joint_assembly.members, 0, "Brace member");
@@ -616,6 +619,7 @@ export function buildMultirowRequest(
   return {
     orchestration_contract_version: "2.5C-RC1",
     direct_finalization_contract_version: "SHEAR01-DIRECT-F1",
+    supporting_w_longitudinal_ends: supportEnds,
     request_id: `${request.calculation_id}-MULTIROW`,
     connection_id: request.joint_assembly.id,
     interface_id: request.interface_id,
@@ -776,6 +780,8 @@ export function SingleBoltEngineeringWorkspace() {
     loadJ1ViewExtents("US_CUSTOMARY"),
   );
   const viewExtentsRef = useRef(viewExtents);
+  const [supportEnds, setSupportEnds] = useState<DirectSupportEndInput>({ condition: "UNSPECIFIED" });
+  const supportEndsRef = useRef(supportEnds);
   const engineeringRevisionRef = useRef(0);
   const previewRevisionRef = useRef(0);
   const [previewInput, setPreviewInput] = useState<CanonicalPreviewInput>(() => {
@@ -817,15 +823,15 @@ export function SingleBoltEngineeringWorkspace() {
     : previewInput, [directF1Family, previewInput]);
   const preview = useCanonicalPreview(singlePreviewInput);
   const multirowRequest = useMemo(
-    () => buildMultirowRequest(request, viewExtents, groupState, demandMode),
-    [demandMode, groupState, request, viewExtents],
+    () => buildMultirowRequest(request, viewExtents, groupState, demandMode, supportEnds),
+    [demandMode, groupState, request, viewExtents, supportEnds],
   );
   const multirowPreviewInput = useMemo(() => ({
     request: multirowRequest,
     revision: multirowRevision,
     immediate: false,
-    validationMessage: multirowValidationMessage(request, groupState, demandMode),
-  }), [demandMode, groupState, multirowRequest, multirowRevision, request]);
+    validationMessage: supportEndValidation(supportEnds) ?? multirowValidationMessage(request, groupState, demandMode),
+  }), [demandMode, groupState, multirowRequest, multirowRevision, request, supportEnds]);
   const multirowPreview = useMultiRowPreview(multirowPreviewInput);
   const singleArrangement = groupState.rowCount === 1 && groupState.boltsPerRow === 1 && !directF1Family;
   const supportedMultirowArrangement = !singleArrangement;
@@ -834,7 +840,7 @@ export function SingleBoltEngineeringWorkspace() {
       const multirowVisualization = multirowPreview.response?.visualization;
       return multirowVisualization === null || multirowVisualization === undefined
         ? null
-        : buildMultiRowSceneModel(multirowVisualization);
+        : buildMultiRowSceneModel(multirowVisualization, multirowPreview.response?.direct_support_end_authority ?? undefined);
     }
     const previewResponse = preview.response;
     const visualization = previewResponse?.visualization;
@@ -923,6 +929,17 @@ export function SingleBoltEngineeringWorkspace() {
     });
   };
 
+  const updateSupportEnds = (next: DirectSupportEndInput) => {
+    supportEndsRef.current = next;
+    setSupportEnds(next);
+    setEdited(true);
+    setLayoutSuggestion(null);
+    engineeringRevisionRef.current += 1;
+    designAbortController.current?.abort();
+    setMultirowRevision((value) => value + 1);
+    if (response !== null || multirowDesign !== null) setStale(true);
+  };
+
   const suggestContainedLayout = async () => {
     setLayoutSuggestion(null);
     setLayoutSuggestionError("");
@@ -939,7 +956,7 @@ export function SingleBoltEngineeringWorkspace() {
     try {
       let conflicts: readonly string[] = [];
       const previewProposal = async (memberSizeChange: boolean): Promise<boolean> => {
-        const candidateRequest = buildMultirowRequest(candidate, viewExtentsRef.current, suggestedGroup, demandMode);
+        const candidateRequest = buildMultirowRequest(candidate, viewExtentsRef.current, suggestedGroup, demandMode, supportEndsRef.current);
         const response = await fetch("/api/v1/calculations/multi-row/preview", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify(candidateRequest), credentials: "same-origin",
@@ -1026,6 +1043,9 @@ export function SingleBoltEngineeringWorkspace() {
     previewRevisionRef.current += 1;
     setRequest(next);
     setViewExtents(nextViewExtents);
+    const nextSupportEnds: DirectSupportEndInput = { condition: historical ? "UNSPECIFIED" : "CONTINUOUS_THROUGH_CONNECTION" };
+    supportEndsRef.current = nextSupportEnds;
+    setSupportEnds(nextSupportEnds);
     setPreviewInput({
       request: next,
       viewExtents: nextViewExtents,
@@ -1203,7 +1223,7 @@ export function SingleBoltEngineeringWorkspace() {
   const previewCurrent = preview.state === "CURRENT_VALID" &&
     preview.currentRevision === previewInput.revision;
   const localDesignBlocker = designValidationMessage(request);
-  const multirowBlocker = multirowValidationMessage(request, groupState, demandMode);
+  const multirowBlocker = supportEndValidation(supportEnds) ?? multirowValidationMessage(request, groupState, demandMode);
   const designButtonBlocker = mat1.active && materialConditionBlocker(mat1.conditions) !== null
     ? materialConditionBlocker(mat1.conditions)
     : singleArrangement && demandMode === "AUTOMATIC_MEMBER_END_FORCE"
@@ -1216,7 +1236,7 @@ export function SingleBoltEngineeringWorkspace() {
           : multirowPreview.state !== "CURRENT_VALID"
             ? "Connection model is updating. Design Check will be available when the model is current."
             : multirowPreview.response?.design_check_ready !== true
-              ? multirowPreview.response?.warnings.map(describeDirectWarning).find((item) => item.group === "action")?.text ?? "The current action cannot be calculated. Review the model warnings above."
+              ? multirowPreview.response?.warnings.map(describeDirectWarning).find((item) => item.group === "input" || item.group === "action")?.text ?? "The current action cannot be calculated. Review the model warnings above."
               : null)
       : previewPending
     ? "Connection model is updating. Design Check will be available when the model is current."
@@ -1387,6 +1407,8 @@ export function SingleBoltEngineeringWorkspace() {
             <ReadOnlyValue label="Brace orientation">diagonal in current vertical plane</ReadOnlyValue>
             <p className="sidebar-note">Out-of-plane / plan angle: 0° — fixed in current verified slice.</p>
             <ReadOnlyValue label="Connected elements">Angle {friendlyIdentifier(geometryTemplate.angle_connected_leg)} + supporting W flange</ReadOnlyValue>
+            {directF1Family ? <DirectSupportEnds value={supportEnds} unit={sourceLengthUnit(request)} onChange={updateSupportEnds} /> : null}
+            {directF1Family && caseLabel.startsWith("Direct") ? <p className="sidebar-note">Continuous support is part of the Direct example geometry. Select actual project ends for your design.</p> : null}
             <ReadOnlyValue label="Selected contact surface">Backend-resolved by current preview; stable internal patch ID retained in inspector</ReadOnlyValue>
             <ReadOnlyValue label="Geometry angle">{formatDecimal(geometryTemplate.brace_to_column_directed_angle_deg, 1)}° directed</ReadOnlyValue>
             <ReadOnlyValue label="Material relationship">{materialRelationship}</ReadOnlyValue>
@@ -1490,6 +1512,7 @@ export function SingleBoltEngineeringWorkspace() {
 
         <ConnectionWorkspaceMain>
           <PersistentConnectionViewer unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
+            {multirowPreview.response?.direct_support_end_authority === undefined || multirowPreview.response.direct_support_end_authority === null ? null : <DirectSupportViewerCue authority={multirowPreview.response.direct_support_end_authority} />}
             {canonicalModel === null ? <section className="viewer-prompt"><h3>Direct angle-to-W connection viewer</h3><p>The connection model updates automatically when the current inputs are valid.</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={canonicalModel} results={activeResults} resolvedLayers={activeResolvedLayers} selection={selection} onSelect={setSelection} {...(directF1Family ? {} : { appliedActionInputValues, onAppliedActionValueChange: setActionComponentValue })} actionSourceLabel="Member" selectedBoltChecks={selectedBoltChecks} title="Direct angle-to-W connection viewer" contactSelectionLabel="Supporting W flange contact face" />}
           </PersistentConnectionViewer>
           {previewPending ? <p className="preview-notice" role="status">Updating connection model…</p> : null}

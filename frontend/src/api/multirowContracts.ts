@@ -5,6 +5,22 @@ export interface MultiRowQuantity {
   unit: string;
 }
 
+export interface DirectSupportEndInput {
+  condition: "UNSPECIFIED" | "CONTINUOUS_THROUGH_CONNECTION" | "FINITE_BOTH_ENDS" | "FINITE_NEGATIVE_END_ONLY" | "FINITE_POSITIVE_END_ONLY";
+  negative_end_distance?: MultiRowQuantity;
+  positive_end_distance?: MultiRowQuantity;
+}
+
+export interface DirectSupportEndAuthority {
+  readonly condition: DirectSupportEndInput["condition"];
+  readonly component_id: string;
+  readonly length_unit: "in" | "mm";
+  readonly negative_end_distance: MultiRowQuantity | null;
+  readonly positive_end_distance: MultiRowQuantity | null;
+  readonly negative_end_member_local_station: string | null;
+  readonly positive_end_member_local_station: string | null;
+}
+
 export interface DirectFaceClearance {
   readonly bolt_id: string;
   readonly component_id: string;
@@ -64,6 +80,7 @@ export interface DirectEngineeringFace {
 export interface MultiRowConnectionRequest {
   orchestration_contract_version: "2.5C-RC1";
   direct_finalization_contract_version?: "SHEAR01-DIRECT-F1";
+  supporting_w_longitudinal_ends?: DirectSupportEndInput;
   request_id: string;
   connection_id: string;
   interface_id: string;
@@ -344,6 +361,7 @@ export interface DirectSingleRowResult {
 }
 
 export interface MultiRowPreviewResponse {
+  readonly direct_support_end_authority?: DirectSupportEndAuthority | null;
   readonly direct_clearance_provenance?: readonly DirectFaceClearance[];
   readonly direct_engineering_geometry?: readonly DirectEngineeringFace[];
   api_transport_schema_version: "0.3.0-draft";

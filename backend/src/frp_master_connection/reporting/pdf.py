@@ -1715,7 +1715,14 @@ def _direct_reader_engineering_sections(
     layers = visual.get("layers", [])
     layers = layers if isinstance(layers, list) else []
     checks = [
-        replace(check, reason=_direct_blocked_description(check.identity, check.availability))
+        replace(
+            check,
+            reason=_direct_blocked_description(
+                check.identity,
+                check.availability,
+                isinstance(result.get("preview", {}).get("direct_support_end_authority"), dict),
+            ),
+        )
         if check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
         else check
         for check in collect_checks(result)
@@ -2205,7 +2212,16 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
     return output
 
 
-def _direct_blocked_description(check_id: str, availability: str) -> str:
+def _direct_blocked_description(
+    check_id: str, availability: str, explicit_support_ends: bool = False
+) -> str:
+    if explicit_support_ends and check_id.startswith(
+        ("FIRST_ROW:layer-B:", "INTERROW:layer-B:", "BLOCK_SHEAR:layer-B:")
+    ):
+        return (
+            "Supporting W section/free-end failure path lacks an independent applicable method; "
+            "Angle e1 is not W end authority"
+        )
     if check_id.startswith("FIRST_ROW:"):
         return "Required first-row net tension: accepted eccentric demand handoff unavailable"
     if check_id.startswith("INTERROW:"):
@@ -2264,16 +2280,28 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                     continue
                 if check_id in unsupported:
                     availability = "CALCULATION_NOT_SUPPORTED"
-                    reason = _direct_blocked_description(check_id, availability)
+                    reason = _direct_blocked_description(
+                        check_id,
+                        availability,
+                        isinstance(preview.get("direct_support_end_authority"), dict),
+                    )
                 elif check_id in incomplete:
                     availability = "INCOMPLETE_INPUT"
-                    reason = _direct_blocked_description(check_id, availability)
+                    reason = _direct_blocked_description(
+                        check_id,
+                        availability,
+                        isinstance(preview.get("direct_support_end_authority"), dict),
+                    )
                 elif check_id in not_required:
                     availability = "NOT_APPLICABLE"
                     reason = "Source predicate marks this check not required"
                 else:
                     availability = "INCOMPLETE_INPUT"
-                    reason = _direct_blocked_description(check_id, availability)
+                    reason = _direct_blocked_description(
+                        check_id,
+                        availability,
+                        isinstance(preview.get("direct_support_end_authority"), dict),
+                    )
                 inventory.append(
                     {
                         "result_id": check_id,
@@ -2307,6 +2335,11 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     )
     styles = _styles()
     visual = preview["visualization"]
+    support_end_authority = preview.get("direct_support_end_authority") if direct else None
+    if isinstance(support_end_authority, dict):
+        from frp_master_connection.reporting.direct_support_view import direct_support_view
+
+        visual = direct_support_view(visual, support_end_authority)
     primary_blocker = None
     if direct:
         preview_warnings = preview.get("warnings", [])
@@ -2356,6 +2389,45 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         primary_blocker=primary_blocker,
     )
     mat1_rows = _mat1_reader_rows(snapshot)
+    if isinstance(support_end_authority, dict):
+        condition_labels = {
+            "UNSPECIFIED": "INPUT NEEDED - supporting W end condition is unspecified",
+            "CONTINUOUS_THROUGH_CONNECTION": (
+                "Continuous through connection; displayed W length is presentation-only."
+            ),
+            "FINITE_BOTH_ENDS": "Real finite W ends above and below connection",
+            "FINITE_NEGATIVE_END_ONLY": "Real finite W end below connection; W continues above",
+            "FINITE_POSITIVE_END_ONLY": "Real finite W end above connection; W continues below",
+        }
+        story.append(_paragraph("Supporting W longitudinal condition", styles["heading"]))
+        story.append(
+            _paragraph(condition_labels[str(support_end_authority["condition"])], styles["body"])
+        )
+        end_rows = []
+        for label, field in (
+            ("W end above - from fixed connection reference", "positive_end_distance"),
+            ("W end below - from fixed connection reference", "negative_end_distance"),
+        ):
+            distance = support_end_authority[field]
+            end_rows.append(
+                (
+                    label,
+                    "Not specified"
+                    if support_end_authority["condition"] == "UNSPECIFIED"
+                    else "Continuous / no finite end declared"
+                    if distance is None
+                    else _dimension_label(distance, system),
+                )
+            )
+        story.append(_table(end_rows, styles))
+        story.append(
+            _paragraph(
+                "W section/free-end failure-path methods remain unevaluated where an independent "
+                "applicable path is not implemented. Angle e1 does not supply W end authority. "
+                "Displayed cap planes on continuous sides are view cuts.",
+                styles["body"],
+            )
+        )
     engineering_faces = preview.get("direct_engineering_geometry")
     if direct and isinstance(engineering_faces, list):
         names = {

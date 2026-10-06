@@ -74,9 +74,10 @@ def test_owner_source_pending_keeps_final_bearing_and_interrow_checks(exposure: 
         for scenario in integration["scenario_results"]
         for check in scenario["supported_results"]
     ]
-    assert len(checks) == 6
+    assert len(checks) == 5
     assert sum(check["limit_state"] == "PIN_BEARING" for check in checks) == 4
-    assert sum("INTERROW" in check["result_id"] for check in checks) == 2
+    assert sum("INTERROW" in check["result_id"] for check in checks) == 1
+    assert "INTERROW:layer-B:BOLT_LINE_1" in integration["unsupported_required_check_ids"]
     assert all(check["availability"] == "CALCULATED" for check in checks)
     assert any("FIRST_ROW" in item for item in integration["unsupported_required_check_ids"])
     assert any("BLOCK_SHEAR" in item for item in integration["unsupported_required_check_ids"])
@@ -125,6 +126,21 @@ def test_actual_run_boundaries_remain_closed(case: str) -> None:
 
 def test_owner_one_row_fail_outranks_source_requirements() -> None:
     body = owner_body(one_row=True)
+    normal = call("POST", DESIGN, body).json()
+    assert normal["overall_status"] == "SOURCE_REQUIRED"
+    normal_single = normal["native_design"]["automatic_group_mode_integration"][
+        "direct_single_row_result"
+    ]
+    assert all(
+        check["design_resistance"] is None
+        for check in normal_single["checks"]
+        if check["layer_id"] == "layer-B"
+    )
+    # The inherited W net-tension FAIL used Angle geometry and is now blocked.
+    # A genuinely failing, explicitly larger Angle load still outranks source gaps.
+    body["legacy_request"]["physical_connection"]["joint_assembly"]["member_end_actions"][0][
+        "force"
+    ]["y"] = "70"
     response = call("POST", DESIGN, body)
     assert response.status_code == 200, response.text
     result = response.json()
@@ -166,7 +182,7 @@ def test_si_native_utilizations_are_same_physical_design() -> None:
     for index in range(2):
         left = results[0]["scenario_results"][index]["supported_results"]
         right = results[1]["scenario_results"][index]["supported_results"]
-        assert len(left) == len(right) == 3
+        assert len(left) == len(right) == (3 if index == 0 else 2)
         for us, metric in zip(left, right, strict=True):
             assert us["result_id"] == metric["result_id"]
             assert abs(Decimal(us["utilization"]) - Decimal(metric["utilization"])) < Decimal(

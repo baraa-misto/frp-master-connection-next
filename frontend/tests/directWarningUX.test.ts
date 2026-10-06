@@ -12,6 +12,10 @@ it("separates physical clearance, source, method and information warnings", () =
   const otherGeometry = describeDirectWarning("DIRECT_PHYSICAL_CONTAINMENT:B_R3_L1:member-a:TOP_FLANGE:outside member");
   expect(otherGeometry).toMatchObject({ group: "geometry", boltId: "B_R3_L1" });
   expect(otherGeometry.text).toContain("outside member");
+  const realEnd = describeDirectWarning("DIRECT_PHYSICAL_CONTAINMENT:B_R1_L1:member-b:TOP_FLANGE:GEOMETRY — Supporting W member end: physical W end above connection: available=0.086; required=1. unit=in.");
+  expect(realEnd).toMatchObject({ group: "geometry", boltId: "B_R1_L1" });
+  expect(realEnd.text).toContain("GEOMETRY — Supporting W member end");
+  expect(realEnd.text).toContain("above connection; actual 0.086 in, required 1.000 in");
   expect(describeDirectWarning("F593_TENSILE_SOURCE_DATA_PENDING")).toMatchObject({ group: "source" });
   expect(describeDirectWarning("CONTROLLED_ICE_DEVELOPMENT_MATERIAL")).toMatchObject({ group: "qualification" });
   expect(describeDirectWarning("OUT_OF_PLANE_MOMENT_UNSUPPORTED")).toMatchObject({ group: "method" });
@@ -20,6 +24,7 @@ it("separates physical clearance, source, method and information warnings", () =
 });
 
 it("classifies action and whole-connection qualification independently of geometry", () => {
+  expect(describeDirectWarning("INPUT_NEEDED: Specify the supporting W end condition.")).toEqual({ group: "input", text: "INPUT NEEDED — Specify the supporting W end condition." });
   expect(describeDirectWarning("DIRECT_INDEPENDENT_MEMBER_END_MOMENT_NOT_SUPPORTED").group).toBe("action");
   expect(describeDirectWarning("DIRECT_BOLT_AXIS_FORCE_UNSUPPORTED").group).toBe("action");
   expect(describeDirectWarning("DIRECT_DEMAND_PLAN_NOT_READY").group).toBe("action");

@@ -122,3 +122,27 @@ signed snapshot and supplies no geometry or resistance authority.
 
 See `docs/qa/SHEAR01_DIRECT_OR2_F3.md` for the bounded cases and QA gates. This
 successor activates no engineering source, qualification or missing method.
+
+## Direct OR2 F3 R1 supporting-W longitudinal ends
+
+Direct requests add `supporting_w_longitudinal_ends`, with `condition` equal to
+`UNSPECIFIED`, `CONTINUOUS_THROUGH_CONNECTION`, `FINITE_BOTH_ENDS`,
+`FINITE_NEGATIVE_END_ONLY`, or `FINITE_POSITIVE_END_ONLY`. Only selected finite
+ends accept `negative_end_distance` / `positive_end_distance` quantities in in/mm;
+they must be positive. Omission on the Direct route means UNSPECIFIED and blocks
+design readiness with INPUT NEEDED. Other families reject this declaration.
+
+The backend emits `direct_support_end_authority`: stable projected interface
+reference, real end coordinates/null, raw/canonical per-bolt station witnesses,
+force-selected existing end, separately labeled presentation crop coordinates,
+and source applicability. Clients cannot submit resolved authority or results.
+The owner examples explicitly declare continuous support. Legacy extrusion
+lengths survive only as display context or explicitly declared historical test
+geometry. W end-dependent paths lacking an independent method remain unevaluated;
+pin bearing and unaffected Angle mechanics retain exact authority.
+
+Direct preview identity excludes presentation view extents/extension primitives,
+while end condition and real-end distances remain design-affecting. UI/report
+rendering reads signed authority to place visible real end caps; rendering creates
+no engineering result or check. Other family fingerprints/serialization remain
+unchanged. See `docs/qa/SHEAR01_DIRECT_OR2_F3_R1.md`.

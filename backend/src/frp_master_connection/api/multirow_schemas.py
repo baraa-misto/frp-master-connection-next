@@ -21,6 +21,10 @@ from frp_master_connection.api.schemas import (
     _StrictModel,
 )
 from frp_master_connection.application import EngineerDistributionKind, MultiRowDemandSource
+from frp_master_connection.application.direct_support_ends import (
+    DirectSupportEndCondition,
+    DirectSupportEndInput,
+)
 from frp_master_connection.calculation import (
     ConnectedMaterialPair,
     FirstRowPlanMethod,
@@ -126,9 +130,35 @@ class MultiRowBoltAxisTensionDTO(_StrictModel):
     demand: QuantityDTO
 
 
+class DirectSupportEndDTO(_StrictModel):
+    condition: DirectSupportEndCondition = DirectSupportEndCondition.UNSPECIFIED
+    negative_end_distance: QuantityDTO | None = None
+    positive_end_distance: QuantityDTO | None = None
+
+    @model_validator(mode="after")
+    def validate_end_authority(self) -> DirectSupportEndDTO:
+        from frp_master_connection.calculation import PhysicalQuantity
+
+        DirectSupportEndInput(
+            self.condition,
+            None
+            if self.negative_end_distance is None
+            else PhysicalQuantity.of(
+                self.negative_end_distance.value, self.negative_end_distance.unit
+            ),
+            None
+            if self.positive_end_distance is None
+            else PhysicalQuantity.of(
+                self.positive_end_distance.value, self.positive_end_distance.unit
+            ),
+        )
+        return self
+
+
 class MultiRowConnectionRequestDTO(_StrictModel):
     orchestration_contract_version: Literal["2.5C-RC1"] = "2.5C-RC1"
     direct_finalization_contract_version: Literal["SHEAR01-DIRECT-F1"] | None = None
+    supporting_w_longitudinal_ends: DirectSupportEndDTO | None = None
     request_id: Identifier
     connection_id: Identifier
     interface_id: Identifier
@@ -170,6 +200,11 @@ class MultiRowConnectionRequestDTO(_StrictModel):
 
     @model_validator(mode="after")
     def validate_public_shape(self) -> MultiRowConnectionRequestDTO:
+        if (
+            self.supporting_w_longitudinal_ends is not None
+            and self.direct_finalization_contract_version is None
+        ):
+            raise ValueError("Supporting W end authority is supported only by Direct.")
         if self.row_count < 2 and self.direct_finalization_contract_version is None:
             raise ValueError("row_count must be at least two outside the Direct F1 route.")
         if self.source_length_unit not in {Unit.IN, Unit.MM}:
@@ -228,6 +263,9 @@ class MultiRowConnectionRequestDTO(_StrictModel):
 
 
 class MultiRowPreviewResponseDTO(_StrictModel):
+    direct_support_end_authority: dict[str, JsonValue] | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
     direct_engineering_geometry: list[dict[str, JsonValue]] = Field(
         default_factory=list, exclude_if=lambda value: not value
     )

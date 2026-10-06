@@ -13,6 +13,7 @@ import json
 import subprocess
 import sys
 from copy import deepcopy
+from decimal import Decimal
 from pathlib import Path
 
 from pypdf import PdfReader
@@ -100,7 +101,15 @@ def main() -> None:
                 assert "Canonical single-row bolt layout" in first_text
                 assert "Not applicable — one row" in first_text
                 assert "Pitch / gauge" not in first_text
-                assert "c lap: 0.6" in first_text
+                single = snapshot.result["automatic_group_mode_integration"]["direct_single_row_result"]
+                assert any(
+                    check["layer_id"] == "layer-A"
+                    and isinstance(check["equation_trace"], dict)
+                    and Decimal(str(check["equation_trace"].get("native", {}).get("factor_trace", {}).get("c_lap", "0"))) == Decimal("0.6")
+                    for check in single["checks"]
+                ), "Executed Angle single-row lap factor must remain 0.6"
+                if name != "valid-1x1":
+                    assert "c lap: 0.6" in first_text
             if name == "invalid-containment":
                 assert "SUBMITTED GEOMETRY — NOT VALIDATED" in first_text
             if name == "red-1x3":

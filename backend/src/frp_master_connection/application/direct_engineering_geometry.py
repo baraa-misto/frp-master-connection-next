@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from decimal import Decimal
 
 from frp_master_connection.calculation import PhysicalQuantity, Unit, decimal_from_finite_real
@@ -20,6 +20,7 @@ from frp_master_connection.geometry.spatial import (
 )
 
 from .direct_physical import DirectContainmentIssue
+from .direct_support_ends import DirectSupportEndAuthority
 from .visualization import (
     BoltDisplaySnapshot,
     SingleBoltVisualizationSnapshot,
@@ -193,6 +194,7 @@ def _obstruction_clearance(
     start: PositionVector3D,
     end: PositionVector3D,
     normal: int,
+    support_end_authority: DirectSupportEndAuthority | None = None,
 ) -> Decimal | None:
     """Circle-to-box clearance when the finite cylinder overlaps its axial slab."""
     lower, upper = _box_limits(primitive)
@@ -202,7 +204,25 @@ def _obstruction_clearance(
         min(a[normal], b[normal]), lower[normal]
     ):
         return None
-    squared = sum(max(lower[i] - a[i], a[i] - upper[i], 0.0) ** 2 for i in range(3) if i != normal)
+    squared = 0.0
+    for i in range(3):
+        if i == normal:
+            continue
+        if (
+            i == 0
+            and support_end_authority is not None
+            and primitive.owner_id == support_end_authority.component_id
+        ):
+            negative = support_end_authority.actual_end(True)
+            positive = support_end_authority.actual_end(False)
+            distance = max(
+                0.0 if negative is None else float(negative) - a[i],
+                0.0 if positive is None else a[i] - float(positive),
+                0.0,
+            )
+        else:
+            distance = max(lower[i] - a[i], a[i] - upper[i], 0.0)
+        squared += distance**2
     return decimal_from_finite_real(math.sqrt(squared))
 
 
@@ -213,6 +233,7 @@ def direct_engineering_geometry(
     row_count: int,
     force_global: Coordinates,
     brace_local_x: Mapping[str, Decimal],
+    support_end_authority: DirectSupportEndAuthority | None = None,
 ) -> tuple[DirectEngineeringFace, ...]:
     """Evaluate separate physical checks; retain raw coordinates and patch witnesses.
 
@@ -289,25 +310,70 @@ def direct_engineering_geometry(
                     "Direct physical hole does not meet the selected penetration plane."
                 )
             lower, upper = _box_limits(primitive)
+            support_record = None
+            if (
+                support_end_authority is not None
+                and member.id == support_end_authority.component_id
+            ):
+                support_record = next(
+                    r
+                    for r in support_end_authority.bolt_records
+                    if r.bolt_id == bolt.bolt_location_id
+                )
+                support_negative = support_end_authority.actual_end(True)
+                support_positive = support_end_authority.actual_end(False)
+                lower = (
+                    float(support_negative) if support_negative is not None else lower[0],
+                    lower[1],
+                    lower[2],
+                )
+                upper = (
+                    float(support_positive) if support_positive is not None else upper[0],
+                    upper[1],
+                    upper[2],
+                )
             local_force = frame.parent_to_local_vector(Vector3D(*force_global))
             loaded_max = local_force.x >= 0
             boundaries: list[DirectEngineeringBoundary] = []
             for minimum, bound in ((True, lower[0]), (False, upper[0])):
                 loaded = minimum != loaded_max
-                boundaries.append(
-                    _boundary(
-                        primitive,
-                        frame,
-                        point,
-                        raw_point,
-                        0,
-                        bound,
-                        minimum,
-                        "PHYSICAL_LOADED_END" if loaded else "PHYSICAL_UNLOADED_END",
-                        "loaded physical member end" if loaded else "unloaded physical member end",
-                        normal,
-                    )
+                real_support_end = (
+                    support_record is not None
+                    and support_end_authority is not None
+                    and support_end_authority.actual_end(minimum) is not None
                 )
+                role = "PHYSICAL_LOADED_END" if loaded else "PHYSICAL_UNLOADED_END"
+                label = "loaded physical member end" if loaded else "unloaded physical member end"
+                if support_record is not None:
+                    role = "REAL_SUPPORT_MEMBER_END" if real_support_end else "VIEW_CROP"
+                    label = (
+                        "physical W end " if real_support_end else "W continuation / view crop "
+                    ) + ("below connection" if minimum else "above connection")
+                boundary = _boundary(
+                    primitive,
+                    frame,
+                    point,
+                    raw_point,
+                    0,
+                    bound,
+                    minimum,
+                    role,
+                    label,
+                    normal,
+                )
+                if support_record is not None:
+                    distance = (
+                        support_record.negative_end_distance
+                        if minimum
+                        else support_record.positive_end_distance
+                    )
+                    boundary = replace(
+                        boundary,
+                        actual_distance=boundary.actual_distance if distance is None else distance,
+                        eligible_e1=real_support_end and loaded,
+                        hardware_eligible=real_support_end,
+                    )
+                boundaries.append(boundary)
             for minimum, bound in ((True, lower[transverse]), (False, upper[transverse])):
                 internal = member.section_family == "ANGLE" and minimum
                 boundaries.append(
@@ -345,6 +411,8 @@ def direct_engineering_geometry(
             washer_radius = decimal_from_finite_real(washer.outside_diameter) / 2
             checks: list[DirectEngineeringCheck] = []
             for boundary in boundaries:
+                if boundary.role == "VIEW_CROP":
+                    continue
                 if boundary.eligible_e2:
                     checks.append(
                         _check(
@@ -413,7 +481,12 @@ def direct_engineering_geometry(
                         # shared interface. They are intended physical holes.
                         continue
                     clearance = _obstruction_clearance(
-                        obstruction, obstruction_frame, start, end, obstruction_normal
+                        obstruction,
+                        obstruction_frame,
+                        start,
+                        end,
+                        obstruction_normal,
+                        support_end_authority,
                     )
                     if clearance is None:
                         continue
@@ -424,6 +497,24 @@ def direct_engineering_geometry(
                     foot = list(obstacle_point)
                     for ordinal in range(3):
                         if ordinal != obstruction_normal:
+                            if (
+                                ordinal == 0
+                                and support_end_authority is not None
+                                and obstruction.owner_id == support_end_authority.component_id
+                            ):
+                                negative = support_end_authority.actual_end(True)
+                                positive = support_end_authority.actual_end(False)
+                                foot[ordinal] = (
+                                    max(float(negative), foot[ordinal])
+                                    if negative is not None
+                                    else foot[ordinal]
+                                )
+                                foot[ordinal] = (
+                                    min(float(positive), foot[ordinal])
+                                    if positive is not None
+                                    else foot[ordinal]
+                                )
+                                continue
                             foot[ordinal] = max(
                                 obstruction_lower[ordinal],
                                 min(obstruction_upper[ordinal], foot[ordinal]),
@@ -519,7 +610,12 @@ def direct_engineering_issues(
             face.bolt_id,
             face.component_id,
             face.physical_element_id,
-            f"{check.check_kind} — {check.boundary_label}: "
+            (
+                "GEOMETRY — Supporting W member end: "
+                if check.engineering_boundary_role == "REAL_SUPPORT_MEMBER_END"
+                else f"{check.check_kind} — "
+            )
+            + f"{check.boundary_label}: "
             f"available={check.actual_distance}; required={check.required_distance}.",
         )
         for face in faces

@@ -10,6 +10,26 @@ from typing import Any, cast
 from tests.api.test_mat1_routes import call, condition, selection
 
 
+def historical_support_ends(*, si: bool = False) -> dict[str, Any]:
+    """Explicit pre-R1 finite geometry, only for historical regression cases.
+
+    The stored historical JSON is unchanged. These distances are deliberately
+    declared in regression requests; current owner examples use continuous W.
+    """
+    scale = Decimal("25.4") if si else Decimal(1)
+    return {
+        "condition": "FINITE_BOTH_ENDS",
+        "negative_end_distance": {
+            "value": str(Decimal("8.742640687119285") * scale),
+            "unit": "mm" if si else "in",
+        },
+        "positive_end_distance": {
+            "value": str(Decimal("1.5") * scale),
+            "unit": "mm" if si else "in",
+        },
+    }
+
+
 def owner_request(*, si: bool = False, one_row: bool = False) -> dict[str, Any]:
     payload = cast(
         dict[str, Any],
@@ -36,6 +56,7 @@ def owner_request(*, si: bool = False, one_row: bool = False) -> dict[str, Any]:
             "owner_id": "bolt-group-1",
             "position": None,
         }
+    payload["supporting_w_longitudinal_ends"] = {"condition": "CONTINUOUS_THROUGH_CONNECTION"}
     if si:
 
         def convert(value: object) -> object:

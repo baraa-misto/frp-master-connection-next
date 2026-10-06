@@ -35,6 +35,8 @@ from frp_master_connection.calculation.inputs import PultrudedElementForm
 from frp_master_connection.calculation.multirow_equations import compare_resistance
 from frp_master_connection.geometry import MultiRowGeometry
 
+from .direct_support_ends import DirectSupportEndAuthority
+
 
 @dataclass(frozen=True, slots=True)
 class DirectSingleRowCheck:
@@ -174,6 +176,7 @@ def evaluate_direct_single_row(
     inherited_incomplete: tuple[str, ...],
     inherited_failed: tuple[str, ...],
     inherited_fingerprint: str,
+    support_end_authority: DirectSupportEndAuthority | None = None,
 ) -> DirectSingleRowResult:
     """Evaluate one row's local paths using the accepted demand scenario.
 
@@ -193,6 +196,52 @@ def evaluate_direct_single_row(
         raise ValueError("Direct single-row adapter supports one through three bolts.")
     checks: list[DirectSingleRowCheck] = []
     for layer, plans in zip(layers, layer_plans, strict=True):
+        if (
+            support_end_authority is not None
+            and layer.component_id == support_end_authority.component_id
+        ):
+            reason = (
+                "METHOD REQUIRED: independent W section/free-end path mapping is absent; "
+                "no Angle e1 or presentation cap supplies W engineering authority"
+            )
+            checks.append(
+                _blocked(
+                    f"SINGLE_ROW_NET_TENSION:{layer.layer_id}",
+                    "SINGLE_ROW_NET_TENSION",
+                    "ASCE_EQ_8_7",
+                    layer.layer_id,
+                    total,
+                    reason,
+                )
+            )
+            checks.extend(
+                _blocked(
+                    f"SINGLE_ROW_SHEAR_OUT:{layer.layer_id}:{line.id}",
+                    "SINGLE_ROW_SHEAR_OUT",
+                    "ASCE_EQ_8_8",
+                    layer.layer_id,
+                    None,
+                    reason,
+                    bolt_id=line.bolts[0].bolt.id,
+                    line_id=line.id,
+                )
+                for line in geometry.bolt_lines
+            )
+            longitudinal = layer.material_direction is MaterialDirection.LONGITUDINAL
+            checks.append(
+                _blocked(
+                    f"SINGLE_ROW_CLEAVAGE:{layer.layer_id}",
+                    "SINGLE_ROW_CLEAVAGE",
+                    "ASCE_EQ_8_9" if longitudinal else "SOURCE_NOT_APPLICABLE",
+                    layer.layer_id,
+                    None,
+                    reason
+                    if longitudinal
+                    else "Cleavage is not applicable to the oblique/transverse material direction",
+                    required=longitudinal,
+                )
+            )
+            continue
         first = plans[0]
         mapping = first.geometry
         if not isinstance(mapping, FirstRowGeometryMapping):

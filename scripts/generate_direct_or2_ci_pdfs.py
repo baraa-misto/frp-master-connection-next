@@ -45,6 +45,12 @@ def main() -> None:
     ]
     for name in cases:
         body = owner_body(si=name == "si-owner", one_row=name == "red-1x1")
+        if name == "red-1x1":
+            # The former RED relied on W net tension with Angle geometry.
+            # Prove an actual executed Angle failure under explicit QA loading.
+            body["legacy_request"]["physical_connection"]["joint_assembly"][
+                "member_end_actions"
+            ][0]["force"]["y"] = "70"
         conditions = body["assignments"]["default_conditions"]
         if name == "unknown-exposure":
             conditions.update(moisture="UNKNOWN", chemical="UNKNOWN")
@@ -100,7 +106,16 @@ def main() -> None:
             if name == "red-1x1":
                 assert result["overall_status"] == "FAIL"
                 assert "FAIL" in text
-                assert "1.22684" in text
+                angle_net = next(
+                    check
+                    for check in result["native_design"]["automatic_group_mode_integration"][
+                        "direct_single_row_result"
+                    ]["checks"]
+                    if check["layer_id"] == "layer-A"
+                    and check["limit_state"] == "SINGLE_ROW_NET_TENSION"
+                )
+                assert angle_net["numerical_comparison"] == "FAIL"
+                assert "net tension" in normalized.lower()
             if name == "unknown-exposure":
                 assert (
                     "Diagnostic only" in text

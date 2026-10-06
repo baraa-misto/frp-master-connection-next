@@ -14,15 +14,20 @@ from frp_master_connection.calculation import (
     EccentricGroupModeCompatibilityResult,
     EccentricResistanceHandoffInput,
     EccentricResistanceHandoffResult,
+    MultiRowCheckFamily,
     MultiRowRequiredCheckContract,
+    PlanAvailability,
     calculate_eccentric_group_mode_compatibility,
     calculate_eccentric_resistance_handoff,
 )
+
+from .direct_support_ends import DirectSupportEndAuthority
 
 
 def evaluate_direct_layered_group_modes(
     handoff_input: EccentricResistanceHandoffInput,
     trace_layers: tuple[str, ...],
+    support_end_authority: DirectSupportEndAuthority | None = None,
 ) -> tuple[tuple[EccentricResistanceHandoffResult, EccentricGroupModeCompatibilityResult], ...]:
     """Run the accepted handoff and group-mode engines once per Direct layer.
 
@@ -43,6 +48,29 @@ def evaluate_direct_layered_group_modes(
             for check in bundle.checks
             if check.layer_id == layer_id or (index == 0 and check.layer_id is None)
         )
+        if index == 1 and support_end_authority is not None:
+            # The inherited plan payload describes the Angle template. Keep it
+            # as an unexecuted audit witness, never as W free-end authority.
+            checks = tuple(
+                replace(
+                    check,
+                    plan_availability=PlanAvailability.CALCULATION_NOT_SUPPORTED,
+                    source_locator=check.source_locator + "; DIRECT W METHOD REQUIRED: "
+                    "independent supporting-W section/free-end failure-path mapping absent; "
+                    "Angle template payload is not W end authority; "
+                    f"condition={support_end_authority.condition.value}; "
+                    f"negative={support_end_authority.negative_end_distance}; "
+                    f"positive={support_end_authority.positive_end_distance}",
+                )
+                if check.family
+                in {
+                    MultiRowCheckFamily.FIRST_ROW_NET_TENSION,
+                    MultiRowCheckFamily.INTERROW_SHEAR_OUT,
+                    MultiRowCheckFamily.BLOCK_SHEAR,
+                }
+                else check
+                for check in checks
+            )
         required = tuple(
             check.check_id
             for check in checks

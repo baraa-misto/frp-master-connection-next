@@ -13,7 +13,7 @@ import pytest
 from pypdf import PdfReader
 from tests.api.test_mat1_routes import call
 from tests.application.test_direct_f1_edges import _row_context
-from tests.direct_or2_fixtures import owner_body, owner_request
+from tests.direct_or2_fixtures import historical_support_ends, owner_body, owner_request
 
 from frp_master_connection.api.calculation_mapping import map_single_bolt_preview_request
 from frp_master_connection.api.multirow_mapping import map_multirow_request
@@ -54,6 +54,7 @@ OUTCOME_BAD = "FAIL"
 
 def f3_request(case: str = "owner", *, si: bool = False) -> dict[str, Any]:
     request = owner_request(si=si)
+    request["supporting_w_longitudinal_ends"] = historical_support_ends(si=si)
     scale = Decimal("25.4") if si else Decimal(1)
     template = request["physical_connection"]["geometry_template"]
     if case == "45":
@@ -282,6 +283,7 @@ def test_all_supported_direct_layouts_have_two_layer_physical_provenance(
     rows: int, lines: int
 ) -> None:
     payload = owner_request(one_row=rows == 1)
+    payload["supporting_w_longitudinal_ends"] = historical_support_ends()
     payload["row_count"], payload["bolts_per_row"] = rows, lines
     data = call("POST", PREVIEW, payload).json()
     assert len(data["direct_engineering_geometry"]) == 2 * rows * lines

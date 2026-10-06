@@ -120,6 +120,13 @@ def test_capability_delta_is_exactly_the_one_new_no_body_route() -> None:
         )
         == "SHEAR01-DIRECT-F1"
     )
+    assert direct_route["declared_native_modes"].pop("/$defs/DirectSupportEndCondition/enum") == [
+        "UNSPECIFIED",
+        "CONTINUOUS_THROUGH_CONNECTION",
+        "FINITE_BOTH_ENDS",
+        "FINITE_NEGATIVE_END_ONLY",
+        "FINITE_POSITIVE_END_ONLY",
+    ]
     assert current == PARENT["capabilities"]
 
 

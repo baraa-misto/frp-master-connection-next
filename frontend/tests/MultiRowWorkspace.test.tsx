@@ -843,6 +843,49 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(mocks.multiEvaluate).toHaveBeenCalledTimes(1);
   });
 
+  it("requires a project support condition and explicitly marks both owner examples continuous", async () => {
+    render(<ShearConnectionsWorkspace />);
+    const selector = screen.getByRole("combobox", { name: "Supporting W — longitudinal extent" });
+    expect(selector).toHaveValue("UNSPECIFIED");
+    expect(screen.getByText(/INPUT NEEDED — Specify whether the supporting W/u)).toBeInTheDocument();
+    fireEvent.change(selector, { target: { value: "CONTINUOUS_THROUGH_CONNECTION" } });
+    expect(screen.queryByText(/Results need to be recalculated/u)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Load Direct example — U.S." }));
+    expect(selector).toHaveValue("CONTINUOUS_THROUGH_CONNECTION");
+    await waitFor(() => { expect(mocks.multiPreview).toHaveBeenCalled(); });
+    expect(mocks.multiPreview.mock.calls.at(-1)?.[0]).toMatchObject({ supporting_w_longitudinal_ends: { condition: "CONTINUOUS_THROUGH_CONNECTION" } });
+    fireEvent.click(screen.getByRole("button", { name: "Load Direct example — SI" }));
+    expect(selector).toHaveValue("CONTINUOUS_THROUGH_CONNECTION");
+  });
+
+  it("keeps a result current after view-only changes and stales it after a real W end edit", async () => {
+    mocks.multiEvaluate.mockResolvedValue(multirowDesignFixture());
+    await openUnifiedMultirow();
+    const design = screen.getByRole("button", { name: "Run Design Check" });
+    await waitFor(() => { expect(design).toBeEnabled(); });
+    fireEvent.click(design);
+    await screen.findByRole("heading", { name: /Engineering review required/i });
+    fireEvent.change(screen.getByLabelText("Supporting W member view extent above connection"), { target: { value: "20" } });
+    await waitFor(() => { expect(design).toBeEnabled(); });
+    expect(screen.queryByText(/Results need to be recalculated/u)).not.toBeInTheDocument();
+    expect(mocks.multiEvaluate).toHaveBeenCalledTimes(1);
+    fireEvent.change(screen.getByRole("combobox", { name: "Supporting W — longitudinal extent" }), { target: { value: "FINITE_POSITIVE_END_ONLY" } });
+    expect(screen.getAllByText(/Results need to be recalculated/u)[0]).toBeVisible();
+    expect(design).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Distance from connection reference to W end above"), { target: { value: "12" } });
+    await waitFor(() => { expect(mocks.multiPreview.mock.calls.at(-1)?.[0]).toMatchObject({ supporting_w_longitudinal_ends: { condition: "FINITE_POSITIVE_END_ONLY", positive_end_distance: { value: "12", unit: "in" } } }); });
+    expect(mocks.multiEvaluate).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows the backend-authored W continuation cue above the actual canonical viewer", async () => {
+    const response: MultiRowPreviewResponse = { ...automaticPreviewFixture(), direct_support_end_authority: { condition: "CONTINUOUS_THROUGH_CONNECTION", component_id: "member-a", length_unit: "in", negative_end_distance: null, positive_end_distance: null, negative_end_member_local_station: null, positive_end_member_local_station: null } };
+    mocks.multiPreview.mockResolvedValue(response);
+    render(<ShearConnectionsWorkspace />);
+    activateNormalAutomaticDemand();
+    expect(await screen.findByLabelText("Supporting W real ends and view cuts")).toHaveTextContent("W continues above — view cut");
+    expect(screen.getByTestId("mock-engineering-scene")).toBeInTheDocument();
+  });
+
   it("binds custom Direct fastener identity and washer geometry to the current request", async () => {
     mocks.multiEvaluate.mockResolvedValue(multirowDesignFixture());
     await openUnifiedMultirow();

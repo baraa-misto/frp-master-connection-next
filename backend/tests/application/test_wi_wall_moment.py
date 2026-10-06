@@ -732,6 +732,24 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # R1 adds the explicit Direct end-authority PDF gate and 48 cases.
+            r1_pdf_steps = (
+                b"      - name: Generate signed Direct supporting-end R1 review PDFs\n"
+                b"        run: python ../scripts/generate_direct_support_ends_r1_ci_pdfs.py "
+                b"--output direct-support-end-r1-review-pdfs\n"
+                b"""\
+      - name: Upload Direct supporting-end R1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-support-end-r1-pdfs-${{ matrix.os }}
+          path: backend/direct-support-end-r1-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(r1_pdf_steps) == 1
+            raw = raw.replace(r1_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7945") == 1
+            raw = raw.replace(b"--expected-tests 7945", b"--expected-tests 7897")
             # F3 adds only signed physical-edge PDFs and 50 focused cases.
             # Remove those exact additions before auditing the sealed predecessor.
             f3_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 F3 review PDFs

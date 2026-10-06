@@ -3,12 +3,13 @@ import { formatDecimal, friendlyEnum, friendlyIdentifier } from "./presentation"
 export type WarningGroup = "input" | "geometry" | "action" | "method" | "source" | "qualification" | "information";
 
 export function describeDirectWarning(raw: string): { group: WarningGroup; text: string; boltId?: string } {
+  if (raw.startsWith("INPUT_NEEDED:")) return { group: "input", text: `INPUT NEEDED — ${raw.slice("INPUT_NEEDED:".length).trim()}` };
   const containment = /^DIRECT_PHYSICAL_CONTAINMENT:([^:]+):([^:]+):([^:]+):(.+)$/u.exec(raw);
   if (containment !== null) {
     const [, boltId, memberId, face, detail] = containment as unknown as [string, string, string, string, string];
-    const physical = /^(CHAPTER_8_EDGE_DISTANCE|CHAPTER_8_END_DISTANCE|HOLE_PHYSICAL_CONTAINMENT|WASHER_SEATING|COMPONENT_INTERFERENCE) — (.+): available=([^;]+); required=([^;]+)\. unit=(in|mm)\./u.exec(detail);
+    const physical = /^(CHAPTER_8_EDGE_DISTANCE|CHAPTER_8_END_DISTANCE|HOLE_PHYSICAL_CONTAINMENT|WASHER_SEATING|COMPONENT_INTERFERENCE|GEOMETRY — Supporting W member end) — (.+): available=([^;]+); required=([^;]+)\. unit=(in|mm)\./u.exec(detail.replace("GEOMETRY — Supporting W member end: ", "GEOMETRY — Supporting W member end — "));
     if (physical !== null) {
-      const names = { CHAPTER_8_EDGE_DISTANCE: "Chapter 8 physical free-edge distance", CHAPTER_8_END_DISTANCE: "Chapter 8 loaded-end distance", HOLE_PHYSICAL_CONTAINMENT: "Physical hole containment", WASHER_SEATING: "Washer seating / hardware clearance", COMPONENT_INTERFERENCE: "Physical component interference" };
+      const names = { CHAPTER_8_EDGE_DISTANCE: "Chapter 8 physical free-edge distance", CHAPTER_8_END_DISTANCE: "Chapter 8 loaded-end distance", HOLE_PHYSICAL_CONTAINMENT: "Physical hole containment", WASHER_SEATING: "Washer seating / hardware clearance", COMPONENT_INTERFERENCE: "Physical component interference", "GEOMETRY — Supporting W member end": "GEOMETRY — Supporting W member end" };
       const [, kind, feature, actual, required, unit] = physical as unknown as [string, keyof typeof names, string, string, string, string];
       return { group: "geometry", boltId, text: `Bolt ${boltId} on ${friendlyIdentifier(memberId)} ${friendlyIdentifier(face)}: ${names[kind]} to ${feature}; actual ${formatDecimal(actual, 3)} ${unit}, required ${formatDecimal(required, 3)} ${unit}. Adjust the actual bolt location or physical hardware clearance.` };
     }

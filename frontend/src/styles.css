@@ -1530,3 +1530,15 @@ td {
 .report-export-dialog select {
   width: 100%;
 }
+
+.direct-support-end-cue {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  background: #edf5f8;
+  border-bottom: 1px dashed #607782;
+  color: #18303d;
+  font-size: 0.85rem;
+}

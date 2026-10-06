@@ -30,6 +30,7 @@ from frp_master_connection.application.direct_physical import (
     direct_face_clearance_provenance,
     is_direct_angle_w,
 )
+from frp_master_connection.application.direct_support_ends import DirectSupportEndInput
 from frp_master_connection.application.multirow_orchestration import DirectMultiRowPreviewResult
 from frp_master_connection.calculation import (
     EndUseFactors,
@@ -164,6 +165,21 @@ def map_multirow_request(request: MultiRowConnectionRequestDTO) -> MultiRowOrche
         request.automatic_action_source_id,
         single_row_geometry_preview_authorized=direct_requested and request.row_count == 1,
         direct_finalization_mode=direct_requested,
+        supporting_w_longitudinal_ends=(
+            DirectSupportEndInput()
+            if request.supporting_w_longitudinal_ends is None
+            else DirectSupportEndInput(
+                request.supporting_w_longitudinal_ends.condition,
+                None
+                if request.supporting_w_longitudinal_ends.negative_end_distance is None
+                else _quantity(request.supporting_w_longitudinal_ends.negative_end_distance),
+                None
+                if request.supporting_w_longitudinal_ends.positive_end_distance is None
+                else _quantity(request.supporting_w_longitudinal_ends.positive_end_distance),
+            )
+        )
+        if direct_requested
+        else None,
     )
 
 
@@ -257,6 +273,9 @@ def serialize_multirow_preview(
             "direct_engineering_geometry": _serialize(response.direct_engineering_geometry)
             if include_direct_clearance and isinstance(response, DirectMultiRowPreviewResult)
             else [],
+            "direct_support_end_authority": _serialize(response.direct_support_end_authority)
+            if isinstance(response, DirectMultiRowPreviewResult)
+            else None,
         }
     )
 

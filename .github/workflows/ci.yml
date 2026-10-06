@@ -66,7 +66,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7897
+          --expected-tests 7945
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider
@@ -116,6 +116,14 @@ jobs:
           if-no-files-found: error
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help
+      - name: Generate signed Direct supporting-end R1 review PDFs
+        run: python ../scripts/generate_direct_support_ends_r1_ci_pdfs.py --output direct-support-end-r1-review-pdfs
+      - name: Upload Direct supporting-end R1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-support-end-r1-pdfs-${{ matrix.os }}
+          path: backend/direct-support-end-r1-review-pdfs/
+          if-no-files-found: error
       - name: Check Alembic CLI availability
         run: python -m alembic --help
       - name: Smoke-test runtime dependencies
