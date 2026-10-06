@@ -40,7 +40,11 @@ export interface MAT1CatalogRecord {
   readonly missing: readonly string[];
   readonly properties: readonly MAT1Property[];
   readonly qualification: string;
+  readonly specification?: Readonly<Record<string, unknown>>;
 }
+
+export const ASCE_SHAPE_BASIS = "ASCE_74_23_MINIMUM_CHARACTERISTIC";
+export const DIRECT_PRODUCTION_MATERIAL_ID = "ICE_ISOPHTHALIC_POLYESTER_ASCE74_23_MIN_SHAPE_RC1";
 
 export interface MAT1SessionProperty {
   readonly label: string;
@@ -91,6 +95,7 @@ interface MAT1State {
   readonly catalogError: string | null;
   readonly active: boolean;
   readonly defaultId: string | null;
+  readonly directMaterialId: string | null;
   readonly custom: Readonly<Record<string, MAT1SessionRecord>>;
   readonly overrides: Readonly<Record<string, Readonly<Record<string, string | null>>>>;
   readonly conditions: MAT1Conditions;
@@ -121,6 +126,7 @@ const initialConditions: MAT1Conditions = {
 let current: MAT1State = {
   catalog: [], catalogError: null, active: false,
   defaultId: "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
+  directMaterialId: DIRECT_PRODUCTION_MATERIAL_ID,
   custom: {}, overrides: {}, conditions: initialConditions, conditionOverrides: {},
   designKeys: {}, designTraces: {},
   previewInputs: {}, previewOwners: {}, previewOwnerKeys: {},
@@ -152,6 +158,19 @@ export function setMAT1Default(id: string | null): void {
     .map((capability) => [capability.route_id, {}]));
   notify({ ...current, active: true, defaultId: id,
     overrides: { ...current.overrides, ...linkedOverrides } });
+}
+
+export function mat1UsesShapeBasis(family: string): boolean {
+  return family === "multi-row" && (current.previewInputs[family] ?? "").includes('"direct_finalization_contract_version":"SHEAR01-DIRECT-F1"');
+}
+
+export function mat1DefaultId(family: string): string | null {
+  return mat1UsesShapeBasis(family) ? current.directMaterialId : current.defaultId;
+}
+
+export function setMAT1DirectMaterial(id: string | null): void {
+  notify({ ...current, active: true, directMaterialId: id,
+    overrides: { ...current.overrides, "multi-row": {} } });
 }
 
 export function setFastenerSelection(family: string, selection: FastenerSelection): void {
@@ -214,9 +233,9 @@ export function createMAT1Session(source?: MAT1CatalogRecord | MAT1SessionRecord
   const id = `SESSION:${crypto.randomUUID()}`;
   const copied = source === undefined ? {} : "kind" in source
     ? structuredClone(source.properties)
-    : Object.fromEntries(source.properties.map((item) => [item.id, {
+    : Object.fromEntries(source.properties.filter((item) => !item.id.startsWith("pull_through_frp_thickness_")).map((item) => [item.id, {
       label: item.label, symbol: item.symbol, value: item.original,
-      unit: item.unit, basis: item.basis,
+      unit: item.unit, basis: item.basis === ASCE_SHAPE_BASIS ? "UNKNOWN" : item.basis,
     }]));
   const record: MAT1SessionRecord = {
     kind: "SESSION", id, revision: "1",
@@ -238,7 +257,7 @@ export function editMAT1Session(id: string, changes: Partial<Pick<MAT1SessionRec
 }
 
 export function deleteMAT1Session(id: string): boolean {
-  if (current.defaultId === id || Object.values(current.overrides).some((owners) => Object.values(owners).includes(id))) return false;
+  if (current.defaultId === id || current.directMaterialId === id || Object.values(current.overrides).some((owners) => Object.values(owners).includes(id))) return false;
   const custom = Object.fromEntries(Object.entries(current.custom).filter(([key]) => key !== id));
   notify({ ...current, custom });
   return true;
@@ -249,7 +268,8 @@ export function clearMAT1Sessions(): void {
     family,
     Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, id !== null && id in current.custom ? null : id])),
   ]));
-  notify({ ...current, custom: {}, defaultId: current.defaultId !== null && current.defaultId in current.custom ? null : current.defaultId, overrides });
+  notify({ ...current, custom: {}, defaultId: current.defaultId !== null && current.defaultId in current.custom ? null : current.defaultId,
+    directMaterialId: current.directMaterialId !== null && current.directMaterialId in current.custom ? null : current.directMaterialId, overrides });
 }
 
 export function materialSelection(id: string | null): object | null {
@@ -267,7 +287,7 @@ export function mat1FamilyKey(family: string, includePreviewInput = true): strin
   if (!current.active) return "LEGACY";
   const owners = current.overrides[family] ?? {};
   return JSON.stringify({
-    family, defaultMaterial: materialSelection(current.defaultId),
+    family, defaultMaterial: materialSelection(mat1DefaultId(family)),
     overrides: Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, materialSelection(id)])),
     conditions: current.conditions, conditionOverrides: current.conditionOverrides[family] ?? {},
     previewInput: includePreviewInput ? current.previewInputs[family] ?? null : undefined,

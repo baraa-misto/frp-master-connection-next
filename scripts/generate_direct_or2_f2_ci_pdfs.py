@@ -47,7 +47,8 @@ def main() -> None:
             conditions["maximum_temperature"]["value"] = "130"
             if name != "temperature-roles":
                 conditions["glass_transition_temperature"] = {
-                    "value": "170" if name == "tg-pass" else "169.999999", "unit": "degF"}
+                    # F5 explicitly requires max(180°F, Tmax + 40°F).
+                    "value": "180" if name == "tg-pass" else "179.999999", "unit": "degF"}
         if name == "material-catalog":
             record = call("GET", "/api/v1/frp-materials/catalog").json()["records"][1]
             body["assignments"]["default_material"] = selection(record)

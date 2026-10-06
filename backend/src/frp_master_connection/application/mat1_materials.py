@@ -123,7 +123,7 @@ def _record(raw: dict[str, Any], source_kind: str) -> MaterialRecord:
             source_locator=item.get("source_locator", "ICE owner material table, MAT1 seed RC0"),
             applicability=("BOLT_SIZE_LABEL_ONLY; TESTED_FRP_THICKNESS_AND_WASHER_UNKNOWN",)
             if key in PULL_THROUGH_IDS
-            else (),
+            else tuple(item.get("applicability", ())),
             source_bolt_diameter_in=(
                 decimal_input(item["source_bolt_diameter_in"]) if key in PULL_THROUGH_IDS else None
             ),
@@ -211,7 +211,9 @@ def predefined_catalog() -> tuple[MaterialRecord, ...]:
 def catalog_record(identifier: str, revision: str, digest: str) -> MaterialRecord:
     """Require exact revision and content binding for a predefined selection."""
 
-    for record in predefined_catalog():
+    from frp_master_connection.application.asce_shape_materials import production_shape_catalog
+
+    for record in (*predefined_catalog(), *production_shape_catalog()):
         if (record.id, record.revision, record.content_digest) == (
             identifier,
             revision,
@@ -224,6 +226,10 @@ def catalog_record(identifier: str, revision: str, digest: str) -> MaterialRecor
 def catalog_property_basis(record: MaterialRecord) -> str:
     """State the actual stored authority; never promote a nominal catalog by selection."""
 
+    from frp_master_connection.application.asce_shape_materials import SHAPE_BASIS, is_shape_basis
+
+    if is_shape_basis(record):
+        return SHAPE_BASIS
     return (
         "USER_DEFINED"
         if record.source_kind == "USER_SUPPLIED_SESSION_DATA"
@@ -422,9 +428,11 @@ def temperature_applicability(conditions: DesignConditions) -> str:
     Existing thermal/qualification gates continue to govern design completeness.
     """
 
+    from frp_master_connection.application.asce_shape_materials import required_tg_f
+
     if conditions.tg_f is None:
         return "NOT_CONFIRMED"
-    return "FAIL" if conditions.maximum_f > conditions.tg_f - Decimal(40) else "PASS"
+    return "FAIL" if conditions.tg_f < required_tg_f(conditions.maximum_f) else "PASS"
 
 
 @dataclass(frozen=True, slots=True)
@@ -453,6 +461,16 @@ def property_ledger(
 ) -> PropertyLedger:
     """Resolve a numerical candidate and explicitly keep source gates visible."""
 
+    from frp_master_connection.application.asce_shape_materials import (
+        SHAPE_BASIS,
+        is_shape_basis,
+        required_tg_f,
+        shape_project_issues,
+        shape_reference_conditions,
+    )
+
+    production = is_shape_basis(record)
+    conditions = shape_reference_conditions(record, conditions)
     prop = record.property(property_id)
     if prop is None:
         raise ValueError(f"MAT1_PROPERTY_REQUIRED:{property_id}")
@@ -476,8 +494,18 @@ def property_ledger(
     if ct is None and role != "OTHER":
         issues.append(temp.rule)
     if cm is None and role != "OTHER":
-        issues.append("MOISTURE_ADJUSTMENT_SOURCE_REQUIRED")
-    gate = thermal_gate(conditions.sustained_f, conditions.maximum_f, conditions.tg_f)
+        issues.append(
+            "MOISTURE_PROJECT_CONDITION_REQUIRED"
+            if production and conditions.moisture == "UNKNOWN"
+            else "MOISTURE_ADJUSTMENT_SOURCE_REQUIRED"
+        )
+    gate = (
+        "TEST_BASED_TEMPERATURE_FACTOR_REQUIRED"
+        if production and conditions.sustained_f > 140
+        else "WITHIN_NUMERICAL_THERMAL_DOMAIN_ONLY"
+        if production
+        else thermal_gate(conditions.sustained_f, conditions.maximum_f, conditions.tg_f)
+    )
     if gate != "WITHIN_NUMERICAL_THERMAL_DOMAIN_ONLY":
         issues.append(gate)
     if conditions.source_reference_condition == "UNKNOWN":
@@ -486,7 +514,7 @@ def property_ledger(
         issues.append("ALREADY_ADJUSTED_SOURCE_FACTOR_DUPLICATION_REVIEW")
     if prop.basis == "ALREADY_ADJUSTED":
         issues.append("ALREADY_ADJUSTED_PROPERTY_FACTOR_DUPLICATION_REVIEW")
-    if prop.basis != "CHARACTERISTIC" and role == "STRENGTH":
+    if prop.basis not in {"CHARACTERISTIC", SHAPE_BASIS} and role == "STRENGTH":
         issues.append("STRENGTH_CHARACTERISTIC_BASIS_NOT_ESTABLISHED")
     if conditions.chemical == "SPECIFIED":
         issues.append("CHEMICAL_ADJUSTMENT_SOURCE_REQUIRED")
@@ -494,12 +522,20 @@ def property_ledger(
         issues.append("CHEMICAL_EXPOSURE_UNRESOLVED")
     if record.source_kind == "OWNER_SUPPLIED_NOMINAL_DATASET":
         issues.append("OWNER_NOMINAL_SOURCE_QUALIFICATION_REQUIRED")
-    if conditions.uv_weathering != "NONE_DECLARED":
+    if production:
+        issues.extend(shape_project_issues(conditions))
+    if not production and conditions.uv_weathering != "NONE_DECLARED":
         issues.append("UV_WEATHERING_APPLICABILITY_SOURCE_REQUIRED")
-    if conditions.freeze_thaw != "NONE_DECLARED":
+    if not production and conditions.freeze_thaw != "NONE_DECLARED":
         issues.append("FREEZE_THAW_APPLICABILITY_SOURCE_REQUIRED")
     if conditions.fatigue_cycles:
         issues.append("FATIGUE_RECORDED_ONLY_APPLICABILITY_REQUIRED")
+    if (
+        not production
+        and conditions.tg_f is not None
+        and conditions.tg_f < required_tg_f(conditions.maximum_f)
+    ):
+        issues.append("ACTUAL_TG_BELOW_PROJECT_REQUIREMENT")
     cch = Decimal(1) if conditions.chemical == "NONE_DECLARED" else None
     adjusted = (
         prop.original * cm * ct * cch

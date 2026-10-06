@@ -104,7 +104,7 @@ export function PersistentConnectionViewer({ children, unity }: PersistentConnec
     ? gateTrace?.overall_status ?? "SOURCE_REQUIRED" : gateTrace === undefined ? "Not calculated" : "Recalculation needed";
   let presented = unity;
   if (unity !== undefined && family !== null && mat1.active) {
-    const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[] } | undefined;
+    const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[]; material_sources?: { default?: { property_basis?: string } } } | undefined;
     if (mat1.designKeys[family] !== mat1FamilyKey(family) || trace === undefined) {
       presented = { tone: "gray", ratio: null, ratioText: "—", status: trace === undefined ? "Not calculated" : "Recalculation needed", governing: null, explanation: trace === undefined ? "Run Design Check to calculate the connection." : "FRP material or design conditions changed. Run Design Check." };
     } else {
@@ -112,16 +112,16 @@ export function PersistentConnectionViewer({ children, unity }: PersistentConnec
       const inspected = mapped === undefined ? unity : viewerUnity(mapped, trace.client_design ?? trace.native_design);
       presented = {
         ...inspected,
-        tone: inspected.tone === "red" ? "red" : "yellow",
+        tone: inspected.tone === "red" || trace.overall_status === "FAIL" ? "red" : "yellow",
         status: trace.overall_status ?? "SOURCE_REQUIRED",
-        explanation: trace.material_issues?.[0] ?? "Material source and qualification remain unresolved.",
+        explanation: trace.material_issues?.[0] ?? (trace.material_sources?.default?.property_basis === "ASCE_74_23_MINIMUM_CHARACTERISTIC" ? "ASCE shape material basis resolved. Required engineering methods and whole-connection qualification remain unresolved." : "Material source and qualification remain unresolved."),
       };
     }
   }
   return <UnityViewerContext.Provider value={presented ?? null}><div className="persistent-connection-viewer">
     {family !== null && mat1.active ? <div className="mat1-result-gate" role="status">
       <strong>Design completeness status: {gateStatus}</strong>
-      <span> Material source and qualification requirements still govern the connection result.</span>
+      <span> Required methods, project conditions and whole-connection qualification govern the connection result.</span>
     </div> : null}
     {children}
     {presented === undefined ? null : <div className="unity-viewer-fallback"><UnityRatioIndicator value={presented} /></div>}

@@ -1,5 +1,5 @@
 /** Versioned material request envelope around the existing explicit design actions. */
-import { acceptMAT1Design, defaultFastenerSelection, F593_FASTENER_REVISION, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { acceptMAT1Design, defaultFastenerSelection, F593_FASTENER_REVISION, mat1DefaultId, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
 import { acceptReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../state/reportSession";
 
 interface MAT1TransportResponse {
@@ -50,8 +50,9 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
   if (url.includes("connector_body_material=SS316")) throw new Error("MAT1_STAINLESS_MEMBER_ADAPTER_UNAVAILABLE");
   const family = String(match[1]); // The route pattern captures one nonempty family segment.
   if (family === "stair-stringer-miter" && match[2] === "design-check") throw new Error("MAT1_SSMC_REQUIRES_ANALYTICAL_DESIGN_ROUTE");
-  if (state.defaultId === null) throw new Error("Assign a connection FRP material before Run Design Check.");
-  const selected = materialSelection(state.defaultId);
+  const defaultId = mat1DefaultId(family);
+  if (defaultId === null) throw new Error("Assign a connection FRP material before Run Design Check.");
+  const selected = materialSelection(defaultId);
   if (selected === null) throw new Error("Selected FRP material is unavailable.");
   const conditions = state.conditions;
   if (conditions.sustained_temperature.value === "" || conditions.maximum_temperature.value === "" || conditions.load_case_name.trim() === "" || conditions.time_effect_category === "") throw new Error("Complete the MAT1 design conditions before Run Design Check.");

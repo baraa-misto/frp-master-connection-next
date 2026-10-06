@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from frp_master_connection.application.asce_shape_materials import (
+    is_shape_basis,
+    shape_reference_conditions,
+)
 from frp_master_connection.application.mat1_materials import (
     DesignConditions,
     MaterialRecord,
@@ -74,7 +78,11 @@ class NativeMaterialAdapter:
 
 
 def adapt_native_material(
-    component_id: str, record: MaterialRecord, conditions: DesignConditions
+    component_id: str,
+    record: MaterialRecord,
+    conditions: DesignConditions,
+    *,
+    shape_binding_verified: bool = False,
 ) -> NativeMaterialAdapter:
     """Pass source-bound numeric candidates into native typed checks once.
 
@@ -83,6 +91,10 @@ def adapt_native_material(
     The caller must block a complete PASS whenever unresolved_issues is nonempty.
     """
 
+    production = is_shape_basis(record)
+    if production and not shape_binding_verified:
+        raise ValueError("F5_SHAPE_BASIS_FAMILY_BINDING_DEFERRED")
+    conditions = shape_reference_conditions(record, conditions)
     if conditions.source_reference_condition == "ALREADY_ADJUSTED":
         raise ValueError("MAT1_ALREADY_ADJUSTED_SOURCE_REQUIRES_NON_DUPLICATING_ADAPTER")
     if any(item.basis == "ALREADY_ADJUSTED" and item.id in _KIND for item in record.properties):
@@ -107,13 +119,21 @@ def adapt_native_material(
                 kind=kind,
                 value=PhysicalQuantity.of(value, unit),
                 behavior=_BEHAVIOR[kind],
-                source_classification=SourceClassification.SOURCE_PENDING,
-                qualification_status=QualificationStatus.ENGINEERING_REVIEW_REQUIRED,
+                source_classification=SourceClassification.CODE_CHARACTERISTIC
+                if production
+                else SourceClassification.SOURCE_PENDING,
+                qualification_status=QualificationStatus.QUALIFIED
+                if production
+                else QualificationStatus.ENGINEERING_REVIEW_REQUIRED,
                 source_document=prop.source_locator,
                 source_revision=f"{record.revision}:{record.content_digest}",
                 applicability_metadata=prop.applicability,
                 engineer_notes=(
-                    "MAT1 numerical candidate; original source and factors retained in ledger.",
+                    "ASCE minimum characteristic shape specification; "
+                    "furnished-product conformance is project QA responsibility."
+                    if production
+                    else "MAT1 numerical candidate; original source and factors retained "
+                    "in ledger.",
                 ),
                 use_in_chapter_8_equations=kind not in _PULL_THROUGH,
             )
@@ -128,8 +148,12 @@ def adapt_native_material(
         id=record.id,
         display_name=record.display_name,
         locked=record.source_kind != "USER_SUPPLIED_SESSION_DATA",
-        basis=SourceClassification.SOURCE_PENDING,
-        qualification_statuses=(
+        basis=SourceClassification.CODE_CHARACTERISTIC
+        if production
+        else SourceClassification.SOURCE_PENDING,
+        qualification_statuses=(QualificationStatus.QUALIFIED,)
+        if production
+        else (
             QualificationStatus.ENGINEERING_REVIEW_REQUIRED,
             QualificationStatus.SOURCE_PENDING,
         ),

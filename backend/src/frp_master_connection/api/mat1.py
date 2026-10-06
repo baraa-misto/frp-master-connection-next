@@ -84,6 +84,13 @@ from frp_master_connection.application import (
     evaluate_multirow_connection,
     evaluate_single_bolt_connection,
 )
+from frp_master_connection.application.asce_shape_materials import (
+    is_shape_basis,
+    material_condition_basis,
+    production_shape_catalog,
+    shape_source_metadata,
+    shape_temperature_state,
+)
 from frp_master_connection.application.connector_material_assembly import (
     canonical_material_assembly,
 )
@@ -99,7 +106,6 @@ from frp_master_connection.application.mat1_materials import (
     predefined_catalog,
     property_ledger,
     session_record,
-    temperature_applicability,
     temperature_fahrenheit,
 )
 from frp_master_connection.application.mat1_multirow import bind_multirow_material
@@ -395,6 +401,9 @@ def _material_source_snapshot(assignments: MaterialAssignmentsDTO) -> dict[str, 
         "default": _json_value(
             {
                 **asdict(resolve_material(assignments.default_material)),
+                "specification": shape_source_metadata(
+                    resolve_material(assignments.default_material)
+                ),
                 "property_basis": catalog_property_basis(
                     resolve_material(assignments.default_material)
                 ),
@@ -405,21 +414,45 @@ def _material_source_snapshot(assignments: MaterialAssignmentsDTO) -> dict[str, 
                 {
                     **asdict(resolve_material(selection)),
                     "property_basis": catalog_property_basis(resolve_material(selection)),
+                    "specification": shape_source_metadata(resolve_material(selection)),
                 }
             )
             for owner, selection in assignments.material_overrides.items()
         },
         "temperature_applicability": {
-            "default": temperature_applicability(
-                resolve_conditions(assignments.default_conditions)
+            "default": shape_temperature_state(
+                resolve_material(assignments.default_material),
+                resolve_conditions(assignments.default_conditions),
             ),
             "overrides": {
-                owner: temperature_applicability(resolve_conditions(conditions))
+                owner: shape_temperature_state(
+                    resolve_material(
+                        assignments.material_overrides.get(owner, assignments.default_material)
+                    ),
+                    resolve_conditions(conditions),
+                )
                 for owner, conditions in assignments.condition_overrides.items()
             },
-            "tg_evidence": "USER_SUPPLIED"
+            "tg_evidence": "PROJECT_CONFORMANCE_SPECIFICATION"
+            if is_shape_basis(resolve_material(assignments.default_material))
+            else "USER_SUPPLIED"
             if assignments.default_conditions.glass_transition_temperature is not None
             else "MISSING",
+        },
+        "condition_basis": {
+            "default": material_condition_basis(
+                resolve_material(assignments.default_material),
+                resolve_conditions(assignments.default_conditions),
+            ),
+            "overrides": {
+                owner: material_condition_basis(
+                    resolve_material(
+                        assignments.material_overrides.get(owner, assignments.default_material)
+                    ),
+                    resolve_conditions(conditions),
+                )
+                for owner, conditions in assignments.condition_overrides.items()
+            },
         },
     }
 
@@ -445,10 +478,13 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                     {
                         **asdict(record),
                         "property_basis": catalog_property_basis(record),
-                        "qualification": "OWNER_OR_CATALOG_DATA_NOT_SERVER_QUALIFIED",
+                        "qualification": "CODE_MATERIAL_SPECIFICATION_REQUIREMENT"
+                        if is_shape_basis(record)
+                        else "OWNER_OR_CATALOG_DATA_NOT_SERVER_QUALIFIED",
+                        "specification": shape_source_metadata(record),
                     }
                 )
-                for record in predefined_catalog()
+                for record in (*predefined_catalog(), *production_shape_catalog())
             ],
         }
 
@@ -468,12 +504,15 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             raise HTTPException(status_code=422, detail={"code": str(error)}) from error
         return {
             "contract": "MAT1-FACTOR-RC0",
-            "result_status": "SOURCE_REQUIRED",
+            "result_status": "CODE_MATERIAL_SPECIFICATION_REQUIREMENT"
+            if is_shape_basis(record)
+            else "SOURCE_REQUIRED",
             "record_id": record.id,
             "record_revision": record.revision,
             "content_digest": record.content_digest,
             "load_case_name": conditions.load_case_name,
             "ledgers": [_json_value(asdict(item)) for item in ledgers],
+            "condition_basis": material_condition_basis(record, conditions),
             "design_check_performed": False,
         }
 
@@ -660,7 +699,17 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             if len(identities) != 1:
                 raise ValueError("MAT1_MULTIROW_LINKED_LAYER_MATERIAL_OR_CONDITIONS_REQUIRED")
             adapters = [
-                adapt_native_material(layer_id, record, condition)
+                adapt_native_material(
+                    layer_id,
+                    record,
+                    condition,
+                    shape_binding_verified=(
+                        legacy.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
+                        and all(
+                            layer.element_classification.value == "SHAPE" for layer in legacy.layers
+                        )
+                    ),
+                )
                 for layer_id, record, condition in per_layer
             ]
             catalog_binding = (
@@ -673,6 +722,9 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 adapters[0].adjusted_snapshot,
                 resolve_fastener_selection(request.fastener),
                 catalog_binding,
+                tuple(
+                    sorted({issue for adapter in adapters for issue in adapter.unresolved_issues})
+                ),
             )
             native = serialize_multirow_design(
                 evaluate_multirow_connection(canonical),
@@ -694,7 +746,15 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
         )
         return {
             "contract": "MAT1-MULTI-ROW-RC0",
-            "overall_status": "FAIL" if numerical_fail else "SOURCE_REQUIRED",
+            "overall_status": "FAIL"
+            if numerical_fail
+            or any(
+                shape_temperature_state(record, condition) == "FAIL"
+                for _, record, condition in per_layer
+            )
+            else "ENGINEERING_REVIEW_REQUIRED"
+            if all(is_shape_basis(record) for _, record, _ in per_layer)
+            else "SOURCE_REQUIRED",
             "native_design": native.model_dump(mode="json"),
             "material_sources": _material_source_snapshot(request.assignments),
             "fastener_source": (

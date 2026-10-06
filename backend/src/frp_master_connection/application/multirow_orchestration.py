@@ -1532,11 +1532,12 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
     ]
     if request.bolts_per_row > 3:
         warning_values.append("MORE_THAN_THREE_BOLTS_PER_ROW_FIRST_ROW_CHECK_UNSUPPORTED")
+    if mat1_material is None:
+        warning_values.append("CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW")
+    elif material.basis is not SourceClassification.CODE_CHARACTERISTIC:
+        warning_values.append("MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED")
     warning_values.extend(
         (
-            "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"
-            if mat1_material is None
-            else "MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED",
             *(
                 ()
                 if catalog_binding is not None and fastener.fnt is not None
@@ -1984,16 +1985,36 @@ def _execution_bundle(
                     interrow_plan=plan,
                 )
             )
+        production = direct and layer.material.basis is SourceClassification.CODE_CHARACTERISTIC
+        project_issues = getattr(request, "mat1_material_issues", ())
+        source_check = _check(
+            f"PROJECT_CONDITION_REVIEW:{layer.layer_id}"
+            if production and project_issues
+            else f"MATERIAL_SOURCE_REVIEW:{layer.layer_id}",
+            MultiRowCheckFamily.MATERIAL_SOURCE_REVIEW,
+            MultiRowEquationMethod.STATUS_ONLY,
+            None,
+            method,
+            QualificationDisposition.QUALIFIED_ASCE_PRESCRIPTIVE
+            if production and not project_issues
+            else QualificationDisposition.ENGINEERING_REVIEW_REQUIRED,
+            PlanAvailability.NOT_APPLICABLE
+            if production and not project_issues
+            else PlanAvailability.READY,
+            layer_id=layer.layer_id,
+        )
         checks.append(
-            _check(
-                f"MATERIAL_SOURCE_REVIEW:{layer.layer_id}",
-                MultiRowCheckFamily.MATERIAL_SOURCE_REVIEW,
-                MultiRowEquationMethod.STATUS_ONLY,
-                None,
-                method,
-                QualificationDisposition.ENGINEERING_REVIEW_REQUIRED,
-                layer_id=layer.layer_id,
+            replace(
+                source_check,
+                source_locator=(
+                    "ASCE/SEI 74-23 Table 1-2 shape specification; "
+                    "material source requirement satisfied by project conformance"
+                    if not project_issues
+                    else "; ".join(project_issues)
+                ),
             )
+            if production
+            else source_check
         )
     for block_plan in resolved.block_plan_set.candidates:
         layer_id = block_plan.path_id.split(":", 1)[0]

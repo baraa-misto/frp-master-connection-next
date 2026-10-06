@@ -142,10 +142,11 @@ def test_provenance_keeps_existing_unresolved_face_and_hardware_issues() -> None
 @pytest.mark.parametrize(
     ("sustained", "maximum", "tg", "expected"),
     [
-        ("70", "120", "160", "PASS"),
-        ("120", "120", "160", "PASS"),
+        # F5 adds the ASCE 180°F baseline to the existing Tmax + 40°F requirement.
+        ("70", "120", "160", "FAIL"),
+        ("120", "120", "160", "FAIL"),
         ("70", "120", "159.999999", "FAIL"),
-        ("70", "120", "160.000001", "PASS"),
+        ("70", "120", "160.000001", "FAIL"),
         ("70", "120", None, "NOT_CONFIRMED"),
         ("141", "150", "200", "PASS"),
     ],
@@ -182,7 +183,11 @@ def test_tg_boundary_is_separate_from_sustained_factor(
 
 def test_catalog_authority_and_numerical_checks_remain_honest() -> None:
     catalog = call("GET", "/api/v1/frp-materials/catalog").json()
-    assert {r["property_basis"] for r in catalog["records"]} == {"DEVELOPMENT_NOMINAL"}
+    assert {r["property_basis"] for r in catalog["records"]} == {
+        "DEVELOPMENT_NOMINAL",
+        "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+    }
+    assert {r["property_basis"] for r in catalog["records"][:2]} == {"DEVELOPMENT_NOMINAL"}
     assert (
         catalog_property_basis(
             replace(predefined_catalog()[0], source_kind="USER_SUPPLIED_SESSION_DATA")

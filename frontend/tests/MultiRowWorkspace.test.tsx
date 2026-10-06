@@ -16,7 +16,7 @@ import { MultiRowVisualizationPanel } from "../src/visualization/MultiRowVisuali
 import { ShearConnectionsWorkspace } from "../src/workspace/ShearConnectionsWorkspace";
 import { PREVIEW_DEBOUNCE_MS } from "../src/workspace/previewWorkflow";
 import * as benchmarks from "../src/fixtures/j1Benchmarks";
-import { mat1Snapshot, setMAT1Active, setMAT1Conditions } from "../src/state/mat1Session";
+import { ASCE_SHAPE_BASIS, DIRECT_PRODUCTION_MATERIAL_ID, mat1Snapshot, rememberMAT1Preview, setMAT1Active, setMAT1Catalog, setMAT1Conditions, setMAT1DirectMaterial } from "../src/state/mat1Session";
 import {
   previewResponseFixture,
   visualizationFixture,
@@ -465,6 +465,28 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByLabelText<HTMLSelectElement>("Unit system").value).toBe("SI");
     expect(screen.getByLabelText<HTMLInputElement>("Leg y").value).toBe("101.6");
     expect(screen.getByText(/historical J1 regression fixture may not satisfy current Direct physical-validation rules/)).not.toBeVisible();
+  });
+
+  it("removes the historical geometry-preview material warning only for the selected production basis", async () => {
+    const previous = mat1Snapshot();
+    const record = { id: DIRECT_PRODUCTION_MATERIAL_ID, revision: "RC1", content_digest: "a".repeat(64), display_name: "ICE — Isophthalic polyester", company: "ICE", resin: "ISOPHTHALIC_POLYESTER" as const, source_kind: "ASCE_SHAPE_SPECIFICATION", property_basis: ASCE_SHAPE_BASIS, qualification: "CODE_MATERIAL_SPECIFICATION_REQUIREMENT", missing: [], properties: [] };
+    setMAT1Catalog([record]);
+    setMAT1DirectMaterial(record.id);
+    rememberMAT1Preview("multi-row", JSON.stringify({ direct_finalization_contract_version: "SHEAR01-DIRECT-F1" }));
+    const preview = multirowPreviewFixture(2, 1);
+    preview.warnings = ["CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW", "DIRECT_INDEPENDENT_MEMBER_END_MOMENT_NOT_SUPPORTED"];
+    mocks.multiPreview.mockResolvedValue(preview);
+    const view = render(<ShearConnectionsWorkspace />);
+    activateNormalAutomaticDemand();
+    await waitFor(() => { expect(mocks.multiPreview).toHaveBeenCalled(); });
+    await waitFor(() => { expect(screen.getByTestId("mock-engineering-scene")).toBeInTheDocument(); });
+    expect(screen.queryByText(/Supported calculations use owner-supplied ICE data/)).not.toBeInTheDocument();
+    act(() => { setMAT1DirectMaterial(null); });
+    expect(screen.getByText(/Supported calculations use owner-supplied ICE data/)).toBeInTheDocument();
+    view.unmount();
+    setMAT1Catalog(previous.catalog);
+    setMAT1DirectMaterial(previous.directMaterialId);
+    rememberMAT1Preview("multi-row", previous.previewInputs["multi-row"] ?? "{}");
   });
 
   it("explains missing shared conditions before requesting a Direct design", async () => {

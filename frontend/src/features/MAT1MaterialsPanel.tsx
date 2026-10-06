@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { inspectMAT1Factors, loadMAT1Owners } from "../api/mat1Service";
 import { workspaceCapability } from "../domain/workspaceCapabilities";
 import { materialConditionIssues } from "./materialConditionValidation";
+import { ASCEShapeBasisSummary } from "./ASCEShapeBasisSummary";
 
 import {
   applyMAT1ToOwners,
@@ -10,6 +11,10 @@ import {
   deleteMAT1Session,
   editMAT1Session,
   mat1FamilyKey,
+  mat1DefaultId,
+  mat1UsesShapeBasis,
+  ASCE_SHAPE_BASIS,
+  setMAT1DirectMaterial,
   setMAT1Conditions,
   setMAT1ConditionOverride,
   setMAT1Default,
@@ -64,8 +69,12 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
     return () => { controller.abort(); };
   }, [family, previewInput, state.active, state.previewOwnerKeys]);
 
-  const selectedCatalog = state.catalog.find((item) => item.id === state.defaultId);
-  const selectedSession = state.defaultId === null ? undefined : state.custom[state.defaultId];
+  const directScope = mat1UsesShapeBasis(family);
+  const defaultId = mat1DefaultId(family);
+  const selectDefault = (id: string | null): void => { if (directScope) setMAT1DirectMaterial(id); else setMAT1Default(id); };
+  const selectedCatalog = state.catalog.find((item) => item.id === defaultId);
+  const production = selectedCatalog?.property_basis === ASCE_SHAPE_BASIS;
+  const selectedSession = defaultId === null ? undefined : state.custom[defaultId];
   const selected = selectedCatalog ?? selectedSession;
   const trace = state.designTraces[family] as { material_ledgers?: Record<string, unknown>[]; overall_status?: string; material_sources?: { temperature_applicability?: { default: string; tg_evidence: string } } } | undefined;
   const owners = Array.from(new Set([
@@ -117,34 +126,36 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
     try {
       const body = await inspectMAT1Factors({
         material, conditions: state.conditions,
-        component_id: family, property_ids: displayedProperties.map((item) => item.id),
+        component_id: family, property_ids: displayedProperties.filter((item) => !item.id.startsWith("pull_through_frp_thickness_")).map((item) => item.id),
       }, new AbortController().signal);
       setCandidate(body);
       setShowAdjustments(true);
-      setFeedback({ key: factorFeedbackKey, text: "Numerical candidates only; source and qualification gates remain open." });
+      setFeedback({ key: factorFeedbackKey, text: production ? "ASCE shape specification factors calculated. Project-condition issues and remaining connection limits are listed separately." : "Numerical candidates only; source and qualification gates remain open." });
     } catch (error) { setFeedback({ key: factorFeedbackKey, text: String(error) }); }
   }
 
   return <section className="mat1-material-panel" aria-label="FRP Materials and Design Conditions">
     <details open>
       <summary>Materials and project conditions <small>{selected?.display_name ?? "Material unavailable"}</small></summary>
-      <p>Predefined values are read-only owner-supplied data. Session materials disappear on reload, tab close, or Clear session materials.</p>
+      <p>{production ? "Predefined values use the controlled ASCE minimum characteristic shape specification." : "Predefined values are read-only owner-supplied data."} Session materials disappear on reload, tab close, or Clear session materials.</p>
       <p>Selected material: <strong>{selected?.company ?? "Unavailable"} · {selected === undefined ? "Unknown resin" : readable(selected.resin)}</strong>. Select a documented material and enter actual service conditions before checking.</p>
       {state.catalogError === null ? null : <p role="alert">{state.catalogError}</p>}
       {state.active ? <>
-        <label>Connection default material <select value={state.defaultId ?? ""} onChange={(event) => { setMAT1Default(event.currentTarget.value || null); setCandidate(null); }}>
+        <label>Connection default material <select value={defaultId ?? ""} onChange={(event) => { selectDefault(event.currentTarget.value || null); setCandidate(null); }}>
           <option value="">Unassigned — design unavailable</option>
-          {state.catalog.map((record) => <option key={record.id} value={record.id}>{record.company} · {readable(record.resin)} · {record.revision}</option>)}
+          {state.catalog.filter((record) => directScope ? record.property_basis === ASCE_SHAPE_BASIS : record.property_basis !== ASCE_SHAPE_BASIS).map((record) => <option key={record.id} value={record.id}>{directScope ? record.display_name : `${record.company} · ${readable(record.resin)} · ${record.revision}`}</option>)}
           {Object.values(state.custom).map((record) => <option key={record.id} value={record.id}>Session · {record.display_name} · revision {record.revision}</option>)}
         </select></label>
+        {directScope ? <details><summary>Advanced Engineering Diagnostics · Development / legacy material records</summary><label>Development / legacy material <select value={production ? "" : defaultId ?? ""} onChange={(event) => { selectDefault(event.currentTarget.value || null); setCandidate(null); }}><option value="">Choose an explicit development record</option>{state.catalog.filter((record) => record.property_basis !== ASCE_SHAPE_BASIS).map((record) => <option key={record.id} value={record.id}>{record.display_name} · {record.revision}</option>)}</select></label><p>DEVELOPMENT DATA — NOT PRODUCTION CHARACTERISTIC BASIS. These immutable owner records do not permit final GREEN.</p></details> : null}
+        {production ? <ASCEShapeBasisSummary record={selectedCatalog} conditions={state.conditions} /> : null}
         {selected === undefined ? null : <>
           <p>Property basis: <strong>{selectedCatalog?.property_basis ?? (selectedCatalog === undefined ? "USER_DEFINED" : "DEVELOPMENT_NOMINAL")}</strong>. Catalog selection binds the stored design properties; it does not change their source basis.</p>
           {selectedCatalog !== undefined && (selectedCatalog.property_basis === undefined || selectedCatalog.property_basis === "DEVELOPMENT_NOMINAL") ? <p>Material basis needed: the current ICE seed has nominal development values. A controlled product/revision, characteristic statistical basis and reference conditioning are needed for approved design properties.</p> : null}
           <section className="information-status" aria-label="Specification / procurement notes"><h4>Specification / procurement notes</h4><p>Design material: {selected.display_name} / {selected.revision}. Project material shall conform to this selected specification. Per-connection supplier proof is not required by this workflow.</p></section>
         </>}
         <div className="benchmark-actions">
-          <button type="button" onClick={() => { const id = createMAT1Session(); setMAT1Default(id); setShowProperties(true); }}>New session material</button>
-          <button type="button" disabled={selected === undefined} onClick={selected === undefined ? undefined : () => { const id = createMAT1Session(selected); setMAT1Default(id); setShowProperties(true); }}>Copy as session material</button>
+          <button type="button" onClick={() => { const id = createMAT1Session(); selectDefault(id); setShowProperties(true); }}>New session material</button>
+          <button type="button" disabled={selected === undefined} onClick={selected === undefined ? undefined : () => { const id = createMAT1Session(selected); selectDefault(id); setShowProperties(true); }}>Copy as session material</button>
           <details><summary>Advanced Engineering Diagnostics · session management</summary><button type="button" onClick={() => { clearMAT1Sessions(); setMessage("Session materials cleared. Affected assignments are unassigned and stale."); }}>Clear session materials</button>
           {Object.values(state.custom).map((item) => <button key={item.id} type="button" onClick={() => { setMessage(deleteMAT1Session(item.id) ? "Session material deleted." : "Reassign components before deleting this material."); }}>Delete {item.display_name}</button>)}</details>
         </div>
@@ -174,24 +185,24 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
           <label>Temperature unit <select value={state.conditions.sustained_temperature.unit} onChange={(event) => { const unit = event.currentTarget.value as "degF" | "degC"; updateConditions({ sustained_temperature: { value: convertTemperature(state.conditions.sustained_temperature.value, unit), unit }, maximum_temperature: { value: convertTemperature(state.conditions.maximum_temperature.value, unit), unit }, glass_transition_temperature: state.conditions.glass_transition_temperature === null ? null : { value: convertTemperature(state.conditions.glass_transition_temperature.value, unit), unit } }); }}><option value="degF">°F</option><option value="degC">°C</option></select></label>
           <label>Maximum expected material temperature <input aria-label="Maximum expected material temperature" aria-invalid={inputIssues.maximum_temperature !== undefined} value={state.conditions.maximum_temperature.value} onChange={(event) => { updateConditions({ maximum_temperature: { ...state.conditions.maximum_temperature, value: event.currentTarget.value } }); }} /></label>
           <p>Sustained temperature is used for temperature adjustment of design properties where applicable. Maximum expected temperature is used to check material temperature applicability, including Tg limits.</p>
-          <p aria-label="Tg applicability"><strong>Tg applicability: {thermal?.default.replaceAll("_", " ") ?? "NOT CONFIRMED"}</strong>{thermal?.tg_evidence === "USER_SUPPLIED" ? " — numerical comparison on entered Tg; controlled product evidence is still required." : " — TEMPERATURE APPLICABILITY NOT CONFIRMED. Glass-transition-temperature data are not available for this material record. Supported calculations may run, but maximum-temperature applicability cannot be confirmed."}</p>
+          {production ? null : <p aria-label="Tg applicability"><strong>Tg applicability: {thermal?.default.replaceAll("_", " ") ?? "NOT CONFIRMED"}</strong>{thermal?.tg_evidence === "USER_SUPPLIED" ? " — numerical comparison on entered Tg; controlled product evidence is still required." : " — TEMPERATURE APPLICABILITY NOT CONFIRMED. Glass-transition-temperature data are not available for this material record. Supported calculations may run, but maximum-temperature applicability cannot be confirmed."}</p>}
           <label>Moisture <select value={state.conditions.moisture} onChange={(event) => { updateConditions({ moisture: event.currentTarget.value as MAT1Conditions["moisture"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Reference condition</option><option value="SUSTAINED_MOISTURE">Sustained moisture</option><option value="OTHER">Other documented condition</option></select></label>
           <label>Chemical exposure <select value={state.conditions.chemical} onChange={(event) => { updateConditions({ chemical: event.currentTarget.value as MAT1Conditions["chemical"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label>
+          {production ? <><label>Extraordinary UV / weathering <select value={state.conditions.uv_weathering} onChange={(event) => { updateConditions({ uv_weathering: event.currentTarget.value as MAT1Conditions["uv_weathering"] }); }}><option value="UNKNOWN">Choose actual project exposure</option><option value="NONE_DECLARED">No extraordinary exposure beyond ASCE qualification</option><option value="SPECIFIED">Extraordinary exposure — engineering review required</option></select></label><label>Extraordinary freeze-thaw <select value={state.conditions.freeze_thaw} onChange={(event) => { updateConditions({ freeze_thaw: event.currentTarget.value as MAT1Conditions["freeze_thaw"] }); }}><option value="UNKNOWN">Choose actual project exposure</option><option value="NONE_DECLARED">No extraordinary exposure beyond ASCE qualification</option><option value="SPECIFIED">Extraordinary exposure — engineering review required</option></select></label></> : null}
           <label>Load case name (required) <input required aria-invalid={state.conditions.load_case_name.trim() === ""} value={state.conditions.load_case_name} onChange={(event) => { updateConditions({ load_case_name: event.currentTarget.value }); }} /></label>
           {state.conditions.load_case_name.trim() === "" ? <p role="alert">Enter a load-case name before running Design Check or viewing calculated factors.</p> : null}
           <label>Load present in this submitted combination <select value={state.conditions.time_effect_category} onChange={(event) => { const category = event.currentTarget.value; const selectedClass = loadClassifications.find(([id]) => id === category); updateConditions({ time_effect_category: category, live_load_subtype: selectedClass?.[2] ?? "" }); }}><option value="">Select the load classification</option>{loadClassifications.map(([id, label]) => <option value={id} key={id}>{label}</option>)}</select></label>
           {state.conditions.time_effect_category === "LONG_TERM_OPERATING" ? <label>Full nominal operating amplitude <select value={state.conditions.full_amplitude_duration} onChange={(event) => { updateConditions({ full_amplitude_duration: event.currentTarget.value }); }}><option value="">Select documented duration</option><option value="MORE_THAN_ONE_YEAR">More than one year</option><option value="ONE_YEAR_OR_LESS">One year or less — choose another live classification</option></select></label> : null}
           {Object.keys(inputIssues).length === 0 ? null : <section aria-label="INPUTS NEEDED"><strong>INPUTS NEEDED</strong><ul>{Object.entries(inputIssues).map(([field, text]) => <li key={field}>{text}</li>)}</ul></section>}<p>Enter one already-factored member-end load combination at a time. This selection determines its time-effect factor; the app does not generate building loads or combine nominal cases.</p>
           <details><summary>Advanced material source evidence and exposure notes</summary>
-          <label>Source reference condition <select value={state.conditions.source_reference_condition} onChange={(event) => { updateConditions({ source_reference_condition: event.currentTarget.value as MAT1Conditions["source_reference_condition"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Documented reference condition</option><option value="ALREADY_ADJUSTED">Documented already adjusted</option></select></label>
+          {production ? <p>Source reference condition: REFERENCE — resolved from ASCE Section 2.4.2.</p> : <><label>Source reference condition <select value={state.conditions.source_reference_condition} onChange={(event) => { updateConditions({ source_reference_condition: event.currentTarget.value as MAT1Conditions["source_reference_condition"] }); }}><option value="UNKNOWN">Unknown</option><option value="REFERENCE">Documented reference condition</option><option value="ALREADY_ADJUSTED">Documented already adjusted</option></select></label><label>Actual Tg from controlled custom source <input value={state.conditions.glass_transition_temperature?.value ?? ""} onChange={(event) => { updateConditions({ glass_transition_temperature: event.currentTarget.value === "" ? null : { value: event.currentTarget.value, unit: state.conditions.maximum_temperature.unit } }); }} /></label></>}
           {state.conditions.chemical === "SPECIFIED" ? <div className="mat1-chemical-details">
             <label>Substance <input value={state.conditions.chemical_substance} onChange={(event) => { updateConditions({ chemical_substance: event.currentTarget.value }); }} /></label>
             <label>Concentration <input value={state.conditions.chemical_concentration} onChange={(event) => { updateConditions({ chemical_concentration: event.currentTarget.value }); }} /></label>
             <label>Contact form <input value={state.conditions.chemical_contact_form} onChange={(event) => { updateConditions({ chemical_contact_form: event.currentTarget.value }); }} /></label>
             <label>Duration <input value={state.conditions.chemical_duration} onChange={(event) => { updateConditions({ chemical_duration: event.currentTarget.value }); }} /></label>
           </div> : null}
-          <label>UV / weathering <select value={state.conditions.uv_weathering} onChange={(event) => { updateConditions({ uv_weathering: event.currentTarget.value as MAT1Conditions["uv_weathering"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label>
-          <label>Freeze–thaw <select value={state.conditions.freeze_thaw} onChange={(event) => { updateConditions({ freeze_thaw: event.currentTarget.value as MAT1Conditions["freeze_thaw"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label>
+          {production ? null : <><label>UV / weathering <select value={state.conditions.uv_weathering} onChange={(event) => { updateConditions({ uv_weathering: event.currentTarget.value as MAT1Conditions["uv_weathering"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label><label>Freeze–thaw <select value={state.conditions.freeze_thaw} onChange={(event) => { updateConditions({ freeze_thaw: event.currentTarget.value as MAT1Conditions["freeze_thaw"] }); }}><option value="UNKNOWN">Unknown</option><option value="NONE_DECLARED">None declared</option><option value="SPECIFIED">Specified — source required</option></select></label></>}
           <label>Protective measures <input value={state.conditions.protective_measures} onChange={(event) => { updateConditions({ protective_measures: event.currentTarget.value }); }} /></label>
           <label>Exposure notes <textarea value={state.conditions.exposure_notes} onChange={(event) => { updateConditions({ exposure_notes: event.currentTarget.value }); }} /></label>
           <label>Action provenance <input value={state.conditions.action_provenance} onChange={(event) => { updateConditions({ action_provenance: event.currentTarget.value }); }} /></label>
@@ -206,7 +217,7 @@ export function MAT1MaterialsPanel({ family }: { readonly family: string }) {
           {factorRows.length === 0 ? <p>Run Design Check to see the backend factors for the selected material and this load combination.</p>
             : <><p>Read-only factors from the last current calculation. The time factor applies to strength checks in this submitted load combination.</p>
               <div className="table-scroll"><table><thead><tr><th>Property role</th><th>Moisture C<sub>M</sub></th><th>Temperature C<sub>T</sub></th><th>Chemical C<sub>CH</sub></th><th>Time λ</th></tr></thead><tbody>{factorRows.map((row) => <tr key={[row.role, row.cm, row.ct, row.cch, row.lambda].join(":")}><th>{row.role}</th><td>{factorText(row.cm)}</td><td>{factorText(row.ct)}</td><td>{factorText(row.cch)}</td><td>{factorText(row.lambda)}</td></tr>)}</tbody></table></div>
-              {diagnosticOnly ? <p role="status"><strong>Diagnostic only — adjusted resistance unavailable.</strong> Unresolved exposure factors retain original declared values only for partial numerical diagnostics. Final GREEN is unavailable.</p> : null}<p>Numerical factors do not establish the source or qualification of the selected material.</p></>}
+              {diagnosticOnly ? <p role="status"><strong>Diagnostic only — adjusted resistance unavailable.</strong> Unresolved exposure factors retain original declared values only for partial numerical diagnostics. Final GREEN is unavailable.</p> : null}<p>{production ? "Material source uses the ASCE shape specification; project conditions and whole-connection method qualification remain separate." : "Numerical factors do not establish the source or qualification of the selected material."}</p></>}
         </section>
         {linkedMaterial ? <p>Selected FRP material applies to the angle brace and supporting W member.</p> : null}
         <details><summary>Advanced Engineering Diagnostics · FRP component assignments and factor trace</summary><section aria-label="Physical FRP component assignments">

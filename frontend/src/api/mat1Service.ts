@@ -19,6 +19,12 @@ interface FactorEnvelope {
   readonly record_id: string;
   readonly ledgers: readonly unknown[];
   readonly design_check_performed: false;
+  readonly condition_basis?: {
+    readonly status: string;
+    readonly required_tg: { readonly value: string; readonly unit: "degF" };
+    readonly required_tg_degC: string;
+    readonly project_issues: readonly string[];
+  };
 }
 
 type MaterialSelection =

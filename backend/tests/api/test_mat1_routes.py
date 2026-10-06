@@ -56,7 +56,9 @@ def condition(category: str) -> dict[str, Any]:
 def test_catalog_is_exact_source_bound_data_not_a_qualification() -> None:
     response = call("GET", "/api/v1/frp-materials/catalog")
     assert response.status_code == 200
-    records = response.json()["records"]
+    all_records = response.json()["records"]
+    assert len(all_records) == 4
+    records = all_records[:2]  # Preserve every historical RC0 assertion independently of RC1.
     assert len(records) == 2
     assert {item["company"] for item in records} == {"ICE"}
     assert [item["resin"] for item in records] == [
@@ -116,6 +118,10 @@ def test_single_bolt_changes_native_tension_check_and_retains_source_gate() -> N
             },
         }
         response = call("POST", "/api/v1/frp-materials/single-bolt/design-check", body)
+        if record["property_basis"] == "ASCE_74_23_MINIMUM_CHARACTERISTIC":
+            assert response.status_code == 422
+            assert "F5_SHAPE_BASIS_FAMILY_BINDING_DEFERRED" in response.text
+            continue
         assert response.status_code == 200
         result = response.json()
         assert result["overall_status"] == "SOURCE_REQUIRED"
@@ -257,6 +263,10 @@ def test_native_clip_angle_family_consumes_mat1_properties() -> None:
                 },
             },
         )
+        if record["property_basis"] == "ASCE_74_23_MINIMUM_CHARACTERISTIC":
+            assert response.status_code == 422
+            assert "F5_SHAPE_BASIS_FAMILY_BINDING_DEFERRED" in response.text
+            continue
         assert response.status_code == 200, response.text
         result = response.json()
         assert result["overall_status"] == "SOURCE_REQUIRED"

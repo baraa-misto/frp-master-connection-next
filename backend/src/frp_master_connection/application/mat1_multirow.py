@@ -16,6 +16,7 @@ class MAT1MultiRowRequest(MultiRowOrchestrationRequest):
     mat1_material: MaterialPropertySnapshot
     or1_fastener: FastenerSnapshot | None = None
     f593_catalog_binding: CatalogBinding | None = None
+    mat1_material_issues: tuple[str, ...] = ()
 
 
 def bind_multirow_material(
@@ -23,6 +24,7 @@ def bind_multirow_material(
     material: MaterialPropertySnapshot,
     fastener: FastenerSnapshot | None = None,
     catalog_binding: CatalogBinding | None = None,
+    material_issues: tuple[str, ...] = (),
 ) -> MAT1MultiRowRequest:
     """Construct a successor request; legacy fields and mechanics remain identical."""
 
@@ -37,4 +39,5 @@ def bind_multirow_material(
         mat1_material=material,
         or1_fastener=fastener,
         f593_catalog_binding=catalog_binding,
+        mat1_material_issues=material_issues,
     )

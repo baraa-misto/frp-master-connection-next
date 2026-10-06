@@ -356,6 +356,8 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
     if not isinstance(sources, dict) or not isinstance(sources.get("default"), dict):
         return []
     record = sources["default"]
+    production = record.get("property_basis") == "ASCE_74_23_MINIMUM_CHARACTERISTIC"
+    condition_basis = sources.get("condition_basis", {}).get("default", {})
     assignments = snapshot.request.get("mat1_assignments", {})
     conditions = assignments.get("default_conditions", {}) if isinstance(assignments, dict) else {}
     conditions = conditions if isinstance(conditions, dict) else {}
@@ -437,11 +439,16 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
             quantity("maximum_temperature"),
         ),
         (
-            "Tg applicability",
+            "Required Tg" if production else "Tg applicability",
             (
-                str(sources["temperature_applicability"].get("default", "NOT_CONFIRMED")).replace(
-                    "_", " "
-                )
+                f">= {condition_basis['required_tg']['value']} degF "
+                f"({short_number(condition_basis['required_tg_degC'])} degC); "
+                "max(180 degF, Tmax + 40 degF); furnished-product conformance is project QA; "
+                "actual product Tg not measured by software"
+                if production
+                else str(
+                    sources["temperature_applicability"].get("default", "NOT_CONFIRMED")
+                ).replace("_", " ")
                 + "; entered Tg is not controlled product qualification"
                 if isinstance(sources.get("temperature_applicability"), dict)
                 else "NOT CONFIRMED; Tg evidence unavailable"
@@ -449,7 +456,10 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
         ),
         (
             "Catalog property basis",
-            str(record.get("property_basis", "Not established")),
+            "ASCE/SEI 74-23 Table 1-2 minimum characteristic shape properties; "
+            "project-specified ICE resin; not manufacturer test data"
+            if production
+            else str(record.get("property_basis", "Not established")),
         ),
         (
             "Temperature roles",
@@ -470,6 +480,28 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
             f"{conditions.get('load_case_name', 'Unspecified')} · {load_class}",
         ),
     ]
+    if production:
+        rows.extend(
+            [
+                ("Product scope", "Pultruded FRP shape (Angle / Wide flange); not plate"),
+                ("Reference condition", "REFERENCE — ASCE Section 2.4.2"),
+                (
+                    "Modulus role",
+                    "Characteristic strength/stability minimum; no mean-modulus authority",
+                ),
+                ("Material record digest", str(record["content_digest"])),
+                (
+                    "Material specification",
+                    "Table 1-1 physical requirements and Sections 1.3.4.1 / 1.3.4.2 durability; "
+                    "75% tensile retention is product qualification, "
+                    "not an extra design multiplier",
+                ),
+                (
+                    "Project-condition requirements",
+                    readable_value(snapshot.result.get("material_issues", [])),
+                ),
+            ]
+        )
     rows.extend((f"{role} adjustment candidates", value) for role, value in factors.items())
     if isinstance(ledgers, list) and any(
         isinstance(item, dict)
@@ -487,7 +519,10 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
     rows.append(
         (
             "Source and qualification",
-            "Open; numerical factors and checks do not establish complete "
+            "ASCE shape specification basis resolved; required engineering methods and "
+            "whole-connection Section 2.3.2 qualification remain separate."
+            if production
+            else "Open; numerical factors and checks do not establish complete "
             "material or hardware authority.",
         )
     )
@@ -1707,6 +1742,12 @@ def _direct_reader_engineering_sections(
     materials = physical_request.get("material_snapshots", [])
     materials = materials if isinstance(materials, list) else []
     material = materials[0] if materials and isinstance(materials[0], dict) else {}
+    sources = snapshot.result.get("material_sources", {})
+    selected = sources.get("default", {}) if isinstance(sources, dict) else {}
+    production_shape = (
+        isinstance(selected, dict)
+        and selected.get("property_basis") == "ASCE_74_23_MINIMUM_CHARACTERISTIC"
+    )
     fastener = physical_request.get("fastener_snapshot", {})
     fastener = fastener if isinstance(fastener, dict) else {}
     sections = {
@@ -1727,6 +1768,11 @@ def _direct_reader_engineering_sections(
         if check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
         else check
         for check in collect_checks(result)
+        if not (
+            production_shape
+            and check.availability == "NOT_APPLICABLE"
+            and check.identity.startswith("MATERIAL_SOURCE_REVIEW:")
+        )
     ]
     bolts = visual.get("bolts", [])
     first_bolt = (
@@ -1823,7 +1869,10 @@ def _direct_reader_engineering_sections(
                 ),
                 (
                     "FRP qualification",
-                    readable_value(material.get("qualification_statuses"), system),
+                    "ASCE minimum characteristic shape specification; "
+                    "whole-connection qualification unresolved"
+                    if production_shape
+                    else readable_value(material.get("qualification_statuses"), system),
                 ),
                 (
                     "Fastener",
@@ -2239,6 +2288,8 @@ def _direct_blocked_description(
         return "Required bolt resistance: controlled fastener strength source unavailable"
     if check_id.startswith("MATERIAL_SOURCE_REVIEW:"):
         return "FRP property record requires source and production qualification review"
+    if check_id.startswith("PROJECT_CONDITION_REVIEW:"):
+        return "Actual project environmental conditions / adjustment sources remain unresolved"
     if check_id == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION":
         return "Whole Direct connection requires Section 2.3.2 qualification"
     return "Required check remains unevaluated; see exact native state in Full Technical Audit"

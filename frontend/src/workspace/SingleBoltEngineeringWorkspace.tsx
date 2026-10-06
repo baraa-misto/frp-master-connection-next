@@ -9,7 +9,7 @@ import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
 import { materialConditionBlocker } from "../features/materialConditionValidation";
-import { defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
+import { ASCE_SHAPE_BASIS, mat1DefaultId, defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
 import type { FastenerSelection } from "../state/mat1Session";
 
 import {
@@ -1296,8 +1296,10 @@ export function SingleBoltEngineeringWorkspace() {
     ...(multirowPreview.response?.warnings ?? []).filter((warning) =>
       // Geometry previews retain the historical fastener snapshot. The separately
       // authenticated catalog summary owns current selector/diameter source status.
-      (mat1.fastenerSelections["multi-row"] ?? defaultFastenerSelection).kind !== "CATALOG"
-      || !warning.includes("F593_TENSILE_SOURCE_DATA_PENDING"),
+      ((mat1.fastenerSelections["multi-row"] ?? defaultFastenerSelection).kind !== "CATALOG"
+      || !warning.includes("F593_TENSILE_SOURCE_DATA_PENDING"))
+      && !(mat1.catalog.find((record) => record.id === mat1DefaultId("multi-row"))?.property_basis === ASCE_SHAPE_BASIS
+        && warning === "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"),
     ).map(describeDirectWarning),
     ...(!stale && automaticGroupModeIntegration !== null ? [
       ...automaticGroupModeIntegration.unsupported_required_check_ids.map((id) => ({ group: "method" as const, text: `Required check not evaluated: ${friendlyIdentifier(id)}.` })),
