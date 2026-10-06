@@ -244,6 +244,37 @@ _OR1_BRACE_REVERSE_DELTA = (
     ),
 )
 
+# Owner-authorized OR2-F3-R1-G1: exact dev-only source-map-js successor.
+# Preserve every historical pin and reconstruct the immediately preceding bytes.
+_SOURCE_MAP_G1_LOCK_SHA256 = "CABD7E8B10A3887EDE115A91FC5DC81A8DACA87B6AC597DC006A94F7ED292D17"
+_SOURCE_MAP_G1_LOCK_BLOB = "66240c21734e4a734537b3dd6d2c55dafc4b798d"
+_SOURCE_MAP_G1_SUCCESSOR_BLOCK = (
+    b'    "node_modules/source-map-js": {\n'
+    b'      "version": "1.2.2",\n'
+    b'      "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",\n'
+    b'      "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1'
+    b'PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==",\n'
+    b'      "dev": true,\n'
+    b'      "license": "BSD-3-Clause",\n'
+    b'      "engines": {\n'
+    b'        "node": ">=0.10.0"\n'
+    b"      }\n"
+    b"    },\n"
+)
+_SOURCE_MAP_G1_PREDECESSOR_BLOCK = (
+    b'    "node_modules/source-map-js": {\n'
+    b'      "version": "1.2.1",\n'
+    b'      "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",\n'
+    b'      "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpw'
+    b'vzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==",\n'
+    b'      "dev": true,\n'
+    b'      "license": "BSD-3-Clause",\n'
+    b'      "engines": {\n'
+    b'        "node": ">=0.10.0"\n'
+    b"      }\n"
+    b"    },\n"
+)
+
 _SECURITY_REVERSE_DELTA = (
     (b"4.1.11", b"4.1.10"),
     (
@@ -308,6 +339,31 @@ def _assert_frozen_dependency_bytes(path: str, raw: bytes) -> None:
     ), "historical Git blob"
 
 
+def _reverse_source_map_g1(raw: bytes) -> bytes:
+    assert hashlib.sha256(raw).hexdigest().upper() == _SOURCE_MAP_G1_LOCK_SHA256, (
+        "source-map-js successor SHA-256"
+    )
+    assert (
+        hashlib.sha1(
+            b"blob " + str(len(raw)).encode() + b"\0" + raw, usedforsecurity=False
+        ).hexdigest()
+        == _SOURCE_MAP_G1_LOCK_BLOB
+    ), "source-map-js successor Git blob"
+    assert raw.count(_SOURCE_MAP_G1_SUCCESSOR_BLOCK) == 1, "exact source-map-js successor block"
+    assert raw.count(_SOURCE_MAP_G1_PREDECESSOR_BLOCK) == 0, "predecessor block in successor"
+    prior = raw.replace(_SOURCE_MAP_G1_SUCCESSOR_BLOCK, _SOURCE_MAP_G1_PREDECESSOR_BLOCK, 1)
+    assert hashlib.sha256(prior).hexdigest().upper() == _OR1_BRACE_LOCK_SHA256, (
+        "exact source-map-js predecessor SHA-256"
+    )
+    assert (
+        hashlib.sha1(
+            b"blob " + str(len(prior)).encode() + b"\0" + prior, usedforsecurity=False
+        ).hexdigest()
+        == _OR1_BRACE_LOCK_BLOB
+    ), "exact source-map-js predecessor Git blob"
+    return prior
+
+
 def _reverse_or1_brace_expansion(raw: bytes) -> bytes:
     assert hashlib.sha256(raw).hexdigest().upper() == _OR1_BRACE_LOCK_SHA256, (
         "brace-expansion successor SHA-256"
@@ -336,6 +392,9 @@ def _reverse_or1_brace_expansion(raw: bytes) -> bytes:
 
 def _restore_frozen_dependency_bytes(path: str, raw: bytes) -> bytes:
     digest = hashlib.sha256(raw).hexdigest().upper()
+    if path == "frontend/package-lock.json" and digest == _SOURCE_MAP_G1_LOCK_SHA256:
+        raw = _reverse_source_map_g1(raw)
+        digest = hashlib.sha256(raw).hexdigest().upper()
     if path == "frontend/package-lock.json" and digest == _OR1_BRACE_LOCK_SHA256:
         raw = _reverse_or1_brace_expansion(raw)
         digest = hashlib.sha256(raw).hexdigest().upper()
@@ -378,7 +437,7 @@ def _assert_security_dependencies(repository_root: Path) -> None:
         # Git-aware text checkout normalization; the authoritative pins are LF blobs.
         raw = (repository_root / path).read_text(encoding="utf-8").encode()
         expected = (
-            _OR1_BRACE_LOCK_SHA256
+            _SOURCE_MAP_G1_LOCK_SHA256
             if path == "frontend/package-lock.json"
             else _SECURITY_DEPENDENCY_SHA256[path]
         )
@@ -1688,6 +1747,7 @@ def test_stage_2_4a_pure_modules_have_no_io_time_or_randomness_imports() -> None
 def test_g1_current_lock_is_exact_brace_expansion_successor() -> None:
     root = Path(__file__).parents[3]
     raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    raw = _reverse_source_map_g1(raw)
     prior = _reverse_or1_brace_expansion(raw)
     assert _git_blob_id(root, raw) == _OR1_BRACE_LOCK_BLOB
     assert _git_blob_id(root, prior) == _OR1_UNDICI_LOCK_BLOB
@@ -1712,6 +1772,7 @@ def test_g1_current_lock_is_exact_brace_expansion_successor() -> None:
 def test_g1_reverse_chain_preserves_all_frozen_dependency_identities() -> None:
     root = Path(__file__).parents[3]
     raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    raw = _reverse_source_map_g1(raw)
     prior = _reverse_or1_brace_expansion(raw)
     stage43 = prior.replace(_OR1_UNDICI_SUCCESSOR_BLOCK, _OR1_UNDICI_STAGE43_BLOCK, 1)
     assert (
@@ -1740,6 +1801,7 @@ def test_g1_brace_successor_rejects_changed_or_ambiguous_block(
         .read_text(encoding="utf-8")
         .encode()
     )
+    raw = _reverse_source_map_g1(raw)
     block = _OR1_BRACE_REVERSE_DELTA[block_index][0]
     assert raw.count(block) == 1
     if mutation == "missing":
@@ -1770,6 +1832,7 @@ def test_g1_brace_successor_rejects_other_byte_changes(mutation: str) -> None:
         .read_text(encoding="utf-8")
         .encode()
     )
+    raw = _reverse_source_map_g1(raw)
     mutated = {
         "unrelated": raw.replace(b'"name": "frp-master-connection-web"', b'"name": "changed"', 1),
         "extra-package": raw.replace(b'"packages": {', b'"packages": {"unapproved": {},', 1),
@@ -1780,5 +1843,94 @@ def test_g1_brace_successor_rejects_other_byte_changes(mutation: str) -> None:
     assert mutated != raw
     with pytest.raises(AssertionError, match="brace-expansion successor SHA-256"):
         _reverse_or1_brace_expansion(mutated)
+    with pytest.raises(AssertionError):
+        _restore_frozen_dependency_bytes("frontend/package-lock.json", mutated)
+
+
+def test_source_map_g1_exact_delta_and_previous_bytes() -> None:
+    root = Path(__file__).parents[3]
+    raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    prior = _reverse_source_map_g1(raw)
+    assert prior.replace(_SOURCE_MAP_G1_PREDECESSOR_BLOCK, _SOURCE_MAP_G1_SUCCESSOR_BLOCK, 1) == raw
+    current, predecessor = json.loads(raw), json.loads(prior)
+    changed = [
+        key
+        for key in current["packages"]
+        if current["packages"][key] != predecessor["packages"][key]
+    ]
+    assert changed == ["node_modules/source-map-js"]
+    assert current["packages"].keys() == predecessor["packages"].keys()
+    package = current["packages"][changed[0]]
+    old = predecessor["packages"][changed[0]]
+    assert [field for field in package if package[field] != old[field]] == [
+        "version",
+        "resolved",
+        "integrity",
+    ]
+    assert package["version"] == "1.2.2"
+    assert old["version"] == "1.2.1"
+    assert package["dev"] is old["dev"] is True
+    _assert_security_dependencies(root)
+
+
+def test_source_map_g1_exact_complete_historical_chain() -> None:
+    root = Path(__file__).parents[3]
+    raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    prior = _reverse_source_map_g1(raw)
+    frozen = _restore_frozen_dependency_bytes("frontend/package-lock.json", raw)
+    assert frozen == _restore_frozen_dependency_bytes("frontend/package-lock.json", prior)
+    _assert_frozen_dependency_bytes("frontend/package-lock.json", frozen)
+    original = _verify_nanoid_security_successor_transition(root, frozen)
+    assert _git_blob_id(root, original) == STAGE_2_3_R8_FROZEN_PACKAGE_LOCK_BLOB
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "1.2.3",
+        "other-version",
+        "url",
+        "integrity",
+        "missing",
+        "duplicated",
+        "unrelated",
+        "extra-package",
+        "whitespace",
+        "append",
+        "truncate",
+        "dev",
+    ],
+)
+def test_source_map_g1_rejects_every_unauthorized_byte_change(mutation: str) -> None:
+    raw = (
+        (Path(__file__).parents[3] / "frontend/package-lock.json")
+        .read_text(encoding="utf-8")
+        .encode()
+    )
+    block = _SOURCE_MAP_G1_SUCCESSOR_BLOCK
+    wrong = {
+        "1.2.3": block.replace(b'"version": "1.2.2"', b'"version": "1.2.3"', 1),
+        "other-version": block.replace(b'"version": "1.2.2"', b'"version": "99.0.0"', 1),
+        "url": block.replace(b"registry.npmjs.org", b"example.invalid", 1),
+        "integrity": block.replace(b"sha512-KGj/", b"sha512-wrong/", 1),
+        "missing": b"",
+        "duplicated": block * 2,
+        "dev": block.replace(b'"dev": true', b'"dev": false', 1),
+    }
+    if mutation in wrong:
+        mutated = raw.replace(block, wrong[mutation], 1)
+    else:
+        mutated = {
+            "unrelated": raw.replace(
+                b'"name": "frp-master-connection-web"', b'"name": "changed"', 1
+            ),
+            "extra-package": raw.replace(b'"packages": {', b'"packages": {"unapproved": {},', 1),
+            "whitespace": raw.replace(b'"lockfileVersion": 3', b'"lockfileVersion" : 3', 1),
+            "append": raw + b" ",
+            "truncate": raw[:-1],
+        }[mutation]
+    assert mutated != raw
+    with pytest.raises(AssertionError, match="source-map-js successor SHA-256"):
+        _reverse_source_map_g1(mutated)
     with pytest.raises(AssertionError):
         _restore_frozen_dependency_bytes("frontend/package-lock.json", mutated)

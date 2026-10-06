@@ -732,6 +732,9 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # G1 adds 14 exact security-successor governance cases only.
+            assert raw.count(b"--expected-tests 7959") == 1
+            raw = raw.replace(b"--expected-tests 7959", b"--expected-tests 7945")
             # R1 adds the explicit Direct end-authority PDF gate and 48 cases.
             r1_pdf_steps = (
                 b"      - name: Generate signed Direct supporting-end R1 review PDFs\n"
