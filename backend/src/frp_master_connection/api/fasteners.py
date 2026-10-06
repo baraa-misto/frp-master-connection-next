@@ -5,14 +5,22 @@ from __future__ import annotations
 from dataclasses import replace
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import Field, StrictStr, model_validator
 
 from frp_master_connection.api.calculation_mapping import _fastener_snapshot
 from frp_master_connection.api.dependencies import build_trusted_identity_dependency
-from frp_master_connection.api.schemas import FastenerSnapshotDTO, _StrictModel
+from frp_master_connection.api.f593_catalog_source import controlled_catalog
+from frp_master_connection.api.schemas import FastenerSnapshotDTO, QuantityDTO, _StrictModel
+from frp_master_connection.application.f593_catalog import (
+    CATALOG_ID,
+    CatalogBinding,
+    CatalogPlane,
+    bind_f593_catalog,
+)
 from frp_master_connection.calculation import (
     FastenerSnapshot,
+    PhysicalQuantity,
     QualificationStatus,
     SourceClassification,
     create_locked_f593_fastener_snapshot,
@@ -61,8 +69,25 @@ class SessionFastenerSelectionDTO(_StrictModel):
         return self
 
 
+class CatalogFastenerSelectionDTO(_StrictModel):
+    """Selectors only; strength and provenance are always server resolved."""
+
+    kind: Literal["CATALOG"]
+    contract: Literal["FASTENER-F4-RC1"]
+    revision: StrictStr = CATALOG_ID
+    alloy_group: StrictStr = "2"
+    alloy: StrictStr = "316"
+    condition: StrictStr = "COLD_WORKED"
+    shear_thread_status: Literal["EXCLUDED", "INCLUDED", "UNKNOWN"] = "UNKNOWN"
+
+
+class CatalogResolutionDTO(_StrictModel):
+    selection: CatalogFastenerSelectionDTO
+    diameter: QuantityDTO
+
+
 FastenerSelectionDTO = Annotated[
-    DefaultFastenerSelectionDTO | SessionFastenerSelectionDTO,
+    DefaultFastenerSelectionDTO | SessionFastenerSelectionDTO | CatalogFastenerSelectionDTO,
     Field(discriminator="kind"),
 ]
 
@@ -70,7 +95,7 @@ FastenerSelectionDTO = Annotated[
 def resolve_fastener_selection(selection: FastenerSelectionDTO) -> FastenerSnapshot | None:
     """None means the native controlled F593 source-pending preset remains in force."""
 
-    if isinstance(selection, DefaultFastenerSelectionDTO):
+    if not isinstance(selection, SessionFastenerSelectionDTO):
         return None
     snapshot = _fastener_snapshot(selection.snapshot)
     return replace(
@@ -85,6 +110,8 @@ def resolve_fastener_selection(selection: FastenerSelectionDTO) -> FastenerSnaps
 
 
 def fastener_source_record(selection: FastenerSelectionDTO) -> dict[str, object]:
+    if isinstance(selection, CatalogFastenerSelectionDTO):
+        raise ValueError("F4 catalog source record requires physical diameter resolution.")
     if isinstance(selection, DefaultFastenerSelectionDTO):
         preset = create_locked_f593_fastener_snapshot()
         return {
@@ -124,10 +151,18 @@ def build_fastener_router(identity_resolver: TrustedIdentityResolver) -> APIRout
     router = APIRouter(prefix="/api/v1/fasteners")
     identity = build_trusted_identity_dependency(identity_resolver)
 
+    @router.post("/resolve", dependencies=[Depends(identity)])
+    async def resolve(request: CatalogResolutionDTO) -> dict[str, object]:
+        try:
+            return resolve_catalog_selection(request.selection, request.diameter).source_record
+        except (ArithmeticError, TypeError, ValueError) as error:
+            raise HTTPException(status_code=422, detail={"code": str(error)}) from error
+
     @router.get("/catalog", dependencies=[Depends(identity)])
     async def catalog() -> dict[str, object]:
         return {
             "contract": FASTENER_CONTRACT,
+            "controlled_datasets": [controlled_catalog().model_dump(mode="json")],
             "records": [
                 fastener_source_record(
                     DefaultFastenerSelectionDTO(
@@ -138,3 +173,17 @@ def build_fastener_router(identity_resolver: TrustedIdentityResolver) -> APIRout
         }
 
     return router
+
+
+def resolve_catalog_selection(
+    selection: CatalogFastenerSelectionDTO, diameter: QuantityDTO
+) -> CatalogBinding:
+    return bind_f593_catalog(
+        PhysicalQuantity.of(diameter.value, diameter.unit),
+        (CatalogPlane("SHEAR_PLANE_1", selection.shear_thread_status),),
+        catalog=controlled_catalog(),
+        revision=selection.revision,
+        alloy_group=selection.alloy_group,
+        alloy=selection.alloy,
+        condition=selection.condition,
+    )

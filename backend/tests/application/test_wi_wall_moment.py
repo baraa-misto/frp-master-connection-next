@@ -732,6 +732,23 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # F4 adds the controlled-catalog PDF gate and 95 focused cases.
+            f4_pdf_steps = (
+                b"      - name: Generate signed Direct F593 F4 catalog review PDFs\n"
+                b"        run: python ../scripts/generate_direct_f593_f4_ci_pdfs.py "
+                b"--output direct-f593-f4-review-pdfs\n"
+                b"""      - name: Upload Direct F593 F4 catalog review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f593-f4-pdfs-${{ matrix.os }}
+          path: backend/direct-f593-f4-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(f4_pdf_steps) == 1
+            raw = raw.replace(f4_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8054") == 1
+            raw = raw.replace(b"--expected-tests 8054", b"--expected-tests 7959")
             # G1 adds 14 exact security-successor governance cases only.
             assert raw.count(b"--expected-tests 7959") == 1
             raw = raw.replace(b"--expected-tests 7959", b"--expected-tests 7945")

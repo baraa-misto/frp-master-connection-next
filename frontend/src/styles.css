@@ -1224,6 +1224,9 @@ td {
 .compact-source-card h4 { font-size: 0.8rem; }
 .compact-source-card > p { font-size: 0.71rem; }
 .compact-source-card .property-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sidebar-group-body:has(> .fastener-selection) { grid-template-columns: minmax(0, 1fr); }
+.fastener-selection { min-width: 0; overflow-wrap: anywhere; }
+.fastener-selection select { max-width: 100%; }
 .diagnostic-list { display: grid; gap: 0.35rem; margin: 0; }
 .diagnostic-list div { min-width: 0; }
 .diagnostic-list dt,
@@ -1257,6 +1260,8 @@ td {
 .connection-view-column { display: grid; min-width: 0; max-width: 100%; gap: 0.75rem; }
 .connection-view-column > * { min-width: 0; max-width: 100%; }
 .persistent-connection-viewer { position: sticky; top: 0.5rem; z-index: 1; min-width: 0; align-self: start; }
+/* Open Direct results must remain visible below the viewer while scrolling. */
+.direct-connection-workspace .connection-view-column:has(> .results-drawer[open]) > .persistent-connection-viewer { position: static; }
 .unity-canvas-overlay, .unity-viewer-fallback { position: absolute; left: 50%; z-index: 5; width: min(11.5rem, calc(100% - 1.5rem)); transform: translateX(-50%); pointer-events: none; }
 .unity-canvas-overlay { top: 0.65rem; }
 .unity-viewer-fallback { top: 0.65rem; }

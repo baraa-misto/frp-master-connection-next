@@ -3,14 +3,20 @@ import type { SingleBoltEvaluationRequest } from "../api/contracts";
 import { WORKSPACE_CAPABILITIES } from "../domain/workspaceCapabilities";
 
 export const F593_FASTENER_REVISION = "ASTM-F593-17-G2-316-316L-SOURCE-PENDING-RC0";
+export const F593_CATALOG_REVISION = "ASTM_F593_17_GROUP_2_316_316L_RC1";
 export type FastenerSelection =
+  | { readonly kind: "CATALOG"; readonly contract: "FASTENER-F4-RC1"; readonly revision: typeof F593_CATALOG_REVISION;
+      readonly alloy_group: "2"; readonly alloy: "316" | "316L";
+      readonly condition: "COLD_WORKED" | "AF" | "A" | "CW1" | "CW2";
+      readonly shear_thread_status: "EXCLUDED" | "INCLUDED" | "UNKNOWN" }
   | { readonly kind: "DEFAULT"; readonly contract: "FASTENER-OR1-RC1"; readonly revision: typeof F593_FASTENER_REVISION }
   | { readonly kind: "SESSION"; readonly contract: "FASTENER-OR1-RC1"; readonly revision: string;
       readonly source_label: string; readonly fnt_source_basis: string;
       readonly snapshot: SingleBoltEvaluationRequest["fastener_snapshot"] };
 
 export const defaultFastenerSelection: FastenerSelection = {
-  kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION,
+  kind: "CATALOG", contract: "FASTENER-F4-RC1", revision: F593_CATALOG_REVISION,
+  alloy_group: "2", alloy: "316", condition: "COLD_WORKED", shear_thread_status: "EXCLUDED",
 };
 
 export interface MAT1Property {

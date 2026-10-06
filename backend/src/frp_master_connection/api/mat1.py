@@ -38,9 +38,11 @@ from frp_master_connection.api.direct_side_lap_concrete_mapping import (
 from frp_master_connection.api.double_channel_truss_node import dctn_response
 from frp_master_connection.api.fasteners import (
     F593_REVISION,
+    CatalogFastenerSelectionDTO,
     DefaultFastenerSelectionDTO,
     FastenerSelectionDTO,
     fastener_source_record,
+    resolve_catalog_selection,
     resolve_fastener_selection,
 )
 from frp_master_connection.api.multi_member_tee_mapping import (
@@ -661,10 +663,16 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 adapt_native_material(layer_id, record, condition)
                 for layer_id, record, condition in per_layer
             ]
+            catalog_binding = (
+                resolve_catalog_selection(request.fastener, legacy.bolt_diameter)
+                if isinstance(request.fastener, CatalogFastenerSelectionDTO)
+                else None
+            )
             canonical = bind_multirow_material(
                 map_multirow_request(legacy),
                 adapters[0].adjusted_snapshot,
                 resolve_fastener_selection(request.fastener),
+                catalog_binding,
             )
             native = serialize_multirow_design(
                 evaluate_multirow_connection(canonical),
@@ -689,7 +697,11 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "overall_status": "FAIL" if numerical_fail else "SOURCE_REQUIRED",
             "native_design": native.model_dump(mode="json"),
             "material_sources": _material_source_snapshot(request.assignments),
-            "fastener_source": fastener_source_record(request.fastener),
+            "fastener_source": (
+                catalog_binding.source_record
+                if catalog_binding is not None
+                else fastener_source_record(request.fastener)
+            ),
             "material_ledgers": [
                 _json_value(asdict(ledger)) for adapter in adapters for ledger in adapter.ledgers
             ],

@@ -9,7 +9,7 @@ import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
 import { materialConditionBlocker } from "../features/materialConditionValidation";
-import { defaultFastenerSelection, setFastenerSelection, useMAT1 } from "../state/mat1Session";
+import { defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
 import type { FastenerSelection } from "../state/mat1Session";
 
 import {
@@ -1034,7 +1034,9 @@ export function SingleBoltEngineeringWorkspace() {
   };
 
   const loadProfile = (unitSystem: BenchmarkUnitSystem, historical: boolean) => {
-    setFastenerSelection("multi-row", defaultFastenerSelection);
+    setFastenerSelection("multi-row", historical
+      ? { kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION }
+      : defaultFastenerSelection);
     const next = historical ? loadJ1Benchmark(unitSystem) : directStartingExample(unitSystem);
     const nextViewExtents = loadJ1ViewExtents(unitSystem);
     requestRef.current = next;
@@ -1082,7 +1084,18 @@ export function SingleBoltEngineeringWorkspace() {
       next.fastener_snapshot = selection.kind === "SESSION"
         ? structuredClone(selection.snapshot)
         : loadJ1Benchmark(next.joint_assembly.unit_system).fastener_snapshot;
+      if (selection.kind === "CATALOG") {
+        requiredAt(next.fastener_snapshot.shear_plane_thread_statuses, 0, "Shear-plane thread status").status = selection.shear_thread_status;
+      }
     }, INPUT_CLASSIFICATION.geometry, "IMMEDIATE");
+  };
+  const selectShearThreads = (value: string) => {
+    const selected = mat1.fastenerSelections["multi-row"] ?? defaultFastenerSelection;
+    if (selected.kind === "CATALOG") {
+      selectFastener({ ...selected, shear_thread_status: value as Extract<FastenerSelection, { kind: "CATALOG" }>["shear_thread_status"] });
+    } else {
+      updateRequest((next) => { requiredAt(next.fastener_snapshot.shear_plane_thread_statuses, 0, "Shear-plane thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE");
+    }
   };
 
   const setSectionQuantity = (memberIndex: number, name: SectionQuantityName, value: string) => {
@@ -1280,7 +1293,12 @@ export function SingleBoltEngineeringWorkspace() {
   const automaticGroupModeIntegration =
     multirowDesign?.automatic_group_mode_integration ?? null;
   const directWarnings: ReturnType<typeof describeDirectWarning>[] = directF1Family ? [
-    ...(multirowPreview.response?.warnings ?? []).map(describeDirectWarning),
+    ...(multirowPreview.response?.warnings ?? []).filter((warning) =>
+      // Geometry previews retain the historical fastener snapshot. The separately
+      // authenticated catalog summary owns current selector/diameter source status.
+      (mat1.fastenerSelections["multi-row"] ?? defaultFastenerSelection).kind !== "CATALOG"
+      || !warning.includes("F593_TENSILE_SOURCE_DATA_PENDING"),
+    ).map(describeDirectWarning),
     ...(!stale && automaticGroupModeIntegration !== null ? [
       ...automaticGroupModeIntegration.unsupported_required_check_ids.map((id) => ({ group: "method" as const, text: `Required check not evaluated: ${friendlyIdentifier(id)}.` })),
       ...automaticGroupModeIntegration.incomplete_required_check_ids.map((id) => ({ group: id.includes("MATERIAL") || id.includes("SECTION_2_3_2") ? "qualification" as const : "source" as const, text: `Required evidence unresolved: ${friendlyIdentifier(id)}.` })),
@@ -1350,7 +1368,7 @@ export function SingleBoltEngineeringWorkspace() {
         }));
 
   return (
-    <ConnectionWorkspaceShell family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
+    <ConnectionWorkspaceShell className="direct-connection-workspace" family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
         <div><p className="eyebrow">Shear · Brace/beam connection — Direct</p><h2 id="workspace-scope-title">{DIRECT_SHAPE_CAPABILITIES.current_variant}</h2></div>
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>
@@ -1436,16 +1454,17 @@ export function SingleBoltEngineeringWorkspace() {
             </div> : null}
             {directF1Family ? <ReadOnlyValue label="Lap configuration">Single lap · physical angle LEG_1 to W TOP_FLANGE</ReadOnlyValue> : <label className="field-control"><span>Lap configuration</span><select value={request.lap_configuration} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { next.lap_configuration = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="SINGLE_LAP">Single lap</option><option value="DOUBLE_LAP">Double lap</option></select></label>}
             <details><summary>Thread location relative to shear plane: {shearPlaneStatus.status === "UNKNOWN" || request.material_assignments.some((assignment) => assignment.bearing_thread_status === "UNKNOWN") ? "Requires confirmation" : "Recorded — verify against fastener and grip"}</summary><p className="sidebar-note">The available fastener record does not establish thread length relative to every physical plane. Confirm actual hardware before relying on the recorded status.</p>{request.material_assignments.map((assignment, index) => <label className="field-control" key={`${assignment.participant_id}:${assignment.physical_element_id}`}><span>Bearing threads · {friendlyIdentifier(assignment.participant_id === "member-a" ? "layer-A" : "layer-B")}</span><select value={assignment.bearing_thread_status} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { requiredAt(next.material_assignments, index, "Material assignment").bearing_thread_status = value; requiredAt(next.fastener_snapshot.bearing_layer_thread_statuses, index, "Bearing-layer thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label>)}
-            <label className="field-control"><span>Shear-plane threads</span><select value={shearPlaneStatus.status} onChange={(event) => { const value = event.currentTarget.value; updateRequest((next) => { requiredAt(next.fastener_snapshot.shear_plane_thread_statuses, 0, "Shear-plane thread status").status = value; }, INPUT_CLASSIFICATION.designFactor, "NONE"); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label></details>
+            <label className="field-control"><span>Shear-plane threads</span><select value={shearPlaneStatus.status} onChange={(event) => { selectShearThreads(event.currentTarget.value); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label></details>
           </SidebarGroup>
 
           <SidebarGroup title="Fastener" summary={directF1Family ? "Selected hardware and source" : "F593 source pending"} defaultOpen={directF1Family}>
             {directF1Family && workspaceSupports("multi-row", "custom_fastener") ? <FastenerSelector
               defaultSnapshot={loadJ1Benchmark(request.joint_assembly.unit_system).fastener_snapshot}
+              diameter={request.bolt_diameter}
               selection={mat1.fastenerSelections["multi-row"] ?? defaultFastenerSelection}
               onSelect={selectFastener}
             /> : null}
-            {directF1Family ? <details><summary>Fastener technical record</summary><FastenerCard request={request} /></details> : <FastenerCard request={request} />}
+            {directF1Family ? (mat1.fastenerSelections["multi-row"] ?? defaultFastenerSelection).kind === "CATALOG" ? null : <details><summary>Fastener technical record</summary><FastenerCard request={request} /></details> : <FastenerCard request={request} />}
           </SidebarGroup>
 
           <SidebarGroup title="Loads" summary="Factored member-end action">

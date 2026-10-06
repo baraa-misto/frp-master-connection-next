@@ -70,6 +70,9 @@ it("routes every special design envelope and stores backend source status", asyn
 
 it("binds the selected Direct fastener to the signed design envelope and stales it on change", async () => {
   ready();
+  await post("/api/v1/calculations/multi-row/design-check", { direct_finalization_contract_version: "SHEAR01-DIRECT-F1", layers: [] });
+  const standard = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as { fastener: unknown };
+  expect(standard.fastener).toEqual(store.defaultFastenerSelection);
   const snapshot = structuredClone(loadJ1Benchmark("US_CUSTOMARY").fastener_snapshot);
   snapshot.id = "USER_FASTENER_UI_QA";
   snapshot.locked = false;

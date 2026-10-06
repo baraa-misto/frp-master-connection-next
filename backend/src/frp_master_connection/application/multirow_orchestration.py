@@ -24,6 +24,7 @@ from frp_master_connection.application.direct_physical import (
     direct_material_force_angle,
     is_direct_angle_w,
 )
+from frp_master_connection.application.f593_catalog import CatalogBinding
 from frp_master_connection.calculation import (
     DEMAND_FRAME_TOLERANCE,
     BlockPathPlanStatus,
@@ -1431,9 +1432,16 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             ):
                 raise ValueError("Custom Fnt is numerical user data, not qualified F593 source.")
             fastener_source = selected
+    catalog_binding = getattr(request, "f593_catalog_binding", None)
+    if catalog_binding is not None:
+        if not isinstance(catalog_binding, CatalogBinding) or not request.direct_finalization_mode:
+            raise ValueError("F4 binding requires a trusted Direct catalog resolution.")
+        fastener_source = catalog_binding.fastener
     shear_status = (
         fastener_source.shear_plane_thread_statuses[0].status
         if fastener_source.shear_plane_thread_statuses
+        else ThreadStatus.INCLUDED
+        if catalog_binding is not None
         else ThreadStatus.EXCLUDED
     )
     fastener = replace(
@@ -1529,12 +1537,18 @@ def _resolve(request: MultiRowOrchestrationRequest) -> _ResolvedMultiRow:
             "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"
             if mat1_material is None
             else "MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED",
-            (
-                "F593_TENSILE_SOURCE_DATA_PENDING"
-                if fastener.locked
-                else "CUSTOM_FASTENER_TENSILE_SOURCE_DATA_PENDING"
-                if fastener.fnt is None
-                else "CUSTOM_FASTENER_FNT_IS_NUMERICAL_USER_DATA_NOT_QUALIFIED_F593"
+            *(
+                ()
+                if catalog_binding is not None and fastener.fnt is not None
+                else (
+                    (
+                        "F593_TENSILE_SOURCE_DATA_PENDING"
+                        if fastener.locked
+                        else "CUSTOM_FASTENER_TENSILE_SOURCE_DATA_PENDING"
+                        if fastener.fnt is None
+                        else "CUSTOM_FASTENER_FNT_IS_NUMERICAL_USER_DATA_NOT_QUALIFIED_F593"
+                    ),
+                )
             ),
         )
     )
@@ -1816,6 +1830,12 @@ def _execution_bundle(
     method = applicability.method_applicability
     qualification = applicability.qualification
     checks: list[MultiRowExecutableCheck] = []
+    binding = getattr(request, "f593_catalog_binding", None)
+    # The frozen enum has no UNKNOWN member. An unresolved plane never reaches
+    # its shear equation; source provenance retains UNKNOWN, with no derived Fnv.
+    thread_unresolved = (
+        isinstance(binding, CatalogBinding) and not binding.fastener.shear_plane_thread_statuses
+    )
     for bolt in resolved.bolt_contexts:
         bolt_strength_available = bolt.fastener.fnt is not None
         bolt_qualification = (
@@ -1833,6 +1853,8 @@ def _execution_bundle(
                 bolt_qualification,
                 (
                     PlanAvailability.READY
+                    if bolt_strength_available and not thread_unresolved
+                    else PlanAvailability.INCOMPLETE_INPUT
                     if bolt_strength_available
                     else PlanAvailability.SOURCE_DATA_PENDING
                 ),
@@ -1864,7 +1886,10 @@ def _execution_bundle(
                         bolt.bolt_axis_tension_demand,
                         method,
                         bolt_qualification,
-                        tension_availability,
+                        PlanAvailability.INCOMPLETE_INPUT
+                        if thread_unresolved
+                        and family is MultiRowCheckFamily.BOLT_COMBINED_TENSION_SHEAR
+                        else tension_availability,
                         bolt_id=bolt.bolt_id,
                     )
                 )

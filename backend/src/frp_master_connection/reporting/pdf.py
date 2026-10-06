@@ -36,6 +36,7 @@ from reportlab.platypus import (
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
+from frp_master_connection.reporting.f593_report import f593_bolt_rows, f593_source_rows
 from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
 from frp_master_connection.reporting.reader_data import humanize, readable_value, short_number
 from frp_master_connection.reporting.snapshot import ReportSnapshot
@@ -1987,6 +1988,12 @@ def _direct_reader_engineering_sections(
                     styles,
                 )
             )
+    bolt_rows = f593_bolt_rows(snapshot.result.get("fastener_source"), result, visual, system)
+    if bolt_rows:
+        story.append(
+            _paragraph("Catalog-resolved native bolt shear calculations", styles["heading"])
+        )
+        story.append(_table(bolt_rows, styles))
     story.append(_paragraph("7  Active design limits", styles["heading"]))
     if checks:
         story.append(limitations_matrix(checks))
@@ -2389,6 +2396,7 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         primary_blocker=primary_blocker,
     )
     mat1_rows = _mat1_reader_rows(snapshot)
+    mat1_rows.extend(f593_source_rows(snapshot.result.get("fastener_source"), system))
     if isinstance(support_end_authority, dict):
         condition_labels = {
             "UNSPECIFIED": "INPUT NEEDED - supporting W end condition is unspecified",
@@ -2464,11 +2472,11 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             story.append(_table(failures, styles))
         story.append(
             _paragraph(
-                "Chapter 8 uses physical member ends and free side edges. Hole containment "
-                "and washer seating are evaluated separately. Full Technical Audit retains "
-                "all physical boundary coordinates and COMPUTATIONAL CONTACT-PATCH BOUNDARY "
-                "witnesses — NOT AN ENGINEERING EDGE UNLESS MAPPED. Nut/head envelopes and "
-                "unresolved heel/fillet shapes are not supplied; checks use represented geometry.",
+                "Chapter 8 uses physical member ends and free side edges; hole containment "
+                "and washer seating are separate. Full Technical Audit retains boundary "
+                "coordinates and "
+                "COMPUTATIONAL CONTACT-PATCH BOUNDARY witnesses — NOT AN ENGINEERING EDGE "
+                "UNLESS MAPPED. Nut/head and heel/fillet geometry remain unresolved.",
                 styles["body"],
             )
         )

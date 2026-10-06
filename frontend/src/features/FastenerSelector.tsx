@@ -2,6 +2,7 @@
 import type { SingleBoltEvaluationRequest } from "../api/contracts";
 import type { FastenerSelection } from "../state/mat1Session";
 import { defaultFastenerSelection } from "../state/mat1Session";
+import { F593CatalogSummary } from "./F593CatalogSummary";
 
 type Snapshot = SingleBoltEvaluationRequest["fastener_snapshot"];
 
@@ -32,10 +33,11 @@ function createSessionFastener(defaultSnapshot: Snapshot, copy: boolean): Fasten
   };
 }
 
-export function FastenerSelector({ defaultSnapshot, selection, onSelect }: {
+export function FastenerSelector({ defaultSnapshot, selection, onSelect, diameter }: {
   readonly defaultSnapshot: Snapshot;
   readonly selection: FastenerSelection;
   readonly onSelect: (selection: FastenerSelection) => void;
+  readonly diameter?: { readonly value: string; readonly unit: string };
 }) {
   const update = (current: Extract<FastenerSelection, { kind: "SESSION" }>, changes: Partial<Snapshot>, metadata: Partial<Extract<FastenerSelection, { kind: "SESSION" }>> = {}) => {
     onSelect({ ...current, ...metadata, revision: String(Number(current.revision) + 1),
@@ -43,11 +45,13 @@ export function FastenerSelector({ defaultSnapshot, selection, onSelect }: {
   };
   const custom = selection.kind === "SESSION" ? selection : null;
   return <section className="fastener-selection" aria-label="Selected fastener">
-    <label>Fastener <select value={selection.kind} onChange={(event) => {
+    <label>Fastener <select value={selection.kind === "SESSION" ? "SESSION" : "DEFAULT"} onChange={(event) => {
       onSelect(event.currentTarget.value === "DEFAULT" ? defaultFastenerSelection : createSessionFastener(defaultSnapshot, false));
-    }}><option value="DEFAULT">ASTM F593-17 Group 2 — 316/316L (Fnt source pending)</option><option value="SESSION">User-defined fastener</option></select></label>
+    }}><option value="DEFAULT">ASTM F593-17 Group 2 — 316/316L</option><option value="SESSION">User-defined fastener</option></select></label>
     <div className="benchmark-actions"><button type="button" onClick={() => { onSelect(createSessionFastener(defaultSnapshot, true)); }}>Copy as custom</button></div>
-    {custom === null ? <><p>Catalog source-data gap: the controlled ASTM F593-17 tensile-strength table for Group 2 316/316L, cold-worked condition and selected diameter is missing. Bolt strength remains unevaluated. Per-connection supplier certification is not required by this workflow.</p><section className="information-status" aria-label="Fastener specification / procurement notes"><h4>Specification / procurement notes</h4><p>Specified fastener shall conform to ASTM F593 Group 2 316/316L. Matching F594 nut, washer basis, installation state and geometry remain recorded.</p></section></> : <>
+    {custom === null ? selection.kind === "CATALOG" && diameter !== undefined
+      ? <F593CatalogSummary selection={selection} diameter={diameter} onSelect={onSelect} />
+      : <><p>Catalog source-data gap: the controlled ASTM F593-17 tensile-strength table for Group 2 316/316L, cold-worked condition and selected diameter is missing. Bolt strength remains unevaluated. Per-connection supplier certification is not required by this workflow.</p><section className="information-status" aria-label="Fastener specification / procurement notes"><h4>Specification / procurement notes</h4><p>Specified fastener shall conform to ASTM F593 Group 2 316/316L. Matching F594 nut, washer basis, installation state and geometry remain recorded.</p></section></> : <>
       <p>Custom Fnt enables numerical bolt checks only. It does not qualify this fastener as ASTM F593.</p>
       <details><summary>Fastener technical details</summary><div className="field-grid">
         <label>Fastener name <input value={custom.snapshot.display_name} onChange={(event) => { update(custom, { display_name: event.currentTarget.value }); }} /></label>

@@ -1,5 +1,5 @@
 /** Versioned material request envelope around the existing explicit design actions. */
-import { acceptMAT1Design, defaultFastenerSelection, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { acceptMAT1Design, defaultFastenerSelection, F593_FASTENER_REVISION, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
 import { acceptReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../state/reportSession";
 
 interface MAT1TransportResponse {
@@ -109,7 +109,8 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
       default_material: selected, material_overrides: overrides,
       default_conditions: conditions, condition_overrides: state.conditionOverrides[family] ?? {},
     },
-    ...(family === "multi-row" ? { fastener: state.fastenerSelections[family] ?? defaultFastenerSelection } : {}),
+    ...(family === "multi-row" ? { fastener: state.fastenerSelections[family] ?? (legacy.direct_finalization_contract_version === "SHEAR01-DIRECT-F1" ? defaultFastenerSelection
+      : { kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION }) } : {}),
   };
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");

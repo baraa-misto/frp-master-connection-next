@@ -146,3 +146,6 @@ while end condition and real-end distances remain design-affecting. UI/report
 rendering reads signed authority to place visible real end caps; rendering creates
 no engineering result or check. Other family fingerprints/serialization remain
 unchanged. See `docs/qa/SHEAR01_DIRECT_OR2_F3_R1.md`.
+# Direct ASTM F593 catalog selector — F4 RC1
+
+Direct MAT1 design requests may select `CATALOG / FASTENER-F4-RC1` with controlled revision, alloy group, alloy, condition and shear-thread status. Nominal diameter comes from the physical request; the backend resolves the table row and lower Fnt before calling the existing engine. The authenticated `/api/v1/fasteners/resolve` route exposes the same current source resolution for UI presentation. Client strength/result fields are forbidden. Historical DEFAULT/FASTENER-OR1-RC1 and SESSION contracts remain available; non-Direct catalog binding is deferred. See [F4 source and verification record](../qa/SHEAR01_DIRECT_OR2_F4.md).

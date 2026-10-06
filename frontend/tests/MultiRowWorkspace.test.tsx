@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EvaluationTransportError } from "../src/api/client";
 import { clearanceWitness } from "./directGeometryIssueFixtures";
 import f3Faces from "./fixtures/directF3EngineeringFaces.json";
+import f593Resolution from "./fixtures/f593_f4_resolution.json";
 import type { VisualizationSnapshot } from "../src/api/contracts";
 import type {
   MultiRowConnectionRequest,
@@ -428,6 +429,7 @@ function activateNormalAutomaticDemand(): void {
 
 describe("Stage 2.4C-R1 unified connection workspace", () => {
   beforeEach(() => {
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(() => Promise.resolve(new Response(JSON.stringify(f593Resolution)))));
     mocks.singlePreview.mockReset();
     mocks.singleEvaluate.mockReset();
     mocks.multiPreview.mockReset();
@@ -440,6 +442,18 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     setMAT1Active(false);
     vi.useRealTimers();
     vi.unstubAllGlobals();
+  });
+
+  it("binds normal thread confirmation to catalog selectors before any example load", async () => {
+    render(<ShearConnectionsWorkspace />);
+    activateNormalAutomaticDemand();
+    await waitFor(() => { expect(mocks.multiPreview).toHaveBeenCalled(); });
+    expect(screen.queryByText(/controlled ASTM F593 catalog tensile-strength table/u)).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Shear-plane threads"), {target:{value:"INCLUDED"}});
+    expect(mat1Snapshot().fastenerSelections["multi-row"]).toMatchObject({kind:"CATALOG",shear_thread_status:"INCLUDED"});
+    expect(screen.getByLabelText("Shear-plane threads")).toHaveValue("INCLUDED");
+    fireEvent.change(screen.getByLabelText("Shear-plane threads"), {target:{value:"UNKNOWN"}});
+    expect(mat1Snapshot().fastenerSelections["multi-row"]).toMatchObject({kind:"CATALOG",shear_thread_status:"UNKNOWN"});
   });
 
   it("loads normal Direct examples in both unit systems without opening legacy fixtures", async () => {
@@ -902,8 +916,11 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByRole("heading", { name: "Project washer assembly" })).toBeInTheDocument();
     expect(screen.getByText(/User-supplied Fnt 75 ksi/)).toBeInTheDocument();
     expect(screen.getByText("2.25 in")).toBeInTheDocument();
+    expect(screen.getByText(/controlled ASTM F593 catalog tensile-strength table/u)).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Fastener"), { target: { value: "DEFAULT" } });
-    expect(screen.getAllByText(/ASTM F593 tensile-strength source is required/).length).toBeGreaterThan(0);
+    await screen.findByText("Catalog source resolved");
+    expect(screen.queryByText(/controlled ASTM F593 catalog tensile-strength table/u)).not.toBeInTheDocument();
+    expect(screen.queryByText(/ASTM F593 tensile-strength source is required/)).not.toBeInTheDocument();
   });
 
   it("maps loaded-boundary placement exactly, previews it, and stales design without rerunning", async () => {

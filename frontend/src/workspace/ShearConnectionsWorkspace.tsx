@@ -56,7 +56,7 @@ export function ShearConnectionsWorkspace() {
       {template === "COLUMN_BASE_WEB_ANGLES_CONCRETE" ? <ColumnBaseWebAngleWorkspace /> : null}
       {template === "SYMMETRIC_DOUBLE_WEB_SPLICE" ? <WebSpliceWorkspace /> : null}
       {template === "DOUBLE_CHANNEL_TRUSS_NODE_CONNECTION" ? <DoubleChannelTrussNodeWorkspace /> : null}
-      {template === "DIRECT_REFERENCE" && workspaceSupports("multi-row", "force_only_shear") ? <details className="selection-panel"><summary>Material and source readiness</summary><p>Direct uses an FRP angle brace, supporting FRP W member, and metallic fastener. FRP material qualification, ASTM F593 tensile-strength source, and whole-connection qualification remain required for a complete design.</p></details> : <ConnectorMaterialReadiness />}
+      {template === "DIRECT_REFERENCE" && workspaceSupports("multi-row", "force_only_shear") ? <details className="selection-panel"><summary>Material and source readiness</summary><p>Direct uses an FRP angle brace, supporting FRP W member, and metallic fastener. The controlled F593 catalog resolves supported alloy/condition/diameter rows. FRP material qualification and whole-connection qualification remain required for a complete design.</p></details> : <ConnectorMaterialReadiness />}
     </>
   );
 }

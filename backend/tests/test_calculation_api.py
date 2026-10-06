@@ -904,6 +904,7 @@ def test_openapi_registers_one_post_and_excludes_client_authority() -> None:
     schema = _application().openapi()
     assert set(schema["paths"]) == {
         "/api/v1/fasteners/catalog",
+        "/api/v1/fasteners/resolve",
         "/api/v1/workspaces/capabilities",
         "/api/v1/workspaces/direct-shapes",
         "/api/v1/frp-materials/catalog",
