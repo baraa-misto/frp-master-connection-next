@@ -66,7 +66,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 8278
+          --expected-tests 8298
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence
@@ -74,6 +74,14 @@ jobs:
         with:
           name: appendix-rc3-qa-${{ matrix.os }}
           path: backend/appendix-rc3-qa/
+          if-no-files-found: error
+      - name: Generate signed Direct F6 first-row review PDFs
+        run: python ../scripts/generate_direct_f6_ci_pdfs.py --output direct-f6-review-pdfs
+      - name: Upload Direct F6 first-row review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f6-pdfs-${{ matrix.os }}
+          path: backend/direct-f6-review-pdfs/
           if-no-files-found: error
       - name: Generate real REPORT1 PDFs on this runner
         run: >-

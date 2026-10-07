@@ -732,6 +732,23 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # F6 adds the bounded first-row gates/report evidence and 20 tests.
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "7A646A4AD883C3C2C2243D2B2146925E60151A17729D6CE5DDBAF09A1F4B5F76"
+            )
+            f6_pdf_steps = b"""      - name: Generate signed Direct F6 first-row review PDFs
+        run: python ../scripts/generate_direct_f6_ci_pdfs.py --output direct-f6-review-pdfs
+      - name: Upload Direct F6 first-row review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f6-pdfs-${{ matrix.os }}
+          path: backend/direct-f6-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f6_pdf_steps) == 1
+            raw = raw.replace(f6_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8298") == 1
+            raw = raw.replace(b"--expected-tests 8298", b"--expected-tests 8278")
             # A3-R1 adds only the inactive Appendix QA gate and 149 tests.
             assert hashlib.sha256(raw).hexdigest().upper() == (
                 "30A2ECD5F70EF8ECA9CF19137AA4AAF4567259A05130A9F1A666E8F39BC5E23B"

@@ -48,6 +48,22 @@ def evaluate_direct_layered_group_modes(
             for check in bundle.checks
             if check.layer_id == layer_id or (index == 0 and check.layer_id is None)
         )
+        # F6 audit: inherited template width/e1 plans are not authenticated
+        # Figure C8-11 physical section authority. Even a zero residual moment
+        # must not activate that plan. A source-approved Direct adapter is
+        # required before either first-row check can execute (including RC3).
+        checks = tuple(
+            replace(
+                check,
+                plan_availability=PlanAvailability.CALCULATION_NOT_SUPPORTED,
+                source_locator=check.source_locator + "; DIRECT F6 METHOD REQUIRED: "
+                "physical Figure C8-11 width and first-row stress/demand handoff "
+                "not authorized; inherited Angle template is not section authority",
+            )
+            if check.family is MultiRowCheckFamily.FIRST_ROW_NET_TENSION
+            else check
+            for check in checks
+        )
         if index == 1 and support_end_authority is not None:
             # The inherited plan payload describes the Angle template. Keep it
             # as an unexecuted audit witness, never as W free-end authority.
