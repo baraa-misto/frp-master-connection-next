@@ -732,6 +732,27 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # A3-R1 adds only the inactive Appendix QA gate and 149 tests.
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "30A2ECD5F70EF8ECA9CF19137AA4AAF4567259A05130A9F1A666E8F39BC5E23B"
+            )
+            rc3_qa_steps = (
+                b"      - name: Verify inactive Appendix RC3 numerical authority "
+                b"and Direct C3 parity\n"
+                b"        run: python ../scripts/generate_appendix_rc3_ci_evidence.py "
+                b"--output appendix-rc3-qa\n"
+                b"""      - name: Upload Appendix RC3 numerical authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: appendix-rc3-qa-${{ matrix.os }}
+          path: backend/appendix-rc3-qa/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(rc3_qa_steps) == 1
+            raw = raw.replace(rc3_qa_steps, b"")
+            assert raw.count(b"--expected-tests 8278") == 1
+            raw = raw.replace(b"--expected-tests 8278", b"--expected-tests 8129")
             # F5 adds the ASCE material report gate and 75 controlled-source cases.
             f5_pdf_steps = (
                 b"      - name: Generate signed Direct ASCE F5 material review PDFs\n"

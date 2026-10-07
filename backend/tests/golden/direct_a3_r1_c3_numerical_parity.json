@@ -1,0 +1,1717 @@
+{
+  "predecessor_sha": "c3d127587ecaa48c67bb1e90d2f79ad82716f190",
+  "source": "A3 signed owner_135_continuous saved request/result",
+  "request": {
+    "assignments": {
+      "default_conditions": {
+        "chemical": "NONE_DECLARED",
+        "freeze_thaw": "NONE_DECLARED",
+        "glass_transition_temperature": null,
+        "load_case_name": "EXAMPLE ONLY - NOT PROJECT CONDITIONS",
+        "maximum_temperature": {
+          "unit": "degF",
+          "value": "100"
+        },
+        "moisture": "REFERENCE",
+        "source_reference_condition": "UNKNOWN",
+        "sustained_temperature": {
+          "unit": "degF",
+          "value": "70"
+        },
+        "time_effect_category": "WIND_TORNADO_SEISMIC",
+        "uv_weathering": "NONE_DECLARED"
+      },
+      "default_material": {
+        "content_digest": "B47C62635E22B3E0E21D56B42255AD8F1A589477555141E4A182F6B076FF618E",
+        "id": "ICE_ISOPHTHALIC_POLYESTER_ASCE74_23_MIN_SHAPE_RC1",
+        "kind": "CATALOG",
+        "revision": "RC1"
+      }
+    },
+    "contract": "MAT1-MULTI-ROW-RC0",
+    "fastener": {
+      "contract": "FASTENER-F4-RC1",
+      "kind": "CATALOG",
+      "revision": "ASTM_F593_17_GROUP_2_316_316L_RC1",
+      "shear_thread_status": "EXCLUDED"
+    },
+    "legacy_request": {
+      "automatic_action_source_id": "action-1",
+      "bolt_axis_tension_required": false,
+      "bolt_axis_tensions": [],
+      "bolt_diameter": {
+        "unit": "in",
+        "value": ".5"
+      },
+      "bolts_per_row": 1,
+      "connection_id": "CONNECTION-MR-API",
+      "demand_source": "AUTOMATIC_MEMBER_END_FORCE",
+      "direct_finalization_contract_version": "SHEAR01-DIRECT-F1",
+      "display_unit_system": "US_CUSTOMARY",
+      "eccentricity_tolerance": {
+        "unit": "in",
+        "value": ".000001"
+      },
+      "engineer_allocations": [],
+      "engineer_distribution_kind": null,
+      "first_row_method": "ASCE_STANDARD_SIMPLIFIED",
+      "force_line_offset": {
+        "unit": "in",
+        "value": "0"
+      },
+      "gauge": {
+        "unit": "in",
+        "value": "2"
+      },
+      "geometry_tolerance": {
+        "unit": "in",
+        "value": ".000001"
+      },
+      "hole_basis": "US_CUSTOMARY_PRINTED",
+      "interface_id": "interface-1",
+      "lap_configuration": "SINGLE_LAP",
+      "layers": [
+        {
+          "bearing_thread_status": "EXCLUDED",
+          "component_id": "member-a",
+          "element_classification": "SHAPE",
+          "end_use_factors": {
+            "approval_metadata": [
+              "approved"
+            ],
+            "cch": "1",
+            "cm": "1",
+            "ct": "1",
+            "source_reference": "engineer input"
+          },
+          "layer_id": "layer-A",
+          "material_axis_angle_degrees": "0",
+          "material_id": "ICE_LOCKED_PULTRUDED_FRP",
+          "thickness": {
+            "unit": "in",
+            "value": ".5"
+          }
+        },
+        {
+          "bearing_thread_status": "EXCLUDED",
+          "component_id": "member-b",
+          "element_classification": "SHAPE",
+          "end_use_factors": {
+            "approval_metadata": [
+              "approved"
+            ],
+            "cch": "1",
+            "cm": "1",
+            "ct": "1",
+            "source_reference": "engineer input"
+          },
+          "layer_id": "layer-B",
+          "material_axis_angle_degrees": "0",
+          "material_id": "ICE_LOCKED_PULTRUDED_FRP",
+          "thickness": {
+            "unit": "in",
+            "value": ".5"
+          }
+        }
+      ],
+      "load_combination_id": "LC-1",
+      "loaded_boundary_to_row_1_distance": {
+        "unit": "in",
+        "value": "3"
+      },
+      "material_pair": "FRP_FRP",
+      "negative_side_distance": {
+        "unit": "in",
+        "value": "1"
+      },
+      "orchestration_contract_version": "2.5C-RC1",
+      "physical_connection": {
+        "bolt_diameter": {
+          "unit": "in",
+          "value": "0.5"
+        },
+        "bolt_group_id": "bolt-group-1",
+        "bolt_location_id": "bolt-1",
+        "calculation_id": "benchmark-assembly:calculation",
+        "explicit_resolved_demand": null,
+        "fastener_snapshot": {
+          "id": "ASTM_F593_17_GROUP_2_316_316L",
+          "washer_geometry": {
+            "outside_diameter": {
+              "unit": "in",
+              "value": "1"
+            },
+            "thickness": {
+              "unit": "in",
+              "value": "0.051"
+            },
+            "under_head": true,
+            "under_nut": true
+          }
+        },
+        "geometry_template": {
+          "angle_connected_leg": "LEG_1",
+          "bolt_to_brace_end_distance": {
+            "unit": "in",
+            "value": "3"
+          },
+          "brace_to_column_directed_angle_deg": "135",
+          "column_flange_connection_side": "EXTERIOR",
+          "hole_diameter": {
+            "unit": "in",
+            "value": "0.563"
+          },
+          "kind": "BRACE_TO_COLUMN_FLANGE",
+          "outstanding_leg_side": "POSITIVE_INTERFACE_Z"
+        },
+        "interface_id": "interface-1",
+        "joint_assembly": {
+          "design_category": "SHEAR",
+          "id": "benchmark-assembly",
+          "label": "Canonical orchestration benchmark",
+          "load_combinations": [
+            {
+              "id": "LC-1",
+              "input_basis": "FACTORED_STRENGTH",
+              "label": "Factored benchmark"
+            }
+          ],
+          "member_end_actions": [
+            {
+              "convention": "MEMBER_ON_JOINT",
+              "coordinate_frame_kind": "MEMBER_LOCAL",
+              "coordinate_frame_owner_id": "member-a",
+              "force": {
+                "unit": "kip",
+                "x": "0.7",
+                "y": "0",
+                "z": "0"
+              },
+              "id": "action-1",
+              "load_combination_id": "LC-1",
+              "member_end": "START",
+              "member_id": "member-a",
+              "moment": {
+                "unit": "kip-in",
+                "x": "0",
+                "y": "0",
+                "z": "0"
+              },
+              "reference_point": {
+                "kind": "MEMBER_CONNECTED_END",
+                "owner_id": "member-a",
+                "position": null
+              }
+            }
+          ],
+          "members": [
+            {
+              "connected_end": "START",
+              "id": "member-a",
+              "label": "Pultruded FRP angle brace",
+              "material_kind": "PULTRUDED_FRP",
+              "material_orientation": {
+                "crosswise_axis": "Y",
+                "lengthwise_axis": "X",
+                "through_thickness_axis": "Z"
+              },
+              "role": "BRACE",
+              "section": {
+                "kind": "ANGLE",
+                "leg_y": {
+                  "unit": "in",
+                  "value": "4"
+                },
+                "leg_z": {
+                  "unit": "in",
+                  "value": "4"
+                },
+                "thickness": {
+                  "unit": "in",
+                  "value": ".5"
+                }
+              }
+            },
+            {
+              "connected_end": "START",
+              "id": "member-b",
+              "label": "Pultruded FRP W column",
+              "material_kind": "PULTRUDED_FRP",
+              "material_orientation": {
+                "crosswise_axis": "Y",
+                "lengthwise_axis": "X",
+                "through_thickness_axis": "Z"
+              },
+              "role": "COLUMN",
+              "section": {
+                "flange_thickness": {
+                  "unit": "in",
+                  "value": ".5"
+                },
+                "flange_width": {
+                  "unit": "in",
+                  "value": "8"
+                },
+                "kind": "WIDE_FLANGE",
+                "overall_depth": {
+                  "unit": "in",
+                  "value": "8"
+                },
+                "web_thickness": {
+                  "unit": "in",
+                  "value": ".5"
+                }
+              }
+            }
+          ],
+          "unit_system": "US_CUSTOMARY"
+        },
+        "lap_configuration": "SINGLE_LAP",
+        "load_combination_id": "LC-1",
+        "material_assignments": [
+          {
+            "bearing_thread_status": "EXCLUDED",
+            "element_form": "SHAPE_ELEMENT",
+            "material_region_id": "LEG_1",
+            "material_snapshot_id": "ICE_LOCKED_PULTRUDED_FRP",
+            "participant_id": "member-a",
+            "physical_element_id": "LEG_1",
+            "potential_perpendicular_element_exemption": false
+          },
+          {
+            "bearing_thread_status": "EXCLUDED",
+            "element_form": "SHAPE_ELEMENT",
+            "material_region_id": "FLANGES",
+            "material_snapshot_id": "ICE_LOCKED_PULTRUDED_FRP",
+            "participant_id": "member-b",
+            "physical_element_id": "TOP_FLANGE",
+            "potential_perpendicular_element_exemption": true
+          }
+        ],
+        "material_snapshots": [
+          {
+            "basis": "ENGINEER_APPROVED_DEVELOPMENT",
+            "display_name": "ICE Locked Pultruded FRP",
+            "explicitly_missing": [
+              "FC_T"
+            ],
+            "id": "ICE_LOCKED_PULTRUDED_FRP",
+            "locked": true,
+            "properties": [
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "EC_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "3000"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "EC_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "1000"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "ET_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "3000"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "ET_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "800"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FBR_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "30"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FBR_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "18"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FC_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "33"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "INTERLAMINAR",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FSH_INT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "4.5"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "IN_PLANE_SHEAR",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FSH_LT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "8"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FT_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "33"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FT_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "7.5"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "IN_PLANE_SHEAR",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "G_LT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "420"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DIMENSIONLESS_RATIO",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "NU_LT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "1",
+                  "value": "0.3"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DISCRETE_PULL_THROUGH",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "PULL_THROUGH_1_2",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": false,
+                "value": {
+                  "unit": "kip",
+                  "value": "0.9"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DISCRETE_PULL_THROUGH",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "PULL_THROUGH_3_4",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": false,
+                "value": {
+                  "unit": "kip",
+                  "value": "1.25"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DISCRETE_PULL_THROUGH",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "PULL_THROUGH_3_8",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": false,
+                "value": {
+                  "unit": "kip",
+                  "value": "0.65"
+                }
+              }
+            ],
+            "qualification_statuses": [
+              "DEVELOPMENT_ONLY",
+              "ENGINEERING_REVIEW_REQUIRED"
+            ]
+          }
+        ],
+        "source_action_id": "action-1",
+        "view_extents": {
+          "brace_view_length": {
+            "unit": "in",
+            "value": "4"
+          },
+          "column_view_extent_above": {
+            "unit": "in",
+            "value": "1.5"
+          },
+          "column_view_extent_below": {
+            "unit": "in",
+            "value": "8.7426406871192848"
+          }
+        }
+      },
+      "pitch": {
+        "unit": "in",
+        "value": "2"
+      },
+      "positive_side_distance": {
+        "unit": "in",
+        "value": "1"
+      },
+      "prescribed_lbr": ".5",
+      "provenance": {
+        "clearance_or_contact_modeled": true,
+        "engineer_confirmed": false,
+        "load_combination": "LC-API",
+        "reference_point": "CONNECTION_CENTROID",
+        "revision": "1",
+        "source_document_or_calculation": "engineer calculation",
+        "source_method": "EXTERNALLY_RESOLVED_CONNECTION_DEMAND"
+      },
+      "request_id": "OR2-F1-OWNER",
+      "row_count": 2,
+      "row_distribution_basis": "ASCE_PRESCRIBED",
+      "source_length_unit": "in",
+      "source_reference": "Owner-approved OR2-F1 starter; explicit QA action only",
+      "supporting_w_longitudinal_ends": {
+        "condition": "CONTINUOUS_THROUGH_CONNECTION"
+      },
+      "time_effect_category": "WIND_TORNADO_SEISMIC",
+      "unloaded_end_e1": {
+        "unit": "in",
+        "value": "3"
+      }
+    }
+  },
+  "expected": {
+    "checks": [
+      {
+        "result_id": "BOLT_SHEAR:B_R1_L1",
+        "source_plan_id": "BOLT_SHEAR:B_R1_L1",
+        "layer_id": null,
+        "bolt_id": "B_R1_L1",
+        "row_id": null,
+        "bolt_line_id": null,
+        "path_id": null,
+        "limit_state": "BOLT_SHEAR",
+        "equation_method": "BOLT_SHEAR",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "unit": "N",
+          "canonical_value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "unit": "N",
+          "canonical_value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "39303.28222886731081772958976534793760397014080254399786541",
+          "unit": "N",
+          "canonical_value": "39303.28222886731081772958976534793760397014080254399786541",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "unit": "N",
+          "canonical_value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.0408310087862165886355861684632552564076064508160240439617748",
+        "numerical_comparison": "PASS",
+        "factor_trace": null,
+        "equation_trace": {
+          "area_trace": {
+            "diameter": {
+              "value": "0.5",
+              "unit": "in",
+              "canonical_value": "12.7",
+              "canonical_unit": "mm"
+            },
+            "area": {
+              "value": "126.67686977437443785790993782228775504804036310630246975",
+              "unit": "mm2",
+              "canonical_value": "126.67686977437443785790993782228775504804036310630246975",
+              "canonical_unit": "mm2"
+            }
+          },
+          "nominal_stress": {
+            "value": "413.6854375901016802033604067",
+            "unit": "MPa",
+            "canonical_value": "413.6854375901016802033604067",
+            "canonical_unit": "MPa"
+          },
+          "phi": "0.75",
+          "lambda_factor": "1",
+          "nominal_resistance": {
+            "value": "52404.3763051564144236394530204639168052935210700586638205466",
+            "unit": "N",
+            "canonical_value": "52404.3763051564144236394530204639168052935210700586638205466",
+            "canonical_unit": "N"
+          },
+          "design_resistance": {
+            "value": "39303.28222886731081772958976534793760397014080254399786541",
+            "unit": "N",
+            "canonical_value": "39303.28222886731081772958976534793760397014080254399786541",
+            "canonical_unit": "N"
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "54eeb4c7917e57703932546aaa6ceea6716b7750323bf5b9dfb6f7e7c336f873"
+      },
+      {
+        "result_id": "PIN_BEARING:layer-A:B_R1_L1",
+        "source_plan_id": "PIN_BEARING:layer-A:B_R1_L1",
+        "layer_id": "layer-A",
+        "bolt_id": "B_R1_L1",
+        "row_id": null,
+        "bolt_line_id": null,
+        "path_id": null,
+        "limit_state": "PIN_BEARING",
+        "equation_method": "PIN_BEARING",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "20016.99726867225",
+          "unit": "N",
+          "canonical_value": "20016.99726867225",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "12010.19836120335",
+          "unit": "N",
+          "canonical_value": "12010.19836120335",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "7206.11901672201",
+          "unit": "N",
+          "canonical_value": "7206.11901672201",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "unit": "N",
+          "canonical_value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.222698606321941554559028001413881876613469658764782356085616",
+        "numerical_comparison": "PASS",
+        "factor_trace": {
+          "property_traces": [
+            {
+              "property_kind": "FBR_T",
+              "source_property": {
+                "value": "18",
+                "unit": "ksi",
+                "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                "canonical_unit": "MPa"
+              },
+              "qualification_status": "QUALIFIED",
+              "cm": "1",
+              "ct": "1",
+              "cch": "1",
+              "adjusted_property": {
+                "value": "124.10563127703050406100812201624403248806497612995225990452",
+                "unit": "MPa",
+                "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                "canonical_unit": "MPa"
+              }
+            }
+          ],
+          "nominal_resistance": {
+            "value": "20016.99726867225",
+            "unit": "N",
+            "canonical_value": "20016.99726867225",
+            "canonical_unit": "N"
+          },
+          "c_delta": "1",
+          "c_lap": "0.6",
+          "phi": "0.6",
+          "lambda_factor": "1",
+          "design_resistance": {
+            "value": "7206.11901672201",
+            "unit": "N",
+            "canonical_value": "7206.11901672201",
+            "canonical_unit": "N"
+          }
+        },
+        "equation_trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi",
+              "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+              "canonical_unit": "MPa"
+            },
+            "qualification_status": "QUALIFIED",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa",
+              "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+              "canonical_unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi",
+                  "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                  "canonical_unit": "MPa"
+                },
+                "qualification_status": "QUALIFIED",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa",
+                  "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "canonical_unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N",
+              "canonical_value": "20016.99726867225",
+              "canonical_unit": "N"
+            },
+            "c_delta": "1",
+            "c_lap": "0.6",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "7206.11901672201",
+              "unit": "N",
+              "canonical_value": "7206.11901672201",
+              "canonical_unit": "N"
+            }
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "bb9b4b3f8fd62c2b197142738ac854763d7c243573a6eb683da5b28fd7534fa9"
+      },
+      {
+        "result_id": "BOLT_SHEAR:B_R2_L1",
+        "source_plan_id": "BOLT_SHEAR:B_R2_L1",
+        "layer_id": null,
+        "bolt_id": "B_R2_L1",
+        "row_id": null,
+        "bolt_line_id": null,
+        "path_id": null,
+        "limit_state": "BOLT_SHEAR",
+        "equation_method": "BOLT_SHEAR",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "unit": "N",
+          "canonical_value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "unit": "N",
+          "canonical_value": "52404.3763051564144236394530204639168052935210700586638205466",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "39303.28222886731081772958976534793760397014080254399786541",
+          "unit": "N",
+          "canonical_value": "39303.28222886731081772958976534793760397014080254399786541",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "unit": "N",
+          "canonical_value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.0408310087862165886355861684632552564076064508160240439617748",
+        "numerical_comparison": "PASS",
+        "factor_trace": null,
+        "equation_trace": {
+          "area_trace": {
+            "diameter": {
+              "value": "0.5",
+              "unit": "in",
+              "canonical_value": "12.7",
+              "canonical_unit": "mm"
+            },
+            "area": {
+              "value": "126.67686977437443785790993782228775504804036310630246975",
+              "unit": "mm2",
+              "canonical_value": "126.67686977437443785790993782228775504804036310630246975",
+              "canonical_unit": "mm2"
+            }
+          },
+          "nominal_stress": {
+            "value": "413.6854375901016802033604067",
+            "unit": "MPa",
+            "canonical_value": "413.6854375901016802033604067",
+            "canonical_unit": "MPa"
+          },
+          "phi": "0.75",
+          "lambda_factor": "1",
+          "nominal_resistance": {
+            "value": "52404.3763051564144236394530204639168052935210700586638205466",
+            "unit": "N",
+            "canonical_value": "52404.3763051564144236394530204639168052935210700586638205466",
+            "canonical_unit": "N"
+          },
+          "design_resistance": {
+            "value": "39303.28222886731081772958976534793760397014080254399786541",
+            "unit": "N",
+            "canonical_value": "39303.28222886731081772958976534793760397014080254399786541",
+            "canonical_unit": "N"
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "e001cf2ed35b48f5ef63b336b819c54aaf5d5ed81a65a2a6546166326ba62e4f"
+      },
+      {
+        "result_id": "PIN_BEARING:layer-A:B_R2_L1",
+        "source_plan_id": "PIN_BEARING:layer-A:B_R2_L1",
+        "layer_id": "layer-A",
+        "bolt_id": "B_R2_L1",
+        "row_id": null,
+        "bolt_line_id": null,
+        "path_id": null,
+        "limit_state": "PIN_BEARING",
+        "equation_method": "PIN_BEARING",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "20016.99726867225",
+          "unit": "N",
+          "canonical_value": "20016.99726867225",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "12010.19836120335",
+          "unit": "N",
+          "canonical_value": "12010.19836120335",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "7206.11901672201",
+          "unit": "N",
+          "canonical_value": "7206.11901672201",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "unit": "N",
+          "canonical_value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.222698606321941554559028001413881876613469658764782356085616",
+        "numerical_comparison": "PASS",
+        "factor_trace": {
+          "property_traces": [
+            {
+              "property_kind": "FBR_T",
+              "source_property": {
+                "value": "18",
+                "unit": "ksi",
+                "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                "canonical_unit": "MPa"
+              },
+              "qualification_status": "QUALIFIED",
+              "cm": "1",
+              "ct": "1",
+              "cch": "1",
+              "adjusted_property": {
+                "value": "124.10563127703050406100812201624403248806497612995225990452",
+                "unit": "MPa",
+                "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                "canonical_unit": "MPa"
+              }
+            }
+          ],
+          "nominal_resistance": {
+            "value": "20016.99726867225",
+            "unit": "N",
+            "canonical_value": "20016.99726867225",
+            "canonical_unit": "N"
+          },
+          "c_delta": "1",
+          "c_lap": "0.6",
+          "phi": "0.6",
+          "lambda_factor": "1",
+          "design_resistance": {
+            "value": "7206.11901672201",
+            "unit": "N",
+            "canonical_value": "7206.11901672201",
+            "canonical_unit": "N"
+          }
+        },
+        "equation_trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi",
+              "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+              "canonical_unit": "MPa"
+            },
+            "qualification_status": "QUALIFIED",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa",
+              "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+              "canonical_unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi",
+                  "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                  "canonical_unit": "MPa"
+                },
+                "qualification_status": "QUALIFIED",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa",
+                  "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "canonical_unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N",
+              "canonical_value": "20016.99726867225",
+              "canonical_unit": "N"
+            },
+            "c_delta": "1",
+            "c_lap": "0.6",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "7206.11901672201",
+              "unit": "N",
+              "canonical_value": "7206.11901672201",
+              "canonical_unit": "N"
+            }
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "1c8da6ab3aadcd6c99a90f83f2af401907f4dd05219b63bf0f4d6e3b07a98f1c"
+      },
+      {
+        "result_id": "INTERROW:layer-A:BOLT_LINE_1",
+        "source_plan_id": "SHEAR_OUT_BOLT_LINE_1",
+        "layer_id": "layer-A",
+        "bolt_id": null,
+        "row_id": null,
+        "bolt_line_id": "BOLT_LINE_1",
+        "path_id": null,
+        "limit_state": "INTERROW_SHEAR_OUT",
+        "equation_method": "INTERROW_ASCE_EQ_8_12",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "117538.0286729973478",
+          "unit": "N",
+          "canonical_value": "117538.0286729973478",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "70522.81720379840868",
+          "unit": "N",
+          "canonical_value": "70522.81720379840868",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "31735.267741709283906",
+          "unit": "N",
+          "canonical_value": "31735.267741709283906",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "3113.7551306823499999999968115546737859760600641624670735113237519679180128324936",
+          "unit": "N",
+          "canonical_value": "3113.7551306823499999999968115546737859760600641624670735113237519679180128324936",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.098116554617561293411669490069900487753324760367191373902818",
+        "numerical_comparison": "PASS",
+        "factor_trace": {
+          "property_traces": [
+            {
+              "property_kind": "FSH_LT",
+              "source_property": {
+                "value": "8",
+                "unit": "ksi",
+                "canonical_value": "55.1580583453468906937813875627751255502511005022010044020088",
+                "canonical_unit": "MPa"
+              },
+              "qualification_status": "QUALIFIED",
+              "cm": "1",
+              "ct": "1",
+              "cch": "1",
+              "adjusted_property": {
+                "value": "55.1580583453468906937813875627751255502511005022010044020088",
+                "unit": "MPa",
+                "canonical_value": "55.1580583453468906937813875627751255502511005022010044020088",
+                "canonical_unit": "MPa"
+              }
+            }
+          ],
+          "equation_nominal_resistance": {
+            "value": "117538.0286729973478",
+            "unit": "N",
+            "canonical_value": "117538.0286729973478",
+            "canonical_unit": "N"
+          },
+          "lap_factor_c_lap": "0.6",
+          "pitch_factor_c_delta": "1",
+          "connection_adjusted_nominal_resistance": {
+            "value": "70522.81720379840868",
+            "unit": "N",
+            "canonical_value": "70522.81720379840868",
+            "canonical_unit": "N"
+          },
+          "resistance_factor_phi": "0.45",
+          "time_effect_factor_lambda": "1",
+          "design_resistance": {
+            "value": "31735.267741709283906",
+            "unit": "N",
+            "canonical_value": "31735.267741709283906",
+            "canonical_unit": "N"
+          }
+        },
+        "equation_trace": {
+          "method": "ASCE_EQ_8_12",
+          "unloaded_end_e1": {
+            "value": "3",
+            "unit": "in",
+            "canonical_value": "76.2",
+            "canonical_unit": "mm"
+          },
+          "net_hole_diameter": {
+            "value": "0.563",
+            "unit": "in",
+            "canonical_value": "14.3002",
+            "canonical_unit": "mm"
+          },
+          "pitches": [
+            {
+              "value": "2",
+              "unit": "in",
+              "canonical_value": "50.8",
+              "canonical_unit": "mm"
+            }
+          ],
+          "row_span": {
+            "value": "2",
+            "unit": "in",
+            "canonical_value": "50.8",
+            "canonical_unit": "mm"
+          },
+          "shear_property": {
+            "property_kind": "FSH_LT",
+            "source_property": {
+              "value": "8",
+              "unit": "ksi",
+              "canonical_value": "55.1580583453468906937813875627751255502511005022010044020088",
+              "canonical_unit": "MPa"
+            },
+            "qualification_status": "QUALIFIED",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "55.1580583453468906937813875627751255502511005022010044020088",
+              "unit": "MPa",
+              "canonical_value": "55.1580583453468906937813875627751255502511005022010044020088",
+              "canonical_unit": "MPa"
+            }
+          },
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FSH_LT",
+                "source_property": {
+                  "value": "8",
+                  "unit": "ksi",
+                  "canonical_value": "55.1580583453468906937813875627751255502511005022010044020088",
+                  "canonical_unit": "MPa"
+                },
+                "qualification_status": "QUALIFIED",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "55.1580583453468906937813875627751255502511005022010044020088",
+                  "unit": "MPa",
+                  "canonical_value": "55.1580583453468906937813875627751255502511005022010044020088",
+                  "canonical_unit": "MPa"
+                }
+              }
+            ],
+            "equation_nominal_resistance": {
+              "value": "117538.0286729973478",
+              "unit": "N",
+              "canonical_value": "117538.0286729973478",
+              "canonical_unit": "N"
+            },
+            "lap_factor_c_lap": "0.6",
+            "pitch_factor_c_delta": "1",
+            "connection_adjusted_nominal_resistance": {
+              "value": "70522.81720379840868",
+              "unit": "N",
+              "canonical_value": "70522.81720379840868",
+              "canonical_unit": "N"
+            },
+            "resistance_factor_phi": "0.45",
+            "time_effect_factor_lambda": "1",
+            "design_resistance": {
+              "value": "31735.267741709283906",
+              "unit": "N",
+              "canonical_value": "31735.267741709283906",
+              "canonical_unit": "N"
+            }
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "56350b40b0b6fc71271e3f11c1c387783552eddd5a473608cfc11869d537954a"
+      },
+      {
+        "result_id": "PIN_BEARING:layer-B:B_R1_L1",
+        "source_plan_id": "PIN_BEARING:layer-B:B_R1_L1",
+        "layer_id": "layer-B",
+        "bolt_id": "B_R1_L1",
+        "row_id": null,
+        "bolt_line_id": null,
+        "path_id": null,
+        "limit_state": "PIN_BEARING",
+        "equation_method": "PIN_BEARING",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "20016.99726867225",
+          "unit": "N",
+          "canonical_value": "20016.99726867225",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "12010.19836120335",
+          "unit": "N",
+          "canonical_value": "12010.19836120335",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "7206.11901672201",
+          "unit": "N",
+          "canonical_value": "7206.11901672201",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "unit": "N",
+          "canonical_value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.222698606321941554559028001413881876613469658764782356085616",
+        "numerical_comparison": "PASS",
+        "factor_trace": {
+          "property_traces": [
+            {
+              "property_kind": "FBR_T",
+              "source_property": {
+                "value": "18",
+                "unit": "ksi",
+                "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                "canonical_unit": "MPa"
+              },
+              "qualification_status": "QUALIFIED",
+              "cm": "1",
+              "ct": "1",
+              "cch": "1",
+              "adjusted_property": {
+                "value": "124.10563127703050406100812201624403248806497612995225990452",
+                "unit": "MPa",
+                "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                "canonical_unit": "MPa"
+              }
+            }
+          ],
+          "nominal_resistance": {
+            "value": "20016.99726867225",
+            "unit": "N",
+            "canonical_value": "20016.99726867225",
+            "canonical_unit": "N"
+          },
+          "c_delta": "1",
+          "c_lap": "0.6",
+          "phi": "0.6",
+          "lambda_factor": "1",
+          "design_resistance": {
+            "value": "7206.11901672201",
+            "unit": "N",
+            "canonical_value": "7206.11901672201",
+            "canonical_unit": "N"
+          }
+        },
+        "equation_trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi",
+              "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+              "canonical_unit": "MPa"
+            },
+            "qualification_status": "QUALIFIED",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa",
+              "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+              "canonical_unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi",
+                  "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                  "canonical_unit": "MPa"
+                },
+                "qualification_status": "QUALIFIED",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa",
+                  "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "canonical_unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N",
+              "canonical_value": "20016.99726867225",
+              "canonical_unit": "N"
+            },
+            "c_delta": "1",
+            "c_lap": "0.6",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "7206.11901672201",
+              "unit": "N",
+              "canonical_value": "7206.11901672201",
+              "canonical_unit": "N"
+            }
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "94af753cfe69737ba8f2b308679fcf32a7ec3505e1714920bf0b6481177a3a9a"
+      },
+      {
+        "result_id": "PIN_BEARING:layer-B:B_R2_L1",
+        "source_plan_id": "PIN_BEARING:layer-B:B_R2_L1",
+        "layer_id": "layer-B",
+        "bolt_id": "B_R2_L1",
+        "row_id": null,
+        "bolt_line_id": null,
+        "path_id": null,
+        "limit_state": "PIN_BEARING",
+        "equation_method": "PIN_BEARING",
+        "source_locator": "ASCE/SEI 74-23 Chapter 8 / controlled Slice 2 RC2 method",
+        "method_applicability": "ASCE_PRESCRIPTIVE",
+        "qualification": "QUALIFIED_ASCE_PRESCRIPTIVE",
+        "availability": "CALCULATED",
+        "geometry_status": "VALID",
+        "equation_nominal_resistance": {
+          "value": "20016.99726867225",
+          "unit": "N",
+          "canonical_value": "20016.99726867225",
+          "canonical_unit": "N"
+        },
+        "connection_adjusted_nominal_resistance": {
+          "value": "12010.19836120335",
+          "unit": "N",
+          "canonical_value": "12010.19836120335",
+          "canonical_unit": "N"
+        },
+        "design_resistance": {
+          "value": "7206.11901672201",
+          "unit": "N",
+          "canonical_value": "7206.11901672201",
+          "canonical_unit": "N"
+        },
+        "demand": {
+          "value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "unit": "N",
+          "canonical_value": "1604.7926620140314750989181972722128847429262434976204356145997350014239246377582",
+          "canonical_unit": "N"
+        },
+        "utilization": "0.222698606321941554559028001413881876613469658764782356085616",
+        "numerical_comparison": "PASS",
+        "factor_trace": {
+          "property_traces": [
+            {
+              "property_kind": "FBR_T",
+              "source_property": {
+                "value": "18",
+                "unit": "ksi",
+                "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                "canonical_unit": "MPa"
+              },
+              "qualification_status": "QUALIFIED",
+              "cm": "1",
+              "ct": "1",
+              "cch": "1",
+              "adjusted_property": {
+                "value": "124.10563127703050406100812201624403248806497612995225990452",
+                "unit": "MPa",
+                "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                "canonical_unit": "MPa"
+              }
+            }
+          ],
+          "nominal_resistance": {
+            "value": "20016.99726867225",
+            "unit": "N",
+            "canonical_value": "20016.99726867225",
+            "canonical_unit": "N"
+          },
+          "c_delta": "1",
+          "c_lap": "0.6",
+          "phi": "0.6",
+          "lambda_factor": "1",
+          "design_resistance": {
+            "value": "7206.11901672201",
+            "unit": "N",
+            "canonical_value": "7206.11901672201",
+            "canonical_unit": "N"
+          }
+        },
+        "equation_trace": {
+          "bearing_property": {
+            "property_kind": "FBR_T",
+            "source_property": {
+              "value": "18",
+              "unit": "ksi",
+              "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+              "canonical_unit": "MPa"
+            },
+            "qualification_status": "QUALIFIED",
+            "cm": "1",
+            "ct": "1",
+            "cch": "1",
+            "adjusted_property": {
+              "value": "124.10563127703050406100812201624403248806497612995225990452",
+              "unit": "MPa",
+              "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+              "canonical_unit": "MPa"
+            }
+          },
+          "thread_factor": "1",
+          "factor_trace": {
+            "property_traces": [
+              {
+                "property_kind": "FBR_T",
+                "source_property": {
+                  "value": "18",
+                  "unit": "ksi",
+                  "canonical_value": "124.1056312770305040610081220162440324880649761299522599045198",
+                  "canonical_unit": "MPa"
+                },
+                "qualification_status": "QUALIFIED",
+                "cm": "1",
+                "ct": "1",
+                "cch": "1",
+                "adjusted_property": {
+                  "value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "unit": "MPa",
+                  "canonical_value": "124.10563127703050406100812201624403248806497612995225990452",
+                  "canonical_unit": "MPa"
+                }
+              }
+            ],
+            "nominal_resistance": {
+              "value": "20016.99726867225",
+              "unit": "N",
+              "canonical_value": "20016.99726867225",
+              "canonical_unit": "N"
+            },
+            "c_delta": "1",
+            "c_lap": "0.6",
+            "phi": "0.6",
+            "lambda_factor": "1",
+            "design_resistance": {
+              "value": "7206.11901672201",
+              "unit": "N",
+              "canonical_value": "7206.11901672201",
+              "canonical_unit": "N"
+            }
+          }
+        },
+        "warnings": [],
+        "versions": {
+          "calculation_contract_version": "2.4B-RC2",
+          "calculation_engine_version": "0.2.0.dev1",
+          "engineering_rule_set_version": "asce74-23-ch8-multirow-rc2.dev1",
+          "execution_input_schema": "frp-master-connection-calculation-slice-2-execution-input",
+          "execution_input_schema_version": "0.1.0-draft",
+          "result_schema": "frp-master-connection-calculation-slice-2-result",
+          "result_schema_version": "0.1.0-draft",
+          "fingerprint_schema": "frp-master-connection-calculation-slice-2-fingerprint",
+          "fingerprint_schema_version": "0.1.0-draft",
+          "golden_schema": "frp-master-connection-calculation-slice-2-golden-rc2"
+        },
+        "input_fingerprint": "21463ba62793dfdd46e0de1bbbb556067307183850ae87d6e013209090f01a57"
+      }
+    ],
+    "integration": {
+      "required_check_ids": [
+        "BOLT_SHEAR:B_R1_L1",
+        "PIN_BEARING:layer-A:B_R1_L1",
+        "BOLT_SHEAR:B_R2_L1",
+        "PIN_BEARING:layer-A:B_R2_L1",
+        "FIRST_ROW:layer-A",
+        "INTERROW:layer-A:BOLT_LINE_1",
+        "MATERIAL_SOURCE_REVIEW:layer-A",
+        "BLOCK_SHEAR:layer-A:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1",
+        "BLOCK_SHEAR:layer-A:BLOCK_L_RIGHT_ROW_1_BOLT_LINE_1",
+        "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION",
+        "PIN_BEARING:layer-B:B_R1_L1",
+        "PIN_BEARING:layer-B:B_R2_L1",
+        "FIRST_ROW:layer-B",
+        "INTERROW:layer-B:BOLT_LINE_1",
+        "MATERIAL_SOURCE_REVIEW:layer-B",
+        "BLOCK_SHEAR:layer-B:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1",
+        "BLOCK_SHEAR:layer-B:BLOCK_L_RIGHT_ROW_1_BOLT_LINE_1"
+      ],
+      "not_required_check_ids": [
+        "MATERIAL_SOURCE_REVIEW:layer-A",
+        "MATERIAL_SOURCE_REVIEW:layer-B"
+      ],
+      "unsupported_required_check_ids": [
+        "FIRST_ROW:layer-A",
+        "BLOCK_SHEAR:layer-A:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1",
+        "BLOCK_SHEAR:layer-A:BLOCK_L_RIGHT_ROW_1_BOLT_LINE_1",
+        "FIRST_ROW:layer-B",
+        "INTERROW:layer-B:BOLT_LINE_1",
+        "BLOCK_SHEAR:layer-B:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1",
+        "BLOCK_SHEAR:layer-B:BLOCK_L_RIGHT_ROW_1_BOLT_LINE_1"
+      ],
+      "incomplete_required_check_ids": [
+        "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION"
+      ],
+      "failed_check_ids": [],
+      "qualification": "SECTION_2_3_2_QUALIFICATION_REQUIRED",
+      "numerical_comparison": "NOT_EVALUATED",
+      "governing_supported_check_ids": [
+        "PIN_BEARING:layer-A:B_R1_L1",
+        "PIN_BEARING:layer-A:B_R2_L1",
+        "PIN_BEARING:layer-B:B_R1_L1",
+        "PIN_BEARING:layer-B:B_R2_L1"
+      ],
+      "overall_disposition": "NOT_EVALUATED"
+    },
+    "overall_status": "ENGINEERING_REVIEW_REQUIRED"
+  }
+}

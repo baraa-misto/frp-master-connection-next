@@ -66,7 +66,15 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 8129
+          --expected-tests 8278
+      - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
+        run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
+      - name: Upload Appendix RC3 numerical authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: appendix-rc3-qa-${{ matrix.os }}
+          path: backend/appendix-rc3-qa/
+          if-no-files-found: error
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider
