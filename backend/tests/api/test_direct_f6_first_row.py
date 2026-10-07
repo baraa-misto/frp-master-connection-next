@@ -96,8 +96,15 @@ def test_actual_direct_first_row_cannot_execute_unproved_template_plan(name: str
         )
 
 
-def test_owner_seven_checks_and_all_schedule_fields_retain_exact_parity() -> None:
-    assert direct_projection() == BASELINE["expected"]
+def test_owner_seven_checks_retain_exact_parity_after_authorized_f7_schedule_delta() -> None:
+    actual = direct_projection()
+    assert [c for c in actual["checks"] if c["limit_state"] != "BLOCK_SHEAR"] == BASELINE[
+        "expected"
+    ]["checks"]
+    assert (
+        actual["integration"]["required_check_ids"]
+        == BASELINE["expected"]["integration"]["required_check_ids"]
+    )
 
 
 @pytest.mark.parametrize(

@@ -147,6 +147,7 @@ from .calculation_orchestration import (
     SingleBoltOrchestrationRequest,
 )
 from .connection_preview import PreviewGeometryStatus, preview_single_bolt_connection
+from .direct_angle_block import DirectAngleBlockResult, evaluate_direct_angle_block
 from .direct_frame import direct_axial_frame_input
 from .direct_group_mode import evaluate_direct_layered_group_modes
 from .direct_single_row import DirectSingleRowResult, evaluate_direct_single_row
@@ -599,6 +600,8 @@ class AutomaticGroupModeIntegrationResult:
 @dataclass(frozen=True, slots=True)
 class DirectLayeredGroupModeIntegrationResult(AutomaticGroupModeIntegrationResult):
     """Direct-specific repeated demand scenario with one trace per physical layer."""
+
+    direct_angle_block_results: tuple[DirectAngleBlockResult, ...] = ()
 
     def __post_init__(self) -> None:
         self._validate(allow_layered=True)
@@ -2564,6 +2567,121 @@ def _integrate_group_mode_results(
     )
 
 
+def _integrate_direct_angle_block(
+    original: DirectLayeredGroupModeIntegrationResult,
+    blocks: tuple[DirectAngleBlockResult, ...],
+) -> DirectLayeredGroupModeIntegrationResult:
+    """Supersede only F7 Angle history IDs; retain every frozen scenario witness."""
+
+    calculated = set.intersection(
+        *({check.result_id for check in block.supported_results} for block in blocks)
+    )
+    # A history row can be N/A only when every considered scenario proves it.
+    not_applicable = set.intersection(
+        *({row.result_id for row in block.history_results} for block in blocks)
+    )
+    superseded = calculated | not_applicable
+    unsupported = tuple(i for i in original.unsupported_required_check_ids if i not in superseded)
+    incomplete = tuple(i for i in original.incomplete_required_check_ids if i not in superseded)
+    not_required = tuple(dict.fromkeys((*original.not_required_check_ids, *sorted(not_applicable))))
+    all_checks = (
+        *[c for s in original.scenario_results for c in s.supported_results],
+        *[c for block in blocks for c in block.supported_results],
+    )
+    failed = tuple(
+        dict.fromkeys(
+            (
+                *original.failed_check_ids,
+                *[
+                    c.result_id
+                    for c in all_checks
+                    if c.numerical_comparison is NumericalComparison.FAIL
+                ],
+            )
+        )
+    )
+    code_failure = any(b.supported_results and not b.code_geometry_satisfied for b in blocks)
+    invalid = any(
+        b.handoff is not None
+        and b.handoff.overall_disposition is MultiRowOverallDisposition.INVALID_GEOMETRY
+        for b in blocks
+    )
+    if failed:
+        numerical, overall = NumericalComparison.FAIL, MultiRowOverallDisposition.FAIL
+    elif invalid:
+        numerical, overall = (
+            NumericalComparison.NOT_EVALUATED,
+            MultiRowOverallDisposition.INVALID_GEOMETRY,
+        )
+    elif code_failure:
+        numerical, overall = (
+            NumericalComparison.NOT_EVALUATED,
+            MultiRowOverallDisposition.CODE_GEOMETRY_REQUIREMENT_NOT_SATISFIED,
+        )
+    else:
+        numerical, overall = original.numerical_comparison, original.overall_disposition
+    old_maximum = max(
+        (
+            c.utilization
+            for s in original.scenario_results
+            for c in s.supported_results
+            if c.utilization is not None
+        ),
+        default=None,
+    )
+    new_checks = tuple(c for b in blocks for c in b.supported_results)
+    new_maximum = max(
+        (c.utilization for c in new_checks if c.utilization is not None), default=None
+    )
+    from frp_master_connection.calculation import GOVERNING_UTILIZATION_TOLERANCE
+
+    maximum = max((v for v in (old_maximum, new_maximum) if v is not None), default=None)
+    new_governing = tuple(
+        dict.fromkeys(
+            c.result_id
+            for c in new_checks
+            if c.utilization is not None
+            and maximum is not None
+            and maximum - c.utilization <= GOVERNING_UTILIZATION_TOLERANCE
+        )
+    )
+    if old_maximum is not None and (
+        new_maximum is None or new_maximum - old_maximum <= GOVERNING_UTILIZATION_TOLERANCE
+    ):
+        # The accepted aggregate retains governing IDs from each physical
+        # layer. A non-governing F7 check must not reclassify those IDs.
+        governing = tuple(dict.fromkeys((*original.governing_supported_check_ids, *new_governing)))
+    else:
+        governing = new_governing
+    fingerprint = hashlib.sha256(
+        json.dumps(
+            {
+                "parent_integration_fingerprint": original.result_fingerprint,
+                "block_fingerprints": [b.result_fingerprint for b in blocks],
+                "not_required": not_required,
+                "unsupported": unsupported,
+                "incomplete": incomplete,
+                "failed": failed,
+                "governing": governing,
+                "overall": overall.value,
+            },
+            sort_keys=True,
+        ).encode("utf-8")
+    ).hexdigest()
+    return replace(
+        original,
+        direct_angle_block_results=blocks,
+        not_required_check_ids=not_required,
+        unsupported_required_check_ids=unsupported,
+        incomplete_required_check_ids=incomplete,
+        failed_check_ids=failed,
+        numerical_comparison=numerical,
+        overall_disposition=overall,
+        governing_supported_check_ids=governing,
+        result_fingerprint=fingerprint,
+    )
+
+
 def evaluate_multirow_connection(
     request: MultiRowOrchestrationRequest,
 ) -> MultiRowOrchestrationResponse:
@@ -2675,6 +2793,23 @@ def evaluate_multirow_connection(
         integration = _integrate_group_mode_results(
             group_modes, complete_inventory=request.direct_finalization_mode
         )
+        if request.direct_finalization_mode and request.row_count > 1:
+            direct_preview = cast(DirectMultiRowPreviewResult, preview)
+            physical_scene = resolved.visualization.physical_connection
+            if physical_scene is not None:
+                integration = _integrate_direct_angle_block(
+                    cast(DirectLayeredGroupModeIntegrationResult, integration),
+                    tuple(
+                        evaluate_direct_angle_block(
+                            item,
+                            resolved.geometry,
+                            physical_scene,
+                            direct_preview.direct_engineering_geometry,
+                            resolved.hole_definition,
+                        )
+                        for item in handoff_inputs
+                    ),
+                )
         single_row = (
             evaluate_direct_single_row(
                 resolved.geometry,

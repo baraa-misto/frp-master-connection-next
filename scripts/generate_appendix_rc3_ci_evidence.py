@@ -11,7 +11,7 @@ from decimal import Decimal, localcontext
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / 'backend/src'), str(ROOT / 'backend')]
 from tests.calculation.test_appendix_rc3 import CASES, arguments, values, serialized
-from tests.api.test_appendix_rc3_direct_parity import BASELINE, direct_projection
+from tests.api.test_appendix_rc3_direct_parity import BASELINE, direct_projection, test_direct_c3_exact_numerical_schedule_parity
 from frp_master_connection.calculation.appendix_rc3 import full_first_row_resistance_rc3, ENGINE_ID, SPEC_ID, GOLDEN_ID
 from frp_master_connection.calculation.multirow_equations import full_first_row_resistance
 from frp_master_connection.calculation.equations import INTERNAL_DECIMAL_PRECISION
@@ -41,14 +41,15 @@ def main() -> None:
         old = full_first_row_resistance(**args)
     assert serialized(old.knt) == Decimal('0.671426574084')
     direct = direct_projection()
-    assert direct == BASELINE['expected']
+    assert [c for c in direct['checks'] if c['limit_state'] != 'BLOCK_SHEAR'] == BASELINE['expected']['checks']
+    test_direct_c3_exact_numerical_schedule_parity()
     payload = dict(candidate_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                    platform=platform.platform(), engine=ENGINE_ID, spec=SPEC_ID, golden=GOLDEN_ID,
                    geometries=len(CASES), evaluations=len(results),
                    frozen_witness_knt=str(old.knt), successor_witness_knt=results[0]['values_60']['knt'],
                    cases=results, direct_c3_parity=direct)
     (output/'APPENDIX_RC3_PLATFORM_QA.json').write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
-    print('Appendix RC3 independent numerical reference / raw US-SI parity / Direct C3 parity PASS')
+    print('Appendix RC3 independent reference / raw US-SI parity / seven Direct checks exact; F7 Angle block schedule verified')
 
 if __name__ == '__main__':
     main()

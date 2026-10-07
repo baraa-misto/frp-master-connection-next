@@ -28,6 +28,7 @@ from reportlab.platypus import (
     BaseDocTemplate,
     Flowable,
     Frame,
+    KeepTogether,
     PageBreak,
     PageTemplate,
     Paragraph,
@@ -1948,7 +1949,14 @@ def _direct_reader_engineering_sections(
     critical = governing(checks)
     if critical is not None:
         integration = result.get("automatic_group_mode_integration", {})
-        scenarios = integration.get("scenario_results", []) if isinstance(integration, dict) else []
+        scenarios = (
+            [
+                *integration.get("scenario_results", []),
+                *integration.get("direct_angle_block_results", []),
+            ]
+            if isinstance(integration, dict)
+            else []
+        )
         native = next(
             (
                 item
@@ -2327,7 +2335,10 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         if isinstance(integration, dict):
             supported = {
                 item.get("result_id")
-                for scenario in integration.get("scenario_results", [])
+                for scenario in [
+                    *integration.get("scenario_results", []),
+                    *integration.get("direct_angle_block_results", []),
+                ]
                 if isinstance(scenario, dict)
                 for item in scenario.get("supported_results", [])
                 if isinstance(item, dict)
@@ -2355,6 +2366,10 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                 elif check_id in not_required:
                     availability = "NOT_APPLICABLE"
                     reason = "Source predicate marks this check not required"
+                    for block in integration.get("direct_angle_block_results", []):
+                        for row in block.get("history_results", []):
+                            if row.get("result_id") == check_id:
+                                reason = row["reason"]
                 else:
                     availability = "INCOMPLETE_INPUT"
                     reason = _direct_blocked_description(
@@ -2364,6 +2379,14 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                     )
                 if availability == "CALCULATION_NOT_SUPPORTED":
                     reason = direct_first_row_reason(check_id, result) or reason
+                    if check_id == "BLOCK_SHEAR:layer-A:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1":
+                        reason = (
+                            " / ".join(
+                                block["reason"]
+                                for block in integration.get("direct_angle_block_results", [])
+                            )
+                            or reason
+                        )
                 inventory.append(
                     {
                         "result_id": check_id,
@@ -2618,6 +2641,63 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         if direct
         else _reader_engineering_sections(snapshot, reader_result, system, styles)
     )
+    if isinstance(integration, dict):
+        for block in integration.get("direct_angle_block_results", []):
+            if not block["supported_results"] and not block["history_results"]:
+                # The existing active-limits row carries this unavailable
+                # adapter's reason; there is no executed calculation to repeat.
+                continue
+            block_story: list[Flowable] = [
+                _paragraph("Angle physical free-side block shear", styles["heading"])
+            ]
+            block_story.append(
+                _paragraph(
+                    f"{block['method_id']}. Project rational physical L path; "
+                    "Section 2.3.2 whole-connection qualification remains required.",
+                    styles["body"],
+                )
+            )
+            for check in block["supported_results"]:
+                block_story.append(
+                    _table(
+                        [
+                            (
+                                "Executed equation and areas",
+                                multirow_native_substitution(check, visual, system),
+                            ),
+                            (
+                                "Separate factors (each applied once)",
+                                _factor_substitution(check["factor_trace"], system)
+                                + "\n"
+                                + "; ".join(
+                                    f"{prop['property_kind']}: CM={prop['cm']}, "
+                                    f"CT={prop['ct']}, CCH={prop['cch']}"
+                                    for prop in check["factor_trace"]["property_traces"]
+                                ),
+                            ),
+                            (
+                                "Demand / resistance / utilization / outcome",
+                                f"{readable_value(check['demand'], system)} / "
+                                f"{readable_value(check['design_resistance'], system)} / "
+                                f"{short_number(check['utilization'], ratio=True)} / "
+                                f"{check['numerical_comparison']}",
+                            ),
+                        ],
+                        styles,
+                    )
+                )
+            if block["reason"]:
+                block_story.append(_paragraph(block["reason"], styles["body"]))
+            for row in block["history_results"]:
+                block_story.append(
+                    _paragraph(
+                        "Block shear — Angle heel side: NOT APPLICABLE. " + row["reason"],
+                        styles["body"],
+                    )
+                )
+            # Keep the worked calculation and its bounded N/A explanation
+            # together instead of leaving the explanation on a lone final page.
+            story.append(KeepTogether(block_story))
     if direct and options.mode == "ENGINEER_REPORT":
         return _finish_multirow_pdf(story, snapshot, options, status, styles)
     if isinstance(calculation, dict):

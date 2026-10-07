@@ -732,6 +732,23 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            # F7 adds only its platform PDF evidence and 51 focused cases.
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "96647818CEFA541050F9A5E86D8822D2AFCE70AC9158F837974815F71ECF5420"
+            )
+            f7_pdf_steps = b"""      - name: Generate signed Direct F7 Angle block review PDFs
+        run: python ../scripts/generate_direct_f7_ci_pdfs.py --output direct-f7-review-pdfs
+      - name: Upload Direct F7 Angle block review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f7-pdfs-${{ matrix.os }}
+          path: backend/direct-f7-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f7_pdf_steps) == 1
+            raw = raw.replace(f7_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8349") == 1
+            raw = raw.replace(b"--expected-tests 8349", b"--expected-tests 8298")
             # F6 adds the bounded first-row gates/report evidence and 20 tests.
             assert hashlib.sha256(raw).hexdigest().upper() == (
                 "7A646A4AD883C3C2C2243D2B2146925E60151A17729D6CE5DDBAF09A1F4B5F76"

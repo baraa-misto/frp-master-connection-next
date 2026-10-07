@@ -370,7 +370,7 @@ def test_direct_signed_source_and_native_property_authority(resin: int) -> None:
     )
     native = result["native_design"]
     assert "MAT1_MATERIAL_SOURCE_QUALIFICATION_REQUIRED" not in native["preview"]["warnings"]
-    assert len(supported(result)) == 7
+    assert len(supported(result)) == 8
     assert all("PULL_THROUGH" not in c["limit_state"] for c in supported(result))
     assert all(
         ledger["original"] == "21" and ledger["adjusted_candidate"] == "21"

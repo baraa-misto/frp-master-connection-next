@@ -288,7 +288,11 @@ def design(body: dict[str, Any]) -> dict[str, Any]:
 
 def supported(data: dict[str, Any]) -> list[dict[str, Any]]:
     i = data["native_design"]["automatic_group_mode_integration"]
-    return [r for s in i["scenario_results"] for r in s["supported_results"]]
+    return [
+        r
+        for s in [*i["scenario_results"], *i.get("direct_angle_block_results", [])]
+        for r in s["supported_results"]
+    ]
 
 
 @pytest.mark.parametrize("thread", ["EXCLUDED", "INCLUDED", "UNKNOWN"])
@@ -377,8 +381,15 @@ def test_non_bolt_engineering_exact_parity_and_owner_schedule(si: bool) -> None:
         assert old["preview"].get(key) == new["preview"].get(key)
     old_checks = {c["result_id"]: c for c in supported(before)}
     new_checks = {c["result_id"]: c for c in supported(after)}
-    assert len(old_checks) == 5
-    assert len(new_checks) == 7
+    # F7 adds the authenticated Angle block only when this historical fixture
+    # satisfies its physical/source applicability. The five prior non-bolt
+    # checks and two catalog-enabled bolt checks retain their exact contract.
+    old_block = {k for k, v in old_checks.items() if v["limit_state"] == "BLOCK_SHEAR"}
+    new_block = {k for k, v in new_checks.items() if v["limit_state"] == "BLOCK_SHEAR"}
+    assert old_block == new_block
+    assert old_block == {"BLOCK_SHEAR:layer-A:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1"}
+    assert len(old_checks) - len(old_block) == 5
+    assert len(new_checks) - len(new_block) == 7
     for check_id, original in old_checks.items():
         current = new_checks[check_id]
         for key in original:
@@ -386,7 +397,7 @@ def test_non_bolt_engineering_exact_parity_and_owner_schedule(si: bool) -> None:
                 assert current[key] == original[key], (check_id, key)
     old_i, new_i = old["automatic_group_mode_integration"], new["automatic_group_mode_integration"]
     assert old_i["required_check_ids"] == new_i["required_check_ids"]
-    assert len(new_i["required_check_ids"]) - len(new_checks) == 10
+    assert len(new_i["required_check_ids"]) - len(new_checks) == 10 - len(new_block)
     assert old_i["unsupported_required_check_ids"] == new_i["unsupported_required_check_ids"]
     assert [
         x for x in old_i["incomplete_required_check_ids"] if not x.startswith("BOLT_")

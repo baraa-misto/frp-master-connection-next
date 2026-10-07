@@ -581,6 +581,34 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getAllByText("Connection").length).toBeGreaterThan(0);
   });
 
+  it.each(["", "Raw net area below 75%; ordinary compliant PASS prohibited"])("shows authenticated F7 block and bounded heel N/A with qualification (%s)", async (reason) => {
+    const design = automaticDesignFixture();
+    const integration = design.automatic_group_mode_integration;
+    const original = integration?.scenario_results[0]?.supported_results[0];
+    if (integration === null || original === undefined) throw new Error("Native integration required");
+    integration.direct_angle_block_results = [{
+      contract_version: "SHEAR01-DIRECT-OR2-F7", scenario_id: "ASCE_PRESCRIBED",
+      method_id: "ASCE_8_14B_DIRECT_PHYSICAL_L_PATH_RATIONAL",
+      supported_results: [{ ...original, result_id: "BLOCK_SHEAR:layer-A:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1", limit_state: "BLOCK_SHEAR", design_resistance: {value:"3.6479025",unit:"kip"}, utilization:".191891", numerical_comparison:"PASS" }],
+      history_results: [{ result_id:"BLOCK_SHEAR:layer-A:BLOCK_L_RIGHT_ROW_1_BOLT_LINE_1", layer_id:"layer-A", limit_state:"BLOCK_SHEAR", availability:"NOT_APPLICABLE", numerical_comparison:"NOT_EVALUATED", reason:"The isolated two-cut path does not detach: perpendicular leg remains continuous. Whole-connection qualification required.", required:false, demand:null, design_resistance:null, utilization:null }],
+      code_geometry_satisfied: reason === "", reason, result_fingerprint:"a".repeat(64),
+    }];
+    integration.qualification = "SECTION_2_3_2_QUALIFICATION_REQUIRED";
+    mocks.multiPreview.mockResolvedValue(automaticPreviewFixture());
+    mocks.multiEvaluate.mockResolvedValue(design);
+    render(<ShearConnectionsWorkspace />);
+    activateNormalAutomaticDemand();
+    const button = screen.getByRole("button", {name:"Run Design Check"});
+    await waitFor(() => { expect(button).toBeEnabled(); });
+    fireEvent.click(button);
+    await screen.findByText("Angle physical block shear");
+    expect(screen.getByText(/Angle heel side: NOT APPLICABLE/u)).toBeVisible();
+    expect(screen.getByText(/perpendicular leg remains continuous/u)).toBeVisible();
+    expect(screen.getByText(/ASCE_8_14B_DIRECT_PHYSICAL_L_PATH_RATIONAL/u)).toBeVisible();
+    expect(screen.getAllByText(/2 supported checks evaluated/u)[0]).toBeVisible();
+    if (reason) expect(screen.getByText(reason)).toBeVisible();
+  });
+
   it("keeps Direct geometry unchanged when a proposed layout is dismissed", async () => {
     await openUnifiedMultirow();
     const candidate = multirowPreviewFixture();

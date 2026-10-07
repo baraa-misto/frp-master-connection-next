@@ -329,6 +329,27 @@ export interface AutomaticGroupModeIntegrationResult {
   ];
   result_fingerprint: string;
   direct_single_row_result?: DirectSingleRowResult;
+  direct_angle_block_results?: {
+    contract_version: string;
+    scenario_id: string;
+    method_id: string;
+    supported_results: MultiRowCheckResult[];
+    history_results: {
+      result_id: string;
+      layer_id: string;
+      limit_state: string;
+      availability: "NOT_APPLICABLE";
+      numerical_comparison: "NOT_EVALUATED";
+      reason: string;
+      required: false;
+      demand: null;
+      design_resistance: null;
+      utilization: null;
+    }[];
+    code_geometry_satisfied: boolean;
+    reason: string;
+    result_fingerprint: string;
+  }[];
 }
 
 export interface DirectSingleRowResult {

@@ -266,6 +266,21 @@ def collect_checks(result: dict[str, Any]) -> list[CheckView]:
                 visit(item)
 
     visit(result)
+    integration = result.get("automatic_group_mode_integration")
+    if isinstance(integration, dict):
+        # F7 is the final authenticated physical-path adapter. Earlier frozen
+        # handoffs remain in the audit as superseded template witnesses.
+        for block in integration.get("direct_angle_block_results", []):
+            if isinstance(block, dict):
+                for final in collect_checks(
+                    {
+                        "final": [
+                            *block.get("supported_results", []),
+                            *block.get("history_results", []),
+                        ]
+                    }
+                ):
+                    checks[final.identity] = final
     return list(checks.values())
 
 
