@@ -54,6 +54,14 @@ jobs:
         run: python -m pip install --no-deps --no-build-isolation --editable .
       - name: Check dependency consistency
         run: python -m pip check
+      - name: Verify exact F8-G1 dependencies and full security audit
+        run: python ../scripts/verify_direct_f8_g1_dependencies.py --output direct-f8-g1-dependency-qa.json
+      - name: Upload F8-G1 dependency and security evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f8-g1-dependencies-${{ matrix.os }}
+          path: backend/direct-f8-g1-dependency-qa.json
+          if-no-files-found: error
       - name: Check Ruff formatting
         run: python -m ruff format --check .
       - name: Run Ruff linting
@@ -66,7 +74,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 8349
+          --expected-tests 8568
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence
@@ -90,6 +98,14 @@ jobs:
         with:
           name: direct-f7-pdfs-${{ matrix.os }}
           path: backend/direct-f7-review-pdfs/
+          if-no-files-found: error
+      - name: Generate Direct F8 qualification PDFs and statistical evidence
+        run: python ../scripts/generate_direct_f8_ci_pdfs.py --output direct-f8-review-pdfs
+      - name: Upload Direct F8 qualification evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f8-pdfs-${{ matrix.os }}
+          path: backend/direct-f8-review-pdfs/
           if-no-files-found: error
       - name: Generate real REPORT1 PDFs on this runner
         run: >-

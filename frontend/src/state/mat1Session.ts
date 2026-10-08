@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from "react";
 import type { SingleBoltEvaluationRequest } from "../api/contracts";
 import { WORKSPACE_CAPABILITIES } from "../domain/workspaceCapabilities";
+import { invalidateReportSnapshot } from "./reportSession";
 
 export const F593_FASTENER_REVISION = "ASTM-F593-17-G2-316-316L-SOURCE-PENDING-RC0";
 export const F593_CATALOG_REVISION = "ASTM_F593_17_GROUP_2_316_316L_RC1";
@@ -102,6 +103,7 @@ interface MAT1State {
   readonly conditionOverrides: Readonly<Record<string, Readonly<Record<string, MAT1Conditions>>>>;
   readonly designKeys: Readonly<Record<string, string>>;
   readonly designTraces: Readonly<Record<string, unknown>>;
+  readonly directQualificationRecordId: string | null;
   readonly previewInputs: Readonly<Record<string, string>>;
   readonly previewOwners: Readonly<Record<string, readonly string[]>>;
   readonly previewOwnerKeys: Readonly<Record<string, string>>;
@@ -128,7 +130,7 @@ let current: MAT1State = {
   defaultId: "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
   directMaterialId: DIRECT_PRODUCTION_MATERIAL_ID,
   custom: {}, overrides: {}, conditions: initialConditions, conditionOverrides: {},
-  designKeys: {}, designTraces: {},
+  designKeys: {}, designTraces: {}, directQualificationRecordId: null,
   previewInputs: {}, previewOwners: {}, previewOwnerKeys: {},
   fastenerSelections: {},
 };
@@ -175,6 +177,11 @@ export function setMAT1DirectMaterial(id: string | null): void {
 
 export function setFastenerSelection(family: string, selection: FastenerSelection): void {
   notify({ ...current, fastenerSelections: { ...current.fastenerSelections, [family]: selection } });
+}
+
+export function setDirectQualificationRecordId(id: string | null): void {
+  invalidateReportSnapshot("multi-row");
+  notify({ ...current, directQualificationRecordId: id });
 }
 
 export function setMAT1Conditions(conditions: MAT1Conditions): void {
@@ -292,6 +299,8 @@ export function mat1FamilyKey(family: string, includePreviewInput = true): strin
     conditions: current.conditions, conditionOverrides: current.conditionOverrides[family] ?? {},
     previewInput: includePreviewInput ? current.previewInputs[family] ?? null : undefined,
     fastener: family === "multi-row" ? current.fastenerSelections[family] ?? defaultFastenerSelection : undefined,
+    ...(family === "multi-row" && current.directQualificationRecordId !== null
+      ? { qualificationRecord: current.directQualificationRecordId } : {}),
   });
 }
 

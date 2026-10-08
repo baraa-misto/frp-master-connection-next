@@ -33,6 +33,18 @@ function ready(): void {
 }
 const post = (path: string, body: object = { a: 1 }) => transport.mat1Fetch(path, { method: "POST", headers: { Accept: "application/json" }, body: JSON.stringify(body) });
 
+it("forwards only an installed qualification ID for Direct and invalidates its snapshot", async () => {
+  ready();
+  store.setDirectQualificationRecordId("INSTALLED-Q1");
+  await post("/api/v1/calculations/multi-row/design-check", { direct_finalization_contract_version: "SHEAR01-DIRECT-F1", layers: [] });
+  const request = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as Record<string, unknown>;
+  expect(request.qualification_record_id).toBe("INSTALLED-Q1");
+  expect(request).not.toHaveProperty("specimens");
+  await post("/api/v1/calculations/multi-row/design-check", { layers: [] });
+  const other = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as Record<string, unknown>;
+  expect(other).not.toHaveProperty("qualification_record_id");
+});
+
 it("keeps preview geometry-only and records its input for currency", async () => {
   await post("/api/v1/calculations/clip-angle/preview", { geometry: 1 });
   expect(fetchMock.mock.calls[0]?.[0]).toBe("/api/v1/calculations/clip-angle/preview");

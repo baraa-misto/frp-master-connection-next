@@ -37,7 +37,9 @@ from reportlab.platypus import (
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
+from frp_master_connection.application.direct_qualification_matching import COVERED_RESPONSES
 from frp_master_connection.reporting.direct_first_row import direct_first_row_reason
+from frp_master_connection.reporting.direct_qualification import qualification_summary_rows
 from frp_master_connection.reporting.f593_report import f593_bolt_rows, f593_source_rows
 from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
 from frp_master_connection.reporting.reader_data import humanize, readable_value, short_number
@@ -1767,6 +1769,13 @@ def _direct_reader_engineering_sections(
                 check.availability,
                 isinstance(result.get("preview", {}).get("direct_support_end_authority"), dict),
             ),
+            qualification=(
+                "Section 2.3.2 whole-connection qualification coverage required"
+                if check.identity in COVERED_RESPONSES
+                else "Approved matching Section 2.3.2 qualification record required"
+                if check.identity == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION"
+                else check.qualification
+            ),
         )
         if check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
         else check
@@ -2397,6 +2406,13 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                         "availability": availability,
                         "numerical_comparison": "NOT_EVALUATED",
                         "reason": reason,
+                        "qualification": (
+                            "Section 2.3.2 whole-connection qualification coverage required"
+                            if check_id in COVERED_RESPONSES
+                            else "Approved matching Section 2.3.2 qualification record required"
+                            if check_id == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION"
+                            else "Not stated"
+                        ),
                         "required": check_id not in not_required,
                     }
                 )
@@ -2473,6 +2489,21 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
         multirow_visual=visual,
         primary_blocker=primary_blocker,
     )
+    evaluation = snapshot.result.get("qualification_evaluation")
+    if direct and isinstance(evaluation, dict):
+        story.append(_paragraph("Connection qualification", styles["heading"]))
+        if evaluation.get("synthetic"):
+            story.append(
+                _paragraph("SYNTHETIC QA — CANNOT QUALIFY PRODUCTION DESIGN", styles["heading"])
+            )
+        story.append(
+            _paragraph(
+                "Qualification evaluation — final status integration pending. "
+                "Analytical results remain authoritative.",
+                styles["body"],
+            )
+        )
+        story.append(_table(qualification_summary_rows(evaluation, system), styles))
     mat1_rows = _mat1_reader_rows(snapshot)
     mat1_rows.extend(f593_source_rows(snapshot.result.get("fastener_source"), system))
     if isinstance(support_end_authority, dict):
@@ -2698,6 +2729,29 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             # Keep the worked calculation and its bounded N/A explanation
             # together instead of leaving the explanation on a lone final page.
             story.append(KeepTogether(block_story))
+    if direct and options.mode == "FULL_TECHNICAL_AUDIT":
+        audit = snapshot.input_provenance.get("direct_qualification_audit")
+        if isinstance(audit, dict):
+            story.append(
+                _paragraph("Section 2.3.2 complete qualification evidence", styles["heading"])
+            )
+            _append_bounded_tables(story, _flatten("qualification_audit", audit), styles)
+            story.append(
+                _table(
+                    [
+                        (
+                            "Qualification evaluation digest",
+                            _text(
+                                evaluation.get("evaluation_digest")
+                                if isinstance(evaluation, dict)
+                                else None
+                            ),
+                        ),
+                        ("Authenticated design snapshot digest", snapshot.digest),
+                    ],
+                    styles,
+                )
+            )
     if direct and options.mode == "ENGINEER_REPORT":
         return _finish_multirow_pdf(story, snapshot, options, status, styles)
     if isinstance(calculation, dict):

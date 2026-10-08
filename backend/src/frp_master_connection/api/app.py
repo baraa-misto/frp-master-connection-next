@@ -129,6 +129,7 @@ def create_app(
                 request=report_request,
                 result=result,
                 input_provenance={
+                    **getattr(request.state, "direct_qualification_provenance", {}),
                     "server_defaulted_fields": server_defaulted_fields(
                         request.scope.get("route"), parsed_request
                     )

@@ -1835,4 +1835,14 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
       source.mockRestore();
     }
   });
+  it("stales Direct after selecting a server-installed qualification record", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((url: string) => Promise.resolve(new Response(JSON.stringify(url.includes("direct-qualification") ? { available_record_ids: ["INSTALLED-Q1"] } : f593Resolution)))));
+    render(<ShearConnectionsWorkspace />);
+    fireEvent.click(screen.getByRole("button", { name: "Load Direct example — U.S." }));
+    const selector = await screen.findByRole("combobox", { name: "Approved qualification record" });
+    fireEvent.change(selector, { target: { value: "INSTALLED-Q1" } });
+    expect(mat1Snapshot().directQualificationRecordId).toBe("INSTALLED-Q1");
+    expect(screen.getByText(/Run Design Check to evaluate qualification for the current inputs/)).toBeVisible();
+  });
+
 });

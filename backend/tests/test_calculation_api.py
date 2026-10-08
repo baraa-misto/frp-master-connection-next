@@ -908,6 +908,7 @@ def test_openapi_registers_one_post_and_excludes_client_authority() -> None:
         "/api/v1/workspaces/capabilities",
         "/api/v1/workspaces/direct-shapes",
         "/api/v1/frp-materials/catalog",
+        "/api/v1/frp-materials/direct-qualification/records",
         "/api/v1/frp-materials/factor-candidates",
         "/api/v1/frp-materials/family/owners",
         "/api/v1/frp-materials/single-bolt/design-check",

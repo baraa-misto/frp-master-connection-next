@@ -44,8 +44,8 @@ try {
 
     $pipVersion = (& $virtualEnvironmentPython -m pip --version 2>&1 | Out-String).Trim()
     Assert-NativeSuccess "Backend pip version check"
-    if ($pipVersion -notmatch '^pip 26\.1\.2(?:\s|$)') {
-        throw "Stage 0.2.2 requires the environment-provided pip 26.1.2; found '$pipVersion'."
+    if ($pipVersion -notmatch '^pip (?:26\.1\.2|26\.2(?:\.0)?)(?:\s|$)') {
+        throw "F8-G1 bootstrap requires the historical seed pip 26.1.2 or approved pip 26.2.0 (published as 26.2); found '$pipVersion'."
     }
     Write-Host "Backend interpreter: $virtualEnvironmentPython ($environmentPythonVersion)"
     Write-Host "Backend pip: $pipVersion"
@@ -56,6 +56,9 @@ try {
 
     & $virtualEnvironmentPython -m pip install --require-hashes --only-binary=:all: --requirement $lockFile
     Assert-NativeSuccess "Hash-locked dependency installation"
+
+    & $virtualEnvironmentPython -c "from importlib.metadata import version; assert version('pip') in ('26.2', '26.2.0'); assert version('Mako') == '1.4.2'; assert version('scipy') == '1.18.1'; assert version('numpy') == '2.5.3'"
+    Assert-NativeSuccess "Exact F8-G1 installed security and statistical successors"
 
     & $virtualEnvironmentPython -m pip install --no-deps --no-build-isolation --editable $backendRoot
     Assert-NativeSuccess "Editable backend installation"

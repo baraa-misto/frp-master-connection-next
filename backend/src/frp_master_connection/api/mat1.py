@@ -9,7 +9,7 @@ from dataclasses import asdict, replace
 from decimal import Decimal
 from typing import Annotated, Any, Literal, Self, cast
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from pydantic import Field, JsonValue, StrictStr, model_validator
 
@@ -32,6 +32,12 @@ from frp_master_connection.api.column_moment_base import serialize_column_moment
 from frp_master_connection.api.connector_material_native import FAMILIES
 from frp_master_connection.api.dctn3b import dctn3b_response
 from frp_master_connection.api.dependencies import build_trusted_identity_dependency
+from frp_master_connection.api.direct_qualification import (
+    QualificationDesignContext,
+    attach_qualification,
+    qualification_catalog,
+    qualification_snapshot_provenance,
+)
 from frp_master_connection.api.direct_side_lap_concrete_mapping import (
     serialize_direct_side_lap_concrete_design,
 )
@@ -263,6 +269,8 @@ class MultiRowMAT1RequestDTO(_StrictModel):
     contract: Literal["MAT1-MULTI-ROW-RC0"]
     legacy_request: MultiRowConnectionRequestDTO
     assignments: MaterialAssignmentsDTO
+    qualification_record_id: StrictStr | None = None
+    qualification_context: QualificationDesignContext | None = None
     fastener: FastenerSelectionDTO = Field(
         default_factory=lambda: DefaultFastenerSelectionDTO(
             kind="DEFAULT", contract="FASTENER-OR1-RC1", revision=F593_REVISION
@@ -467,6 +475,12 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     router = APIRouter(prefix="/api/v1/frp-materials")
     identity = build_trusted_identity_dependency(identity_resolver)
 
+    @router.get("/direct-qualification/records")
+    async def read_direct_qualification_records(
+        _identity: Annotated[TrustedIdentity, Depends(identity)],
+    ) -> dict[str, Any]:
+        return qualification_catalog()
+
     @router.get("/catalog")
     async def catalog(
         _identity: Annotated[TrustedIdentity, Depends(identity)],
@@ -644,6 +658,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     @router.post("/multi-row/design-check")
     async def multirow_design(
         request: MultiRowMAT1RequestDTO,
+        http_request: Request,
         _identity: Annotated[TrustedIdentity, Depends(identity)],
     ) -> dict[str, object]:
         """Bind a common source where this native method assumes identical layers."""
@@ -744,7 +759,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 or (isinstance(single_row, dict) and bool(single_row.get("failed_check_ids")))
             )
         )
-        return {
+        result = {
             "contract": "MAT1-MULTI-ROW-RC0",
             "overall_status": "FAIL"
             if numerical_fail
@@ -770,6 +785,22 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             ),
             "design_check_performed": True,
         }
+
+        try:
+            qualified_result = attach_qualification(
+                result,
+                legacy.model_dump(mode="json"),
+                request.qualification_context,
+                request.qualification_record_id,
+                cast(dict[str, Any], _json_value(asdict(per_layer[0][2]))),
+                [ledger for adapter in adapters for ledger in adapter.ledgers],
+            )
+            http_request.state.direct_qualification_provenance = qualification_snapshot_provenance(
+                qualified_result
+            )
+            return qualified_result
+        except ValueError as error:
+            raise HTTPException(status_code=422, detail={"code": str(error)}) from error
 
     @router.post("/tee-connector/design-check")
     async def tee_design(

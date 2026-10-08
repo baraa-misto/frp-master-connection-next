@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from frp_master_connection.api.dependencies import build_trusted_identity_dependency
+from frp_master_connection.api.direct_qualification import qualification_snapshot_current
 from frp_master_connection.reporting.capture import _CALCULATION_FAMILIES
 from frp_master_connection.reporting.pdf import (
     ReportingCoverageError,
@@ -123,6 +124,10 @@ def build_report_router(
                 else cast(str, request.report_snapshot)
             )
             snapshot = signer.verify(token, account_id=identity.account_id)
+            if not qualification_snapshot_current(snapshot.result):
+                raise SnapshotError(
+                    "Qualification record changed or became unavailable; run a fresh Design Check"
+                )
         except SnapshotError as error:
             raise HTTPException(status_code=409, detail=str(error)) from error
         options = ReportOptions(**request.model_dump(exclude={"report_snapshot", "report_handle"}))

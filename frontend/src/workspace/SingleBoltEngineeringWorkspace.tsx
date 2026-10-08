@@ -2,6 +2,7 @@ import { viewerUnity } from "./unityRatio";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
 import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
+import { DirectQualification } from "../features/DirectQualification";
 import { DirectEngineeringGeometryIssue } from "../features/DirectEngineeringGeometryIssue";
 import { DirectSupportEnds, DirectSupportViewerCue, supportEndValidation } from "../features/DirectSupportEnds";
 import type { DirectSupportEndInput } from "../api/multirowContracts";
@@ -1465,6 +1466,7 @@ export function SingleBoltEngineeringWorkspace() {
             <label className="field-control"><span>Shear-plane threads</span><select value={shearPlaneStatus.status} onChange={(event) => { selectShearThreads(event.currentTarget.value); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label></details>
           </SidebarGroup>
 
+          {directF1Family ? <DirectQualification stale={stale} onSelectionChange={() => { setStale(true); }} /> : null}
           <SidebarGroup title="Fastener" summary={directF1Family ? "Selected hardware and source" : "F593 source pending"} defaultOpen={directF1Family}>
             {directF1Family && workspaceSupports("multi-row", "custom_fastener") ? <FastenerSelector
               defaultSnapshot={loadJ1Benchmark(request.joint_assembly.unit_system).fastener_snapshot}

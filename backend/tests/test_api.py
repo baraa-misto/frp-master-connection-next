@@ -164,6 +164,7 @@ def test_openapi_product_path_set_is_exact() -> None:
         "/api/v1/workspaces/capabilities",
         "/api/v1/workspaces/direct-shapes",
         "/api/v1/frp-materials/catalog",
+        "/api/v1/frp-materials/direct-qualification/records",
         "/api/v1/frp-materials/factor-candidates",
         "/api/v1/frp-materials/family/owners",
         "/api/v1/frp-materials/single-bolt/design-check",

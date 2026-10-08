@@ -10,7 +10,7 @@ from dataclasses import replace
 from decimal import ROUND_HALF_EVEN, Context, Decimal, localcontext
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, NotRequired, TypedDict, cast
 from unittest.mock import patch
 
 import pytest
@@ -625,7 +625,14 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
     root = Path(__file__).resolve().parents[3]
     records = json.loads((root / "docs/qa/STAGE_4_2_INHERITED_IDENTITIES.json").read_text())
     assert records["baseline"] == "473a3c8cd43f13022d254dae2477084895478c74"
-    workflow_identities = {
+
+    class WorkflowIdentity(TypedDict):
+        commit: NotRequired[str]
+        blob: str
+        expected_tests: bytes
+        sha256: NotRequired[str]
+
+    workflow_identities: dict[str, WorkflowIdentity] = {
         "historical_pre_ssmc_3_main": {
             "commit": "9a9b4529faa1287e8df8360daceed2687e1e2b57",
             "blob": "2169d74e008b597793102c0bba25505d840ebdcb",
@@ -662,6 +669,13 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
         if path in _FROZEN_DEPENDENCIES:
             raw = _historical_dependency_bytes(root, path)
         elif path == "backend/pyproject.toml":
+            # Owner-authorized F8 statistical dependency successor, otherwise exact F7.
+            assert (
+                hashlib.sha256(raw).hexdigest().upper()
+                == "83B45A59F2850CE7F9DE6C9391A56F37C72A87C1EB0BFFA5072BA82C995A0F71"
+            )
+            assert raw.count(b'  "scipy==1.18.1",\n') == 1
+            raw = raw.replace(b'  "scipy==1.18.1",\n', b"")
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw,
                 usedforsecurity=False,
@@ -690,6 +704,33 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(catalog_data) == 1
             raw = raw.replace(catalog_data, historical_data)
         elif path == "backend/requirements/requirements-dev-py314.lock.txt":
+            from tests.direct_f8_g1_governance import pre_g1_lock
+
+            raw = pre_g1_lock(raw)
+            # Remove only the two exact hash-locked F8 statistical package blocks.
+            assert (
+                hashlib.sha256(raw).hexdigest().upper()
+                == "FA0A6A2C49C73E484969DE546F4A569925FA071EB9C4011A8764CC320FFBA63A"
+            )
+            f8_packages = {
+                "numpy": "C94C68E2885D3DDF9DB6E7115740F8303C84172CA5E24ADA839F0C8C3DD8694E",
+                "scipy": "1C15167C10062298809802B2E15AD924FBA4BC666286174641BC6F02C0E83605",
+            }
+            f8_headers = list(re.finditer(rb"(?m)^[a-z][a-z0-9-]+==[^\n]*\n", raw))
+            f8_ranges = []
+            for f8_package_name, digest in f8_packages.items():
+                positions = [
+                    i
+                    for i, item in enumerate(f8_headers)
+                    if item.group().startswith(f8_package_name.encode() + b"==")
+                ]
+                assert len(positions) == 1
+                index = positions[0]
+                start, stop = f8_headers[index].start(), f8_headers[index + 1].start()
+                assert hashlib.sha256(raw[start:stop]).hexdigest().upper() == digest
+                f8_ranges.append((start, stop))
+            for start, stop in sorted(f8_ranges, reverse=True):
+                raw = raw[:start] + raw[stop:]
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw,
                 usedforsecurity=False,
@@ -732,6 +773,31 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            from tests.direct_f8_g1_governance import pre_g1_workflow
+
+            raw = pre_g1_workflow(raw)
+            # F8 adds only its two platform evidence steps and 200 focused cases.
+            assert (
+                hashlib.sha256(raw).hexdigest().upper()
+                == "C6B56ED836C0BAD48ECC66B489E73A46CA59B94E4354E475F732809EE1DFCC74"
+            )
+            f8_pdf_steps = (
+                b"      - name: Generate Direct F8 qualification PDFs "
+                b"and statistical evidence\n"
+                b"        run: python ../scripts/generate_direct_f8_ci_pdfs.py "
+                b"--output direct-f8-review-pdfs\n"
+                b"""      - name: Upload Direct F8 qualification evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f8-pdfs-${{ matrix.os }}
+          path: backend/direct-f8-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(f8_pdf_steps) == 1
+            raw = raw.replace(f8_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8549") == 1
+            raw = raw.replace(b"--expected-tests 8549", b"--expected-tests 8349")
             # F7 adds only its platform PDF evidence and 51 focused cases.
             assert hashlib.sha256(raw).hexdigest().upper() == (
                 "96647818CEFA541050F9A5E86D8822D2AFCE70AC9158F837974815F71ECF5420"
