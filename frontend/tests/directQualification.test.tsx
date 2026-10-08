@@ -14,7 +14,7 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 const evaluation = () => ({ record_digest: "A".repeat(64), selected_record_id: "SYNTHETIC_QA", record_revision: 1,
   scope_match_state: "MATCHED", capacity_state: "CAPACITY_PASS", covered_response_ids: ["1", "2", "3", "4", "5"],
   mismatch_reasons: [] as string[], synthetic: true, laboratory: "SYNTHETIC QA laboratory", rdp_approval: "SYNTHETIC QA engineer",
-  statistics: { accepted_n: 10, Ro: "10000", phi_p: "0.50866" }, Rd_q: { value: "5086.6", unit: "N" } });
+  statistics: { accepted_n: 10, Ro: "10000", phi_p: "0.50866", VR: ".15" }, Rd_q: { value: "5086.6", unit: "N" }, Ru: { value: "3113.76", unit: "N" }, utilization: ".61216" });
 
 it("keeps the empty approved catalog neutral and prohibits user approval", async () => {
   render(<DirectQualification stale={false} onSelectionChange={vi.fn()} />);
@@ -46,7 +46,7 @@ it("shows bounded synthetic statistics without final status activation", () => {
   expect(screen.getByText("10000 N")).toBeVisible();
   expect(screen.getByText("0.5087")).toBeVisible();
   expect(screen.getByText("5 of 5")).toBeVisible();
-  expect(screen.getByText(/final status integration pending/)).toBeVisible();
+  expect(screen.queryByText(/final status integration pending/)).not.toBeInTheDocument();
 });
 
 it("shows friendly mismatches, invalid statistics and unavailable strength", () => {
@@ -54,9 +54,10 @@ it("shows friendly mismatches, invalid statistics and unavailable strength", () 
     scope_match_state: "MISMATCH", capacity_state: "UNEVALUATED", mismatch_reasons: ["GEOMETRY MISMATCH", "STATISTICS INVALID"] };
   acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), { qualification_evaluation: item });
   render(<DirectQualification stale={false} onSelectionChange={vi.fn()} />);
+  fireEvent.click(screen.getByText("Advanced qualification diagnostics"));
   expect(screen.getByText("GEOMETRY MISMATCH")).toBeVisible();
   expect(screen.getByText("STATISTICS INVALID")).toBeVisible();
-  expect(screen.getAllByText("Unevaluated")).toHaveLength(3);
+  expect(screen.getAllByText("Unevaluated")).toHaveLength(4);
   expect(screen.queryByText(/CANNOT QUALIFY/)).not.toBeInTheDocument();
 });
 
@@ -65,7 +66,7 @@ it("handles absent optional statistics without NaN", () => {
   expect(ignored.accepted_n).toBe(10);
   acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), { qualification_evaluation: item });
   render(<DirectQualification stale={false} onSelectionChange={vi.fn()} />);
-  expect(screen.getAllByText("Unevaluated")).toHaveLength(3);
+  expect(screen.getAllByText("Unevaluated")).toHaveLength(4);
   expect(screen.queryByText(/NaN/)).not.toBeInTheDocument();
 });
 
@@ -103,4 +104,15 @@ it.each([true, false])("cancels late catalog completion on unmount (reject=%s)",
     else finish({ ok: true, json: () => Promise.resolve({ available_record_ids: ["Q"] }) } as Response);
   });
   expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+});
+
+it.each(["CAPACITY_PASS", "CAPACITY_FAIL"])("renders the backend %s classification and human mismatch guidance", (capacity) => {
+  const final_decision = { contract: "DIRECT-STATUS-F9", qualification_capacity_state: capacity,
+    unresolved_requirements: ["Qualification loading protocol does not cover the current load history."] };
+  const item = { ...evaluation(), synthetic: false, Ru: null, utilization: null };
+  acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), { qualification_evaluation: item, final_decision });
+  render(<DirectQualification stale={false} onSelectionChange={vi.fn()} />);
+  expect(screen.getByText(`APPROVED CAPACITY — ${capacity === "CAPACITY_PASS" ? "PASS" : "FAIL"}`)).toBeVisible();
+  expect(screen.getByText(/loading protocol does not cover/)).toBeVisible();
+  expect(screen.getAllByText("Unevaluated")).toHaveLength(2);
 });

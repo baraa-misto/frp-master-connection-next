@@ -178,6 +178,7 @@ def test_openapi_product_path_set_is_exact() -> None:
         "/api/v1/meta",
         "/api/v1/reports/export",
         "/api/v1/reports/input-only-snapshot",
+        "/api/v1/reports/direct-decision-current",
         "/api/v1/calculations/single-bolt/evaluate",
         "/api/v1/calculations/single-bolt/preview",
         "/api/v1/calculations/multi-row/preview",

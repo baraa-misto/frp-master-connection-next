@@ -20,7 +20,7 @@ jobs:
   backend:
     name: Backend (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -74,7 +74,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 8568
+          --expected-tests 8658
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence
@@ -106,6 +106,14 @@ jobs:
         with:
           name: direct-f8-pdfs-${{ matrix.os }}
           path: backend/direct-f8-review-pdfs/
+          if-no-files-found: error
+      - name: Generate authenticated Direct F9 status and report matrix
+        run: python ../scripts/generate_direct_f9_ci_pdfs.py --output direct-f9-review-pdfs
+      - name: Upload Direct F9 status and report evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f9-pdfs-${{ matrix.os }}
+          path: backend/direct-f9-review-pdfs/
           if-no-files-found: error
       - name: Generate real REPORT1 PDFs on this runner
         run: >-

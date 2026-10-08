@@ -16,7 +16,7 @@ import { MultiRowVisualizationPanel } from "../src/visualization/MultiRowVisuali
 import { ShearConnectionsWorkspace } from "../src/workspace/ShearConnectionsWorkspace";
 import { PREVIEW_DEBOUNCE_MS } from "../src/workspace/previewWorkflow";
 import * as benchmarks from "../src/fixtures/j1Benchmarks";
-import { ASCE_SHAPE_BASIS, DIRECT_PRODUCTION_MATERIAL_ID, mat1Snapshot, rememberMAT1Preview, setMAT1Active, setMAT1Catalog, setMAT1Conditions, setMAT1DirectMaterial } from "../src/state/mat1Session";
+import { ASCE_SHAPE_BASIS, DIRECT_PRODUCTION_MATERIAL_ID, acceptMAT1Design, mat1FamilyKey, mat1Snapshot, rememberMAT1Preview, setMAT1Active, setMAT1Catalog, setMAT1Conditions, setMAT1DirectMaterial } from "../src/state/mat1Session";
 import {
   previewResponseFixture,
   visualizationFixture,
@@ -429,6 +429,7 @@ function activateNormalAutomaticDemand(): void {
 
 describe("Stage 2.4C-R1 unified connection workspace", () => {
   beforeEach(() => {
+    acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), null);
     vi.stubGlobal("fetch", vi.fn().mockImplementation(() => Promise.resolve(new Response(JSON.stringify(f593Resolution)))));
     mocks.singlePreview.mockReset();
     mocks.singleEvaluate.mockReset();
@@ -604,7 +605,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await screen.findByText("Angle physical block shear");
     expect(screen.getByText(/Angle heel side: NOT APPLICABLE/u)).toBeVisible();
     expect(screen.getByText(/perpendicular leg remains continuous/u)).toBeVisible();
-    expect(screen.getByText(/ASCE_8_14B_DIRECT_PHYSICAL_L_PATH_RATIONAL/u)).toBeVisible();
+    expect(screen.getByText(/ASCE Eq. 8-14b — rational physical Angle free-side L path/u)).toBeVisible();
     expect(screen.getAllByText(/2 supported checks evaluated/u)[0]).toBeVisible();
     if (reason) expect(screen.getByText(reason)).toBeVisible();
   });
@@ -1249,7 +1250,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.queryByLabelText("Bolt-axis tension required")).not.toBeInTheDocument();
   });
 
-  it("labels an explicitly complete backend QA fixture GREEN", async () => {
+  it("requires a backend final decision before showing a complete QA fixture GREEN", async () => {
     const complete = automaticDesignFixture();
     const integration = complete.automatic_group_mode_integration;
     if (integration === null) throw new Error("Automatic integration fixture is required.");
@@ -1273,7 +1274,31 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     const button = screen.getByRole("button", { name: "Run Design Check" });
     await waitFor(() => { expect(button).toBeEnabled(); });
     fireEvent.click(button);
-    expect((await screen.findAllByText("GREEN — complete pass")).length).toBeGreaterThan(0);
+    await screen.findByRole("heading", { name: "Calculated supported checks" });
+    expect(screen.getAllByText("GRAY — not calculated / input needed").length).toBeGreaterThan(0);
+    // Isolated presentation fixture, no provider record or engineering approval.
+    act(() => { acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), {
+      final_decision: { contract: "DIRECT-STATUS-F9", final_status: "GREEN", final_status_reason: "DESIGN PASS",
+        governing_label: "Hypothetical authoritative passed evaluation", qualification_capacity_state: "CAPACITY_PASS",
+        unresolved_requirements: [], analytical_check_summary: { evaluated: 1, numerical_outcome: "PASS",
+          highest_utilization: ".5", counts: { REQUIRED_UNRESOLVED: 0 } } },
+    }); });
+    expect(screen.getAllByText("GREEN — DESIGN PASS").length).toBeGreaterThan(0);
+    act(() => { acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), {
+      final_decision: { contract: "DIRECT-STATUS-F9", final_status: "YELLOW", final_status_reason: "QUALIFICATION REQUIRED",
+        governing_label: "Approved matching qualification", qualification_capacity_state: "UNEVALUATED",
+        unresolved_requirements: ["Select approved current evidence"], analytical_check_summary: { evaluated: 1,
+          numerical_outcome: "PASS", highest_utilization: ".5", counts: { REQUIRED_UNRESOLVED: 6 } } },
+    }); });
+    expect(screen.getAllByText("YELLOW — QUALIFICATION REQUIRED").length).toBeGreaterThan(0);
+    act(() => { acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), {
+      final_decision: { contract: "DIRECT-STATUS-F9", final_status: "GREEN", final_status_reason: "DESIGN PASS",
+        governing_label: "Pure presentation currency fixture", qualification_capacity_state: "CAPACITY_PASS",
+        qualification_record_identity: {digest: "hypothetical-presentation-only"},
+        unresolved_requirements: [], analytical_check_summary: { evaluated: 1, numerical_outcome: "PASS",
+          highest_utilization: ".5", counts: { REQUIRED_UNRESOLVED: 0 } } },
+    }); });
+    await waitFor(() => { expect(screen.getAllByText("GRAY — stale; run Design Check").length).toBeGreaterThan(0); });
   });
 
   it("renders backend automatic vectors and fail-closed handoff results only on command", async () => {
@@ -1306,7 +1331,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     await waitFor(() => { expect(button).toBeEnabled(); });
     fireEvent.click(button);
     await screen.findByRole("heading", { name: "Not Evaluated" });
-    expect(screen.getAllByText("YELLOW — incomplete design").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("GRAY — not calculated / input needed").length).toBeGreaterThan(0);
     expect(screen.getByText("Calculated supported checks")).toBeVisible();
     fireEvent.click(requiredElement(document.querySelector(".results-technical-audit > summary")));
     expect(screen.getByRole("heading", { name: "Eccentric group-mode checks" })).toBeVisible();
@@ -1314,8 +1339,8 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(screen.getByText("Not required — zero line demand")).toBeVisible();
     expect(screen.getByText(/Eccentric first-row net tension is not supported/u)).toBeVisible();
     expect(screen.getAllByText(/Rational Eccentric Bolt Line Shearout Handoff/u).length).toBe(2);
-    expect(screen.getAllByText(/Partial Eccentric/u)).toHaveLength(2);
-    const limitation = screen.getByText(/Ordinary whole-connection PASS is prohibited/u);
+    expect(screen.getAllByText(/Partial Eccentric/u)).toHaveLength(1);
+    const limitation = screen.getByText(/Remaining design actions/u);
     expect(limitation).toHaveTextContent(/Unsupported:/u);
     expect(limitation).toHaveTextContent(/Incomplete:/u);
     expect(screen.getByText(/mz:1/u)).toBeVisible();
@@ -1634,7 +1659,7 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     expect(await screen.findByRole("heading", { name: "Angle and W flange checks" })).toBeVisible();
     expect(screen.getAllByText("Fail").length).toBeGreaterThan(0);
     expect(screen.getByText(/Residual moment requires an accepted section demand/u)).toBeVisible();
-    expect(screen.getByText(/Ordinary whole-connection PASS is prohibited/u)).toBeVisible();
+    expect(screen.getByText(/Remaining design actions/u)).toBeVisible();
   });
 
   it("keeps zero-residual automatic presentation on the inherited legacy result", async () => {
@@ -1802,6 +1827,49 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
       fireEvent.change(screen.getByLabelText("First-row method"), { target: { value: "ASCE_COMMENTARY_FULL" } });
       fireEvent.change(screen.getByLabelText("Prescribed Lbr"), { target: { value: "1.2" } });
       expect(screen.getByLabelText("First-row method")).toHaveValue("ASCE_COMMENTARY_FULL");
+      mocks.multiPreview.mockResolvedValue(automaticPreviewFixture());
+      mocks.multiEvaluate.mockResolvedValue(automaticDesignFixture());
+      fireEvent.click(screen.getByRole("button", {name:"Automatic from member-end force"}));
+      const run = screen.getByRole("button", {name:"Run Design Check"});
+      await waitFor(() => {expect(mocks.multiPreview.mock.lastCall?.[0]).toMatchObject({demand_source:"AUTOMATIC_MEMBER_END_FORCE"});});
+      await waitFor(() => {expect(run).toBeEnabled();});
+      fireEvent.click(run);
+      await screen.findByRole("heading", {name:"Calculated supported checks"});
+      expect(screen.queryByRole("status", {name:"Direct final design status"})).not.toBeInTheDocument();
+      fireEvent.change(screen.getByLabelText("Leg y"), {target:{value:"4.1"}});
+      expect(screen.getAllByText("Results need to be recalculated").length).toBeGreaterThan(0);
+      await waitFor(() => {
+        const latest = mocks.multiPreview.mock.lastCall?.[0] as MultiRowConnectionRequest | undefined;
+        expect(latest?.physical_connection?.joint_assembly.members[0]).toMatchObject({section:{leg_y:{value:"4.1"}}});
+      });
+      await waitFor(() => {expect(screen.queryByText("Updating connection model…")).not.toBeInTheDocument();});
+      await waitFor(() => {expect(run).toBeEnabled();});
+      const handoffOnly = automaticDesignFixture();
+      handoffOnly.automatic_group_mode_integration = null;
+      mocks.multiEvaluate.mockResolvedValue(handoffOnly);
+      fireEvent.click(run);
+      await waitFor(() => {expect(screen.getAllByText("YELLOW — incomplete design").length).toBeGreaterThan(0);});
+      const failed = automaticDesignFixture();
+      const failedIntegration = failed.automatic_group_mode_integration;
+      if (failedIntegration === null) throw new Error("Legacy integration fixture required");
+      failedIntegration.failed_check_ids = ["PURE_LEGACY_UI_QA_FAILURE"];
+      failedIntegration.overall_disposition = "FAIL";
+      mocks.multiEvaluate.mockResolvedValue(failed);
+      fireEvent.click(run);
+      await waitFor(() => {expect(screen.getAllByText("RED — numerical failure").length).toBeGreaterThan(0);});
+      const passed = automaticDesignFixture();
+      const passedIntegration = passed.automatic_group_mode_integration;
+      if (passedIntegration === null) throw new Error("Legacy integration fixture required");
+      passedIntegration.failed_check_ids = [];
+      passedIntegration.overall_disposition = "PASS";
+      mocks.multiEvaluate.mockResolvedValue(passed);
+      fireEvent.click(run);
+      await waitFor(() => {expect(screen.getAllByText("GREEN — complete pass").length).toBeGreaterThan(0);});
+      mocks.multiEvaluate.mockResolvedValue(multirowDesignFixture());
+      fireEvent.click(run);
+      await waitFor(() => {expect(screen.getByText("1 governing / co-governing check(s)")).toBeInTheDocument();});
+      fireEvent.change(screen.getByLabelText("Leg y"), {target:{value:"4.2"}});
+      expect(screen.getAllByText("Results need to be recalculated").length).toBeGreaterThan(0);
     } finally {
       benchmark.mockRestore();
     }
@@ -1831,6 +1899,27 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
       expect(screen.queryAllByLabelText(/axis tension$/u)).toHaveLength(0);
       fireEvent.click(screen.getByLabelText("Bolt-axis tension required"));
       expect(screen.getByLabelText("Bolt-axis tension required")).not.toBeChecked();
+      const legacy = automaticDesignFixture();
+      const integration = legacy.automatic_group_mode_integration;
+      const basis = legacy.automatic_handoff_results[0]?.supported_results[0];
+      if (integration === null || basis === undefined) throw new Error("Legacy result fixture required");
+      integration.direct_single_row_result = {
+        contract_version:"SHEAR01-DIRECT-F1-R1-SINGLE-ROW", source_scenario_id:"PURE_UI_QA",
+        checks:[{...basis, required:true,layer_id:"layer-A",result_id:"QA_NET",limit_state:"SINGLE_ROW_NET_TENSION",equation_method:"ASCE_EQ_8_7A_8_7C", equation_trace:{},reason:"Pure presentation fixture"},
+          {...basis, required:true,layer_id:"layer-A",result_id:"QA_PENDING",limit_state:"SINGLE_ROW_SHEAR_OUT",equation_method:"ASCE_EQ_8_8",availability:"ENGINEERING_REVIEW_REQUIRED",equation_trace:null,reason:"Unresolved",utilization:null}],
+        required_check_ids:["QA_NET","QA_PENDING"],incomplete_required_check_ids:["QA_PENDING"],failed_check_ids:[],
+        numerical_comparison:"NOT_EVALUATED",overall_disposition:"NOT_EVALUATED",result_fingerprint:"a".repeat(64),
+      };
+      mocks.multiPreview.mockResolvedValue(automaticPreviewFixture());
+      mocks.multiEvaluate.mockResolvedValue(legacy);
+      fireEvent.change(screen.getByLabelText("Row count"),{target:{value:"2"}});
+      fireEvent.click(screen.getByRole("button",{name:"Automatic from member-end force"}));
+      await waitFor(() => {expect(mocks.multiPreview.mock.lastCall?.[0]).toMatchObject({demand_source:"AUTOMATIC_MEMBER_END_FORCE"});});
+      const run=screen.getByRole("button",{name:"Run Design Check"});
+      await waitFor(() => {expect(run).toBeEnabled();});
+      fireEvent.click(run);
+      await screen.findByRole("heading",{name:"Calculated supported checks"});
+      expect(screen.queryByRole("status",{name:"Direct final design status"})).not.toBeInTheDocument();
     } finally {
       source.mockRestore();
     }

@@ -7,6 +7,7 @@ from typing import cast
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 
+from frp_master_connection.api.direct_status import input_direct_status
 from frp_master_connection.api.routes import build_router
 from frp_master_connection.config import ApplicationEnvironment, AppSettings
 from frp_master_connection.reporting.capture import reportable_route
@@ -118,6 +119,8 @@ def create_app(
             else native_response
         )
         identity = request.state.trusted_identity
+        if invalid_request and route[0] == "multi-row":
+            result = input_direct_status(result, report_request)
         opt_in = request.query_params.get("report_snapshot") == "1"
         safe_headers = {
             key: value for key, value in response.headers.items() if key.lower() != "content-length"

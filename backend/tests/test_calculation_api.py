@@ -922,6 +922,7 @@ def test_openapi_registers_one_post_and_excludes_client_authority() -> None:
         "/api/v1/meta",
         "/api/v1/reports/export",
         "/api/v1/reports/input-only-snapshot",
+        "/api/v1/reports/direct-decision-current",
         "/api/v1/calculations/single-bolt/preview",
         "/api/v1/calculations/multi-row/preview",
         "/api/v1/calculations/multi-row/design-check",

@@ -10,6 +10,10 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from frp_master_connection.api.dependencies import build_trusted_identity_dependency
 from frp_master_connection.api.direct_qualification import qualification_snapshot_current
+from frp_master_connection.api.direct_status import (
+    direct_status_snapshot_current,
+    input_direct_status,
+)
 from frp_master_connection.reporting.capture import _CALCULATION_FAMILIES
 from frp_master_connection.reporting.pdf import (
     ReportingCoverageError,
@@ -63,6 +67,13 @@ class InputOnlyDraftRequest(BaseModel):
     draft: dict[str, Any]
 
 
+class DecisionCurrencyRequest(BaseModel):
+    """Revalidate existing server authority, never accept an engineering result."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+    report_handle: str = Field(min_length=32, max_length=80)
+
+
 def _filename(request: ExportRequest) -> str:
     parts = (request.project_number, request.connection_id, request.revision)
     stem = "_".join(
@@ -85,6 +96,32 @@ def build_report_router(
     identity_dependency = build_trusted_identity_dependency(identity_resolver)
     render_slots = asyncio.Semaphore(MAX_CONCURRENT_REPORTS)
 
+    @router.post("/direct-decision-current")
+    async def direct_decision_current(
+        request: DecisionCurrencyRequest,
+        identity: Annotated[TrustedIdentity, Depends(identity_dependency)],
+    ) -> JSONResponse:
+        try:
+            snapshot = signer.verify(
+                store.get(request.report_handle), account_id=identity.account_id
+            )
+            if (
+                snapshot.family != "multi-row"
+                or snapshot.kind != "design"
+                or "final_decision" not in snapshot.result
+                or not direct_status_snapshot_current(snapshot.result, snapshot.request)
+                or not qualification_snapshot_current(snapshot.result)
+            ):
+                raise SnapshotError(
+                    "Direct design or qualification evidence is no longer current; run Design Check"
+                )
+        except SnapshotError as error:
+            raise HTTPException(status_code=409, detail=str(error)) from error
+        return JSONResponse(
+            {"current": True, "snapshot_digest": snapshot.digest},
+            headers={"Cache-Control": "no-store, private"},
+        )
+
     @router.post("/input-only-snapshot")
     async def input_only_snapshot(
         request: InputOnlyDraftRequest,
@@ -97,7 +134,15 @@ def build_report_router(
                 family=request.family,
                 kind="input_only",
                 request={"client_draft": request.draft},
-                result={
+                result=input_direct_status(
+                    {
+                        "status": "INPUT_NOT_EVALUATED",
+                        "reason": "Client draft captured without native validation or calculation",
+                    },
+                    {"client_draft": request.draft},
+                )
+                if request.family == "multi-row"
+                else {
                     "status": "INPUT_NOT_EVALUATED",
                     "reason": "Client draft captured without native validation or calculation",
                 },
@@ -124,6 +169,10 @@ def build_report_router(
                 else cast(str, request.report_snapshot)
             )
             snapshot = signer.verify(token, account_id=identity.account_id)
+            if snapshot.kind == "design" and not direct_status_snapshot_current(
+                snapshot.result, snapshot.request
+            ):
+                raise SnapshotError("Direct decision does not match the current design snapshot")
             if not qualification_snapshot_current(snapshot.result):
                 raise SnapshotError(
                     "Qualification record changed or became unavailable; run a fresh Design Check"

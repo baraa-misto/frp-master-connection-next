@@ -1664,3 +1664,12 @@ Additive internal clear-plate E3/F9/H2 provider from baseline `20fabefa90247dd34
 ## Direct Owner Round 2 F1 candidate
 
 The bounded Angle/W owner starter, run-versus-completeness blockers, Direct-only governed axial-frame representation correction, and publication gates are recorded in [the OR2 F1 QA contract](docs/qa/SHEAR01_DIRECT_OR2_F1.md). Current capabilities are available at GET /api/v1/workspaces/direct-shapes. Only Angle to WIDE_FLANGE is enabled; source and qualification requirements remain open.
+
+## Direct Owner Round 2 F9 candidate
+
+[Direct F9 final status](docs/architecture/DIRECT_F9_FINAL_STATUS.md) documents the
+backend-authoritative decision, authenticated currency endpoint and concise Engineer
+Report. The production owner case remains YELLOW: 8 evaluated / 6 unresolved,
+1 bounded N/A and 2 neutral entries. No real approved qualification record is
+installed. GREEN capability is verified only with isolated pure decision inputs.
+No main merge, qualification activation or Direct freeze is part of this candidate.

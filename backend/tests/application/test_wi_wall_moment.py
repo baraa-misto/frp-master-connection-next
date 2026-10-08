@@ -774,8 +774,9 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
             from tests.direct_f8_g1_governance import pre_g1_workflow
+            from tests.direct_f9_governance import pre_f9_workflow
 
-            raw = pre_g1_workflow(raw)
+            raw = pre_g1_workflow(pre_f9_workflow(raw))
             # F8 adds only its two platform evidence steps and 200 focused cases.
             assert (
                 hashlib.sha256(raw).hexdigest().upper()

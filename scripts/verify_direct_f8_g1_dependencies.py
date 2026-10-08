@@ -15,6 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 from tests.direct_f8_g1_governance import authority, f7_lock, pre_g1_bootstrap, pre_g1_workflow
 
+from tests.direct_f9_governance import pre_f9_workflow
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -27,7 +29,7 @@ def main() -> None:
         assert len(copies) == 1
     lock = (ROOT / "backend/requirements/requirements-dev-py314.lock.txt").read_bytes()
     f7_lock(lock)
-    pre_g1_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())
+    pre_g1_workflow(pre_f9_workflow((ROOT / ".github/workflows/ci.yml").read_bytes()))
     pre_g1_bootstrap((ROOT / "scripts/backend-bootstrap.ps1").read_bytes())
     packages = re.findall(r"(?m)^([a-z][a-z0-9-]+)==([^ \\\n]+)", lock.decode())
     payload = {"queries": [{"package": {"name": n, "ecosystem": "PyPI"}, "version": v} for n, v in packages]}

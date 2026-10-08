@@ -798,7 +798,13 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             http_request.state.direct_qualification_provenance = qualification_snapshot_provenance(
                 qualified_result
             )
-            return qualified_result
+            from frp_master_connection.api.direct_status import attach_direct_status
+
+            return attach_direct_status(
+                qualified_result,
+                legacy.model_dump(mode="json"),
+                http_request.state.direct_qualification_provenance,
+            )
         except ValueError as error:
             raise HTTPException(status_code=422, detail={"code": str(error)}) from error
 

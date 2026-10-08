@@ -19,6 +19,7 @@ from tests.direct_f8_g1_governance import (
     pre_g1_lock,
     pre_g1_workflow,
 )
+from tests.direct_f9_governance import pre_f9_workflow
 
 
 def test_exact_security_chain_reconstructs_both_predecessors() -> None:
@@ -27,9 +28,9 @@ def test_exact_security_chain_reconstructs_both_predecessors() -> None:
     assert digest(f7_lock(raw)) == F7_LOCK_SHA256
     assert package_blocks(pre_g1_lock(raw))["mako"].startswith(b"mako==1.3.12 ")
     assert package_blocks(pre_g1_lock(raw))["pip"].startswith(b"pip==26.1.2 ")
-    assert digest(pre_g1_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())) == (
-        "C6B56ED836C0BAD48ECC66B489E73A46CA59B94E4354E475F732809EE1DFCC74"
-    )
+    assert digest(
+        pre_g1_workflow(pre_f9_workflow((ROOT / ".github/workflows/ci.yml").read_bytes()))
+    ) == ("C6B56ED836C0BAD48ECC66B489E73A46CA59B94E4354E475F732809EE1DFCC74")
 
 
 @pytest.mark.parametrize(

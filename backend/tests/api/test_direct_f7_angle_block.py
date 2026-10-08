@@ -664,10 +664,17 @@ def test_real_pdf_native_calculation_heel_reason_qualification_and_snapshot_immu
     )
     assert "8 supported checks evaluated" in text
     assert "6 required checks/evidence items unresolved" in text
-    assert "Angle heel side: NOT APPLICABLE" in text
+    assert "Angle heel side" in text
+    assert "NOT APPLICABLE" in text
     assert "perpendicular leg remains continuous" in text
     assert "Section 2.3.2" in text
-    assert block_result(result)["method_id"] in text
+    method_id = block_result(result)["method_id"]
+    if mode == "FULL_TECHNICAL_AUDIT":
+        assert method_id in text
+    else:
+        assert method_id not in text
+        equation = "8-14a" if "8_14A" in method_id else "8-14b"
+        assert f"ASCE Eq. {equation}" in text
     assert "FSH_LT: CM=1, CT=1, CCH=1" in text
     assert "FT_L: CM=1, CT=1, CCH=1" in text
     assert (snapshot.request, snapshot.result) == before
@@ -678,3 +685,29 @@ def test_real_pdf_native_calculation_heel_reason_qualification_and_snapshot_immu
     assert heel.utilization is None
     assert heel.demand is None
     assert heel.resistance is None
+    if case == "owner-135" and mode == "ENGINEER_REPORT":
+        legacy_result = deepcopy(result)
+        legacy_result.pop("final_decision")
+        legacy_snapshot = signer.verify(
+            signer.issue(
+                family="multi-row",
+                kind="design",
+                request=body,
+                result=legacy_result,
+                account_id="f7",
+            ),
+            account_id="f7",
+        )
+        legacy_before = deepcopy((legacy_snapshot.request, legacy_snapshot.result))
+        legacy_pdf = render_report_pdf(legacy_snapshot, options)
+        legacy_text = " ".join(
+            " ".join(
+                p.extract_text() or "" for p in PdfReader(io.BytesIO(legacy_pdf)).pages
+            ).split()
+        )
+        assert "Block shear — Angle heel side: NOT APPLICABLE." in legacy_text
+        assert "perpendicular leg remains continuous" in legacy_text
+        assert f"ASCE Eq. {equation}" in legacy_text
+        assert "FSH_LT: CM=1, CT=1, CCH=1" in legacy_text
+        assert "FT_L: CM=1, CT=1, CCH=1" in legacy_text
+        assert (legacy_snapshot.request, legacy_snapshot.result) == legacy_before

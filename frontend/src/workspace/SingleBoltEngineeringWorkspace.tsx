@@ -1,8 +1,11 @@
 import { viewerUnity } from "./unityRatio";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
 import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
 import { DirectQualification } from "../features/DirectQualification";
+import { DirectDesignStatus } from "../features/DirectDesignStatus";
+import { currentDirectDecision, directDecisionHeadline } from "../features/directDecision";
+import type { DirectDecision } from "../features/directDecision";
 import { DirectEngineeringGeometryIssue } from "../features/DirectEngineeringGeometryIssue";
 import { DirectSupportEnds, DirectSupportViewerCue, supportEndValidation } from "../features/DirectSupportEnds";
 import type { DirectSupportEndInput } from "../api/multirowContracts";
@@ -10,7 +13,7 @@ import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
 import { materialConditionBlocker } from "../features/materialConditionValidation";
-import { ASCE_SHAPE_BASIS, mat1DefaultId, defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
+import { ASCE_SHAPE_BASIS, mat1DefaultId, mat1FamilyKey, defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
 import type { FastenerSelection } from "../state/mat1Session";
 
 import {
@@ -466,11 +469,13 @@ function AutomaticMultirowResults({
   integration,
   demandFingerprint,
   displayUnitSystem,
+  finalDecision,
 }: {
   readonly handoff: AutomaticHandoffResult;
   readonly integration: AutomaticGroupModeIntegrationResult;
   readonly demandFingerprint: string;
   readonly displayUnitSystem: "US_CUSTOMARY" | "SI";
+  readonly finalDecision?: DirectDecision | undefined;
 }) {
   const legacyOnly = integration.scenario_results.every((scenario) =>
     scenario.first_row_compatibility.status !== "CALCULATION_NOT_SUPPORTED" &&
@@ -485,18 +490,18 @@ function AutomaticMultirowResults({
   const numericalComparison = singleRow?.numerical_comparison ?? integration.numerical_comparison;
   const qualification = integration.qualification;
   const governing = integration.governing_supported_check_ids;
-  const limitations = singleRow === undefined
+  const limitations = finalDecision?.unresolved_requirements ?? (singleRow === undefined
     ? [
       ...integration.unsupported_required_check_ids.map((value) => `Unsupported: ${friendlyIdentifier(value)}`),
       ...integration.incomplete_required_check_ids.map((value) => `Incomplete: ${friendlyIdentifier(value)}`),
-    ] : singleRow.incomplete_required_check_ids.map((value) => `Incomplete: ${friendlyIdentifier(value)}`);
+    ] : singleRow.incomplete_required_check_ids.map((value) => `Incomplete: ${friendlyIdentifier(value)}`));
 
   return (
     <>
       <section className="result-summary" aria-labelledby="automatic-result-summary-title">
-        <div className="summary-status"><span className="large-status-icon" aria-hidden="true">{statusIcon(numericalComparison)}</span><div><p className="eyebrow">Automatic member-end-force demand</p><h3 id="automatic-result-summary-title">{friendlyEnum(overallDisposition)}</h3></div></div>
-        <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>NUMERICAL CHECKS:</strong> {finalChecks.length + (singleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</span><span><strong>DESIGN COMPLETENESS:</strong> {limitations.length} required checks/evidence items unresolved</span><span><strong>Comparison:</strong> {friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {governing.map(friendlyIdentifier).join(", ") || "None"}</span></div>
-        {limitations.length === 0 ? null : <div className="qualification-banner"><span aria-hidden="true">!</span> Ordinary whole-connection PASS is prohibited while {limitations.length} required checks remain unsupported or incomplete.<details><summary>Advanced Engineering Diagnostics · required-check inventory</summary><ul>{limitations.map((value) => <li key={value}>{value}</li>)}</ul></details></div>}
+        <div className="summary-status"><span className="large-status-icon" aria-hidden="true">{statusIcon(numericalComparison)}</span><div><p className="eyebrow">Automatic member-end-force demand</p><h3 id="automatic-result-summary-title">{finalDecision === undefined ? friendlyEnum(overallDisposition) : directDecisionHeadline(finalDecision, false)}</h3></div></div>
+        <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>NUMERICAL CHECKS:</strong> {finalChecks.length + (singleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</span><span><strong>DESIGN COMPLETENESS:</strong> {finalDecision?.analytical_check_summary.counts.REQUIRED_UNRESOLVED ?? limitations.length} required checks/evidence items unresolved</span><span><strong>Comparison:</strong> {finalDecision?.analytical_check_summary.numerical_outcome ?? friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {finalDecision?.qualification_capacity_state ?? friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {finalDecision?.governing_label ?? (governing.map(friendlyIdentifier).join(", ") || "None")}</span></div>
+        {limitations.length === 0 ? null : <div className="qualification-banner"><span aria-hidden="true">!</span> Remaining design actions: {finalDecision?.analytical_check_summary.counts.REQUIRED_UNRESOLVED ?? limitations.length} required checks or evidence items.<details><summary>Advanced Engineering Diagnostics · required-check inventory</summary><ul>{limitations.map((value) => <li key={value}>{value}</li>)}</ul></details></div>}
       </section>
       <section className="results-panel" aria-labelledby="automatic-checks-title">
         <div className="panel-heading"><div><p className="eyebrow">Current Design Check</p><h3 id="automatic-checks-title">Calculated supported checks</h3></div></div>
@@ -505,7 +510,7 @@ function AutomaticMultirowResults({
       {singleRow === undefined ? null : <section className="results-panel" aria-labelledby="direct-single-row-checks-title"><div className="panel-heading"><div><p className="eyebrow">Direct one-row source methods</p><h3 id="direct-single-row-checks-title">Angle and W flange checks</h3></div></div><div className="table-scroll compact-results-table"><table><thead><tr><th>Check</th><th>Layer / line</th><th>Status</th><th>Demand</th><th>Design resistance</th><th>Utilization</th><th>Reason</th></tr></thead><tbody>{singleRow.checks.map((check) => <tr key={check.result_id}><td>{friendlyEnum(check.limit_state)}<br /><small>{friendlyEnum(check.equation_method)}</small></td><td>{[check.layer_id, check.bolt_line_id].filter((value): value is string => value !== null).map(friendlyIdentifier).join(" · ")}</td><td>{friendlyEnum(check.numerical_comparison === "NOT_EVALUATED" ? check.availability : check.numerical_comparison)}</td><td>{formatDisplayQuantity(check.demand, displayUnitSystem)}</td><td>{formatDisplayQuantity(check.design_resistance, displayUnitSystem)}</td><td>{formatUtilization(check.utilization)}</td><td>{check.reason}</td></tr>)}</tbody></table></div></section>}
         {(integration.direct_angle_block_results ?? []).map((block) => <section key={block.result_fingerprint}>
           <h4>Angle physical block shear</h4>
-          <p>{block.method_id} · Section 2.3.2 qualification required</p>
+          <p>ASCE Eq. 8-14b — rational physical Angle free-side L path</p>
           {block.reason === "" ? null : <p className="unsupported-note">{block.reason}</p>}
           {block.history_results.map((row) => <p key={row.result_id}><strong>Block shear — Angle heel side: NOT APPLICABLE.</strong> {row.reason}</p>)}
         </section>)}
@@ -820,6 +825,7 @@ export function SingleBoltEngineeringWorkspace() {
   const [loading, setLoading] = useState(false);
   const [edited, setEdited] = useState(false);
   const [stale, setStale] = useState(false);
+  const invalidateCurrency = useCallback(() => { setStale(true); }, []);
   const [resultsOpen, setResultsOpen] = useState(false);
   const [selection, setSelection] = useState<SceneSelection>({ kind: "MEMBER", id: "member-a" });
   const [layoutSuggestion, setLayoutSuggestion] = useState<{ request: SingleBoltEvaluationRequest; group: BoltGroupState; revision: number; memberSizeChange: boolean } | null>(null);
@@ -1299,6 +1305,8 @@ export function SingleBoltEngineeringWorkspace() {
   const automaticHandoff = multirowDesign?.automatic_handoff_results[0] ?? null;
   const automaticGroupModeIntegration =
     multirowDesign?.automatic_group_mode_integration ?? null;
+  const directDecision = currentDirectDecision(mat1.designTraces["multi-row"], stale,
+    mat1.designKeys["multi-row"] === mat1FamilyKey("multi-row"));
   const directWarnings: ReturnType<typeof describeDirectWarning>[] = directF1Family ? [
     ...(multirowPreview.response?.warnings ?? []).filter((warning) =>
       // Geometry previews retain the historical fastener snapshot. The separately
@@ -1308,7 +1316,7 @@ export function SingleBoltEngineeringWorkspace() {
       && !(mat1.catalog.find((record) => record.id === mat1DefaultId("multi-row"))?.property_basis === ASCE_SHAPE_BASIS
         && warning === "CONTROLLED_ICE_DEVELOPMENT_MATERIAL_REQUIRES_ENGINEERING_REVIEW"),
     ).map(describeDirectWarning),
-    ...(!stale && automaticGroupModeIntegration !== null ? [
+    ...(directDecision !== undefined ? directDecision.unresolved_requirements.map((text) => ({ group: "qualification" as const, text })) : !stale && automaticGroupModeIntegration !== null ? [
       ...automaticGroupModeIntegration.unsupported_required_check_ids.map((id) => ({ group: "method" as const, text: `Required check not evaluated: ${friendlyIdentifier(id)}.` })),
       ...automaticGroupModeIntegration.incomplete_required_check_ids.map((id) => ({ group: id.includes("MATERIAL") || id.includes("SECTION_2_3_2") ? "qualification" as const : "source" as const, text: `Required evidence unresolved: ${friendlyIdentifier(id)}.` })),
     ] : []),
@@ -1324,7 +1332,9 @@ export function SingleBoltEngineeringWorkspace() {
     ?? automaticGroupModeIntegration?.failed_check_ids ?? [];
   const directDisposition = directSingleRow?.overall_disposition
     ?? automaticGroupModeIntegration?.overall_disposition;
-  const directMultirowStatus = stale
+  const directMultirowStatus = directF1Family
+    ? directDecisionHeadline(directDecision, stale)
+    : stale
     ? "Results need to be recalculated"
     : automaticGroupModeIntegration === null
       ? multirowDesign === null ? "GRAY — not calculated" : "YELLOW — incomplete design"
@@ -1521,7 +1531,7 @@ export function SingleBoltEngineeringWorkspace() {
           </SidebarGroup>
 
           <SidebarGroup title="Design Results" summary={stale ? "Results need to be recalculated" : activeDesignSummary} defaultOpen>
-            {supportedMultirowArrangement
+            {directF1Family ? <DirectDesignStatus stale={stale} onCurrencyInvalid={invalidateCurrency} /> : supportedMultirowArrangement
               ? automaticHandoff !== null && automaticGroupModeIntegration !== null
                 ? <><strong>{directMultirowStatus}</strong><p className="sidebar-note">{friendlyEnum(automaticHandoff.coverage)} · {automaticGroupModeIntegration.governing_supported_check_ids.length} governing supported check(s)</p><p><strong>NUMERICAL CHECKS:</strong> {finalDirectChecks(automaticGroupModeIntegration).length + (directSingleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</p>{stale ? null : <p className="sidebar-note">{(directSingleRow?.incomplete_required_check_ids.length ?? (automaticGroupModeIntegration.unsupported_required_check_ids.length + automaticGroupModeIntegration.incomplete_required_check_ids.length))} required checks/evidence items remain unresolved. Supported numerical checks are shown separately. Final GREEN still requires the listed method, source and qualification evidence.</p>}</>
                 : multirowResult === null
@@ -1553,7 +1563,7 @@ export function SingleBoltEngineeringWorkspace() {
           {supportedMultirowArrangement && multirowPreview.response?.visualization !== null && multirowPreview.response?.visualization !== undefined ? <details className="layout-diagnostic"><summary>Bolt layout — optional 2D diagnostic</summary><p>The canonical 3D connection above remains primary. This backend-authored interface-plane diagram is a secondary layout and block-path diagnostic.</p><label className="checkbox-control"><input type="checkbox" checked={groupState.showBlockPaths} onChange={(event) => { updateGroup({ showBlockPaths: event.currentTarget.checked }, false); }} /> Show accepted block paths</label><MultiRowVisualizationPanel snapshot={multirowPreview.response.visualization} showBlockPaths={groupState.showBlockPaths} displayUnitSystem={request.joint_assembly.unit_system} /></details> : null}
           <details className={`results-drawer${stale ? " stale-design-results" : ""}`} open={resultsOpen} onToggle={(event) => { setResultsOpen(event.currentTarget.open); }}>
             <summary><span>Design results &amp; calculation details</span><small>{activeDesignSummary === "No design run" ? "Run Design Check to populate" : stale ? "Recalculation needed" : activeDesignSummary}</small></summary>
-            <div className="results-drawer-body">{stale ? <p>Previous calculation belongs to earlier inputs. Run Design Check for current results.</p> : supportedMultirowArrangement ? automaticHandoff !== null && automaticGroupModeIntegration !== null && multirowDesign?.automatic_demand_result !== null && multirowDesign?.automatic_demand_result !== undefined ? <AutomaticMultirowResults handoff={automaticHandoff} integration={automaticGroupModeIntegration} demandFingerprint={multirowDesign.automatic_demand_result.result_fingerprint} displayUnitSystem={request.joint_assembly.unit_system} /> : multirowResult === null ? <p>No multi-row design run.</p> : <MultirowResults result={multirowResult} displayUnitSystem={request.joint_assembly.unit_system} /> : response === null ? <p>No design run.</p> : <><ResultSummary response={response} /><ResultTable response={response} /></>}</div>
+            <div className="results-drawer-body">{stale ? <p>Previous calculation belongs to earlier inputs. Run Design Check for current results.</p> : supportedMultirowArrangement ? automaticHandoff !== null && automaticGroupModeIntegration !== null && multirowDesign?.automatic_demand_result !== null && multirowDesign?.automatic_demand_result !== undefined ? <AutomaticMultirowResults handoff={automaticHandoff} integration={automaticGroupModeIntegration} demandFingerprint={multirowDesign.automatic_demand_result.result_fingerprint} displayUnitSystem={request.joint_assembly.unit_system} finalDecision={directF1Family ? directDecision : undefined} /> : multirowResult === null ? <p>No multi-row design run.</p> : <MultirowResults result={multirowResult} displayUnitSystem={request.joint_assembly.unit_system} /> : response === null ? <p>No design run.</p> : <><ResultSummary response={response} /><ResultTable response={response} /></>}</div>
           </details>
         </ConnectionWorkspaceMain>
     </ConnectionWorkspaceShell>

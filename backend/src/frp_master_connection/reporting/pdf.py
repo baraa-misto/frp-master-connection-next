@@ -7,6 +7,7 @@ connection or synthesize a resistance from diagram dimensions.
 from __future__ import annotations
 
 import io
+from collections.abc import Sequence
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from decimal import Decimal
@@ -40,6 +41,11 @@ from reportlab.platypus.tableofcontents import TableOfContents
 from frp_master_connection.application.direct_qualification_matching import COVERED_RESPONSES
 from frp_master_connection.reporting.direct_first_row import direct_first_row_reason
 from frp_master_connection.reporting.direct_qualification import qualification_summary_rows
+from frp_master_connection.reporting.direct_status import (
+    coverage_rows,
+    engineering_notation,
+    executive_rows,
+)
 from frp_master_connection.reporting.f593_report import f593_bolt_rows, f593_source_rows
 from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
 from frp_master_connection.reporting.reader_data import humanize, readable_value, short_number
@@ -261,6 +267,8 @@ def _ratio_side(ratio: Decimal) -> str:
 
 
 def _paragraph(value: object, style: ParagraphStyle) -> Paragraph:
+    if isinstance(value, Paragraph):
+        return value
     plain = _text(value)
     return Paragraph(escape(plain).replace("\n", "<br/>"), style)
 
@@ -1308,7 +1316,7 @@ def _styles() -> dict[str, ParagraphStyle]:
     }
 
 
-def _table(rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]) -> Table:
+def _table(rows: Sequence[tuple[str, object]], styles: dict[str, ParagraphStyle]) -> Table:
     if len(rows) > MAX_TABLE_ROWS:
         raise ReportingCoverageError("REPORT1 table exceeds the configured row limit")
     data = [[_paragraph("Parameter", styles["table"]), _paragraph("Value", styles["table"])]]
@@ -1633,6 +1641,25 @@ def _reader_opening(
             styles,
         ),
     ]
+    decision = snapshot.result.get("final_decision")
+    if isinstance(decision, dict):
+        prior_rows = [
+            (
+                "Project / connection",
+                options.project_name + " / " + (options.connection_id or family_label),
+            ),
+            (
+                "Case / load combination",
+                str(
+                    snapshot.request.get("mat1_assignments", {})
+                    .get("default_conditions", {})
+                    .get("load_case_name", "See actual project conditions below")
+                ),
+            ),
+            *executive_rows(decision, system),
+            ("Calculated at / snapshot ID", issued + " / " + snapshot.digest[:12]),
+        ]
+        story[3] = _table(prior_rows, styles)
     if snapshot.kind == "design" and critical is None:
         story.append(
             _paragraph(
@@ -1659,7 +1686,13 @@ def _reader_opening(
         story.append(_paragraph("SUBMITTED GEOMETRY — NOT VALIDATED", styles["body"]))
     if boxes or faces:
         for view in ("isometric", "elevation", "plan"):
-            story.append(colored_view(boxes, faces, bolts, view))
+            drawing = colored_view(boxes, faces, bolts, view)
+            if isinstance(decision, dict):
+                # Scale only the fixed camera artwork, never native geometry.
+                drawing.scale(0.8, 0.8)
+                drawing.width *= 0.8
+                drawing.height *= 0.8
+            story.append(drawing)
             if view == "isometric":
                 story.append(_paragraph("Isometric - not to scale", styles["caption"]))
         story.append(
@@ -1931,9 +1964,15 @@ def _direct_reader_engineering_sections(
             styles,
         )
     )
+    decision = snapshot.result.get("final_decision")
     story.append(_paragraph("5  Required checks and numerical results", styles["heading"]))
     if checks:
-        story.append(results_matrix(checks, system))
+        numerical_checks = (
+            [c for c in checks if c.availability == "CALCULATED"]
+            if isinstance(decision, dict)
+            else checks
+        )
+        story.append(results_matrix(numerical_checks, system))
     else:
         story.append(_paragraph("No required resistance has been evaluated.", styles["body"]))
     evaluated = sum(check.availability == "CALCULATED" for check in checks)
@@ -2041,9 +2080,20 @@ def _direct_reader_engineering_sections(
                         ("Check", critical.identity),
                         (
                             "Source and equation",
-                            f"{native.get('source_locator')}; {template.expression}",
+                            f"{native.get('source_locator')}; {template.expression}".replace(
+                                "ASCE_8_14A_DIRECT_PHYSICAL_L_PATH_RATIONAL",
+                                "ASCE Eq. 8-14a — physical Angle free-side L path",
+                            ).replace(
+                                "ASCE_8_14B_DIRECT_PHYSICAL_L_PATH_RATIONAL",
+                                "ASCE Eq. 8-14b — physical Angle free-side L path",
+                            ),
                         ),
-                        ("Executed substitution", substitution),
+                        (
+                            "Executed substitution",
+                            engineering_notation(substitution, styles["small"])
+                            if isinstance(decision, dict)
+                            else substitution,
+                        ),
                         (
                             "Demand / design resistance",
                             paired(native.get("demand"), native.get("design_resistance")),
@@ -2061,10 +2111,24 @@ def _direct_reader_engineering_sections(
         story.append(
             _paragraph("Catalog-resolved native bolt shear calculations", styles["heading"])
         )
-        story.append(_table(bolt_rows, styles))
+        story.append(
+            _table(
+                [
+                    (label, engineering_notation(value, styles["small"]))
+                    for label, value in bolt_rows
+                ]
+                if isinstance(decision, dict)
+                else bolt_rows,
+                styles,
+            )
+        )
     story.append(_paragraph("7  Active design limits", styles["heading"]))
     if checks:
-        story.append(limitations_matrix(checks))
+        story.append(
+            _table(coverage_rows(decision, checks), styles)
+            if isinstance(decision, dict)
+            else limitations_matrix(checks)
+        )
     warnings = result.get("preview", {}).get("warnings", [])
     if isinstance(warnings, list) and warnings:
         story.append(
@@ -2411,7 +2475,7 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                             if check_id in COVERED_RESPONSES
                             else "Approved matching Section 2.3.2 qualification record required"
                             if check_id == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION"
-                            else "Not stated"
+                            else "Source-backed disposition; no additional qualification predicate"
                         ),
                         "required": check_id not in not_required,
                     }
@@ -2434,6 +2498,9 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             or (calculation.get("overall_disposition") if isinstance(calculation, dict) else None)
         )
     )
+    decision = snapshot.result.get("final_decision") if direct else None
+    if isinstance(decision, dict):
+        status = decision["final_status"] + " — " + decision["final_status_reason"]
     styles = _styles()
     visual = preview["visualization"]
     support_end_authority = preview.get("direct_support_end_authority") if direct else None
@@ -2479,6 +2546,8 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             )
         else:
             primary_blocker = "No complete Direct resistance result is available"
+    if isinstance(decision, dict):
+        primary_blocker = decision["governing_label"]
     story = _reader_opening(
         snapshot,
         options,
@@ -2492,20 +2561,41 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     evaluation = snapshot.result.get("qualification_evaluation")
     if direct and isinstance(evaluation, dict):
         story.append(_paragraph("Connection qualification", styles["heading"]))
+        if evaluation.get("record_digest") is None:
+            story.append(
+                _paragraph(
+                    "Section 2.3.2 whole-connection qualification coverage required. "
+                    "Approved matching Section 2.3.2 qualification record required.",
+                    styles["body"],
+                )
+            )
         if evaluation.get("synthetic"):
             story.append(
                 _paragraph("SYNTHETIC QA — CANNOT QUALIFY PRODUCTION DESIGN", styles["heading"])
             )
         story.append(
             _paragraph(
-                "Qualification evaluation — final status integration pending. "
-                "Analytical results remain authoritative.",
+                "One whole-connection comparison; analytical checks remain independently required.",
                 styles["body"],
             )
         )
-        story.append(_table(qualification_summary_rows(evaluation, system), styles))
+        story.append(
+            _table(
+                qualification_summary_rows(evaluation, system, concise=isinstance(decision, dict)),
+                styles,
+            )
+        )
     mat1_rows = _mat1_reader_rows(snapshot)
     mat1_rows.extend(f593_source_rows(snapshot.result.get("fastener_source"), system))
+    if isinstance(decision, dict):
+        mat1_rows = [
+            (label, value)
+            for label, value in mat1_rows
+            if "digest" not in label.lower()
+            and "hash" not in label.lower()
+            and "sha-256" not in label.lower()
+        ]
+
     if isinstance(support_end_authority, dict):
         condition_labels = {
             "UNSPECIFIED": "INPUT NEEDED - supporting W end condition is unspecified",
@@ -2631,7 +2721,13 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             story.append(_table(clearance_rows, styles))
     if mat1_rows:
         story.append(_paragraph("Materials, conditions and design basis", styles["heading"]))
-        story.append(_table(mat1_rows, styles))
+        if isinstance(decision, dict):
+            # Bind the heading to a small identity group. A heading kept with the
+            # entire long material table can force a nearly empty preceding page.
+            story.append(_table(mat1_rows[:3], styles))
+            story.append(_table(mat1_rows[3:], styles))
+        else:
+            story.append(_table(mat1_rows, styles))
     story.append(
         _paragraph(
             "Native dimensioned bolt layout" if not direct else "Canonical bolt layout diagnostic",
@@ -2683,7 +2779,8 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             ]
             block_story.append(
                 _paragraph(
-                    f"{block['method_id']}. Project rational physical L path; "
+                    f"ASCE Eq. 8-14{'a' if '8_14A' in block['method_id'] else 'b'} — "
+                    "rational physical Angle free-side L path. "
                     "Section 2.3.2 whole-connection qualification remains required.",
                     styles["body"],
                 )
@@ -2694,11 +2791,27 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                         [
                             (
                                 "Executed equation and areas",
-                                multirow_native_substitution(check, visual, system),
+                                engineering_notation(
+                                    multirow_native_substitution(check, visual, system),
+                                    styles["small"],
+                                )
+                                if isinstance(decision, dict)
+                                else multirow_native_substitution(check, visual, system),
                             ),
                             (
                                 "Separate factors (each applied once)",
-                                _factor_substitution(check["factor_trace"], system)
+                                engineering_notation(
+                                    _factor_substitution(check["factor_trace"], system)
+                                    + "\n"
+                                    + "; ".join(
+                                        f"{prop['property_kind']}: CM={prop['cm']}, "
+                                        f"CT={prop['ct']}, CCH={prop['cch']}"
+                                        for prop in check["factor_trace"]["property_traces"]
+                                    ),
+                                    styles["small"],
+                                )
+                                if isinstance(decision, dict)
+                                else _factor_substitution(check["factor_trace"], system)
                                 + "\n"
                                 + "; ".join(
                                     f"{prop['property_kind']}: CM={prop['cm']}, "
@@ -2720,15 +2833,18 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             if block["reason"]:
                 block_story.append(_paragraph(block["reason"], styles["body"]))
             for row in block["history_results"]:
-                block_story.append(
-                    _paragraph(
-                        "Block shear — Angle heel side: NOT APPLICABLE. " + row["reason"],
-                        styles["body"],
+                if not isinstance(decision, dict):
+                    block_story.append(
+                        _paragraph(
+                            "Block shear — Angle heel side: NOT APPLICABLE. " + row["reason"],
+                            styles["body"],
+                        )
                     )
-                )
-            # Keep the worked calculation and its bounded N/A explanation
-            # together instead of leaving the explanation on a lone final page.
-            story.append(KeepTogether(block_story))
+            # The F9 coverage matrix already retains the full bounded N/A reason.
+            # Avoid duplicating it on a nearly empty final page.
+            story.extend(block_story) if isinstance(decision, dict) else story.append(
+                KeepTogether(block_story)
+            )
     if direct and options.mode == "FULL_TECHNICAL_AUDIT":
         audit = snapshot.input_provenance.get("direct_qualification_audit")
         if isinstance(audit, dict):
@@ -2978,6 +3094,10 @@ def render_report_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> bytes
         "INPUT_VALIDATION_FAILED",
         "INPUT_NOT_EVALUATED",
     }:
+        if "final_decision" in snapshot.result:
+            from frp_master_connection.reporting.direct_input import render_direct_input_pdf
+
+            return render_direct_input_pdf(snapshot, options)
         from frp_master_connection.reporting.generic import render_generic_pdf
 
         return render_generic_pdf(snapshot, options)

@@ -1906,3 +1906,10 @@ Freeze publication is gated: SELF is the governance commit with parent `388083ba
 ## CME-2C C2-P2 isolated implementation
 
 Additive internal clear-plate E3/F9/H2 provider from baseline `20fabefa90247dd3470d4698edda1b22d017e7c6` (128). See `docs/architecture/CME_2C_ISOLATED_CLEAR_PLATE_PROVIDER.md` for trusted pre-resolved frozen C2-M/P1 snapshots, the owner-approved raw-traced E3 Fy cap, native numerical authority, fail-closed boundaries and publication gates. Frozen production/tests and all fifteen tags remain unchanged; no public API, frontend, hardware or family material activation. One implementation commit is expected at count 129; exact-SHA hosted four-job verification is recorded externally after normal push. No new freeze tag or later-stage work.
+# Direct F9 candidate QA successor
+
+F9 requires the complete configured backend/frontend gates and 100% coverage,
+including 8,658 backend / 1,292 frontend tests. The four hosted jobs retain all
+historical checks and generate twelve actual F9 PDFs per Windows/Ubuntu platform.
+Exact final SHA and post-publication evidence are recorded in the external F9
+review package. Dependencies, frozen engines, main and protected tags remain unchanged.

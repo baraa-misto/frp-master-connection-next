@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { mat1FamilyKey, setDirectQualificationRecordId, useMAT1 } from "../state/mat1Session";
+import { currentDirectDecision } from "./directDecision";
 
 interface Evaluation {
   readonly record_digest: string | null;
@@ -12,8 +13,10 @@ interface Evaluation {
   readonly synthetic: boolean;
   readonly laboratory?: string;
   readonly rdp_approval?: string;
-  readonly statistics?: { readonly accepted_n: number; readonly Ro: string | null; readonly phi_p: string | null };
+  readonly statistics?: { readonly accepted_n: number; readonly Ro: string | null; readonly phi_p: string | null; readonly VR?: string | null };
   readonly Rd_q: { readonly value: string; readonly unit: string } | null;
+  readonly Ru?: { readonly value: string; readonly unit: string } | null;
+  readonly utilization?: string | null;
 }
 
 export function DirectQualification({ stale, onSelectionChange }: {
@@ -37,10 +40,10 @@ export function DirectQualification({ stale, onSelectionChange }: {
   }, []);
   const trace = mat1.designTraces["multi-row"] as { readonly qualification_evaluation?: Evaluation } | undefined;
   const evaluation = stale || mat1.designKeys["multi-row"] !== mat1FamilyKey("multi-row") ? undefined : trace?.qualification_evaluation;
+  const decision = currentDirectDecision(trace, stale, mat1.designKeys["multi-row"] === mat1FamilyKey("multi-row"));
   return <section aria-label="Connection qualification">
     <h3>Connection qualification</h3>
-    <p><strong>QUALIFICATION REQUIRED</strong></p>
-    <p>Qualification evaluation — final status integration pending</p>
+    <p><strong>{decision?.qualification_capacity_state === "CAPACITY_PASS" ? "APPROVED CAPACITY — PASS" : decision?.qualification_capacity_state === "CAPACITY_FAIL" ? "APPROVED CAPACITY — FAIL" : "QUALIFICATION REQUIRED"}</strong></p>
     {error ? <p role="status">Qualification catalog could not be reached. Check the local backend and reload the application.</p> : null}
     {records.length > 0 ? <label className="field-control"><span>Approved qualification record</span>
       <select value={mat1.directQualificationRecordId ?? ""} onChange={(event) => {
@@ -59,11 +62,15 @@ export function DirectQualification({ stale, onSelectionChange }: {
         <dt>Accepted specimens</dt><dd>{evaluation.statistics?.accepted_n ?? "Unevaluated"}</dd>
         <dt>Reference strength</dt><dd>{evaluation.statistics?.Ro == null ? "Unevaluated" : `${Number(evaluation.statistics.Ro).toPrecision(5)} N`}</dd>
         <dt>phi_p</dt><dd>{evaluation.statistics?.phi_p == null ? "Unevaluated" : Number(evaluation.statistics.phi_p).toPrecision(4)}</dd>
+        <dt>COV</dt><dd>{evaluation.statistics?.VR == null ? "Unevaluated" : Number(evaluation.statistics.VR).toPrecision(5)}</dd>
         <dt>Qualified design strength</dt><dd>{evaluation.Rd_q === null ? "Unevaluated" : `${Number(evaluation.Rd_q.value).toPrecision(5)} ${evaluation.Rd_q.unit}`}</dd>
+        <dt>Required strength</dt><dd>{evaluation.Ru == null ? "Unevaluated" : `${Number(evaluation.Ru.value).toPrecision(5)} ${evaluation.Ru.unit}`}</dd>
+        <dt>Utilization</dt><dd>{evaluation.utilization == null ? "Unevaluated" : Number(evaluation.utilization).toPrecision(6)}</dd>
         <dt>Scope / capacity</dt><dd>{evaluation.scope_match_state} / {evaluation.capacity_state}</dd>
         <dt>Covered responses</dt><dd>{evaluation.covered_response_ids.length} of 5</dd>
       </dl>
-      {evaluation.mismatch_reasons.length > 0 ? <ul>{evaluation.mismatch_reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul> : null}
+      {decision === undefined ? null : <ul>{decision.unresolved_requirements.map((reason) => <li key={reason}>{reason}</li>)}</ul>}
+      {evaluation.mismatch_reasons.length > 0 ? <details><summary>Advanced qualification diagnostics</summary><ul>{evaluation.mismatch_reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul></details> : null}
     </>}
   </section>;
 }

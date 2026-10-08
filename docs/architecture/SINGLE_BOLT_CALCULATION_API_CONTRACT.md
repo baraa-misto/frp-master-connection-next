@@ -193,3 +193,8 @@ resistance equations. Both preview and design return visualization snapshot
 `1.3.0-draft`; preview may contain non-targetable `view_extension_primitives`, while
 the design response leaves that collection empty. Decimal strings and explicit
 units remain mandatory for every physical quantity.
+# Direct F9 reporting currency successor
+
+The current API inventory has 64 paths / 64 operations. The additive authenticated
+Direct report-currency operation and aggregate status contract are described in
+[Direct F9 final status](DIRECT_F9_FINAL_STATUS.md). Single-bolt engineering is unchanged.
