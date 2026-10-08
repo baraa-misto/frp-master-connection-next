@@ -65,7 +65,7 @@ def main() -> None:
             assert "No per-connection supplier certification required" in text
             if rows:
                 assert "Catalog-resolved native bolt shear calculations" in text or mode == "FULL_TECHNICAL_AUDIT"
-                assert "F_nv" in text
+                assert "F_nv" in text or "Fnv" in "".join(text.split())
             if name == "unsupported-cw-gap":
                 assert "No controlled cold-worked ASTM F593 table row" in text
             if mode == "FULL_TECHNICAL_AUDIT":

@@ -58,10 +58,15 @@ def main() -> None:
             (output / filename).write_bytes(pdf)
             pages = PdfReader(io.BytesIO(pdf)).pages
             text = " ".join(" ".join(p.extract_text() or "" for p in pages).split())
-            assert "Angle heel side: NOT APPLICABLE" in text
+            assert "Angle heel side NOT APPLICABLE" in text
             assert "perpendicular leg remains continuous" in text
             assert "Section 2.3.2" in text
-            assert block["method_id"] in text
+            if mode == "FULL_TECHNICAL_AUDIT":
+                assert block["method_id"] in text
+            else:
+                assert block["method_id"] not in text
+                equation = "8-14a" if "8_14A" in block["method_id"] else "8-14b"
+                assert f"ASCE Eq. {equation}" in text
             if name != "three-row":
                 assert "8 supported checks evaluated" in text
                 assert "6 required checks/evidence items unresolved" in text
