@@ -358,6 +358,12 @@ def _mat1_factor_label(role: str, key: str, ledger: dict[str, object]) -> str:
     if role == "Modulus" and key == "lambda_factor":
         return "Not applicable to modulus"
     value = ledger.get(key)
+    if (
+        role == "Modulus"
+        and key == "cch"
+        and ledger.get("chemical_modulus_applicability") == "UNEVALUATED"
+    ):
+        return "UNEVALUATED (chemical modulus)"
     return str(value) if value is not None else "source required"
 
 
@@ -492,6 +498,43 @@ def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
             f"{conditions.get('load_case_name', 'Unspecified')} · {load_class}",
         ),
     ]
+    if conditions.get("direct_policy") == "SHEAR01-DIRECT-MC1":
+        rows = [
+            (label, value)
+            for label, value in rows
+            if label
+            not in {
+                "Sustained operating material temperature",
+                "Maximum expected material temperature",
+                "Temperature roles",
+            }
+        ]
+        rows.extend(
+            [
+                ("Design Temperature", quantity("design_temperature")),
+                (
+                    "Temperature policy",
+                    "Highest expected service temperature conservatively assumed sustained "
+                    "for CT and used for required Tg; new Direct MC1 input policy.",
+                ),
+                (
+                    "Chemical factor origin",
+                    "Engineer-specified strength-only CCH="
+                    + str(conditions.get("chemical_strength_factor"))
+                    + "; not independently certified chemical test data. No chemical-modulus "
+                    "factor established; applicable dependent calculations remain UNEVALUATED. "
+                    "Independent supported strength checks may proceed."
+                    if conditions.get("chemical") == "SPECIFIED"
+                    else "None declared; no chemical adjustment.",
+                ),
+                (
+                    "Durability scope",
+                    "Routine ASCE catalog durability is a product-specification requirement. "
+                    "Legacy unknown exposure declarations have not been changed to no exposure; "
+                    "known extraordinary exposure evidence remains subject to engineering review.",
+                ),
+            ]
+        )
     if production:
         rows.extend(
             [
@@ -1793,10 +1836,15 @@ def _direct_reader_engineering_sections(
     }
     layers = visual.get("layers", [])
     layers = layers if isinstance(layers, list) else []
+    source_blocked = set(
+        snapshot.result.get("direct_material_applicability", {}).get("blocked_check_ids", [])
+    )
     checks = [
         replace(
             check,
-            reason=direct_first_row_reason(check.identity, result)
+            reason=check.reason
+            if check.identity in source_blocked
+            else direct_first_row_reason(check.identity, result)
             or _direct_blocked_description(
                 check.identity,
                 check.availability,
@@ -2124,10 +2172,24 @@ def _direct_reader_engineering_sections(
         )
     story.append(_paragraph("7  Active design limits", styles["heading"]))
     if checks:
-        story.append(
-            _table(coverage_rows(decision, checks), styles)
+        limit_rows = coverage_rows(decision, checks) if isinstance(decision, dict) else []
+        source_labels = (
+            {row["label"] for row in decision["schedule"] if row["check_id"] in source_blocked}
             if isinstance(decision, dict)
-            else limitations_matrix(checks)
+            else set()
+        )
+        limit_rows = [
+            (
+                label,
+                "SOURCE REQUIRED — NOT EVALUATED. "
+                + str(snapshot.result["direct_material_applicability"]["reason"])
+                if label in source_labels
+                else description,
+            )
+            for label, description in limit_rows
+        ]
+        story.append(
+            _table(limit_rows, styles) if isinstance(decision, dict) else limitations_matrix(checks)
         )
     warnings = result.get("preview", {}).get("warnings", [])
     if isinstance(warnings, list) and warnings:
@@ -2786,6 +2848,13 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                 )
             )
             for check in block["supported_results"]:
+                if check["availability"] != "CALCULATED":
+                    block_story.append(
+                        _paragraph(
+                            str(check.get("reason") or check["availability"]), styles["body"]
+                        )
+                    )
+                    continue
                 block_story.append(
                     _table(
                         [

@@ -1,8 +1,18 @@
 import type { MAT1Conditions } from "../state/mat1Session";
+import { validChemicalStrengthFactor, validDesignTemperature } from "./directMaterialConditions";
 
 /** Basic transport inputs only. Unknown exposure and source/qualification are not run blockers. */
 export function materialConditionIssues(conditions: MAT1Conditions): Readonly<Record<string, string>> {
   const issues: Record<string, string> = {};
+  if (conditions.direct_policy !== undefined) {
+    if (conditions.design_temperature === undefined || !validDesignTemperature(conditions.design_temperature.value)) issues.design_temperature = "Enter a finite Design Temperature.";
+    if (conditions.moisture !== "REFERENCE" && conditions.moisture !== "SUSTAINED_MOISTURE") issues.moisture = "Select Dry or Sustained moisture.";
+    if (conditions.chemical !== "NONE_DECLARED" && conditions.chemical !== "SPECIFIED") issues.chemical = "Select None or Custom adjustment.";
+    if (conditions.chemical === "SPECIFIED" && !validChemicalStrengthFactor(conditions.chemical_strength_factor ?? "")) issues.chemical_strength_factor = "Enter a dimensionless C_CH greater than 0 and at most 1.00.";
+    if (conditions.time_effect_category === "") issues.time_effect_category = "Select the Load Combination Classification.";
+    if (conditions.time_effect_category === "LONG_TERM_OPERATING" && conditions.full_amplitude_duration !== "MORE_THAN_ONE_YEAR") issues.full_amplitude_duration = "Long-term operating requires full operating amplitude for more than one year.";
+    return issues;
+  }
   for (const [key, label] of [["sustained_temperature", "sustained material temperature"], ["maximum_temperature", "maximum material temperature"]] as const) {
     const value = conditions[key].value;
     if (value.trim() === "" || !Number.isFinite(Number(value))) issues[key] = `Enter a finite ${label}.`;

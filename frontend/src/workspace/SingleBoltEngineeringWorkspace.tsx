@@ -13,7 +13,7 @@ import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { DIRECT_SHAPE_CAPABILITIES } from "../domain/directCapabilities";
 import ownerStarter from "../../../backend/src/frp_master_connection/data/direct_owner_starter.json";
 import { materialConditionBlocker } from "../features/materialConditionValidation";
-import { ASCE_SHAPE_BASIS, mat1DefaultId, mat1FamilyKey, defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
+import { ASCE_SHAPE_BASIS, mat1Conditions, mat1DefaultId, mat1FamilyKey, defaultFastenerSelection, F593_FASTENER_REVISION, setFastenerSelection, useMAT1 } from "../state/mat1Session";
 import type { FastenerSelection } from "../state/mat1Session";
 
 import {
@@ -500,7 +500,7 @@ function AutomaticMultirowResults({
     <>
       <section className="result-summary" aria-labelledby="automatic-result-summary-title">
         <div className="summary-status"><span className="large-status-icon" aria-hidden="true">{statusIcon(numericalComparison)}</span><div><p className="eyebrow">Automatic member-end-force demand</p><h3 id="automatic-result-summary-title">{finalDecision === undefined ? friendlyEnum(overallDisposition) : directDecisionHeadline(finalDecision, false)}</h3></div></div>
-        <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>NUMERICAL CHECKS:</strong> {finalChecks.length + (singleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</span><span><strong>DESIGN COMPLETENESS:</strong> {finalDecision?.analytical_check_summary.counts.REQUIRED_UNRESOLVED ?? limitations.length} required checks/evidence items unresolved</span><span><strong>Comparison:</strong> {finalDecision?.analytical_check_summary.numerical_outcome ?? friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {finalDecision?.qualification_capacity_state ?? friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {finalDecision?.governing_label ?? (governing.map(friendlyIdentifier).join(", ") || "None")}</span></div>
+        <div className="compact-result-facts"><span><strong>Method:</strong> Rational elastic bolt-group eccentricity</span><span><strong>Handoff coverage:</strong> {friendlyEnum(handoff.coverage)}</span><span><strong>NUMERICAL CHECKS:</strong> {finalDecision?.analytical_check_summary.evaluated ?? (finalChecks.length + (singleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0))} supported checks evaluated</span><span><strong>DESIGN COMPLETENESS:</strong> {finalDecision?.analytical_check_summary.counts.REQUIRED_UNRESOLVED ?? limitations.length} required checks/evidence items unresolved</span><span><strong>Comparison:</strong> {finalDecision?.analytical_check_summary.numerical_outcome ?? friendlyEnum(numericalComparison)}</span><span><strong>Qualification:</strong> {finalDecision?.qualification_capacity_state ?? friendlyEnum(qualification)}</span><span><strong>Governing supported:</strong> {finalDecision?.governing_label ?? (governing.map(friendlyIdentifier).join(", ") || "None")}</span></div>
         {limitations.length === 0 ? null : <div className="qualification-banner"><span aria-hidden="true">!</span> Remaining design actions: {finalDecision?.analytical_check_summary.counts.REQUIRED_UNRESOLVED ?? limitations.length} required checks or evidence items.<details><summary>Advanced Engineering Diagnostics · required-check inventory</summary><ul>{limitations.map((value) => <li key={value}>{value}</li>)}</ul></details></div>}
       </section>
       <section className="results-panel" aria-labelledby="automatic-checks-title">
@@ -1250,8 +1250,9 @@ export function SingleBoltEngineeringWorkspace() {
     preview.currentRevision === previewInput.revision;
   const localDesignBlocker = designValidationMessage(request);
   const multirowBlocker = supportEndValidation(supportEnds) ?? multirowValidationMessage(request, groupState, demandMode);
-  const designButtonBlocker = mat1.active && materialConditionBlocker(mat1.conditions) !== null
-    ? materialConditionBlocker(mat1.conditions)
+  const selectedMaterialConditions = directF1Family ? mat1Conditions("multi-row") : mat1.conditions;
+  const designButtonBlocker = mat1.active && materialConditionBlocker(selectedMaterialConditions) !== null
+    ? materialConditionBlocker(selectedMaterialConditions)
     : singleArrangement && demandMode === "AUTOMATIC_MEMBER_END_FORCE"
     ? "Automatic member-end-force demand is available for the accepted multi-row workflow."
     : supportedMultirowArrangement

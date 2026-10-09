@@ -1,0 +1,20 @@
+{
+  "contract": "SHEAR01-DIRECT-OR2-F9-MC1",
+  "controlling_order_sha256": "1BC8A4ED02F2C6F472927EA4E9A8A6E0DCCC93A8A6318677E558F0E67124FC95",
+  "predecessor_candidate": "44faac5c4ccf7f46f1a8ff739114916047889a40",
+  "owner_clarification": "R1 Option B: strength-only engineer CCH; chemical modulus unresolved",
+  "scope": "Explicit new Direct input/strength-factor/reporting policy; no resistance method or qualification activation",
+  "backend_tests": 8729,
+  "frontend_tests": 1340,
+  "predecessor_workflow_sha256": "6FAA4FB9A2432320435370CE5BA3AF893972F74675E32A61C762C44924E90C85",
+  "workflow_sha256": "921E49F1818CDD99C5F61B0CF8DD7EDA3A96F639782E45E1DA74FB61F6FE04C4",
+  "added_steps": "      - name: Generate authenticated Direct MC1 material and condition PDF matrix\n        run: python ../scripts/generate_direct_mc1_ci_pdfs.py --output direct-mc1-review-pdfs\n      - name: Upload Direct MC1 material and condition report evidence\n        uses: actions/upload-artifact@v7\n        with:\n          name: direct-mc1-pdfs-${{ matrix.os }}\n          path: backend/direct-mc1-review-pdfs/\n          if-no-files-found: error\n",
+  "backend_timeout_minutes": 60,
+  "dependencies": "All F8-G1 locks, pins and security requirements unchanged",
+  "protected_refs": "main and all three protected annotated tags unchanged",
+  "frozen_engine_identities": 53,
+  "new_pdf_controls": 7,
+  "new_pdf_modes": 2,
+  "new_pdf_count_per_platform": 14,
+  "historical_pdf_gates": "Every historical gate retained byte-identical"
+}

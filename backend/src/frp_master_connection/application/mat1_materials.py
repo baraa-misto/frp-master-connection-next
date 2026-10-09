@@ -421,6 +421,14 @@ class DesignConditions:
     fatigue_cycles: str = ""
 
 
+@dataclass(frozen=True, slots=True)
+class DirectDesignConditions(DesignConditions):
+    """Explicit new Direct policy; legacy dataclass and its audit bytes stay intact."""
+
+    direct_policy: Literal["SHEAR01-DIRECT-MC1"] = "SHEAR01-DIRECT-MC1"
+    chemical_strength_factor: Decimal | None = None
+
+
 def temperature_applicability(conditions: DesignConditions) -> str:
     """Separate Tmax/Tg arithmetic from CT and its stricter factor boundary.
 
@@ -516,7 +524,19 @@ def property_ledger(
         issues.append("ALREADY_ADJUSTED_PROPERTY_FACTOR_DUPLICATION_REVIEW")
     if prop.basis not in {"CHARACTERISTIC", SHAPE_BASIS} and role == "STRENGTH":
         issues.append("STRENGTH_CHARACTERISTIC_BASIS_NOT_ESTABLISHED")
-    if conditions.chemical == "SPECIFIED":
+    strength_chemical_factor = (
+        conditions.chemical_strength_factor
+        if isinstance(conditions, DirectDesignConditions)
+        else None
+    )
+    custom_strength = (
+        isinstance(conditions, DirectDesignConditions)
+        and conditions.chemical == "SPECIFIED"
+        and strength_chemical_factor is not None
+    )
+    if custom_strength and role == "MODULUS":
+        issues.append("CHEMICAL_MODULUS_APPLICABILITY_UNRESOLVED")
+    elif conditions.chemical == "SPECIFIED" and not custom_strength:
         issues.append("CHEMICAL_ADJUSTMENT_SOURCE_REQUIRED")
     elif conditions.chemical == "UNKNOWN":
         issues.append("CHEMICAL_EXPOSURE_UNRESOLVED")
@@ -536,7 +556,15 @@ def property_ledger(
         and conditions.tg_f < required_tg_f(conditions.maximum_f)
     ):
         issues.append("ACTUAL_TG_BELOW_PROJECT_REQUIREMENT")
-    cch = Decimal(1) if conditions.chemical == "NONE_DECLARED" else None
+    cch = (
+        strength_chemical_factor
+        if custom_strength and role == "STRENGTH"
+        else Decimal("1.00")
+        if isinstance(conditions, DirectDesignConditions) and conditions.chemical == "NONE_DECLARED"
+        else Decimal(1)
+        if conditions.chemical == "NONE_DECLARED"
+        else None
+    )
     adjusted = (
         prop.original * cm * ct * cch
         if (

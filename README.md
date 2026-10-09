@@ -1673,3 +1673,12 @@ Report. The production owner case remains YELLOW: 8 evaluated / 6 unresolved,
 1 bounded N/A and 2 neutral entries. No real approved qualification record is
 installed. GREEN capability is verified only with isolated pure decision inputs.
 No main merge, qualification activation or Direct freeze is part of this candidate.
+
+## Direct MC1 material and condition candidate
+
+[Direct MC1](docs/architecture/DIRECT_MC1_MATERIAL_CONDITIONS.md) records the compact
+new input policy and owner R1 Option B: custom C_CH applies to strength only;
+chemical-modulus applicability remains unresolved. Legacy signed two-temperature
+requests are preserved. No new resistance method, qualification activation, main
+merge or freeze is authorized. The governed successor adds 14 actual PDFs per OS
+while retaining all historical gates.

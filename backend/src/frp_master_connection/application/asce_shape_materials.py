@@ -12,6 +12,7 @@ from typing import Any, cast
 
 from frp_master_connection.application.mat1_materials import (
     DesignConditions,
+    DirectDesignConditions,
     MaterialRecord,
     _record,
     predefined_catalog,
@@ -92,7 +93,7 @@ def shape_project_issues(conditions: DesignConditions) -> tuple[str, ...]:
         ("UV_WEATHERING", conditions.uv_weathering),
         ("FREEZE_THAW", conditions.freeze_thaw),
     ):
-        if state == "UNKNOWN":
+        if state == "UNKNOWN" and not isinstance(conditions, DirectDesignConditions):
             issues.append(f"{name}_PROJECT_CONDITION_REQUIRED")
         elif state == "SPECIFIED":
             issues.append(f"EXTRAORDINARY_{name}_REVIEW_REQUIRED")

@@ -22,8 +22,13 @@ def test_f9_workflow_restores_exact_f8_g1_and_earlier_history() -> None:
 def test_f9_workflow_mutation_fails_closed(mutation: str) -> None:
     raw = (ROOT / ".github/workflows/ci.yml").read_bytes().replace(b"\r\n", b"\n")
     governed = authority()
+    count = governed["backend_tests"]
+    if b"Generate authenticated Direct MC1" in raw:
+        from tests.direct_mc1_governance import authority as mc1_authority
+
+        count = mc1_authority()["backend_tests"]
     replacements = {
-        "count": (f"--expected-tests {governed['backend_tests']}".encode(), b"--expected-tests 1"),
+        "count": (f"--expected-tests {count}".encode(), b"--expected-tests 1"),
         "timeout": (b"timeout-minutes: 60", b"timeout-minutes: 61"),
         "steps": (governed["added_steps"].encode(), b""),
         "runtime": (b"python-version: 3.14.6", b"python-version: 3.14.7"),

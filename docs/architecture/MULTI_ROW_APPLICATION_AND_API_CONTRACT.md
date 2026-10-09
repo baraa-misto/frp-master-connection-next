@@ -154,3 +154,15 @@ Direct MAT1 design requests may select `CATALOG / FASTENER-F4-RC1` with controll
 The current API inventory has 64 paths / 64 operations. MAT1 Direct design results
 now include one backend-authoritative final decision, retaining every native and F8
 engineering result. See [Direct F9 final status](DIRECT_F9_FINAL_STATUS.md).
+## Direct MC1 material-input extension
+
+New Direct MAT1 requests may declare the explicit SHEAR01-DIRECT-MC1 policy, one
+design_temperature and an optional chemical_strength_factor. The backend validates
+physical equality to both existing sustained/maximum temperature fields. Custom
+chemical factors must be exact finite decimal strings in (0, 1]; they apply only
+to applicable FRP strength. Modulus retains independently supported CM/CT candidate
+values with chemical applicability UNEVALUATED, never an assumed chemical factor.
+Unmarked historical requests retain their original schema and calculations.
+See [the MC1 specification](DIRECT_MC1_MATERIAL_CONDITIONS.md). Route inventory,
+authentication, geometry, demand, F9 precedence and F8 qualification authority
+are unchanged. No other family accepts this calculation-policy marker.

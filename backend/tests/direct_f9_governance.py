@@ -18,6 +18,13 @@ def authority(raw: bytes | None = None) -> dict[str, Any]:
 
 
 def pre_f9_workflow(raw: bytes) -> bytes:
+    if b"Generate authenticated Direct MC1" in raw:
+        from tests.direct_mc1_governance import pre_mc1_workflow
+
+        try:
+            raw = pre_mc1_workflow(raw)
+        except AssertionError as error:
+            raise AssertionError("F9_WORKFLOW_IDENTITY_INVALID_MC1_SUCCESSOR") from error
     governed = authority()
     raw = raw.replace(b"\r\n", b"\n")
     assert digest(raw) == governed["workflow_sha256"], "F9_WORKFLOW_IDENTITY_INVALID"

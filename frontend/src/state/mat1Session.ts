@@ -89,6 +89,9 @@ export interface MAT1Conditions {
   readonly design_period: string;
   readonly service_period: string;
   readonly fatigue_cycles: string;
+  readonly direct_policy?: "SHEAR01-DIRECT-MC1";
+  readonly design_temperature?: { readonly value: string; readonly unit: "degF" | "degC" };
+  readonly chemical_strength_factor?: string;
 }
 
 interface MAT1State {
@@ -100,6 +103,7 @@ interface MAT1State {
   readonly custom: Readonly<Record<string, MAT1SessionRecord>>;
   readonly overrides: Readonly<Record<string, Readonly<Record<string, string | null>>>>;
   readonly conditions: MAT1Conditions;
+  readonly directConditions: MAT1Conditions | null;
   readonly conditionOverrides: Readonly<Record<string, Readonly<Record<string, MAT1Conditions>>>>;
   readonly designKeys: Readonly<Record<string, string>>;
   readonly designTraces: Readonly<Record<string, unknown>>;
@@ -129,7 +133,7 @@ let current: MAT1State = {
   catalog: [], catalogError: null, active: false,
   defaultId: "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
   directMaterialId: DIRECT_PRODUCTION_MATERIAL_ID,
-  custom: {}, overrides: {}, conditions: initialConditions, conditionOverrides: {},
+  custom: {}, overrides: {}, conditions: initialConditions, directConditions: null, conditionOverrides: {},
   designKeys: {}, designTraces: {}, directQualificationRecordId: null,
   previewInputs: {}, previewOwners: {}, previewOwnerKeys: {},
   fastenerSelections: {},
@@ -185,6 +189,7 @@ export function setDirectQualificationRecordId(id: string | null): void {
 }
 
 export function setMAT1Conditions(conditions: MAT1Conditions): void {
+  if (current.directConditions !== null) invalidateReportSnapshot("multi-row");
   const conditionOverrides = Object.fromEntries(Object.entries(current.conditionOverrides).map(([family, owners]) => [
     family,
     Object.fromEntries(Object.entries(owners).map(([owner, value]) => [owner, {
@@ -193,7 +198,16 @@ export function setMAT1Conditions(conditions: MAT1Conditions): void {
       action_provenance: conditions.action_provenance,
     }])),
   ]));
-  notify({ ...current, conditions, conditionOverrides });
+  notify({ ...current, conditions, directConditions: null, conditionOverrides });
+}
+
+export function mat1Conditions(family: string): MAT1Conditions {
+  return mat1UsesShapeBasis(family) ? current.directConditions ?? current.conditions : current.conditions;
+}
+
+export function setMAT1DirectConditions(conditions: MAT1Conditions): void {
+  invalidateReportSnapshot("multi-row");
+  notify({ ...current, directConditions: conditions });
 }
 
 export function setMAT1Override(family: string, owner: string, id: string | null | undefined): void {
@@ -296,7 +310,7 @@ export function mat1FamilyKey(family: string, includePreviewInput = true): strin
   return JSON.stringify({
     family, defaultMaterial: materialSelection(mat1DefaultId(family)),
     overrides: Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, materialSelection(id)])),
-    conditions: current.conditions, conditionOverrides: current.conditionOverrides[family] ?? {},
+    conditions: mat1Conditions(family), conditionOverrides: current.conditionOverrides[family] ?? {},
     previewInput: includePreviewInput ? current.previewInputs[family] ?? null : undefined,
     fastener: family === "multi-row" ? current.fastenerSelections[family] ?? defaultFastenerSelection : undefined,
     ...(family === "multi-row" && current.directQualificationRecordId !== null

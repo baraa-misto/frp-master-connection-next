@@ -1913,3 +1913,14 @@ including 8,658 backend / 1,292 frontend tests. The four hosted jobs retain all
 historical checks and generate twelve actual F9 PDFs per Windows/Ubuntu platform.
 Exact final SHA and post-publication evidence are recorded in the external F9
 review package. Dependencies, frozen engines, main and protected tags remain unchanged.
+
+## Direct F9 MC1 candidate QA successor
+
+MC1 requires 8,729 backend / 1,340 frontend tests with the unchanged configured
+100% coverage requirements. The exact workflow successor reverses to accepted F9,
+F8-G1 and earlier workflow identities; no historical gate is replaced.
+Seven actual Direct controls are exported in Engineer Report and Full Technical
+Audit modes on Windows 2025 and Ubuntu 24.04. Local and hosted numerical, provenance,
+rendered-page and exact-SHA evidence is retained in the external MC1 review package.
+PR #1 stays draft; main, tags, 53 engineering identities, dependencies and existing
+qualification authority remain unchanged.

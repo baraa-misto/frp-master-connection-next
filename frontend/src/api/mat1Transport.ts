@@ -1,5 +1,6 @@
 /** Versioned material request envelope around the existing explicit design actions. */
-import { acceptMAT1Design, defaultFastenerSelection, F593_FASTENER_REVISION, mat1DefaultId, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { acceptMAT1Design, defaultFastenerSelection, F593_FASTENER_REVISION, mat1Conditions, mat1DefaultId, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { materialConditionBlocker } from "../features/materialConditionValidation";
 import { acceptReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../state/reportSession";
 
 interface MAT1TransportResponse {
@@ -54,7 +55,11 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
   if (defaultId === null) throw new Error("Assign a connection FRP material before Run Design Check.");
   const selected = materialSelection(defaultId);
   if (selected === null) throw new Error("Selected FRP material is unavailable.");
-  const conditions = state.conditions;
+  const conditions = mat1Conditions(family);
+  if (conditions.direct_policy !== undefined) {
+    const blocker = materialConditionBlocker(conditions);
+    if (blocker !== null) throw new Error(blocker);
+  }
   if (conditions.sustained_temperature.value === "" || conditions.maximum_temperature.value === "" || conditions.load_case_name.trim() === "" || conditions.time_effect_category === "") throw new Error("Complete the MAT1 design conditions before Run Design Check.");
   const overrides: Record<string, object> = {};
   for (const [owner, id] of Object.entries(state.overrides[family] ?? {})) {

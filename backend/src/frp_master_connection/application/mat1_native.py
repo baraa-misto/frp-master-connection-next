@@ -8,6 +8,7 @@ from frp_master_connection.application.asce_shape_materials import (
     is_shape_basis,
     shape_reference_conditions,
 )
+from frp_master_connection.application.direct_material_conditions import modulus_cm_ct_candidate
 from frp_master_connection.application.mat1_materials import (
     DesignConditions,
     MaterialRecord,
@@ -111,8 +112,13 @@ def adapt_native_material(
         ledgers.append(ledger)
         issues.extend(ledger.issues)
         unit = Unit.ONE if prop.unit == "dimensionless" else Unit(prop.unit)
+        partial_modulus = modulus_cm_ct_candidate(ledger)
         value = (
-            ledger.adjusted_candidate if ledger.adjusted_candidate is not None else prop.original
+            ledger.adjusted_candidate
+            if ledger.adjusted_candidate is not None
+            else partial_modulus
+            if partial_modulus is not None
+            else prop.original
         )
         entries.append(
             FRPPropertyEntry(
@@ -129,13 +135,17 @@ def adapt_native_material(
                 source_revision=f"{record.revision}:{record.content_digest}",
                 applicability_metadata=prop.applicability,
                 engineer_notes=(
-                    "ASCE minimum characteristic shape specification; "
+                    "MC1: moisture/temperature modulus candidate only; chemical modulus "
+                    "applicability unresolved. Not eligible for definitive Chapter 8 use."
+                    if "CHEMICAL_MODULUS_APPLICABILITY_UNRESOLVED" in ledger.issues
+                    else "ASCE minimum characteristic shape specification; "
                     "furnished-product conformance is project QA responsibility."
                     if production
                     else "MAT1 numerical candidate; original source and factors retained "
                     "in ledger.",
                 ),
-                use_in_chapter_8_equations=kind not in _PULL_THROUGH,
+                use_in_chapter_8_equations=kind not in _PULL_THROUGH
+                and "CHEMICAL_MODULUS_APPLICABILITY_UNRESOLVED" not in ledger.issues,
             )
         )
     missing = tuple(

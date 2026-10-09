@@ -88,7 +88,8 @@ export async function loadMAT1Owners(family: string, legacyRequest: unknown, sig
 export async function inspectMAT1Factors(request: FactorInspectionRequest, signal: AbortSignal): Promise<FactorEnvelope> {
   const body = await requestJson("/api/v1/frp-materials/factor-candidates", {
     method: "POST", headers: { "Content-Type": "application/json" }, signal,
-    body: JSON.stringify({ contract: "MAT1-FACTOR-RC0", ...request }),
+    body: JSON.stringify({ contract: "MAT1-FACTOR-RC0", ...request,
+      ...(request.conditions.direct_policy === "SHEAR01-DIRECT-MC1" ? { family_id: "multi-row" } : {}) }),
   });
   if (!isRecord(body) || body.contract !== "MAT1-FACTOR-RC0" || body.design_check_performed !== false
     || typeof body.record_id !== "string" || !Array.isArray(body.ledgers)) {

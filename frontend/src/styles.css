@@ -1556,3 +1556,17 @@ td {
 .direct-final-status.status-gray { border-color: #6b7280; }
 .direct-final-status h3 { font-size: 1rem; margin-top: 0; }
 .direct-final-status p { margin: .4rem 0; }
+/* Direct MC1: compact material/condition surface, separate from family layouts. */
+.mc1-panel { padding: 1rem; }
+.mc1-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem 1.2rem; }
+.mc1-grid > div { min-width: 0; }
+.mc1-grid label { display: block; margin: 0 0 .25rem; }
+.mc1-grid select, .mc1-grid input { width: 100%; max-width: 100%; }
+.mc1-grid output { display: block; padding: .4rem 0; }
+.mc1-wide { grid-column: 1 / -1; }
+.mc1-unit { max-width: 8rem; }
+.mc1-help { font-size: .85rem; margin: .2rem 0; }
+.mc1-help summary { cursor: pointer; width: fit-content; padding: .15rem .45rem; border: 1px solid currentColor; border-radius: 50%; }
+.mc1-help p { max-width: 65ch; }
+.mc1-advanced { margin-top: .6rem; }
+@media (max-width: 700px) { .mc1-grid { grid-template-columns: minmax(0, 1fr); } .mc1-wide { grid-column: auto; } }

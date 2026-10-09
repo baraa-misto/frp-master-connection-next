@@ -17,6 +17,15 @@ const record: MAT1CatalogRecord = {
 
 afterEach(() => { vi.unstubAllGlobals(); });
 
+it("retains optional actual Tg editing for legacy family material requests", () => {
+  setMAT1Catalog([record]); setMAT1Default(record.id); setMAT1Active(true);
+  render(<MAT1MaterialsPanel family="beam-web-splice" />);
+  fireEvent.change(screen.getByLabelText("Actual Tg from controlled custom source"), { target: { value: "190" } });
+  expect(mat1Snapshot().conditions.glass_transition_temperature?.value).toBe("190");
+  fireEvent.change(screen.getByLabelText("Actual Tg from controlled custom source"), { target: { value: "" } });
+  expect(mat1Snapshot().conditions.glass_transition_temperature).toBeNull();
+});
+
 it("keeps catalog basis and entered Tg comparison separate from procurement conformance", () => {
   const qualifiedDisplayRecord = { ...record, property_basis: "MANUFACTURER_CHARACTERISTIC" };
   setMAT1Catalog([qualifiedDisplayRecord]); setMAT1Default(record.id); setMAT1Active(true);

@@ -50,13 +50,14 @@ it("uses two production selections in Direct while preserving other-family legac
   expect(mat1DefaultId("beam-web-splice")).toBe(legacy.id);
 });
 
-it("records actual extraordinary exposure choices and invalidates the current material result", () => {
+it("retains imported extraordinary exposure evidence without exposing removed Direct controls", () => {
   render(<MAT1MaterialsPanel family="multi-row" />);
   const original = mat1FamilyKey("multi-row");
   act(() => { acceptMAT1Design("multi-row", original, { overall_status: "ENGINEERING_REVIEW_REQUIRED", material_ledgers: [{ property_id: "tensile_strength_L", cm: "1", ct: "1", cch: "1", lambda_factor: "1", adjusted_candidate: "30" }] }); });
   expect(screen.getByText(/ASCE shape specification/)).toBeInTheDocument();
-  fireEvent.change(screen.getByLabelText("Extraordinary UV / weathering"), { target: { value: "SPECIFIED" } });
-  fireEvent.change(screen.getByLabelText("Extraordinary freeze-thaw"), { target: { value: "UNKNOWN" } });
+  expect(screen.queryByLabelText("Extraordinary UV / weathering")).not.toBeInTheDocument();
+  expect(screen.queryByLabelText("Extraordinary freeze-thaw")).not.toBeInTheDocument();
+  act(() => { setMAT1Conditions({ ...conditions, uv_weathering: "SPECIFIED", freeze_thaw: "UNKNOWN" }); });
   expect(mat1Snapshot().conditions.uv_weathering).toBe("SPECIFIED");
   expect(mat1Snapshot().conditions.freeze_thaw).toBe("UNKNOWN");
   expect(mat1FamilyKey("multi-row")).not.toBe(original);
@@ -73,9 +74,9 @@ it("keeps explicit legacy selection source-gated and allows return to production
   expect(screen.getByLabelText("Tg applicability")).toHaveTextContent("NOT CONFIRMED");
   expect(screen.getByText(/DEVELOPMENT DATA/)).toBeInTheDocument();
   fireEvent.change(screen.getByLabelText("Actual Tg from controlled custom source"), { target: { value: "179.999" } });
-  expect(mat1Snapshot().conditions.glass_transition_temperature?.value).toBe("179.999");
+  expect(mat1Snapshot().directConditions?.glass_transition_temperature?.value).toBe("179.999");
   fireEvent.change(screen.getByLabelText("Actual Tg from controlled custom source"), { target: { value: "" } });
-  expect(mat1Snapshot().conditions.glass_transition_temperature).toBeNull();
+  expect(mat1Snapshot().directConditions?.glass_transition_temperature).toBeNull();
   fireEvent.change(screen.getByLabelText("Connection default material"), { target: { value: poly.id } });
   expect(screen.queryByLabelText("Tg applicability")).not.toBeInTheDocument();
 });
