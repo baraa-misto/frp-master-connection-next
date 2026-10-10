@@ -425,6 +425,14 @@
           "N/mm",
           "1"
         ],
+        "/properties/direct_finalization_contract_version/anyOf/0/const": "SHEAR01-DIRECT-F1",
+        "/$defs/DirectSupportEndCondition/enum": [
+          "UNSPECIFIED",
+          "CONTINUOUS_THROUGH_CONNECTION",
+          "FINITE_BOTH_ENDS",
+          "FINITE_NEGATIVE_END_ONLY",
+          "FINITE_POSITIVE_END_ONLY"
+        ],
         "/properties/orchestration_contract_version/const": "2.5C-RC1"
       },
       "stainless": "CME-2_METHODS_THEN_CME-3_FAMILY_ACTIVATION_REQUIRED",

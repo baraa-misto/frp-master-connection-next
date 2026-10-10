@@ -10,6 +10,7 @@ from __future__ import annotations
 import math
 import re
 from collections import Counter
+from dataclasses import replace
 from typing import Any
 
 from reportlab.graphics.shapes import Circle, Drawing, Line, Polygon, String
@@ -404,6 +405,45 @@ def colored_view(
 
 def multirow_physical_geometry(visual: dict[str, Any]) -> tuple[list[BoxFigure], list[BoltPoint]]:
     """Adapt the native 2-D plate/row visualization to the fixed report cameras."""
+
+    physical = visual.get("physical_connection")
+    physical_bolts = visual.get("physical_bolts")
+    layers = visual.get("layers")
+    if (
+        isinstance(physical, dict)
+        and isinstance(physical_bolts, list)
+        and isinstance(layers, list)
+        and len(layers) == 2
+        and {
+            str(component.get("section_family"))
+            for component in physical.get("components", [])
+            if isinstance(component, dict)
+        }
+        == {"ANGLE", "WIDE_FLANGE"}
+    ):
+        from frp_master_connection.reporting.geometry import canonical_bolt_points, canonical_boxes
+
+        boxes = canonical_boxes({"primitives": physical.get("primitives", [])})
+        bolts: list[BoltPoint] = []
+        for item in physical_bolts:
+            if not isinstance(item, dict) or not isinstance(item.get("display"), dict):
+                continue
+            display = item["display"]
+            washers = display.get("washers", [])
+            washer = washers[0] if isinstance(washers, list) and washers else {}
+            diameter = washer.get("outside_diameter") if isinstance(washer, dict) else None
+            for marker in canonical_bolt_points({"bolt": display}):
+                bolts.append(
+                    replace(
+                        marker,
+                        washer_diameter=float(diameter) if diameter is not None else None,
+                        row=str(item.get("row_id")),
+                        line=str(item.get("bolt_line_id")),
+                    )
+                )
+        if not boxes or len(bolts) != len(physical_bolts):
+            raise ValueError("Direct report requires every physical member and bolt path")
+        return boxes, bolts
 
     x0, x1, y0, y1 = (float(value) for value in visual["boundary"])
     thickness = sum(float(layer["thickness"]["value"]) for layer in visual["layers"])

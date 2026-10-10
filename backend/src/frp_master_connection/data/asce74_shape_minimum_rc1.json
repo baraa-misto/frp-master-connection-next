@@ -1,0 +1,452 @@
+{
+  "format": "ASCE74_23_MINIMUM_CHARACTERISTIC_SHAPE_CATALOG_RC1",
+  "specification": {
+    "source_standard": "ASCE/SEI 74-23",
+    "edition": "2023",
+    "erratum": "Erratum 1",
+    "erratum_effective": "2026-01-13",
+    "tables_affected_by_erratum": false,
+    "source_pdf_sha256": "A7127E37572D5D625C5F338FFB9A1D2D53F396897AFB26E0B4698A0131FE65BC",
+    "source_pdf_pages": [
+      17,
+      18,
+      19,
+      23
+    ],
+    "product_scope": "PULTRUDED_SHAPE",
+    "source_table": "Table 1-2",
+    "reference_condition": "REFERENCE",
+    "reference_locator": "Section 2.4.2",
+    "modulus_role": "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY",
+    "source_classification": "CODE_CHARACTERISTIC_SPECIFICATION_BASIS; NOT_MANUFACTURER_TEST_DATA",
+    "procurement_note": "Project FRP shall conform to the selected resin system and the applicable ASCE/SEI 74-23 minimum physical, mechanical, and durability requirements.",
+    "physical_requirements": {
+      "source_locator": "Table 1-1",
+      "barcol_hardness": "> 40",
+      "glass_transition_temperature_average": "> 180 degF (published approximate 82 degC); actual supplied-product Tg is not fabricated",
+      "moisture_equilibrium_content": "< 2%",
+      "minimum_samples": "5",
+      "cov": "< 10%"
+    },
+    "tg_project_requirement": {
+      "source_locator": "Section 1.3.4.1",
+      "formula": "max(180 degF, maximum expected material temperature + 40 degF)",
+      "temperature_conversion": "degC=(degF-32)*5/9; temperature difference 40 degF=200/9 degC",
+      "actual_supplied_tg": "NOT_MEASURED_BY_SOFTWARE"
+    },
+    "durability_requirements": {
+      "source_locator": "Sections 1.3.4.1 / 1.3.4.2",
+      "conditioning": [
+        "Distilled water 100 +/- 3 degF for 1000 h",
+        "ASTM G154 Cycle 1, UVA-340, alternating UV / condensing humidity",
+        "100 freeze-thaw cycles, ASTM C666 Procedure A"
+      ],
+      "longitudinal_transverse_tensile_retention": ">= 75% of characteristic values; product conformance, not a design multiplier",
+      "conditioned_tg": "Project-required Tg threshold; minimum five samples"
+    },
+    "factor_formulas": {
+      "source_locator": "Table 2-2 / Section 2.4.4",
+      "reference_temperature": "T <= 90 degF: strength/modulus CT=1",
+      "vinyl_strength": "1.7 - 0.008*T",
+      "vinyl_modulus": "1.5 - 0.006*T",
+      "polyester_strength": "1.9 - 0.010*T",
+      "polyester_modulus": "1.7 - 0.008*T",
+      "temperature_domain": "90 < sustained T <= 140 degF; no extrapolation above 140",
+      "reference_moisture": "CM strength/modulus=1",
+      "sustained_moisture": "CM strength=.75 / modulus=.90",
+      "chemical": "None declared CCH=1; specified ASTM C581 / engineer-stipulated source required"
+    },
+    "legacy_records": [
+      "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
+      "ICE_VINYL_ESTER_OWNER_SEED_RC0"
+    ]
+  },
+  "records": [
+    {
+      "id": "ICE_ISOPHTHALIC_POLYESTER_ASCE74_23_MIN_SHAPE_RC1",
+      "revision": "RC1",
+      "display_name": "ICE — Isophthalic polyester",
+      "company": "ICE",
+      "resin": "Isophthalic polyester",
+      "properties": {
+        "tensile_strength_L": {
+          "label": "Longitudinal tensile strength",
+          "symbol": "Ft,L",
+          "value": "30",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal tensile strength; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "tensile_strength_T": {
+          "label": "Transverse tensile strength",
+          "symbol": "Ft,T",
+          "value": "7",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse tensile strength; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "tensile_modulus_L": {
+          "label": "Longitudinal tensile modulus",
+          "symbol": "Et,L",
+          "value": "3000",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal tensile modulus; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "tensile_modulus_T": {
+          "label": "Transverse tensile modulus",
+          "symbol": "Et,T",
+          "value": "800",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse tensile modulus; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "compressive_strength_L": {
+          "label": "Longitudinal compressive strength",
+          "symbol": "Fc,L",
+          "value": "30",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal compressive strength; D6641; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "compressive_modulus_L": {
+          "label": "Longitudinal compressive modulus",
+          "symbol": "Ec,L",
+          "value": "3000",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal compressive modulus; D6641; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "compressive_modulus_T": {
+          "label": "Transverse compressive modulus",
+          "symbol": "Ec,T",
+          "value": "1000",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse compressive modulus; D6641; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "in_plane_shear_strength_LT": {
+          "label": "In-plane shear strength",
+          "symbol": "Fsh,LT",
+          "value": "8",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; In-plane shear strength; D5379; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "in_plane_shear_modulus_LT": {
+          "label": "In-plane shear modulus",
+          "symbol": "GLT",
+          "value": "400",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; In-plane shear modulus; D5379; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "interlaminar_shear_strength": {
+          "label": "Interlaminar shear strength",
+          "symbol": "Fsh,int",
+          "value": "3.5",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Interlaminar shear strength; D2344; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "bearing_strength_L": {
+          "label": "Longitudinal pin-bearing strength",
+          "symbol": "Fbr,L",
+          "value": "21",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal pin-bearing strength; D953 Procedure C; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "UNTHREADED_PIN_BASIS; CHAPTER_8_THREAD_REDUCTION_SEPARATE"
+          ]
+        },
+        "bearing_strength_T": {
+          "label": "Transverse pin-bearing strength",
+          "symbol": "Fbr,T",
+          "value": "18",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse pin-bearing strength; D953 Procedure C; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "UNTHREADED_PIN_BASIS; CHAPTER_8_THREAD_REDUCTION_SEPARATE"
+          ]
+        },
+        "pull_through_frp_thickness_0_375_in": {
+          "label": "Pull-through per fastener at FRP thickness t=0.375 in",
+          "symbol": "Fpt(t)",
+          "value": "0.650",
+          "unit": "kip",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; FRP thickness t=0.375 in; ASTM D7332 Procedure B; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "FRP_THICKNESS_IN=0.375",
+            "EXACT_THICKNESS_ONLY; NO_INTERPOLATION; BOLT_AXIS_METHOD_REQUIRED"
+          ]
+        },
+        "pull_through_frp_thickness_0_500_in": {
+          "label": "Pull-through per fastener at FRP thickness t=0.500 in",
+          "symbol": "Fpt(t)",
+          "value": "0.900",
+          "unit": "kip",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; FRP thickness t=0.500 in; ASTM D7332 Procedure B; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "FRP_THICKNESS_IN=0.500",
+            "EXACT_THICKNESS_ONLY; NO_INTERPOLATION; BOLT_AXIS_METHOD_REQUIRED"
+          ]
+        },
+        "pull_through_frp_thickness_0_750_in": {
+          "label": "Pull-through per fastener at FRP thickness t=0.750 in",
+          "symbol": "Fpt(t)",
+          "value": "1.250",
+          "unit": "kip",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; FRP thickness t=0.750 in; ASTM D7332 Procedure B; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "FRP_THICKNESS_IN=0.750",
+            "EXACT_THICKNESS_ONLY; NO_INTERPOLATION; BOLT_AXIS_METHOD_REQUIRED"
+          ]
+        }
+      },
+      "explicitly_missing": [
+        "TRANSVERSE_COMPRESSIVE_STRENGTH",
+        "DIRECTIONAL_FLEXURAL_PROPERTIES",
+        "MANUFACTURER_MEAN_MODULUS",
+        "ACTUAL_SUPPLIED_PRODUCT_TG"
+      ]
+    },
+    {
+      "id": "ICE_VINYL_ESTER_ASCE74_23_MIN_SHAPE_RC1",
+      "revision": "RC1",
+      "display_name": "ICE — Vinyl ester",
+      "company": "ICE",
+      "resin": "Vinyl ester",
+      "properties": {
+        "tensile_strength_L": {
+          "label": "Longitudinal tensile strength",
+          "symbol": "Ft,L",
+          "value": "30",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal tensile strength; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "tensile_strength_T": {
+          "label": "Transverse tensile strength",
+          "symbol": "Ft,T",
+          "value": "7",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse tensile strength; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "tensile_modulus_L": {
+          "label": "Longitudinal tensile modulus",
+          "symbol": "Et,L",
+          "value": "3000",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal tensile modulus; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "tensile_modulus_T": {
+          "label": "Transverse tensile modulus",
+          "symbol": "Et,T",
+          "value": "800",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse tensile modulus; D638; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "compressive_strength_L": {
+          "label": "Longitudinal compressive strength",
+          "symbol": "Fc,L",
+          "value": "30",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal compressive strength; D6641; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "compressive_modulus_L": {
+          "label": "Longitudinal compressive modulus",
+          "symbol": "Ec,L",
+          "value": "3000",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal compressive modulus; D6641; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "compressive_modulus_T": {
+          "label": "Transverse compressive modulus",
+          "symbol": "Ec,T",
+          "value": "1000",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse compressive modulus; D6641; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "in_plane_shear_strength_LT": {
+          "label": "In-plane shear strength",
+          "symbol": "Fsh,LT",
+          "value": "8",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; In-plane shear strength; D5379; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "in_plane_shear_modulus_LT": {
+          "label": "In-plane shear modulus",
+          "symbol": "GLT",
+          "value": "400",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; In-plane shear modulus; D5379; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "CHARACTERISTIC_STRENGTH_STABILITY_ONLY; NO_MEAN_MODULUS_AUTHORITY"
+          ]
+        },
+        "interlaminar_shear_strength": {
+          "label": "Interlaminar shear strength",
+          "symbol": "Fsh,int",
+          "value": "3.5",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Interlaminar shear strength; D2344; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE"
+          ]
+        },
+        "bearing_strength_L": {
+          "label": "Longitudinal pin-bearing strength",
+          "symbol": "Fbr,L",
+          "value": "21",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Longitudinal pin-bearing strength; D953 Procedure C; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "UNTHREADED_PIN_BASIS; CHAPTER_8_THREAD_REDUCTION_SEPARATE"
+          ]
+        },
+        "bearing_strength_T": {
+          "label": "Transverse pin-bearing strength",
+          "symbol": "Fbr,T",
+          "value": "18",
+          "unit": "ksi",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; Transverse pin-bearing strength; D953 Procedure C; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "UNTHREADED_PIN_BASIS; CHAPTER_8_THREAD_REDUCTION_SEPARATE"
+          ]
+        },
+        "pull_through_frp_thickness_0_375_in": {
+          "label": "Pull-through per fastener at FRP thickness t=0.375 in",
+          "symbol": "Fpt(t)",
+          "value": "0.650",
+          "unit": "kip",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; FRP thickness t=0.375 in; ASTM D7332 Procedure B; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "FRP_THICKNESS_IN=0.375",
+            "EXACT_THICKNESS_ONLY; NO_INTERPOLATION; BOLT_AXIS_METHOD_REQUIRED"
+          ]
+        },
+        "pull_through_frp_thickness_0_500_in": {
+          "label": "Pull-through per fastener at FRP thickness t=0.500 in",
+          "symbol": "Fpt(t)",
+          "value": "0.900",
+          "unit": "kip",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; FRP thickness t=0.500 in; ASTM D7332 Procedure B; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "FRP_THICKNESS_IN=0.500",
+            "EXACT_THICKNESS_ONLY; NO_INTERPOLATION; BOLT_AXIS_METHOD_REQUIRED"
+          ]
+        },
+        "pull_through_frp_thickness_0_750_in": {
+          "label": "Pull-through per fastener at FRP thickness t=0.750 in",
+          "symbol": "Fpt(t)",
+          "value": "1.250",
+          "unit": "kip",
+          "basis": "ASCE_74_23_MINIMUM_CHARACTERISTIC",
+          "source_locator": "ASCE/SEI 74-23 Table 1-2; FRP thickness t=0.750 in; ASTM D7332 Procedure B; minimum 10 tests",
+          "applicability": [
+            "PULTRUDED_SHAPE",
+            "FRP_THICKNESS_IN=0.750",
+            "EXACT_THICKNESS_ONLY; NO_INTERPOLATION; BOLT_AXIS_METHOD_REQUIRED"
+          ]
+        }
+      },
+      "explicitly_missing": [
+        "TRANSVERSE_COMPRESSIVE_STRENGTH",
+        "DIRECTIONAL_FLEXURAL_PROPERTIES",
+        "MANUFACTURER_MEAN_MODULUS",
+        "ACTUAL_SUPPLIED_PRODUCT_TG"
+      ]
+    }
+  ]
+}

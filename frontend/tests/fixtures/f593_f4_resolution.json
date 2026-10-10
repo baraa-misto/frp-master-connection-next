@@ -1,0 +1,75 @@
+{
+  "kind": "CATALOG",
+  "contract": "FASTENER-F4-RC1",
+  "revision": "ASTM_F593_17_GROUP_2_316_316L_RC1",
+  "id": "ASTM_F593_17_GROUP_2_316_316L",
+  "display_name": "ASTM F593-17 Group 2 \u2014 316",
+  "specification": "ASTM F593-17",
+  "alloy_group": "2",
+  "alloys": [
+    "316"
+  ],
+  "condition": "CW1",
+  "marking": "F593G",
+  "nut": "ASTM F594-15",
+  "washer_basis": "compatible 316/316L stainless steel",
+  "installation": "SNUG_TIGHT",
+  "fnt": {
+    "value": "100",
+    "unit": "ksi"
+  },
+  "display_fnt": {
+    "value": "100",
+    "unit": "ksi"
+  },
+  "fnt_state": "CATALOG_SOURCE_RESOLVED",
+  "qualification": "NUMERICAL_SOURCE_RESOLVED_CONNECTION_QUALIFICATION_UNCHANGED",
+  "source_requirement": "",
+  "catalog_record_id": "ASTM_F593_17_GROUP_2_316_316L_RC1",
+  "catalog_revision": "RC1",
+  "catalog_digest": "ecb9ca81764f33f5926b2404870322d82325558855ba03f5b077b692e1c7b9ec",
+  "source_classification": "OWNER_APPROVED_ASTMF593_TABLE_TRANSCRIPTION_RC1",
+  "source_revision": "SHEAR01-DIRECT-OR2-F4",
+  "owner_approval": "Owner supplied and approved in the controlling F4 order; transcription, not an ASTM-issued original.",
+  "selected_row": {
+    "row_id": "G2-CW1",
+    "condition": "CW1",
+    "marking": "F593G",
+    "diameter_min": ".250",
+    "diameter_max": ".625",
+    "tensile_min": "100",
+    "tensile_max": "150",
+    "design_fnt": "100",
+    "yield_min": "65",
+    "hardness_basis": "B95 to C32"
+  },
+  "nominal_diameter": {
+    "value": "0.5",
+    "unit": "in"
+  },
+  "exact_diameter_mm": "12.7",
+  "range_comparison": "INCLUSIVE_MATCH",
+  "requested_selectors": {
+    "revision": "ASTM_F593_17_GROUP_2_316_316L_RC1",
+    "alloy_group": "2",
+    "alloy": "316",
+    "condition": "COLD_WORKED"
+  },
+  "design_rule": "Minimum/lower specified tensile bound; ASCE/SEI 74-23 Chapter 8 F593 reference.",
+  "shear_planes": [
+    {
+      "plane_id": "SHEAR_PLANE_1",
+      "thread_status": "EXCLUDED",
+      "fnv": {
+        "value": "413.6854375901016802033604067",
+        "unit": "MPa"
+      },
+      "display_fnv": {
+        "value": "59.99999999999999999999999999698126551205708763548399075682213729988536851111449434896347295502835265",
+        "unit": "ksi"
+      },
+      "fnv_rule": "0.6 Fnt"
+    }
+  ],
+  "specification_note": "Specified fastener shall conform to ASTM F593-17, Alloy Group 2, 316, CW1/F593G. Delivered hardware conformance is procurement/project QA responsibility. No per-connection supplier certification required."
+}

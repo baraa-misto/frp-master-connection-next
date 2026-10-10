@@ -23,7 +23,7 @@ describe("Stage 2.3R presentation-only engineering formatting", () => {
 
   it("uses engineer-friendly labels while retaining unknown stable IDs", () => {
     expect(friendlyIdentifier("member-a")).toBe("Angle brace");
-    expect(friendlyIdentifier("member-b")).toBe("W column");
+    expect(friendlyIdentifier("member-b")).toBe("Supporting W member");
     expect(friendlyIdentifier("bolt-1")).toBe("Selected bolt");
     expect(friendlyIdentifier("B_R2_L3")).toBe("Bolt · Row 2 · Line 3");
     expect(friendlyIdentifier("ROW_2")).toBe("Row 2");

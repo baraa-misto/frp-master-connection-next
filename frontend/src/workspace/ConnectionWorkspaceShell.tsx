@@ -1,5 +1,6 @@
-import { createContext, useContext } from "react";
-import type { ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
+import type { MouseEvent, ReactNode } from "react";
+import { workspaceSupports } from "../domain/workspaceCapabilities";
 import { mat1FamilyKey, useMAT1 } from "../state/mat1Session";
 import { viewerUnity } from "./unityRatio";
 import type { UnityFamily, UnityView } from "./unityRatio";
@@ -15,6 +16,7 @@ interface ConnectionWorkspaceShellProps {
   readonly className?: string;
   readonly family?: string;
   readonly reportDraft?: unknown;
+  readonly reportBlockedReason?: string;
 }
 
 interface ConnectionWorkspaceSidebarProps {
@@ -29,6 +31,7 @@ interface ConnectionWorkspaceMainProps {
 interface PersistentConnectionViewerProps {
   readonly children: ReactNode;
   readonly unity?: UnityView;
+  readonly geometryOnlyReason?: string;
 }
 
 interface SidebarGroupProps {
@@ -37,7 +40,7 @@ interface SidebarGroupProps {
   readonly children: ReactNode;
   readonly defaultOpen?: boolean;
   readonly selected?: boolean;
-  readonly onSelect?: (() => void) | undefined;
+  readonly onSelect?: ((event: MouseEvent<HTMLElement>) => void) | undefined;
   readonly onFocusCapture?: (() => void) | undefined;
 }
 
@@ -62,13 +65,25 @@ export function ConnectionWorkspaceShell({
   className = "",
   family,
   reportDraft,
+  reportBlockedReason,
 }: ConnectionWorkspaceShellProps) {
+  const mat1 = useMAT1();
+  // reportDraft already binds geometry. Preview bookkeeping must not invalidate
+  // the signed response to that same request while it is in flight.
+  const inputKey = family === undefined ? null : JSON.stringify([reportDraft, mat1FamilyKey(family, false)]);
+  const priorInputKey = useRef(inputKey);
+  useEffect(() => {
+    if (family !== undefined && priorInputKey.current !== inputKey) {
+      invalidateReportSnapshot(family);
+    }
+    priorInputKey.current = inputKey;
+  }, [family, inputKey]);
   return (
     <MAT1FamilyContext.Provider value={family ?? null}><div className={`engineering-workspace connection-first-workspace${className === "" ? "" : ` ${className}`}`}>
       {banner}
-      {family === undefined ? null : <ReportExportButton family={family} draft={reportDraft} />}
-      {family === undefined ? null : <div onChangeCapture={() => { invalidateReportSnapshot(family); }} onClickCapture={event => { if (event.target instanceof Element && event.target.closest("button")) invalidateReportSnapshot(family); }}><MAT1MaterialsPanel family={family} /></div>}
-      <div className="workspace-body" onChangeCapture={() => { if (family !== undefined) invalidateReportSnapshot(family); }} onClickCapture={event => { if (family !== undefined && event.target instanceof Element && event.target.closest("button")) invalidateReportSnapshot(family); }}>{children}</div>
+      {reportBlockedReason !== undefined ? <p role="status">{reportBlockedReason}</p> : family === undefined ? null : <ReportExportButton family={family} draft={reportDraft} />}
+      {family === undefined || !mat1.active || !workspaceSupports(family, "frp_material_selection") ? null : <div><MAT1MaterialsPanel family={family} /></div>}
+      <div className="workspace-body">{children}</div>
     </div></MAT1FamilyContext.Provider>
   );
 }
@@ -84,32 +99,34 @@ export function ConnectionWorkspaceMain({ children }: ConnectionWorkspaceMainPro
   return <main className="connection-view-column">{children}</main>;
 }
 
-export function PersistentConnectionViewer({ children, unity }: PersistentConnectionViewerProps) {
+export function PersistentConnectionViewer({ children, unity, geometryOnlyReason }: PersistentConnectionViewerProps) {
   const family = useContext(MAT1FamilyContext);
   const mat1 = useMAT1();
   const gateTrace = family === null ? undefined : mat1.designTraces[family] as { overall_status?: string } | undefined;
   const gateStatus = family !== null && mat1.designKeys[family] === mat1FamilyKey(family)
-    ? gateTrace?.overall_status ?? "SOURCE_REQUIRED" : "STALE";
+    ? gateTrace?.overall_status ?? "SOURCE_REQUIRED" : gateTrace === undefined ? "Not calculated" : "Recalculation needed";
   let presented = unity;
-  if (unity !== undefined && family !== null && mat1.active) {
-    const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[] } | undefined;
+  if (geometryOnlyReason !== undefined) {
+    presented = { tone: "gray", ratio: null, ratioText: "—", status: "Structural design not evaluated", governing: null, explanation: geometryOnlyReason };
+  } else if (unity !== undefined && family !== null && mat1.active) {
+    const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[]; material_sources?: { default?: { property_basis?: string } } } | undefined;
     if (mat1.designKeys[family] !== mat1FamilyKey(family) || trace === undefined) {
-      presented = { tone: "gray", ratio: null, ratioText: "—", status: "STALE", governing: null, explanation: "FRP material or design conditions changed. Run Design Check." };
+      presented = { tone: "gray", ratio: null, ratioText: "—", status: trace === undefined ? "Not calculated" : "Recalculation needed", governing: null, explanation: trace === undefined ? "Run Design Check to calculate the connection." : "FRP material or design conditions changed. Run Design Check." };
     } else {
       const mapped = unityFamily[family];
       const inspected = mapped === undefined ? unity : viewerUnity(mapped, trace.client_design ?? trace.native_design);
       presented = {
         ...inspected,
-        tone: inspected.tone === "red" ? "red" : "yellow",
+        tone: inspected.tone === "red" || trace.overall_status === "FAIL" ? "red" : "yellow",
         status: trace.overall_status ?? "SOURCE_REQUIRED",
-        explanation: trace.material_issues?.[0] ?? "Material source and qualification remain unresolved.",
+        explanation: trace.material_issues?.[0] ?? (trace.material_sources?.default?.property_basis === "ASCE_74_23_MINIMUM_CHARACTERISTIC" ? "ASCE shape material basis resolved. Required engineering methods and whole-connection qualification remain unresolved." : "Material source and qualification remain unresolved."),
       };
     }
   }
   return <UnityViewerContext.Provider value={presented ?? null}><div className="persistent-connection-viewer">
     {family !== null && mat1.active ? <div className="mat1-result-gate" role="status">
-      <strong>MAT1 connection status: {gateStatus}</strong>
-      <span> Detailed native checks are numerical diagnostics on declared material data. Source and qualification gates govern the connection status.</span>
+      <strong>Design completeness status: {geometryOnlyReason === undefined ? gateStatus : "Structural design not evaluated"}</strong>
+      <span> Required methods, project conditions and whole-connection qualification govern the connection result.</span>
     </div> : null}
     {children}
     {presented === undefined ? null : <div className="unity-viewer-fallback"><UnityRatioIndicator value={presented} /></div>}
@@ -131,7 +148,7 @@ export function SidebarGroup({
       open={defaultOpen || selected || undefined}
       onFocusCapture={onFocusCapture}
     >
-      <summary onClick={() => { onSelect?.(); }}>
+      <summary onClick={(event) => { onSelect?.(event); }}>
         <span>{title}</span>
         <small>{summary}</small>
       </summary>

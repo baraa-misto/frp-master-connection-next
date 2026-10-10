@@ -14,6 +14,25 @@ import { wiMomentSpliceDesignFixture, wiMomentSplicePreviewFixture } from "./wiM
 
 const mocks = vi.hoisted(() => ({ evaluate: vi.fn(), preview: vi.fn(), momentDesign: vi.fn(), momentPreview: vi.fn() }));
 const HOSTED_WINDOWS_COVERAGE_UI_TIMEOUT_MS = 20_000;
+function requiredElement(element: Element | null | undefined): Element {
+  if (element === null || element === undefined) throw new Error("Expected diagnostic control");
+  return element;
+}
+
+// Historical single-bolt UI tests exercise a synthetic non-Direct family.
+// The real FRP angle/W benchmark is covered by the unified Direct F1 tests.
+vi.mock("../src/fixtures/j1Benchmarks", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../src/fixtures/j1Benchmarks")>();
+  return {
+    ...actual,
+    loadJ1Benchmark: (unitSystem: "US_CUSTOMARY" | "SI") => {
+      const request = actual.loadJ1Benchmark(unitSystem);
+      const support = request.joint_assembly.members[1];
+      if (support !== undefined) support.material_kind = "STEEL";
+      return request;
+    },
+  };
+});
 
 vi.mock("../src/api/client", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../src/api/client")>();
@@ -137,7 +156,8 @@ describe("Stage 2.3R application and workspace", () => {
   it("renders exactly the two governed categories with no default selection", () => {
     render(<App />);
     expect(screen.getByRole("heading", { level: 1, name: "FRP Master Connection" })).toBeVisible();
-    expect(screen.getByText(/Stage 2\.6B/)).toBeVisible();
+    // OR1-08: the normal product header no longer exposes an internal stage identifier.
+    expect(screen.getByText("Engineering design workspace")).toBeVisible();
     const controls = within(screen.getByLabelText("Primary design categories")).getAllByRole("button");
     expect(controls).toHaveLength(2);
     expect(controls.every((value) => value.getAttribute("aria-pressed") === "false")).toBe(true);
@@ -160,37 +180,36 @@ describe("Stage 2.3R application and workspace", () => {
 
   it("opens the real Shear workspace with scope, session warning, classification, and source cards", () => {
     openShear();
-    expect(screen.getByRole("heading", { name: "Connection engineering workspace" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Direct angle-to-W connection" })).toBeVisible();
     expect(screen.getByText("Session only")).toBeVisible();
     expect(screen.getByText(/Session only .* not saved/)).toBeVisible();
     expect(screen.getAllByText("Shear Connections").length).toBeGreaterThan(0);
     expect(screen.queryByRole("option", { name: "Stair Stringer Miter Connection" })).toBeNull();
-    for (const label of ["Brace to column flange", "One brace", "One selected bolt", "One row"]) {
+    // This synthetic historical one-bolt route remains available for regression coverage.
+    for (const label of ["Direct angle-to-W connection", "One brace", "One selected bolt", "One row"]) {
       expect(screen.getAllByText(label).length).toBeGreaterThan(0);
     }
     expect(screen.getByText("Angle brace")).toBeVisible();
-    expect(screen.getByText("W column")).toBeVisible();
-    fireEvent.click(screen.getByText("Materials"));
-    expect(screen.getByRole("heading", { name: "ICE Locked Pultruded FRP" })).toBeVisible();
-    for (const property of ["Ft,L", "Ft,T", "Fbr,L", "Fbr,T", "Fsh,LT"]) {
-      expect(screen.getByText(property)).toBeVisible();
-    }
-    expect(screen.queryByText("Fc,T")).not.toBeInTheDocument();
+    expect(screen.getByText("Supporting W member")).toBeVisible();
+    // OR1-09: the legacy ICE card was removed; the authenticated MAT1 panel
+    // presents the selected record in the mounted product workflow.
+    expect(screen.queryByRole("heading", { name: "ICE Locked Pultruded FRP" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByText("Fastener"));
-    expect(screen.getByRole("heading", { name: "316/316L stainless fastener" })).toBeVisible();
-    expect(screen.getByText(/Fnt source pending/)).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Connection viewer" })).toBeVisible();
-    expect(screen.getByText(/browser does not reconstruct calculation geometry/)).toBeVisible();
+    // OR1-10: the technical card names the selected source record.
+    expect(screen.getByRole("heading", { name: "316/316L Stainless-Steel Fastener System" })).toBeVisible();
+    expect(screen.getByText(/ASTM F593 tensile-strength source is required/)).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Direct angle-to-W connection viewer" })).toBeVisible();
+    expect(screen.getByText(/connection model updates automatically/)).toBeVisible();
   });
 
   it("loads exact J1 U.S. and SI input profiles without a production expected result", () => {
     openShear();
-    fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
+    fireEvent.click(screen.getByRole("button", { name: "Legacy J1 regression fixture — U.S." }));
     expect(screen.getByLabelText("Case label")).toHaveValue("Verified J1 — U.S.");
     expect(screen.getByLabelText("Bolt diameter")).toHaveValue("0.5");
     expect(screen.getAllByText("in").length).toBeGreaterThan(0);
     expect(screen.queryByRole("heading", { name: /Detailed calculation results/ })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — SI" }));
+    fireEvent.click(screen.getByRole("button", { name: "Legacy J1 regression fixture — SI" }));
     expect(screen.getByLabelText("Case label")).toHaveValue("Verified J1 — SI");
     expect(screen.getByLabelText("Unit system")).toHaveValue("SI");
     expect(screen.getByLabelText("Bolt diameter")).toHaveValue("12.7");
@@ -202,6 +221,16 @@ describe("Stage 2.3R application and workspace", () => {
     fireEvent.blur(screen.getByLabelText("Thickness"));
     expect(screen.getByLabelText("Thickness")).toHaveValue("9.525");
     expect(screen.getAllByText("mm").length).toBeGreaterThan(0);
+  });
+
+  it("shows Direct-specific material readiness and keeps the historical fixture in diagnostics", () => {
+    openShear();
+    expect(screen.getByText("Material and source readiness")).toBeInTheDocument();
+    expect(screen.queryByText(/Fastener and foundation materials remain separate/)).not.toBeInTheDocument();
+    expect(screen.getByText(/historical J1 regression fixture may not satisfy current Direct physical-validation/)).not.toBeVisible();
+    fireEvent.click(screen.getByText("Advanced Engineering Diagnostics · regression fixtures"));
+    expect(screen.getByText(/historical J1 regression fixture may not satisfy current Direct physical-validation/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Legacy J1 regression fixture — U.S." })).toBeVisible();
   });
 
   it("requires explicit unit-reset confirmation after edits and never live converts strings", () => {
@@ -225,7 +254,7 @@ describe("Stage 2.3R application and workspace", () => {
 
   it("exposes and updates supported angle, W, bolt, washer, thread, lap, action, demand, and factor inputs", () => {
     openShear();
-    fireEvent.click(screen.getByRole("button", { name: "Load verified J1 — U.S." }));
+    fireEvent.click(screen.getByRole("button", { name: "Legacy J1 regression fixture — U.S." }));
     const textEdits: Readonly<Record<string, string>> = {
       "Leg y": "3.4",
       "Leg z": "3.1",
@@ -238,9 +267,9 @@ describe("Stage 2.3R application and workspace", () => {
       "Standard hole display": "0.57",
       "Washer outside diameter": "1.01",
       "Washer thickness": "0.052",
-      "Column view extent below connection": "5.3",
-      "Column view extent above connection": "5.4",
-      "Brace-to-column angle": "60",
+      "Supporting W member view extent below connection": "5.3",
+      "Supporting W member view extent above connection": "5.4",
+      "Angle-to-W orientation": "60",
       "Brace view length": "4.5",
       "Bolt-to-brace-end distance e1": "2.1",
       "P / Fx": "-0.8",
@@ -292,25 +321,39 @@ describe("Stage 2.3R application and workspace", () => {
     expect(screen.getByLabelText("In-plane Fx")).toBeInTheDocument();
   });
 
+  it("keeps the historical non-Direct one-bolt route closed when its preview is not design-ready", async () => {
+    const blocked = previewResponseFixture();
+    blocked.design_check_ready = false;
+    blocked.design_check_blocking_reasons = ["BACKEND_RESISTANCE_INPUT_INCOMPLETE"];
+    mocks.preview.mockResolvedValueOnce(blocked);
+    openShear();
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Run Design Check" })).toHaveAttribute(
+        "title", "BACKEND_RESISTANCE_INPUT_INCOMPLETE",
+      );
+    });
+    expect(mocks.evaluate).not.toHaveBeenCalled();
+  });
+
   it("submits explicit orientation semantics, updates the angle layer, and marks results stale", async () => {
     openShear();
     fireEvent.click(screen.getByText("Connection Orientation / Geometry"));
-    expect(screen.getByLabelText("W column flange connection face")).toHaveValue("EXTERIOR");
+    expect(screen.getByLabelText("Supporting W member flange connection face")).toHaveValue("EXTERIOR");
     expect(screen.getByLabelText("Connected angle leg")).toHaveValue("LEG_1");
     expect(screen.getByLabelText("Outstanding angle leg")).toHaveValue("POSITIVE_INTERFACE_Z");
     mocks.evaluate.mockResolvedValueOnce(responseFixture());
     fireEvent.click(await currentDesignButton());
     await screen.findByRole("heading", { name: /Section 2.3.2 qualification required/i });
-    expect(screen.getByLabelText("Selected object")).toHaveTextContent("W Column Flange contact face");
-    fireEvent.change(screen.getByLabelText("W column flange connection face"), {
+    expect(screen.getByLabelText("Selected object")).toHaveTextContent("Supporting W flange contact face");
+    fireEvent.change(screen.getByLabelText("Supporting W member flange connection face"), {
       target: { value: "WEB_SIDE" },
     });
-    expect(screen.getByText("Design results are stale — run Design Check to update.")).toBeVisible();
+    expect(screen.getByText("Results need to be recalculated. Run Design Check after the model updates.")).toBeVisible();
     fireEvent.change(screen.getByLabelText("Connected angle leg"), {
       target: { value: "LEG_2" },
     });
     expect(screen.getByLabelText("Bearing threads · Angle Connected Leg")).toBeInTheDocument();
-    expect(screen.getByLabelText("Bearing threads · W Column Flange")).toBeInTheDocument();
+    expect(screen.getByLabelText("Bearing threads · Supporting W Flange")).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Outstanding angle leg"), {
       target: { value: "NEGATIVE_INTERFACE_Z" },
     });
@@ -359,9 +402,9 @@ describe("Stage 2.3R application and workspace", () => {
     openShear();
     await evaluateWith();
     fireEvent.click(screen.getByRole("button", { name: "Select W model" }));
-    expect(screen.getByLabelText("Selected object")).toHaveTextContent("W column");
+    expect(screen.getByLabelText("Selected object")).toHaveTextContent("Supporting W member");
     fireEvent.click(screen.getByRole("button", { name: "Select contact model" }));
-    expect(screen.getByLabelText("Selected object")).toHaveTextContent("W Column Flange contact face");
+    expect(screen.getByLabelText("Selected object")).toHaveTextContent("Supporting W flange contact face");
     const members = screen.getByText("Members");
     fireEvent.click(members);
     fireEvent.click(members);
@@ -375,7 +418,7 @@ describe("Stage 2.3R application and workspace", () => {
     const orientationGroup = screen.getByText("Connection Orientation / Geometry");
     fireEvent.click(orientationGroup);
     fireEvent.click(orientationGroup);
-    expect(screen.getByLabelText("Selected object")).toHaveTextContent("W Column Flange contact face");
+    expect(screen.getByLabelText("Selected object")).toHaveTextContent("Supporting W flange contact face");
   });
 
   it("shows loading state then renders server-authoritative qualification, table, trace, issues, and viewer", async () => {
@@ -387,7 +430,7 @@ describe("Stage 2.3R application and workspace", () => {
     resolveRequest?.(responseFixture());
     expect(await screen.findByRole("heading", { name: "Section 2.3.2 Qualification Required." })).toBeVisible();
     expect(screen.getByText(/not an ordinary whole-joint PASS/i)).toBeVisible();
-    fireEvent.click(screen.getByText("Advanced / Diagnostics"));
+    fireEvent.click(requiredElement(screen.getAllByText("Advanced Engineering Diagnostics")[0]));
     expect(screen.getByText("abc123")).toBeVisible();
     expect(screen.getByText("Net Section Tension")).toBeVisible();
     expect(screen.getByText("Whole-connection qualification remains required.")).toBeVisible();
@@ -511,18 +554,19 @@ describe("Stage 2.3R application and workspace", () => {
     expect(screen.getByText(/FX:/)).toBeInTheDocument();
   });
 
-  it("retains but clearly stales design results only after engineering input changes", async () => {
+  it("segregates stale design results only after engineering input changes", async () => {
     openShear();
     await evaluateWith();
     fireEvent.change(screen.getByLabelText("Bolt diameter"), { target: { value: "0.52" } });
-    expect(screen.getByText("Design results are stale — run Design Check to update.")).toBeVisible();
-    expect(screen.getByRole("heading", { name: /Section 2.3.2 qualification required/i })).toBeVisible();
+    expect(screen.getByText("Results need to be recalculated. Run Design Check after the model updates.")).toBeVisible();
+    expect(screen.queryByRole("heading", { name: /Section 2.3.2 qualification required/i })).not.toBeInTheDocument();
+    expect(screen.getByText("Previous calculation belongs to earlier inputs. Run Design Check for current results.")).toBeVisible();
     await evaluateWith();
     fireEvent.change(screen.getByLabelText("Case label"), { target: { value: "Changed label" } });
-    expect(screen.queryByText("Design results are stale — run Design Check to update.")).not.toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "60" } });
-    expect(screen.getByText("Design results are stale — run Design Check to update.")).toBeVisible();
-    expect(screen.getByRole("heading", { name: /Section 2.3.2 Qualification Required/i })).toBeVisible();
+    expect(screen.queryByText("Results need to be recalculated. Run Design Check after the model updates.")).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), { target: { value: "60" } });
+    expect(screen.getByText("Results need to be recalculated. Run Design Check after the model updates.")).toBeVisible();
+    expect(screen.queryByRole("heading", { name: /Section 2.3.2 Qualification Required/i })).not.toBeInTheDocument();
   });
 
   it("previews 4, 5, 8, and 12 inch view extents without staling current design", { timeout: HOSTED_WINDOWS_COVERAGE_UI_TIMEOUT_MS }, async () => {
@@ -537,7 +581,7 @@ describe("Stage 2.3R application and workspace", () => {
       const submitted = requiredAt(mocks.preview.mock.calls, 0)[0] as SingleBoltPreviewRequest;
       expect(submitted.view_extents?.brace_view_length.value).toBe(length);
       mocks.preview.mockClear();
-      expect(screen.queryByText(/Design results are stale/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Results need to be recalculated/)).not.toBeInTheDocument();
       expect(screen.getByRole("heading", { name: /Section 2\.3\.2 qualification required/i })).toBeVisible();
     }
     expect(mocks.evaluate).toHaveBeenCalledTimes(1);
@@ -545,7 +589,7 @@ describe("Stage 2.3R application and workspace", () => {
     fireEvent.change(screen.getByLabelText("Bolt-to-brace-end distance e1"), {
       target: { value: "2.5" },
     });
-    expect(screen.getByText(/Design results are stale .* run Design Check to update/)).toBeVisible();
+    expect(screen.getByText(/Results need to be recalculated.*Run Design Check after the model updates/)).toBeVisible();
   });
 
   it("accepts 120, 150, and 175 directed angles and shows separate server material relationships", { timeout: HOSTED_WINDOWS_COVERAGE_UI_TIMEOUT_MS }, async () => {
@@ -561,7 +605,7 @@ describe("Stage 2.3R application and workspace", () => {
       ["150", /30\.0° · Transverse/],
       ["175", /5\.0° · Longitudinal/],
     ] as const) {
-      fireEvent.change(screen.getByLabelText("Brace-to-column angle"), {
+      fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), {
         target: { value: geometryAngle },
       });
       await waitFor(() => {
@@ -574,7 +618,7 @@ describe("Stage 2.3R application and workspace", () => {
       )[0] as SingleBoltPreviewRequest;
       expect(submitted.geometry_template?.brace_to_column_directed_angle_deg).toBe(geometryAngle);
     }
-    expect(screen.getByText(/Design results are stale .* run Design Check to update/)).toBeVisible();
+    expect(screen.getByText(/Results need to be recalculated.*Run Design Check after the model updates/)).toBeVisible();
     expect(mocks.evaluate).not.toHaveBeenCalled();
   });
 
@@ -594,7 +638,7 @@ describe("Stage 2.3R application and workspace", () => {
     fireEvent.change(forceEditor, { target: { value: "-1.200" } });
     fireEvent.keyDown(forceEditor, { key: "Enter" });
     expect(screen.getByLabelText("P / Fx")).toHaveValue("-1.2");
-    expect(screen.getByText(/Design results are stale .* run Design Check to update/)).toBeVisible();
+    expect(screen.getByText(/Results need to be recalculated.*Run Design Check after the model updates/)).toBeVisible();
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Edit Member Fx applied load value" })).toHaveTextContent("−1.20 kip");
     });
@@ -635,23 +679,23 @@ describe("Stage 2.3R application and workspace", () => {
     openShear();
     await waitFor(() => { expect(mocks.preview).toHaveBeenCalledTimes(1); });
     mocks.preview.mockClear();
-    fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "0" } });
+    fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), { target: { value: "0" } });
     expect((await screen.findAllByText("Waiting for valid input")).length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "Run Design Check" })).toBeDisabled();
     expect(mocks.preview).not.toHaveBeenCalled();
     expect(mocks.evaluate).not.toHaveBeenCalled();
-    fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "90" } });
+    fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), { target: { value: "90" } });
     fireEvent.change(screen.getByLabelText("Brace view length"), { target: { value: "0" } });
     expect(screen.getAllByText("Waiting for valid input").length).toBeGreaterThan(0);
     fireEvent.change(screen.getByLabelText("Brace view length"), { target: { value: "4" } });
-    fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "NaN" } });
+    fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), { target: { value: "NaN" } });
     expect(screen.getAllByText("Waiting for valid input").length).toBeGreaterThan(0);
-    fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "180" } });
+    fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), { target: { value: "180" } });
     expect(screen.getAllByText("Waiting for valid input").length).toBeGreaterThan(0);
-    fireEvent.change(screen.getByLabelText("Brace-to-column angle"), { target: { value: "45" } });
+    fireEvent.change(screen.getByLabelText("Angle-to-W orientation"), { target: { value: "45" } });
     for (const label of [
-      "Column view extent below connection",
-      "Column view extent above connection",
+      "Supporting W member view extent below connection",
+      "Supporting W member view extent above connection",
       "Bolt-to-brace-end distance e1",
       "Standard hole display",
     ]) {
@@ -730,11 +774,11 @@ describe("Stage 2.3R application and workspace", () => {
     openShear();
 
     const alert = await screen.findByRole("alert");
-    expect(alert).toHaveTextContent("Preview unavailable");
+    expect(alert).toHaveTextContent("Connection model could not be updated");
     expect(screen.getByRole("button", { name: "Run Design Check" })).toBeDisabled();
-    expect(screen.getByText("Connection viewer")).toBeVisible();
+    expect(screen.getByText("Direct angle-to-W connection viewer")).toBeVisible();
     mocks.preview.mockResolvedValueOnce(previewResponseFixture());
-    fireEvent.click(screen.getByRole("button", { name: "Retry preview" }));
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
     await waitFor(() => { expect(screen.getAllByText("Valid geometry").length).toBeGreaterThan(0); });
     expect(mocks.evaluate).not.toHaveBeenCalled();
   });
@@ -814,7 +858,7 @@ describe("Stage 2.3R application and workspace", () => {
     mocks.evaluate.mockResolvedValueOnce(ordinary);
     fireEvent.click(await currentDesignButton());
     expect(await screen.findByRole("heading", { name: "Ready" })).toBeVisible();
-    fireEvent.click(screen.getByText("Advanced / Diagnostics"));
+    fireEvent.click(requiredElement(screen.getAllByText("Advanced Engineering Diagnostics")[0]));
     expect(screen.getByText("Not available")).toBeVisible();
     expect(screen.getByText("None returned")).toBeVisible();
   });

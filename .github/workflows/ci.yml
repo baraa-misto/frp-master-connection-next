@@ -20,7 +20,7 @@ jobs:
   backend:
     name: Backend (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 25
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -35,6 +35,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
@@ -53,17 +54,83 @@ jobs:
         run: python -m pip install --no-deps --no-build-isolation --editable .
       - name: Check dependency consistency
         run: python -m pip check
+      - name: Verify exact F8-G1 dependencies and full security audit
+        run: python ../scripts/verify_direct_f8_g1_dependencies.py --output direct-f8-g1-dependency-qa.json
+      - name: Upload F8-G1 dependency and security evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f8-g1-dependencies-${{ matrix.os }}
+          path: backend/direct-f8-g1-dependency-qa.json
+          if-no-files-found: error
       - name: Check Ruff formatting
         run: python -m ruff format --check .
       - name: Run Ruff linting
         run: python -m ruff check .
       - name: Run strict mypy analysis
         run: python -m mypy --strict src tests
+      - name: Build source and wheel distributions
+        run: python -m build --no-isolation --sdist --wheel --outdir dist
       - name: Run deterministic backend shards with combined coverage
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 7731
+          --expected-tests 8957
+      - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
+        run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
+      - name: Upload Appendix RC3 numerical authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: appendix-rc3-qa-${{ matrix.os }}
+          path: backend/appendix-rc3-qa/
+          if-no-files-found: error
+      - name: Generate signed Direct F6 first-row review PDFs
+        run: python ../scripts/generate_direct_f6_ci_pdfs.py --output direct-f6-review-pdfs
+      - name: Upload Direct F6 first-row review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f6-pdfs-${{ matrix.os }}
+          path: backend/direct-f6-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed Direct F7 Angle block review PDFs
+        run: python ../scripts/generate_direct_f7_ci_pdfs.py --output direct-f7-review-pdfs
+      - name: Upload Direct F7 Angle block review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f7-pdfs-${{ matrix.os }}
+          path: backend/direct-f7-review-pdfs/
+          if-no-files-found: error
+      - name: Generate Direct F8 qualification PDFs and statistical evidence
+        run: python ../scripts/generate_direct_f8_ci_pdfs.py --output direct-f8-review-pdfs
+      - name: Upload Direct F8 qualification evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f8-pdfs-${{ matrix.os }}
+          path: backend/direct-f8-review-pdfs/
+          if-no-files-found: error
+      - name: Generate authenticated Direct F9 status and report matrix
+        run: python ../scripts/generate_direct_f9_ci_pdfs.py --output direct-f9-review-pdfs
+      - name: Upload Direct F9 status and report evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f9-pdfs-${{ matrix.os }}
+          path: backend/direct-f9-review-pdfs/
+          if-no-files-found: error
+      - name: Generate authenticated Direct MC1 material and condition PDF matrix
+        run: python ../scripts/generate_direct_mc1_ci_pdfs.py --output direct-mc1-review-pdfs
+      - name: Upload Direct MC1 material and condition report evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-mc1-pdfs-${{ matrix.os }}
+          path: backend/direct-mc1-review-pdfs/
+          if-no-files-found: error
+      - name: Generate authenticated Direct SAB2 geometry reviews
+        run: python ../scripts/generate_direct_sab2_ci_pdfs.py --output direct-sab2-review-pdfs
+      - name: Upload Direct SAB2 geometry review evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-sab2-pdfs-${{ matrix.os }}
+          path: backend/direct-sab2-review-pdfs/
+          if-no-files-found: error
       - name: Generate real REPORT1 PDFs on this runner
         run: >-
           python -m pytest -q -p no:cacheprovider
@@ -71,8 +138,72 @@ jobs:
           tests/test_report1_pdf.py::test_multirow_real_pdf_has_native_path_inventory_and_input_only_boundary
           tests/test_report1_pdf.py::test_dctn_3b_transverse_demand_is_reported_without_response_qualification
           tests/test_report1_pdf_edges.py::test_embedded_font_keeps_common_unicode_metadata_searchable
+      - name: Generate signed-snapshot Direct F1 review PDFs
+        run: python ../scripts/generate_direct_f1_ci_pdfs.py --output direct-f1-review-pdfs
+      - name: Upload Direct F1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f1-pdfs-${{ matrix.os }}
+          path: backend/direct-f1-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed-snapshot Direct OR1 review PDFs
+        run: python ../scripts/generate_direct_or1_ci_pdfs.py --output direct-or1-review-pdfs
+      - name: Upload Direct OR1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or1-pdfs-${{ matrix.os }}
+          path: backend/direct-or1-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed-snapshot Direct OR2 review PDFs
+        run: python ../scripts/generate_direct_or2_ci_pdfs.py --output direct-or2-review-pdfs
+      - name: Upload Direct OR2 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed-snapshot Direct OR2 F2 review PDFs
+        run: python ../scripts/generate_direct_or2_f2_ci_pdfs.py --output direct-or2-f2-review-pdfs
+      - name: Upload Direct OR2 F2 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-f2-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-f2-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed-snapshot Direct OR2 F3 review PDFs
+        run: python ../scripts/generate_direct_or2_f3_ci_pdfs.py --output direct-or2-f3-review-pdfs
+      - name: Upload Direct OR2 F3 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-f3-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-f3-review-pdfs/
+          if-no-files-found: error
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help
+      - name: Generate signed Direct ASCE F5 material review PDFs
+        run: python ../scripts/generate_direct_asce_f5_ci_pdfs.py --output direct-asce-f5-review-pdfs
+      - name: Upload Direct ASCE F5 material review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-asce-f5-pdfs-${{ matrix.os }}
+          path: backend/direct-asce-f5-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed Direct F593 F4 catalog review PDFs
+        run: python ../scripts/generate_direct_f593_f4_ci_pdfs.py --output direct-f593-f4-review-pdfs
+      - name: Upload Direct F593 F4 catalog review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f593-f4-pdfs-${{ matrix.os }}
+          path: backend/direct-f593-f4-review-pdfs/
+          if-no-files-found: error
+      - name: Generate signed Direct supporting-end R1 review PDFs
+        run: python ../scripts/generate_direct_support_ends_r1_ci_pdfs.py --output direct-support-end-r1-review-pdfs
+      - name: Upload Direct supporting-end R1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-support-end-r1-pdfs-${{ matrix.os }}
+          path: backend/direct-support-end-r1-review-pdfs/
+          if-no-files-found: error
       - name: Check Alembic CLI availability
         run: python -m alembic --help
       - name: Smoke-test runtime dependencies
@@ -102,6 +233,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Set up Node
         uses: actions/setup-node@v7
         with:

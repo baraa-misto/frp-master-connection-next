@@ -7,7 +7,8 @@ connection or synthesize a resistance from diagram dimensions.
 from __future__ import annotations
 
 import io
-from dataclasses import dataclass
+from collections.abc import Sequence
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from decimal import Decimal
 from itertools import pairwise
@@ -28,6 +29,7 @@ from reportlab.platypus import (
     BaseDocTemplate,
     Flowable,
     Frame,
+    KeepTogether,
     PageBreak,
     PageTemplate,
     Paragraph,
@@ -36,6 +38,15 @@ from reportlab.platypus import (
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
+from frp_master_connection.application.direct_qualification_matching import COVERED_RESPONSES
+from frp_master_connection.reporting.direct_first_row import direct_first_row_reason
+from frp_master_connection.reporting.direct_qualification import qualification_summary_rows
+from frp_master_connection.reporting.direct_status import (
+    coverage_rows,
+    engineering_notation,
+    executive_rows,
+)
+from frp_master_connection.reporting.f593_report import f593_bolt_rows, f593_source_rows
 from frp_master_connection.reporting.multirow_substitutions import multirow_native_substitution
 from frp_master_connection.reporting.reader_data import humanize, readable_value, short_number
 from frp_master_connection.reporting.snapshot import ReportSnapshot
@@ -82,6 +93,7 @@ class ReportOptions:
     prepared_by: str = ""
     checked_by: str = ""
     notes: str = ""
+    mode: Literal["ENGINEER_REPORT", "FULL_TECHNICAL_AUDIT"] = "ENGINEER_REPORT"
 
 
 @dataclass(frozen=True, slots=True)
@@ -205,6 +217,22 @@ _MULTIROW_METHODS = {
     ),
 }
 
+_DIRECT_SINGLE_ROW_METHODS = {
+    "ASCE_EQ_8_7A_8_7B": _SINGLE_BOLT_METHODS["NET_SECTION_TENSION"],
+    "ASCE_EQ_8_7A_8_7C": MethodTemplate(
+        "Single-row net tension",
+        "R_n = (w - N_b d_n) t F_t / (0.65 C_i); R_d = phi lambda C_delta C_lap R_n",
+        "The actual two- or three-bolt net section and source coefficient are retained.",
+    ),
+    "ASCE_EQ_8_8": _SINGLE_BOLT_METHODS["SHEAR_OUT"],
+    "ASCE_EQ_8_9A_8_9B": _SINGLE_BOLT_METHODS["CLEAVAGE"],
+    "ASCE_EQ_8_9C": MethodTemplate(
+        "Single-row cleavage",
+        "R_n = 0.15 [(e_2 + 0.5g - d_n) F_t,L + 2e_1 F_s] t; R_d = phi lambda C_delta C_lap R_n",
+        "This method applies only to the source-authorized longitudinal tensile path.",
+    ),
+}
+
 
 def _font_setup() -> None:
     if "ReportVera" in pdfmetrics.getRegisteredFontNames():
@@ -239,6 +267,8 @@ def _ratio_side(ratio: Decimal) -> str:
 
 
 def _paragraph(value: object, style: ParagraphStyle) -> Paragraph:
+    if isinstance(value, Paragraph):
+        return value
     plain = _text(value)
     return Paragraph(escape(plain).replace("\n", "<br/>"), style)
 
@@ -283,6 +313,274 @@ def _input_source_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
         )
     else:
         rows.append(("Server defaults", "None recorded for this validated request"))
+    return rows
+
+
+def _direct_selected_material_label(
+    snapshot: ReportSnapshot, native_material: dict[str, object]
+) -> str:
+    """Present the selected MAT1 source; the native material ID is an internal adapter."""
+
+    sources = snapshot.result.get("material_sources")
+    if not isinstance(sources, dict):
+        return str(native_material.get("display_name", "Unresolved"))
+    records: list[dict[str, object]] = []
+    default = sources.get("default")
+    if isinstance(default, dict):
+        records.append(default)
+    overrides = sources.get("overrides")
+    if isinstance(overrides, dict):
+        records.extend(item for item in overrides.values() if isinstance(item, dict))
+    labels = sorted({str(record.get("display_name", "Unresolved")) for record in records})
+    return ", ".join(labels) if labels else str(native_material.get("display_name", "Unresolved"))
+
+
+def _direct_selected_fastener(snapshot: ReportSnapshot) -> dict[str, object]:
+    source = snapshot.result.get("fastener_source")
+    if not isinstance(source, dict):
+        return {}
+    selected = source.get("snapshot") if source.get("kind") == "SESSION" else source
+    return selected if isinstance(selected, dict) else {}
+
+
+def _direct_selected_fastener_label(snapshot: ReportSnapshot, fallback: str) -> str:
+    selected = _direct_selected_fastener(snapshot)
+    return str(selected.get("display_name", fallback))
+
+
+def _direct_selected_fastener_fnt(snapshot: ReportSnapshot) -> str:
+    selected = _direct_selected_fastener(snapshot)
+    fnt = selected.get("fnt")
+    return "Controlled source required" if fnt is None else readable_value(fnt, "US_CUSTOMARY")
+
+
+def _mat1_factor_label(role: str, key: str, ledger: dict[str, object]) -> str:
+    if role == "Modulus" and key == "lambda_factor":
+        return "Not applicable to modulus"
+    value = ledger.get(key)
+    if (
+        role == "Modulus"
+        and key == "cch"
+        and ledger.get("chemical_modulus_applicability") == "UNEVALUATED"
+    ):
+        return "UNEVALUATED (chemical modulus)"
+    return str(value) if value is not None else "source required"
+
+
+def _mat1_reader_rows(snapshot: ReportSnapshot) -> list[tuple[str, str]]:
+    """Read selected MAT1 facts from the signed response, without recalculation."""
+
+    sources = snapshot.result.get("material_sources")
+    if not isinstance(sources, dict) or not isinstance(sources.get("default"), dict):
+        return []
+    record = sources["default"]
+    production = record.get("property_basis") == "ASCE_74_23_MINIMUM_CHARACTERISTIC"
+    condition_basis = sources.get("condition_basis", {}).get("default", {})
+    assignments = snapshot.request.get("mat1_assignments", {})
+    conditions = assignments.get("default_conditions", {}) if isinstance(assignments, dict) else {}
+    conditions = conditions if isinstance(conditions, dict) else {}
+
+    def quantity(name: str) -> str:
+        item = conditions.get(name, {})
+        return (
+            f"{item.get('value', 'unspecified')} {item.get('unit', '')}"
+            if isinstance(item, dict)
+            else "Unspecified"
+        )
+
+    physical = snapshot.request.get("physical_connection", {})
+    hardware = physical.get("fastener_snapshot", {}) if isinstance(physical, dict) else {}
+    hardware = hardware if isinstance(hardware, dict) else {}
+    hardware_id = hardware.get("id", "Unknown")
+    hardware_label = (
+        "ASTM F593-17 Group 2 316/316L cold-worked; ASTM F594-15 nut"
+        if hardware_id == "ASTM_F593_17_GROUP_2_316_316L"
+        else str(hardware.get("display_name", hardware_id))
+    )
+    hardware_label = _direct_selected_fastener_label(snapshot, hardware_label)
+    ledgers = snapshot.result.get("material_ledgers", [])
+    factors: dict[str, str] = {}
+    if isinstance(ledgers, list):
+        for item in ledgers:
+            if not isinstance(item, dict):
+                continue
+            property_id = item.get("property_id")
+            if not isinstance(property_id, str):
+                continue
+            role = "Modulus" if "modulus" in property_id else "Strength"
+            if role not in factors:
+                factors[role] = ", ".join(
+                    f"{label}={_mat1_factor_label(role, key, item)}"
+                    for label, key in (
+                        ("CM", "cm"),
+                        ("CT", "ct"),
+                        ("CCH", "cch"),
+                        ("lambda", "lambda_factor"),
+                    )
+                )
+    resin = str(record.get("resin", "UNKNOWN")).replace("_", " ").title()
+    moisture = str(conditions.get("moisture", "UNKNOWN")).replace("_", " ").title()
+    chemical = str(conditions.get("chemical", "UNKNOWN")).replace("_", " ").title()
+    load_class = str(conditions.get("time_effect_category", "UNKNOWN")).replace("_", " ").title()
+    company = str(record.get("company", "Unknown"))
+    display_name = str(record.get("display_name", "Unknown"))
+    material_label = (
+        display_name
+        if display_name.casefold().startswith(f"{company} — ".casefold())
+        else f"{company} — {display_name}"
+    )
+    if resin.casefold() not in material_label.casefold():
+        material_label += f" ({resin})"
+    rows = [
+        (
+            "Selected FRP",
+            material_label,
+        ),
+        (
+            "Material source",
+            f"{record.get('id', 'Unknown')} · revision {record.get('revision', 'Unknown')}",
+        ),
+        (
+            "Fastener",
+            hardware_label,
+        ),
+        (
+            "Fastener Fnt",
+            _direct_selected_fastener_fnt(snapshot),
+        ),
+        (
+            "Sustained operating material temperature",
+            quantity("sustained_temperature"),
+        ),
+        (
+            "Maximum expected material temperature",
+            quantity("maximum_temperature"),
+        ),
+        (
+            "Required Tg" if production else "Tg applicability",
+            (
+                f">= {condition_basis['required_tg']['value']} degF "
+                f"({short_number(condition_basis['required_tg_degC'])} degC); "
+                "max(180 degF, Tmax + 40 degF); furnished-product conformance is project QA; "
+                "actual product Tg not measured by software"
+                if production
+                else str(
+                    sources["temperature_applicability"].get("default", "NOT_CONFIRMED")
+                ).replace("_", " ")
+                + "; entered Tg is not controlled product qualification"
+                if isinstance(sources.get("temperature_applicability"), dict)
+                else "NOT CONFIRMED; Tg evidence unavailable"
+            ),
+        ),
+        (
+            "Catalog property basis",
+            "ASCE/SEI 74-23 Table 1-2 minimum characteristic shape properties; "
+            "project-specified ICE resin; not manufacturer test data"
+            if production
+            else str(record.get("property_basis", "Not established")),
+        ),
+        (
+            "Temperature roles",
+            "Sustained temperature controls backend CT; maximum expected temperature "
+            "controls Tg applicability. Missing Tg does not erase calculable CT.",
+        ),
+        (
+            "Specification / procurement notes",
+            "Project FRP and hardware shall conform to their selected specifications. "
+            "Per-connection supplier certification is not the catalog design-source requirement.",
+        ),
+        (
+            "Moisture / chemical exposure",
+            f"{moisture} / {chemical}",
+        ),
+        (
+            "Load case and classification",
+            f"{conditions.get('load_case_name', 'Unspecified')} · {load_class}",
+        ),
+    ]
+    if conditions.get("direct_policy") == "SHEAR01-DIRECT-MC1":
+        rows = [
+            (label, value)
+            for label, value in rows
+            if label
+            not in {
+                "Sustained operating material temperature",
+                "Maximum expected material temperature",
+                "Temperature roles",
+            }
+        ]
+        rows.extend(
+            [
+                ("Design Temperature", quantity("design_temperature")),
+                (
+                    "Temperature policy",
+                    "Highest expected service temperature conservatively assumed sustained "
+                    "for CT and used for required Tg; new Direct MC1 input policy.",
+                ),
+                (
+                    "Chemical factor origin",
+                    "Engineer-specified strength-only CCH="
+                    + str(conditions.get("chemical_strength_factor"))
+                    + "; not independently certified chemical test data. No chemical-modulus "
+                    "factor established; applicable dependent calculations remain UNEVALUATED. "
+                    "Independent supported strength checks may proceed."
+                    if conditions.get("chemical") == "SPECIFIED"
+                    else "None declared; no chemical adjustment.",
+                ),
+                (
+                    "Durability scope",
+                    "Routine ASCE catalog durability is a product-specification requirement. "
+                    "Legacy unknown exposure declarations have not been changed to no exposure; "
+                    "known extraordinary exposure evidence remains subject to engineering review.",
+                ),
+            ]
+        )
+    if production:
+        rows.extend(
+            [
+                ("Product scope", "Pultruded FRP shape (Angle / Wide flange); not plate"),
+                ("Reference condition", "REFERENCE — ASCE Section 2.4.2"),
+                (
+                    "Modulus role",
+                    "Characteristic strength/stability minimum; no mean-modulus authority",
+                ),
+                ("Material record digest", str(record["content_digest"])),
+                (
+                    "Material specification",
+                    "Table 1-1 physical requirements and Sections 1.3.4.1 / 1.3.4.2 durability; "
+                    "75% tensile retention is product qualification, "
+                    "not an extra design multiplier",
+                ),
+                (
+                    "Project-condition requirements",
+                    readable_value(snapshot.result.get("material_issues", [])),
+                ),
+            ]
+        )
+    rows.extend((f"{role} adjustment candidates", value) for role, value in factors.items())
+    if isinstance(ledgers, list) and any(
+        isinstance(item, dict)
+        and "strength" in str(item.get("property_id"))
+        and item.get("adjusted_candidate") is None
+        for item in ledgers
+    ):
+        rows.append(
+            (
+                "Diagnostic resistance boundary",
+                "Diagnostic only — adjusted resistance unavailable. Original declared values "
+                "are retained only for partial numerical diagnostics; final GREEN is unavailable.",
+            )
+        )
+    rows.append(
+        (
+            "Source and qualification",
+            "ASCE shape specification basis resolved; required engineering methods and "
+            "whole-connection Section 2.3.2 qualification remain separate."
+            if production
+            else "Open; numerical factors and checks do not establish complete "
+            "material or hardware authority.",
+        )
+    )
     return rows
 
 
@@ -1061,7 +1359,7 @@ def _styles() -> dict[str, ParagraphStyle]:
     }
 
 
-def _table(rows: list[tuple[str, str]], styles: dict[str, ParagraphStyle]) -> Table:
+def _table(rows: Sequence[tuple[str, object]], styles: dict[str, ParagraphStyle]) -> Table:
     if len(rows) > MAX_TABLE_ROWS:
         raise ReportingCoverageError("REPORT1 table exceeds the configured row limit")
     data = [[_paragraph("Parameter", styles["table"]), _paragraph("Value", styles["table"])]]
@@ -1270,6 +1568,7 @@ def _reader_opening(
     styles: dict[str, ParagraphStyle],
     *,
     multirow_visual: dict[str, Any] | None = None,
+    primary_blocker: str | None = None,
 ) -> list[Flowable]:
     """Shared engineer-readable front matter for the specialized Direct modes."""
 
@@ -1299,6 +1598,17 @@ def _reader_opening(
         for check in checks
     )
     issued = datetime.fromtimestamp(snapshot.issued_at, tz=UTC).strftime("%Y-%m-%d %H:%M UTC")
+    family_label = humanize(snapshot.family)
+    if snapshot.request.get("direct_finalization_contract_version") == "SHEAR01-DIRECT-F1":
+        rows = snapshot.request.get("row_count")
+        bolts = snapshot.request.get("bolts_per_row")
+        if type(rows) is not int or type(bolts) is not int:
+            raise ReportingCoverageError("Direct row and bolt counts are missing from the snapshot")
+        row_word = "row" if rows == 1 else "rows"
+        bolt_word = "bolt" if bolts == 1 else "bolts"
+        family_label = (
+            f"Direct angle-to-W connection — {rows} {row_word} x {bolts} {bolt_word} per row"
+        )
     story: list[Flowable] = [
         _paragraph(
             "Inputs and model report — design not evaluated"
@@ -1314,8 +1624,9 @@ def _reader_opening(
                 ("Project number", options.project_number),
                 ("Connection ID", options.connection_id or _text(result.get("connection_id"))),
                 ("Revision", options.revision),
-                ("Connection family", humanize(snapshot.family)),
+                ("Connection family", family_label),
                 ("Native connection status", humanize(status)),
+                *([("Primary design limit", primary_blocker)] if primary_blocker else []),
                 (
                     "Numerical design status",
                     (
@@ -1340,7 +1651,9 @@ def _reader_opening(
                     + ("; no local numerical result" if critical is None else ""),
                 ),
                 (
-                    "Governing check",
+                    "Governing check"
+                    if status in {"PASS", "FAIL"}
+                    else "Highest evaluated utilization",
                     f"{critical.name} — {critical.component}"
                     if critical
                     else "No evaluated numerical check",
@@ -1359,13 +1672,37 @@ def _reader_opening(
                     if critical and critical.utilization is not None
                     else "Not evaluated",
                 ),
-                ("Governing outcome", humanize(critical.outcome) if critical else "Not evaluated"),
+                (
+                    "Governing outcome"
+                    if status in {"PASS", "FAIL"}
+                    else "Evaluated check outcome",
+                    humanize(critical.outcome) if critical else "Not evaluated",
+                ),
                 ("Calculated at", issued),
                 ("Snapshot ID", snapshot.digest[:12]),
             ],
             styles,
         ),
     ]
+    decision = snapshot.result.get("final_decision")
+    if isinstance(decision, dict):
+        prior_rows = [
+            (
+                "Project / connection",
+                options.project_name + " / " + (options.connection_id or family_label),
+            ),
+            (
+                "Case / load combination",
+                str(
+                    snapshot.request.get("mat1_assignments", {})
+                    .get("default_conditions", {})
+                    .get("load_case_name", "See actual project conditions below")
+                ),
+            ),
+            *executive_rows(decision, system),
+            ("Calculated at / snapshot ID", issued + " / " + snapshot.digest[:12]),
+        ]
+        story[3] = _table(prior_rows, styles)
     if snapshot.kind == "design" and critical is None:
         story.append(
             _paragraph(
@@ -1384,11 +1721,21 @@ def _reader_opening(
         boxes, bolts = multirow_physical_geometry(multirow_visual)
         faces = []
     story.append(_paragraph("2  Physical connection model", styles["heading"]))
-    if snapshot.kind == "input_only":
+    preview_state = result.get("preview")
+    invalid_native_geometry = isinstance(preview_state, dict) and (
+        preview_state.get("geometry_status") == "INVALID_GEOMETRY"
+    )
+    if snapshot.kind == "input_only" or invalid_native_geometry:
         story.append(_paragraph("SUBMITTED GEOMETRY — NOT VALIDATED", styles["body"]))
     if boxes or faces:
         for view in ("isometric", "elevation", "plan"):
-            story.append(colored_view(boxes, faces, bolts, view))
+            drawing = colored_view(boxes, faces, bolts, view)
+            if isinstance(decision, dict):
+                # Scale only the fixed camera artwork, never native geometry.
+                drawing.scale(0.8, 0.8)
+                drawing.width *= 0.8
+                drawing.height *= 0.8
+            story.append(drawing)
             if view == "isometric":
                 story.append(_paragraph("Isometric - not to scale", styles["caption"]))
         story.append(
@@ -1396,7 +1743,7 @@ def _reader_opening(
                 "Fixed camera views of physical geometry in the authenticated backend "
                 "snapshot. Shaft paths are drawn where native endpoints exist; an outlined "
                 "hardware symbol marks a native center when only a plan position is available. "
-                "The report tags below map to exact native identities in the audit appendix.",
+                "The report tags below map to exact native identities in the Full Technical Audit.",
                 styles["small"],
             )
         )
@@ -1455,6 +1802,404 @@ def _reader_engineering_sections(
             story.append(_paragraph("No native numerical check was evaluated.", styles["body"]))
         story.append(_paragraph("6  Unevaluated checks and design limitations", styles["heading"]))
         story.append(limitations_matrix(checks))
+    return story
+
+
+def _direct_reader_engineering_sections(
+    snapshot: ReportSnapshot,
+    result: dict[str, Any],
+    visual: dict[str, Any],
+    system: DisplayUnits,
+    styles: dict[str, ParagraphStyle],
+) -> list[Flowable]:
+    """Keep the Direct body readable while the exact request/result remain in the appendix."""
+
+    from frp_master_connection.reporting.reader_data import collect_checks, governing
+    from frp_master_connection.reporting.reader_tables import limitations_matrix, results_matrix
+
+    physical_request = snapshot.request.get("physical_connection", {})
+    physical_request = physical_request if isinstance(physical_request, dict) else {}
+    materials = physical_request.get("material_snapshots", [])
+    materials = materials if isinstance(materials, list) else []
+    material = materials[0] if materials and isinstance(materials[0], dict) else {}
+    sources = snapshot.result.get("material_sources", {})
+    selected = sources.get("default", {}) if isinstance(sources, dict) else {}
+    production_shape = (
+        isinstance(selected, dict)
+        and selected.get("property_basis") == "ASCE_74_23_MINIMUM_CHARACTERISTIC"
+    )
+    fastener = physical_request.get("fastener_snapshot", {})
+    fastener = fastener if isinstance(fastener, dict) else {}
+    sections = {
+        member.get("role"): member.get("section", {})
+        for member in physical_request.get("joint_assembly", {}).get("members", [])
+    }
+    layers = visual.get("layers", [])
+    layers = layers if isinstance(layers, list) else []
+    source_blocked = set(
+        snapshot.result.get("direct_material_applicability", {}).get("blocked_check_ids", [])
+    )
+    checks = [
+        replace(
+            check,
+            reason=check.reason
+            if check.identity in source_blocked
+            else direct_first_row_reason(check.identity, result)
+            or _direct_blocked_description(
+                check.identity,
+                check.availability,
+                isinstance(result.get("preview", {}).get("direct_support_end_authority"), dict),
+            ),
+            qualification=(
+                "Section 2.3.2 whole-connection qualification coverage required"
+                if check.identity in COVERED_RESPONSES
+                else "Approved matching Section 2.3.2 qualification record required"
+                if check.identity == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION"
+                else check.qualification
+            ),
+        )
+        if check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
+        else check
+        for check in collect_checks(result)
+        if not (
+            production_shape
+            and check.availability == "NOT_APPLICABLE"
+            and check.identity.startswith("MATERIAL_SOURCE_REVIEW:")
+        )
+    ]
+    bolts = visual.get("bolts", [])
+    first_bolt = (
+        bolts[0] if isinstance(bolts, list) and bolts and isinstance(bolts[0], dict) else {}
+    )
+
+    def paired(first: object, second: object) -> str:
+        return f"{readable_value(first, system)} / {readable_value(second, system)}"
+
+    story: list[Flowable] = [_paragraph("3  Direct assembly and design basis", styles["heading"])]
+    if snapshot.kind == "input_only":
+        story.append(
+            _paragraph(
+                "Input / geometry report — no engineering design check performed. "
+                "Supply actual sustained and maximum material temperatures, load classification "
+                "and load-case name, and correct any native geometry issues before Design Check.",
+                styles["body"],
+            )
+        )
+        story.append(
+            _table(
+                [
+                    (
+                        "Submitted project conditions",
+                        readable_value(
+                            snapshot.request.get("mat1_assignments", {}).get("default_conditions"),
+                            system,
+                        ),
+                    ),
+                ],
+                styles,
+            )
+        )
+    story.append(
+        _table(
+            [
+                ("Physical members", "Pultruded FRP angle LEG_1 to FRP W TOP_FLANGE"),
+                ("Angle dimensions", readable_value(sections.get("BRACE"), system)),
+                ("W dimensions", readable_value(sections.get("COLUMN"), system)),
+                (
+                    "Orientation / selected faces",
+                    readable_value(physical_request.get("geometry_template"), system),
+                ),
+                (
+                    "Washer dimensions / placement",
+                    readable_value(fastener.get("washer_geometry"), system),
+                ),
+                (
+                    "Bolt layout",
+                    f"{len(visual.get('row_ids', []))} "
+                    f"{'row' if len(visual.get('row_ids', [])) == 1 else 'rows'} x "
+                    f"{len(visual.get('bolt_line_ids', []))} "
+                    f"{'bolt' if len(visual.get('bolt_line_ids', [])) == 1 else 'bolts'} per row",
+                ),
+                ("Lap configuration", "SINGLE_LAP — angle LEG_1 to W TOP_FLANGE; one shear plane"),
+                (
+                    "Penetrated layers",
+                    ", ".join(
+                        str(item.get("layer_id")) for item in layers if isinstance(item, dict)
+                    ),
+                ),
+                ("Bolt diameter", readable_value(snapshot.request.get("bolt_diameter"), system)),
+                (
+                    "Hole diameter",
+                    readable_value(first_bolt.get("hole_diameter"), system),
+                ),
+                (
+                    "Pitch / gauge" if len(visual.get("row_ids", [])) > 1 else "Gauge",
+                    paired(visual.get("pitch"), visual.get("gauge"))
+                    if len(visual.get("row_ids", [])) > 1
+                    else readable_value(visual.get("gauge"), system),
+                ),
+                *(
+                    [("Pitch", "Not applicable — one row")]
+                    if len(visual.get("row_ids", [])) == 1
+                    else []
+                ),
+                (
+                    "Unloaded / loaded end",
+                    paired(
+                        visual.get("unloaded_end_e1"),
+                        visual.get("loaded_boundary_to_row_1_distance"),
+                    ),
+                ),
+                (
+                    "Negative / positive side",
+                    paired(
+                        visual.get("negative_side_distance"), visual.get("positive_side_distance")
+                    ),
+                ),
+                (
+                    "FRP material",
+                    _direct_selected_material_label(snapshot, material),
+                ),
+                (
+                    "FRP qualification",
+                    "ASCE minimum characteristic shape specification; "
+                    "whole-connection qualification unresolved"
+                    if production_shape
+                    else readable_value(material.get("qualification_statuses"), system),
+                ),
+                (
+                    "Fastener",
+                    _direct_selected_fastener_label(
+                        snapshot, str(fastener.get("id", "Unresolved"))
+                    ),
+                ),
+                ("Fastener Fnt", _direct_selected_fastener_fnt(snapshot)),
+            ],
+            styles,
+        )
+    )
+    demand = result.get("automatic_demand_result", {})
+    demand = demand if isinstance(demand, dict) else {}
+    scenarios = demand.get("scenarios", [])
+    scenario = (
+        scenarios[0]
+        if isinstance(scenarios, list) and scenarios and isinstance(scenarios[0], dict)
+        else {}
+    )
+    story.append(_paragraph("4  Applied action and load path", styles["heading"]))
+    story.append(
+        _table(
+            [
+                (
+                    "Global applied force",
+                    readable_value(demand.get("original_global_force"), system),
+                ),
+                ("Applied reference", readable_value(demand.get("force_reference_point"), system)),
+                ("Projected in-plane force", readable_value(demand.get("projected_force"), system)),
+                (
+                    "Bolt-group centroid",
+                    readable_value(demand.get("geometric_bolt_centroid"), system),
+                ),
+                (
+                    "Residual in-plane moment",
+                    readable_value(scenario.get("residual_moment"), system),
+                ),
+                (
+                    "Per-bolt vectors",
+                    "Complete native vectors and equilibrium trace in the Full Technical Audit",
+                ),
+            ],
+            styles,
+        )
+    )
+    decision = snapshot.result.get("final_decision")
+    story.append(_paragraph("5  Required checks and numerical results", styles["heading"]))
+    if checks:
+        numerical_checks = (
+            [c for c in checks if c.availability == "CALCULATED"]
+            if isinstance(decision, dict)
+            else checks
+        )
+        story.append(results_matrix(numerical_checks, system))
+    else:
+        story.append(_paragraph("No required resistance has been evaluated.", styles["body"]))
+    evaluated = sum(check.availability == "CALCULATED" for check in checks)
+    unresolved = sum(
+        check.required and check.availability not in {"CALCULATED", "NOT_APPLICABLE"}
+        for check in checks
+    )
+    completeness = (
+        "not assessed — no design calculation performed"
+        if snapshot.kind == "input_only"
+        else f"{unresolved} required checks/evidence items unresolved"
+    )
+    story.append(
+        _paragraph(
+            f"NUMERICAL CHECKS: {evaluated} supported checks evaluated. "
+            f"DESIGN COMPLETENESS: {completeness}. "
+            "Source, qualification and method requirements are unevaluated; "
+            "numerical FAIL remains RED.",
+            styles["body"],
+        )
+    )
+    critical = governing(checks)
+    if critical is not None:
+        integration = result.get("automatic_group_mode_integration", {})
+        scenarios = (
+            [
+                *integration.get("scenario_results", []),
+                *integration.get("direct_angle_block_results", []),
+            ]
+            if isinstance(integration, dict)
+            else []
+        )
+        native = next(
+            (
+                item
+                for handoff in [*scenarios, *result.get("automatic_handoff_results", [])]
+                if isinstance(handoff, dict)
+                for item in handoff.get("supported_results", [])
+                if isinstance(item, dict) and item.get("result_id") == critical.identity
+            ),
+            None,
+        )
+        local = False
+        if native is None:
+            integration = result.get("automatic_group_mode_integration", {})
+            single_row = (
+                integration.get("direct_single_row_result", {})
+                if isinstance(integration, dict)
+                else {}
+            )
+            native = next(
+                (
+                    item
+                    for item in single_row.get("checks", [])
+                    if isinstance(item, dict) and item.get("result_id") == critical.identity
+                ),
+                None,
+            )
+            local = native is not None
+        if isinstance(native, dict):
+            method = str(native.get("equation_method"))
+            template = (
+                _DIRECT_SINGLE_ROW_METHODS.get(method) if local else _MULTIROW_METHODS.get(method)
+            )
+            if template is None:
+                raise ReportingCoverageError(
+                    f"Executed Direct method lacks a report adapter: {method}"
+                )
+            if local:
+                trace = native.get("equation_trace")
+                if not isinstance(trace, dict):
+                    raise ReportingCoverageError(
+                        f"Executed Direct check lacks a native trace: {critical.identity}"
+                    )
+                source_inputs = {
+                    key: value
+                    for key, value in trace.items()
+                    if key not in {"native", "factor_trace", "tensile_property", "shear_property"}
+                }
+                nested = trace.get("native")
+                if isinstance(nested, dict):
+                    for key in ("knt", "governing_branches"):
+                        if key in nested:
+                            source_inputs[key] = nested[key]
+                for key in ("tensile_property", "shear_property"):
+                    prop = trace.get(key) or (nested.get(key) if isinstance(nested, dict) else None)
+                    if isinstance(prop, dict):
+                        source_inputs[key] = prop.get("adjusted_property")
+                factors = trace.get("factor_trace") or (
+                    nested.get("factor_trace") if isinstance(nested, dict) else None
+                )
+                if isinstance(factors, dict):
+                    source_inputs["nominal_resistance"] = factors.get("nominal_resistance")
+                    source_inputs["c_delta"] = factors.get("c_delta")
+                    source_inputs["c_lap"] = factors.get("c_lap")
+                    source_inputs["phi"] = factors.get("phi")
+                    source_inputs["lambda"] = factors.get("lambda_factor")
+                substitution = readable_value(source_inputs, system)
+            else:
+                substitution = multirow_native_substitution(native, visual, system)
+            story.append(_paragraph("6  Governing worked calculation", styles["heading"]))
+            story.append(
+                _table(
+                    [
+                        ("Check", critical.identity),
+                        (
+                            "Source and equation",
+                            f"{native.get('source_locator')}; {template.expression}".replace(
+                                "ASCE_8_14A_DIRECT_PHYSICAL_L_PATH_RATIONAL",
+                                "ASCE Eq. 8-14a — physical Angle free-side L path",
+                            ).replace(
+                                "ASCE_8_14B_DIRECT_PHYSICAL_L_PATH_RATIONAL",
+                                "ASCE Eq. 8-14b — physical Angle free-side L path",
+                            ),
+                        ),
+                        (
+                            "Executed substitution",
+                            engineering_notation(substitution, styles["small"])
+                            if isinstance(decision, dict)
+                            else substitution,
+                        ),
+                        (
+                            "Demand / design resistance",
+                            paired(native.get("demand"), native.get("design_resistance")),
+                        ),
+                        (
+                            "Utilization (rounded)",
+                            short_number(native.get("utilization"), ratio=True),
+                        ),
+                    ],
+                    styles,
+                )
+            )
+    bolt_rows = f593_bolt_rows(snapshot.result.get("fastener_source"), result, visual, system)
+    if bolt_rows:
+        story.append(
+            _paragraph("Catalog-resolved native bolt shear calculations", styles["heading"])
+        )
+        story.append(
+            _table(
+                [
+                    (label, engineering_notation(value, styles["small"]))
+                    for label, value in bolt_rows
+                ]
+                if isinstance(decision, dict)
+                else bolt_rows,
+                styles,
+            )
+        )
+    story.append(_paragraph("7  Active design limits", styles["heading"]))
+    if checks:
+        limit_rows = coverage_rows(decision, checks) if isinstance(decision, dict) else []
+        source_labels = (
+            {row["label"] for row in decision["schedule"] if row["check_id"] in source_blocked}
+            if isinstance(decision, dict)
+            else set()
+        )
+        limit_rows = [
+            (
+                label,
+                "SOURCE REQUIRED — NOT EVALUATED. "
+                + str(snapshot.result["direct_material_applicability"]["reason"])
+                if label in source_labels
+                else description,
+            )
+            for label, description in limit_rows
+        ]
+        story.append(
+            _table(limit_rows, styles) if isinstance(decision, dict) else limitations_matrix(checks)
+        )
+    warnings = result.get("preview", {}).get("warnings", [])
+    if isinstance(warnings, list) and warnings:
+        story.append(
+            _paragraph(
+                "Full native geometry, source and demand notices are retained in the "
+                "Full Technical Audit appendix.",
+                styles["small"],
+            )
+        )
     return story
 
 
@@ -1668,6 +2413,33 @@ def render_single_bolt_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> 
     return output
 
 
+def _direct_blocked_description(
+    check_id: str, availability: str, explicit_support_ends: bool = False
+) -> str:
+    if explicit_support_ends and check_id.startswith(
+        ("FIRST_ROW:layer-B:", "INTERROW:layer-B:", "BLOCK_SHEAR:layer-B:")
+    ):
+        return (
+            "Supporting W section/free-end failure path lacks an independent applicable method; "
+            "Angle e1 is not W end authority"
+        )
+    if check_id.startswith("FIRST_ROW:"):
+        return "Required first-row net tension: accepted eccentric demand handoff unavailable"
+    if check_id.startswith("INTERROW:"):
+        return "Required inter-row shear-out: accepted eccentric demand handoff unavailable"
+    if check_id.startswith("BLOCK_SHEAR:layer-B:"):
+        return "Required W top-flange oblique block shear: approved method unavailable"
+    if check_id.startswith("BOLT_") and availability != "CALCULATED":
+        return "Required bolt resistance: controlled fastener strength source unavailable"
+    if check_id.startswith("MATERIAL_SOURCE_REVIEW:"):
+        return "FRP property record requires source and production qualification review"
+    if check_id.startswith("PROJECT_CONDITION_REVIEW:"):
+        return "Actual project environmental conditions / adjustment sources remain unresolved"
+    if check_id == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION":
+        return "Whole Direct connection requires Section 2.3.2 qualification"
+    return "Required check remains unevaluated; see exact native state in Full Technical Audit"
+
+
 def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> bytes:
     """Render the actual multi-row distribution and every native path result."""
 
@@ -1684,44 +2456,489 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     if not isinstance(preview, dict) or not isinstance(preview.get("visualization"), dict):
         raise ReportingCoverageError("Canonical multi-row preview geometry is missing")
     calculation = result.get("calculation_result")
-    if snapshot.kind == "design" and not isinstance(calculation, dict):
+    direct = snapshot.request.get("direct_finalization_contract_version") == "SHEAR01-DIRECT-F1"
+    integration = result.get("automatic_group_mode_integration") if direct else None
+    if snapshot.kind == "design" and not isinstance(calculation, dict) and not direct:
         raise ReportingCoverageError("Multi-row design response lacks its native result")
     checks = [] if calculation is None else calculation.get("results", [])
     if not isinstance(checks, list):
         raise ReportingCoverageError("Multi-row native check inventory is malformed")
+    reader_result = result
+    if direct:
+        reader_result = dict(result)
+        inventory: list[dict[str, object]] = []
+        if isinstance(integration, dict):
+            supported = {
+                item.get("result_id")
+                for scenario in [
+                    *integration.get("scenario_results", []),
+                    *integration.get("direct_angle_block_results", []),
+                ]
+                if isinstance(scenario, dict)
+                for item in scenario.get("supported_results", [])
+                if isinstance(item, dict)
+            }
+            unsupported = set(integration.get("unsupported_required_check_ids", []))
+            incomplete = set(integration.get("incomplete_required_check_ids", []))
+            not_required = set(integration.get("not_required_check_ids", []))
+            for check_id in integration.get("required_check_ids", []):
+                if not isinstance(check_id, str) or check_id in supported:
+                    continue
+                if check_id in unsupported:
+                    availability = "CALCULATION_NOT_SUPPORTED"
+                    reason = _direct_blocked_description(
+                        check_id,
+                        availability,
+                        isinstance(preview.get("direct_support_end_authority"), dict),
+                    )
+                elif check_id in incomplete:
+                    availability = "INCOMPLETE_INPUT"
+                    reason = _direct_blocked_description(
+                        check_id,
+                        availability,
+                        isinstance(preview.get("direct_support_end_authority"), dict),
+                    )
+                elif check_id in not_required:
+                    availability = "NOT_APPLICABLE"
+                    reason = "Source predicate marks this check not required"
+                    for block in integration.get("direct_angle_block_results", []):
+                        for row in block.get("history_results", []):
+                            if row.get("result_id") == check_id:
+                                reason = row["reason"]
+                else:
+                    availability = "INCOMPLETE_INPUT"
+                    reason = _direct_blocked_description(
+                        check_id,
+                        availability,
+                        isinstance(preview.get("direct_support_end_authority"), dict),
+                    )
+                if availability == "CALCULATION_NOT_SUPPORTED":
+                    reason = direct_first_row_reason(check_id, result) or reason
+                    if check_id == "BLOCK_SHEAR:layer-A:BLOCK_L_LEFT_ROW_1_BOLT_LINE_1":
+                        reason = (
+                            " / ".join(
+                                block["reason"]
+                                for block in integration.get("direct_angle_block_results", [])
+                            )
+                            or reason
+                        )
+                inventory.append(
+                    {
+                        "result_id": check_id,
+                        "limit_state": check_id.split(":", 1)[0],
+                        "layer_id": check_id.split(":")[1]
+                        if check_id.split(":")[1:2] and check_id.split(":")[1].startswith("layer-")
+                        else None,
+                        "availability": availability,
+                        "numerical_comparison": "NOT_EVALUATED",
+                        "reason": reason,
+                        "qualification": (
+                            "Section 2.3.2 whole-connection qualification coverage required"
+                            if check_id in COVERED_RESPONSES
+                            else "Approved matching Section 2.3.2 qualification record required"
+                            if check_id == "DIRECT_WHOLE_CONNECTION_SECTION_2_3_2_QUALIFICATION"
+                            else "Source-backed disposition; no additional qualification predicate"
+                        ),
+                        "required": check_id not in not_required,
+                    }
+                )
+        reader_result["direct_required_check_inventory"] = inventory
+    single_row_result = (
+        integration.get("direct_single_row_result") if isinstance(integration, dict) else None
+    )
     status = (
         "DESIGN_NOT_EVALUATED"
         if snapshot.kind == "input_only"
+        else _text(single_row_result.get("overall_disposition"))
+        if direct and isinstance(single_row_result, dict)
+        else _text(integration.get("overall_disposition"))
+        if direct and isinstance(integration, dict)
+        else _text(preview.get("plan_availability") or preview.get("geometry_status"))
+        if direct
         else _text(
             snapshot.result.get("overall_status")
             or (calculation.get("overall_disposition") if isinstance(calculation, dict) else None)
         )
     )
+    decision = snapshot.result.get("final_decision") if direct else None
+    if isinstance(decision, dict):
+        status = decision["final_status"] + " — " + decision["final_status_reason"]
     styles = _styles()
     visual = preview["visualization"]
+    support_end_authority = preview.get("direct_support_end_authority") if direct else None
+    if isinstance(support_end_authority, dict):
+        from frp_master_connection.reporting.direct_support_view import direct_support_view
+
+        visual = direct_support_view(visual, support_end_authority)
+    primary_blocker = None
+    if direct:
+        preview_warnings = preview.get("warnings", [])
+        if preview.get("geometry_status") == "INVALID_GEOMETRY":
+            primary_blocker = (
+                "Physical edge/end distance, hole containment or hardware fit fails; "
+                "see physical geometry checks"
+                if isinstance(preview_warnings, list)
+                and any(
+                    isinstance(item, str) and item.startswith("DIRECT_PHYSICAL_CONTAINMENT:")
+                    for item in preview_warnings
+                )
+                else "Invalid physical connection geometry; see geometry notices"
+            )
+        elif isinstance(single_row_result, dict) and any(
+            isinstance(item, dict) and "residual moment" in str(item.get("reason", ""))
+            for item in single_row_result.get("checks", [])
+        ):
+            primary_blocker = (
+                "Residual geometric moment has no accepted one-row section demand resolution"
+            )
+        elif isinstance(integration, dict):
+            unsupported = integration.get("unsupported_required_check_ids", [])
+            oblique_w = next(
+                (
+                    item
+                    for item in unsupported
+                    if isinstance(item, str) and item.startswith("BLOCK_SHEAR:layer-B:")
+                ),
+                None,
+            )
+            primary_blocker = (
+                "W TOP_FLANGE oblique block-shear path lacks an approved method"
+                if oblique_w is not None
+                else "Required source, demand or whole-connection qualification remains unresolved"
+            )
+        else:
+            primary_blocker = "No complete Direct resistance result is available"
+    if isinstance(decision, dict):
+        primary_blocker = decision["governing_label"]
     story = _reader_opening(
-        snapshot, options, result, status, system, styles, multirow_visual=visual
+        snapshot,
+        options,
+        reader_result,
+        status,
+        system,
+        styles,
+        multirow_visual=visual,
+        primary_blocker=primary_blocker,
     )
-    story.append(_paragraph("Native dimensioned bolt layout", styles["heading"]))
+    evaluation = snapshot.result.get("qualification_evaluation")
+    if direct and isinstance(evaluation, dict):
+        story.append(_paragraph("Connection qualification", styles["heading"]))
+        if evaluation.get("record_digest") is None:
+            story.append(
+                _paragraph(
+                    "Section 2.3.2 whole-connection qualification coverage required. "
+                    "Approved matching Section 2.3.2 qualification record required.",
+                    styles["body"],
+                )
+            )
+        if evaluation.get("synthetic"):
+            story.append(
+                _paragraph("SYNTHETIC QA — CANNOT QUALIFY PRODUCTION DESIGN", styles["heading"])
+            )
+        story.append(
+            _paragraph(
+                "One whole-connection comparison; analytical checks remain independently required.",
+                styles["body"],
+            )
+        )
+        story.append(
+            _table(
+                qualification_summary_rows(evaluation, system, concise=isinstance(decision, dict)),
+                styles,
+            )
+        )
+    mat1_rows = _mat1_reader_rows(snapshot)
+    mat1_rows.extend(f593_source_rows(snapshot.result.get("fastener_source"), system))
+    if isinstance(decision, dict):
+        mat1_rows = [
+            (label, value)
+            for label, value in mat1_rows
+            if "digest" not in label.lower()
+            and "hash" not in label.lower()
+            and "sha-256" not in label.lower()
+        ]
+
+    if isinstance(support_end_authority, dict):
+        condition_labels = {
+            "UNSPECIFIED": "INPUT NEEDED - supporting W end condition is unspecified",
+            "CONTINUOUS_THROUGH_CONNECTION": (
+                "Continuous through connection; displayed W length is presentation-only."
+            ),
+            "FINITE_BOTH_ENDS": "Real finite W ends above and below connection",
+            "FINITE_NEGATIVE_END_ONLY": "Real finite W end below connection; W continues above",
+            "FINITE_POSITIVE_END_ONLY": "Real finite W end above connection; W continues below",
+        }
+        story.append(_paragraph("Supporting W longitudinal condition", styles["heading"]))
+        story.append(
+            _paragraph(condition_labels[str(support_end_authority["condition"])], styles["body"])
+        )
+        end_rows = []
+        for label, field in (
+            ("W end above - from fixed connection reference", "positive_end_distance"),
+            ("W end below - from fixed connection reference", "negative_end_distance"),
+        ):
+            distance = support_end_authority[field]
+            end_rows.append(
+                (
+                    label,
+                    "Not specified"
+                    if support_end_authority["condition"] == "UNSPECIFIED"
+                    else "Continuous / no finite end declared"
+                    if distance is None
+                    else _dimension_label(distance, system),
+                )
+            )
+        story.append(_table(end_rows, styles))
+        story.append(
+            _paragraph(
+                "W section/free-end failure-path methods remain unevaluated where an independent "
+                "applicable path is not implemented. Angle e1 does not supply W end authority. "
+                "Displayed cap planes on continuous sides are view cuts.",
+                styles["body"],
+            )
+        )
+    engineering_faces = preview.get("direct_engineering_geometry")
+    if direct and isinstance(engineering_faces, list):
+        names = {
+            "CHAPTER_8_EDGE_DISTANCE": "Chapter 8 physical free-edge distance",
+            "CHAPTER_8_END_DISTANCE": "Chapter 8 loaded-end distance",
+            "HOLE_PHYSICAL_CONTAINMENT": "Physical hole containment",
+            "WASHER_SEATING": "Washer seating / hardware clearance",
+            "COMPONENT_INTERFERENCE": "Physical component interference",
+        }
+        failures = []
+        for face in engineering_faces:
+            if not isinstance(face, dict):
+                continue
+            for check in face.get("checks", []):
+                if not isinstance(check, dict) or check.get("pass_fail") != "FAIL":
+                    continue
+                actual = _dimension_label(
+                    {"value": check["actual_distance"], "unit": check["unit"]}, system
+                )
+                required = _dimension_label(
+                    {"value": check["required_distance"], "unit": check["unit"]}, system
+                )
+                failures.append(
+                    (
+                        f"{check['bolt_id']} / {check['component_id']} / "
+                        f"{check['physical_element_id']}",
+                        f"{names.get(str(check['check_kind']), 'Physical geometry')}: "
+                        f"{check['boundary_label']}; actual "
+                        f"{actual}; required {required}; FAIL",
+                    )
+                )
+        if failures:
+            story.append(_paragraph("Physical engineering geometry checks", styles["heading"]))
+            story.append(_table(failures, styles))
+        story.append(
+            _paragraph(
+                "Chapter 8 uses physical member ends and free side edges; hole containment "
+                "and washer seating are separate. Full Technical Audit retains boundary "
+                "coordinates and "
+                "COMPUTATIONAL CONTACT-PATCH BOUNDARY witnesses — NOT AN ENGINEERING EDGE "
+                "UNLESS MAPPED. Nut/head and heel/fillet geometry remain unresolved.",
+                styles["body"],
+            )
+        )
+    if (
+        direct
+        and engineering_faces is None
+        and isinstance(preview.get("direct_clearance_provenance"), list)
+    ):
+        clearance_rows = []
+        unit = str(visual.get("source_length_unit", ""))
+        for witness in preview["direct_clearance_provenance"]:
+            if not isinstance(witness, dict) or witness.get("valid") is not False:
+                continue
+            clearance_rows.append(
+                (
+                    f"{witness['bolt_id']} / {witness['component_id']} / "
+                    f"{witness['physical_element_id']}",
+                    f"Boundary: {witness['controlling_boundary_id']}; "
+                    f"actual: {witness['center_to_boundary']} {unit}; "
+                    f"validator: {witness['validator_minimum']} {unit}; "
+                    f"Chapter 8: {witness['chapter_8_minimum']} {unit}; "
+                    f"bolt / hole / washer radii: {witness['bolt_radius']} / "
+                    f"{witness['hole_radius']} / {witness['washer_radius']} {unit}; "
+                    f"plane offset: {witness['plane_offset']} {unit}",
+                )
+            )
+        if clearance_rows:
+            story.append(
+                _paragraph("Geometry issue — canonical contact-patch boundary", styles["heading"])
+            )
+            story.append(
+                _paragraph(
+                    "Each row identifies the affected bolt / member / element and its "
+                    "Controlling boundary. Actual center-to-boundary distance, Validator minimum "
+                    "and the separate Chapter 8 center-distance minimum are followed by the "
+                    "Bolt / hole / washer radii and Plane offset. The selected contact patch "
+                    "can be a subface; its boundary is not automatically a physical free member "
+                    "edge. Adjust placement within current members first. All individual "
+                    "boundary distances, vertices and axes remain in Full Technical Audit.",
+                    styles["body"],
+                )
+            )
+            story.append(_table(clearance_rows, styles))
+    if mat1_rows:
+        story.append(_paragraph("Materials, conditions and design basis", styles["heading"]))
+        if isinstance(decision, dict):
+            # Bind the heading to a small identity group. A heading kept with the
+            # entire long material table can force a nearly empty preceding page.
+            story.append(_table(mat1_rows[:3], styles))
+            story.append(_table(mat1_rows[3:], styles))
+        else:
+            story.append(_table(mat1_rows, styles))
+    story.append(
+        _paragraph(
+            "Native dimensioned bolt layout" if not direct else "Canonical bolt layout diagnostic",
+            styles["heading"],
+        )
+    )
+    layout_note = (
+        "Pitch between rows is not applicable to this one-row layout. "
+        if direct and len(visual.get("row_ids", [])) == 1
+        else "p is bolt pitch; "
+    )
     story.append(
         _paragraph(
             "The following witnesses identify the native boundary, row, gauge, bolt and "
-            "hole dimensions. e1 is loaded end distance; p is bolt pitch; g is gauge; "
-            "s+ and s- are side edge distances; hole d is hole diameter. "
+            "hole dimensions. e1 is loaded end distance; "
+            + layout_note
+            + "g is gauge; s+ and s- are side edge distances; hole d is hole diameter. "
             "All figures are not to scale.",
             styles["body"],
         )
     )
-    for view in ("isometric", "plan", "elevation"):
+    for view in ("plan",) if direct else ("isometric", "plan", "elevation"):
         story.append(_multirow_drawing(visual, view, system))
         story.append(
             _paragraph(
-                f"Canonical multi-row {view} projection. Dimensions and coordinates are listed "
+                (
+                    "Canonical single-row bolt layout"
+                    if direct and len(visual.get("row_ids", [])) == 1
+                    else f"Canonical multi-row {view} projection"
+                )
+                + ". Dimensions and coordinates are listed "
                 "from the same backend snapshot below.",
                 styles["caption"],
             )
         )
-    story.extend(_reader_engineering_sections(snapshot, result, system, styles))
+    story.extend(
+        _direct_reader_engineering_sections(snapshot, reader_result, visual, system, styles)
+        if direct
+        else _reader_engineering_sections(snapshot, reader_result, system, styles)
+    )
+    if isinstance(integration, dict):
+        for block in integration.get("direct_angle_block_results", []):
+            if not block["supported_results"] and not block["history_results"]:
+                # The existing active-limits row carries this unavailable
+                # adapter's reason; there is no executed calculation to repeat.
+                continue
+            block_story: list[Flowable] = [
+                _paragraph("Angle physical free-side block shear", styles["heading"])
+            ]
+            block_story.append(
+                _paragraph(
+                    f"ASCE Eq. 8-14{'a' if '8_14A' in block['method_id'] else 'b'} — "
+                    "rational physical Angle free-side L path. "
+                    "Section 2.3.2 whole-connection qualification remains required.",
+                    styles["body"],
+                )
+            )
+            for check in block["supported_results"]:
+                if check["availability"] != "CALCULATED":
+                    block_story.append(
+                        _paragraph(
+                            str(check.get("reason") or check["availability"]), styles["body"]
+                        )
+                    )
+                    continue
+                block_story.append(
+                    _table(
+                        [
+                            (
+                                "Executed equation and areas",
+                                engineering_notation(
+                                    multirow_native_substitution(check, visual, system),
+                                    styles["small"],
+                                )
+                                if isinstance(decision, dict)
+                                else multirow_native_substitution(check, visual, system),
+                            ),
+                            (
+                                "Separate factors (each applied once)",
+                                engineering_notation(
+                                    _factor_substitution(check["factor_trace"], system)
+                                    + "\n"
+                                    + "; ".join(
+                                        f"{prop['property_kind']}: CM={prop['cm']}, "
+                                        f"CT={prop['ct']}, CCH={prop['cch']}"
+                                        for prop in check["factor_trace"]["property_traces"]
+                                    ),
+                                    styles["small"],
+                                )
+                                if isinstance(decision, dict)
+                                else _factor_substitution(check["factor_trace"], system)
+                                + "\n"
+                                + "; ".join(
+                                    f"{prop['property_kind']}: CM={prop['cm']}, "
+                                    f"CT={prop['ct']}, CCH={prop['cch']}"
+                                    for prop in check["factor_trace"]["property_traces"]
+                                ),
+                            ),
+                            (
+                                "Demand / resistance / utilization / outcome",
+                                f"{readable_value(check['demand'], system)} / "
+                                f"{readable_value(check['design_resistance'], system)} / "
+                                f"{short_number(check['utilization'], ratio=True)} / "
+                                f"{check['numerical_comparison']}",
+                            ),
+                        ],
+                        styles,
+                    )
+                )
+            if block["reason"]:
+                block_story.append(_paragraph(block["reason"], styles["body"]))
+            for row in block["history_results"]:
+                if not isinstance(decision, dict):
+                    block_story.append(
+                        _paragraph(
+                            "Block shear — Angle heel side: NOT APPLICABLE. " + row["reason"],
+                            styles["body"],
+                        )
+                    )
+            # The F9 coverage matrix already retains the full bounded N/A reason.
+            # Avoid duplicating it on a nearly empty final page.
+            story.extend(block_story) if isinstance(decision, dict) else story.append(
+                KeepTogether(block_story)
+            )
+    if direct and options.mode == "FULL_TECHNICAL_AUDIT":
+        audit = snapshot.input_provenance.get("direct_qualification_audit")
+        if isinstance(audit, dict):
+            story.append(
+                _paragraph("Section 2.3.2 complete qualification evidence", styles["heading"])
+            )
+            _append_bounded_tables(story, _flatten("qualification_audit", audit), styles)
+            story.append(
+                _table(
+                    [
+                        (
+                            "Qualification evaluation digest",
+                            _text(
+                                evaluation.get("evaluation_digest")
+                                if isinstance(evaluation, dict)
+                                else None
+                            ),
+                        ),
+                        ("Authenticated design snapshot digest", snapshot.digest),
+                    ],
+                    styles,
+                )
+            )
+    if direct and options.mode == "ENGINEER_REPORT":
+        return _finish_multirow_pdf(story, snapshot, options, status, styles)
     if isinstance(calculation, dict):
         story.append(_paragraph("7  Native check equations and substitutions", styles["heading"]))
         for check in checks:
@@ -1762,7 +2979,12 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                         ("Executed numerical substitution", executed_substitution),
                         (
                             "Executed factor substitution",
-                            _factor_substitution(check.get("factor_trace"), system)
+                            _factor_substitution(
+                                check.get("equation_trace")
+                                if method == "BOLT_SHEAR"
+                                else check.get("factor_trace"),
+                                system,
+                            )
                             if evaluated
                             else "Not executed",
                         ),
@@ -1818,7 +3040,37 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             styles["body"],
         )
     )
+    if isinstance(snapshot.result.get("material_sources"), dict):
+        story.append(
+            _paragraph(
+                "The native ICE_LOCKED_PULTRUDED_FRP token in this appendix is an internal "
+                "compatibility adapter. The selected MAT1 source record and its digest in the "
+                "signed material authority control the FRP properties used by the calculation; "
+                "the adapter is not a second material selection.",
+                styles["body"],
+            )
+        )
     story.append(_paragraph("Appendix A — Submitted request and provenance", styles["heading"]))
+    if direct:
+        story.append(_paragraph("F6 first-row authority context", styles["heading"]))
+        story.append(
+            _paragraph(
+                "For unevaluated multi-row first-row paths, Figure C8-11 mapping, source row "
+                "identity and e3/e4/effective width require an independent physical handoff. "
+                "C8-11b is the Angle one-free-edge/one-perpendicular-element candidate; "
+                "the W oblique net-section mapping remains independent. Raw physical edges, "
+                "row coordinates, material directions and force vectors follow in this audit. "
+                "Table C8-1 FRP/FRP shares are 0.50/0.50 for two rows and 0.40/0.20/0.40 "
+                "for three rows, conditional on source applicability. They are bearing/bypass "
+                "strength-model inputs, not rational elastic bolt demands. External eccentric "
+                "moment requires an approved first-row stress handoff. The corrected successor "
+                "asce74-23-ch8-multirow-appendix-corrected-rc3.dev1 / CS2-APPENDIX-RC3 remains "
+                "inactive; no RC3 coefficient, resistance or utilization is generated by this "
+                "report. The native method/availability and full traces below "
+                "remain authoritative.",
+                styles["body"],
+            )
+        )
     _append_bounded_tables(
         story, [*_input_source_rows(snapshot), *_flatten("request", snapshot.request)], styles
     )
@@ -1860,6 +3112,16 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             styles,
         )
     )
+    return _finish_multirow_pdf(story, snapshot, options, status, styles)
+
+
+def _finish_multirow_pdf(
+    story: list[Flowable],
+    snapshot: ReportSnapshot,
+    options: ReportOptions,
+    status: str,
+    styles: dict[str, ParagraphStyle],
+) -> bytes:
     stream = io.BytesIO()
     document = _ReportDocument(
         stream,
@@ -1880,10 +3142,31 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
 def render_report_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> bytes:
     """Dispatch the native response through the shared ReportLab pipeline."""
 
+    # MAT1 captures the submitted native request inside a signed assignment
+    # envelope. Present that native geometry/load shape to the existing report
+    # adapters, while retaining the exact material assignment in the audit.
+    # This transformation is presentation-only: the signed response and every
+    # engineering result remain the ones returned by the design endpoint.
+    legacy_request = snapshot.request.get("legacy_request")
+    if isinstance(legacy_request, dict) and "assignments" in snapshot.request:
+        snapshot = replace(
+            snapshot,
+            request={
+                **legacy_request,
+                "mat1_contract": snapshot.request.get("contract"),
+                "mat1_assignments": snapshot.request["assignments"],
+                "fastener_assignment": snapshot.request.get("fastener"),
+            },
+        )
+
     if snapshot.kind == "input_only" and snapshot.result.get("status") in {
         "INPUT_VALIDATION_FAILED",
         "INPUT_NOT_EVALUATED",
     }:
+        if "final_decision" in snapshot.result:
+            from frp_master_connection.reporting.direct_input import render_direct_input_pdf
+
+            return render_direct_input_pdf(snapshot, options)
         from frp_master_connection.reporting.generic import render_generic_pdf
 
         return render_generic_pdf(snapshot, options)

@@ -159,7 +159,15 @@ def test_openapi_product_path_set_is_exact() -> None:
     application = create_app(settings=AppSettings(environment=ApplicationEnvironment.TEST))
 
     assert set(application.openapi()["paths"]) == {
+        "/api/v1/direct-two-bolt/preview",
+        "/api/v1/direct-two-bolt/design-check",
+        "/api/v1/direct-two-bolt/geometry-review",
+        "/api/v1/fasteners/catalog",
+        "/api/v1/fasteners/resolve",
+        "/api/v1/workspaces/capabilities",
+        "/api/v1/workspaces/direct-shapes",
         "/api/v1/frp-materials/catalog",
+        "/api/v1/frp-materials/direct-qualification/records",
         "/api/v1/frp-materials/factor-candidates",
         "/api/v1/frp-materials/family/owners",
         "/api/v1/frp-materials/single-bolt/design-check",
@@ -173,6 +181,7 @@ def test_openapi_product_path_set_is_exact() -> None:
         "/api/v1/meta",
         "/api/v1/reports/export",
         "/api/v1/reports/input-only-snapshot",
+        "/api/v1/reports/direct-decision-current",
         "/api/v1/calculations/single-bolt/evaluate",
         "/api/v1/calculations/single-bolt/preview",
         "/api/v1/calculations/multi-row/preview",

@@ -66,7 +66,9 @@ from frp_master_connection.api.direct_side_lap_concrete_schemas import (
     DirectSideLapConcretePreviewResponseDTO,
     DirectSideLapConcreteRequestDTO,
 )
+from frp_master_connection.api.direct_two_bolt import build_two_bolt_router
 from frp_master_connection.api.double_channel_truss_node import build_dctn_router
+from frp_master_connection.api.fasteners import build_fastener_router
 from frp_master_connection.api.mat1 import build_mat1_router
 from frp_master_connection.api.multi_member_tee_mapping import (
     map_multi_member_tee_request,
@@ -157,6 +159,7 @@ from frp_master_connection.api.wi_wall_moment_schemas import (
     WIWallMomentRequestDTO,
     WIWallMomentResponseDTO,
 )
+from frp_master_connection.api.workspace_capabilities import build_workspace_capability_router
 from frp_master_connection.application import (
     build_single_bolt_visualization_snapshot,
     evaluate_multirow_connection,
@@ -234,6 +237,9 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     router.include_router(build_dctn_router(identity_resolver))
     router.include_router(build_ssmc_router(identity_resolver))
     router.include_router(build_mat1_router(identity_resolver))
+    router.include_router(build_two_bolt_router(identity_resolver))
+    router.include_router(build_fastener_router(identity_resolver))
+    router.include_router(build_workspace_capability_router(identity_resolver))
     router.include_router(build_connector_material_router(identity_resolver))
     identity_dependency = build_trusted_identity_dependency(identity_resolver)
 
@@ -601,7 +607,10 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail={"code": "CANONICAL_MAPPING_INVALID", "message": str(error)},
             ) from error
-        return serialize_multirow_preview(preview_multirow_connection(canonical_request))
+        return serialize_multirow_preview(
+            preview_multirow_connection(canonical_request),
+            include_direct_clearance=canonical_request.direct_finalization_mode,
+        )
 
     @router.post(
         "/api/v1/calculations/multi-row/design-check",
@@ -627,7 +636,10 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail={"code": "CANONICAL_MAPPING_INVALID", "message": str(error)},
             ) from error
-        return serialize_multirow_design(evaluate_multirow_connection(canonical_request))
+        return serialize_multirow_design(
+            evaluate_multirow_connection(canonical_request),
+            include_direct_clearance=canonical_request.direct_finalization_mode,
+        )
 
     @router.post(
         "/api/v1/calculations/multi-member-tee/preview",

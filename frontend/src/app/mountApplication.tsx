@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import { App } from "./App";
+import { MAT1ProductBootstrap } from "./MAT1ProductBootstrap";
 
 export function mountApplication(container: HTMLElement | null): Root {
   if (container === null) {
@@ -11,7 +11,7 @@ export function mountApplication(container: HTMLElement | null): Root {
   const root = createRoot(container);
   root.render(
     <StrictMode>
-      <App />
+      <MAT1ProductBootstrap />
     </StrictMode>,
   );
   return root;

@@ -935,7 +935,9 @@ def test_slice_3_engine_is_pure_demand_only_and_has_no_integration_or_golden_acc
         repository_root / "backend/src/frp_master_connection/application/multirow_orchestration.py"
     )
     application_source = application_path.read_text(encoding="utf-8")
-    assert application_source.count("calculate_eccentric_bolt_group_demand") == 2
+    # Direct OR2 may run the same frozen demand engine once more after its
+    # governed, physical-zero frame canonicalization at the adapter boundary.
+    assert application_source.count("calculate_eccentric_bolt_group_demand") == 3
     api_sources = tuple((repository_root / "backend/src/frp_master_connection/api").rglob("*.py"))
     frontend_sources = tuple((repository_root / "frontend" / "src").rglob("*"))
     combined = "\n".join(

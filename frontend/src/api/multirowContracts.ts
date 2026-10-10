@@ -1,12 +1,86 @@
-import type { SingleBoltPreviewRequest, VisualizationSnapshot } from "./contracts";
+import type { JsonValue, SingleBoltPreviewRequest, VisualizationSnapshot } from "./contracts";
 
 export interface MultiRowQuantity {
   value: string;
   unit: string;
 }
 
+export interface DirectSupportEndInput {
+  condition: "UNSPECIFIED" | "CONTINUOUS_THROUGH_CONNECTION" | "FINITE_BOTH_ENDS" | "FINITE_NEGATIVE_END_ONLY" | "FINITE_POSITIVE_END_ONLY";
+  negative_end_distance?: MultiRowQuantity;
+  positive_end_distance?: MultiRowQuantity;
+}
+
+export interface DirectSupportEndAuthority {
+  readonly condition: DirectSupportEndInput["condition"];
+  readonly component_id: string;
+  readonly length_unit: "in" | "mm";
+  readonly negative_end_distance: MultiRowQuantity | null;
+  readonly positive_end_distance: MultiRowQuantity | null;
+  readonly negative_end_member_local_station: string | null;
+  readonly positive_end_member_local_station: string | null;
+}
+
+export interface DirectFaceClearance {
+  readonly bolt_id: string;
+  readonly component_id: string;
+  readonly physical_element_id: string;
+  readonly surface_id: string;
+  readonly face_point_local: readonly [string, string];
+  readonly boundaries: readonly {
+    readonly boundary_id: string;
+    readonly start_local: readonly [string, string];
+    readonly end_local: readonly [string, string];
+    readonly distance: string;
+    readonly dimension_end_local: readonly [string, string];
+  }[];
+  readonly controlling_boundary_id: string;
+  readonly center_to_boundary: string;
+  readonly bolt_radius: string;
+  readonly hole_radius: string;
+  readonly washer_radius: string;
+  readonly chapter_8_minimum: string;
+  readonly validator_minimum: string;
+  readonly hole_ligament: string;
+  readonly washer_ligament: string;
+  readonly plane_offset: string;
+  readonly valid: boolean;
+}
+
+export interface DirectEngineeringCheck {
+  readonly check_kind: string;
+  readonly engineering_boundary_id: string;
+  readonly engineering_boundary_role: string;
+  readonly actual_distance: string;
+  readonly required_distance: string;
+  readonly pass_fail: string;
+  readonly boundary_label: string;
+  readonly source_rule: string;
+}
+
+export interface DirectEngineeringFace {
+  readonly bolt_id: string;
+  readonly component_id: string;
+  readonly physical_element_id: string;
+  readonly bolt_center_member_local: readonly [string, string, string];
+  readonly transverse_axis: number;
+  readonly face_vertices_local: readonly (readonly [string, string, string])[];
+  readonly boundaries: readonly {
+    readonly boundary_id: string;
+    readonly start_local: readonly [string, string, string];
+    readonly end_local: readonly [string, string, string];
+    readonly dimension_end_local: readonly [string, string, string];
+  }[];
+  readonly checks: readonly DirectEngineeringCheck[];
+  readonly hole_radius: string;
+  readonly washer_radius: string;
+  readonly limitations: readonly string[];
+}
+
 export interface MultiRowConnectionRequest {
   orchestration_contract_version: "2.5C-RC1";
+  direct_finalization_contract_version?: "SHEAR01-DIRECT-F1";
+  supporting_w_longitudinal_ends?: DirectSupportEndInput;
   request_id: string;
   connection_id: string;
   interface_id: string;
@@ -254,9 +328,63 @@ export interface AutomaticGroupModeIntegrationResult {
     "APPLICATION_INTEGRATION",
   ];
   result_fingerprint: string;
+  direct_single_row_result?: DirectSingleRowResult;
+  direct_angle_block_results?: {
+    contract_version: string;
+    scenario_id: string;
+    method_id: string;
+    supported_results: MultiRowCheckResult[];
+    history_results: {
+      result_id: string;
+      layer_id: string;
+      limit_state: string;
+      availability: "NOT_APPLICABLE";
+      numerical_comparison: "NOT_EVALUATED";
+      reason: string;
+      required: false;
+      demand: null;
+      design_resistance: null;
+      utilization: null;
+    }[];
+    code_geometry_satisfied: boolean;
+    reason: string;
+    result_fingerprint: string;
+  }[];
+}
+
+export interface DirectSingleRowResult {
+  contract_version: string;
+  source_scenario_id: string;
+  checks: {
+    result_id: string;
+    limit_state: string;
+    equation_method: string;
+    source_locator: string;
+    layer_id: string;
+    bolt_id: string | null;
+    bolt_line_id: string | null;
+    demand: MultiRowQuantity | null;
+    design_resistance: MultiRowQuantity | null;
+    utilization: string | null;
+    numerical_comparison: string;
+    availability: string;
+    qualification: string;
+    required: boolean;
+    reason: string;
+    equation_trace: JsonValue;
+  }[];
+  required_check_ids: string[];
+  incomplete_required_check_ids: string[];
+  failed_check_ids: string[];
+  numerical_comparison: string;
+  overall_disposition: string;
+  result_fingerprint: string;
 }
 
 export interface MultiRowPreviewResponse {
+  readonly direct_support_end_authority?: DirectSupportEndAuthority | null;
+  readonly direct_clearance_provenance?: readonly DirectFaceClearance[];
+  readonly direct_engineering_geometry?: readonly DirectEngineeringFace[];
   api_transport_schema_version: "0.3.0-draft";
   orchestration_contract_version: "2.5C-RC1";
   preview_schema_version: "0.2.0-draft";

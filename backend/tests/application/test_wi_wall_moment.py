@@ -10,7 +10,7 @@ from dataclasses import replace
 from decimal import ROUND_HALF_EVEN, Context, Decimal, localcontext
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, NotRequired, TypedDict, cast
 from unittest.mock import patch
 
 import pytest
@@ -625,7 +625,14 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
     root = Path(__file__).resolve().parents[3]
     records = json.loads((root / "docs/qa/STAGE_4_2_INHERITED_IDENTITIES.json").read_text())
     assert records["baseline"] == "473a3c8cd43f13022d254dae2477084895478c74"
-    workflow_identities = {
+
+    class WorkflowIdentity(TypedDict):
+        commit: NotRequired[str]
+        blob: str
+        expected_tests: bytes
+        sha256: NotRequired[str]
+
+    workflow_identities: dict[str, WorkflowIdentity] = {
         "historical_pre_ssmc_3_main": {
             "commit": "9a9b4529faa1287e8df8360daceed2687e1e2b57",
             "blob": "2169d74e008b597793102c0bba25505d840ebdcb",
@@ -662,6 +669,13 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
         if path in _FROZEN_DEPENDENCIES:
             raw = _historical_dependency_bytes(root, path)
         elif path == "backend/pyproject.toml":
+            # Owner-authorized F8 statistical dependency successor, otherwise exact F7.
+            assert (
+                hashlib.sha256(raw).hexdigest().upper()
+                == "83B45A59F2850CE7F9DE6C9391A56F37C72A87C1EB0BFFA5072BA82C995A0F71"
+            )
+            assert raw.count(b'  "scipy==1.18.1",\n') == 1
+            raw = raw.replace(b'  "scipy==1.18.1",\n', b"")
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw,
                 usedforsecurity=False,
@@ -690,6 +704,33 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(catalog_data) == 1
             raw = raw.replace(catalog_data, historical_data)
         elif path == "backend/requirements/requirements-dev-py314.lock.txt":
+            from tests.direct_f8_g1_governance import pre_g1_lock
+
+            raw = pre_g1_lock(raw)
+            # Remove only the two exact hash-locked F8 statistical package blocks.
+            assert (
+                hashlib.sha256(raw).hexdigest().upper()
+                == "FA0A6A2C49C73E484969DE546F4A569925FA071EB9C4011A8764CC320FFBA63A"
+            )
+            f8_packages = {
+                "numpy": "C94C68E2885D3DDF9DB6E7115740F8303C84172CA5E24ADA839F0C8C3DD8694E",
+                "scipy": "1C15167C10062298809802B2E15AD924FBA4BC666286174641BC6F02C0E83605",
+            }
+            f8_headers = list(re.finditer(rb"(?m)^[a-z][a-z0-9-]+==[^\n]*\n", raw))
+            f8_ranges = []
+            for f8_package_name, digest in f8_packages.items():
+                positions = [
+                    i
+                    for i, item in enumerate(f8_headers)
+                    if item.group().startswith(f8_package_name.encode() + b"==")
+                ]
+                assert len(positions) == 1
+                index = positions[0]
+                start, stop = f8_headers[index].start(), f8_headers[index + 1].start()
+                assert hashlib.sha256(raw[start:stop]).hexdigest().upper() == digest
+                f8_ranges.append((start, stop))
+            for start, stop in sorted(f8_ranges, reverse=True):
+                raw = raw[:start] + raw[stop:]
             successor_blob = hashlib.sha1(
                 b"blob " + str(len(raw)).encode() + b"\0" + raw,
                 usedforsecurity=False,
@@ -732,12 +773,242 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
             assert raw.count(report1_command) == 1
             raw = raw.replace(report1_command, historical_command)
         elif path == ".github/workflows/ci.yml":
+            from tests.direct_f8_g1_governance import pre_g1_workflow
+            from tests.direct_f9_governance import pre_f9_workflow
+
+            raw = pre_g1_workflow(pre_f9_workflow(raw))
+            # F8 adds only its two platform evidence steps and 200 focused cases.
+            assert (
+                hashlib.sha256(raw).hexdigest().upper()
+                == "C6B56ED836C0BAD48ECC66B489E73A46CA59B94E4354E475F732809EE1DFCC74"
+            )
+            f8_pdf_steps = (
+                b"      - name: Generate Direct F8 qualification PDFs "
+                b"and statistical evidence\n"
+                b"        run: python ../scripts/generate_direct_f8_ci_pdfs.py "
+                b"--output direct-f8-review-pdfs\n"
+                b"""      - name: Upload Direct F8 qualification evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f8-pdfs-${{ matrix.os }}
+          path: backend/direct-f8-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(f8_pdf_steps) == 1
+            raw = raw.replace(f8_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8549") == 1
+            raw = raw.replace(b"--expected-tests 8549", b"--expected-tests 8349")
+            # F7 adds only its platform PDF evidence and 51 focused cases.
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "96647818CEFA541050F9A5E86D8822D2AFCE70AC9158F837974815F71ECF5420"
+            )
+            f7_pdf_steps = b"""      - name: Generate signed Direct F7 Angle block review PDFs
+        run: python ../scripts/generate_direct_f7_ci_pdfs.py --output direct-f7-review-pdfs
+      - name: Upload Direct F7 Angle block review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f7-pdfs-${{ matrix.os }}
+          path: backend/direct-f7-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f7_pdf_steps) == 1
+            raw = raw.replace(f7_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8349") == 1
+            raw = raw.replace(b"--expected-tests 8349", b"--expected-tests 8298")
+            # F6 adds the bounded first-row gates/report evidence and 20 tests.
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "7A646A4AD883C3C2C2243D2B2146925E60151A17729D6CE5DDBAF09A1F4B5F76"
+            )
+            f6_pdf_steps = b"""      - name: Generate signed Direct F6 first-row review PDFs
+        run: python ../scripts/generate_direct_f6_ci_pdfs.py --output direct-f6-review-pdfs
+      - name: Upload Direct F6 first-row review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f6-pdfs-${{ matrix.os }}
+          path: backend/direct-f6-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f6_pdf_steps) == 1
+            raw = raw.replace(f6_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8298") == 1
+            raw = raw.replace(b"--expected-tests 8298", b"--expected-tests 8278")
+            # A3-R1 adds only the inactive Appendix QA gate and 149 tests.
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "30A2ECD5F70EF8ECA9CF19137AA4AAF4567259A05130A9F1A666E8F39BC5E23B"
+            )
+            rc3_qa_steps = (
+                b"      - name: Verify inactive Appendix RC3 numerical authority "
+                b"and Direct C3 parity\n"
+                b"        run: python ../scripts/generate_appendix_rc3_ci_evidence.py "
+                b"--output appendix-rc3-qa\n"
+                b"""      - name: Upload Appendix RC3 numerical authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: appendix-rc3-qa-${{ matrix.os }}
+          path: backend/appendix-rc3-qa/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(rc3_qa_steps) == 1
+            raw = raw.replace(rc3_qa_steps, b"")
+            assert raw.count(b"--expected-tests 8278") == 1
+            raw = raw.replace(b"--expected-tests 8278", b"--expected-tests 8129")
+            # F5 adds the ASCE material report gate and 75 controlled-source cases.
+            f5_pdf_steps = (
+                b"      - name: Generate signed Direct ASCE F5 material review PDFs\n"
+                b"        run: python ../scripts/generate_direct_asce_f5_ci_pdfs.py "
+                b"--output direct-asce-f5-review-pdfs\n"
+                b"""      - name: Upload Direct ASCE F5 material review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-asce-f5-pdfs-${{ matrix.os }}
+          path: backend/direct-asce-f5-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(f5_pdf_steps) == 1
+            raw = raw.replace(f5_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8129") == 1
+            raw = raw.replace(b"--expected-tests 8129", b"--expected-tests 8054")
+            # F4 adds the controlled-catalog PDF gate and 95 focused cases.
+            f4_pdf_steps = (
+                b"      - name: Generate signed Direct F593 F4 catalog review PDFs\n"
+                b"        run: python ../scripts/generate_direct_f593_f4_ci_pdfs.py "
+                b"--output direct-f593-f4-review-pdfs\n"
+                b"""      - name: Upload Direct F593 F4 catalog review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f593-f4-pdfs-${{ matrix.os }}
+          path: backend/direct-f593-f4-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(f4_pdf_steps) == 1
+            raw = raw.replace(f4_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 8054") == 1
+            raw = raw.replace(b"--expected-tests 8054", b"--expected-tests 7959")
+            # G1 adds 14 exact security-successor governance cases only.
+            assert raw.count(b"--expected-tests 7959") == 1
+            raw = raw.replace(b"--expected-tests 7959", b"--expected-tests 7945")
+            # R1 adds the explicit Direct end-authority PDF gate and 48 cases.
+            r1_pdf_steps = (
+                b"      - name: Generate signed Direct supporting-end R1 review PDFs\n"
+                b"        run: python ../scripts/generate_direct_support_ends_r1_ci_pdfs.py "
+                b"--output direct-support-end-r1-review-pdfs\n"
+                b"""\
+      - name: Upload Direct supporting-end R1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-support-end-r1-pdfs-${{ matrix.os }}
+          path: backend/direct-support-end-r1-review-pdfs/
+          if-no-files-found: error
+"""
+            )
+            assert raw.count(r1_pdf_steps) == 1
+            raw = raw.replace(r1_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7945") == 1
+            raw = raw.replace(b"--expected-tests 7945", b"--expected-tests 7897")
+            # F3 adds only signed physical-edge PDFs and 50 focused cases.
+            # Remove those exact additions before auditing the sealed predecessor.
+            f3_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 F3 review PDFs
+        run: python ../scripts/generate_direct_or2_f3_ci_pdfs.py --output direct-or2-f3-review-pdfs
+      - name: Upload Direct OR2 F3 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-f3-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-f3-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f3_pdf_steps) == 1
+            raw = raw.replace(f3_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7897") == 1
+            raw = raw.replace(b"--expected-tests 7897", b"--expected-tests 7847")
+            # F2 adds only signed platform evidence and its fourteen exact tests.
+            f2_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 F2 review PDFs
+        run: python ../scripts/generate_direct_or2_f2_ci_pdfs.py --output direct-or2-f2-review-pdfs
+      - name: Upload Direct OR2 F2 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-f2-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-f2-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(f2_pdf_steps) == 1
+            raw = raw.replace(f2_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7847") == 1
+            raw = raw.replace(b"--expected-tests 7847", b"--expected-tests 7833")
+            # OR2 adds only its signed platform PDF evidence and exact count.
+            or2_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR2 review PDFs
+        run: python ../scripts/generate_direct_or2_ci_pdfs.py --output direct-or2-review-pdfs
+      - name: Upload Direct OR2 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or2-pdfs-${{ matrix.os }}
+          path: backend/direct-or2-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(or2_pdf_steps) == 1
+            raw = raw.replace(or2_pdf_steps, b"")
+            assert raw.count(b"--expected-tests 7833") == 1
+            raw = raw.replace(b"--expected-tests 7833", b"--expected-tests 7797")
+            # Hosted Windows completed coverage but hit the 25-minute job
+            # limit during report generation. Candidate PR checkout now uses
+            # the exact head SHA on both platforms.
+            exact_head_ref = (
+                b"          ref: ${{ github.event.pull_request.head.sha || github.sha }}\n"
+            )
+            assert raw.count(exact_head_ref) == 2
+            raw = raw.replace(exact_head_ref, b"")
+            assert raw.count(b"    timeout-minutes: 40") == 1
+            raw = raw.replace(b"    timeout-minutes: 40", b"    timeout-minutes: 25")
+            # Reconstruct the exact Direct F1 predecessor before auditing the
+            # older reporting and material CI identities below. OR1 adds only
+            # this build gate, platform PDF artifact, and test-count increase.
+            or1_build_step = b"""      - name: Build source and wheel distributions
+        run: python -m build --no-isolation --sdist --wheel --outdir dist
+"""
+            or1_pdf_steps = b"""      - name: Generate signed-snapshot Direct OR1 review PDFs
+        run: python ../scripts/generate_direct_or1_ci_pdfs.py --output direct-or1-review-pdfs
+      - name: Upload Direct OR1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-or1-pdfs-${{ matrix.os }}
+          path: backend/direct-or1-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(or1_build_step) == 1
+            assert raw.count(or1_pdf_steps) == 1
+            # G1 adds seventeen exact successor/tamper cases; preserve prior CI bytes.
+            assert raw.count(b"--expected-tests 7797") == 1
+            raw = raw.replace(b"--expected-tests 7797", b"--expected-tests 7780")
+            assert raw.count(b"--expected-tests 7780") == 1
+            raw = raw.replace(b"--expected-tests 7780", b"--expected-tests 7779")
+            assert raw.count(b"--expected-tests 7779") == 1
+            raw = raw.replace(b"--expected-tests 7779", b"--expected-tests 7776")
+            assert raw.count(b"--expected-tests 7776") == 1
+            raw = raw.replace(or1_build_step, b"").replace(or1_pdf_steps, b"")
+            raw = raw.replace(b"--expected-tests 7776", b"--expected-tests 7764")
+            assert hashlib.sha256(raw).hexdigest().upper() == (
+                "13FF24CA8C2EB9E92E5B45DD5A9807150A8B20512705D14E03760AF1807A8CFD"
+            )
+            direct_qa_steps = b"""      - name: Generate signed-snapshot Direct F1 review PDFs
+        run: python ../scripts/generate_direct_f1_ci_pdfs.py --output direct-f1-review-pdfs
+      - name: Upload Direct F1 review PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-f1-pdfs-${{ matrix.os }}
+          path: backend/direct-f1-review-pdfs/
+          if-no-files-found: error
+"""
+            assert raw.count(direct_qa_steps) == 1
+            raw = raw.replace(direct_qa_steps, b"")
             historical_identity = workflow_identities["historical_pre_ssmc_3_main"]
             report1_identity = workflow_identities["report1_reporting_successor"]
             successor_identity = workflow_identities["mat1_material_complete_successor"]
             prior_mat1_identity = workflow_identities["mat1_material_successor"]
             prior_identity = workflow_identities["ssmc_3_analytical_successor"]
-            correction_count = b"--expected-tests 7731"
+            correction_count = b"--expected-tests 7764"
             assert raw.count(correction_count) == 1
             raw = raw.replace(correction_count, report1_identity["expected_tests"])
             successor_blob = hashlib.sha1(

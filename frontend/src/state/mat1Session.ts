@@ -1,4 +1,24 @@
 import { useSyncExternalStore } from "react";
+import type { SingleBoltEvaluationRequest } from "../api/contracts";
+import { WORKSPACE_CAPABILITIES } from "../domain/workspaceCapabilities";
+import { invalidateReportSnapshot } from "./reportSession";
+
+export const F593_FASTENER_REVISION = "ASTM-F593-17-G2-316-316L-SOURCE-PENDING-RC0";
+export const F593_CATALOG_REVISION = "ASTM_F593_17_GROUP_2_316_316L_RC1";
+export type FastenerSelection =
+  | { readonly kind: "CATALOG"; readonly contract: "FASTENER-F4-RC1"; readonly revision: typeof F593_CATALOG_REVISION;
+      readonly alloy_group: "2"; readonly alloy: "316" | "316L";
+      readonly condition: "COLD_WORKED" | "AF" | "A" | "CW1" | "CW2";
+      readonly shear_thread_status: "EXCLUDED" | "INCLUDED" | "UNKNOWN" }
+  | { readonly kind: "DEFAULT"; readonly contract: "FASTENER-OR1-RC1"; readonly revision: typeof F593_FASTENER_REVISION }
+  | { readonly kind: "SESSION"; readonly contract: "FASTENER-OR1-RC1"; readonly revision: string;
+      readonly source_label: string; readonly fnt_source_basis: string;
+      readonly snapshot: SingleBoltEvaluationRequest["fastener_snapshot"] };
+
+export const defaultFastenerSelection: FastenerSelection = {
+  kind: "CATALOG", contract: "FASTENER-F4-RC1", revision: F593_CATALOG_REVISION,
+  alloy_group: "2", alloy: "316", condition: "COLD_WORKED", shear_thread_status: "EXCLUDED",
+};
 
 export interface MAT1Property {
   readonly id: string;
@@ -17,10 +37,15 @@ export interface MAT1CatalogRecord {
   readonly company: string;
   readonly resin: "ISOPHTHALIC_POLYESTER" | "VINYL_ESTER" | "OTHER";
   readonly source_kind: string;
+  readonly property_basis?: string;
   readonly missing: readonly string[];
   readonly properties: readonly MAT1Property[];
   readonly qualification: string;
+  readonly specification?: Readonly<Record<string, unknown>>;
 }
+
+export const ASCE_SHAPE_BASIS = "ASCE_74_23_MINIMUM_CHARACTERISTIC";
+export const DIRECT_PRODUCTION_MATERIAL_ID = "ICE_ISOPHTHALIC_POLYESTER_ASCE74_23_MIN_SHAPE_RC1";
 
 export interface MAT1SessionProperty {
   readonly label: string;
@@ -64,6 +89,9 @@ export interface MAT1Conditions {
   readonly design_period: string;
   readonly service_period: string;
   readonly fatigue_cycles: string;
+  readonly direct_policy?: "SHEAR01-DIRECT-MC1";
+  readonly design_temperature?: { readonly value: string; readonly unit: "degF" | "degC" };
+  readonly chemical_strength_factor?: string;
 }
 
 interface MAT1State {
@@ -71,15 +99,19 @@ interface MAT1State {
   readonly catalogError: string | null;
   readonly active: boolean;
   readonly defaultId: string | null;
+  readonly directMaterialId: string | null;
   readonly custom: Readonly<Record<string, MAT1SessionRecord>>;
   readonly overrides: Readonly<Record<string, Readonly<Record<string, string | null>>>>;
   readonly conditions: MAT1Conditions;
+  readonly directConditions: MAT1Conditions | null;
   readonly conditionOverrides: Readonly<Record<string, Readonly<Record<string, MAT1Conditions>>>>;
   readonly designKeys: Readonly<Record<string, string>>;
   readonly designTraces: Readonly<Record<string, unknown>>;
+  readonly directQualificationRecordId: string | null;
   readonly previewInputs: Readonly<Record<string, string>>;
   readonly previewOwners: Readonly<Record<string, readonly string[]>>;
   readonly previewOwnerKeys: Readonly<Record<string, string>>;
+  readonly fastenerSelections: Readonly<Record<string, FastenerSelection>>;
 }
 
 const initialConditions: MAT1Conditions = {
@@ -88,7 +120,7 @@ const initialConditions: MAT1Conditions = {
   glass_transition_temperature: null,
   moisture: "UNKNOWN",
   chemical: "UNKNOWN",
-  load_case_name: "",
+  load_case_name: "LC-1",
   time_effect_category: "",
   source_reference_condition: "UNKNOWN",
   chemical_substance: "", chemical_concentration: "", chemical_contact_form: "", chemical_duration: "",
@@ -98,10 +130,13 @@ const initialConditions: MAT1Conditions = {
 };
 
 let current: MAT1State = {
-  catalog: [], catalogError: null, active: false, defaultId: null,
-  custom: {}, overrides: {}, conditions: initialConditions, conditionOverrides: {},
-  designKeys: {}, designTraces: {},
+  catalog: [], catalogError: null, active: false,
+  defaultId: "ICE_ISOPHTHALIC_POLYESTER_OWNER_SEED_RC0",
+  directMaterialId: DIRECT_PRODUCTION_MATERIAL_ID,
+  custom: {}, overrides: {}, conditions: initialConditions, directConditions: null, conditionOverrides: {},
+  designKeys: {}, designTraces: {}, directQualificationRecordId: null,
   previewInputs: {}, previewOwners: {}, previewOwnerKeys: {},
+  fastenerSelections: {},
 };
 const listeners = new Set<() => void>();
 const notify = (next: MAT1State): void => { current = next; listeners.forEach((listener) => { listener(); }); };
@@ -123,10 +158,38 @@ export function setMAT1Active(active: boolean): void {
 }
 
 export function setMAT1Default(id: string | null): void {
-  notify({ ...current, active: true, defaultId: id });
+  // A linked family's old component override cannot survive a new selection.
+  const linkedOverrides = Object.fromEntries(Object.values(WORKSPACE_CAPABILITIES)
+    .filter((capability) => capability.material_assignment_mode === "LINKED")
+    .map((capability) => [capability.route_id, {}]));
+  notify({ ...current, active: true, defaultId: id,
+    overrides: { ...current.overrides, ...linkedOverrides } });
+}
+
+export function mat1UsesShapeBasis(family: string): boolean {
+  return family === "multi-row" && (current.previewInputs[family] ?? "").includes('"direct_finalization_contract_version":"SHEAR01-DIRECT-F1"');
+}
+
+export function mat1DefaultId(family: string): string | null {
+  return mat1UsesShapeBasis(family) ? current.directMaterialId : current.defaultId;
+}
+
+export function setMAT1DirectMaterial(id: string | null): void {
+  notify({ ...current, active: true, directMaterialId: id,
+    overrides: { ...current.overrides, "multi-row": {} } });
+}
+
+export function setFastenerSelection(family: string, selection: FastenerSelection): void {
+  notify({ ...current, fastenerSelections: { ...current.fastenerSelections, [family]: selection } });
+}
+
+export function setDirectQualificationRecordId(id: string | null): void {
+  invalidateReportSnapshot("multi-row");
+  notify({ ...current, directQualificationRecordId: id });
 }
 
 export function setMAT1Conditions(conditions: MAT1Conditions): void {
+  if (current.directConditions !== null) invalidateReportSnapshot("multi-row");
   const conditionOverrides = Object.fromEntries(Object.entries(current.conditionOverrides).map(([family, owners]) => [
     family,
     Object.fromEntries(Object.entries(owners).map(([owner, value]) => [owner, {
@@ -135,7 +198,16 @@ export function setMAT1Conditions(conditions: MAT1Conditions): void {
       action_provenance: conditions.action_provenance,
     }])),
   ]));
-  notify({ ...current, conditions, conditionOverrides });
+  notify({ ...current, conditions, directConditions: null, conditionOverrides });
+}
+
+export function mat1Conditions(family: string): MAT1Conditions {
+  return mat1UsesShapeBasis(family) ? current.directConditions ?? current.conditions : current.conditions;
+}
+
+export function setMAT1DirectConditions(conditions: MAT1Conditions): void {
+  invalidateReportSnapshot("multi-row");
+  notify({ ...current, directConditions: conditions });
 }
 
 export function setMAT1Override(family: string, owner: string, id: string | null | undefined): void {
@@ -182,9 +254,9 @@ export function createMAT1Session(source?: MAT1CatalogRecord | MAT1SessionRecord
   const id = `SESSION:${crypto.randomUUID()}`;
   const copied = source === undefined ? {} : "kind" in source
     ? structuredClone(source.properties)
-    : Object.fromEntries(source.properties.map((item) => [item.id, {
+    : Object.fromEntries(source.properties.filter((item) => !item.id.startsWith("pull_through_frp_thickness_")).map((item) => [item.id, {
       label: item.label, symbol: item.symbol, value: item.original,
-      unit: item.unit, basis: item.basis,
+      unit: item.unit, basis: item.basis === ASCE_SHAPE_BASIS ? "UNKNOWN" : item.basis,
     }]));
   const record: MAT1SessionRecord = {
     kind: "SESSION", id, revision: "1",
@@ -206,7 +278,7 @@ export function editMAT1Session(id: string, changes: Partial<Pick<MAT1SessionRec
 }
 
 export function deleteMAT1Session(id: string): boolean {
-  if (current.defaultId === id || Object.values(current.overrides).some((owners) => Object.values(owners).includes(id))) return false;
+  if (current.defaultId === id || current.directMaterialId === id || Object.values(current.overrides).some((owners) => Object.values(owners).includes(id))) return false;
   const custom = Object.fromEntries(Object.entries(current.custom).filter(([key]) => key !== id));
   notify({ ...current, custom });
   return true;
@@ -217,7 +289,8 @@ export function clearMAT1Sessions(): void {
     family,
     Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, id !== null && id in current.custom ? null : id])),
   ]));
-  notify({ ...current, custom: {}, defaultId: current.defaultId !== null && current.defaultId in current.custom ? null : current.defaultId, overrides });
+  notify({ ...current, custom: {}, defaultId: current.defaultId !== null && current.defaultId in current.custom ? null : current.defaultId,
+    directMaterialId: current.directMaterialId !== null && current.directMaterialId in current.custom ? null : current.directMaterialId, overrides });
 }
 
 export function materialSelection(id: string | null): object | null {
@@ -231,14 +304,17 @@ export function materialSelection(id: string | null): object | null {
   };
 }
 
-export function mat1FamilyKey(family: string): string {
+export function mat1FamilyKey(family: string, includePreviewInput = true): string {
   if (!current.active) return "LEGACY";
   const owners = current.overrides[family] ?? {};
   return JSON.stringify({
-    family, defaultMaterial: materialSelection(current.defaultId),
+    family, defaultMaterial: materialSelection(mat1DefaultId(family)),
     overrides: Object.fromEntries(Object.entries(owners).map(([owner, id]) => [owner, materialSelection(id)])),
-    conditions: current.conditions, conditionOverrides: current.conditionOverrides[family] ?? {},
-    previewInput: current.previewInputs[family] ?? null,
+    conditions: mat1Conditions(family), conditionOverrides: current.conditionOverrides[family] ?? {},
+    previewInput: includePreviewInput ? current.previewInputs[family] ?? null : undefined,
+    fastener: family === "multi-row" ? current.fastenerSelections[family] ?? defaultFastenerSelection : undefined,
+    ...(family === "multi-row" && current.directQualificationRecordId !== null
+      ? { qualificationRecord: current.directQualificationRecordId } : {}),
   });
 }
 

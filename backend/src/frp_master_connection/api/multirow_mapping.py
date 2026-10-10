@@ -17,7 +17,7 @@ from frp_master_connection.api.multirow_schemas import (
     MultiRowDesignResponseDTO,
     MultiRowPreviewResponseDTO,
 )
-from frp_master_connection.api.schemas import QuantityDTO
+from frp_master_connection.api.schemas import QuantityDTO, SingleBoltPreviewRequestDTO
 from frp_master_connection.application import (
     BoltAxisTensionInput,
     EngineerRowAllocationInput,
@@ -26,10 +26,17 @@ from frp_master_connection.application import (
     MultiRowOrchestrationResponse,
     MultiRowPreviewResult,
 )
+from frp_master_connection.application.direct_physical import (
+    direct_face_clearance_provenance,
+    is_direct_angle_w,
+)
+from frp_master_connection.application.direct_support_ends import DirectSupportEndInput
+from frp_master_connection.application.multirow_orchestration import DirectMultiRowPreviewResult
 from frp_master_connection.calculation import (
     EndUseFactors,
     MethodProvenance,
     PhysicalQuantity,
+    Unit,
     canonical_decimal_string,
     decimal_from_finite_real,
 )
@@ -92,6 +99,29 @@ def map_multirow_request(request: MultiRowConnectionRequestDTO) -> MultiRowOrche
         if request.physical_connection is None
         else map_connection_view_extents(request.physical_connection)
     )
+    direct_requested = request.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
+    if direct_requested and not is_direct_angle_w(physical_request):
+        raise ValueError("The Direct F1 route requires the physical FRP angle/W family.")
+    if direct_requested:
+        direct_physical = cast(SingleBoltPreviewRequestDTO, request.physical_connection)
+        unit = request.source_length_unit
+        # Same native rule as _rectangular_geometry: the loaded boundary is
+        # independent of presentation extents and the entered loaded distance.
+        physical_length = (
+            2 * _quantity(request.unloaded_end_e1).to(unit).magnitude
+            + (request.row_count - 1) * _quantity(request.pitch).to(unit).magnitude
+        )
+        physical_unit = (
+            Unit.IN
+            if direct_physical.joint_assembly.unit_system.value == "US_CUSTOMARY"
+            else Unit.MM
+        )
+        physical_request = map_single_bolt_preview_request(
+            direct_physical,
+            direct_brace_physical_length=float(
+                PhysicalQuantity.of(physical_length, unit).to(physical_unit).magnitude
+            ),
+        )
     return MultiRowOrchestrationRequest(
         request.request_id,
         request.connection_id,
@@ -133,6 +163,23 @@ def map_multirow_request(request: MultiRowConnectionRequestDTO) -> MultiRowOrche
         view_extents,
         request.demand_source,
         request.automatic_action_source_id,
+        single_row_geometry_preview_authorized=direct_requested and request.row_count == 1,
+        direct_finalization_mode=direct_requested,
+        supporting_w_longitudinal_ends=(
+            DirectSupportEndInput()
+            if request.supporting_w_longitudinal_ends is None
+            else DirectSupportEndInput(
+                request.supporting_w_longitudinal_ends.condition,
+                None
+                if request.supporting_w_longitudinal_ends.negative_end_distance is None
+                else _quantity(request.supporting_w_longitudinal_ends.negative_end_distance),
+                None
+                if request.supporting_w_longitudinal_ends.positive_end_distance is None
+                else _quantity(request.supporting_w_longitudinal_ends.positive_end_distance),
+            )
+        )
+        if direct_requested
+        else None,
     )
 
 
@@ -157,8 +204,40 @@ def _serialize(value: object) -> object:
     return value
 
 
+def _serialize_direct_trace(value: object) -> object:
+    """Serialize nested Direct-only equation operands without changing legacy DTOs."""
+
+    if isinstance(value, PhysicalQuantity):
+        return _serialize(value)
+    if is_dataclass(value):
+        return {
+            field.name: _serialize_direct_trace(getattr(value, field.name))
+            for field in fields(value)
+        }
+    if isinstance(value, dict):
+        return {str(key): _serialize_direct_trace(item) for key, item in value.items()}
+    if isinstance(value, tuple | list):
+        return [_serialize_direct_trace(item) for item in value]
+    return _serialize(value)
+
+
+def _direct_clearance(response: MultiRowPreviewResult) -> object:
+    """Transport-only witnesses; never part of frozen native result fingerprints."""
+
+    visual = response.visualization
+    if visual is None or visual.physical_connection is None:
+        return []
+    return _serialize(
+        direct_face_clearance_provenance(
+            visual.physical_connection, tuple(item.display for item in visual.physical_bolts)
+        )
+    )
+
+
 def serialize_multirow_preview(
     response: MultiRowPreviewResult,
+    *,
+    include_direct_clearance: bool = False,
 ) -> MultiRowPreviewResponseDTO:
     visualization = (
         None
@@ -188,13 +267,27 @@ def serialize_multirow_preview(
                 if response.automatic_demand_result is None
                 else _serialize(response.automatic_demand_result)
             ),
+            "direct_clearance_provenance": _direct_clearance(response)
+            if include_direct_clearance
+            else [],
+            "direct_engineering_geometry": _serialize(response.direct_engineering_geometry)
+            if include_direct_clearance and isinstance(response, DirectMultiRowPreviewResult)
+            else [],
+            "direct_support_end_authority": _serialize(response.direct_support_end_authority)
+            if isinstance(response, DirectMultiRowPreviewResult)
+            else None,
         }
     )
 
 
 def serialize_multirow_design(
     response: MultiRowOrchestrationResponse,
+    *,
+    include_direct_clearance: bool = False,
 ) -> MultiRowDesignResponseDTO:
+    preview = cast(dict[str, object], _serialize(response.preview))
+    if include_direct_clearance:
+        preview["direct_clearance_provenance"] = _direct_clearance(response.preview)
     return MultiRowDesignResponseDTO.model_validate(
         {
             "api_transport_schema_version": MULTIROW_API_TRANSPORT_SCHEMA_VERSION,
@@ -203,7 +296,7 @@ def serialize_multirow_design(
             "visualization_schema_version": response.preview.visualization_schema_version,
             "request_id": response.request_id,
             "connection_id": response.connection_id,
-            "preview": cast(dict[str, object], _serialize(response.preview)),
+            "preview": preview,
             "calculation_result": (
                 None
                 if response.calculation_result is None
@@ -224,7 +317,20 @@ def serialize_multirow_design(
                 if response.automatic_group_mode_integration is None
                 else cast(
                     dict[str, object],
-                    _serialize(response.automatic_group_mode_integration),
+                    {
+                        **cast(
+                            dict[str, object], _serialize(response.automatic_group_mode_integration)
+                        ),
+                        **(
+                            {
+                                "direct_single_row_result": _serialize_direct_trace(
+                                    getattr(response, "direct_single_row_result", None)
+                                )
+                            }
+                            if getattr(response, "direct_single_row_result", None) is not None
+                            else {}
+                        ),
+                    },
                 )
             ),
         }

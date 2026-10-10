@@ -56,7 +56,9 @@ def condition(category: str) -> dict[str, Any]:
 def test_catalog_is_exact_source_bound_data_not_a_qualification() -> None:
     response = call("GET", "/api/v1/frp-materials/catalog")
     assert response.status_code == 200
-    records = response.json()["records"]
+    all_records = response.json()["records"]
+    assert len(all_records) == 4
+    records = all_records[:2]  # Preserve every historical RC0 assertion independently of RC1.
     assert len(records) == 2
     assert {item["company"] for item in records} == {"ICE"}
     assert [item["resin"] for item in records] == [
@@ -76,6 +78,32 @@ def test_catalog_is_exact_source_bound_data_not_a_qualification() -> None:
     )
 
 
+def test_live_classification_is_bound_to_the_submitted_factor_case() -> None:
+    record = call("GET", "/api/v1/frp-materials/catalog").json()["records"][0]
+    body: dict[str, Any] = {
+        "contract": "MAT1-FACTOR-RC0",
+        "material": selection(record),
+        "component_id": "member-a",
+        "property_ids": ["tensile_strength_L"],
+        "conditions": condition("STORAGE"),
+    }
+    body["conditions"]["live_load_subtype"] = "STORAGE"
+    response = call("POST", "/api/v1/frp-materials/factor-candidates", body)
+    assert response.status_code == 200
+    assert response.json()["ledgers"][0]["lambda_factor"] == "0.6"
+
+    body["conditions"]["live_load_subtype"] = "IMPACT"
+    assert call("POST", "/api/v1/frp-materials/factor-candidates", body).status_code == 422
+
+    body["conditions"] = condition("LONG_TERM_OPERATING")
+    body["conditions"]["live_load_subtype"] = "LONG_TERM_OPERATING"
+    assert call("POST", "/api/v1/frp-materials/factor-candidates", body).status_code == 422
+    body["conditions"]["full_amplitude_duration"] = "MORE_THAN_ONE_YEAR"
+    response = call("POST", "/api/v1/frp-materials/factor-candidates", body)
+    assert response.status_code == 200
+    assert response.json()["ledgers"][0]["lambda_factor"] == "0.4"
+
+
 def test_single_bolt_changes_native_tension_check_and_retains_source_gate() -> None:
     records = call("GET", "/api/v1/frp-materials/catalog").json()["records"]
     legacy = cast(dict[str, Any], build_api_payload("P1"))
@@ -90,11 +118,18 @@ def test_single_bolt_changes_native_tension_check_and_retains_source_gate() -> N
             },
         }
         response = call("POST", "/api/v1/frp-materials/single-bolt/design-check", body)
+        if record["property_basis"] == "ASCE_74_23_MINIMUM_CHARACTERISTIC":
+            assert response.status_code == 422
+            assert "F5_SHAPE_BASIS_FAMILY_BINDING_DEFERRED" in response.text
+            continue
         assert response.status_code == 200
         result = response.json()
         assert result["overall_status"] == "SOURCE_REQUIRED"
         assert result["design_check_performed"] is True
         assert "TG_REQUIRED" in result["material_issues"]
+        assert result["material_sources"]["default"]["id"] == record["id"]
+        assert result["material_sources"]["default"]["resin"] == record["resin"]
+        assert result["material_sources"]["default"]["content_digest"] == record["content_digest"]
         output.append(result)
 
     def resistance(result: dict[str, Any], limit: str) -> Decimal:
@@ -107,6 +142,54 @@ def test_single_bolt_changes_native_tension_check_and_retains_source_gate() -> N
     )
     assert resistance(output[1], "PIN_BEARING") == resistance(output[0], "PIN_BEARING")
     assert records[1]["id"] in str(output[1]["native_design"]["material_assignments"])
+
+
+def test_design_snapshot_retains_exact_session_material_without_catalog_impersonation() -> None:
+    record = call("GET", "/api/v1/frp-materials/catalog").json()["records"][0]
+    properties = {
+        item["id"]: {
+            "label": item["label"],
+            "symbol": item["symbol"],
+            "value": "41" if item["id"] == "tensile_strength_L" else item["original"],
+            "unit": item["unit"],
+            "basis": item["basis"],
+        }
+        for item in record["properties"]
+    }
+    legacy = cast(dict[str, Any], build_api_payload("P1"))
+    response = call(
+        "POST",
+        "/api/v1/frp-materials/single-bolt/design-check",
+        {
+            "contract": "MAT1-SINGLE-BOLT-RC0",
+            "legacy_request": legacy,
+            "assignments": {
+                "default_material": {
+                    "kind": "SESSION",
+                    "id": "SESSION:owner-review-coupon",
+                    "revision": "1",
+                    "display_name": "Owner review coupon",
+                    "company": "Project laboratory",
+                    "resin": "ISOPHTHALIC_POLYESTER",
+                    "properties": properties,
+                },
+                "default_conditions": condition(legacy["time_effect_category"]),
+            },
+        },
+    )
+    assert response.status_code == 200, response.text
+    result = response.json()
+    source = result["material_sources"]["default"]
+    assert source["id"] == "SESSION:owner-review-coupon"
+    assert source["company"] == "Project laboratory"
+    assert source["resin"] == "ISOPHTHALIC_POLYESTER"
+    assert (
+        next(item for item in source["properties"] if item["id"] == "tensile_strength_L")[
+            "original"
+        ]
+        == "41"
+    )
+    assert result["overall_status"] == "SOURCE_REQUIRED"
 
 
 def test_forged_authority_and_conflicting_legacy_factor_are_rejected() -> None:
@@ -180,6 +263,10 @@ def test_native_clip_angle_family_consumes_mat1_properties() -> None:
                 },
             },
         )
+        if record["property_basis"] == "ASCE_74_23_MINIMUM_CHARACTERISTIC":
+            assert response.status_code == 422
+            assert "F5_SHAPE_BASIS_FAMILY_BINDING_DEFERRED" in response.text
+            continue
         assert response.status_code == 200, response.text
         result = response.json()
         assert result["overall_status"] == "SOURCE_REQUIRED"

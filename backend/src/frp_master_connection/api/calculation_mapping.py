@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import fields, is_dataclass
+from dataclasses import fields, is_dataclass, replace
 from datetime import date
 from decimal import Decimal
 from enum import Enum
@@ -756,7 +756,11 @@ def _brace_to_column_template_geometry(
     return GeometryDTO.model_validate(result)
 
 
-def map_single_bolt_request(dto: SingleBoltEvaluationRequestDTO) -> SingleBoltOrchestrationRequest:
+def map_single_bolt_request(
+    dto: SingleBoltEvaluationRequestDTO,
+    *,
+    direct_brace_physical_length: float | None = None,
+) -> SingleBoltOrchestrationRequest:
     """Rebuild the canonical object graph from one strict stateless DTO."""
 
     unit_system = dto.joint_assembly.unit_system
@@ -852,6 +856,16 @@ def map_single_bolt_request(dto: SingleBoltEvaluationRequestDTO) -> SingleBoltOr
         )
         for member, dto_member in zip(members, dto.joint_assembly.members, strict=True)
     )
+    # Direct alone supplies this backend-derived native loaded boundary. Keep the
+    # old placement frame and bolt anchor exactly; only the physical extent changes.
+    original_surface_sets = tuple(create_component_surface_set(item) for item in placed_members)
+    if direct_brace_physical_length is not None:
+        from frp_master_connection.geometry.placement import place_member_with_physical_length
+
+        placed_members = (
+            place_member_with_physical_length(placed_members[0], direct_brace_physical_length),
+            *placed_members[1:],
+        )
     surface_sets = tuple(create_component_surface_set(item) for item in placed_members)
     surfaces = tuple(patch for surface_set in surface_sets for patch in surface_set.patches)
     first_dto = interface_dto.first_side
@@ -901,6 +915,27 @@ def map_single_bolt_request(dto: SingleBoltEvaluationRequestDTO) -> SingleBoltOr
         ),
         surfaces,
     )
+    if direct_brace_physical_length is not None:
+        original_patch = _surface(
+            tuple(p for s in original_surface_sets for p in s.patches),
+            first_dto.participant_id,
+            first_dto.physical_element_id,
+            first_dto.patch_id,
+            first_dto.face_role,
+        )
+        if not isinstance(original_patch.geometry, PlanarRectangularSurface3D):
+            raise ValueError("Direct physical-end reconciliation requires a rectangular face.")
+        original_origin = original_patch.geometry.frame.local_to_parent_point(
+            PositionVector3D(
+                0.0,
+                _geometry_scalar(interface_dto.origin_local_y, length_unit),
+                _geometry_scalar(interface_dto.origin_local_z, length_unit),
+            )
+        )
+        resolved_interface = replace(
+            resolved_interface,
+            interface_frame=replace(resolved_interface.interface_frame, origin=original_origin),
+        )
     basis = JointGeometryBasis(
         assembly,
         _frame(geometry.joint_frame, length_unit),
@@ -1054,6 +1089,8 @@ def map_single_bolt_request(dto: SingleBoltEvaluationRequestDTO) -> SingleBoltOr
 
 def map_single_bolt_preview_request(
     dto: SingleBoltPreviewRequestDTO,
+    *,
+    direct_brace_physical_length: float | None = None,
 ) -> SingleBoltOrchestrationRequest:
     """Reuse the exact design mapper while keeping design-only transport fields absent.
 
@@ -1093,7 +1130,10 @@ def map_single_bolt_preview_request(
             "whole_connection_requires_section_2_3_2": False,
         }
     )
-    return map_single_bolt_request(SingleBoltEvaluationRequestDTO.model_validate(payload))
+    return map_single_bolt_request(
+        SingleBoltEvaluationRequestDTO.model_validate(payload),
+        direct_brace_physical_length=direct_brace_physical_length,
+    )
 
 
 def map_connection_view_extents(

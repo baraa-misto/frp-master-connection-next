@@ -1,5 +1,6 @@
 /** Versioned material request envelope around the existing explicit design actions. */
-import { acceptMAT1Design, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { acceptMAT1Design, defaultFastenerSelection, F593_FASTENER_REVISION, mat1Conditions, mat1DefaultId, mat1FamilyKey, mat1Snapshot, materialSelection, rememberMAT1Preview } from "../state/mat1Session";
+import { materialConditionBlocker } from "../features/materialConditionValidation";
 import { acceptReportSnapshot, invalidateReportSnapshot, reportGeneration } from "../state/reportSession";
 
 interface MAT1TransportResponse {
@@ -19,6 +20,79 @@ function mat1Endpoint(family: string): { readonly path: string; readonly contrac
   if (family === "tee-connector") return { path: "/api/v1/frp-materials/tee-connector/design-check", contract: "MAT1-TEE-RC0" };
   if (family === "stair-stringer-miter") return { path: "/api/v1/frp-materials/stair-stringer-miter/analytical-design-check", contract: "MAT1-SSMC-ANALYTICAL-RC0" };
   return { path: "/api/v1/frp-materials/family/design-check", contract: "MAT1-FAMILY-RC0" };
+}
+
+export function buildMAT1DesignEnvelope(family: string, body: RequestInit["body"]) {
+  const state = mat1Snapshot();
+  const defaultId = mat1DefaultId(family);
+  if (defaultId === null) throw new Error("Assign a connection FRP material before Run Design Check.");
+  const selected = materialSelection(defaultId);
+  if (selected === null) throw new Error("Selected FRP material is unavailable.");
+  const conditions = mat1Conditions(family);
+  if (conditions.direct_policy !== undefined) {
+    const blocker = materialConditionBlocker(conditions);
+    if (blocker !== null) throw new Error(blocker);
+  }
+  if (conditions.sustained_temperature.value === "" || conditions.maximum_temperature.value === "" || conditions.load_case_name.trim() === "" || conditions.time_effect_category === "") throw new Error("Complete the MAT1 design conditions before Run Design Check.");
+  const overrides: Record<string, object> = {};
+  for (const [owner, id] of Object.entries(state.overrides[family] ?? {})) {
+    if (id === null) throw new Error(`FRP component ${owner} is unassigned.`);
+    const resolved = materialSelection(id);
+    if (resolved === null) throw new Error(`FRP component ${owner} has an unavailable material.`);
+    overrides[owner] = resolved;
+  }
+  if (typeof body !== "string") throw new Error("MAT1 design transport requires a JSON request body.");
+  const legacy = JSON.parse(body) as Record<string, unknown>;
+  if (family === "single-bolt" || family === "multi-row") {
+    // The native engines still accept the historical factor fields. The MAT1
+    // successor supplies adjusted properties, so their legacy multipliers must
+    // be neutral to avoid applying the same end-use factors twice.
+    legacy.time_effect_category = conditions.time_effect_category;
+    if (family === "single-bolt") {
+      const factors = legacy.end_use_factors as Record<string, unknown> | undefined;
+      if (factors !== undefined && [factors.cm, factors.ct, factors.cch].some((value) => Number(value) !== 1)) {
+        throw new Error("This imported design contains manual end-use factors. Remove its expert factors before checking with calculated MAT1 factors.");
+      }
+      legacy.end_use_factors = {
+        ...(factors ?? {}), cm: "1", ct: "1", cch: "1",
+        source_reference: "MAT1-adjusted properties; native factor interface neutralized",
+        approval_metadata: ["No second end-use adjustment applied"],
+      };
+    } else if (Array.isArray(legacy.layers)) {
+      for (const layer of legacy.layers as Record<string, unknown>[]) {
+        const factors = layer.end_use_factors as Record<string, unknown> | undefined;
+        if (factors !== undefined && [factors.cm, factors.ct, factors.cch].some((value) => Number(value) !== 1)) {
+          throw new Error("This imported design contains manual end-use factors. Remove its expert factors before checking with calculated MAT1 factors.");
+        }
+      }
+      legacy.layers = legacy.layers.map((layer: Record<string, unknown>) => ({
+        ...layer, end_use_factors: {
+          ...((layer.end_use_factors as Record<string, unknown> | undefined) ?? {}),
+          cm: "1", ct: "1", cch: "1",
+          source_reference: "MAT1-adjusted properties; native factor interface neutralized",
+          approval_metadata: ["No second end-use adjustment applied"],
+        },
+      }));
+    }
+  }
+  if (family === "stair-stringer-miter" && typeof legacy.action === "object" && legacy.action !== null) {
+    legacy.action = { ...legacy.action, time_effect_category: conditions.time_effect_category };
+  }
+  const endpoint = mat1Endpoint(family);
+  const request = {
+    contract: endpoint.contract,
+    ...(endpoint.contract === "MAT1-FAMILY-RC0" ? { family_id: family } : {}),
+    legacy_request: legacy,
+    assignments: {
+      default_material: selected, material_overrides: overrides,
+      default_conditions: conditions, condition_overrides: state.conditionOverrides[family] ?? {},
+    },
+    ...(family === "multi-row" ? { fastener: state.fastenerSelections[family] ?? (legacy.direct_finalization_contract_version === "SHEAR01-DIRECT-F1" ? defaultFastenerSelection
+      : { kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION }) } : {}),
+    ...(family === "multi-row" && legacy.direct_finalization_contract_version === "SHEAR01-DIRECT-F1" && state.directQualificationRecordId !== null
+      ? { qualification_record_id: state.directQualificationRecordId } : {}),
+  };
+  return { endpoint, request };
 }
 
 export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
@@ -50,35 +124,8 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
   if (url.includes("connector_body_material=SS316")) throw new Error("MAT1_STAINLESS_MEMBER_ADAPTER_UNAVAILABLE");
   const family = String(match[1]); // The route pattern captures one nonempty family segment.
   if (family === "stair-stringer-miter" && match[2] === "design-check") throw new Error("MAT1_SSMC_REQUIRES_ANALYTICAL_DESIGN_ROUTE");
-  if (state.defaultId === null) throw new Error("Assign a connection FRP material before Run Design Check.");
-  const selected = materialSelection(state.defaultId);
-  if (selected === null) throw new Error("Selected FRP material is unavailable.");
-  const conditions = state.conditions;
-  if (conditions.sustained_temperature.value === "" || conditions.maximum_temperature.value === "" || conditions.load_case_name.trim() === "" || conditions.time_effect_category === "") throw new Error("Complete the MAT1 design conditions before Run Design Check.");
-  const overrides: Record<string, object> = {};
-  for (const [owner, id] of Object.entries(state.overrides[family] ?? {})) {
-    if (id === null) throw new Error(`FRP component ${owner} is unassigned.`);
-    const resolved = materialSelection(id);
-    if (resolved === null) throw new Error(`FRP component ${owner} has an unavailable material.`);
-    overrides[owner] = resolved;
-  }
-  if (typeof init.body !== "string") throw new Error("MAT1 design transport requires a JSON request body.");
-  const legacy = JSON.parse(init.body) as Record<string, unknown>;
-  if (family === "single-bolt" || family === "multi-row") legacy.time_effect_category = conditions.time_effect_category;
-  if (family === "stair-stringer-miter" && typeof legacy.action === "object" && legacy.action !== null) {
-    legacy.action = { ...legacy.action, time_effect_category: conditions.time_effect_category };
-  }
-  const endpoint = mat1Endpoint(family);
+  const { endpoint, request } = buildMAT1DesignEnvelope(family, init.body);
   const key = mat1FamilyKey(family);
-  const request = {
-    contract: endpoint.contract,
-    ...(endpoint.contract === "MAT1-FAMILY-RC0" ? { family_id: family } : {}),
-    legacy_request: legacy,
-    assignments: {
-      default_material: selected, material_overrides: overrides,
-      default_conditions: conditions, condition_overrides: state.conditionOverrides[family] ?? {},
-    },
-  };
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");
   const response = await fetch(endpoint.path, {

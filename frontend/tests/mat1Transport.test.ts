@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import type { MAT1CatalogRecord, MAT1Conditions } from "../src/state/mat1Session";
+import { loadJ1Benchmark } from "../src/fixtures/j1Benchmarks";
 
 const record: MAT1CatalogRecord = {
   id: "ICE:POLY", revision: "RC0", content_digest: "A".repeat(64), display_name: "ICE", company: "ICE",
@@ -31,6 +32,18 @@ function ready(): void {
   store.setMAT1Catalog([record]); store.setMAT1Default(record.id); store.setMAT1Conditions(conditions);
 }
 const post = (path: string, body: object = { a: 1 }) => transport.mat1Fetch(path, { method: "POST", headers: { Accept: "application/json" }, body: JSON.stringify(body) });
+
+it("forwards only an installed qualification ID for Direct and invalidates its snapshot", async () => {
+  ready();
+  store.setDirectQualificationRecordId("INSTALLED-Q1");
+  await post("/api/v1/calculations/multi-row/design-check", { direct_finalization_contract_version: "SHEAR01-DIRECT-F1", layers: [] });
+  const request = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as Record<string, unknown>;
+  expect(request.qualification_record_id).toBe("INSTALLED-Q1");
+  expect(request).not.toHaveProperty("specimens");
+  await post("/api/v1/calculations/multi-row/design-check", { layers: [] });
+  const other = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as Record<string, unknown>;
+  expect(other).not.toHaveProperty("qualification_record_id");
+});
 
 it("keeps preview geometry-only and records its input for currency", async () => {
   await post("/api/v1/calculations/clip-angle/preview", { geometry: 1 });
@@ -67,6 +80,34 @@ it("routes every special design envelope and stores backend source status", asyn
   expect(forwardedHeaders.get("Content-Type")).toBe("application/json");
 });
 
+it("binds the selected Direct fastener to the signed design envelope and stales it on change", async () => {
+  ready();
+  await post("/api/v1/calculations/multi-row/design-check", { direct_finalization_contract_version: "SHEAR01-DIRECT-F1", layers: [] });
+  const standard = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as { fastener: unknown };
+  expect(standard.fastener).toEqual(store.defaultFastenerSelection);
+  const snapshot = structuredClone(loadJ1Benchmark("US_CUSTOMARY").fastener_snapshot);
+  snapshot.id = "USER_FASTENER_UI_QA";
+  snapshot.locked = false;
+  snapshot.fnt = { value: "75", unit: "ksi" };
+  snapshot.fnt_source_classification = "USER_DEFINED";
+  snapshot.fnt_qualification_status = "DEVELOPMENT_ONLY";
+  store.setFastenerSelection("multi-row", {
+    kind: "SESSION", contract: "FASTENER-OR1-RC1", revision: "1",
+    source_label: "QA session source", fnt_source_basis: "QA-only Fnt", snapshot,
+  });
+  await post("/api/v1/calculations/multi-row/design-check", { layers: [] });
+  const submitted = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as {
+    fastener: { kind: string; snapshot: { id: string; fnt: { value: string } } };
+  };
+  expect(submitted.fastener).toMatchObject({ kind: "SESSION", snapshot: { id: "USER_FASTENER_UI_QA", fnt: { value: "75" } } });
+  expect(store.mat1Snapshot().designKeys["multi-row"]).toBe(store.mat1FamilyKey("multi-row"));
+  store.setFastenerSelection("multi-row", store.defaultFastenerSelection);
+  expect(store.mat1Snapshot().designKeys["multi-row"]).not.toBe(store.mat1FamilyKey("multi-row"));
+  await post("/api/v1/calculations/clip-angle/design-check");
+  const unrelated = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as Record<string, unknown>;
+  expect(unrelated).not.toHaveProperty("fastener");
+});
+
 it("blocks missing inputs, unassigned owners and stainless bypasses", async () => {
   ready();
   store.setMAT1Default(null);
@@ -87,6 +128,29 @@ it("blocks missing inputs, unassigned owners and stainless bypasses", async () =
   await expect(post("/api/v1/calculations/clip-angle/design-check?connector_body_material=SS316")).rejects.toThrow("MAT1_STAINLESS_MEMBER_ADAPTER_UNAVAILABLE");
   await expect(post("/api/v1/calculations/stair-stringer-miter/design-check")).rejects.toThrow("MAT1_SSMC_REQUIRES_ANALYTICAL_DESIGN_ROUTE");
   expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it("passes neutral legacy factors once and blocks an imported manual factor", async () => {
+  ready();
+  const factors = { cm: "1", ct: "1", cch: "1" };
+  await post("/api/v1/calculations/single-bolt/evaluate", { end_use_factors: factors });
+  let body = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as {
+    legacy_request: { end_use_factors: typeof factors };
+  };
+  expect(body.legacy_request.end_use_factors).toMatchObject(factors);
+  expect(body.legacy_request.end_use_factors).toHaveProperty("source_reference", expect.stringContaining("MAT1-adjusted"));
+  await post("/api/v1/calculations/multi-row/design-check", { layers: [{ end_use_factors: factors }] });
+  body = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as typeof body;
+  expect((body.legacy_request as unknown as { layers: { end_use_factors: typeof factors }[] }).layers[0]?.end_use_factors).toMatchObject(factors);
+  await post("/api/v1/calculations/multi-row/design-check", { layers: [{}] });
+  body = JSON.parse((fetchMock.mock.calls.at(-1)?.[1] as RequestInit).body as string) as typeof body;
+  expect((body.legacy_request as unknown as { layers: { end_use_factors: typeof factors }[] }).layers[0]?.end_use_factors).toMatchObject(factors);
+  await expect(post("/api/v1/calculations/multi-row/design-check", {
+    layers: [{ end_use_factors: { cm: "0.75", ct: "1", cch: "1" } }],
+  })).rejects.toThrow("imported design contains manual end-use factors");
+  await expect(post("/api/v1/calculations/single-bolt/evaluate", {
+    end_use_factors: { cm: "0.75", ct: "1", cch: "1" },
+  })).rejects.toThrow("imported design contains manual end-use factors");
 });
 
 it("preserves a valid physical override and normalizes Request and URL inputs", async () => {
