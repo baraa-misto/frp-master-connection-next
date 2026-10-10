@@ -2,16 +2,20 @@
 
 from copy import deepcopy
 from decimal import Decimal
+from types import SimpleNamespace
 
 import pytest
 from tests.api.test_direct_two_bolt import quantity, sab2_body
 from tests.direct_sab2_cases import sab2_cases
 
+import frp_master_connection.application.direct_two_bolt_display as display
 from frp_master_connection.api.direct_two_bolt import TwoBoltRequestDTO, geometry_response
 
 
 @pytest.mark.parametrize("name", list(sab2_cases()))
-def test_actual_production_review_controls_preserve_independent_fit_and_route(name: str) -> None:
+def test_actual_production_review_controls_preserve_independent_fit_and_route(
+    name: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
     body = sab2_cases()[name]
     saved = deepcopy(body)
     data = geometry_response(TwoBoltRequestDTO.model_validate(body))
@@ -38,6 +42,17 @@ def test_actual_production_review_controls_preserve_independent_fit_and_route(na
         assert data["geometry"]["hardware_state"] == "CONDITIONAL"
         assert data["geometry"]["installation_state"] == "NOT_EVALUATED"
         assert data["direct_support_end_authority"]["condition"] == "FINITE_BOTH_ENDS"
+        # Poison only the new display module's former libm dependency. The
+        # unchanged native engine retains its own imports. This regression
+        # fails for the original platform-dependent mesh and checks the whole
+        # result, including every mesh point and all independent fit evidence.
+        monkeypatch.setattr(
+            display,
+            "math",
+            SimpleNamespace(cos=lambda _: float("nan"), sin=lambda _: float("nan"), tau=6.0),
+            raising=False,
+        )
+        assert geometry_response(TwoBoltRequestDTO.model_validate(body)) == data
 
 
 def test_fresh_compatible_visualization_keeps_original_bolt_identity_and_exact_mapping() -> None:

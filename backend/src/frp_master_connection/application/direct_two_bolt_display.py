@@ -7,7 +7,6 @@ clearance remains the analytic cylinder calculation in the shared kernel.
 
 from __future__ import annotations
 
-import math
 from copy import deepcopy
 from decimal import Decimal
 from typing import Any, cast
@@ -22,6 +21,9 @@ from frp_master_connection.application.direct_two_bolt_geometry import (
     dot,
     local_point,
     scale,
+)
+from frp_master_connection.calculation.deterministic_trigonometry import (
+    deterministic_sine_cosine_degrees,
 )
 
 
@@ -184,12 +186,17 @@ def display_constraints(visual: dict[str, Any], pair: PairInput, factor: Decimal
     )
     for station, center in enumerate(centers):
         for envelope in pair.hardware:
+            # Use the existing Stage 3.2-R5 geometry representation authority.
+            # This faceted display envelope never changes analytic clearance.
             ring = tuple(
                 (
-                    Decimal(str(math.cos(i * math.tau / 32))) * envelope.radius,
-                    Decimal(str(math.sin(i * math.tau / 32))) * envelope.radius,
+                    Decimal(str(cosine)) * envelope.radius,
+                    Decimal(str(sine)) * envelope.radius,
                 )
-                for i in range(32)
+                for sine, cosine in (
+                    deterministic_sine_cosine_degrees(Decimal(i) * Decimal("11.25"))
+                    for i in range(32)
+                )
             )
             face = Face(
                 "DISPLAY",
