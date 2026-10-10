@@ -66,6 +66,7 @@ from frp_master_connection.api.direct_side_lap_concrete_schemas import (
     DirectSideLapConcretePreviewResponseDTO,
     DirectSideLapConcreteRequestDTO,
 )
+from frp_master_connection.api.direct_two_bolt import build_two_bolt_router
 from frp_master_connection.api.double_channel_truss_node import build_dctn_router
 from frp_master_connection.api.fasteners import build_fastener_router
 from frp_master_connection.api.mat1 import build_mat1_router
@@ -236,6 +237,7 @@ def build_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     router.include_router(build_dctn_router(identity_resolver))
     router.include_router(build_ssmc_router(identity_resolver))
     router.include_router(build_mat1_router(identity_resolver))
+    router.include_router(build_two_bolt_router(identity_resolver))
     router.include_router(build_fastener_router(identity_resolver))
     router.include_router(build_workspace_capability_router(identity_resolver))
     router.include_router(build_connector_material_router(identity_resolver))

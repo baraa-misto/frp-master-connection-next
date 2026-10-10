@@ -4,6 +4,11 @@ import { FastenerSelector } from "../features/FastenerSelector";
 import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
 import { DirectQualification } from "../features/DirectQualification";
 import { DirectDesignStatus } from "../features/DirectDesignStatus";
+import { DirectTwoBoltGeometry } from "../features/DirectTwoBoltGeometry";
+import type { CurrentTwoBolt } from "../features/DirectTwoBoltGeometry";
+import { designTwoBolt, INITIAL_TWO_BOLT, editedTwoBolt } from "../api/directTwoBolt";
+import type { TwoBoltOptions } from "../api/directTwoBolt";
+import { invalidateReportSnapshot } from "../state/reportSession";
 import { currentDirectDecision, directDecisionHeadline } from "../features/directDecision";
 import type { DirectDecision } from "../features/directDecision";
 import { DirectEngineeringGeometryIssue } from "../features/DirectEngineeringGeometryIssue";
@@ -819,6 +824,11 @@ export function SingleBoltEngineeringWorkspace() {
   const [multirowRevision, setMultirowRevision] = useState(0);
   const [response, setResponse] = useState<SingleBoltEvaluationResponse | null>(null);
   const [multirowDesign, setMultirowDesign] = useState<MultiRowDesignResponse | null>(null);
+  const [twoBoltOptions, setTwoBoltOptions] = useState<TwoBoltOptions>(INITIAL_TWO_BOLT);
+  const [twoBoltReceived, setTwoBoltCurrent] = useState<CurrentTwoBolt | null>(null);
+  const [twoBoltPanelOpen, setTwoBoltPanelOpen] = useState(false);
+  const twoBoltAvailable = directF1Family && !caseLabel.startsWith("Verified J1") && groupState.rowCount === 2 && groupState.boltsPerRow === 1;
+  const twoBoltActive = twoBoltAvailable && editedTwoBolt(twoBoltOptions);
   const [error, setError] = useState<EvaluationTransportError | null>(null);
   const [multirowDesignError, setMultirowDesignError] =
     useState<EvaluationTransportError | null>(null);
@@ -831,6 +841,12 @@ export function SingleBoltEngineeringWorkspace() {
   const [layoutSuggestion, setLayoutSuggestion] = useState<{ request: SingleBoltEvaluationRequest; group: BoltGroupState; revision: number; memberSizeChange: boolean } | null>(null);
   const [layoutSuggestionError, setLayoutSuggestionError] = useState("");
   const designAbortController = useRef<AbortController | null>(null);
+  const changeTwoBoltOptions = useCallback((options: TwoBoltOptions) => {
+    engineeringRevisionRef.current += 1;
+    designAbortController.current?.abort();
+    setTwoBoltOptions(options); setTwoBoltCurrent(null); setStale(true); setMultirowDesign(null);
+    invalidateReportSnapshot("multi-row");
+  }, []);
   const singlePreviewInput = useMemo(() => directF1Family
     ? { ...previewInput, validationMessage: "Direct F1 uses the canonical group preview." }
     : previewInput, [directF1Family, previewInput]);
@@ -839,6 +855,11 @@ export function SingleBoltEngineeringWorkspace() {
     () => buildMultirowRequest(request, viewExtents, groupState, demandMode, supportEnds),
     [demandMode, groupState, request, viewExtents, supportEnds],
   );
+  const twoBoltKey = JSON.stringify([multirowRequest, twoBoltOptions, mat1FamilyKey("multi-row", false)]);
+  const twoBoltCurrent = twoBoltReceived?.sourceKey === twoBoltKey ? twoBoltReceived : null;
+  const geometryOnlyReason = !twoBoltActive ? undefined : twoBoltCurrent === null
+    ? "Current two-bolt geometry is updating. Structural design and Engineer Report require a current compatible layout."
+    : twoBoltCurrent.preview.structural_eligible ? undefined : twoBoltCurrent.preview.structural_reason;
   const multirowPreviewInput = useMemo(() => ({
     request: multirowRequest,
     revision: multirowRevision,
@@ -849,6 +870,9 @@ export function SingleBoltEngineeringWorkspace() {
   const singleArrangement = groupState.rowCount === 1 && groupState.boltsPerRow === 1 && !directF1Family;
   const supportedMultirowArrangement = !singleArrangement;
   const canonicalModel = useMemo(() => {
+    if (twoBoltActive) {
+      return twoBoltCurrent === null ? null : buildMultiRowSceneModel(twoBoltCurrent.preview.visualization, twoBoltCurrent.preview.direct_support_end_authority);
+    }
     if (supportedMultirowArrangement) {
       const multirowVisualization = multirowPreview.response?.visualization;
       return multirowVisualization === null || multirowVisualization === undefined
@@ -860,7 +884,7 @@ export function SingleBoltEngineeringWorkspace() {
     return visualization === null || visualization === undefined
       ? null
       : buildSingleBoltSceneModel(visualization);
-  }, [multirowPreview.response, preview.response, supportedMultirowArrangement]);
+  }, [multirowPreview.response, preview.response, supportedMultirowArrangement, twoBoltActive, twoBoltCurrent]);
   const brace = requiredAt(request.joint_assembly.members, 0, "Brace member");
   const support = requiredAt(request.joint_assembly.members, 1, "Support member");
   const action = requiredAt(request.joint_assembly.member_end_actions, 0, "Member-end action");
@@ -1047,6 +1071,8 @@ export function SingleBoltEngineeringWorkspace() {
   };
 
   const loadProfile = (unitSystem: BenchmarkUnitSystem, historical: boolean) => {
+    designAbortController.current?.abort();
+    setTwoBoltOptions(INITIAL_TWO_BOLT); setTwoBoltCurrent(null);
     setFastenerSelection("multi-row", historical
       ? { kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION }
       : defaultFastenerSelection);
@@ -1219,7 +1245,9 @@ export function SingleBoltEngineeringWorkspace() {
     setLoading(true); setError(null); setMultirowDesignError(null); setStale(false);
     try {
       if (supportedMultirowArrangement) {
-        const result = await evaluateMultiRow(multirowRequest, controller.signal);
+        const result = twoBoltActive && twoBoltCurrent !== null
+          ? await designTwoBolt(twoBoltCurrent.request, controller.signal, () => submittedRevision === engineeringRevisionRef.current)
+          : await evaluateMultiRow(multirowRequest, controller.signal);
         if (submittedRevision !== engineeringRevisionRef.current) return;
         setMultirowDesign(result); setResultsOpen(true);
         return;
@@ -1251,7 +1279,7 @@ export function SingleBoltEngineeringWorkspace() {
   const localDesignBlocker = designValidationMessage(request);
   const multirowBlocker = supportEndValidation(supportEnds) ?? multirowValidationMessage(request, groupState, demandMode);
   const selectedMaterialConditions = directF1Family ? mat1Conditions("multi-row") : mat1.conditions;
-  const designButtonBlocker = mat1.active && materialConditionBlocker(selectedMaterialConditions) !== null
+  const designButtonBlocker = geometryOnlyReason ?? (mat1.active && materialConditionBlocker(selectedMaterialConditions) !== null
     ? materialConditionBlocker(selectedMaterialConditions)
     : singleArrangement && demandMode === "AUTOMATIC_MEMBER_END_FORCE"
     ? "Automatic member-end-force demand is available for the accepted multi-row workflow."
@@ -1277,7 +1305,7 @@ export function SingleBoltEngineeringWorkspace() {
             ? "Connection model is updating. Design Check will be available when the model is current."
             : preview.response?.design_check_ready !== true
               ? requiredValue(preview.response, "Canonical preview response").design_check_blocking_reasons.join(", ")
-              : localDesignBlocker;
+              : localDesignBlocker);
   const orientation = supportedMultirowArrangement
     ? multirowPreview.response?.visualization?.physical_connection?.connection_orientation ?? null
     : preview.response?.visualization?.connection_orientation ?? null;
@@ -1333,7 +1361,7 @@ export function SingleBoltEngineeringWorkspace() {
     ?? automaticGroupModeIntegration?.failed_check_ids ?? [];
   const directDisposition = directSingleRow?.overall_disposition
     ?? automaticGroupModeIntegration?.overall_disposition;
-  const directMultirowStatus = directF1Family
+  const directMultirowStatus = geometryOnlyReason !== undefined ? "GRAY — structural design not evaluated" : directF1Family
     ? directDecisionHeadline(directDecision, stale)
     : stale
     ? "Results need to be recalculated"
@@ -1388,7 +1416,7 @@ export function SingleBoltEngineeringWorkspace() {
         }));
 
   return (
-    <ConnectionWorkspaceShell className="direct-connection-workspace" family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
+    <ConnectionWorkspaceShell className="direct-connection-workspace" family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} {...(geometryOnlyReason === undefined ? {} : { reportBlockedReason: geometryOnlyReason })} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
         <div><p className="eyebrow">Shear · Brace/beam connection — Direct</p><h2 id="workspace-scope-title">{DIRECT_SHAPE_CAPABILITIES.current_variant}</h2></div>
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>
@@ -1409,6 +1437,7 @@ export function SingleBoltEngineeringWorkspace() {
               <label className="field-control"><span>Bolts per row</span><input aria-label="Bolts per row" type="number" min="1" max="3" value={groupState.boltsPerRow} onChange={(event) => { setGroupCount("boltsPerRow", event.currentTarget.value); }} /></label>
             </div>
             {groupState.rowCount === 1 && groupState.boltsPerRow > 1 ? <p className="sidebar-note">Direct single-row Chapter 8 checks use the canonical physical angle and W layers.</p> : null}
+            {twoBoltAvailable ? <details onToggle={(event) => { setTwoBoltPanelOpen(event.currentTarget.open); }}><summary>Two-bolt alignment and constructability</summary>{twoBoltPanelOpen || twoBoltActive ? <DirectTwoBoltGeometry legacy={multirowRequest} options={twoBoltOptions} onChange={changeTwoBoltOptions} onCurrent={setTwoBoltCurrent} /> : null}</details> : <p>The shared two-bolt alignment option requires 2 rows × 1 bolt. Other supported layouts retain the existing row-count workflow.</p>}
           </SidebarGroup>
 
           <SidebarGroup
@@ -1532,7 +1561,7 @@ export function SingleBoltEngineeringWorkspace() {
           </SidebarGroup>
 
           <SidebarGroup title="Design Results" summary={stale ? "Results need to be recalculated" : activeDesignSummary} defaultOpen>
-            {directF1Family ? <DirectDesignStatus stale={stale} onCurrencyInvalid={invalidateCurrency} /> : supportedMultirowArrangement
+            {geometryOnlyReason !== undefined ? <section role="status"><h3>GRAY — structural design not evaluated</h3><p>{geometryOnlyReason}</p></section> : directF1Family ? <DirectDesignStatus stale={stale} onCurrencyInvalid={invalidateCurrency} /> : supportedMultirowArrangement
               ? automaticHandoff !== null && automaticGroupModeIntegration !== null
                 ? <><strong>{directMultirowStatus}</strong><p className="sidebar-note">{friendlyEnum(automaticHandoff.coverage)} · {automaticGroupModeIntegration.governing_supported_check_ids.length} governing supported check(s)</p><p><strong>NUMERICAL CHECKS:</strong> {finalDirectChecks(automaticGroupModeIntegration).length + (directSingleRow?.checks.filter((check) => check.availability === "CALCULATED").length ?? 0)} supported checks evaluated</p>{stale ? null : <p className="sidebar-note">{(directSingleRow?.incomplete_required_check_ids.length ?? (automaticGroupModeIntegration.unsupported_required_check_ids.length + automaticGroupModeIntegration.incomplete_required_check_ids.length))} required checks/evidence items remain unresolved. Supported numerical checks are shown separately. Final GREEN still requires the listed method, source and qualification evidence.</p>}</>
                 : multirowResult === null
@@ -1551,20 +1580,20 @@ export function SingleBoltEngineeringWorkspace() {
         </ConnectionWorkspaceSidebar>
 
         <ConnectionWorkspaceMain>
-          <PersistentConnectionViewer unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
+          <PersistentConnectionViewer {...(geometryOnlyReason === undefined ? {} : { geometryOnlyReason })} unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
             {multirowPreview.response?.direct_support_end_authority === undefined || multirowPreview.response.direct_support_end_authority === null ? null : <DirectSupportViewerCue authority={multirowPreview.response.direct_support_end_authority} />}
             {canonicalModel === null ? <section className="viewer-prompt"><h3>Direct angle-to-W connection viewer</h3><p>The connection model updates automatically when the current inputs are valid.</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={canonicalModel} results={activeResults} resolvedLayers={activeResolvedLayers} selection={selection} onSelect={setSelection} {...(directF1Family ? {} : { appliedActionInputValues, onAppliedActionValueChange: setActionComponentValue })} actionSourceLabel="Member" selectedBoltChecks={selectedBoltChecks} title="Direct angle-to-W connection viewer" contactSelectionLabel="Supporting W flange contact face" />}
           </PersistentConnectionViewer>
           {previewPending ? <p className="preview-notice" role="status">Updating connection model…</p> : null}
           {!supportedMultirowArrangement && preview.state === "PREVIEW_ERROR" ? <div className="transport-error" role="alert"><strong>Connection model could not be updated.</strong><p>Check the inputs, then retry.</p><button type="button" onClick={preview.retry}>Retry</button><details><summary>Advanced Engineering Diagnostics</summary><p>{requiredValue(preview.error, "Preview error").message}</p></details></div> : null}
-          {stale ? <p className="stale-notice" role="status">Results need to be recalculated. Run Design Check after the model updates.</p> : null}
+          {stale && geometryOnlyReason === undefined ? <p className="stale-notice" role="status">Results need to be recalculated. Run Design Check after the model updates.</p> : null}
           {supportedMultirowArrangement && activePreviewError !== null ? <div className="transport-error" role="alert"><strong>Connection model could not be updated.</strong><p>Check the inputs, then retry.</p><button type="button" onClick={activePreviewRetry}>Retry</button><details><summary>Advanced Engineering Diagnostics</summary><p>{activePreviewError.message}</p></details></div> : null}
           {error === null ? null : <div className="transport-error" role="alert"><strong>Unable to complete Design Check.</strong><p>{actionableErrorDetail(error.detail) ?? "Review the inputs and try again."}</p><details><summary>Advanced Engineering Diagnostics</summary><p>{error.kind} {error.status === null ? "" : `HTTP ${String(error.status)}`} · {error.message}</p></details></div>}
           {multirowDesignError === null ? null : <div className="transport-error" role="alert"><strong>Unable to complete Design Check.</strong><p>{actionableErrorDetail(multirowDesignError.detail) ?? "Review the inputs and try again."}</p><details><summary>Advanced Engineering Diagnostics</summary><p>{multirowDesignError.kind} {multirowDesignError.status === null ? "" : `HTTP ${String(multirowDesignError.status)}`} · {multirowDesignError.message}</p></details></div>}
-          {supportedMultirowArrangement && multirowPreview.response?.visualization !== null && multirowPreview.response?.visualization !== undefined ? <details className="layout-diagnostic"><summary>Bolt layout — optional 2D diagnostic</summary><p>The canonical 3D connection above remains primary. This backend-authored interface-plane diagram is a secondary layout and block-path diagnostic.</p><label className="checkbox-control"><input type="checkbox" checked={groupState.showBlockPaths} onChange={(event) => { updateGroup({ showBlockPaths: event.currentTarget.checked }, false); }} /> Show accepted block paths</label><MultiRowVisualizationPanel snapshot={multirowPreview.response.visualization} showBlockPaths={groupState.showBlockPaths} displayUnitSystem={request.joint_assembly.unit_system} /></details> : null}
+          {!twoBoltActive && supportedMultirowArrangement && multirowPreview.response?.visualization !== null && multirowPreview.response?.visualization !== undefined ? <details className="layout-diagnostic"><summary>Bolt layout — optional 2D diagnostic</summary><p>The canonical 3D connection above remains primary. This backend-authored interface-plane diagram is a secondary layout and block-path diagnostic.</p><label className="checkbox-control"><input type="checkbox" checked={groupState.showBlockPaths} onChange={(event) => { updateGroup({ showBlockPaths: event.currentTarget.checked }, false); }} /> Show accepted block paths</label><MultiRowVisualizationPanel snapshot={multirowPreview.response.visualization} showBlockPaths={groupState.showBlockPaths} displayUnitSystem={request.joint_assembly.unit_system} /></details> : null}
           <details className={`results-drawer${stale ? " stale-design-results" : ""}`} open={resultsOpen} onToggle={(event) => { setResultsOpen(event.currentTarget.open); }}>
             <summary><span>Design results &amp; calculation details</span><small>{activeDesignSummary === "No design run" ? "Run Design Check to populate" : stale ? "Recalculation needed" : activeDesignSummary}</small></summary>
-            <div className="results-drawer-body">{stale ? <p>Previous calculation belongs to earlier inputs. Run Design Check for current results.</p> : supportedMultirowArrangement ? automaticHandoff !== null && automaticGroupModeIntegration !== null && multirowDesign?.automatic_demand_result !== null && multirowDesign?.automatic_demand_result !== undefined ? <AutomaticMultirowResults handoff={automaticHandoff} integration={automaticGroupModeIntegration} demandFingerprint={multirowDesign.automatic_demand_result.result_fingerprint} displayUnitSystem={request.joint_assembly.unit_system} finalDecision={directF1Family ? directDecision : undefined} /> : multirowResult === null ? <p>No multi-row design run.</p> : <MultirowResults result={multirowResult} displayUnitSystem={request.joint_assembly.unit_system} /> : response === null ? <p>No design run.</p> : <><ResultSummary response={response} /><ResultTable response={response} /></>}</div>
+            <div className="results-drawer-body">{geometryOnlyReason !== undefined ? <p>{geometryOnlyReason}</p> : stale ? <p>Previous calculation belongs to earlier inputs. Run Design Check for current results.</p> : supportedMultirowArrangement ? automaticHandoff !== null && automaticGroupModeIntegration !== null && multirowDesign?.automatic_demand_result !== null && multirowDesign?.automatic_demand_result !== undefined ? <AutomaticMultirowResults handoff={automaticHandoff} integration={automaticGroupModeIntegration} demandFingerprint={multirowDesign.automatic_demand_result.result_fingerprint} displayUnitSystem={request.joint_assembly.unit_system} finalDecision={directF1Family ? directDecision : undefined} /> : multirowResult === null ? <p>No multi-row design run.</p> : <MultirowResults result={multirowResult} displayUnitSystem={request.joint_assembly.unit_system} /> : response === null ? <p>No design run.</p> : <><ResultSummary response={response} /><ResultTable response={response} /></>}</div>
           </details>
         </ConnectionWorkspaceMain>
     </ConnectionWorkspaceShell>

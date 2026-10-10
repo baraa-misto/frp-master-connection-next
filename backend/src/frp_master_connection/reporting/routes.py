@@ -74,6 +74,17 @@ class DecisionCurrencyRequest(BaseModel):
     report_handle: str = Field(min_length=32, max_length=80)
 
 
+def contains_sab2_contract(value: object) -> bool:
+    """A SAB2 geometry wrapper cannot become a legacy report by nesting it."""
+    if isinstance(value, dict):
+        return value.get("contract") == "SHEAR01-DIRECT-SAB2-GEOMETRY-V1" or any(
+            contains_sab2_contract(item) for item in value.values()
+        )
+    if isinstance(value, list):
+        return any(contains_sab2_contract(item) for item in value)
+    return False
+
+
 def _filename(request: ExportRequest) -> str:
     parts = (request.project_number, request.connection_id, request.revision)
     stem = "_".join(
@@ -129,6 +140,13 @@ def build_report_router(
     ) -> JSONResponse:
         if request.family not in _CALCULATION_FAMILIES:
             raise HTTPException(status_code=422, detail="Unknown REPORT1 connection family")
+        if contains_sab2_contract(request.draft):
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    "Use the authenticated Geometry and Constructability Review for SAB2 layouts."
+                ),
+            )
         try:
             token = signer.issue(
                 family=request.family,
@@ -169,6 +187,10 @@ def build_report_router(
                 else cast(str, request.report_snapshot)
             )
             snapshot = signer.verify(token, account_id=identity.account_id)
+            if snapshot.family == "direct-sab2-geometry":
+                raise SnapshotError(
+                    "Geometry-only layouts require the Geometry and Constructability Review export."
+                )
             if snapshot.kind == "design" and not direct_status_snapshot_current(
                 snapshot.result, snapshot.request
             ):

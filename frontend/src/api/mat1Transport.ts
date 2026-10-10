@@ -22,35 +22,8 @@ function mat1Endpoint(family: string): { readonly path: string; readonly contrac
   return { path: "/api/v1/frp-materials/family/design-check", contract: "MAT1-FAMILY-RC0" };
 }
 
-export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+export function buildMAT1DesignEnvelope(family: string, body: RequestInit["body"]) {
   const state = mat1Snapshot();
-  const address = input instanceof URL
-    ? input : new URL(typeof input === "string" ? input : input.url, window.location.origin);
-  const url = address.pathname + address.search;
-  const preview = previewPattern.exec(url);
-  if (preview?.[1] !== undefined && init?.method?.toUpperCase() === "POST" && typeof init.body === "string") {
-    rememberMAT1Preview(preview[1], init.body);
-  }
-  const match = routePattern.exec(url);
-  const familyForReport = match?.[1] ?? preview?.[1];
-  if (familyForReport !== undefined && init?.method?.toUpperCase() === "POST") {
-    invalidateReportSnapshot(familyForReport);
-  }
-  const reportGenerationAtStart = familyForReport === undefined ? 0 : reportGeneration(familyForReport);
-  if (!state.active || match === null || init?.method?.toUpperCase() !== "POST") {
-    const response = await fetch(input, init);
-    if ((response.ok || response.status === 422) && familyForReport !== undefined && init?.method?.toUpperCase() === "POST") {
-      acceptReportSnapshot(
-        familyForReport, response.headers.get("X-Report-Handle"),
-        response.headers.get("X-Report-Kind") === "input_only" ? "input_only" :
-          match === null ? "input_only" : "design", reportGenerationAtStart,
-      );
-    }
-    return response;
-  }
-  if (url.includes("connector_body_material=SS316")) throw new Error("MAT1_STAINLESS_MEMBER_ADAPTER_UNAVAILABLE");
-  const family = String(match[1]); // The route pattern captures one nonempty family segment.
-  if (family === "stair-stringer-miter" && match[2] === "design-check") throw new Error("MAT1_SSMC_REQUIRES_ANALYTICAL_DESIGN_ROUTE");
   const defaultId = mat1DefaultId(family);
   if (defaultId === null) throw new Error("Assign a connection FRP material before Run Design Check.");
   const selected = materialSelection(defaultId);
@@ -68,8 +41,8 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
     if (resolved === null) throw new Error(`FRP component ${owner} has an unavailable material.`);
     overrides[owner] = resolved;
   }
-  if (typeof init.body !== "string") throw new Error("MAT1 design transport requires a JSON request body.");
-  const legacy = JSON.parse(init.body) as Record<string, unknown>;
+  if (typeof body !== "string") throw new Error("MAT1 design transport requires a JSON request body.");
+  const legacy = JSON.parse(body) as Record<string, unknown>;
   if (family === "single-bolt" || family === "multi-row") {
     // The native engines still accept the historical factor fields. The MAT1
     // successor supplies adjusted properties, so their legacy multipliers must
@@ -106,7 +79,6 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
     legacy.action = { ...legacy.action, time_effect_category: conditions.time_effect_category };
   }
   const endpoint = mat1Endpoint(family);
-  const key = mat1FamilyKey(family);
   const request = {
     contract: endpoint.contract,
     ...(endpoint.contract === "MAT1-FAMILY-RC0" ? { family_id: family } : {}),
@@ -120,6 +92,40 @@ export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): P
     ...(family === "multi-row" && legacy.direct_finalization_contract_version === "SHEAR01-DIRECT-F1" && state.directQualificationRecordId !== null
       ? { qualification_record_id: state.directQualificationRecordId } : {}),
   };
+  return { endpoint, request };
+}
+
+export async function mat1Fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  const state = mat1Snapshot();
+  const address = input instanceof URL
+    ? input : new URL(typeof input === "string" ? input : input.url, window.location.origin);
+  const url = address.pathname + address.search;
+  const preview = previewPattern.exec(url);
+  if (preview?.[1] !== undefined && init?.method?.toUpperCase() === "POST" && typeof init.body === "string") {
+    rememberMAT1Preview(preview[1], init.body);
+  }
+  const match = routePattern.exec(url);
+  const familyForReport = match?.[1] ?? preview?.[1];
+  if (familyForReport !== undefined && init?.method?.toUpperCase() === "POST") {
+    invalidateReportSnapshot(familyForReport);
+  }
+  const reportGenerationAtStart = familyForReport === undefined ? 0 : reportGeneration(familyForReport);
+  if (!state.active || match === null || init?.method?.toUpperCase() !== "POST") {
+    const response = await fetch(input, init);
+    if ((response.ok || response.status === 422) && familyForReport !== undefined && init?.method?.toUpperCase() === "POST") {
+      acceptReportSnapshot(
+        familyForReport, response.headers.get("X-Report-Handle"),
+        response.headers.get("X-Report-Kind") === "input_only" ? "input_only" :
+          match === null ? "input_only" : "design", reportGenerationAtStart,
+      );
+    }
+    return response;
+  }
+  if (url.includes("connector_body_material=SS316")) throw new Error("MAT1_STAINLESS_MEMBER_ADAPTER_UNAVAILABLE");
+  const family = String(match[1]); // The route pattern captures one nonempty family segment.
+  if (family === "stair-stringer-miter" && match[2] === "design-check") throw new Error("MAT1_SSMC_REQUIRES_ANALYTICAL_DESIGN_ROUTE");
+  const { endpoint, request } = buildMAT1DesignEnvelope(family, init.body);
+  const key = mat1FamilyKey(family);
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");
   const response = await fetch(endpoint.path, {

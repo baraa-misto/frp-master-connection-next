@@ -6,6 +6,7 @@ import pytest
 
 from tests.direct_f8_g1_governance import CI_SHA256, ROOT, digest, pre_g1_workflow
 from tests.direct_f9_governance import authority, pre_f9_workflow
+from tests.direct_sab2_governance import pre_sab2_workflow
 
 
 def test_f9_workflow_restores_exact_f8_g1_and_earlier_history() -> None:
@@ -21,6 +22,8 @@ def test_f9_workflow_restores_exact_f8_g1_and_earlier_history() -> None:
 )
 def test_f9_workflow_mutation_fails_closed(mutation: str) -> None:
     raw = (ROOT / ".github/workflows/ci.yml").read_bytes().replace(b"\r\n", b"\n")
+    # Apply the unchanged F9 mutations to the exact governed MC1 predecessor.
+    raw = pre_sab2_workflow(raw)
     governed = authority()
     count = governed["backend_tests"]
     if b"Generate authenticated Direct MC1" in raw:
@@ -37,6 +40,7 @@ def test_f9_workflow_mutation_fails_closed(mutation: str) -> None:
         "extra": (b"name: CI", b"name: CI\n# EXTRA"),
     }
     before, after = replacements[mutation]
+    assert before in raw
     with pytest.raises(AssertionError, match="F9_WORKFLOW_IDENTITY"):
         pre_f9_workflow(raw.replace(before, after))
 

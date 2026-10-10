@@ -1,0 +1,20 @@
+{
+  "contract": "SHEAR01-DIRECT-OR2-SAB2",
+  "controlling_order_sha256": "E521B694FB1C448DF967358DD5019C936C8B5A319DA7F8DCE8AEAFE8774BAE9D",
+  "predecessor_candidate": "47222eb76b119500862a50ea7020b9094eed8fa6",
+  "predecessor_workflow_sha256": "921E49F1818CDD99C5F61B0CF8DD7EDA3A96F639782E45E1DA74FB61F6FE04C4",
+  "workflow_sha256": "FE5A0353EB98FACD79033E39CFA66E686E7CE4DBAD6E10F9D7F1B6B6DFAF2B9A",
+  "added_steps": "      - name: Generate authenticated Direct SAB2 geometry reviews\n        run: python ../scripts/generate_direct_sab2_ci_pdfs.py --output direct-sab2-review-pdfs\n      - name: Upload Direct SAB2 geometry review evidence\n        uses: actions/upload-artifact@v7\n        with:\n          name: direct-sab2-pdfs-${{ matrix.os }}\n          path: backend/direct-sab2-review-pdfs/\n          if-no-files-found: error\n",
+  "backend_tests": 8957,
+  "frontend_tests": 1357,
+  "scope": "Shared constructability only; Route A unchanged, B fresh identical legacy calculation, C geometry only",
+  "geometry_contract": "SHEAR01-DIRECT-SAB2-GEOMETRY-V1",
+  "new_pdf_count_per_platform": 8,
+  "mc1_pdf_count_per_platform": 14,
+  "protected_engineering_identities": 53,
+  "dependencies": "All existing pins and locks unchanged",
+  "qualification_activation": false,
+  "new_resistance_or_demand_methods": false,
+  "protected_refs": "main and all three protected annotated tags unchanged",
+  "historical_pdf_gates": "Exact predecessor workflow reconstructed and verified"
+}

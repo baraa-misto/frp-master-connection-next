@@ -16,6 +16,7 @@ interface ConnectionWorkspaceShellProps {
   readonly className?: string;
   readonly family?: string;
   readonly reportDraft?: unknown;
+  readonly reportBlockedReason?: string;
 }
 
 interface ConnectionWorkspaceSidebarProps {
@@ -30,6 +31,7 @@ interface ConnectionWorkspaceMainProps {
 interface PersistentConnectionViewerProps {
   readonly children: ReactNode;
   readonly unity?: UnityView;
+  readonly geometryOnlyReason?: string;
 }
 
 interface SidebarGroupProps {
@@ -63,6 +65,7 @@ export function ConnectionWorkspaceShell({
   className = "",
   family,
   reportDraft,
+  reportBlockedReason,
 }: ConnectionWorkspaceShellProps) {
   const mat1 = useMAT1();
   // reportDraft already binds geometry. Preview bookkeeping must not invalidate
@@ -78,7 +81,7 @@ export function ConnectionWorkspaceShell({
   return (
     <MAT1FamilyContext.Provider value={family ?? null}><div className={`engineering-workspace connection-first-workspace${className === "" ? "" : ` ${className}`}`}>
       {banner}
-      {family === undefined ? null : <ReportExportButton family={family} draft={reportDraft} />}
+      {reportBlockedReason !== undefined ? <p role="status">{reportBlockedReason}</p> : family === undefined ? null : <ReportExportButton family={family} draft={reportDraft} />}
       {family === undefined || !mat1.active || !workspaceSupports(family, "frp_material_selection") ? null : <div><MAT1MaterialsPanel family={family} /></div>}
       <div className="workspace-body">{children}</div>
     </div></MAT1FamilyContext.Provider>
@@ -96,14 +99,16 @@ export function ConnectionWorkspaceMain({ children }: ConnectionWorkspaceMainPro
   return <main className="connection-view-column">{children}</main>;
 }
 
-export function PersistentConnectionViewer({ children, unity }: PersistentConnectionViewerProps) {
+export function PersistentConnectionViewer({ children, unity, geometryOnlyReason }: PersistentConnectionViewerProps) {
   const family = useContext(MAT1FamilyContext);
   const mat1 = useMAT1();
   const gateTrace = family === null ? undefined : mat1.designTraces[family] as { overall_status?: string } | undefined;
   const gateStatus = family !== null && mat1.designKeys[family] === mat1FamilyKey(family)
     ? gateTrace?.overall_status ?? "SOURCE_REQUIRED" : gateTrace === undefined ? "Not calculated" : "Recalculation needed";
   let presented = unity;
-  if (unity !== undefined && family !== null && mat1.active) {
+  if (geometryOnlyReason !== undefined) {
+    presented = { tone: "gray", ratio: null, ratioText: "—", status: "Structural design not evaluated", governing: null, explanation: geometryOnlyReason };
+  } else if (unity !== undefined && family !== null && mat1.active) {
     const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[]; material_sources?: { default?: { property_basis?: string } } } | undefined;
     if (mat1.designKeys[family] !== mat1FamilyKey(family) || trace === undefined) {
       presented = { tone: "gray", ratio: null, ratioText: "—", status: trace === undefined ? "Not calculated" : "Recalculation needed", governing: null, explanation: trace === undefined ? "Run Design Check to calculate the connection." : "FRP material or design conditions changed. Run Design Check." };
@@ -120,7 +125,7 @@ export function PersistentConnectionViewer({ children, unity }: PersistentConnec
   }
   return <UnityViewerContext.Provider value={presented ?? null}><div className="persistent-connection-viewer">
     {family !== null && mat1.active ? <div className="mat1-result-gate" role="status">
-      <strong>Design completeness status: {gateStatus}</strong>
+      <strong>Design completeness status: {geometryOnlyReason === undefined ? gateStatus : "Structural design not evaluated"}</strong>
       <span> Required methods, project conditions and whole-connection qualification govern the connection result.</span>
     </div> : null}
     {children}

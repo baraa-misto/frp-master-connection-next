@@ -20,6 +20,9 @@ def authority(raw: bytes | None = None) -> dict[str, Any]:
 def pre_mc1_workflow(raw: bytes) -> bytes:
     governed = authority()
     raw = raw.replace(b"\r\n", b"\n")
+    from tests.direct_sab2_governance import pre_sab2_workflow
+
+    raw = pre_sab2_workflow(raw, error_message="MC1_WORKFLOW_IDENTITY_INVALID")
     assert digest(raw) == governed["workflow_sha256"], "MC1_WORKFLOW_IDENTITY_INVALID"
     steps = governed["added_steps"].encode()
     count = f"--expected-tests {governed['backend_tests']}".encode()

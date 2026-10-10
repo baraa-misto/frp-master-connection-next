@@ -77,6 +77,12 @@ def create_app(
     ) -> Response:
         """Seal the validated native response from this exact calculation call."""
 
+        if (
+            request.method == "POST"
+            and request.url.path.startswith("/api/v1/direct-two-bolt/")
+            and len(await request.body()) > 8_000_000
+        ):
+            return JSONResponse({"detail": "SAB2 request size limit exceeded"}, status_code=413)
         if request.method != "POST" or not request.url.path.startswith(
             ("/api/v1/calculations/", "/api/v1/frp-materials/")
         ):

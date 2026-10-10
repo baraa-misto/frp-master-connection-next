@@ -16,6 +16,9 @@ import { MultiRowVisualizationPanel } from "../src/visualization/MultiRowVisuali
 import { ShearConnectionsWorkspace } from "../src/workspace/ShearConnectionsWorkspace";
 import { PREVIEW_DEBOUNCE_MS } from "../src/workspace/previewWorkflow";
 import * as benchmarks from "../src/fixtures/j1Benchmarks";
+import * as twoBoltAPI from "../src/api/directTwoBolt";
+import twoBoltFixture from "./fixtures/directTwoBoltGeometry.json";
+import type { GeometryResponse } from "../src/api/directTwoBolt";
 import { ASCE_SHAPE_BASIS, DIRECT_PRODUCTION_MATERIAL_ID, acceptMAT1Design, mat1FamilyKey, mat1Snapshot, rememberMAT1Preview, setMAT1Active, setMAT1Catalog, setMAT1Conditions, setMAT1DirectMaterial } from "../src/state/mat1Session";
 import {
   previewResponseFixture,
@@ -1932,6 +1935,62 @@ describe("Stage 2.4C-R1 unified connection workspace", () => {
     fireEvent.change(selector, { target: { value: "INSTALLED-Q1" } });
     expect(mat1Snapshot().directQualificationRecordId).toBe("INSTALLED-Q1");
     expect(screen.getByText(/Run Design Check to evaluate qualification for the current inputs/)).toBeVisible();
+  });
+
+  it("keeps unmapped shared geometry separate, disables stale design and restores the legacy example on reload", async () => {
+    const data = twoBoltFixture.response as unknown as GeometryResponse;
+    let finish: ((value: GeometryResponse) => void) | undefined;
+    const preview = vi.spyOn(twoBoltAPI, "previewTwoBolt").mockImplementation((request) => Promise.resolve({ ...data, revision: request.revision }));
+    const design = vi.spyOn(twoBoltAPI, "designTwoBolt");
+    mocks.multiPreview.mockResolvedValue(multirowPreviewFixture(2, 1));
+    render(<ShearConnectionsWorkspace />);
+    fireEvent.click(screen.getByRole("button", { name: "Load Direct example — U.S." }));
+    const details = screen.getByText("Two-bolt alignment and constructability").closest("details");
+    if (details === null) throw new Error("Shared geometry details required");
+    details.open = true; fireEvent(details, new Event("toggle"));
+    await screen.findByLabelText("Bolt alignment");
+    preview.mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    fireEvent.change(screen.getByLabelText("Bolt alignment"), { target: { value: "SUPPORT" } });
+    expect(screen.getByRole("button", { name: "Run Design Check" })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /Export Engineer Report/ })).not.toBeInTheDocument();
+    await waitFor(() => { expect(finish).toBeTypeOf("function"); });
+    await act(async () => { finish?.({ ...data, revision: "2" }); await Promise.resolve(); });
+    await screen.findByText(twoBoltAPI.GEOMETRY_BANNER);
+    expect(screen.getByTestId("mock-engineering-scene")).toHaveAttribute("data-bolt-count", "2");
+    expect(design).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Load Direct example — U.S." }));
+    expect(screen.getByLabelText("Bolt alignment")).toHaveValue("BRACE");
+    expect(screen.queryByText(twoBoltAPI.GEOMETRY_BANNER)).not.toBeInTheDocument();
+    preview.mockRestore(); design.mockRestore();
+  });
+
+  it("freshly checks an eligible identical shared layout and invalidates an in-flight result after an edit", async () => {
+    const data = twoBoltFixture.response as unknown as GeometryResponse;
+    const preview = vi.spyOn(twoBoltAPI, "previewTwoBolt").mockImplementation((request) => Promise.resolve({ ...data, revision: request.revision, structural_eligible: true }));
+    let currency: (() => boolean) | undefined;
+    let signal: AbortSignal | undefined;
+    const design = vi.spyOn(twoBoltAPI, "designTwoBolt").mockImplementation((_request, suppliedSignal, current) => {
+      signal = suppliedSignal; currency = current;
+      return Promise.resolve(multirowDesignFixture(2, 1));
+    });
+    mocks.multiPreview.mockResolvedValue(multirowPreviewFixture(2, 1));
+    render(<ShearConnectionsWorkspace />);
+    fireEvent.click(screen.getByRole("button", { name: "Load Direct example — U.S." }));
+    const details = screen.getByText("Two-bolt alignment and constructability").closest("details");
+    if (details === null) throw new Error("Shared geometry details required");
+    details.open = true; fireEvent(details, new Event("toggle"));
+    await screen.findByLabelText("Bolt spacing along selected alignment (in)");
+    fireEvent.change(screen.getByLabelText("Bolt spacing along selected alignment (in)"), { target: { value: "2" } });
+    await screen.findByText(/Identical legacy layout can be freshly evaluated/);
+    const run = screen.getByRole("button", { name: "Run Design Check" });
+    await waitFor(() => { expect(run).toBeEnabled(); });
+    fireEvent.click(run);
+    await waitFor(() => { expect(design).toHaveBeenCalled(); });
+    expect(currency?.()).toBe(true);
+    fireEvent.change(screen.getByLabelText("Midpoint offset +u (in)"), { target: { value: ".1" } });
+    expect(signal?.aborted).toBe(true); expect(currency?.()).toBe(false);
+    expect(mocks.multiEvaluate).not.toHaveBeenCalled();
+    preview.mockRestore(); design.mockRestore();
   });
 
 });

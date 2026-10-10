@@ -1682,3 +1682,13 @@ chemical-modulus applicability remains unresolved. Legacy signed two-temperature
 requests are preserved. No new resistance method, qualification activation, main
 merge or freeze is authorized. The governed successor adds 14 actual PDFs per OS
 while retaining all historical gates.
+
+## Direct SAB2 shared constructability candidate
+
+[Direct SAB2](docs/architecture/DIRECT_SAB2_SHARED_CONSTRUCTABILITY.md) adds
+brace-aligned and support-aligned two-bolt geometry through one backend workflow.
+The default brace calculation remains unchanged. An identical eligible layout
+can be freshly checked; unmapped layouts remain explicitly geometry-only.
+Actual installation dimensions and new structural method mapping remain open.
+The governed successor preserves historical gates and adds eight geometry review
+PDFs on each platform. This candidate is not a Direct freeze or qualification.

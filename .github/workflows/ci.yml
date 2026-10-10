@@ -74,7 +74,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 8729
+          --expected-tests 8957
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence
@@ -122,6 +122,14 @@ jobs:
         with:
           name: direct-mc1-pdfs-${{ matrix.os }}
           path: backend/direct-mc1-review-pdfs/
+          if-no-files-found: error
+      - name: Generate authenticated Direct SAB2 geometry reviews
+        run: python ../scripts/generate_direct_sab2_ci_pdfs.py --output direct-sab2-review-pdfs
+      - name: Upload Direct SAB2 geometry review evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: direct-sab2-pdfs-${{ matrix.os }}
+          path: backend/direct-sab2-review-pdfs/
           if-no-files-found: error
       - name: Generate real REPORT1 PDFs on this runner
         run: >-

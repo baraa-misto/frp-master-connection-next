@@ -713,7 +713,7 @@ export function buildSingleBoltSceneModel(
 }
 
 export function buildMultiRowSceneModel(
-  snapshot: MultiRowVisualization,
+  snapshot: Pick<MultiRowVisualization, "physical_connection" | "physical_bolts" | "connection_demand" | "automatic_bolt_demands">,
   supportEndAuthority?: import("../api/multirowContracts").DirectSupportEndAuthority,
 ): SingleBoltSceneModel {
   const physicalConnection = snapshot.physical_connection;

@@ -159,6 +159,9 @@ def test_openapi_product_path_set_is_exact() -> None:
     application = create_app(settings=AppSettings(environment=ApplicationEnvironment.TEST))
 
     assert set(application.openapi()["paths"]) == {
+        "/api/v1/direct-two-bolt/preview",
+        "/api/v1/direct-two-bolt/design-check",
+        "/api/v1/direct-two-bolt/geometry-review",
         "/api/v1/fasteners/catalog",
         "/api/v1/fasteners/resolve",
         "/api/v1/workspaces/capabilities",

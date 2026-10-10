@@ -5,6 +5,7 @@ import pytest
 from tests.direct_f8_g1_governance import ROOT, digest
 from tests.direct_f9_governance import authority as f9_authority
 from tests.direct_mc1_governance import authority, pre_mc1_workflow
+from tests.direct_sab2_governance import pre_sab2_workflow
 
 
 def test_mc1_workflow_reverses_exactly_to_f9_predecessor() -> None:
@@ -17,6 +18,8 @@ def test_mc1_workflow_reverses_exactly_to_f9_predecessor() -> None:
 )
 def test_mc1_workflow_fails_closed_on_every_unrelated_change(mutation: str) -> None:
     raw = (ROOT / ".github/workflows/ci.yml").read_bytes().replace(b"\r\n", b"\n")
+    # Mutate the exact historical MC1 workflow after reversing the additive SAB2 delta.
+    raw = pre_sab2_workflow(raw)
     governed = authority()
     replacements = {
         "count": (f"--expected-tests {governed['backend_tests']}".encode(), b"--expected-tests 1"),
