@@ -1,0 +1,38 @@
+{
+  "contract": "SHEAR01-DIRECT-OR2-SAB2-P1",
+  "controlling_order_sha256": "7E1CEA941834464D8CDAA8E28129B8FC9326553F4A1DA4D149FB2F1EFE83E4F3",
+  "predecessor_candidate": "242478d92cefdf4f7b97fd49182c6f842e7031be",
+  "predecessor_workflow_sha256": "FE5A0353EB98FACD79033E39CFA66E686E7CE4DBAD6E10F9D7F1B6B6DFAF2B9A",
+  "historical_workflow_sha256": [
+    "FE5A0353EB98FACD79033E39CFA66E686E7CE4DBAD6E10F9D7F1B6B6DFAF2B9A",
+    "921E49F1818CDD99C5F61B0CF8DD7EDA3A96F639782E45E1DA74FB61F6FE04C4"
+  ],
+  "workflow_sha256": "94EE0A2CF56CB55B8D4AE8AC8E77E510FC5AA701C80A465AA0A50118ED453129",
+  "added_steps": "      - name: Generate authenticated Direct P1 presentation control PDFs\n        run: python ../scripts/generate_direct_p1_ci_pdfs.py --output direct-p1-review-pdfs\n      - name: Upload Direct P1 presentation control evidence\n        uses: actions/upload-artifact@v7\n        with:\n          name: direct-p1-pdfs-${{ matrix.os }}\n          path: backend/direct-p1-review-pdfs/\n          if-no-files-found: error\n",
+  "backend_tests": 8980,
+  "frontend_tests": 1388,
+  "new_pdf_count_per_platform": 4,
+  "predecessor_mc1_pdf_count_per_platform": 14,
+  "predecessor_sab2_pdf_count_per_platform": 10,
+  "protected_engineering_identities": 53,
+  "historical_control_identities": 173,
+  "dependencies": "All existing pins and locks unchanged",
+  "coverage": "Exact configured 100%; original source scope and exclusions unchanged",
+  "scope": "I01-I13/I15 Direct presentation only; no engineering or signed-snapshot changes",
+  "new_resistance_or_demand_methods": false,
+  "qualification_activation": false,
+  "unchanged_c13_partial_rows": [
+    "C13-05",
+    "C13-06",
+    "C13-07",
+    "C13-08"
+  ],
+  "other_deferred_items": [
+    "I14",
+    "LV1-N01",
+    "U02"
+  ],
+  "owner_acceptance_pending": true,
+  "protected_refs": "main and all three protected annotated tags unchanged",
+  "historical_pdf_gates": "Exact predecessor workflow reconstructed and verified"
+}

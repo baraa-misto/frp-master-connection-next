@@ -43,7 +43,7 @@ it("uses two production selections in Direct while preserving other-family legac
   expect(mat1DefaultId("beam-web-splice")).toBe(legacy.id);
   expect(screen.queryByLabelText("Tg applicability")).not.toBeInTheDocument();
   expect(screen.queryByLabelText("Source reference condition")).not.toBeInTheDocument();
-  await waitFor(() => { expect(screen.getByLabelText("Tg requirement")).toHaveTextContent(">= 180 °F (82.222 °C)"); });
+  await waitFor(() => { expect(screen.getByLabelText("Tg requirement")).toHaveTextContent("≥ 180 °F (82.222 °C)"); });
   expect(screen.getByRole("region", { name: "ASCE shape material design basis" })).toHaveClass("information-status");
   fireEvent.change(select, { target: { value: vinyl.id } });
   expect(mat1DefaultId("multi-row")).toBe(vinyl.id);

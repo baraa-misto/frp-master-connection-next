@@ -32,6 +32,7 @@ interface PersistentConnectionViewerProps {
   readonly children: ReactNode;
   readonly unity?: UnityView;
   readonly geometryOnlyReason?: string;
+  readonly directUnity?: UnityView;
 }
 
 interface SidebarGroupProps {
@@ -99,7 +100,7 @@ export function ConnectionWorkspaceMain({ children }: ConnectionWorkspaceMainPro
   return <main className="connection-view-column">{children}</main>;
 }
 
-export function PersistentConnectionViewer({ children, unity, geometryOnlyReason }: PersistentConnectionViewerProps) {
+export function PersistentConnectionViewer({ children, unity, geometryOnlyReason, directUnity }: PersistentConnectionViewerProps) {
   const family = useContext(MAT1FamilyContext);
   const mat1 = useMAT1();
   const gateTrace = family === null ? undefined : mat1.designTraces[family] as { overall_status?: string } | undefined;
@@ -108,6 +109,10 @@ export function PersistentConnectionViewer({ children, unity, geometryOnlyReason
   let presented = unity;
   if (geometryOnlyReason !== undefined) {
     presented = { tone: "gray", ratio: null, ratioText: "—", status: "Structural design not evaluated", governing: null, explanation: geometryOnlyReason };
+  } else if (directUnity !== undefined) {
+    // The Direct adapter already requires the current signed decision/context.
+    // Generic scenario selection must never replace this authoritative summary.
+    presented = directUnity;
   } else if (unity !== undefined && family !== null && mat1.active) {
     const trace = mat1.designTraces[family] as { client_design?: unknown; native_design?: unknown; overall_status?: string; material_issues?: string[]; material_sources?: { default?: { property_basis?: string } } } | undefined;
     if (mat1.designKeys[family] !== mat1FamilyKey(family) || trace === undefined) {
@@ -124,9 +129,10 @@ export function PersistentConnectionViewer({ children, unity, geometryOnlyReason
     }
   }
   return <UnityViewerContext.Provider value={presented ?? null}><div className="persistent-connection-viewer">
-    {family !== null && mat1.active ? <div className="mat1-result-gate" role="status">
-      <strong>Design completeness status: {geometryOnlyReason === undefined ? gateStatus : "Structural design not evaluated"}</strong>
-      <span> Required methods, project conditions and whole-connection qualification govern the connection result.</span>
+    {family !== null && mat1.active ? <div className={`mat1-result-gate${geometryOnlyReason !== undefined ? " mat1-result-gate-gray" : directUnity === undefined ? "" : ` mat1-result-gate-${directUnity.tone}`}`} role="status">
+      <strong>Design completeness status: {geometryOnlyReason !== undefined ? "Structural design not evaluated" : directUnity === undefined ? gateStatus : presented?.status}</strong>
+      {directUnity === undefined && geometryOnlyReason === undefined ? <span> Required methods, project conditions and whole-connection qualification govern the connection result.</span> : null}
+      {directUnity === undefined ? null : <details><summary>Advanced status diagnostics</summary><p>Raw backend status: {gateStatus}</p></details>}
     </div> : null}
     {children}
     {presented === undefined ? null : <div className="unity-viewer-fallback"><UnityRatioIndicator value={presented} /></div>}

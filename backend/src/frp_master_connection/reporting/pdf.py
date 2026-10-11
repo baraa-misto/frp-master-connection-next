@@ -40,6 +40,7 @@ from reportlab.platypus.tableofcontents import TableOfContents
 
 from frp_master_connection.application.direct_qualification_matching import COVERED_RESPONSES
 from frp_master_connection.reporting.direct_first_row import direct_first_row_reason
+from frp_master_connection.reporting.direct_presentation import audit_index_rows, source_stop_rows
 from frp_master_connection.reporting.direct_qualification import qualification_summary_rows
 from frp_master_connection.reporting.direct_status import (
     coverage_rows,
@@ -1589,6 +1590,7 @@ def _reader_opening(
         colored_view,
         component_legend,
         multirow_physical_geometry,
+        native_component_legend,
     )
 
     checks = collect_checks(result)
@@ -1699,6 +1701,7 @@ def _reader_opening(
                     .get("load_case_name", "See actual project conditions below")
                 ),
             ),
+            *source_stop_rows(snapshot.result),
             *executive_rows(decision, system),
             ("Calculated at / snapshot ID", issued + " / " + snapshot.digest[:12]),
         ]
@@ -1729,7 +1732,9 @@ def _reader_opening(
         story.append(_paragraph("SUBMITTED GEOMETRY — NOT VALIDATED", styles["body"]))
     if boxes or faces:
         for view in ("isometric", "elevation", "plan"):
-            drawing = colored_view(boxes, faces, bolts, view)
+            drawing = colored_view(
+                boxes, faces, bolts, view, native_tags=isinstance(decision, dict)
+            )
             if isinstance(decision, dict):
                 # Scale only the fixed camera artwork, never native geometry.
                 drawing.scale(0.8, 0.8)
@@ -1747,7 +1752,14 @@ def _reader_opening(
                 styles["small"],
             )
         )
-        story.append(_table(component_legend(boxes, faces, bolts), styles))
+        story.append(
+            _table(
+                native_component_legend(boxes, faces, bolts)
+                if isinstance(decision, dict)
+                else component_legend(boxes, faces, bolts),
+                styles,
+            )
+        )
     return story
 
 
@@ -1907,7 +1919,20 @@ def _direct_reader_engineering_sections(
                 ("W dimensions", readable_value(sections.get("COLUMN"), system)),
                 (
                     "Orientation / selected faces",
-                    readable_value(physical_request.get("geometry_template"), system),
+                    readable_value(
+                        {
+                            key: value
+                            for key, value in physical_request.get("geometry_template", {}).items()
+                            if key
+                            in {
+                                "angle_connected_leg",
+                                "brace_to_column_directed_angle_deg",
+                                "column_flange_connection_side",
+                                "outstanding_leg_side",
+                            }
+                        },
+                        system,
+                    ),
                 ),
                 (
                     "Washer dimensions / placement",
@@ -1933,30 +1958,6 @@ def _direct_reader_engineering_sections(
                     readable_value(first_bolt.get("hole_diameter"), system),
                 ),
                 (
-                    "Pitch / gauge" if len(visual.get("row_ids", [])) > 1 else "Gauge",
-                    paired(visual.get("pitch"), visual.get("gauge"))
-                    if len(visual.get("row_ids", [])) > 1
-                    else readable_value(visual.get("gauge"), system),
-                ),
-                *(
-                    [("Pitch", "Not applicable — one row")]
-                    if len(visual.get("row_ids", [])) == 1
-                    else []
-                ),
-                (
-                    "Unloaded / loaded end",
-                    paired(
-                        visual.get("unloaded_end_e1"),
-                        visual.get("loaded_boundary_to_row_1_distance"),
-                    ),
-                ),
-                (
-                    "Negative / positive side",
-                    paired(
-                        visual.get("negative_side_distance"), visual.get("positive_side_distance")
-                    ),
-                ),
-                (
                     "FRP material",
                     _direct_selected_material_label(snapshot, material),
                 ),
@@ -1974,6 +1975,62 @@ def _direct_reader_engineering_sections(
                     ),
                 ),
                 ("Fastener Fnt", _direct_selected_fastener_fnt(snapshot)),
+            ],
+            styles,
+        )
+    )
+    story.append(
+        _paragraph(
+            "Canonical/native template quantities — separate from physical sections",
+            styles["heading"],
+        )
+    )
+    story.append(
+        _paragraph(
+            "Template s±, gauge and boundary distances are diagnostic quantities. They are "
+            "not automatically physical free-edge, section-width or failure-path distances. "
+            "Only the explicit physical engineering boundary mappings in this report "
+            "establish that correspondence. View cuts and display extents "
+            "are not engineering ends.",
+            styles["body"],
+        )
+    )
+    story.append(
+        _table(
+            [
+                (
+                    "Pitch",
+                    readable_value(visual.get("pitch"), system)
+                    if len(visual.get("row_ids", [])) > 1
+                    else "Not applicable — one row; native value retained in audit",
+                ),
+                (
+                    "Bolt-line gauge g",
+                    readable_value(visual.get("gauge"), system)
+                    + (
+                        "; inactive — one bolt line"
+                        if len(visual.get("bolt_line_ids", [])) == 1
+                        else "; active between bolt lines"
+                    ),
+                ),
+                (
+                    "Native unloaded / loaded boundary e1",
+                    paired(
+                        visual.get("unloaded_end_e1"),
+                        visual.get("loaded_boundary_to_row_1_distance"),
+                    ),
+                ),
+                (
+                    "Native negative / positive side s- / s+",
+                    paired(
+                        visual.get("negative_side_distance"), visual.get("positive_side_distance")
+                    ),
+                ),
+                (
+                    "Exact boundary / frame identities",
+                    "Appendix B: result.preview.visualization; physical end/free-edge records "
+                    "remain separate from computational contact-patch boundaries",
+                ),
             ],
             styles,
         )
@@ -2657,6 +2714,16 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
             and "hash" not in label.lower()
             and "sha-256" not in label.lower()
         ]
+        mat1_rows.append(
+            (
+                "Adjusted-property / native-factor boundary",
+                "Available material adjustments are applied upstream in the signed MAT1 "
+                "ledger. Native CM/CT/CCH=1 uses those adjusted property inputs; it is not "
+                "a second adjustment or the only factor record. Source-unavailable native "
+                "FRP values are diagnostic only. Exact original properties, adjusted "
+                "candidates and adapter evidence remain in the technical audit.",
+            )
+        )
 
     if isinstance(support_end_authority, dict):
         condition_labels = {
@@ -2803,11 +2870,21 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
     )
     story.append(
         _paragraph(
-            "The following witnesses identify the native boundary, row, gauge, bolt and "
-            "hole dimensions. e1 is loaded end distance; "
+            (
+                "The following template witnesses identify the native boundary, row, gauge, "
+                "bolt and "
+                if direct
+                else "The following witnesses identify the native boundary, row, gauge, bolt and "
+            )
+            + "hole dimensions. e1 is loaded end distance; "
             + layout_note
-            + "g is gauge; s+ and s- are side edge distances; hole d is hole diameter. "
-            "All figures are not to scale.",
+            + (
+                "g is template gauge (inactive with one bolt line); s+ and s- are native template "
+                "side distances, not automatically physical free edges; hole d is hole diameter. "
+                if direct
+                else "g is gauge; s+ and s- are side edge distances; hole d is hole diameter. "
+            )
+            + "All figures are not to scale.",
             styles["body"],
         )
     )
@@ -3050,6 +3127,30 @@ def render_multirow_pdf(snapshot: ReportSnapshot, options: ReportOptions) -> byt
                 styles["body"],
             )
         )
+    if direct and isinstance(decision, dict):
+        story.append(
+            _paragraph("Audit field/check index — exact native locators", styles["heading"])
+        )
+        story.append(_table(audit_index_rows(decision), styles))
+        story.append(
+            _paragraph(
+                "Use the existing PDF bookmarks for Appendix A, Appendix B and MAT1 authority, "
+                "then search the exact field/check locator. Full native values remain below "
+                "without truncation or rounding. There is no additional machine-readable "
+                "attachment in this structural report.",
+                styles["body"],
+            )
+        )
+        styles = {
+            **styles,
+            "table": ParagraphStyle(
+                "DirectAuditTable",
+                parent=styles["table"],
+                fontSize=7.5,
+                leading=9.5,
+                wordWrap="CJK",
+            ),
+        }
     story.append(_paragraph("Appendix A — Submitted request and provenance", styles["heading"]))
     if direct:
         story.append(_paragraph("F6 first-row authority context", styles["heading"]))

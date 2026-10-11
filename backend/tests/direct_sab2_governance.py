@@ -22,6 +22,9 @@ def pre_sab2_workflow(
 ) -> bytes:
     governed = authority()
     raw = raw.replace(b"\r\n", b"\n")
+    from tests.direct_p1_governance import pre_p1_workflow
+
+    raw = pre_p1_workflow(raw, error_message=error_message)
     if digest(raw) == governed["predecessor_workflow_sha256"]:
         return raw
     assert digest(raw) == governed["workflow_sha256"], error_message

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import {
   ASCE_SHAPE_BASIS, mat1DefaultId, setMAT1DirectConditions, setMAT1DirectMaterial, useMAT1,
   type MAT1Conditions,
@@ -11,8 +11,13 @@ function Help({ label, children }: { readonly label: string; readonly children: 
   return <details className="mc1-help"><summary aria-label={`Help: ${label}`}>?</summary><p>{children}</p></details>;
 }
 
+function FieldHeading({ label, control, children }: { readonly label: string; readonly control: string; readonly children: ReactNode }) {
+  return <div className="mc1-field-heading"><label htmlFor={control}>{label}</label><Help label={label}>{children}</Help></div>;
+}
+
 export function DirectMaterialsPanel({ children }: { readonly children: ReactNode }) {
   const state = useMAT1();
+  const fieldId = useId();
   const adoption = adoptDirectConditions(state.conditions).adoption;
   const [displayUnit, setDisplayUnit] = useState<"degF" | "degC">(state.conditions.sustained_temperature.unit);
   useEffect(() => {
@@ -36,30 +41,30 @@ export function DirectMaterialsPanel({ children }: { readonly children: ReactNod
     {state.catalogError === null ? null : <p role="alert">{state.catalogError}</p>}
     <h4>Environmental and Material Adjustment Conditions</h4>
     <div className="mc1-grid">
-      <div><label>FRP material<select value={selectedId ?? ""} onChange={(event) => { setMAT1DirectMaterial(event.currentTarget.value || null); }}>
+      <div><FieldHeading label="FRP material" control={`${fieldId}-material`}>ASCE minimum characteristic shape properties. Supplied material must conform to the selected specification. Selection does not qualify the complete connection.</FieldHeading><select id={`${fieldId}-material`} value={selectedId ?? ""} onChange={(event) => { setMAT1DirectMaterial(event.currentTarget.value || null); }}>
         <option value="">Choose FRP material</option>
         {state.catalog.filter((item) => item.property_basis === ASCE_SHAPE_BASIS).map((item) => <option key={item.id} value={item.id}>{item.display_name}</option>)}
         {Object.values(state.custom).map((item) => <option key={item.id} value={item.id}>Session · {item.display_name}</option>)}
-      </select></label><Help label="FRP material">ASCE minimum characteristic shape properties. Supplied material must conform to the selected specification. Selection does not qualify the complete connection.</Help></div>
-      <div><label>Resin system<output>{selected === undefined ? "Choose FRP material" : selected.resin.replaceAll("_", " ").toLowerCase()}</output></label><Help label="Resin system">Resolved from the selected material record; temperature factors use this resin system.</Help></div>
-      <div><label>Design Temperature<input inputMode="decimal" aria-invalid={issues.design_temperature !== undefined} value={displayedTemperature} onChange={(event) => { setMAT1DirectConditions(updateDirectTemperature(conditions, { value: event.currentTarget.value, unit: displayUnit })); }} /></label>
-        <label className="mc1-unit">Temperature unit<select value={displayUnit} onChange={(event) => { setDisplayUnit(event.currentTarget.value as "degF" | "degC"); }}><option value="degF">°F</option><option value="degC">°C</option></select></label>
-        <Help label="Design Temperature">Highest expected service temperature. Conservatively assumed sustained for resistance adjustment and used for required Tg. Above 140°F requires a test-based temperature factor. Unit switching changes only the display; the stored physical value is preserved until edited.</Help></div>
-      <div><label>Moisture condition<select value={conditions.moisture === "REFERENCE" || conditions.moisture === "SUSTAINED_MOISTURE" ? conditions.moisture : ""} onChange={(event) => { update({ moisture: event.currentTarget.value as MAT1Conditions["moisture"] }); }}><option value="" disabled>Choose actual moisture</option><option value="REFERENCE">Dry</option><option value="SUSTAINED_MOISTURE">Sustained moisture</option></select></label><Help label="Moisture condition">Dry uses the reference condition. Sustained moisture applies the established moisture adjustments to strength and modulus. Unknown legacy conditions require an explicit selection.</Help></div>
-      <div><label>Chemical environment<select value={conditions.chemical === "NONE_DECLARED" || conditions.chemical === "SPECIFIED" ? conditions.chemical : ""} onChange={(event) => {
+      </select></div>
+      <div><FieldHeading label="Resin system" control={`${fieldId}-resin`}>Resolved from the selected material record; temperature factors use this resin system.</FieldHeading><output id={`${fieldId}-resin`}>{selected === undefined ? "Choose FRP material" : selected.resin.replaceAll("_", " ").toLowerCase()}</output></div>
+      <div><FieldHeading label="Design Temperature" control={`${fieldId}-temperature`}>Highest expected service temperature. Conservatively assumed sustained for resistance adjustment and used for required Tg. Above 140°F requires a test-based temperature factor. Unit switching changes only the display; the stored physical value is preserved until edited.</FieldHeading>
+        <div className="mc1-temperature-control"><input id={`${fieldId}-temperature`} inputMode="decimal" aria-invalid={issues.design_temperature !== undefined} value={displayedTemperature} onChange={(event) => { setMAT1DirectConditions(updateDirectTemperature(conditions, { value: event.currentTarget.value, unit: displayUnit })); }} />
+        <select className="mc1-unit" aria-label="Temperature unit" value={displayUnit} onChange={(event) => { setDisplayUnit(event.currentTarget.value as "degF" | "degC"); }}><option value="degF">°F</option><option value="degC">°C</option></select></div></div>
+      <div><FieldHeading label="Moisture condition" control={`${fieldId}-moisture`}>Dry uses the reference condition. Sustained moisture applies the established moisture adjustments to strength and modulus. Unknown legacy conditions require an explicit selection.</FieldHeading><select id={`${fieldId}-moisture`} value={conditions.moisture === "REFERENCE" || conditions.moisture === "SUSTAINED_MOISTURE" ? conditions.moisture : ""} onChange={(event) => { update({ moisture: event.currentTarget.value as MAT1Conditions["moisture"] }); }}><option value="" disabled>Choose actual moisture</option><option value="REFERENCE">Dry</option><option value="SUSTAINED_MOISTURE">Sustained moisture</option></select></div>
+      <div><FieldHeading label="Chemical environment" control={`${fieldId}-chemical`}>Custom C_CH is engineer-specified, dimensionless, greater than zero and at most 1.00; strength only. It is not certified chemical test evidence. Modulus chemical applicability remains unresolved; independent supported checks may proceed.</FieldHeading><select id={`${fieldId}-chemical`} value={conditions.chemical === "NONE_DECLARED" || conditions.chemical === "SPECIFIED" ? conditions.chemical : ""} onChange={(event) => {
         const { chemical_strength_factor: priorFactor, ...withoutFactor } = conditions;
         setMAT1DirectConditions(event.currentTarget.value === "NONE_DECLARED" ? { ...withoutFactor, chemical: "NONE_DECLARED" } : { ...conditions, chemical: "SPECIFIED", chemical_strength_factor: priorFactor ?? "" });
-      }}><option value="" disabled>Choose chemical environment</option><option value="NONE_DECLARED">None</option><option value="SPECIFIED">Custom adjustment</option></select></label><Help label="Chemical environment">Custom C_CH is engineer-specified, dimensionless, greater than zero and at most 1.00; strength only. It is not certified chemical test evidence. Modulus chemical applicability remains unresolved; independent supported checks may proceed.</Help></div>
-      {conditions.chemical === "SPECIFIED" ? <div><label>Chemical strength factor C_CH<input inputMode="decimal" aria-invalid={issues.chemical_strength_factor !== undefined} value={conditions.chemical_strength_factor ?? ""} onChange={(event) => { update({ chemical_strength_factor: event.currentTarget.value }); }} /></label><p>Strength only · chemical-modulus applicability unresolved.</p></div> : null}
+      }}><option value="" disabled>Choose chemical environment</option><option value="NONE_DECLARED">None</option><option value="SPECIFIED">Custom adjustment</option></select></div>
+      {conditions.chemical === "SPECIFIED" ? <div><FieldHeading label="Chemical strength factor C_CH" control={`${fieldId}-chemical-factor`}>Engineer-entered strength adjustment only: 0 &lt; C_CH ≤ 1.00. No chemical modulus factor is assumed.</FieldHeading><input id={`${fieldId}-chemical-factor`} inputMode="decimal" aria-invalid={issues.chemical_strength_factor !== undefined} value={conditions.chemical_strength_factor ?? ""} onChange={(event) => { update({ chemical_strength_factor: event.currentTarget.value }); }} /><p>Strength only · chemical-modulus applicability unresolved.</p></div> : null}
     </div>
     <section className="mc1-load-classification" aria-label="Factored load classification">
       <h4>Load Combination Classification</h4>
-      <div className="mc1-grid"><div className="mc1-wide"><label>Load Combination Classification<select value={conditions.time_effect_category} onChange={(event) => {
+      <div className="mc1-grid"><div className="mc1-wide"><div className="mc1-field-heading"><label htmlFor={`${fieldId}-classification`}>Loads in this combination</label><Help label="Load Combination Classification">Classify the loads present in this submitted factored combination. The time-effect factor λ adjusts resistance, not load. Dead only, impact, storage, long-term operating, other live, snow/rain/flood/ice, and wind/tornado/seismic retain their established factors. Long-term operating declares full operating amplitude for more than one year. Mixed loads require engineering classification; the app does not generate or combine loads.</Help></div><select id={`${fieldId}-classification`} value={conditions.time_effect_category} onChange={(event) => {
         const category = event.currentTarget.value;
         const selectedClass = DIRECT_LOAD_CLASSIFICATIONS.find(([id]) => id === category);
         update({ time_effect_category: category, live_load_subtype: selectedClass?.[2] ?? "",
           full_amplitude_duration: category === "LONG_TERM_OPERATING" ? "MORE_THAN_ONE_YEAR" : conditions.full_amplitude_duration });
-      }}><option value="">Choose load classification</option>{DIRECT_LOAD_CLASSIFICATIONS.map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><Help label="Load Combination Classification">Classify the loads present in this submitted factored combination. The time-effect factor λ adjusts resistance, not load. Dead only, impact, storage, long-term operating, other live, snow/rain/flood/ice, and wind/tornado/seismic retain their established factors. Long-term operating declares full operating amplitude for more than one year. Mixed loads require engineering classification; the app does not generate or combine loads.</Help></div></div>
+      }}><option value="">Choose load classification</option>{DIRECT_LOAD_CLASSIFICATIONS.map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></div></div>
     </section>
     {adoption === null ? null : <p role="status">{adoption}</p>}
     {Object.keys(issues).length === 0 ? null : <section aria-label="INPUTS NEEDED"><strong>Inputs needed</strong><ul>{Object.entries(issues).map(([key, value]) => <li key={key}>{value}</li>)}</ul></section>}

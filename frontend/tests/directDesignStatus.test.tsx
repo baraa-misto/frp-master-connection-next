@@ -59,6 +59,26 @@ it("renders unavailable utilization and an evaluated qualification capacity with
   expect(screen.getByText("CAPACITY FAIL")).toBeVisible();
 });
 
+it("retains every distinct unresolved native check in the collapsed complete inventory", () => {
+  const unresolved = ["ANGLE_FIRST_ROW", "SUPPORTING_W_FIRST_ROW", "SUPPORTING_W_BLOCK_1", "SUPPORTING_W_BLOCK_2", "SECTION_2_3_2", "CONNECTION_QUALIFICATION"];
+  const item: DirectDecision = { ...decision(), current_snapshot_digest: "A".repeat(64), schedule: [
+    ...unresolved.map(check_id => ({ check_id, label: `Required ${check_id}`, category: "REQUIRED_UNRESOLVED", outcome: "UNEVALUATED", reason: `Actual source requirement ${check_id}`, utilization: null })),
+    { check_id: "CALCULATED_BOLT", label: "Calculated bolt", category: "ANALYTICALLY_EVALUATED", outcome: "PASS", reason: "Native supported check", utilization: ".2" },
+  ] };
+  acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), { final_decision: item });
+  render(<DirectDesignStatus stale={false} onCurrencyInvalid={vi.fn()} />);
+  const inventory = screen.getByRole("list", { name: "Complete required-check inventory", hidden: true });
+  expect(inventory.closest("details")).not.toHaveAttribute("open");
+  fireEvent.click(screen.getByText("Remaining actions and decision diagnostics"));
+  for (const check_id of unresolved) {
+    expect(screen.getByText(`Required ${check_id}`)).toBeVisible();
+    expect(screen.getByText(`Actual source requirement ${check_id}`)).toBeVisible();
+    expect(screen.getByText(`Native check ID: ${check_id}`)).toBeVisible();
+  }
+  expect(screen.queryByText("Calculated bolt")).not.toBeInTheDocument();
+  expect(screen.getByText(/Snapshot: A{64}/)).toBeVisible();
+});
+
 function signedAuthority() {
   acceptReportSnapshot("multi-row", "s".repeat(32), "design", reportGeneration("multi-row"));
 }

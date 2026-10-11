@@ -27,6 +27,7 @@ from reportlab.platypus import (
 )
 
 from frp_master_connection.application.direct_two_bolt_geometry import GEOMETRY_BANNER
+from frp_master_connection.reporting.direct_presentation import moment_rows, signed_number
 from frp_master_connection.reporting.pdf import _font_setup
 from frp_master_connection.reporting.snapshot import ReportSnapshot, SnapshotError
 
@@ -206,8 +207,8 @@ def face_drawing(result: dict[str, Any], face_index: int) -> Drawing:
             String(
                 10 + index * 245,
                 0,
-                f"{point['station']}: u={float(point['local_center'][0]):.6f}, "
-                f"v={float(point['local_center'][1]):.6f} in",
+                f"{point['station']}: u={signed_number(point['local_center'][0])}, "
+                f"v={signed_number(point['local_center'][1])} in",
                 fontName="ReportVera",
                 fontSize=7,
             )
@@ -265,7 +266,13 @@ def render_geometry_review(snapshot: ReportSnapshot) -> bytes:
                     "Alignment / spacing",
                     f"{result['alignment']} / {result['pair_input']['spacing']} in",
                 ],
-                ["Midpoint, global inches", result["pair_input"]["midpoint"]],
+                [
+                    "Midpoint, global inches",
+                    "; ".join(
+                        f"{axis} = {signed_number(value)} in"
+                        for axis, value in zip("XYZ", result["pair_input"]["midpoint"], strict=True)
+                    ),
+                ],
                 ["Structural route", result["structural_route"]],
                 ["Structural disposition", result["structural_reason"]],
             ],
@@ -310,7 +317,7 @@ def render_geometry_review(snapshot: ReportSnapshot) -> bytes:
                 f"{margin['station']} / {margin['owner']}",
                 margin["role"],
                 f"{margin['boundary']}\n{margin['source']}",
-                margin["value"],
+                signed_number(margin["value"]),
             ]
         )
     story.append(table(rows, [95, 55, 270, 80]))
@@ -327,10 +334,18 @@ def render_geometry_review(snapshot: ReportSnapshot) -> bytes:
     )
     comparison = result["comparison"]
     story.append(paragraph(comparison["basis"]))
+    story.append(paragraph("Reference transport diagnostic — not a bolt-demand method"))
+    moment_table: list[list[object]] = [
+        ["Existing native component / reference", "Global components / units"]
+    ]
+    for label, value in moment_rows(result["moment_diagnostic"]):
+        moment_table.append([label, value])
+    story.append(table(moment_table, [155, 345]))
     story.append(
         paragraph(
-            "Reference transport diagnostic: "
-            + json.dumps(result["moment_diagnostic"], ensure_ascii=False)
+            "M_G = M_P + (P-G) x F is the existing reference transport diagnostic only. "
+            "It establishes neither per-bolt demand nor a resistance center. Exact unrounded "
+            "vectors remain in the technical appendix and unchanged JSON attachment."
         )
     )
     story.append(

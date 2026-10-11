@@ -64,7 +64,10 @@ def coverage_rows(decision: dict[str, Any], checks: list[CheckView]) -> list[tup
             description = "COVERED BY QUALIFICATION — see the single whole-connection capacity."
         elif row["category"] == "NOT_APPLICABLE":
             description = "NOT APPLICABLE — " + row["reason"]
-        rows.append((row["label"], description))
+        label = row["label"]
+        if row["check_id"].startswith("BLOCK_SHEAR:layer-B:"):
+            label += " — native path ID: " + row["check_id"]
+        rows.append((label, description))
     return rows
 
 

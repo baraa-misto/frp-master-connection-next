@@ -1,5 +1,5 @@
 import { viewerUnity } from "./unityRatio";
-import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { FastenerSelector } from "../features/FastenerSelector";
 import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
 import { DirectQualification } from "../features/DirectQualification";
@@ -8,7 +8,8 @@ import { DirectTwoBoltGeometry } from "../features/DirectTwoBoltGeometry";
 import type { CurrentTwoBolt } from "../features/DirectTwoBoltGeometry";
 import { designTwoBolt, INITIAL_TWO_BOLT, editedTwoBolt } from "../api/directTwoBolt";
 import type { TwoBoltOptions } from "../api/directTwoBolt";
-import { invalidateReportSnapshot } from "../state/reportSession";
+import { currentReportSnapshot, invalidateReportSnapshot, subscribeReportSession } from "../state/reportSession";
+import { currentSignedDirectReport, directViewerUnity } from "../features/directPresentation";
 import { currentDirectDecision, directDecisionHeadline } from "../features/directDecision";
 import type { DirectDecision } from "../features/directDecision";
 import { DirectEngineeringGeometryIssue } from "../features/DirectEngineeringGeometryIssue";
@@ -1336,6 +1337,14 @@ export function SingleBoltEngineeringWorkspace() {
     multirowDesign?.automatic_group_mode_integration ?? null;
   const directDecision = currentDirectDecision(mat1.designTraces["multi-row"], stale,
     mat1.designKeys["multi-row"] === mat1FamilyKey("multi-row"));
+  const directAuthority = useSyncExternalStore(subscribeReportSession, () => currentReportSnapshot("multi-row"));
+  const directUnity = directViewerUnity(mat1.designTraces["multi-row"], multirowDesign, {
+    currentKey: mat1.active && mat1.designKeys["multi-row"] === mat1FamilyKey("multi-row"),
+    signedCurrent: currentSignedDirectReport(directAuthority),
+    stale, checking: loading, error: multirowDesignError,
+    invalid: multirowPreview.state === "CURRENT_INVALID",
+    previewCurrent: multirowPreview.state === "CURRENT_VALID" && !multirowPreview.outdated,
+  });
   const directWarnings: ReturnType<typeof describeDirectWarning>[] = directF1Family ? [
     ...(multirowPreview.response?.warnings ?? []).filter((warning) =>
       // Geometry previews retain the historical fastener snapshot. The separately
@@ -1506,7 +1515,7 @@ export function SingleBoltEngineeringWorkspace() {
             <label className="field-control"><span>Shear-plane threads</span><select value={shearPlaneStatus.status} onChange={(event) => { selectShearThreads(event.currentTarget.value); }}><option value="EXCLUDED">Excluded</option><option value="INCLUDED">Included</option><option value="UNKNOWN">Unknown</option></select></label></details>
           </SidebarGroup>
 
-          {directF1Family ? <DirectQualification stale={stale} onSelectionChange={() => { setStale(true); }} /> : null}
+          {directF1Family ? <details className="direct-qualification-details" open={stale || undefined}><summary>Connection qualification evidence</summary><DirectQualification stale={stale} onSelectionChange={() => { setStale(true); }} /></details> : null}
           <SidebarGroup title="Fastener" summary={directF1Family ? "Selected hardware and source" : "F593 source pending"} defaultOpen={directF1Family}>
             {directF1Family && workspaceSupports("multi-row", "custom_fastener") ? <FastenerSelector
               defaultSnapshot={loadJ1Benchmark(request.joint_assembly.unit_system).fastener_snapshot}
@@ -1550,10 +1559,14 @@ export function SingleBoltEngineeringWorkspace() {
               ["information", "INFORMATION"],
             ] as const).map(([group, heading]) => {
               const items = directWarnings.filter((item) => item.group === group);
-              return items.length === 0 ? null : <section key={group} className={group === "information" ? "information-status" : group === "geometry" ? "geometry-status" : undefined} aria-label={heading}><h4>{heading}</h4><ul className="issue-list">{items.map((item, index) => {
+              if (items.length === 0) return null;
+              const notice = <section className={group === "information" ? "information-status" : group === "geometry" ? "geometry-status" : undefined} aria-label={heading}><h4>{heading}</h4><ul className="issue-list">{items.map((item, index) => {
                 const boltId = item.boltId;
                 return <li key={`${item.text}:${String(index)}`}>{boltId === undefined ? item.text : <button type="button" onClick={() => { setSelection({ kind: "BOLT", id: boltId }); }}>{item.text} Show geometry issue</button>}</li>;
               })}</ul></section>;
+              return group === "qualification" || group === "method"
+                ? <details key={group}><summary>{heading === "QUALIFICATION REQUIRED" ? "Qualification notices" : "Required method notices"} · see full decision inventory below</summary>{notice}</details>
+                : <div key={group}>{notice}</div>;
             }) : supportedMultirowArrangement ? multirowPreview.response?.warnings.map((warning) => <p className={describeDirectWarning(warning).group === "information" ? "information-status" : "unsupported-note"} key={warning}>{describeDirectWarning(warning).text}</p>) : null}
             {selectedEngineeringFaces.map((record) => <DirectEngineeringGeometryIssue key={`${record.component_id}:${record.physical_element_id}`} record={record} unit={multirowPreview.response?.visualization?.source_length_unit === "mm" ? "mm" : "in"} />)}
             {selectedGeometryIssue === undefined ? null : <details><summary>Advanced Engineering Diagnostics — computational contact patch</summary><p>COMPUTATIONAL CONTACT-PATCH BOUNDARY — NOT AN ENGINEERING EDGE UNLESS MAPPED. Historical rectangle comparisons are retained for audit; current physical checks govern.</p><DirectGeometryIssue record={selectedGeometryIssue} unit={multirowPreview.response?.visualization?.source_length_unit === "mm" ? "mm" : "in"} /></details>}
@@ -1580,7 +1593,7 @@ export function SingleBoltEngineeringWorkspace() {
         </ConnectionWorkspaceSidebar>
 
         <ConnectionWorkspaceMain>
-          <PersistentConnectionViewer {...(geometryOnlyReason === undefined ? {} : { geometryOnlyReason })} unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
+          <PersistentConnectionViewer {...(directF1Family ? { directUnity } : {})} {...(geometryOnlyReason === undefined ? {} : { geometryOnlyReason })} unity={viewerUnity(singleArrangement ? "single-bolt" : "multirow", singleArrangement ? response : multirowDesign, { stale: stale || (supportedMultirowArrangement ? multirowPreview.outdated : preview.outdated), checking: loading, error: singleArrangement ? error : multirowDesignError })}>
             {multirowPreview.response?.direct_support_end_authority === undefined || multirowPreview.response.direct_support_end_authority === null ? null : <DirectSupportViewerCue authority={multirowPreview.response.direct_support_end_authority} />}
             {canonicalModel === null ? <section className="viewer-prompt"><h3>Direct angle-to-W connection viewer</h3><p>The connection model updates automatically when the current inputs are valid.</p><div className="viewer-prompt-graphic" aria-hidden="true"><span /><span /><span /></div></section> : <VisualizationPanel model={canonicalModel} results={activeResults} resolvedLayers={activeResolvedLayers} selection={selection} onSelect={setSelection} {...(directF1Family ? {} : { appliedActionInputValues, onAppliedActionValueChange: setActionComponentValue })} actionSourceLabel="Member" selectedBoltChecks={selectedBoltChecks} title="Direct angle-to-W connection viewer" contactSelectionLabel="Supporting W flange contact face" />}
           </PersistentConnectionViewer>

@@ -6,10 +6,20 @@ export interface DirectDecision {
   readonly unresolved_requirements: readonly string[];
   readonly qualification_capacity_state: string;
   readonly qualification_record_identity?: { readonly digest: string | null };
+  readonly current_snapshot_digest?: string;
+  readonly schedule?: readonly {
+    readonly check_id: string;
+    readonly label: string;
+    readonly category: string;
+    readonly outcome: string;
+    readonly reason: string;
+    readonly utilization: string | null;
+  }[];
   readonly analytical_check_summary: {
     readonly evaluated: number;
     readonly numerical_outcome: string;
     readonly highest_utilization: string | null;
+    readonly highest_analytical_check?: string | null;
     readonly counts: Readonly<Record<string, number>>;
   };
 }

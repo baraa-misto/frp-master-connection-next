@@ -53,7 +53,7 @@ it("adopts the higher physical legacy temperature without editing legacy state o
   for (const label of ["Extraordinary UV / weathering", "UV / weathering", "Freeze–thaw", "Protective measures", "Exposure notes", "Substance", "Concentration", "Duration"]) expect(screen.queryByLabelText(label)).not.toBeInTheDocument();
   expect(within(screen.getByLabelText("Moisture condition")).getAllByRole("option").filter(o => !(o as HTMLOptionElement).disabled)).toHaveLength(2);
   expect(within(screen.getByLabelText("Chemical environment")).getAllByRole("option").filter(o => !(o as HTMLOptionElement).disabled)).toHaveLength(2);
-  expect(within(screen.getByLabelText("Load Combination Classification")).getAllByRole("option")).toHaveLength(8);
+  expect(within(screen.getByLabelText("Loads in this combination")).getAllByRole("option")).toHaveLength(8);
   const advanced = screen.getByText("Advanced Material Details").closest("details");
   expect(advanced).not.toHaveAttribute("open");
   fireEvent.click(screen.getByLabelText("Help: Load Combination Classification"));
@@ -72,12 +72,12 @@ it("supports compact selections, custom factor validation, strength-only disclos
   expect(screen.getByText(/Strength only · chemical-modulus/)).toBeVisible();
   fireEvent.change(screen.getByLabelText("Chemical strength factor C_CH"), { target: { value: ".8" } });
   expect(screen.getByLabelText("Chemical strength factor C_CH")).toHaveAttribute("aria-invalid", "false");
-  fireEvent.change(screen.getByLabelText("Load Combination Classification"), { target: { value: "LONG_TERM_OPERATING" } });
+  fireEvent.change(screen.getByLabelText("Loads in this combination"), { target: { value: "LONG_TERM_OPERATING" } });
   expect(mat1Conditions("multi-row").full_amplitude_duration).toBe("MORE_THAN_ONE_YEAR");
   expect(mat1Conditions("multi-row").live_load_subtype).toBe("LONG_TERM_OPERATING");
-  fireEvent.change(screen.getByLabelText("Load Combination Classification"), { target: { value: "" } });
+  fireEvent.change(screen.getByLabelText("Loads in this combination"), { target: { value: "" } });
   expect(screen.getByText("Select the Load Combination Classification.")).toBeVisible();
-  fireEvent.change(screen.getByLabelText("Load Combination Classification"), { target: { value: "OTHER_LIVE" } });
+  fireEvent.change(screen.getByLabelText("Loads in this combination"), { target: { value: "OTHER_LIVE" } });
   expect(mat1Conditions("multi-row").live_load_subtype).toBe("OTHER_LIVE");
   fireEvent.change(screen.getByLabelText("Chemical environment"), { target: { value: "NONE_DECLARED" } });
   expect(mat1Conditions("multi-row").chemical_strength_factor).toBeUndefined();
@@ -101,12 +101,38 @@ it("switches display units without rounding the stored physical temperature or c
   expect(screen.getByLabelText("Design Temperature")).toHaveAttribute("aria-invalid", "true");
 });
 
+it("associates adjacent help and inline temperature controls without duplicating load classification", async () => {
+  render(<MAT1MaterialsPanel family="multi-row" />);
+  for (const label of ["FRP material", "Resin system", "Design Temperature", "Moisture condition", "Chemical environment"]) {
+    const control = screen.getByLabelText(label);
+    const help = screen.getByLabelText(`Help: ${label}`);
+    const heading = help.closest(".mc1-field-heading");
+    expect(heading?.querySelector("label")).toHaveAttribute("for", control.id);
+    help.focus();
+    expect(help).toHaveFocus();
+    fireEvent.click(help);
+    expect(help.closest("details")).toHaveAttribute("open");
+    fireEvent.click(help);
+    expect(help.closest("details")).not.toHaveAttribute("open");
+  }
+  expect(screen.getByLabelText("Design Temperature").parentElement).toBe(screen.getByLabelText("Temperature unit").parentElement);
+  expect(screen.getAllByRole("heading", { name: "Load Combination Classification" })).toHaveLength(1);
+  const classification = screen.getByRole("combobox", { name: "Loads in this combination" });
+  expect(within(classification).getAllByRole("option").slice(1).map(option => (option as HTMLOptionElement).value)).toEqual(DIRECT_LOAD_CLASSIFICATIONS.map(([id]) => id));
+  await waitFor(() => { expect(screen.getByLabelText("Tg requirement")).toHaveTextContent("Required Tg: ≥ 180 °F"); });
+  const basis = screen.getByText("Tg specification and adjustment basis").closest("details");
+  expect(basis).not.toHaveAttribute("open");
+  fireEvent.click(screen.getByText("Tg specification and adjustment basis"));
+  expect(basis).toHaveAttribute("open");
+  expect(screen.getByText(/software has not measured actual product Tg/)).toBeVisible();
+});
+
 it("requires explicit unknown selections and retains imported provenance", () => {
   act(() => { setMAT1Conditions({ ...legacy, moisture: "UNKNOWN", chemical: "UNKNOWN", time_effect_category: "", load_case_name: "IMPORTED COMBO", exposure_notes: "Known extraordinary exposure" }); });
   render(<MAT1MaterialsPanel family="multi-row" />);
   expect(screen.getByLabelText("Moisture condition")).toHaveValue("");
   expect(screen.getByLabelText("Chemical environment")).toHaveValue("");
-  expect(screen.getByLabelText("Load Combination Classification")).toHaveValue("");
+  expect(screen.getByLabelText("Loads in this combination")).toHaveValue("");
   expect(mat1Conditions("multi-row").load_case_name).toBe("IMPORTED COMBO");
   expect(mat1Conditions("multi-row").exposure_notes).toBe("Known extraordinary exposure");
   expect(screen.getByText(/Known extraordinary exposure/)).toBeInTheDocument();

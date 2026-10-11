@@ -33,7 +33,9 @@ export function DirectDesignStatus({ stale, onCurrencyInvalid }: { readonly stal
       <p><strong>Qualification:</strong> {decision.qualification_capacity_state === "UNEVALUATED" ? "Required / not currently applicable" : decision.qualification_capacity_state.replaceAll("_", " ")}</p>
       <p><strong>Required checks/evidence items unresolved:</strong> {decision.analytical_check_summary.counts.REQUIRED_UNRESOLVED}</p>
       <details><summary>Remaining actions and decision diagnostics</summary>
+        {decision.schedule === undefined ? null : <ul aria-label="Complete required-check inventory">{decision.schedule.filter(item => item.category === "REQUIRED_UNRESOLVED").map(item => <li key={item.check_id}><strong>{item.label}</strong> — {item.outcome.replaceAll("_", " ")}<p>{item.reason}</p><small>Native check ID: {item.check_id}</small></li>)}</ul>}
         <ul>{decision.unresolved_requirements.map((item) => <li key={item}>{item}</li>)}</ul>
+        <p>Raw decision: {decision.final_status} / {decision.final_status_reason}. Snapshot: {decision.current_snapshot_digest ?? "Unavailable in this trace"}</p>
       </details>
     </>}
   </section>;
