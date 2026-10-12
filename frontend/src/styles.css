@@ -533,6 +533,15 @@ summary:focus-visible {
   gap: 0.8rem;
 }
 
+.direct-bolt-alignment { min-width: 0; margin: .6rem 0; padding: .55rem; border: 1px solid #b6c6d3; border-radius: .2rem; }
+.direct-bolt-alignment legend { padding: 0 .25rem; font-weight: 700; }
+.direct-bolt-alignment-options { display: flex; flex-wrap: wrap; gap: .5rem; }
+.direct-bolt-alignment-options label { display: flex; flex: 1 1 7rem; align-items: flex-start; gap: .35rem; min-width: 0; cursor: pointer; }
+.direct-bolt-alignment-options input { width: auto; flex: none; margin: .2rem 0 0; accent-color: #365a8c; }
+.direct-bolt-alignment-options input:focus-visible { outline: 2px solid #365a8c; outline-offset: 3px; }
+.direct-bolt-alignment p { margin: .4rem 0 0; font-size: .8rem; overflow-wrap: anywhere; }
+@media (max-width: 700px) { .direct-bolt-alignment-options { flex-direction: column; } .direct-bolt-alignment-options label { flex-basis: auto; } }
+
 .three-columns {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }

@@ -5,6 +5,7 @@ import { DirectGeometryIssue } from "../features/DirectGeometryIssue";
 import { DirectQualification } from "../features/DirectQualification";
 import { DirectDesignStatus } from "../features/DirectDesignStatus";
 import { DirectTwoBoltGeometry } from "../features/DirectTwoBoltGeometry";
+import { DirectBoltAlignment } from "../features/DirectBoltAlignment";
 import type { CurrentTwoBolt } from "../features/DirectTwoBoltGeometry";
 import { designTwoBolt, INITIAL_TWO_BOLT, editedTwoBolt } from "../api/directTwoBolt";
 import type { TwoBoltOptions } from "../api/directTwoBolt";
@@ -828,6 +829,7 @@ export function SingleBoltEngineeringWorkspace() {
   const [twoBoltOptions, setTwoBoltOptions] = useState<TwoBoltOptions>(INITIAL_TWO_BOLT);
   const [twoBoltReceived, setTwoBoltCurrent] = useState<CurrentTwoBolt | null>(null);
   const [twoBoltPanelOpen, setTwoBoltPanelOpen] = useState(false);
+  const [twoBoltPreviewEnabled, setTwoBoltPreviewEnabled] = useState(false);
   const twoBoltAvailable = directF1Family && !caseLabel.startsWith("Verified J1") && groupState.rowCount === 2 && groupState.boltsPerRow === 1;
   const twoBoltActive = twoBoltAvailable && editedTwoBolt(twoBoltOptions);
   const [error, setError] = useState<EvaluationTransportError | null>(null);
@@ -843,6 +845,7 @@ export function SingleBoltEngineeringWorkspace() {
   const [layoutSuggestionError, setLayoutSuggestionError] = useState("");
   const designAbortController = useRef<AbortController | null>(null);
   const changeTwoBoltOptions = useCallback((options: TwoBoltOptions) => {
+    setTwoBoltPreviewEnabled(true);
     engineeringRevisionRef.current += 1;
     designAbortController.current?.abort();
     setTwoBoltOptions(options); setTwoBoltCurrent(null); setStale(true); setMultirowDesign(null);
@@ -1074,6 +1077,7 @@ export function SingleBoltEngineeringWorkspace() {
   const loadProfile = (unitSystem: BenchmarkUnitSystem, historical: boolean) => {
     designAbortController.current?.abort();
     setTwoBoltOptions(INITIAL_TWO_BOLT); setTwoBoltCurrent(null);
+    setTwoBoltPreviewEnabled(false); setTwoBoltPanelOpen(false);
     setFastenerSelection("multi-row", historical
       ? { kind: "DEFAULT", contract: "FASTENER-OR1-RC1", revision: F593_FASTENER_REVISION }
       : defaultFastenerSelection);
@@ -1446,7 +1450,10 @@ export function SingleBoltEngineeringWorkspace() {
               <label className="field-control"><span>Bolts per row</span><input aria-label="Bolts per row" type="number" min="1" max="3" value={groupState.boltsPerRow} onChange={(event) => { setGroupCount("boltsPerRow", event.currentTarget.value); }} /></label>
             </div>
             {groupState.rowCount === 1 && groupState.boltsPerRow > 1 ? <p className="sidebar-note">Direct single-row Chapter 8 checks use the canonical physical angle and W layers.</p> : null}
-            {twoBoltAvailable ? <details onToggle={(event) => { setTwoBoltPanelOpen(event.currentTarget.open); }}><summary>Two-bolt alignment and constructability</summary>{twoBoltPanelOpen || twoBoltActive ? <DirectTwoBoltGeometry legacy={multirowRequest} options={twoBoltOptions} onChange={changeTwoBoltOptions} onCurrent={setTwoBoltCurrent} /> : null}</details> : <p>The shared two-bolt alignment option requires 2 rows × 1 bolt. Other supported layouts retain the existing row-count workflow.</p>}
+            {twoBoltAvailable ? <>
+              <DirectBoltAlignment alignment={twoBoltOptions.alignment} onChange={(alignment) => { changeTwoBoltOptions({ ...twoBoltOptions, alignment }); }} />
+              <DirectTwoBoltGeometry legacy={multirowRequest} options={twoBoltOptions} onChange={changeTwoBoltOptions} onCurrent={setTwoBoltCurrent} enabled={twoBoltPreviewEnabled || twoBoltActive} detailsOpen={twoBoltPanelOpen} onDetailsToggle={(open) => { setTwoBoltPanelOpen(open); if (open) setTwoBoltPreviewEnabled(true); }} />
+            </> : <p>The shared two-bolt alignment option requires 2 rows × 1 bolt. Other supported layouts retain the existing row-count workflow.</p>}
           </SidebarGroup>
 
           <SidebarGroup

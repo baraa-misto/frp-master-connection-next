@@ -14,6 +14,9 @@ interface Props {
   options: TwoBoltOptions;
   onChange: (options: TwoBoltOptions) => void;
   onCurrent: (current: CurrentTwoBolt | null) => void;
+  enabled?: boolean;
+  detailsOpen?: boolean;
+  onDetailsToggle?: (open: boolean) => void;
 }
 function stateLabel(value: string): string {
   const labels: Record<string, string> = {
@@ -23,7 +26,7 @@ function stateLabel(value: string): string {
   return labels[value] ?? value;
 }
 
-export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent }: Props) {
+export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent, enabled = true, detailsOpen = true, onDetailsToggle }: Props) {
   useMAT1();
   const inputKey = JSON.stringify([legacy, options, mat1FamilyKey("multi-row", false)]);
   const sequence = useRef(0);
@@ -37,6 +40,7 @@ export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent }: 
   const [exporting, setExporting] = useState(false);
   const [units, setUnits] = useState<"in" | "mm">("in");
   useEffect(() => {
+    if (!enabled) return;
     const controller = new AbortController();
     sequence.current += 1;
     const revision = String(sequence.current);
@@ -54,7 +58,7 @@ export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent }: 
     return () => { controller.abort(); };
     // inputKey binds the complete geometry, materials, conditions and options.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputKey, retry, onCurrent]);
+  }, [enabled, inputKey, retry, onCurrent]);
   const update = (change: Partial<TwoBoltOptions>) => { currentKey.current = ""; onChange({ ...options, ...change }); };
   const download = async (target: CurrentTwoBolt) => {
     const key = inputKey;
@@ -71,10 +75,16 @@ export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent }: 
   };
   const value = (number: string) => (Number(number) * (units === "mm" ? 25.4 : 1)).toFixed(units === "mm" ? 3 : 5);
   return <section aria-label="Two-bolt geometry and constructability" className="two-bolt-geometry">
+    {enabled ? <>
+      {error === "" ? null : <div role="alert"><p>{error}</p><button type="button" onClick={() => { setRetry((n) => n + 1); }}>Retry geometry</button></div>}
+      {exportError === "" ? null : <p role="alert">{exportError}</p>}
+      {current === null ? <p role="status">{error === "" ? "Updating two-bolt geometry…" : "Current geometry unavailable"}</p> : <p role="status">Geometry: {stateLabel(current.preview.geometry.aggregate_state)}.</p>}
+    </> : null}
+    <details open={detailsOpen} onToggle={(event) => { onDetailsToggle?.(event.currentTarget.open); }}>
+    <summary>Geometry and constructability details</summary>
+    {detailsOpen ? <>
     <h3>Two-bolt geometry and constructability</h3>
-    <div className="field-control"><div style={{ display: "flex", alignItems: "center", gap: ".35rem" }}><label htmlFor="direct-two-bolt-alignment">Bolt alignment</label><details className="mc1-help"><summary aria-label="Help: Bolt alignment">?</summary><p>Changes the line joining the two bolt centers. Bolt shafts remain normal to the selected interface. Supporting-member alignment is geometry-only in this stage.</p></details></div><select id="direct-two-bolt-alignment" value={options.alignment} onChange={(event) => { update({ alignment: event.currentTarget.value as TwoBoltOptions["alignment"] }); }}>
-      <option value="BRACE">Along brace</option><option value="SUPPORT">Along supporting member</option>
-    </select></div>
+    <p>Selected alignment: {options.alignment === "BRACE" ? "Along brace" : "Along supporting member"}.</p>
     <p>Same two bolt locations checked against both connected members. Brace alignment retains the existing default.</p>
     <label className="field-control"><span>Bolt spacing along selected alignment (in)</span><input inputMode="decimal" value={options.spacing} placeholder={"Current pitch: " + legacy.pitch.value + " " + legacy.pitch.unit} onChange={(event) => { update({ spacing: event.currentTarget.value }); }} /></label>
     <details><summary>Midpoint offset and bounded proposals</summary>
@@ -113,9 +123,7 @@ export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent }: 
       <label className="field-control"><span>Supporting member root encroachment (in)</span><input inputMode="decimal" value={options.supportRoot} onChange={(event) => { update({ supportRoot: event.currentTarget.value }); }} /></label>
       <label className="field-control"><span>Manufactured geometry source</span><input value={options.geometrySource} onChange={(event) => { update({ geometrySource: event.currentTarget.value }); }} /></label>
     </details>
-    {error === "" ? null : <div role="alert"><p>{error}</p><button type="button" onClick={() => { setRetry((n) => n + 1); }}>Retry geometry</button></div>}
-    {exportError === "" ? null : <p role="alert">{exportError}</p>}
-    {current === null ? <p role="status">{error === "" ? "Updating two-bolt geometry…" : "Current geometry unavailable"}</p> : <>
+    {current === null ? null : <>
       {current.preview.structural_eligible ? <p>Identical legacy layout can be freshly evaluated with its existing engineering limits.</p> : <><strong>{GEOMETRY_BANNER}</strong><p>{current.preview.structural_reason}</p></>}
       <dl>{[
         ["Hole containment", current.preview.geometry.hole_state],
@@ -142,6 +150,8 @@ export function DirectTwoBoltGeometry({ legacy, options, onChange, onCurrent }: 
       </details>
       <button type="button" disabled={exporting} onClick={() => { void download(current); }}>{exporting ? "Preparing geometry review…" : "Export Geometry and Constructability Review"}</button>
     </>}
+    </> : null}
+    </details>
   </section>;
 }
 
