@@ -6,6 +6,7 @@ import json
 from typing import Any, cast
 
 from tests.direct_f8_g1_governance import ROOT, digest
+from tests.hyb1_governance import pre_hyb1_workflow
 
 MANIFEST_SHA256 = "69D97DB06183400D9B6355A6B3B8F6B961B7767742031887C99F5A84CD0C31BF"
 
@@ -19,7 +20,7 @@ def authority(raw: bytes | None = None) -> dict[str, Any]:
 
 def pre_p1_workflow(raw: bytes, *, error_message: str = "P1_WORKFLOW_IDENTITY_INVALID") -> bytes:
     governed = authority()
-    raw = raw.replace(b"\r\n", b"\n")
+    raw = pre_hyb1_workflow(raw, error_message=error_message)
     if digest(raw) in governed["historical_workflow_sha256"]:
         return raw
     assert digest(raw) == governed["workflow_sha256"], error_message

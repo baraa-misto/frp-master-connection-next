@@ -6,6 +6,7 @@ from tests.direct_f8_g1_governance import ROOT, digest
 from tests.direct_p1_governance import authority, pre_p1_workflow
 from tests.direct_sab2_governance import authority as sab2_authority
 from tests.direct_sab2_governance import pre_sab2_workflow
+from tests.hyb1_governance import authority as hyb1_authority
 
 
 def test_p1_reconstructs_the_exact_predecessor_and_preserves_historical_chain() -> None:
@@ -26,7 +27,7 @@ def test_p1_rejects_new_count_or_report_and_historical_gate_drift(mutation: str)
     raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
     old, new = {
         "count": (
-            f"--expected-tests {authority()['backend_tests']}".encode(),
+            f"--expected-tests {hyb1_authority()['backend_tests']}".encode(),
             b"--expected-tests 1",
         ),
         "p1-pdf": (b"direct-p1-review-pdfs", b"direct-p1-missing-pdfs"),

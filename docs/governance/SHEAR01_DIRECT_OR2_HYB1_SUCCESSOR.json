@@ -1,0 +1,20 @@
+{
+  "stage": "SHEAR01-DIRECT-OR2-HYB1",
+  "predecessor_candidate": "e61bce1954c559bc72bbfb7c9f283457af4ed63e",
+  "predecessor_workflow_sha256": "94EE0A2CF56CB55B8D4AE8AC8E77E510FC5AA701C80A465AA0A50118ED453129",
+  "workflow_sha256": "0EC8857F24799567A0542E8D7064652B62987E51AF72B1DDC64E5D4B02E855A6",
+  "accepted_pre_hyb1_sha256": [
+    "94EE0A2CF56CB55B8D4AE8AC8E77E510FC5AA701C80A465AA0A50118ED453129",
+    "FE5A0353EB98FACD79033E39CFA66E686E7CE4DBAD6E10F9D7F1B6B6DFAF2B9A",
+    "921E49F1818CDD99C5F61B0CF8DD7EDA3A96F639782E45E1DA74FB61F6FE04C4"
+  ],
+  "backend_tests": 9085,
+  "frontend_tests": 1397,
+  "new_pdf_count_per_platform": 6,
+  "protected_engineering_identities": 53,
+  "historical_controls": 173,
+  "public_method_activation": false,
+  "new_engineering_qualification": false,
+  "scope": "Inactive reference arithmetic, paired action contracts, review adapter; no public routes",
+  "added_steps": "      - name: Generate inactive HYB1 reference and hybrid review PDFs\n        run: python ../scripts/generate_hyb1_ci_pdfs.py --output hyb1-review-pdfs\n      - name: Upload inactive HYB1 review evidence\n        uses: actions/upload-artifact@v7\n        with:\n          name: hyb1-pdfs-${{ matrix.os }}\n          path: backend/hyb1-review-pdfs/\n          if-no-files-found: error\n"
+}
