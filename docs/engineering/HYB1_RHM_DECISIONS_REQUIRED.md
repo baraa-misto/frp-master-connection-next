@@ -74,3 +74,12 @@ Adopt at most one named physical subset after Q1/Q2/Q3/Q4/Q5 supply the applicab
 equation, demand treatment and independent validation; retain every other missing mode.
 Do not activate SUPPORT calculations or broad hybrid design based on arithmetic tests.
 C13 and Section 2.3.2 remain independently open.
+
+## Supplementary Clip Tee evidence
+
+The owner's second workbook/extraction is registered separately in
+`HYB1_CLIP_TEE_SUPPLEMENT.md`. Its brace end/global block, Tee plate and reinforced
+chord equations add executable component references. They do not supply a distinct
+Angle/W first-row law, independent receiving-W block paths, general eccentric bolt
+distribution or unreinforced flange/web-junction qualification. All six questions
+remain; source domains and selected reinforcement/attachment applicability stay separate.

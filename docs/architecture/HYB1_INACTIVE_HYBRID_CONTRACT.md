@@ -45,7 +45,7 @@ column bearing for receiving-W net/block behavior. Both W block identities persi
 
 ## Preservation and governed verification
 
-The workflow successor adds six inert review PDFs per platform and updates only the
+The original workflow successor adds six inert review PDFs per platform and updates only the
 actual collected backend test count. tests/hyb1_governance.py checks its pinned manifest
 and reconstructs the exact P2 workflow before existing P1/SAB2/MC1 historical gates.
 No existing gate is removed. The manifest records 53 engineering and 173 historical
@@ -65,3 +65,13 @@ print truncation and storm inconsistency are preserved as separate discrepancy e
 
 See HYB1_RHM_DECISIONS_REQUIRED.md for the six exact source/domain questions and smallest
 next owner decision. None constitutes Section 2.3.2 qualification or C13 acceptance.
+
+## Owner-authorized supplementary source
+
+The Clip Tee extraction is a second, separate source; see
+`../engineering/HYB1_CLIP_TEE_SUPPLEMENT.md`. Its reference module and print-only
+renderer add three PDFs (nine total per platform). The original six reference/Direct
+records and the direct-beam workbook remain. The controlled successor preserves the
+original HYB1 workflow reconstruction and adds 29 tests (9,114 backend total).
+No existing public module imports these new reference/report modules. Reinforcement,
+optional attachment and both bolt-alignment mappings retain their separate domains.

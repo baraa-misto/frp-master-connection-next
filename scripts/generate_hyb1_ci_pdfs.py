@@ -31,7 +31,9 @@ from frp_master_connection.application.hyb1_review import (
 )
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
 from frp_master_connection.calculation.rhm_reference import ReferenceStream
+from frp_master_connection.calculation.rhm_clip_tee_reference import execute_clip_tee_reference
 from frp_master_connection.calculation.rhm_workbook_case import execute_workbook_case
+from frp_master_connection.reporting.rhm_clip_tee_review import render_clip_tee_reference
 from frp_master_connection.reporting.hyb1_review import (
     TITLE, canonical_record, capture_signed_native, render_hyb1_review, request_digest, review_record,
 )
@@ -146,12 +148,35 @@ def main() -> None:
                         "current":review.current,"complete":review.analytical_candidate_complete,
                         "scope":review.evidence_scope,"public_activation":False})
         print(path.name+": "+str(len(reader.pages))+" pages",flush=True)
+    assert len(records)==6
+    for name,stream,reinforced in (
+        ("clip-tee-corrected-reference",ReferenceStream.CORRECTED_REFERENCE,True),
+        ("clip-tee-historical-replication",ReferenceStream.HISTORICAL_REPLICATION,True),
+        ("clip-tee-unreinforced-reference",ReferenceStream.CORRECTED_REFERENCE,False),
+    ):
+        book=execute_clip_tee_reference(stream=stream,reinforcement_selected=reinforced)
+        before=repr(book)
+        pdf=render_clip_tee_reference(book)
+        reader=PdfReader(io.BytesIO(pdf))
+        text=" ".join(" ".join(page.extract_text() or "" for page in reader.pages).split())
+        assert before==repr(book)
+        assert book.tee_flange.summary_cell in text and str(book.tee_flange.summary) in text
+        assert all(row.method_id in text and str(row.utilization) in text for row in book.comparisons)
+        assert not book.public_activation and not book.actual_direct_coverage
+        path=output/(name+".pdf");path.write_bytes(pdf)
+        (output/(name+".json")).write_text(json.dumps(asdict(book),indent=2,default=str),encoding="utf-8")
+        (output/(name+".txt")).write_text(text,encoding="utf-8")
+        records.append({"file":path.name,"sha256":sha256(pdf).hexdigest(),"pages":len(reader.pages),
+                        "scope":book.source_domain,"source_workbook_sha256":book.workbook_sha256,
+                        "comparison":book.tee_flange.summary_outcome,"public_activation":False,
+                        "actual_direct_coverage":[]})
+        print(path.name+": "+str(len(reader.pages))+" pages",flush=True)
     metadata={"candidate_sha":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),
               "platform":platform.platform(),"report_count":len(records),"reports":records,
               "native_snapshot_preservation":True,"runtime_interference":False,
               "method_adoption":"PENDING_OWNER_REVIEW","qualification_installed":False}
     (output/"HYB1_PLATFORM_QA.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
-    assert len(records)==6
+    assert len(records)==9
 
 
 if __name__=="__main__":

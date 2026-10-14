@@ -13,7 +13,7 @@ def test_hyb1_exact_predecessor_reconstruction() -> None:
     assert digest(old) == authority()["predecessor_workflow_sha256"]
     assert pre_hyb1_workflow(old) == old
     assert pre_p1_workflow(raw) == pre_p1_workflow(old)
-    assert authority()["new_pdf_count_per_platform"] == 6
+    assert authority()["new_pdf_count_per_platform"] == 9
     assert authority()["public_method_activation"] is False
     assert authority()["protected_engineering_identities"] == 53
     assert authority()["historical_controls"] == 173
@@ -40,3 +40,13 @@ def test_hyb1_manifest_cannot_change_silently() -> None:
     raw = (ROOT / "docs/governance/SHEAR01_DIRECT_OR2_HYB1_SUCCESSOR.json").read_bytes()
     with pytest.raises(AssertionError, match="HYB1_AUTHORITY_IDENTITY"):
         authority(raw + b" ")
+
+
+def test_original_completed_hyb1_workflow_still_reconstructs_exact_p2() -> None:
+    raw = (ROOT / ".github/workflows/ci.yml").read_bytes().replace(b"\r\n", b"\n")
+    governed = authority()
+    original = raw.replace(
+        f"--expected-tests {governed['backend_tests']}".encode(), b"--expected-tests 9085"
+    )
+    assert digest(original) == governed["supplement_predecessor_workflow_sha256"]
+    assert pre_hyb1_workflow(original) == pre_hyb1_workflow(raw)

@@ -17,6 +17,8 @@ def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
         "hyb1_review.py",
         "rhm_reference.py",
         "rhm_workbook_case.py",
+        "rhm_clip_tee_reference.py",
+        "rhm_clip_tee_review.py",
     }
     for path in root.rglob("*.py"):
         if path.name not in new_names:
