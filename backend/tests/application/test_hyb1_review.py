@@ -87,7 +87,7 @@ def test_alignment_typed_and_non_synthetic_cannot_install_mock_coverage() -> Non
     native = replace(native, identity=actual.identity, paired_digest=actual.digest)
     extra = replace(extra, identity=actual.identity, paired_digest=actual.digest)
     review = assess_hybrid(actual, native, extra)
-    assert review.numerical_outcome == "PASS"
+    assert review.numerical_outcome == "NOT_EVALUATED"
     assert not review.analytical_candidate_complete
     assert set(MISSING_IDS + ADDITIONAL_3D) <= set(review.uncovered)
     with pytest.raises(TypeError):

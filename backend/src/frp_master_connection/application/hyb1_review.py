@@ -6,6 +6,7 @@ from hashlib import sha256
 from typing import cast
 
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit, decimal_value
+from frp_master_connection.calculation.rhm_reference import WORKBOOK_SHA256
 from frp_master_connection.calculation.rhm_workbook_case import WorkbookCase, execute_workbook_case
 
 from .hyb1_contract import ActionBasis, PairedActions, PhysicalIdentity
@@ -26,6 +27,10 @@ class ComparisonRow:
     evidence_scope: str
     na_reason: str = ""
     native_outcome: str = ""
+    joint_mechanisms: tuple[str, ...] = ()
+    joint_coverage_evidence: str = ""
+    reference_stream: str = ""
+    reference_source_sha256: str = ""
 
     def __post_init__(self) -> None:
         if not isinstance(self.basis, ActionBasis):
@@ -39,6 +44,12 @@ class ComparisonRow:
             object.__setattr__(self, "ratio", ratio)
         elif self.outcome not in ("NOT_EVALUATED", "NOT_APPLICABLE"):
             raise ValueError("A numerical outcome needs its evaluated ratio.")
+        if self.joint_mechanisms and (
+            len(set(self.joint_mechanisms)) != len(self.joint_mechanisms)
+            or not set(self.joint_mechanisms) <= set(REQUIRED_IDS)
+            or self.joint_coverage_evidence != "SYNTHETIC_JOINT_RELEASE_TEST_ONLY"
+        ):
+            raise ValueError("Joint coverage needs an established domain-specific proof.")
 
 
 @dataclass(frozen=True, slots=True)
@@ -65,6 +76,7 @@ class SupplementalSet:
     paired_digest: str
     rows: tuple[ComparisonRow, ...]
     workbooks: tuple[WorkbookCase, ...] = ()
+    limitations: tuple[str, ...] = ()
 
 
 def calculate_reference_cases(actions: PairedActions) -> SupplementalSet:
@@ -101,6 +113,8 @@ def calculate_reference_cases(actions: PairedActions) -> SupplementalSet:
                 "; ".join(str(r.to(Unit.KIP).magnitude) + " kip" for r in comparison.capacities),
                 "REFERENCE_ONLY",
                 "WORKBOOK_REFERENCE",
+                reference_stream=workbook.stream.value,
+                reference_source_sha256=WORKBOOK_SHA256,
             )
             for comparison in workbook.comparisons
         )
@@ -128,6 +142,9 @@ class HybridReview:
     qualification: str = "UNCHANGED_SECTION_2_3_2_UNRESOLVED"
     owner_acceptance: str = "PENDING"
     public_activation: bool = False
+    reference_outcome: str = "NOT_EVALUATED"
+    reference_governing_asd: ComparisonRow | None = None
+    limitations: tuple[str, ...] = ()
 
 
 def assess_hybrid(
@@ -166,7 +183,12 @@ def assess_hybrid(
             if required_basis is ActionBasis.LRFD
             else actions.manifest.required_asd
         )
-        matches = [r for r in rows if r.mechanism == mechanism and r.basis is required_basis]
+        matches = [
+            r
+            for r in rows
+            if r.basis is required_basis
+            and (r.mechanism == mechanism or (synthetic and mechanism in r.joint_mechanisms))
+        ]
         valid_scope = "SYNTHETIC_TEST_ONLY" if synthetic else "UNCHANGED_NATIVE_ASCE"
         applicable = [
             r
@@ -180,8 +202,24 @@ def assess_hybrid(
         if required_cases and {r.case_id for r in applicable} == set(required_cases):
             coverage.add(mechanism)
     uncovered = tuple(key for key in REQUIRED_IDS if key not in coverage)
-    evaluated = [r for r in rows if r.ratio is not None]
-    fail = native.status == "RED" or any(r.outcome == "FAIL" for r in evaluated)
+    evaluated = [
+        r
+        for r in rows
+        if current
+        and r.ratio is not None
+        and (
+            r.evidence_scope == "UNCHANGED_NATIVE_ASCE"
+            or (synthetic and r.evidence_scope == "SYNTHETIC_TEST_ONLY")
+        )
+    ]
+    references = [
+        r
+        for r in rows
+        if current
+        and r.ratio is not None
+        and r.evidence_scope in ("WORKBOOK_REFERENCE", "HYB2_DIRECT_REFERENCE")
+    ]
+    fail = (current and native.status == "RED") or any(r.outcome == "FAIL" for r in evaluated)
     outcome = "FAIL" if fail else "PASS" if evaluated else "NOT_EVALUATED"
     lrfd = max(
         (r for r in evaluated if r.basis is ActionBasis.LRFD),
@@ -212,4 +250,11 @@ def assess_hybrid(
         qualification="UNCHANGED_NATIVE: " + "; ".join(native.qualification_state)
         if native.qualification_state
         else "UNCHANGED_NATIVE_NOT_REPORTED",
+        reference_outcome="FAIL"
+        if any(r.outcome == "FAIL" for r in references)
+        else "PASS"
+        if references
+        else "NOT_EVALUATED",
+        reference_governing_asd=max(references, key=lambda r: cast(Decimal, r.ratio), default=None),
+        limitations=supplemental.limitations,
     )

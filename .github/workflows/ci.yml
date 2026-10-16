@@ -74,7 +74,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 9114
+          --expected-tests 9181
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence

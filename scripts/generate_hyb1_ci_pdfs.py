@@ -37,6 +37,13 @@ from frp_master_connection.reporting.rhm_clip_tee_review import render_clip_tee_
 from frp_master_connection.reporting.hyb1_review import (
     TITLE, canonical_record, capture_signed_native, render_hyb1_review, request_digest, review_record,
 )
+from frp_master_connection.application.hyb2_direct import (
+    calculate_direct_references, direct_geometry_digest, direct_source_mappings,
+)
+from frp_master_connection.calculation.rhm_direct_reference import (
+    SOURCE_SHA256, DirectGeometry, brace_rotation, execute_direct_source, moment_witness,
+)
+from frp_master_connection.reporting.rhm_direct_review import render_direct_reference
 from tests.api.test_direct_two_bolt import sab2_body
 from tests.hyb1_fixtures import case, complete_fixture, paired, q
 
@@ -171,12 +178,50 @@ def main() -> None:
                         "comparison":book.tee_flange.summary_outcome,"public_activation":False,
                         "actual_direct_coverage":[]})
         print(path.name+": "+str(len(reader.pages))+" pages",flush=True)
+    g=DirectGeometry()
+    action=replace(case(ActionBasis.ASD,"DIRECT-SOURCE",v=".09155",p=".0134"),frame="DIRECT_UV_CENTROID")
+    identity=PhysicalIdentity("INTERNAL_REFERENCE_ACCOUNT","HYB2_DIRECT_REFERENCE",
+                              direct_geometry_digest(g),SOURCE_SHA256,"SOURCE_EXPLICIT_ASD",Alignment.SUPPORT)
+    actions=PairedActions(identity,(),(action,),CaseManifest((),(action.case_id,),False,True,"SOURCE_ONLY_NOT_ASCE_DESIGN"))
+    integration=calculate_direct_references(actions,g)
+    payload=b'{"scope":"SOURCE_SUPPORT_PAIR_NO_NATIVE_ASCE_DESIGN"}'
+    native=NativeCapture(identity,actions.digest,payload,sha256(payload).hexdigest(),(),"NO_NATIVE_ASCE","REFERENCE_ONLY")
+    review=assess_hybrid(actions,native,integration.supplemental)
+    assert review.numerical_outcome=="NOT_EVALUATED" and review.reference_outcome=="PASS"
+    for name,stream,load in (
+        ("direct-l4-i8-corrected-reference",ReferenceStream.CORRECTED_REFERENCE,"91.55"),
+        ("direct-l4-i8-historical-reference",ReferenceStream.HISTORICAL_REPLICATION,"91.55"),
+        ("direct-l4-i8-overload-reference",ReferenceStream.CORRECTED_REFERENCE,"6000"),
+    ):
+        book=execute_direct_source(stream=stream,axial=q(load,Unit.LBF))
+        pdf=render_direct_reference(book)
+        reader=PdfReader(io.BytesIO(pdf));text=" ".join(" ".join(p.extract_text() or "" for p in reader.pages).split())
+        assert all(str(c.utilization) in text and c.method_id in text for c in book.comparisons)
+        record={"source":asdict(book),"rotation":asdict(brace_rotation(g)),
+                "mappings":[asdict(m) for a in Alignment for m in direct_source_mappings(a)],
+                "moment_witness":asdict(moment_witness(g,q("0",Unit.LBF),q("0",Unit.LBF),q("12",Unit.LBF_IN)))}
+        (output/(name+".pdf")).write_bytes(pdf)
+        (output/(name+".json")).write_text(json.dumps(record,indent=2,default=str),encoding="utf-8")
+        (output/(name+".txt")).write_text(text,encoding="utf-8")
+        records.append({"file":name+".pdf","sha256":sha256(pdf).hexdigest(),"pages":len(reader.pages),
+                        "scope":"DIRECT_SOURCE_REFERENCE_ONLY","source_workbook_sha256":SOURCE_SHA256,
+                        "public_activation":False})
+        print(name+": "+str(len(reader.pages))+" pages",flush=True)
+    name="direct-l4-i8-hybrid-reference-incomplete"
+    pdf=render_hyb1_review(review,actions)
+    reader=PdfReader(io.BytesIO(pdf));text=" ".join(" ".join(p.extract_text() or "" for p in reader.pages).split())
+    assert "Reference calculations - not an adopted design" in text and "Coverage not established" in text
+    (output/(name+".pdf")).write_bytes(pdf)
+    (output/(name+".json")).write_text(json.dumps(review_record(review,actions),indent=2),encoding="utf-8")
+    (output/(name+".txt")).write_text(text,encoding="utf-8")
+    records.append({"file":name+".pdf","sha256":sha256(pdf).hexdigest(),"pages":len(reader.pages),
+                    "scope":"INACTIVE_SOURCE_MATCHED_HYBRID_REVIEW","public_activation":False})
     metadata={"candidate_sha":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),
               "platform":platform.platform(),"report_count":len(records),"reports":records,
               "native_snapshot_preservation":True,"runtime_interference":False,
               "method_adoption":"PENDING_OWNER_REVIEW","qualification_installed":False}
     (output/"HYB1_PLATFORM_QA.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
-    assert len(records)==9
+    assert len(records)==13
 
 
 if __name__=="__main__":

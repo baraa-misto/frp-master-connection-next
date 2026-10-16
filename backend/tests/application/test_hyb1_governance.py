@@ -13,7 +13,7 @@ def test_hyb1_exact_predecessor_reconstruction() -> None:
     assert digest(old) == authority()["predecessor_workflow_sha256"]
     assert pre_hyb1_workflow(old) == old
     assert pre_p1_workflow(raw) == pre_p1_workflow(old)
-    assert authority()["new_pdf_count_per_platform"] == 9
+    assert authority()["new_pdf_count_per_platform"] == 13
     assert authority()["public_method_activation"] is False
     assert authority()["protected_engineering_identities"] == 53
     assert authority()["historical_controls"] == 173
@@ -50,3 +50,13 @@ def test_original_completed_hyb1_workflow_still_reconstructs_exact_p2() -> None:
     )
     assert digest(original) == governed["supplement_predecessor_workflow_sha256"]
     assert pre_hyb1_workflow(original) == pre_hyb1_workflow(raw)
+
+
+def test_completed_clip_tee_predecessor_reconstructs_exact_p2() -> None:
+    raw = (ROOT / ".github/workflows/ci.yml").read_bytes().replace(b"\r\n", b"\n")
+    governed = authority()
+    previous = raw.replace(
+        f"--expected-tests {governed['backend_tests']}".encode(), b"--expected-tests 9114"
+    )
+    assert digest(previous) == governed["direct_predecessor_workflow_sha256"]
+    assert pre_hyb1_workflow(previous) == pre_hyb1_workflow(raw)

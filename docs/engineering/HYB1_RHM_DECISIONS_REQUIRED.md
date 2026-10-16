@@ -1,85 +1,65 @@
-# HYB1 specific RHM decisions required
+# RHM decisions required - current Direct source revision HYB2-D1-R1
 
-Six consolidated questions. Independent arithmetic and integration code is executable;
-these questions prevent actual Angle-to-W supplemental method adoption. No production
-method, material policy, qualification or Route C restriction changes in HYB1.
+Independent source arithmetic and partial/reference reports remain available. These six
+method decisions do not become fixable input errors, numerical failures or qualification.
+Original beam and Clip Tee evidence remains preserved separately in delivered archives.
 
-## Q1 - Angle first-row stress transfer and effective width
+## Q1 - First-row or substantiated combined coverage
 
-Which companion equation gives first-row net-section demand and resistance for the
-inclined L4 x 4 x 0.5 leg with an integral heel, 0.563-in holes and submitted true e1=3 in?
-Identify effective width, bearing/bypass distribution, any shear-lag or concentration
-coefficient and its validated domain. Calcs D87:D112 only provide a beam block interaction;
-they do not provide this first-row law. EM2 established the unresolved width/source
-interpretation and retained out-of-plane actions. A property-column lookup is insufficient.
-Affected: FIRST_ROW:layer-A, both alignments (SUPPORT is staggered in Angle axes).
+Direct Calcs D93:D121 and D211:D239 supply brace/column global interactions. Determine
+whether their physical envelope jointly covers first-row net-section failure, or provide
+its companion stress law/effective width and bearing-bypass transfer. A tensile term
+alone is not proof. Both members/alignments remain unverified for that mechanism;
+substantiated combined coverage need not imitate ASCE row names or double resistance.
 
-## Q2 - Independent receiving-W failure paths
+## Q2 - Receiving-column physical releases
 
-Provide the receiving flange first-row and inter-row equations and the two independent
-block-release definitions. How do the negative-CW outstand and positive-CW integral-web
-side carry the actual oblique load and unknown remote column N/V/M? Identify the true
-finite ends needed in SUPPORT; view crops are excluded. Calcs D59:D112 concern the beam;
-D149/D168 cover column bearing only. PulTex Vol5 Rev15 Chapter4 p104 shows a coped beam-web
-example, not these receiving-W paths. Its example also prints 5000 psi in the final sum
-after establishing 5250 psi tensile allowable, so it is not a clean transferred oracle.
-Affected: FIRST_ROW:layer-B, INTERROW:layer-B:BOLT_LINE_1 and distinct W LEFT/RIGHT,
-both alignments. Required response: source-located equations plus a validated release
-and remote-action boundary model, not a statement that column bearing passes.
+Direct local D183:D205 and global D211:D239 now exist: the old beam-source column-bearing-only
+limit is obsolete for this source. Map its one-sided fragments to receiving inter-row and
+independent LEFT/RIGHT releases with integral web continuity, true ends and remote actions.
+P/V load paths are not opposite geometric sides. Local free-edge tear-out is not automatically
+inter-row. No display crop creates a physical boundary. Both alignments need their own mapping.
 
-## Q3 - Net paths, holes and reinforcement engagement
+## Q3 - Length, holes and Xb datum
 
-Are Calcs D62/D73/D87/D88/D100/D101 lengths gross, already net or another convention?
-Specify each hole/corner ownership and deduction rule and the engagement model that
-permits Calcs D144/D161 to add the saved 0.375-in doubler. Establish the reinforcement
-material/orientation and adhesive/fastener transfer rule, including active optional
-parts. No ASCE hole allowance or second hole deduction is imported. The saved 0.75-in
-reference thickness remains explicit; the actual owner geometry gets no doubler credit.
-Affected: reference-to-actual local/block mappings and any reinforced assembly, both alignments.
+Define center-derived gross/calibrated-effective/net lengths for Input L52:L65 and the
+local/global equations. Source has no hole-diameter deduction input; .563-in witness holes
+are tracked without importing ASCE deductions. Confirm Xb=1-.1875-.375=.4375 fabrication
+datum while actual brace thickness remains .5. Source LTV=d_span*sin(phi) differs from
+projecting actual vertical spacing along the brace (d_span*tan(phi)); identify its physical
+fracture segment/calibration. Source is unreinforced. Prior-source doubler/Tee/attachment
+participation is not transferred. Parameter variations remain reference evidence.
 
-## Q4 - Signed eccentric and 3D demand applicability
+## Q4 - Signed eccentric/3D applicability and moment repair
 
-What validated demand/contact and FRP stress-transfer model replaces workbook P/n,V/n
-for actual C01/C02? The original P, group midpoint G, signed F and all transported M
-are retained. Address reversal, compression/contact, bolt stiffness, staggered stations,
-prying, Angle heel and W flange/web junction. Equal bolt-force equilibrium alone does
-not establish first-row stress capacity. Calcs D43:D80 contain no such model; existing
-ASCE supported checks stay unchanged. SUPPORT cannot inherit BRACE row/path/heel N/A.
-Affected: both alignments, changed Angle checks and three separately scheduled 3D mechanisms.
+Input R50 reads blank R47. The corrected R49 wiring witness is tested separately from
+history and from independent vector pair equilibrium. A vertical pair at +/-h carries
+moment through horizontal forces +/-M/(2h); that does not adopt the source scalar P/V
+couple envelope or prove FRP stress transfer. Retain all P/G/F and transported moments,
+reversal, compression/contact, prying, heel and flange/web-junction actions. Nonzero
+moment/out-of-plane/reversal cases withhold affected supplemental results. A separately
+rotated pair recomputes paths/no-fit and inherits neither capacities nor heel N/A.
 
-## Q5 - Actual product, ASD conditions and supplied action-set policy
+## Q5 - Property/factor and paired ASD domain
 
-Establish the actual product/resin/region/axes and statistical definition of each RHM
-listed strength, its own safety factor and approved environment/duration policy. The
-workbook Dim & Properties D/E/F columns and SF4 are recorded reference values, not a
-replacement for current characteristic MAT1 properties or F593 hardware. Provide
-independent complete ASD combination results and their source; no LRFD/1.6 conversion,
-combination generator or inherited ASCE adjustment is installed. Unknown ASD conditions
-remain unresolved. A source match alone does not establish qualification.
-Affected: all actual supplemental numerical evaluations, both alignments.
+New source supplies polyester SF4 values and its discrete temperature schedule. D31/D221
+repeat Ts; retained pending a reviewed successor factor policy, not silently removed or
+blended with ASCE CT. Confirm CW receiving-flange simplification (F13), actual product,
+statistical, duration/environment and fixed included-thread 316SS 12.75-ksi scope.
+Current MAT1/F593 remains unchanged. Complete independently supplied ASD combinations
+are inputs; no LRFD/1.6 inference. Missing ASD does not disable valid LRFD checks.
+Owner-reported satisfactory field use is attribution, not Section 2.3.2 qualification.
 
-## Q6 - Storm rule
+## Q6 - Separate legacy storm variant
 
-Confirm the intended joint load/allowable rule and combination domain for Input M31/M32
-and Calcs B10. Historical demand x 2/3 disagrees with the stated one-third allowable
-increase (which algebraically implies x 3/4). Neither is adopted. The corrected
-ordinary reference uses no additional storm adjustment. State how duplicate allowance
-with supplied ASD combinations is prevented. A storm variant remains unevaluated.
+No active extra storm relief exists in the direct source; its ordinary supplied ASD
+combinations proceed. Earlier beam-source x2/3 versus one-third allowable increase
+remains a separate historical variant. No 3/4 rule or double allowance is installed.
 
-## Smallest next implementation
+## Smallest next step
 
-No actual missing Direct mechanism has a fully supported MAPPED_CANDIDATE in HYB1.
-The executable reference core and paired integration are ready for owner inspection.
-Adopt at most one named physical subset after Q1/Q2/Q3/Q4/Q5 supply the applicable
-equation, demand treatment and independent validation; retain every other missing mode.
-Do not activate SUPPORT calculations or broad hybrid design based on arithmetic tests.
-C13 and Section 2.3.2 remain independently open.
-
-## Supplementary Clip Tee evidence
-
-The owner's second workbook/extraction is registered separately in
-`HYB1_CLIP_TEE_SUPPLEMENT.md`. Its brace end/global block, Tee plate and reinforced
-chord equations add executable component references. They do not supply a distinct
-Angle/W first-row law, independent receiving-W block paths, general eccentric bolt
-distribution or unreinforced flange/web-junction qualification. All six questions
-remain; source domains and selected reinforcement/attachment applicability stay separate.
+Review source Xb/length conventions and one bounded positive centroid-loaded support-aligned
+local/global physical domain. Seven unique reference comparisons and 34 mechanism/source
+records execute now; no actual gap is credited before physical predicates and adoption are
+established. Keep native ASCE/F8/F9, C13, Section 2.3.2 and owner acceptance independent.
+Do not activate support structural routes, waive qualification, merge or freeze.

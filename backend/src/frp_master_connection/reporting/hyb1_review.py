@@ -10,7 +10,8 @@ from hashlib import sha256
 from html import escape
 from typing import Any, cast
 
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import BaseDocTemplate, Paragraph, SimpleDocTemplate, Spacer
@@ -18,6 +19,8 @@ from reportlab.platypus import BaseDocTemplate, Paragraph, SimpleDocTemplate, Sp
 from frp_master_connection.application.hyb1_contract import ActionBasis, PairedActions
 from frp_master_connection.application.hyb1_mapping import direct_mappings
 from frp_master_connection.application.hyb1_review import ComparisonRow, HybridReview, NativeCapture
+from frp_master_connection.application.hyb2_direct import direct_source_mappings
+from frp_master_connection.application.hyb2_status import present_review
 from frp_master_connection.calculation.rhm_reference import WORKBOOK_SHA256
 from frp_master_connection.calculation.rhm_workbook_case import WorkbookCase
 from frp_master_connection.reporting.snapshot import SnapshotSigner
@@ -105,6 +108,8 @@ def capture_signed_native(
 def review_record(review: HybridReview, actions: PairedActions) -> dict[str, Any]:
     if review.identity != actions.identity or review.paired_digest != actions.digest:
         raise ValueError("Review output cannot mix a result with different current inputs.")
+    if not review.current:
+        raise ValueError("Stale review cannot be exported as a current signed-input review.")
 
     def encode(value: object) -> object:
         if isinstance(value, Decimal):
@@ -117,6 +122,10 @@ def review_record(review: HybridReview, actions: PairedActions) -> dict[str, Any
         "review": asdict(review),
         "actions": asdict(actions),
         "mappings": [asdict(row) for row in direct_mappings(review.identity.alignment)],
+        "direct_source_mappings": [
+            asdict(row) for row in direct_source_mappings(review.identity.alignment)
+        ],
+        "presentation": asdict(present_review(review)),
     }
     data["review"]["identity"]["account"] = "REDACTED_ACCOUNT_BOUND"
     data["actions"]["identity"]["account"] = "REDACTED_ACCOUNT_BOUND"
@@ -144,6 +153,41 @@ def render_hyb1_review(
 
     paragraph(TITLE, "Title")
     paragraph("HYB1 INACTIVE REVIEW CANDIDATE - OWNER ENGINEERING REVIEW PENDING", "Heading2")
+    presentation = present_review(review)
+    styles.add(
+        ParagraphStyle(
+            "CalculatedOutcome",
+            parent=styles["Heading2"],
+            textColor={"red": colors.red, "green": colors.darkgreen, "neutral": colors.darkblue}[
+                presentation.calculated_tone
+            ],
+        )
+    )
+    paragraph(presentation.calculated_heading, "CalculatedOutcome")
+    paragraph(
+        presentation.coverage_heading
+        + f" ({presentation.uncovered_count} required mechanisms not evaluated)."
+    )
+    paragraph(presentation.executive_limit)
+    if presentation.reference_streams:
+        paragraph("Executed reference streams: " + ", ".join(presentation.reference_streams))
+    paragraph("Qualification: " + presentation.qualification)
+    paragraph(
+        "Material limitations: RHM source listed/SF4 properties and service conditions "
+        "remain reference evidence. Product/statistical and additional environmental "
+        "applicability are not established. Existing native ASCE materials remain independent."
+    )
+    for detail in presentation.failure_details:
+        paragraph("Governing evaluated failure: " + detail)
+    paragraph("Method and evidence notes", "Heading3")
+    for note in presentation.method_notes:
+        paragraph(note)
+    if review.reference_outcome != "NOT_EVALUATED":
+        paragraph(
+            presentation.reference_heading
+            + "; reference numerical comparisons: "
+            + review.reference_outcome
+        )
     paragraph(
         f"Evidence: {review.evidence_scope}. Native F9: {review.native_status}, unchanged. "
         f"Numerical comparisons: {review.numerical_outcome}; current: {review.current}. "
@@ -198,12 +242,25 @@ def render_hyb1_review(
             f"evidence={row.evidence_scope}"
         )
         paragraph(row.equation + "; " + row.resistance_trace)
+        if row.reference_stream:
+            paragraph(
+                "Reference stream: "
+                + row.reference_stream
+                + "; source SHA256: "
+                + row.reference_source_sha256
+            )
         if row.na_reason:
             paragraph("Applicability/source: " + row.na_reason)
         if row.native_outcome:
             paragraph("Original native outcome (unchanged): " + row.native_outcome)
     paragraph("Physical coverage and independent method questions", "Heading2")
     paragraph("Uncovered mandatory mechanisms: " + ", ".join(review.uncovered))
+    paragraph("Primary Direct L4/I8 source mapping candidates - not adopted", "Heading2")
+    for mapping in record["direct_source_mappings"]:
+        paragraph(mapping["native_id"] + " / " + mapping["disposition"], "Heading3")
+        for key, value in mapping.items():
+            paragraph(key + ": " + str(value))
+    paragraph("Historical beam-source mapping audit - separate source", "Heading2")
     for mapping in record["mappings"]:
         paragraph(mapping["native_id"] + " / " + mapping["disposition"], "Heading3")
         for key, value in mapping.items():
