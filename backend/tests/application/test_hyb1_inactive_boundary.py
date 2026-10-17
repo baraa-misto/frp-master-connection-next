@@ -20,6 +20,8 @@ def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
         "rhm_clip_tee_reference.py",
         "rhm_clip_tee_review.py",
         "rhm_direct_reference.py",
+        "rhm_direct_corrections.py",
+        "rhm_direct_correction_review.py",
         "rhm_direct_review.py",
         "hyb2_direct.py",
         "hyb2_status.py",

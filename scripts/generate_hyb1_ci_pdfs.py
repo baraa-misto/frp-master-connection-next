@@ -44,6 +44,8 @@ from frp_master_connection.calculation.rhm_direct_reference import (
     SOURCE_SHA256, DirectGeometry, brace_rotation, execute_direct_source, moment_witness,
 )
 from frp_master_connection.reporting.rhm_direct_review import render_direct_reference
+from frp_master_connection.calculation.rhm_direct_reference import DirectCandidateStream
+from frp_master_connection.reporting.rhm_direct_correction_review import render_direct_corrections
 from tests.api.test_direct_two_bolt import sab2_body
 from tests.hyb1_fixtures import case, complete_fixture, paired, q
 
@@ -216,12 +218,31 @@ def main() -> None:
     (output/(name+".txt")).write_text(text,encoding="utf-8")
     records.append({"file":name+".pdf","sha256":sha256(pdf).hexdigest(),"pages":len(reader.pages),
                     "scope":"INACTIVE_SOURCE_MATCHED_HYBRID_REVIEW","public_activation":False})
+    corrected=calculate_direct_references(actions,g,stream=DirectCandidateStream.CORRECTED_SOURCE_CANDIDATE)
+    correction=corrected.corrections[0][1]
+    corrected_review=assess_hybrid(actions,native,corrected.supplemental)
+    for name,pdf,data in (
+        ("direct-r2-cos-and-hole-comparison",render_direct_corrections(correction),asdict(correction)),
+        ("direct-r2-hybrid-reference-incomplete",render_hyb1_review(corrected_review,actions,mapping_audit=False),
+         review_record(corrected_review,actions)),
+    ):
+        reader=PdfReader(io.BytesIO(pdf))
+        text=" ".join(" ".join(p.extract_text() or "" for p in reader.pages).split())
+        assert "Reference calculations - not an adopted design" in text
+        assert not correction.public_activation and correction.actual_coverage_credited==()
+        (output/(name+".pdf")).write_bytes(pdf)
+        (output/(name+".json")).write_text(json.dumps(data,indent=2,default=str),encoding="utf-8")
+        (output/(name+".txt")).write_text(text,encoding="utf-8")
+        records.append({"file":name+".pdf","sha256":sha256(pdf).hexdigest(),"pages":len(reader.pages),
+                        "scope":"R2_REFERENCE_ONLY_PHYSICAL_APPLICABILITY_NOT_RECONCILED",
+                        "public_activation":False,"actual_direct_coverage":[]})
+        print(name+": "+str(len(reader.pages))+" pages",flush=True)
     metadata={"candidate_sha":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),
               "platform":platform.platform(),"report_count":len(records),"reports":records,
               "native_snapshot_preservation":True,"runtime_interference":False,
               "method_adoption":"PENDING_OWNER_REVIEW","qualification_installed":False}
     (output/"HYB1_PLATFORM_QA.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
-    assert len(records)==13
+    assert len(records)==15
 
 
 if __name__=="__main__":

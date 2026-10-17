@@ -7,6 +7,7 @@ No first-row, opposite-side or junction coverage is inferred from these equation
 
 from dataclasses import dataclass
 from decimal import Decimal, localcontext
+from enum import StrEnum
 
 from .quantities import PhysicalQuantity, Unit, decimal_value
 from .rhm_reference import (
@@ -23,6 +24,12 @@ from .rhm_reference import (
 SOURCE_SHA256 = "1dcfa90eb1e33101e350b41760b13f6d2f7f87225191e11145362c35f8121e83"
 SOURCE_ID = "RHM_DIRECT_L4_I8_ONE_SIDED"
 METHOD_VERSION = "HYB2-D1-R1-REFERENCE"
+
+
+class DirectCandidateStream(StrEnum):
+    """Direct-only owner correction; the historical/beam/Tee streams stay distinct."""
+
+    CORRECTED_SOURCE_CANDIDATE = "CORRECTED_SOURCE_CANDIDATE"
 
 
 def q(value: Decimal | str, unit: Unit = Unit.IN) -> PhysicalQuantity:
@@ -226,7 +233,7 @@ def moment_witness(
 
 @dataclass(frozen=True, slots=True)
 class DirectSourceCase:
-    stream: ReferenceStream
+    stream: ReferenceStream | DirectCandidateStream
     geometry: DirectGeometry
     paths: DirectPathGeometry
     comparisons: tuple[RhmComparison, ...]

@@ -5,7 +5,7 @@ from typing import Any, cast
 
 from tests.direct_f8_g1_governance import ROOT, digest
 
-MANIFEST_SHA256 = "198A752DDC3F77A3174F9E781838FBDAE86E9445CFC1131C15F8B0E5BF0736E7"
+MANIFEST_SHA256 = "375B140CCB545B054550CF027CAAA705BC9C60437A870B7848540588201AFE10"
 
 
 def authority(raw: bytes | None = None) -> dict[str, Any]:
@@ -30,6 +30,7 @@ def pre_hyb1_workflow(
         governed["direct_predecessor_workflow_sha256"]: governed[
             "direct_predecessor_backend_tests"
         ],
+        governed["r1_predecessor_workflow_sha256"]: governed["r1_predecessor_backend_tests"],
     }
     assert digest(raw) in versions, error_message
     steps = governed["added_steps"].encode()

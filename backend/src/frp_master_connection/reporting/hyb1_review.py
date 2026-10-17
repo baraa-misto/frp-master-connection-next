@@ -137,6 +137,7 @@ def render_hyb1_review(
     actions: PairedActions,
     *,
     workbooks: tuple[WorkbookCase, ...] = (),
+    mapping_audit: bool = True,
 ) -> bytes:
     """Render immutable executed records; never evaluate engineering in a PDF shim."""
     record = review_record(review, actions)
@@ -255,16 +256,23 @@ def render_hyb1_review(
             paragraph("Original native outcome (unchanged): " + row.native_outcome)
     paragraph("Physical coverage and independent method questions", "Heading2")
     paragraph("Uncovered mandatory mechanisms: " + ", ".join(review.uncovered))
-    paragraph("Primary Direct L4/I8 source mapping candidates - not adopted", "Heading2")
-    for mapping in record["direct_source_mappings"]:
-        paragraph(mapping["native_id"] + " / " + mapping["disposition"], "Heading3")
-        for key, value in mapping.items():
-            paragraph(key + ": " + str(value))
-    paragraph("Historical beam-source mapping audit - separate source", "Heading2")
-    for mapping in record["mappings"]:
-        paragraph(mapping["native_id"] + " / " + mapping["disposition"], "Heading3")
-        for key, value in mapping.items():
-            paragraph(key + ": " + str(value))
+    if mapping_audit:
+        paragraph("Primary Direct L4/I8 source mapping candidates - not adopted", "Heading2")
+        for mapping in record["direct_source_mappings"]:
+            paragraph(mapping["native_id"] + " / " + mapping["disposition"], "Heading3")
+            for key, value in mapping.items():
+                paragraph(key + ": " + str(value))
+        paragraph("Historical beam-source mapping audit - separate source", "Heading2")
+        for mapping in record["mappings"]:
+            paragraph(mapping["native_id"] + " / " + mapping["disposition"], "Heading3")
+            for key, value in mapping.items():
+                paragraph(key + ": " + str(value))
+    else:
+        paragraph(
+            "Technical mapping audit: complete native and historical source-use records remain "
+            "in the companion machine-readable JSON and preserved R1 reference reports. "
+            "Their historical question identifiers are not new R2 owner decisions."
+        )
     for workbook in workbooks:
         paragraph("Workbook technical audit - " + workbook.stream.value, "Heading2")
         paragraph("Original workbook SHA256: " + WORKBOOK_SHA256)

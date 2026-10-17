@@ -2,15 +2,15 @@
   "stage": "SHEAR01-DIRECT-OR2-HYB1",
   "predecessor_candidate": "e61bce1954c559bc72bbfb7c9f283457af4ed63e",
   "predecessor_workflow_sha256": "94EE0A2CF56CB55B8D4AE8AC8E77E510FC5AA701C80A465AA0A50118ED453129",
-  "workflow_sha256": "EEDFE4F84ABD102B25ED9A63E906231A1818A7B11AAEA306ACA19DCD8350A324",
+  "workflow_sha256": "BF44A79B014C1E0CD8B5DF44E761CD7408E6D9793CD6F19C42A732EBBF28DF38",
   "accepted_pre_hyb1_sha256": [
     "94EE0A2CF56CB55B8D4AE8AC8E77E510FC5AA701C80A465AA0A50118ED453129",
     "FE5A0353EB98FACD79033E39CFA66E686E7CE4DBAD6E10F9D7F1B6B6DFAF2B9A",
     "921E49F1818CDD99C5F61B0CF8DD7EDA3A96F639782E45E1DA74FB61F6FE04C4"
   ],
-  "backend_tests": 9181,
+  "backend_tests": 9238,
   "frontend_tests": 1397,
-  "new_pdf_count_per_platform": 13,
+  "new_pdf_count_per_platform": 15,
   "protected_engineering_identities": 53,
   "historical_controls": 173,
   "public_method_activation": false,
@@ -25,5 +25,8 @@
   "direct_predecessor_workflow_sha256": "EAAF0C0E15BE78479986FF431CB404816895C61ACE8986A141C168DB034736C5",
   "direct_predecessor_backend_tests": 9114,
   "direct_source_workbook_sha256": "1dcfa90eb1e33101e350b41760b13f6d2f7f87225191e11145362c35f8121e83",
-  "revision": "HYB2-D1-R1; inactive Direct source and separated review status"
+  "revision": "HYB2-D1-R2; inactive owner COS and conditional actual-hole evidence",
+  "r1_predecessor_candidate": "8d15d67c0c884f0ac261e80a7e389fe574e40755",
+  "r1_predecessor_workflow_sha256": "EEDFE4F84ABD102B25ED9A63E906231A1818A7B11AAEA306ACA19DCD8350A324",
+  "r1_predecessor_backend_tests": 9181
 }

@@ -6,8 +6,14 @@ from hashlib import sha256
 from typing import cast
 
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
+from frp_master_connection.calculation.rhm_direct_corrections import (
+    ENDPOINT_QUESTION,
+    DirectCorrections,
+    execute_direct_corrections,
+)
 from frp_master_connection.calculation.rhm_direct_reference import (
     SOURCE_SHA256,
+    DirectCandidateStream,
     DirectGeometry,
     DirectSourceCase,
     execute_direct_source,
@@ -35,13 +41,14 @@ class DirectIntegration:
     supplemental: SupplementalSet
     records: tuple[tuple[str, DirectSourceCase], ...]
     withheld: tuple[tuple[str, str], ...]
+    corrections: tuple[tuple[str, DirectCorrections], ...] = ()
 
 
 def calculate_direct_references(
     actions: PairedActions,
     geometry: DirectGeometry,
     *,
-    stream: ReferenceStream = ReferenceStream.CORRECTED_REFERENCE,
+    stream: ReferenceStream | DirectCandidateStream = ReferenceStream.CORRECTED_REFERENCE,
 ) -> DirectIntegration:
     """Available LRFD checks remain independent when an ASD case cannot be mapped.
 
@@ -58,6 +65,7 @@ def calculate_direct_references(
     rows: list[ComparisonRow] = []
     records: list[tuple[str, DirectSourceCase]] = []
     withheld: list[tuple[str, str]] = []
+    corrections: list[tuple[str, DirectCorrections]] = []
     if not actions.asd:
         withheld.append(
             ("ASD", "Missing independently supplied ASD action set; no LRFD conversion.")
@@ -91,12 +99,21 @@ def calculate_direct_references(
             continue
         axial, shear = case.components[:2]
         # Completeness checked above; no missing component becomes zero.
-        book = execute_direct_source(
-            geometry=geometry,
-            axial=cast(PhysicalQuantity, axial),
-            shear=cast(PhysicalQuantity, shear),
-            stream=stream,
-        )
+        if isinstance(stream, DirectCandidateStream):
+            correction = execute_direct_corrections(
+                geometry=geometry,
+                axial=cast(PhysicalQuantity, axial),
+                shear=cast(PhysicalQuantity, shear),
+            )
+            corrections.append((case.case_id, correction))
+            book = correction.corrected
+        else:
+            book = execute_direct_source(
+                geometry=geometry,
+                axial=cast(PhysicalQuantity, axial),
+                shear=cast(PhysicalQuantity, shear),
+                stream=stream,
+            )
         records.append((case.case_id, book))
         rows.extend(
             ComparisonRow(
@@ -124,10 +141,17 @@ def calculate_direct_references(
             limitations=tuple(
                 case_id + ": Direct supplemental checks NOT EVALUATED. " + reason
                 for case_id, reason in withheld
+            )
+            + tuple(
+                case_id
+                + ": R2 COS and net-hole sensitivities remain reference-only. "
+                + ENDPOINT_QUESTION
+                for case_id, _ in corrections
             ),
         ),
         tuple(records),
         tuple(withheld),
+        tuple(corrections),
     )
 
 

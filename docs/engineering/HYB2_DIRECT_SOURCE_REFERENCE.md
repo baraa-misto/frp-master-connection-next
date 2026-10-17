@@ -1,5 +1,10 @@
 # Direct L4/I8 source and review status - HYB2-D1-R1
 
+R2 supplements this preserved R1 record: see `HYB2_DIRECT_R2_CORRECTED_LTV.md`.
+R2 confirms the Xb edge datum and adds a separate owner COS reference stream
+and actual-hole ledger. Earlier SIN formulas remain historical; physical
+effective fracture endpoints remain unreconciled. R2 governs current interpretation.
+
 ## Source and domain
 
 Source XLSX SHA256: 1dcfa90eb1e33101e350b41760b13f6d2f7f87225191e11145362c35f8121e83.

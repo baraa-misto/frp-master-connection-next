@@ -31,6 +31,7 @@ from frp_master_connection.application.hyb2_status import mechanism_name, presen
 from frp_master_connection.calculation.quantities import Unit
 from frp_master_connection.calculation.rhm_direct_reference import (
     SOURCE_SHA256,
+    DirectCandidateStream,
     DirectGeometry,
     brace_rotation,
     execute_direct_source,
@@ -391,3 +392,42 @@ def test_direct_source_binding_rejects_wrong_revision(field: str) -> None:
     actions = replace(actions, identity=replace(cast(Any, actions.identity), **{field: "WRONG"}))
     with pytest.raises(ValueError, match="exact geometry"):
         calculate_direct_references(actions, DirectGeometry())
+
+
+def test_r2_reference_stream_is_opt_in_and_preserves_status_authority() -> None:
+    actions = source_actions()
+    original = repr(actions)
+    old = calculate_direct_references(actions, DirectGeometry())
+    result = calculate_direct_references(
+        actions, DirectGeometry(), stream=DirectCandidateStream.CORRECTED_SOURCE_CANDIDATE
+    )
+    assert not old.corrections
+    assert old.records[0][1].stream is ReferenceStream.CORRECTED_REFERENCE
+    assert len(result.corrections) == 1
+    assert len(result.supplemental.rows) == 7
+    assert result.records[0][1] == result.corrections[0][1].corrected
+    assert all(r.reference_stream == "CORRECTED_SOURCE_CANDIDATE" for r in result.supplemental.rows)
+    assert repr(actions) == original
+    assert not result.withheld
+    review = assess_hybrid(actions, empty_native(actions), result.supplemental)
+    assert review.reference_outcome == "PASS"
+    assert review.numerical_outcome == "NOT_EVALUATED"
+    assert present_review(review).calculated_tone == "neutral"
+    assert not review.public_activation
+    assert not present_review(review).qualified_complete
+    assert result.corrections[0][1].endpoint_question in result.supplemental.limitations[0]
+    pdf_text = text(render_hyb1_review(review, actions, mapping_audit=False))
+    assert "Technical mapping audit" in pdf_text
+    assert "decision_id: Q" not in pdf_text
+    assert result.corrections[0][1].endpoint_question in pdf_text
+    assert len(review_record(review, actions)["direct_source_mappings"]) == len(REQUIRED_IDS)
+
+
+def test_r2_withheld_actions_do_not_execute_or_create_corrections() -> None:
+    actions = replace(source_actions(), asd=())
+    result = calculate_direct_references(
+        actions, DirectGeometry(), stream=DirectCandidateStream.CORRECTED_SOURCE_CANDIDATE
+    )
+    assert not result.records
+    assert not result.corrections
+    assert result.withheld
