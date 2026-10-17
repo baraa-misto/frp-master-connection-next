@@ -10,7 +10,8 @@ from __future__ import annotations
 import math
 import re
 from collections import Counter
-from typing import Any
+from dataclasses import replace
+from typing import Any, cast
 
 from reportlab.graphics.shapes import Circle, Drawing, Line, Polygon, String
 from reportlab.lib import colors
@@ -183,6 +184,15 @@ def component_legend(
     return component_tags(boxes, faces, bolts)[1]
 
 
+def native_component_legend(
+    boxes: list[BoxFigure], faces: list[FaceFigure], bolts: list[BoltPoint]
+) -> list[tuple[str, str]]:
+    """Direct figure keys retain exact native identities, including repeated parts."""
+    tags, rows = component_tags(boxes, faces, bolts)
+    identities = {tag: identity for identity, tag in tags.items()}
+    return [(tag, description + "; native ID: " + identities[tag]) for tag, description in rows]
+
+
 def _clip_polygon(
     points: list[tuple[float, float]], bounds: tuple[float, float, float, float]
 ) -> list[tuple[float, float]]:
@@ -222,6 +232,7 @@ def colored_view(
     action_reference: tuple[float, float, float] | None = None,
     action_label: str = "Applied force at native reference",
     hardware_detail: bool = False,
+    native_tags: bool = False,
 ) -> Drawing:
     """Render a fixed vector camera from native solids and hardware paths."""
 
@@ -346,7 +357,7 @@ def colored_view(
                 )
             )
             drawing.add(Line(x - radius, y, x + radius, y, strokeColor=color, strokeWidth=1.8))
-        if hardware_detail:
+        if hardware_detail and not native_tags:
             x, y = paper(bolt.center)
             drawing.add(
                 String(
@@ -356,6 +367,39 @@ def colored_view(
                     fontName="ReportVeraBold",
                     fontSize=8,
                     fillColor=dark,
+                )
+            )
+    if native_tags:
+        # Leaders point at a known native part center, never at an invented
+        # engineering station. Repeated parts share the exact identity/legend.
+        anchors: dict[str, tuple[float, float, float]] = {}
+        native_shapes: list[BoxFigure | FaceFigure] = [*boxes, *faces]
+        for shape in native_shapes:
+            anchors.setdefault(
+                shape.identity,
+                cast(
+                    tuple[float, float, float],
+                    tuple(
+                        sum(point[axis] for point in shape.vertices) / len(shape.vertices)
+                        for axis in range(3)
+                    ),
+                ),
+            )
+        anchors.update((bolt.identity, bolt.center) for bolt in bolts)
+        for index, (identity, tag) in enumerate(tags.items()):
+            x, y = paper(anchors[identity])
+            label_y = height - 34 - index * 14
+            drawing.add(
+                Line(22, label_y + 2, x, y, strokeColor=colors.HexColor("#647887"), strokeWidth=0.5)
+            )
+            drawing.add(
+                String(
+                    5,
+                    label_y,
+                    tag,
+                    fontName="ReportVeraBold",
+                    fontSize=7,
+                    fillColor=colors.HexColor("#153949"),
                 )
             )
     if action_force is not None and action_reference is not None:
@@ -404,6 +448,45 @@ def colored_view(
 
 def multirow_physical_geometry(visual: dict[str, Any]) -> tuple[list[BoxFigure], list[BoltPoint]]:
     """Adapt the native 2-D plate/row visualization to the fixed report cameras."""
+
+    physical = visual.get("physical_connection")
+    physical_bolts = visual.get("physical_bolts")
+    layers = visual.get("layers")
+    if (
+        isinstance(physical, dict)
+        and isinstance(physical_bolts, list)
+        and isinstance(layers, list)
+        and len(layers) == 2
+        and {
+            str(component.get("section_family"))
+            for component in physical.get("components", [])
+            if isinstance(component, dict)
+        }
+        == {"ANGLE", "WIDE_FLANGE"}
+    ):
+        from frp_master_connection.reporting.geometry import canonical_bolt_points, canonical_boxes
+
+        boxes = canonical_boxes({"primitives": physical.get("primitives", [])})
+        bolts: list[BoltPoint] = []
+        for item in physical_bolts:
+            if not isinstance(item, dict) or not isinstance(item.get("display"), dict):
+                continue
+            display = item["display"]
+            washers = display.get("washers", [])
+            washer = washers[0] if isinstance(washers, list) and washers else {}
+            diameter = washer.get("outside_diameter") if isinstance(washer, dict) else None
+            for marker in canonical_bolt_points({"bolt": display}):
+                bolts.append(
+                    replace(
+                        marker,
+                        washer_diameter=float(diameter) if diameter is not None else None,
+                        row=str(item.get("row_id")),
+                        line=str(item.get("bolt_line_id")),
+                    )
+                )
+        if not boxes or len(bolts) != len(physical_bolts):
+            raise ValueError("Direct report requires every physical member and bolt path")
+        return boxes, bolts
 
     x0, x1, y0, y1 = (float(value) for value in visual["boundary"])
     thickness = sum(float(layer["thickness"]["value"]) for layer in visual["layers"])

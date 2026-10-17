@@ -269,8 +269,8 @@ export function VisualizationPanel({
   onAppliedActionValueChange,
   actionSourceLabel = "Member",
   selectedBoltChecks = [],
-  title = "Brace-to-column connection",
-  contactSelectionLabel = "W Column Flange contact face",
+  title = "Connection model",
+  contactSelectionLabel = "Selected supporting flange contact face",
   interfaceHighlight = null,
 }: VisualizationPanelProps) {
   const [view, setView] = useState<SceneViewId>("3D");
@@ -382,10 +382,9 @@ export function VisualizationPanel({
     <section className="visualization-panel" aria-labelledby="visualization-title">
       <div className="viewer-title-row">
         <div>
-          <p className="eyebrow">Canonical connection view</p>
+          <p className="eyebrow">Connection view</p>
           <h3 id="visualization-title">{title}</h3>
         </div>
-        <span className="schema-chip">Snapshot {model.snapshotVersion}</span>
       </div>
       <p id="canvas-description" className="sr-description">
         Solid standard-shape members, selected bolt and round holes, with optional
@@ -587,7 +586,7 @@ export function VisualizationPanel({
         </div>
       </div>
 
-      <div className="inspector-grid">
+      <details className="viewer-engineering-diagnostics" open={selection.kind === "BOLT" || undefined}><summary>Advanced Engineering Diagnostics</summary><span className="schema-chip">Snapshot {model.snapshotVersion}</span><div className="inspector-grid">
         {selectedBolt === null ? null : (
           <details open>
             <summary>Selected-bolt inspector</summary>
@@ -671,7 +670,7 @@ export function VisualizationPanel({
             ))}
           </ul>
         </details>
-      </div>
+      </div></details>
     </section>
   );
 }

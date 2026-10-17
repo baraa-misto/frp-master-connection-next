@@ -6,6 +6,7 @@ import type {
   VisualizationSnapshot,
 } from "../api/contracts";
 import type { MultiRowVisualization } from "../api/multirowContracts";
+import { directSupportPresentation } from "./directSupportPresentation";
 import type { FullThroughBoltTrace, TeeVisualization } from "../api/teeContracts";
 import {
   buildRegionEmbeddedMaterialAxisPresentation,
@@ -712,7 +713,8 @@ export function buildSingleBoltSceneModel(
 }
 
 export function buildMultiRowSceneModel(
-  snapshot: MultiRowVisualization,
+  snapshot: Pick<MultiRowVisualization, "physical_connection" | "physical_bolts" | "connection_demand" | "automatic_bolt_demands">,
+  supportEndAuthority?: import("../api/multirowContracts").DirectSupportEndAuthority,
 ): SingleBoltSceneModel {
   const physicalConnection = snapshot.physical_connection;
   if (physicalConnection === null || physicalConnection === undefined) {
@@ -721,7 +723,7 @@ export function buildMultiRowSceneModel(
   if (snapshot.physical_bolts === undefined || snapshot.physical_bolts.length === 0) {
     throw new Error("Multi-row visualization lacks canonical physical bolt placements.");
   }
-  const base = buildSingleBoltSceneModel(physicalConnection);
+  const base = buildSingleBoltSceneModel(supportEndAuthority === undefined ? physicalConnection : directSupportPresentation(physicalConnection, supportEndAuthority));
   const cylinders = snapshot.physical_bolts.flatMap((value) =>
     cylindersForBolt(
       value.display,

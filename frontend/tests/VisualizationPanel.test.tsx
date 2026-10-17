@@ -221,7 +221,7 @@ describe("Stage 2.3R visualization controls", () => {
       resetNonce: 2,
       visibility: { materialAxes: false, memberAxes: "SELECTED" },
     });
-    expect(screen.getByLabelText("Selected object")).toHaveTextContent("W Column Flange contact face");
+    expect(screen.getByLabelText("Selected object")).toHaveTextContent("Selected supporting flange contact face");
   });
 
   it("surfaces server-returned property directions and angles without hiding exact values", () => {
