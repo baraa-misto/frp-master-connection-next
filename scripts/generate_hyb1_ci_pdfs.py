@@ -46,6 +46,9 @@ from frp_master_connection.calculation.rhm_direct_reference import (
 from frp_master_connection.reporting.rhm_direct_review import render_direct_reference
 from frp_master_connection.calculation.rhm_direct_reference import DirectCandidateStream
 from frp_master_connection.reporting.rhm_direct_correction_review import render_direct_corrections
+from frp_master_connection.calculation.rhm_direct_r3 import R3Geometry, execute_r3_review, geometry_digest
+from frp_master_connection.application.hyb2_direct_r3 import calculate_r3_references
+from frp_master_connection.reporting.rhm_direct_r3_review import render_r3
 from tests.api.test_direct_two_bolt import sab2_body
 from tests.hyb1_fixtures import case, complete_fixture, paired, q
 
@@ -237,12 +240,38 @@ def main() -> None:
                         "scope":"R2_REFERENCE_ONLY_PHYSICAL_APPLICABILITY_NOT_RECONCILED",
                         "public_activation":False,"actual_direct_coverage":[]})
         print(name+": "+str(len(reader.pages))+" pages",flush=True)
+    r3g=R3Geometry()
+    r3action=replace(action,frame="DIRECT_P_SKETCH_V_CENTROID")
+    r3identity=replace(identity,geometry=geometry_digest(r3g))
+    r3actions=replace(actions,identity=r3identity,asd=(r3action,))
+    r3integration=calculate_r3_references(r3actions,r3g)
+    r3native=replace(native,identity=r3identity,paired_digest=r3actions.digest)
+    r3review=assess_hybrid(r3actions,r3native,r3integration.supplemental)
+    r3bundle=execute_r3_review(axial=r3action.components[0],shear=r3action.components[1])
+    for name,pdf,data in (
+        ("direct-r3-confirmed-geometry",render_r3(r3bundle),asdict(r3bundle)),
+        ("direct-r3-exact-technical-appendix",render_r3(r3bundle,technical=True),asdict(r3bundle)),
+        ("direct-r3-hybrid-reference-incomplete",render_hyb1_review(r3review,r3actions,mapping_audit=False),
+         review_record(r3review,r3actions)),
+    ):
+        reader=PdfReader(io.BytesIO(pdf))
+        text=" ".join(" ".join(p.extract_text() or "" for p in reader.pages).split())
+        assert "Reference calculations - not an adopted design" in text
+        assert not r3bundle.current.public_activation and r3bundle.current.actual_coverage_credited==()
+        (output/(name+".pdf")).write_bytes(pdf)
+        (output/(name+".json")).write_text(json.dumps(data,indent=2,default=str),encoding="utf-8")
+        (output/(name+".txt")).write_text(text,encoding="utf-8")
+        records.append({"file":name+".pdf","sha256":sha256(pdf).hexdigest(),"pages":len(reader.pages),
+                        "scope":"R3_OWNER_GEOMETRY_RECONCILED_REFERENCE_ARITHMETIC_ONLY",
+                        "geometry_status":r3bundle.current.geometry_status,
+                        "public_activation":False,"actual_direct_coverage":[]})
+        print(name+": "+str(len(reader.pages))+" pages",flush=True)
     metadata={"candidate_sha":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),
               "platform":platform.platform(),"report_count":len(records),"reports":records,
               "native_snapshot_preservation":True,"runtime_interference":False,
               "method_adoption":"PENDING_OWNER_REVIEW","qualification_installed":False}
     (output/"HYB1_PLATFORM_QA.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
-    assert len(records)==15
+    assert len(records)==18
 
 
 if __name__=="__main__":
