@@ -28,6 +28,10 @@ def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
         "rhm_direct_r3.py",
         "hyb2_direct_r3.py",
         "rhm_direct_r3_review.py",
+        "hyb2_d2.py",
+        "hyb2_d2_registry.py",
+        "hyb2_d2_service.py",
+        "hyb2_d2_review.py",
     }
     for path in root.rglob("*.py"):
         if path.name not in new_names:
@@ -36,6 +40,7 @@ def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
             assert "rhm_reference" not in source, str(path)
             assert "rhm_direct_r3" not in source, str(path)
             assert "hyb2_direct_r3" not in source, str(path)
+            assert "hyb2_d2" not in source, str(path)
     frontend_files = tuple((root.parents[2] / "frontend/src").rglob("*.tsx"))
     assert frontend_files
     for path in frontend_files:

@@ -266,12 +266,14 @@ def main() -> None:
                         "geometry_status":r3bundle.current.geometry_status,
                         "public_activation":False,"actual_direct_coverage":[]})
         print(name+": "+str(len(reader.pages))+" pages",flush=True)
+    from generate_hyb2_d2_ci_pdfs import generate_d2
+    records.extend(generate_d2(output))
     metadata={"candidate_sha":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),
               "platform":platform.platform(),"report_count":len(records),"reports":records,
               "native_snapshot_preservation":True,"runtime_interference":False,
               "method_adoption":"PENDING_OWNER_REVIEW","qualification_installed":False}
     (output/"HYB1_PLATFORM_QA.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
-    assert len(records)==18
+    assert len(records)==27
 
 
 if __name__=="__main__":
