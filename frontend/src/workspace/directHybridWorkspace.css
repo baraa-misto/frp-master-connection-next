@@ -1,0 +1,20 @@
+.hybrid-workspace .properties-sidebar { min-width: 0; }
+.hybrid-quantity { display: flex; align-items: center; gap: .5rem; }
+.hybrid-quantity input { min-width: 0; width: 100%; }
+.hybrid-case { border: 1px solid #c8d3df; padding: .75rem; margin: .75rem 0; min-width: 0; }
+.hybrid-example { padding: 1rem; background: #eef4fa; border-radius: .5rem; }
+.hybrid-summary { border: 1px solid #ccd8e3; border-left: 5px solid #64748b; background: #f7fafc; padding: 1rem; border-radius: .5rem; }
+.hybrid-green { border-left-color: #177a48; }
+.hybrid-green h3 { color: #146c3e; }
+.hybrid-red { border-left-color: #bf2734; }
+.hybrid-red h3 { color: #a81d2b; }
+.hybrid-summary p { overflow-wrap: anywhere; }
+.hybrid-exports { display: flex; flex-wrap: wrap; gap: .5rem; }
+.hybrid-table-scroll { overflow-x: auto; max-width: 100%; }
+.hybrid-table-scroll table { width: 100%; border-collapse: collapse; }
+.hybrid-table-scroll td, .hybrid-table-scroll th { padding: .6rem; border-bottom: 1px solid #dbe2e9; text-align: left; overflow-wrap: anywhere; max-width: 24rem; }
+.hybrid-workspace pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 25rem; overflow: auto; }
+.hybrid-workspace .workspace-banner { flex-wrap: wrap; }
+@media (max-width: 760px) { .hybrid-workspace .workspace-body { display: flex; flex-direction: column; } .hybrid-workspace .properties-sidebar { width: 100%; max-width: 100%; } .hybrid-workspace .connection-view-column { min-width: 0; width: 100%; } }
+
+.hybrid-detail-failure { color: #8b1d25; background: #fff1f2; border: 1px solid #d8868d; border-radius: .3rem; padding: .75rem; font-weight: 600; }

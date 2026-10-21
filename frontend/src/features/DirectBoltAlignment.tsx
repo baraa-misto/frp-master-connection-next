@@ -1,9 +1,10 @@
 import { useId } from "react";
 import type { Alignment } from "../api/directTwoBolt";
 
-export function DirectBoltAlignment({ alignment, onChange }: {
+export function DirectBoltAlignment({ alignment, onChange, calculationScope }: {
   alignment: Alignment;
   onChange: (alignment: Alignment) => void;
+  calculationScope?: string;
 }) {
   const id = useId();
   return <fieldset className="direct-bolt-alignment" aria-describedby={id}>
@@ -13,6 +14,6 @@ export function DirectBoltAlignment({ alignment, onChange }: {
       <label><input type="radio" name={id} value="SUPPORT" checked={alignment === "SUPPORT"} onChange={() => { onChange("SUPPORT"); }} /><span>Along supporting member</span></label>
     </div>
     <p id={id} aria-label="Help: Bolt alignment">Alignment joins the two bolt centers. Bolt shafts remain normal to the selected interface.</p>
-    <p>{alignment === "BRACE" ? "Existing brace calculations require the current layout to satisfy the supported method guards." : "Geometry and constructability only. Structural design is not evaluated."}</p>
+    <p>{calculationScope ?? (alignment === "BRACE" ? "Existing brace calculations require the current layout to satisfy the supported method guards." : "Geometry and constructability only. Structural design is not evaluated.")}</p>
   </fieldset>;
 }

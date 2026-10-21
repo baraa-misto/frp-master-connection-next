@@ -42,7 +42,10 @@ def package_blocks(raw: bytes) -> dict[str, bytes]:
 
 
 def pre_g1_lock(raw: bytes, manifest: bytes | None = None) -> bytes:
+    from tests.hybrid_workflow_governance import pre_d3_backend_dependency
+
     governed = authority(manifest)["security_successor"]
+    raw = pre_d3_backend_dependency(raw)
     raw = raw.replace(b"\r\n", b"\n")
     assert digest(raw) == LOCK_SHA256, "F8_G1_LOCK_IDENTITY_INVALID"
     blocks = package_blocks(raw)

@@ -6,8 +6,9 @@ import { DirectQualification } from "../features/DirectQualification";
 import { DirectDesignStatus } from "../features/DirectDesignStatus";
 import { DirectTwoBoltGeometry } from "../features/DirectTwoBoltGeometry";
 import { DirectBoltAlignment } from "../features/DirectBoltAlignment";
+import { DirectHybridWorkspace } from "./DirectHybridWorkspace";
 import type { CurrentTwoBolt } from "../features/DirectTwoBoltGeometry";
-import { designTwoBolt, INITIAL_TWO_BOLT, editedTwoBolt } from "../api/directTwoBolt";
+import { designTwoBolt, INITIAL_TWO_BOLT, editedTwoBolt, twoBoltRequest } from "../api/directTwoBolt";
 import type { TwoBoltOptions } from "../api/directTwoBolt";
 import { currentReportSnapshot, invalidateReportSnapshot, subscribeReportSession } from "../state/reportSession";
 import { currentSignedDirectReport, directViewerUnity } from "../features/directPresentation";
@@ -791,6 +792,7 @@ export function multirowValidationMessage(
 }
 
 export function SingleBoltEngineeringWorkspace() {
+  const [hybridMode, setHybridMode] = useState(() => new URLSearchParams(window.location.search).get("workspace") === "direct-hybrid");
   const mat1 = useMAT1();
   const [request, setRequest] = useState<SingleBoltEvaluationRequest>(initialRequest);
   const directF1Family = isDirectFRPFamily(request) && workspaceSupports("multi-row", "force_only_shear");
@@ -1428,12 +1430,15 @@ export function SingleBoltEngineeringWorkspace() {
           utilization: formatUtilization(check.utilization),
         }));
 
+  if (hybridMode && twoBoltAvailable) return <DirectHybridWorkspace initialNative={twoBoltRequest(multirowRequest, twoBoltOptions, String(multirowRevision))} onNative={() => { setHybridMode(false); }} />;
+
   return (
     <ConnectionWorkspaceShell className="direct-connection-workspace" family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} {...(geometryOnlyReason === undefined ? {} : { reportBlockedReason: geometryOnlyReason })} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
         <div><p className="eyebrow">Shear · Brace/beam connection — Direct</p><h2 id="workspace-scope-title">{DIRECT_SHAPE_CAPABILITIES.current_variant}</h2></div>
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>
         <ConnectionWorkspaceSidebar ariaLabel="Connection properties">
+          {twoBoltAvailable ? <button type="button" className="primary-button" onClick={() => { setHybridMode(true); }}>Hybrid — ASCE + RHM</button> : null}
           <SidebarGroup title="General / Case" summary={request.joint_assembly.unit_system} defaultOpen>
             <div className="benchmark-buttons"><button type="button" onClick={() => { loadDirectExample("US_CUSTOMARY"); }}>Load Direct example — U.S.</button><button type="button" onClick={() => { loadDirectExample("SI"); }}>Load Direct example — SI</button></div>
             <details><summary>Advanced Engineering Diagnostics · regression fixtures</summary><p>The historical J1 regression fixture may not satisfy current Direct physical-validation rules. It is not a qualified design.</p><div className="benchmark-buttons"><button type="button" onClick={() => { loadBenchmark("US_CUSTOMARY"); }}>Legacy J1 regression fixture — U.S.</button><button type="button" onClick={() => { loadBenchmark("SI"); }}>Legacy J1 regression fixture — SI</button></div></details>

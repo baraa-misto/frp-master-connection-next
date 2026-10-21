@@ -7,10 +7,11 @@ from tests.direct_p1_governance import authority, pre_p1_workflow
 from tests.direct_sab2_governance import authority as sab2_authority
 from tests.direct_sab2_governance import pre_sab2_workflow
 from tests.hyb1_governance import authority as hyb1_authority
+from tests.hybrid_workflow_governance import pre_d3_workflow
 
 
 def test_p1_reconstructs_the_exact_predecessor_and_preserves_historical_chain() -> None:
-    raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
+    raw = pre_d3_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())
     previous = pre_p1_workflow(raw)
     assert digest(previous) == sab2_authority()["workflow_sha256"]
     assert pre_sab2_workflow(previous) == pre_sab2_workflow(raw)
@@ -24,7 +25,7 @@ def test_p1_reconstructs_the_exact_predecessor_and_preserves_historical_chain() 
 
 @pytest.mark.parametrize("mutation", ["count", "p1-pdf", "sab2-pdf", "historical", "security"])
 def test_p1_rejects_new_count_or_report_and_historical_gate_drift(mutation: str) -> None:
-    raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
+    raw = pre_d3_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())
     old, new = {
         "count": (
             f"--expected-tests {hyb1_authority()['backend_tests']}".encode(),

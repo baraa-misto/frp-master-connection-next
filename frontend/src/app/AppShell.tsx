@@ -6,7 +6,7 @@ import { ConnectorMaterialReadiness } from "../features/ConnectorMaterialReadine
 import { WorkspacePreview } from "../views/WorkspacePreview";
 
 export function AppShell() {
-  const [selectedCategory, setSelectedCategory] = useState<PrimaryCategoryId | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<PrimaryCategoryId | null>(() => new URLSearchParams(window.location.search).get("workspace") === "direct-hybrid" ? "shear" : null);
 
   return (
     <div className="application-frame">

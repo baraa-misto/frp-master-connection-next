@@ -75,3 +75,11 @@ records and the direct-beam workbook remain. The controlled successor preserves 
 original HYB1 workflow reconstruction and adds 29 tests (9,114 backend total).
 No existing public module imports these new reference/report modules. Reinforcement,
 optional attachment and both bolt-alignment mappings retain their separate domains.
+
+## D3-P1 candidate workflow successor
+
+The owner's later D3-P1 order authorizes a real current-input candidate workflow.
+See [HYB2_D3_P1_LIVE_WORKFLOW.md](HYB2_D3_P1_LIVE_WORKFLOW.md) for its additive
+entrypoint, authenticated lifecycle and separate workflow/structural-adoption
+permissions. The inactive-access statements above describe the historical HYB1/D2
+stage. Their engineering limitations and original report evidence remain preserved.

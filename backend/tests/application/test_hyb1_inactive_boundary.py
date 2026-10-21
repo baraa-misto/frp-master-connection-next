@@ -12,6 +12,10 @@ from tests.hyb1_fixtures import paired, q
 def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
     root = Path(__file__).parents[2] / "src/frp_master_connection"
     new_names = {
+        # D3-P1 explicitly authorizes live workflow access, not structural adoption.
+        "hybrid_workflow.py",
+        "hybrid_store.py",
+        "hybrid_app.py",
         "hyb1_contract.py",
         "hyb1_mapping.py",
         "hyb1_review.py",

@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "backend"))
 from tests.direct_f8_g1_governance import authority, f7_lock, pre_g1_bootstrap, pre_g1_workflow
 
 from tests.direct_f9_governance import pre_f9_workflow
+from verify_hybrid_security_compatibility import verify as verify_security_compatibility
 
 
 def main() -> None:
@@ -45,9 +46,11 @@ def main() -> None:
                 raise
             time.sleep(2 * (attempt + 1))
     assert response is not None and len(response["results"]) == len(packages)
+    compatibility = verify_security_compatibility()
     findings = [{"package": n, "version": v, "advisories": r["vulns"]} for (n, v), r in zip(packages, response["results"], strict=True) if r.get("vulns")]
     evidence = {"queried_at_utc": datetime.now(timezone.utc).isoformat(), "source": "https://api.osv.dev/v1/querybatch", "installed_versions": installed, "pip_authorized_pin": "26.2.0", "pip_published_metadata": "26.2", "pip_version_identity": "PEP440 zero-patch equality; exact hash-locked release", "packages": [{"name": n, "version": v} for n, v in packages], "result": response, "findings": findings, "status": "PASS" if not findings else "UNRESOLVED", "governance": "Exact reverse security successors and F8 additions restore accepted F7 lock", "direct_added": authority()["direct_added"], "transitive_added": authority()["transitive_added"]}
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    evidence["HYB2_D3_approved_backend_security_compatibility"] = compatibility
     args.output.write_text(json.dumps(evidence, indent=2), encoding="utf-8")
     print(json.dumps({"installed_versions": installed, "authorized_pip": "26.2.0", "all_locked_packages": len(packages), "unresolved_findings": len(findings), "status": evidence["status"]}, indent=2), flush=True)
     assert not findings, "STOP: full backend dependency audit is not clean"

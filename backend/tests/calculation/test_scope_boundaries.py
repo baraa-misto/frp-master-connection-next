@@ -12,6 +12,7 @@ from pathlib import Path, PurePosixPath
 import pytest
 
 from tests.calculation.stage_4_5_scope_authority import frozen_stage45_entries
+from tests.hybrid_workflow_governance import pre_d3_dependency
 
 STAGE_2_3_FROZEN_FRONTEND_SRC_TREE = "df664801ea31a5a33e582e886dc787bf4f9be8aa"
 STAGE_2_4C_REJECTED_INTERIM_FRONTEND_SRC_TREE = "cf71cf158afd3525aba0849e207746b6a6842f73"
@@ -340,6 +341,7 @@ def _assert_frozen_dependency_bytes(path: str, raw: bytes) -> None:
 
 
 def _reverse_source_map_g1(raw: bytes) -> bytes:
+    raw = pre_d3_dependency("frontend/package-lock.json", raw)
     assert hashlib.sha256(raw).hexdigest().upper() == _SOURCE_MAP_G1_LOCK_SHA256, (
         "source-map-js successor SHA-256"
     )
@@ -391,6 +393,7 @@ def _reverse_or1_brace_expansion(raw: bytes) -> bytes:
 
 
 def _restore_frozen_dependency_bytes(path: str, raw: bytes) -> bytes:
+    raw = pre_d3_dependency(path, raw)
     digest = hashlib.sha256(raw).hexdigest().upper()
     if path == "frontend/package-lock.json" and digest == _SOURCE_MAP_G1_LOCK_SHA256:
         raw = _reverse_source_map_g1(raw)
@@ -436,6 +439,7 @@ def _assert_security_dependencies(repository_root: Path) -> None:
     for path in _FROZEN_DEPENDENCIES:
         # Git-aware text checkout normalization; the authoritative pins are LF blobs.
         raw = (repository_root / path).read_text(encoding="utf-8").encode()
+        raw = pre_d3_dependency(path, raw)
         expected = (
             _SOURCE_MAP_G1_LOCK_SHA256
             if path == "frontend/package-lock.json"
@@ -1850,6 +1854,7 @@ def test_g1_brace_successor_rejects_other_byte_changes(mutation: str) -> None:
 def test_source_map_g1_exact_delta_and_previous_bytes() -> None:
     root = Path(__file__).parents[3]
     raw = (root / "frontend/package-lock.json").read_text(encoding="utf-8").encode()
+    raw = pre_d3_dependency("frontend/package-lock.json", raw)
     prior = _reverse_source_map_g1(raw)
     assert prior.replace(_SOURCE_MAP_G1_PREDECESSOR_BLOCK, _SOURCE_MAP_G1_SUCCESSOR_BLOCK, 1) == raw
     current, predecessor = json.loads(raw), json.loads(prior)
@@ -1907,6 +1912,7 @@ def test_source_map_g1_rejects_every_unauthorized_byte_change(mutation: str) -> 
         .read_text(encoding="utf-8")
         .encode()
     )
+    raw = pre_d3_dependency("frontend/package-lock.json", raw)
     block = _SOURCE_MAP_G1_SUCCESSOR_BLOCK
     wrong = {
         "1.2.3": block.replace(b'"version": "1.2.2"', b'"version": "1.2.3"', 1),

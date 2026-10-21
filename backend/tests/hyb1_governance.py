@@ -4,6 +4,7 @@ import json
 from typing import Any, cast
 
 from tests.direct_f8_g1_governance import ROOT, digest
+from tests.hybrid_workflow_governance import pre_d3_workflow
 
 MANIFEST_SHA256 = "AD7168318A24C513F86F949264427F478253CCA09044B2D50966C77AB47B6BBE"
 
@@ -19,7 +20,7 @@ def pre_hyb1_workflow(
     raw: bytes, *, error_message: str = "HYB1_WORKFLOW_IDENTITY_INVALID"
 ) -> bytes:
     governed = authority()
-    raw = raw.replace(b"\r\n", b"\n")
+    raw = pre_d3_workflow(raw, error_message=error_message)
     if digest(raw) in governed["accepted_pre_hyb1_sha256"]:
         return raw
     versions = {
