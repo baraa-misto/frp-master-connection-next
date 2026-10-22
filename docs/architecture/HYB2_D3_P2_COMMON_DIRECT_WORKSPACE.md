@@ -71,6 +71,9 @@ Material axes (LW/CW/TT) is visible beside the camera controls without opening t
 overlay menu. The established labels, colors and TT marker legend are reused in
 3D and all orthographic views. Its visibility survives current-model replacement;
 changing an overlay does not execute engineering or invalidate signed results.
+Solid/X-ray mode changes renew only the two mesh material types. This prevents a
+shader compiled as opaque from painting over the axes after a mode transition;
+geometry, camera state and the demand-driven rendering loop are retained.
 
 ## Results, currentness and reports
 
