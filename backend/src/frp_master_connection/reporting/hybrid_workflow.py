@@ -9,7 +9,8 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Flowable, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
-from frp_master_connection.reporting.hyb2_d2_review import number, path_drawing, render_d2
+from frp_master_connection.reporting.hyb2_d2_review import path_drawing, render_d2
+from frp_master_connection.reporting.hybrid_labels import label, utilization
 from frp_master_connection.reporting.pdf import (
     ReportOptions,
     _font_setup,
@@ -63,15 +64,15 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
             "RHM calculations are reference/conditional method calculations; "
             "structural applicability is not established."
         )
-    p("Analytical coverage: " + a["coverage_state"] + ". " + record["coverage_summary"])
+    p("Analytical coverage: " + label(a["coverage_state"]) + ". " + record["coverage_summary"])
     p(
         "Qualification: "
-        + a["qualification"]
-        + ". Native F8/F9: "
-        + a["native_status"]
+        + label(a["qualification"])
+        + ". Native completeness: "
+        + label(a["native_status"])
         + " (unchanged)."
     )
-    p("Physical fit: " + a["fit"]["state"] + ". " + a["fit"]["action"])
+    p("Physical fit: " + label(a["fit"]["state"]) + ". " + a["fit"]["action"])
     for check in record["detailing_failures"]:
         p(
             "DETAILING REQUIREMENT FAIL: "
@@ -93,21 +94,38 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
     p("Current inputs and methods", "Heading2")
     p("Revision " + str(record["revision"]) + "; fingerprint " + record["fingerprint"])
     p("Data provenance: " + record["data_provenance"])
-    p("Domain: " + a["source_domain"])
+    p("Domain: " + label(a["source_domain"]))
     q = record["inputs"]
     if q["geometry"] is not None:
         table(
             [["Geometry input", "Current declared value"]]
             + [
-                [k, (v["value"] + " " + v["unit"]) if isinstance(v, dict) else v]
+                [label(k), (v["value"] + " " + v["unit"]) if isinstance(v, dict) else v]
                 for k, v in q["geometry"].items()
             ],
             [200, 310],
         )
     else:
         native = q["native_request"]["legacy"]["physical_connection"]["joint_assembly"]
-        p("Native member geometry: " + str([(m["id"], m["section"]) for m in native["members"]]))
-        p("Native original member-end actions: " + str(native["member_end_actions"]))
+        table(
+            [["Member / section input", "Current declared value"]]
+            + [
+                [
+                    label(m["id"]) + " - " + label(k),
+                    (v["value"] + " " + v["unit"]) if isinstance(v, dict) else label(v),
+                ]
+                for m in native["members"]
+                for k, v in m["section"].items()
+            ]
+            + [
+                [label(k), v["value"] + " " + v["unit"]]
+                for k, v in q["native_request"]["legacy"].items()
+                if isinstance(v, dict) and "value" in v
+            ],
+            [250, 260],
+        )
+        if technical:
+            p("Native original member-end actions: " + str(native["member_end_actions"]))
     p(
         "Selected alignment: "
         + q["alignment"]
@@ -115,7 +133,7 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
     )
     p(
         "Supplemental profile: "
-        + q["source_profile"]
+        + label(q["source_profile"])
         + (
             "; source polyester 100 F, listed strengths/SF4, Ts=.85 and "
             "repeated Ts in D31/D221. Source 316SS included-thread shear 12.75"
@@ -170,29 +188,38 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
         + [
             [
                 r["basis"] + " / " + r["case_id"],
-                r["mechanism"] + " / " + r["evidence_scope"],
-                number(r["ratio"]) + " / " + r["outcome"],
+                label(r["mechanism"]) + " / " + label(r["evidence_scope"]),
+                utilization(r["ratio"], technical=technical) + " / " + r["outcome"],
             ]
             for r in a["comparisons"]
         ],
         [115, 270, 125],
     )
-    for label, key in [("Governing LRFD", "governing_lrfd"), ("Governing ASD", "governing_asd")]:
+    for governing_label, key in [
+        ("Governing LRFD", "governing_lrfd"),
+        ("Governing ASD", "governing_asd"),
+    ]:
         row = a[key]
         p(
-            label + ": NOT EVALUATED"
+            governing_label + ": NOT EVALUATED"
             if row is None
-            else label
+            else governing_label
             + ": "
-            + row["mechanism"]
+            + label(row["mechanism"])
             + " / "
             + row["case_id"]
             + " / UR "
-            + number(row["ratio"])
+            + utilization(row["ratio"], technical=technical)
         )
         if row is not None:
-            p("Governing equation: " + row["equation"])
-            p("Current calculation trace: " + row["resistance_trace"])
+            if technical:
+                p("Governing equation: " + row["equation"])
+                p("Current calculation trace: " + row["resistance_trace"])
+            else:
+                p(
+                    "Exact governing substitutions and intermediate values are retained "
+                    "in Technical Audit and the current calculation JSON."
+                )
     p("Supplied independent action sets", "Heading2")
     for basis in ["lrfd", "asd"]:
         for case in record["actions"][basis]:

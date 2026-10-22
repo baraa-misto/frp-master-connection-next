@@ -307,8 +307,11 @@ def test_p25_27_positive_pdf_and_stale_handle_without_recalculation(
             ).split()
         )
         assert "Hybrid Connection Calculation Report" in text
-        assert "0.1008921362393273" in text
-        assert "NOT_ESTABLISHED_SECTION_2_3_2" in text
+        assert "0.101" in text
+        assert "Actual vertical bolt center spacing" in text
+        assert "Brace edge to bolt-column centerline (Xb)" in text
+        assert "Current calculation trace:" not in text
+        assert "Not established; Section 2.3.2 remains open" in text
         assert "field-use history, not physical load-test evidence" in text
         assert client.get(BASE + "/reports/" + handle + "?technical=true").status_code == 200
         assert (

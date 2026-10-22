@@ -792,7 +792,13 @@ export function multirowValidationMessage(
 }
 
 export function SingleBoltEngineeringWorkspace() {
-  const [hybridMode, setHybridMode] = useState(() => new URLSearchParams(window.location.search).get("workspace") === "direct-hybrid");
+  return <NativeDirectLayoutWorkspace unifiedTwoBolt />;
+}
+
+// Retain the native layout renderer for supported one-row/multi-row layouts and
+// independent historical compatibility verification. Every public two-bolt entry
+// delegates to the common Direct workspace, irrespective of URL or load basis.
+export function NativeDirectLayoutWorkspace({ unifiedTwoBolt = false }: { readonly unifiedTwoBolt?: boolean } = {}) {
   const mat1 = useMAT1();
   const [request, setRequest] = useState<SingleBoltEvaluationRequest>(initialRequest);
   const directF1Family = isDirectFRPFamily(request) && workspaceSupports("multi-row", "force_only_shear");
@@ -870,8 +876,8 @@ export function SingleBoltEngineeringWorkspace() {
     request: multirowRequest,
     revision: multirowRevision,
     immediate: false,
-    validationMessage: supportEndValidation(supportEnds) ?? multirowValidationMessage(request, groupState, demandMode),
-  }), [demandMode, groupState, multirowRequest, multirowRevision, request, supportEnds]);
+    validationMessage: unifiedTwoBolt && twoBoltAvailable ? "The common Direct workspace owns the current connection preview." : supportEndValidation(supportEnds) ?? multirowValidationMessage(request, groupState, demandMode),
+  }), [demandMode, groupState, multirowRequest, multirowRevision, request, supportEnds, unifiedTwoBolt, twoBoltAvailable]);
   const multirowPreview = useMultiRowPreview(multirowPreviewInput);
   const singleArrangement = groupState.rowCount === 1 && groupState.boltsPerRow === 1 && !directF1Family;
   const supportedMultirowArrangement = !singleArrangement;
@@ -1430,7 +1436,7 @@ export function SingleBoltEngineeringWorkspace() {
           utilization: formatUtilization(check.utilization),
         }));
 
-  if (hybridMode && twoBoltAvailable) return <DirectHybridWorkspace initialNative={twoBoltRequest(multirowRequest, twoBoltOptions, String(multirowRevision))} onNative={() => { setHybridMode(false); }} />;
+  if (unifiedTwoBolt && twoBoltAvailable) return <DirectHybridWorkspace initialNative={twoBoltRequest(multirowRequest, twoBoltOptions, String(multirowRevision))} onNative={() => { setGroupCount("rowCount", "1"); }} />;
 
   return (
     <ConnectionWorkspaceShell className="direct-connection-workspace" family={singleArrangement ? "single-bolt" : "multi-row"} reportDraft={singleArrangement ? request : multirowRequest} {...(geometryOnlyReason === undefined ? {} : { reportBlockedReason: geometryOnlyReason })} banner={<section className="workspace-banner" aria-labelledby="workspace-scope-title">
@@ -1438,7 +1444,6 @@ export function SingleBoltEngineeringWorkspace() {
         <div className="workspace-scope-chips"><span>One brace</span><span>{groupState.rowCount === 1 ? "One row" : `${String(groupState.rowCount)} rows`}</span><span>{singleArrangement ? "One selected bolt" : `${String(groupState.boltsPerRow)} bolt${groupState.boltsPerRow === 1 ? "" : "s"} per row`}</span><span>Session only</span></div>
       </section>}>
         <ConnectionWorkspaceSidebar ariaLabel="Connection properties">
-          {twoBoltAvailable ? <button type="button" className="primary-button" onClick={() => { setHybridMode(true); }}>Hybrid — ASCE + RHM</button> : null}
           <SidebarGroup title="General / Case" summary={request.joint_assembly.unit_system} defaultOpen>
             <div className="benchmark-buttons"><button type="button" onClick={() => { loadDirectExample("US_CUSTOMARY"); }}>Load Direct example — U.S.</button><button type="button" onClick={() => { loadDirectExample("SI"); }}>Load Direct example — SI</button></div>
             <details><summary>Advanced Engineering Diagnostics · regression fixtures</summary><p>The historical J1 regression fixture may not satisfy current Direct physical-validation rules. It is not a qualified design.</p><div className="benchmark-buttons"><button type="button" onClick={() => { loadBenchmark("US_CUSTOMARY"); }}>Legacy J1 regression fixture — U.S.</button><button type="button" onClick={() => { loadBenchmark("SI"); }}>Legacy J1 regression fixture — SI</button></div></details>

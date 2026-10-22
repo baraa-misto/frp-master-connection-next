@@ -257,6 +257,15 @@ def source_scene(g: R3Geometry, r: R3Record, alignment: Alignment) -> dict[str, 
                     "interfaceId": "R3_SHARED_PAIR",
                 }
             )
+    from frp_master_connection.application.hybrid_material_axes import source_material_axes
+
+    for item, element, region in zip(
+        boxes,
+        ("TOP_FLANGE", "WEB", "BOTTOM_FLANGE", "LEG_2"),
+        ("FLANGES", "WEB", "FLANGES", "LEG_2"),
+        strict=True,
+    ):
+        item["elementId"], item["materialRegionId"] = element, region
     return {
         "snapshotVersion": "HYB2-D3-P1-R3",
         "unitSystem": "US_CUSTOMARY",
@@ -270,7 +279,7 @@ def source_scene(g: R3Geometry, r: R3Record, alignment: Alignment) -> dict[str, 
         "appliedArrows": [],
         "connectionDemandArrows": [],
         "perBoltDemandArrows": [],
-        "materialAxes": [],
+        "materialAxes": source_material_axes(r.p_axis, r.n_axis),
         "zones": [],
         "connectionOrientation": None,
         "boundsCenter": v(1, 2, 0),

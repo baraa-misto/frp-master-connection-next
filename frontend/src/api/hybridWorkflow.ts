@@ -8,6 +8,9 @@ export interface HybridCase {
   components: [HybridQuantity | null, HybridQuantity | null, HybridQuantity | null, HybridQuantity | null, HybridQuantity | null, HybridQuantity | null];
 }
 export interface HybridInputs {
+  // These are physical boundary representations of the one current connection,
+  // never calculation-basis modes. The backend rejects simultaneous native/R3
+  // inputs and retains layout-specific applicability for every fresh execution.
   contract: "HYB2-D3-P1-LIVE"; workspace_id: string; revision: number;
   connection: "RHM_R3" | "CURRENT_NATIVE"; alignment: "BRACE" | "SUPPORT";
   geometry: HybridGeometry | null; native_request: TwoBoltRequest | null;
@@ -68,6 +71,8 @@ export function enteredCase(id: string, force = "0", shear = "0"): HybridCase {
   return { case_id: id, frame: "DIRECT_P_SKETCH_V_CENTROID", reference: [q("0", "in"), q("0", "in"), q("0", "in")], components: [q(force, "kip"), q(shear, "kip"), q("0", "kip"), q("0", "kip-in"), q("0", "kip-in"), q("0", "kip-in")] };
 }
 export function sourceExample(current: HybridInputs): HybridInputs {
+  // Inputs-only sample preset. The common workspace confirms replacement and
+  // retains an undo snapshot; calculation results are never transferred here.
   const q = (value: string): HybridQuantity => ({ value, unit: "in" });
   return { ...current, connection: "RHM_R3", native_request: null, alignment: "SUPPORT", include_native_lrfd: false,
     geometry: { vertical_bolt_pitch: q("2"), phi: "30.9", xb: q(".4375"), xc: q("1"), brace_near_v_edge_distance: q("1"), brace_leg: q("4"), column_flange: q("4"), brace_thickness: q(".5"), column_thickness: q(".375"), diameter: q(".5"), hole: q(".563") },

@@ -14,6 +14,13 @@ import type {
 } from "../src/api/multirowContracts";
 import { MultiRowVisualizationPanel } from "../src/visualization/MultiRowVisualizationPanel";
 import { ShearConnectionsWorkspace } from "../src/workspace/ShearConnectionsWorkspace";
+// This suite independently preserves the native layout renderer's historical
+// controls and numerical presentation. Public two-bolt composition is verified
+// through AppShell in hybridEntry and the live unified workspace/browser checks.
+vi.mock("../src/workspace/SingleBoltEngineeringWorkspace", async (original) => {
+  const actual = await original<typeof import("../src/workspace/SingleBoltEngineeringWorkspace")>();
+  return { ...actual, SingleBoltEngineeringWorkspace: actual.NativeDirectLayoutWorkspace };
+});
 import { PREVIEW_DEBOUNCE_MS } from "../src/workspace/previewWorkflow";
 import * as benchmarks from "../src/fixtures/j1Benchmarks";
 import * as twoBoltAPI from "../src/api/directTwoBolt";
@@ -430,7 +437,7 @@ function activateNormalAutomaticDemand(): void {
   fireEvent.change(rows, { target: { value: original } });
 }
 
-describe("Stage 2.4C-R1 unified connection workspace", () => {
+describe("Native layout compatibility — unchanged supported calculation controls", () => {
   beforeEach(() => {
     acceptMAT1Design("multi-row", mat1FamilyKey("multi-row"), null);
     vi.stubGlobal("fetch", vi.fn().mockImplementation(() => Promise.resolve(new Response(JSON.stringify(f593Resolution)))));

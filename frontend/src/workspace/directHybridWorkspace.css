@@ -18,3 +18,11 @@
 @media (max-width: 760px) { .hybrid-workspace .workspace-body { display: flex; flex-direction: column; } .hybrid-workspace .properties-sidebar { width: 100%; max-width: 100%; } .hybrid-workspace .connection-view-column { min-width: 0; width: 100%; } }
 
 .hybrid-detail-failure { color: #8b1d25; background: #fff1f2; border: 1px solid #d8868d; border-radius: .3rem; padding: .75rem; font-weight: 600; }
+.hybrid-preset-backdrop { position: fixed; inset: 0; background: #172c48aa; z-index: 100; display: grid; place-items: center; padding: 1rem; }
+.hybrid-preset-confirm { max-width: 35rem; padding: 1.5rem; border-radius: .6rem; background: white; box-shadow: 0 1rem 3rem #10233a66; }
+.hybrid-preset-confirm button { margin: .25rem; }
+.hybrid-ready { padding: .75rem 1rem; border: 1px solid #cbd5e1; border-radius: .4rem; background: #f8fafc; }
+.hybrid-workspace .hybrid-exports { margin: .75rem 0; }
+.hybrid-workspace .hybrid-example button { margin: .25rem; }
+.hybrid-workspace .properties-sidebar .mc1-grid { grid-template-columns: minmax(0, 1fr); }
+.hybrid-workspace .properties-sidebar .mc1-wide { grid-column: auto; }

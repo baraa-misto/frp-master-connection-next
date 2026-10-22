@@ -13,6 +13,7 @@ from tests.hybrid_workflow_governance import (
     pre_d3_dependency,
     pre_d3_workflow,
 )
+from tests.hybrid_workspace_security import pre_p2_dependency
 
 
 def test_exact_d2_predecessor_and_separate_workflow_access() -> None:
@@ -30,7 +31,7 @@ def test_exact_d2_predecessor_and_separate_workflow_access() -> None:
     assert digest(security_raw) == authority()["security_successor_sha256"]
     security = json.loads(security_raw)
     for name, identities in security["files"].items():
-        current = (ROOT / name).read_bytes()
+        current = pre_p2_dependency(name, (ROOT / name).read_bytes())
         assert digest(current) == identities["after_sha256"].upper()
         assert digest(pre_d3_dependency(name, current)) == identities["before_sha256"].upper()
         assert pre_d3_dependency(name, current + b" ") == current + b" "
@@ -53,7 +54,7 @@ def test_exact_d2_predecessor_and_separate_workflow_access() -> None:
     assert security["retained_nanoid"] == "3.3.18"
     assert security["unrelated_changed_records"] == []
     backend = backend_security_authority()
-    current_lock = (ROOT / backend["file"]).read_bytes()
+    current_lock = pre_p2_dependency(backend["file"], (ROOT / backend["file"]).read_bytes())
     old_lock = pre_d3_backend_dependency(current_lock)
     assert digest(current_lock) == backend["after_sha256"]
     assert digest(old_lock) == backend["before_sha256"]
@@ -85,7 +86,9 @@ def test_backend_security_successor_mutations_retain_original_guard(
 
 @pytest.mark.parametrize("mutation", ["count", "new-pdf", "old-pdf", "security"])
 def test_bounded_successor_rejects_workflow_drift(mutation: str) -> None:
-    raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
+    from tests.hybrid_workspace_governance import pre_p2_workflow
+
+    raw = pre_p2_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())
     before, after = {
         "count": (
             f"--expected-tests {authority()['backend_tests']}".encode(),

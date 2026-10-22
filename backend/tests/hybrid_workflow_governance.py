@@ -16,6 +16,9 @@ def authority(raw: bytes | None = None) -> dict[str, Any]:
 
 
 def pre_d3_workflow(raw: bytes, *, error_message: str = "D3_WORKFLOW_IDENTITY_INVALID") -> bytes:
+    from tests.hybrid_workspace_governance import pre_p2_workflow
+
+    raw = pre_p2_workflow(raw, error_message=error_message)
     raw = raw.replace(b"\r\n", b"\n")
     governed = authority()
     if b"hybrid-workflow-pdfs" not in raw:
@@ -32,6 +35,9 @@ def pre_d3_workflow(raw: bytes, *, error_message: str = "D3_WORKFLOW_IDENTITY_IN
 
 def pre_d3_dependency(path: str, raw: bytes) -> bytes:
     """Reverse only the exact approved security successor, then retain old guards."""
+    from tests.hybrid_workspace_security import pre_p2_dependency
+
+    raw = pre_p2_dependency(path, raw)
     manifest = (
         (ROOT / "docs/governance/HYB2_D3_P1_SECURITY_SUCCESSOR.json")
         .read_text(encoding="utf8")
@@ -72,6 +78,9 @@ def backend_security_authority(raw: bytes | None = None) -> dict[str, Any]:
 
 def pre_d3_backend_dependency(raw: bytes) -> bytes:
     """Restore only the exact owner-approved Certifi/Pillow lock successor."""
+    from tests.hybrid_workspace_security import pre_p2_dependency
+
+    raw = pre_p2_dependency("backend/requirements/requirements-dev-py314.lock.txt", raw)
     raw = raw.replace(b"\r\n", b"\n")
     governed = backend_security_authority()
     if digest(raw) != governed["after_sha256"]:

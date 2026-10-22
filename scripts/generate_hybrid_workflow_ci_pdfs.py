@@ -82,12 +82,15 @@ async def generate(output: Path, native_inputs: dict) -> None:
                 reader = PdfReader(io.BytesIO(pdf.content))
                 text = " ".join(" ".join(p.extract_text() or "" for p in reader.pages).split())
                 assert "Hybrid Connection Calculation Report" in text
-                assert "NOT_ESTABLISHED_SECTION_2_3_2" in text
+                assert "Not established; Section 2.3.2 remains open" in text
                 assert "C13 and Section 2.3.2 remain open" in text
                 assert "field-use history, not physical load-test evidence" in text
                 for row in record["assessment"]["comparisons"]:
                     if row["ratio"] is not None:
-                        assert format(Decimal(row["ratio"]), ".16g") in text
+                        if technical:
+                            assert row["ratio"] in text.replace(" ", "")
+                        else:
+                            assert format(Decimal(row["ratio"]), ".3f") in text
                 (output / (stem + ".pdf")).write_bytes(pdf.content)
                 (output / (stem + ".json")).write_bytes(exported.content)
                 (output / (stem + ".txt")).write_text(text, encoding="utf8")

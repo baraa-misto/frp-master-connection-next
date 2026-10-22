@@ -30,6 +30,22 @@ const sceneProps = vi.hoisted(() => ({
 
 const noSelectionChange = () => undefined;
 
+it("keeps the material axes quick control visible and synchronized in 3D and orthographic views", async () => {
+  const changed = vi.fn();
+  render(<VisualizationPanel materialAxesQuickAccess initialMaterialAxes onMaterialAxesChange={changed} model={buildSingleBoltSceneModel(visualizationFixture())} selection={{ kind: "MEMBER", id: "member-a" }} onSelect={noSelectionChange} />);
+  await screen.findByTestId("scene-props");
+  const toggle = screen.getByLabelText("Material axes (LW/CW/TT)");
+  expect(toggle.closest("details")).toBeNull();
+  expect(toggle).toBeChecked();
+  expect(screen.getByLabelText("Material axes legend")).toBeVisible();
+  for (const view of ["Front", "Top", "Side 1", "Side 2", "3D"]) {
+    fireEvent.click(screen.getByRole("button", { name: view }));
+    expect(sceneProps.current).toMatchObject({ view, visibility: { materialAxes: true } });
+  }
+  fireEvent.click(toggle); expect(changed).toHaveBeenLastCalledWith(false); expect(screen.queryByLabelText("Material axes legend")).not.toBeInTheDocument();
+  fireEvent.click(toggle); expect(changed).toHaveBeenLastCalledWith(true);
+});
+
 vi.mock("../src/visualization/EngineeringScene", () => ({
   default: (props: typeof sceneProps.current) => {
     sceneProps.renders += 1;

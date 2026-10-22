@@ -141,6 +141,12 @@ let current: MAT1State = {
 const listeners = new Set<() => void>();
 const notify = (next: MAT1State): void => { current = next; listeners.forEach((listener) => { listener(); }); };
 const subscribe = (listener: () => void): (() => void) => { listeners.add(listener); return () => { listeners.delete(listener); }; };
+/** Observe the current external material state immediately, then each change. */
+export function observeMAT1(listener: () => void): () => void {
+  const stop = subscribe(listener);
+  listener();
+  return stop;
+}
 
 export const mat1Snapshot = (): MAT1State => current;
 export const useMAT1 = (): MAT1State => useSyncExternalStore(subscribe, mat1Snapshot);

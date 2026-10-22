@@ -669,6 +669,9 @@ def test_g127_g128_inherited_engines_dependencies_and_freeze_identity() -> None:
         if path in _FROZEN_DEPENDENCIES:
             raw = _historical_dependency_bytes(root, path)
         elif path == "backend/pyproject.toml":
+            from tests.hybrid_workspace_security import pre_p2_dependency
+
+            raw = pre_p2_dependency(path, raw)
             # Owner-authorized F8 statistical dependency successor, otherwise exact F7.
             assert (
                 hashlib.sha256(raw).hexdigest().upper()

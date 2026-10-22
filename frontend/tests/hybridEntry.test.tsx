@@ -7,12 +7,12 @@ vi.mock("../src/workspace/DirectHybridWorkspace", () => ({ DirectHybridWorkspace
 vi.mock("../src/visualization/EngineeringScene", () => ({ default: () => <p>Viewer test boundary</p> }));
 afterEach(() => { window.history.replaceState(null, "", "/"); vi.unstubAllGlobals(); });
 
-it("opens the real Direct mode by fresh URL, returns to native inputs, and reopens through its visible entry", async () => {
+it("opens the common Direct workspace and routes other actual bolt arrangements through their preserved controls", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ detail: "Preview unavailable in entry unit test" }), { status: 422 })));
   window.history.replaceState(null, "", "/?workspace=direct-hybrid");
   render(<AppShell />);
   expect(screen.getByRole("region", { name: "Actual hybrid entry" })).toHaveTextContent("2 rows; BRACE");
   fireEvent.click(screen.getByRole("button", { name: "Return native" }));
-  fireEvent.click(await screen.findByRole("button", { name: "Hybrid — ASCE + RHM" }));
+  fireEvent.change(await screen.findByLabelText("Row count"), { target: { value: "2" } });
   expect(screen.getByRole("region", { name: "Actual hybrid entry" })).toBeVisible();
 });
