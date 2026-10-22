@@ -42,6 +42,8 @@ it("opens live native inputs, retains the viewer, executes current checks and of
   expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeDisabled();
   await run();
   expect(screen.getByText(/0\/0 requested RHM comparisons and 8 native/)).toBeVisible();
+  expect(screen.getByRole("region", { name: "Current hybrid check results" })).toHaveTextContent("Existing ASCE calculation");
+  expect(screen.getByRole("region", { name: "Current hybrid check results" })).not.toHaveTextContent("Unchanged Native Asce");
   expect(screen.getByRole("region", { name: "Hybrid calculation summary" })).toHaveTextContent(/Partial.*Section 2.3.2 qualification are not established/);
   fireEvent.click(screen.getByRole("button", { name: "Current backend viewer" }));
   for (const name of ["Hybrid Calculation Report", "Technical Audit", "Calculation JSON"]) fireEvent.click(screen.getByRole("button", { name }));
@@ -71,6 +73,8 @@ it("uses an explicit source example, editable geometry, both accessible alignmen
   fireEvent.click(screen.getByRole("button", { name: "Remove LRFD case" }));
   await run();
   expect(screen.getByText(/7\/7 requested RHM comparisons/)).toBeVisible();
+  expect(screen.getByRole("region", { name: "Current hybrid check results" })).toHaveTextContent("RHM reference calculation");
+  expect(screen.getByRole("region", { name: "Current hybrid check results" })).not.toHaveTextContent("Hyb2 Direct Reference");
   expect(lastDraft().native_request).toBeNull();
 });
 
