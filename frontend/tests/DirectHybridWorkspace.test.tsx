@@ -36,6 +36,39 @@ beforeEach(() => {
 });
 afterEach(() => { vi.restoreAllMocks(); });
 
+it("binds selected MAT1 data to the same source geometry and shows the larger scoped basis with physical gaps", async () => {
+  const selection = native().material_request as { assignments: object; fastener: object };
+  mocks.envelope.mockImplementation((_family: string, legacy: string) => ({ request: { ...selection, legacy_request: JSON.parse(legacy) as unknown } }));
+  mocks.calculate.mockImplementation((_path: string, draft: HybridInputs) => {
+    const r = response(draft);
+    if (draft.geometry !== null && r.record !== undefined) {
+      const row = { mechanism: "PIN_BEARING:layer-B:B1", case_id: "entered-LRFD", basis: "LRFD" as const, ratio: ".185276010241590855733112026", outcome: "PASS", evidence_scope: "ASCE_SAME_CONNECTION_COMPONENT_CALCULATION", equation: "ASCE 8-5/8-6", resistance_trace: "stored exact evidence" };
+      r.record.assessment.governing_lrfd = row;
+      r.record.numerical_governing = row;
+      r.record.assessment.comparisons.push(row);
+      r.record.requested_computation.native_checks_executed = 6;
+      r.record.same_connection_lrfd = { assumptions: ["Existing in-plane stiffness assumption; prying remains separate."] };
+      r.record.physical_mechanisms = [{ mechanism: "Hole bearing", executed_comparisons: [{ basis: "LRFD", case_id: row.case_id, check_id: row.mechanism, scope: row.evidence_scope, outcome: row.outcome }], evidence: "Fresh same-pair bearing", remaining_evidence: "Contact and installation still require evidence." }, { mechanism: "First-row fracture", executed_comparisons: [], evidence: "No established joint coverage", remaining_evidence: "Actual effective-width/stress proof required." }];
+      r.record.detailing_failures = [{ check_kind: "BRACE_END_DISTANCE_MINIMUM_LOWER_BOUND", actual_distance: ".558986595504703736943652684849", required_distance: "1", unit: "in", boundary_label: "Actual R3 oblique end", source_rule: "ASCE Table 8-1 lower bound.", bolt_id: "B1", case_id: row.case_id }];
+    }
+    return Promise.resolve(r);
+  });
+  mount(); loadSource();
+  expect(lastDraft().lrfd_cases).toEqual([]); // Source ASD never creates LRFD actions.
+  fireEvent.click(screen.getByRole("button", { name: "Add LRFD case" }));
+  change("LRFD case ID", "entered-LRFD");
+  await run();
+  expect(lastDraft().same_connection_lrfd?.assignments).toEqual(selection.assignments);
+  expect(lastDraft().native_request).toBeNull();
+  expect(screen.getByRole("region", { name: "Hybrid calculation summary" })).toHaveTextContent("6 ASCE component numerical checks");
+  expect(screen.getByText(/B1 \/ entered-LRFD: 0.559 in; required 1.000/)).toBeVisible();
+  expect(screen.getByRole("region", { name: "Current hybrid check results" })).toHaveTextContent("ASCE component — current connection");
+  expect(screen.getByRole("region", { name: "Physical mechanism coverage" })).toHaveTextContent("First-row fracture — evidence required");
+  expect(screen.getAllByText(/LRFD.*entered-LRFD.*Receiving I flange|Receiving I flange.*entered-LRFD/).length).toBeGreaterThan(0);
+  change("LRFD case ID", "ignored");
+  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeDisabled();
+});
+
 it("opens live native inputs, retains the viewer, executes current checks and offers the three current exports", async () => {
   const back = vi.fn(); render(<DirectHybridWorkspace initialNative={native()} onNative={back} />);
   await screen.findByRole("button", { name: "Current backend viewer" });
@@ -49,6 +82,21 @@ it("opens live native inputs, retains the viewer, executes current checks and of
   for (const name of ["Hybrid Calculation Report", "Technical Audit", "Calculation JSON"]) fireEvent.click(screen.getByRole("button", { name }));
   expect(mocks.download.mock.calls.map((call) => (call as unknown[]).slice(1, 3))).toEqual([[false, "pdf"], [true, "pdf"], [false, "json"]]);
   fireEvent.click(screen.getByRole("button", { name: "Other bolt arrangements" })); expect(back).toHaveBeenCalledOnce();
+});
+
+it("keeps independent source calculations available when current ASCE project conditions become incomplete", async () => {
+  act(() => { setMAT1Active(true); });
+  mount(); loadSource(); await run();
+  const before = structuredClone(lastDraft());
+  mocks.envelope.mockImplementation(() => { throw new Error("Complete current ASCE conditions"); });
+  act(() => { setMAT1DirectConditions({ ...mat1Conditions("multi-row"), load_case_name: "P3 incomplete conditions" }); });
+  await waitFor(() => { expect(lastDraft().same_connection_lrfd).toBeUndefined(); });
+  expect(lastDraft().geometry).toEqual(before.geometry);
+  expect(lastDraft().asd_cases).toEqual(before.asd_cases);
+  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeDisabled();
+  expect(screen.getByText(/Complete current material and project conditions to enable applicable ASCE/)).toBeVisible();
+  await run();
+  expect(screen.getByText(/7\/7 requested RHM comparisons/)).toBeVisible();
 });
 
 it("uses an explicit source example, editable geometry, both accessible alignments and current case fields", async () => {
@@ -150,7 +198,7 @@ it("presents scoped failure and actual fit/detailing failures without converting
   failed.record.detailing_failures = [{ check_kind: "CHAPTER_8_END_DISTANCE", actual_distance: ".9", required_distance: "1", unit: "in", boundary_label: "loaded physical end", source_rule: "ASCE Table 8-1" }];
   mocks.calculate.mockResolvedValue(failed); mount(); await run();
   expect(screen.getByRole("heading", { name: "Evaluated checks: FAIL (scoped)" })).toBeVisible();
-  expect(screen.getByText(/Chapter 8 End Distance: .9 in; required 1 in/)).toBeVisible();
+  expect(screen.getByText(/Chapter 8 End Distance: 0.900 in; required 1.000 in/)).toBeVisible();
   expect(screen.getByText(/Physical fit: Not Fit/)).toHaveClass("hybrid-detail-failure");
   expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeEnabled();
 });
@@ -325,8 +373,10 @@ it("binds material, condition and hardware changes from the external MAT1 store 
   loadSource(); await run();
   const source = structuredClone(lastDraft());
   act(() => { setFastenerSelection("multi-row", defaultFastenerSelection); });
-  expect(lastDraft()).toEqual(source);
-  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeEnabled();
+  expect(lastDraft().revision).toBe(source.revision + 1);
+  expect(lastDraft().geometry).toEqual(source.geometry);
+  expect(lastDraft().asd_cases).toEqual(source.asd_cases);
+  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeDisabled();
   act(() => { setMAT1Active(false); });
 });
 

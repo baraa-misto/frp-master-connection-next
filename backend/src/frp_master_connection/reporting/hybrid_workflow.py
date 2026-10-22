@@ -1,6 +1,8 @@
 "Successor current-input calculation report; prints immutable backend results only."
 
 import io
+from collections.abc import Sequence
+from decimal import Decimal
 from html import escape
 from typing import Any
 
@@ -23,18 +25,23 @@ from frp_master_connection.reporting.snapshot import ReportSnapshot
 def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
     """No engineering recomputation, applicability inference or status repainting."""
     a = record["assessment"]
+    same = record.get("same_connection_lrfd")
     out = io.BytesIO()
     styles = getSampleStyleSheet()
     styles["BodyText"].fontSize = 9
     styles["BodyText"].leading = 12
     styles["BodyText"].wordWrap = "CJK"
     styles["BodyText"].spaceAfter = 6
+    styles["Heading3"].keepWithNext = True
+    if same is not None:
+        styles["Heading1"].keepWithNext = True
+        styles["Heading2"].keepWithNext = True
     story: list[Flowable] = []
 
     def p(value: object, style: str = "BodyText") -> None:
         story.append(Paragraph(escape(str(value)), styles[style]))
 
-    def table(rows: list[list[object]], widths: list[int]) -> None:
+    def table(rows: Sequence[Sequence[object]], widths: list[int]) -> None:
         t = Table(
             [[Paragraph(escape(str(x)), styles["BodyText"]) for x in row] for row in rows],
             colWidths=widths,
@@ -68,19 +75,35 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
     p(
         "Qualification: "
         + label(a["qualification"])
-        + ". Native completeness: "
-        + label(a["native_status"])
-        + " (unchanged)."
+        + (
+            ". The original native route was not invoked; freshly mapped ASCE components "
+            "are identified below. Original F8/F9 authority is unchanged."
+            if same is not None
+            else ". Native completeness: " + label(a["native_status"]) + " (unchanged)."
+        )
     )
     p("Physical fit: " + label(a["fit"]["state"]) + ". " + a["fit"]["action"])
     for check in record["detailing_failures"]:
         p(
             "DETAILING REQUIREMENT FAIL: "
-            + check["check_kind"]
+            + (
+                label(check["check_kind"])
+                if "same_connection_lrfd" in record
+                else check["check_kind"]
+            )
+            + (
+                " / " + check["bolt_id"] + " / " + check["case_id"]
+                if "same_connection_lrfd" in record and "bolt_id" in check
+                else ""
+            )
             + "; "
             + check["boundary_label"]
             + "; actual "
-            + str(check["actual_distance"])
+            + (
+                utilization(check["actual_distance"], technical=technical)
+                if "same_connection_lrfd" in record
+                else str(check["actual_distance"])
+            )
             + " "
             + check["unit"]
             + "; required "
@@ -171,6 +194,73 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
         _font_setup()
         story.append(_multirow_drawing(native["native_design"]["preview"]["visualization"], "plan"))
     p("Executed calculations", "Heading2")
+    if same is not None:
+        p("Same physical connection - ASCE component mapping", "Heading2")
+        p(
+            "The actual R3 bolt centers and thicknesses are used for every fresh ASCE component "
+            "calculation below. No result from the different native BRACE example is copied."
+        )
+        for item in same["assumptions"]:
+            p(item)
+        conditions = same["materials"]["conditions"]
+        p(
+            "ASCE current project conditions: design temperature "
+            + conditions["maximum_f"]
+            + " F; moisture "
+            + label(conditions["moisture"])
+            + "; chemical "
+            + label(conditions["chemical"])
+            + "; load classification "
+            + label(conditions["time_category"])
+            + "."
+        )
+        p(
+            "ASCE hardware selection: "
+            + str(same["materials"]["fastener"].get("display_name", "User-selected hardware"))
+        )
+        for adapter in same["materials"]["resolved_materials"]:
+            p("ASCE " + adapter["original"]["display_name"] + "; " + adapter["original"]["id"])
+            for ledger in adapter["ledgers"]:
+                if ledger["property_id"] in ("bearing_strength_L", "bearing_strength_T"):
+                    p(
+                        label(ledger["property_id"])
+                        + ": original "
+                        + str(ledger["original"])
+                        + "; adjusted "
+                        + str(ledger["adjusted_candidate"])
+                        + " "
+                        + ledger["unit"]
+                        + "; CM="
+                        + str(ledger["cm"])
+                        + ", CT="
+                        + str(ledger["ct"])
+                        + ", CCH="
+                        + str(ledger["cch"])
+                        + "."
+                    )
+        for case in same["cases"]:
+            p(
+                "ASCE LRFD case "
+                + case["case_id"]
+                + "; row pitch "
+                + utilization(case["row_pitch_in"], technical=technical)
+                + " in; C_delta="
+                + utilization(case["c_delta"], technical=technical)
+                + "."
+            )
+            table(
+                [["Current ASCE component", "Demand / resistance (kip)"]]
+                + [
+                    [
+                        label(x["mechanism"]),
+                        format(Decimal(x["demand_kip"]), ".4f")
+                        + " / "
+                        + format(Decimal(x["resistance_kip"]), ".4f"),
+                    ]
+                    for x in case["checks"]
+                ],
+                [330, 180],
+            )
     c = record["requested_computation"]
     p(
         str(c["rhm_comparisons_executed"])
@@ -220,9 +310,42 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
                     "Exact governing substitutions and intermediate values are retained "
                     "in Technical Audit and the current calculation JSON."
                 )
+    maximum = record.get("numerical_governing")
+    if maximum is not None:
+        p(
+            "Maximum evaluated utilization: "
+            + utilization(maximum["ratio"], technical=technical)
+            + " / "
+            + maximum["basis"]
+            + " / "
+            + maximum["case_id"]
+            + " / "
+            + label(maximum["mechanism"])
+            + ". Separate bases are not combined into a resistance."
+        )
     p("Supplied independent action sets", "Heading2")
     for basis in ["lrfd", "asd"]:
         for case in record["actions"][basis]:
+            if same is not None and not technical:
+                p(basis.upper() + " " + case["case_id"] + "; frame " + label(case["frame"]))
+                p(
+                    "Reference (x, y, z): "
+                    + ", ".join(
+                        format(Decimal(x["magnitude"]), ".6g") + " " + x["unit"]
+                        for x in case["reference"]
+                    )
+                    + ". Actions in that frame: "
+                    + "; ".join(
+                        name + " = " + format(Decimal(x["magnitude"]), ".6g") + " " + x["unit"]
+                        for name, x in zip(
+                            ("Fx / P", "Fy / sketch V", "Fz", "Mx", "My", "Mz"),
+                            case["components"],
+                            strict=True,
+                        )
+                    )
+                    + ". Exact inputs are retained in Technical Audit and JSON."
+                )
+                continue
             p(
                 basis.upper()
                 + " "
@@ -241,11 +364,11 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
         p("Current physical geometry and failure-path witnesses", "Heading2")
         p(
             "Actual vertical spacing "
-            + current["vertical_pitch_in"]
+            + utilization(current["vertical_pitch_in"], technical=technical or same is None)
             + " in; transverse LTV "
-            + current["transverse_ltv_in"]
+            + utilization(current["transverse_ltv_in"], technical=technical or same is None)
             + " in; longitudinal projection "
-            + current["longitudinal_stagger_in"]
+            + utilization(current["longitudinal_stagger_in"], technical=technical or same is None)
             + " in. Candidate cuts are not adopted fracture paths."
         )
         story.append(
@@ -255,6 +378,10 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
             )
         )
     p("Detailing and coverage limitations", "Heading2")
+    for mechanism in record.get("physical_mechanisms", []):
+        p(mechanism["mechanism"], "Heading3")
+        p(mechanism["evidence"])
+        p("Remaining evidence: " + mechanism["remaining_evidence"])
     p(a["fit"]["action"])
     for text in a["fit"]["unknowns"]:
         p(text)
@@ -272,6 +399,23 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
     )
     if technical:
         p("All current native detailing rule comparisons: " + str(record["detailing_checks"]))
+        if same is not None:
+            p("Same-connection ASCE exact technical audit", "Heading1")
+            p("Contract: " + same["contract"] + "; geometry digest " + same["geometry_digest"])
+            p("Actual shared centers (in): " + str(same["physical_centers_in"]))
+            p(
+                "Original declared LRFD cases before coordinate transforms: "
+                + str(same["declared_lrfd_cases"])
+            )
+            p("Complete selected source records: " + str(same["materials"]))
+            for case in same["cases"]:
+                p("Independent LRFD combination " + case["case_id"], "Heading2")
+                for key, value in case.items():
+                    if key != "checks":
+                        p(key + ": " + str(value))
+                for check in case["checks"]:
+                    p(check["mechanism"], "Heading3")
+                    p(check)
     SimpleDocTemplate(
         out, pagesize=(612, 792), leftMargin=45, rightMargin=45, topMargin=38, bottomMargin=38
     ).build(story)

@@ -17,6 +17,8 @@ LABELS = {
     "xc": "Receiving-member common-edge distance (Xc)",
     "UNCHANGED_NATIVE_ASCE": "Existing ASCE calculation",
     "HYB2_DIRECT_REFERENCE": "RHM reference calculation",
+    "ASCE_SAME_CONNECTION_COMPONENT_CALCULATION": "ASCE component - current connection",
+    "BRACE_END_DISTANCE_MINIMUM_LOWER_BOUND": "Angle end distance (minimum 2d screen)",
     "DIRECT_SHARED_BOLTS": "Shared bolts - shear",
     "DIRECT_BRACE_BEARING": "Angle connected leg - bearing",
     "DIRECT_BRACE_LOCAL": "Angle connected leg - local shear paths",

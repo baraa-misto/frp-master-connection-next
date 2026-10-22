@@ -14,6 +14,7 @@ def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
     new_names = {
         # D3-P1 explicitly authorizes live workflow access, not structural adoption.
         "hybrid_workflow.py",
+        "hybrid_same_connection.py",
         "hybrid_store.py",
         "hybrid_app.py",
         "hyb1_contract.py",

@@ -74,7 +74,7 @@ jobs:
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 9455
+          --expected-tests 9495
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence
@@ -201,6 +201,14 @@ jobs:
         with:
           name: hybrid-workflow-pdfs-${{ matrix.os }}
           path: backend/hybrid-workflow-pdfs/
+          if-no-files-found: error
+      - name: Generate same-connection Hybrid P3 reports
+        run: python ../scripts/generate_hybrid_same_connection_ci_pdfs.py --output hybrid-same-connection-pdfs
+      - name: Upload same-connection Hybrid P3 reports
+        uses: actions/upload-artifact@v7
+        with:
+          name: hybrid-same-connection-pdfs-${{ matrix.os }}
+          path: backend/hybrid-same-connection-pdfs/
           if-no-files-found: error
       - name: Check Uvicorn CLI availability
         run: python -m uvicorn --help

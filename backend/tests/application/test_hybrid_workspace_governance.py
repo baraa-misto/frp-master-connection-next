@@ -35,7 +35,10 @@ def test_exact_p1_predecessor_and_all_preserved_engineering_identities() -> None
 
 @pytest.mark.parametrize("mutation", ["count", "inherited_reports", "security"])
 def test_p2_successor_rejects_unapproved_workflow_drift(mutation: str) -> None:
+    from tests.hybrid_same_connection_governance import pre_p3_workflow
+
     raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
+    raw = pre_p3_workflow(raw)
     before, after = {
         "count": (b"--expected-tests 9455", b"--expected-tests 1"),
         "inherited_reports": (b"hyb1-review-pdfs/", b"missing-review-pdfs/"),

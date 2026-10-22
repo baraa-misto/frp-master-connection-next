@@ -1,5 +1,8 @@
 import type { TwoBoltRequest, GeometryResponse } from "./directTwoBolt";
 import type { SingleBoltSceneModel } from "../visualization/sceneModel";
+import type { buildMAT1DesignEnvelope } from "./mat1Transport";
+import type { FastenerSelection } from "../state/mat1Session";
+export interface SameConnectionLRFD { assignments: ReturnType<typeof buildMAT1DesignEnvelope>["request"]["assignments"]; fastener: FastenerSelection }
 export interface HybridQuantity { value: string; unit: string }
 export type HybridGeometry = Record<"vertical_bolt_pitch" | "xb" | "xc" | "brace_near_v_edge_distance" | "brace_leg" | "column_flange" | "brace_thickness" | "column_thickness" | "diameter" | "hole", HybridQuantity> & { phi: string };
 export interface HybridCase {
@@ -18,13 +21,17 @@ export interface HybridInputs {
   source_profile: "RHM_POLYESTER_100F_SF4" | "UNMATCHED";
   bearing_face: "UNKNOWN" | "DECLARED_STRAIGHT_FREE_EDGE";
   washer_od: HybridQuantity | null; native_edge_distance: HybridQuantity | null;
+  same_connection_lrfd?: SameConnectionLRFD;
 }
 export interface HybridComparison { mechanism: string; case_id: string; basis: "LRFD" | "ASD"; ratio: string | null; outcome: string; evidence_scope: string; equation: string; resistance_trace: string }
 export interface HybridRecord {
   revision: number; fingerprint: string; field_use_note: string; coverage_summary: string; data_provenance: string;
   requested_computation: { rhm_comparisons_executed: number; rhm_comparisons_requested: number; native_checks_executed: number; native_run_completed: boolean };
   withheld: [string, string][];
-  detailing_failures: { check_kind: string; actual_distance: string; required_distance: string; unit: string; boundary_label: string; source_rule: string }[];
+  same_connection_lrfd?: { assumptions: string[] };
+  numerical_governing?: HybridComparison | null;
+  physical_mechanisms?: { mechanism: string; executed_comparisons: { basis: string; case_id: string; check_id: string; scope: string; outcome: string }[]; evidence: string; remaining_evidence: string }[];
+  detailing_failures: { check_kind: string; actual_distance: string; required_distance: string; unit: string; boundary_label: string; source_rule: string; bolt_id?: string; case_id?: string }[];
   assessment: {
     evaluated_outcome: "PASS" | "FAIL" | "NOT_EVALUATED"; tone: "green" | "red" | "neutral";
     coverage_state: string; source_domain: string; qualification: string; native_status: string;
@@ -74,7 +81,7 @@ export function sourceExample(current: HybridInputs): HybridInputs {
   // Inputs-only sample preset. The common workspace confirms replacement and
   // retains an undo snapshot; calculation results are never transferred here.
   const q = (value: string): HybridQuantity => ({ value, unit: "in" });
-  return { ...current, connection: "RHM_R3", native_request: null, alignment: "SUPPORT", include_native_lrfd: false,
+  return { ...current, connection: "RHM_R3", native_request: null, alignment: "SUPPORT", include_native_lrfd: true,
     geometry: { vertical_bolt_pitch: q("2"), phi: "30.9", xb: q(".4375"), xc: q("1"), brace_near_v_edge_distance: q("1"), brace_leg: q("4"), column_flange: q("4"), brace_thickness: q(".5"), column_thickness: q(".375"), diameter: q(".5"), hole: q(".563") },
     asd_cases: [enteredCase("RHM-source-ASD-example", ".09155", ".0134")], lrfd_cases: [], source_profile: "RHM_POLYESTER_100F_SF4", bearing_face: "UNKNOWN", washer_od: null, native_edge_distance: null };
 }

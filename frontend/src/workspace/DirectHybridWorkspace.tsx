@@ -16,7 +16,7 @@ import { DirectBoltAlignment } from "../features/DirectBoltAlignment";
 import { ConnectionWorkspaceMain, ConnectionWorkspaceShell, ConnectionWorkspaceSidebar, PersistentConnectionViewer, SidebarGroup } from "./ConnectionWorkspaceShell";
 import type { UnityView } from "./unityRatio";
 import { formatUnityPercent } from "./unityRatio";
-import { formatUtilization, friendlyEnum } from "./presentation";
+import { formatDecimal, formatUtilization, friendlyEnum } from "./presentation";
 import { DirectConnectionInputs } from "./DirectConnectionInputs";
 import { calculationLabel } from "./directCalculationLabels";
 import { DirectPresetConfirmation } from "./DirectPresetConfirmation";
@@ -54,6 +54,16 @@ function NativeInputs({ value, onChange }: { readonly value: TwoBoltRequest; rea
   </>;
 }
 
+function sourceMaterials(value: HybridInputs, template: TwoBoltRequest): HybridInputs {
+  const next = { ...value };
+  if (value.geometry === null) return next;
+  try {
+    const envelope = buildMAT1DesignEnvelope("multi-row", JSON.stringify(template.legacy));
+    next.same_connection_lrfd = { assignments: envelope.request.assignments, fastener: envelope.request.fastener ?? defaultFastenerSelection };
+  } catch { delete next.same_connection_lrfd; }
+  return next;
+}
+
 export function DirectHybridWorkspace({ initialNative, onNative }: { readonly initialNative: TwoBoltRequest; readonly onNative: () => void }) {
   const materials = useMAT1();
   const priorMaterialKey = useRef(mat1FamilyKey("multi-row", false));
@@ -88,7 +98,7 @@ export function DirectHybridWorkspace({ initialNative, onNative }: { readonly in
     const materialKey = mat1FamilyKey("multi-row", false);
     if (priorMaterialKey.current === materialKey) return;
     priorMaterialKey.current = materialKey;
-    if (draft.native_request === null) return;
+    if (draft.native_request === null) { edit(sourceMaterials(draft, nativeExample.current)); return; }
     const native = { ...draft.native_request };
     try {
       const envelope = buildMAT1DesignEnvelope("multi-row", JSON.stringify(native.legacy));
@@ -100,6 +110,8 @@ export function DirectHybridWorkspace({ initialNative, onNative }: { readonly in
   const applyPreset = () => {
     const previous = structuredClone(draft);
     const next = structuredClone(preset === "SOURCE" ? sourceExample(draft) : preset === "RESTORE" && savedInputs !== null ? savedInputs : { ...draft, connection: "CURRENT_NATIVE" as const, native_request: structuredClone(nativeExample.current), geometry: null, alignment: nativeExample.current.alignment, include_native_lrfd: true, asd_cases: [], lrfd_cases: [], source_profile: "UNMATCHED" as const, washer_od: null, native_edge_distance: null, bearing_face: "UNKNOWN" as const });
+    if (preset === "SOURCE") { delete next.same_connection_lrfd; Object.assign(next, sourceMaterials(next, nativeExample.current)); }
+    if (next.connection === "CURRENT_NATIVE") delete next.same_connection_lrfd;
     if (preset === "NATIVE" && materials.active && next.native_request !== null) {
       try {
         const envelope = buildMAT1DesignEnvelope("multi-row", JSON.stringify(next.native_request.legacy));
@@ -127,8 +139,8 @@ export function DirectHybridWorkspace({ initialNative, onNative }: { readonly in
   const model = useMemo(() => buildHybridScene(preview), [preview]);
   const reportHandle = result?.report_handle;
   const record = result?.record, a = record?.assessment;
-  const governing = a?.governing_asd ?? a?.governing_lrfd;
-  const unity: UnityView = { tone: a?.tone === "neutral" || a === undefined ? "gray" : a.tone, ratio: governing?.ratio === null || governing?.ratio === undefined ? null : Number(governing.ratio), ratioText: governing?.ratio === null || governing?.ratio === undefined ? "—" : formatUnityPercent(Number(governing.ratio)), status: a === undefined ? "Ready to calculate" : "Evaluated checks: " + a.evaluated_outcome + " (scoped)", governing: governing === null || governing === undefined ? null : governing.basis + " / " + governing.case_id + " / " + calculationLabel(governing.mechanism), explanation: "Calculated methods only; analytical coverage and qualification are not established." };
+  const governing = record?.numerical_governing ?? a?.governing_asd ?? a?.governing_lrfd ?? null;
+  const unity: UnityView = { tone: a?.tone === "neutral" || a === undefined ? "gray" : a.tone, ratio: governing?.ratio === null || governing?.ratio === undefined ? null : Number(governing.ratio), ratioText: governing?.ratio === null || governing?.ratio === undefined ? "—" : formatUnityPercent(Number(governing.ratio)), status: a === undefined ? "Ready to calculate" : "Evaluated checks: " + a.evaluated_outcome + " (scoped)", governing: governing === null ? null : governing.basis + " / " + governing.case_id + " / " + calculationLabel(governing.mechanism), explanation: "Calculated methods only; analytical coverage and qualification are not established." };
   const changeAlignment = (alignment: "BRACE" | "SUPPORT") => { edit({ ...draft, alignment, native_request: draft.native_request === null ? null : { ...draft.native_request, alignment } }); };
   const geometry = draft.geometry, nativeRequest = draft.native_request;
   const units = geometry?.vertical_bolt_pitch.unit ?? "in";
@@ -137,10 +149,10 @@ export function DirectHybridWorkspace({ initialNative, onNative }: { readonly in
     <p><strong>Calculated checks only.</strong> Analytical coverage: {friendlyEnum(record.assessment.coverage_state)}.</p>
     <p>{record.coverage_summary}</p>
     {record.requested_computation.rhm_comparisons_executed === 0 ? null : <p>RHM ASD reference comparisons use the listed source properties and source conditions. Applicability to actual project materials and conditions is not established.</p>}
-    <p>{record.requested_computation.rhm_comparisons_executed}/{record.requested_computation.rhm_comparisons_requested} requested RHM comparisons and {record.requested_computation.native_checks_executed} native numerical checks executed.</p>
+    <p>{record.requested_computation.rhm_comparisons_executed}/{record.requested_computation.rhm_comparisons_requested} requested RHM comparisons and {record.requested_computation.native_checks_executed} {record.same_connection_lrfd === undefined ? "native" : "ASCE component"} numerical checks executed.</p>
     <Governing label="Governing LRFD" row={a?.governing_lrfd ?? null} /><Governing label="Governing RHM ASD" row={a?.governing_asd ?? null} />
     <p className={record.assessment.fit.state === "NOT_FIT" ? "hybrid-detail-failure" : "hybrid-detail-state"}>Physical fit: {friendlyEnum(record.assessment.fit.state)}. {record.assessment.fit.action}</p>
-    {record.detailing_failures.map((check, i) => <p key={i} className="hybrid-detail-failure">{friendlyEnum(check.check_kind)}: {check.actual_distance} {check.unit}; required {check.required_distance} {check.unit}. {check.boundary_label}. {check.source_rule}. Revise the actual detailing.</p>)}
+    {record.detailing_failures.map((check, i) => <p key={i} className="hybrid-detail-failure">{calculationLabel(check.check_kind)}{check.bolt_id === undefined ? "" : " — " + check.bolt_id}{check.case_id === undefined ? "" : " / " + check.case_id}: {formatDecimal(check.actual_distance)} {check.unit}; required {formatDecimal(check.required_distance)} {check.unit}. {check.boundary_label}. {check.source_rule} Revise the actual detailing.</p>)}
 
   </section>);
   return <ConnectionWorkspaceShell className="hybrid-workspace" banner={<><section className="workspace-banner"><div><p className="eyebrow">Shear · Direct</p><h2>Direct connection — ASCE LRFD + RHM ASD</h2><p>Engineer-assisted calculations with separate LRFD/ASD bases.</p></div><button type="button" onClick={onNative}>Other bolt arrangements</button></section>{summary}{exportControls}</>}>
@@ -152,16 +164,16 @@ export function DirectHybridWorkspace({ initialNative, onNative }: { readonly in
       <SidebarGroup title="Connection geometry" summary="One editable Angle / I connection" defaultOpen><DirectConnectionInputs value={draft} onChange={edit} /></SidebarGroup>
       <p className="sidebar-note">User-declared inputs. No certificate, review hash or liability checkbox is required to calculate.</p>
       <SidebarGroup title="Materials and project conditions" summary="Separate LRFD and source ASD property authorities" defaultOpen>
-        {nativeRequest === null ? <p>The source sample uses its listed polyester and 100°F ASD properties. Native MAT1 factors are not transferred to this source layout.</p> : <div onChange={() => { try { const envelope = buildMAT1DesignEnvelope("multi-row", JSON.stringify(nativeRequest.legacy)); edit({ ...draft, native_request: { ...nativeRequest, legacy: envelope.request.legacy_request as unknown as MultiRowConnectionRequest, material_request: envelope.request } }); } catch (e) { const unresolved = { ...nativeRequest }; delete unresolved.material_request; edit({ ...draft, native_request: unresolved }); setError((e as Error).message); } }}><MAT1MaterialsPanel family="multi-row" /></div>}
+        {nativeRequest === null ? <><p>ASCE LRFD uses the selected MAT1 characteristic/specification properties and actual project conditions on this same geometry. RHM ASD retains its separate listed polyester/100°F reference basis; no factor or property blending.</p><MAT1MaterialsPanel family="multi-row" />{draft.same_connection_lrfd === undefined ? <p>Complete current material and project conditions to enable applicable ASCE components. Independent RHM reference calculations remain available.</p> : null}</> : <div onChange={() => { try { const envelope = buildMAT1DesignEnvelope("multi-row", JSON.stringify(nativeRequest.legacy)); edit({ ...draft, native_request: { ...nativeRequest, legacy: envelope.request.legacy_request as unknown as MultiRowConnectionRequest, material_request: envelope.request } }); } catch (e) { const unresolved = { ...nativeRequest }; delete unresolved.material_request; edit({ ...draft, native_request: unresolved }); setError((e as Error).message); } }}><MAT1MaterialsPanel family="multi-row" /></div>}
       </SidebarGroup>
-      {nativeRequest === null ? null : <SidebarGroup title="Fastener" summary="Native hardware source and selection"><FastenerSelector defaultSnapshot={loadJ1Benchmark(nativeRequest.legacy.physical_connection?.joint_assembly.unit_system ?? "US_CUSTOMARY").fastener_snapshot} diameter={nativeRequest.legacy.bolt_diameter} selection={materials.fastenerSelections["multi-row"] ?? defaultFastenerSelection} onSelect={(selection) => { setFastenerSelection("multi-row", selection); }} /></SidebarGroup>}
+      <SidebarGroup title="Fastener" summary="ASCE hardware source and selection"><FastenerSelector defaultSnapshot={loadJ1Benchmark(nativeRequest?.legacy.physical_connection?.joint_assembly.unit_system ?? "US_CUSTOMARY").fastener_snapshot} diameter={nativeRequest?.legacy.bolt_diameter ?? geometry?.diameter ?? { value: ".5", unit: "in" }} selection={materials.fastenerSelections["multi-row"] ?? defaultFastenerSelection} onSelect={(selection) => { setFastenerSelection("multi-row", selection); }} /></SidebarGroup>
       <SidebarGroup title="RHM supplemental properties" summary="Separate source-specific ASD basis"><label className="field-control">RHM property profile<select aria-label="RHM property profile" value={draft.source_profile} onChange={(e) => { edit({ ...draft, source_profile: e.currentTarget.value as HybridInputs["source_profile"] }); }}><option value="UNMATCHED">No matching source profile</option><option value="RHM_POLYESTER_100F_SF4">RHM polyester 100°F · listed/SF4</option></select></label><p>Ts=.85; repeated Ts in D31/D221. Source 316SS included-thread allowance 12.75 ksi. These are worksheet properties, not the native MAT1/F593 selector. Moisture/duration/chemical and product-statistical applicability remain explicit limitations.</p></SidebarGroup>
       <SidebarGroup title="Loads and calculation bases" summary="Independent LRFD and ASD actions" defaultOpen>
         <label className="checkbox-control"><input type="checkbox" checked={draft.include_native_lrfd} onChange={(e) => { edit({ ...draft, include_native_lrfd: e.currentTarget.checked }); }} />Evaluate applicable ASCE LRFD checks</label>
-        {nativeRequest === null ? <p>ASCE checks require a demonstrated native geometry mapping; selecting this basis does not borrow another layout's results.</p> : <NativeInputs value={nativeRequest} onChange={(native_request) => { edit({ ...draft, native_request }); }} />}
+        {nativeRequest === null ? <p>Applicable ASCE bolt/bearing components use this R3 pair, current MAT1 properties and independent entered LRFD cases. No BRACE-reference result is borrowed and no LRFD case is inferred from ASD.</p> : <NativeInputs value={nativeRequest} onChange={(native_request) => { edit({ ...draft, native_request }); }} />}
         <p>P follows the brace; source sketch V=-n. Nonzero/unknown unsupported components and transported moments remain supplied and are withheld, never zeroed.</p>
         {(["asd_cases", "lrfd_cases"] as const).map((key) => <div key={key}>{key === "lrfd_cases" && draft.connection === "CURRENT_NATIVE" ? null : <><button type="button" disabled={draft[key].length >= 8} onClick={() => { edit({ ...draft, [key]: [...draft[key], enteredCase((key === "asd_cases" ? "ASD-" : "LRFD-") + String(draft[key].length + 1))] }); }}>Add {key === "asd_cases" ? "ASD" : "LRFD"} case</button>{draft[key].map((value, i) => <CaseEditor key={i} basis={key === "asd_cases" ? "ASD" : "LRFD"} value={value} onChange={(next) => { edit({ ...draft, [key]: draft[key].map((c, j) => i === j ? next : c) }); }} onRemove={() => { edit({ ...draft, [key]: draft[key].filter((_, j) => j !== i) }); }} />)}</>}</div>)}
-        <p>No entered case list is automatically declared a complete project envelope. Source SUPPORT geometry does not imply native ASCE checks ran.</p>
+        <p>No entered case list is automatically declared a complete project envelope. The executed-check list identifies each calculation and its basis.</p>
       </SidebarGroup>
       <SidebarGroup title="Washer and detailing" summary="Declared footprint; separate from strength" defaultOpen><label className="field-control">Bearing-face definition<select aria-label="Bearing-face definition" value={draft.bearing_face} onChange={(e) => { edit({ ...draft, bearing_face: e.currentTarget.value as HybridInputs["bearing_face"] }); }}><option value="UNKNOWN">Unknown / conditional screen</option><option value="DECLARED_STRAIGHT_FREE_EDGE">User-declared straight free edge</option></select></label><label className="field-control">Washer outside diameter<div className="hybrid-quantity"><input aria-label="Washer outside diameter" inputMode="decimal" value={draft.washer_od?.value ?? ""} placeholder="Unknown" onChange={(e) => { edit({ ...draft, washer_od: e.currentTarget.value === "" ? null : { value: e.currentTarget.value, unit: units } }); }} /><span>{units}</span></div></label>{draft.connection === "CURRENT_NATIVE" ? <label className="field-control">Declared straight-edge distance<input aria-label="Declared straight-edge distance" value={draft.native_edge_distance?.value ?? ""} onChange={(e) => { edit({ ...draft, native_edge_distance: e.currentTarget.value === "" ? null : { value: e.currentTarget.value, unit: units } }); }} />{units}</label> : <p>The declared free-edge screen uses the same current Xb as the physical R3 model. User declaration is not a verified survey.</p>}</SidebarGroup>
       <button className="primary-button" type="button" disabled={busy} onClick={() => { void run(); }}>{busy ? "Running Hybrid Calculations…" : "Run Hybrid Calculations"}</button>
@@ -172,6 +184,7 @@ export function DirectHybridWorkspace({ initialNative, onNative }: { readonly in
       <PersistentConnectionViewer {...(a === undefined ? {} : { unity })}>{model === null ? <p role="status">Current geometry is pending or invalid. No earlier model or result is represented as current.</p> : <VisualizationPanel model={model} selection={selection} onSelect={setSelection} title="Current Direct connection geometry" materialAxesQuickAccess initialMaterialAxes={materialAxesVisible} onMaterialAxesChange={setMaterialAxesVisible} />}</PersistentConnectionViewer>
       <p>Source-model far caps are display crops, not engineering end cuts. Fillet and complete hardware/tool fit remain unknown.</p>
       {record === undefined ? null : <><section aria-label="Current hybrid check results"><h3>Executed checks — separate bases</h3><div className="hybrid-table-scroll"><table><thead><tr><th>Basis / case</th><th>Calculated check</th><th>Utilization</th><th>Outcome / scope</th></tr></thead><tbody>{a?.comparisons.map((row) => <tr key={row.basis + row.case_id + row.mechanism}><td>{row.basis} / {row.case_id}</td><td>{calculationLabel(row.mechanism)}</td><td>{formatUtilization(row.ratio)}</td><td>{friendlyEnum(row.outcome)} / {calculationLabel(row.evidence_scope)}</td></tr>)}</tbody></table></div>{record.withheld.map(([id, reason], i) => <p key={i}>Not evaluated — {calculationLabel(id)}: {reason}</p>)}</section><details><summary>Method notes and technical provenance</summary><p>{record.data_provenance}</p><p>{record.field_use_note}</p><p>Native completeness authority: {a?.native_status}. {record.coverage_summary}</p><p>Fingerprint: {record.fingerprint}; revision {record.revision}. Qualified engineering adoption and Section 2.3.2 evidence remain separate.</p><p>Exact equations, operands, registry and native traces are retained in the Technical Audit and current backend record.</p></details></>}
+      {record?.physical_mechanisms === undefined ? null : <section aria-label="Physical mechanism coverage"><h3>Physical mechanism coverage</h3>{record.physical_mechanisms.map((item) => <details key={item.mechanism}><summary>{item.mechanism} — {item.executed_comparisons.length === 0 ? "evidence required" : "scoped calculations available"}</summary><p>{item.evidence}</p><p>{item.remaining_evidence}</p></details>)}{record.same_connection_lrfd?.assumptions.map((note) => <p key={note}>{note}</p>)}</section>}
     </ConnectionWorkspaceMain>
   </ConnectionWorkspaceShell>;
 }

@@ -7,6 +7,8 @@ const labels: Readonly<Record<string, string>> = {
   DIRECT_COLUMN_GLOBAL: "Receiving I flange — global block shear reference",
   LRFD: "ASCE LRFD", ASD: "RHM ASD", NO_NATIVE_ASCE: "ASCE checks unavailable for this physical layout",
   HYB2_DIRECT_REFERENCE: "RHM reference calculation", UNCHANGED_NATIVE_ASCE: "Existing ASCE calculation",
+  ASCE_SAME_CONNECTION_COMPONENT_CALCULATION: "ASCE component — current connection",
+  BRACE_END_DISTANCE_MINIMUM_LOWER_BOUND: "Angle end distance (minimum 2d screen)",
 };
 export function calculationLabel(value: string): string {
   return value.split(":").map((part) => {

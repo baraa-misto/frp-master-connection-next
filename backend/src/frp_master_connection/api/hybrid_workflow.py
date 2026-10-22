@@ -3,7 +3,7 @@
 import asyncio
 import json
 from collections.abc import Awaitable, Callable
-from dataclasses import replace
+from dataclasses import asdict, replace
 from decimal import Decimal
 from typing import Annotated, Any, Literal, cast
 
@@ -20,6 +20,7 @@ from frp_master_connection.api.direct_two_bolt import (
     geometry_response,
     resolve_geometry,
 )
+from frp_master_connection.api.hybrid_same_connection import SameConnectionLRFD
 from frp_master_connection.api.schemas import Identifier, QuantityDTO, _StrictModel
 from frp_master_connection.application.hyb1_contract import (
     ActionBasis,
@@ -31,6 +32,12 @@ from frp_master_connection.application.hyb1_contract import (
 )
 from frp_master_connection.application.hyb1_review import NativeCapture
 from frp_master_connection.application.hyb2_d2 import SourceConditions, assess_d2
+from frp_master_connection.application.hybrid_same_connection import (
+    calculate_same_connection,
+    canonicalize_same_connection_reference,
+    integrate_same_connection,
+    physical_mechanisms,
+)
 from frp_master_connection.application.hybrid_workflow import (
     FIELD_USE,
     LIMITS,
@@ -167,9 +174,14 @@ class HybridInputs(Revision):
     bearing_face: Literal["UNKNOWN", "DECLARED_STRAIGHT_FREE_EDGE"]
     washer_od: QuantityDTO | None
     native_edge_distance: QuantityDTO | None
+    same_connection_lrfd: SameConnectionLRFD | None = Field(
+        default=None, exclude_if=lambda v: v is None
+    )
 
     @model_validator(mode="after")
     def physical_scope(self) -> HybridInputs:
+        if self.same_connection_lrfd is not None and self.connection != "RHM_R3":
+            raise ValueError("R3 ASCE materials cannot accompany a different native geometry.")
         if self.connection == "RHM_R3":
             if self.geometry is None or self.native_request is not None:
                 raise ValueError(
@@ -341,6 +353,11 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
             return preview
         asd = tuple(case.case() for case in dto.asd_cases)
         lrfd = tuple(case.case(ActionBasis.LRFD) for case in dto.lrfd_cases)
+        if dto.same_connection_lrfd is not None:
+            lrfd = tuple(
+                canonicalize_same_connection_reference(case, declared.frame)
+                for case, declared in zip(lrfd, dto.lrfd_cases, strict=True)
+            )
         trace: tuple[ActionCase, ...] = ()
         token = ""
         native_result: dict[str, Any] = {"native_authority": "NOT_SUPPLIED_NO_RESULTS_INFERRED"}
@@ -439,6 +456,16 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
             conditions=conditions,
             today=datetime.now(UTC).date(),
         )
+        same_connection = None
+        same_detailing: tuple[dict[str, Any], ...] = ()
+        if g is not None and dto.include_native_lrfd and dto.same_connection_lrfd is not None:
+            integrated = await asyncio.to_thread(
+                calculate_same_connection, actions, g, dto.same_connection_lrfd.resolve(g)
+            )
+            assessment = integrate_same_connection(assessment, integrated)
+            same_connection = integrated.trace
+            same_detailing = integrated.detailing
+            detail_checks.extend(json.loads(json.dumps(same_detailing, default=str)))
         edge = (
             g.xb
             if g is not None
@@ -452,6 +479,35 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
             washer=None if dto.washer_od is None else quantity(dto.washer_od),
             face=dto.bearing_face,
         )
+        if (
+            same_connection is not None
+            and assessment.fit.actual_overhang_in is not None
+            and assessment.fit.actual_overhang_in > 0
+        ):
+            assessment = replace(
+                assessment,
+                fit=replace(
+                    assessment.fit,
+                    action="Insufficient washer edge clearance — the selected washer may extend "
+                    "beyond the member edge. Verify washer seating or revise the edge distance. "
+                    + assessment.fit.action,
+                ),
+            )
+        if same_connection is not None and dto.washer_od is not None:
+            od = quantity(dto.washer_od).to(Unit.IN).magnitude
+            required_od = 2 * cast(R3Geometry, g).diameter.to(Unit.IN).magnitude
+            if od < required_od:
+                detail_checks.append(
+                    {
+                        "check_kind": "WASHER_MINIMUM_OUTSIDE_DIAMETER",
+                        "actual_distance": str(od),
+                        "required_distance": str(required_od),
+                        "unit": "in",
+                        "pass_fail": "FAIL",
+                        "boundary_label": "Declared washer",
+                        "source_rule": "ASCE 8.2.4: OD at least 2d.",
+                    }
+                )
         if (
             native_geometry is not None
             and native_geometry["geometry"]["aggregate_state"] == "DOES_NOT_FIT"
@@ -469,7 +525,13 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
         source = ReviewSource(actions, geometry=g, conditions=conditions)
         record = assessment_record(assessment, source, native.immutable_payload)
         withheld = list(assessment.withheld)
-        if native_request is None:
+        if native_request is None and same_connection is None:
+            if g is not None and dto.include_native_lrfd:
+                native_reason = (
+                    "Current R3 geometry supports scoped ASCE bolt/bearing components. "
+                    "Complete current MAT1 materials/conditions and select hardware, then "
+                    "enter independent LRFD combinations. No BRACE result is transferred."
+                )
             withheld.append(
                 (
                     "LRFD",
@@ -522,6 +584,22 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
             },
             withheld=withheld,
         )
+        if same_connection is not None:
+            same_connection["declared_lrfd_cases"] = [
+                case.model_dump(mode="json") for case in dto.lrfd_cases
+            ]
+            record["same_connection_lrfd"] = json.loads(json.dumps(same_connection, default=str))
+            record["physical_mechanisms"] = physical_mechanisms(assessment.comparisons)
+            governing = max(
+                (r for r in assessment.comparisons if r.ratio is not None),
+                key=lambda r: cast(Decimal, r.ratio),
+                default=None,
+            )
+            record["numerical_governing"] = (
+                None
+                if governing is None
+                else json.loads(json.dumps(asdict(governing), default=str))
+            )
         handle = store.seal(account, dto.workspace_id, dto.revision, fingerprint, record)
         return dict(**preview, record=record, report_handle=handle)
 
