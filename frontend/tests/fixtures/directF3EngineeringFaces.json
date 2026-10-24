@@ -1,0 +1,1788 @@
+{
+  "free": {
+    "bolt_id": "B_R1_L1",
+    "component_id": "member-b",
+    "physical_element_id": "TOP_FLANGE",
+    "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+    "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+    "bolt_center_global": [
+      "-0.5",
+      "-3.8224236059739014",
+      "-0.9939964812277111"
+    ],
+    "bolt_center_member_local": [
+      "6.076848122046002",
+      "-3.913952736853105",
+      "0.5"
+    ],
+    "raw_bolt_center_member_local": [
+      "6.076848122046002",
+      "-3.913952736853105",
+      "0.5"
+    ],
+    "coordinate_canonicalization": "NONE",
+    "normal_axis": 2,
+    "transverse_axis": 1,
+    "face_vertices_local": [
+      [
+        "0",
+        "-4",
+        "0.5"
+      ],
+      [
+        "10.242640687119286",
+        "-4",
+        "0.5"
+      ],
+      [
+        "10.242640687119286",
+        "4",
+        "0.5"
+      ],
+      [
+        "0",
+        "4",
+        "0.5"
+      ]
+    ],
+    "boundaries": [
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "role": "PHYSICAL_LOADED_END",
+        "label": "loaded physical member end",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "-0.5",
+          "4.091529130879204",
+          "-7.070844603273713"
+        ],
+        "start_local": [
+          "0",
+          "-4",
+          "0.5"
+        ],
+        "end_local": [
+          "0",
+          "4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "0",
+          "-3.913952736853105",
+          "0.5"
+        ],
+        "actual_distance": "6.076848122046002",
+        "raw_distance": "6.076848122046002",
+        "eligible_e1": true,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MAX",
+        "role": "PHYSICAL_UNLOADED_END",
+        "label": "unloaded physical member end",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "3.1717960838455728"
+        ],
+        "end_global": [
+          "-0.5",
+          "4.091529130879204",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "10.242640687119286",
+          "-4",
+          "0.5"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "10.242640687119286",
+          "-3.913952736853105",
+          "0.5"
+        ],
+        "actual_distance": "4.165792565073284",
+        "raw_distance": "4.165792565073284",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "role": "PHYSICAL_FREE_SIDE_EDGE",
+        "label": "negative physical free side edge",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "0",
+          "-4",
+          "0.5"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "-4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "6.076848122046002",
+          "-4",
+          "0.5"
+        ],
+        "actual_distance": "0.086047263146895",
+        "raw_distance": "0.086047263146895",
+        "eligible_e1": false,
+        "eligible_e2": true,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "role": "PHYSICAL_FREE_SIDE_EDGE",
+        "label": "positive physical free side edge",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "4.091529130879204",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "-0.5",
+          "4.091529130879204",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "0",
+          "4",
+          "0.5"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "6.076848122046002",
+          "4",
+          "0.5"
+        ],
+        "actual_distance": "7.913952736853105",
+        "raw_distance": "7.913952736853105",
+        "eligible_e1": false,
+        "eligible_e2": true,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:WEB:0:OBSTRUCTION",
+        "role": "INTERNAL_SECTION_JUNCTION",
+        "label": "clearance to member-b WEB",
+        "source_geometry_id": "MEMBER:member-b:WEB:0",
+        "start_global": [
+          "0",
+          "-0.15847086912079633",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "0",
+          "-0.15847086912079633",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "0",
+          "-0.25",
+          "0"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "-0.25",
+          "0"
+        ],
+        "dimension_end_local": [
+          "6.076848122046002",
+          "-0.25",
+          "0"
+        ],
+        "actual_distance": "3.663952736853105",
+        "raw_distance": "3.663952736853105",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      }
+    ],
+    "checks": [
+      {
+        "check_kind": "CHAPTER_8_END_DISTANCE",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "6.076848122046002",
+        "required_distance": "1",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 Table 8-1 e1: tension one row 4d; two/three rows and compression 2d; no perpendicular-wall exemption assumed",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "6.076848122046002",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "6.076848122046002",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "4.165792565073284",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "4.165792565073284",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_EDGE_DISTANCE",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "0.086047263146895",
+        "required_distance": "0.75",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "ASCE/SEI 74-23 8.2.5 / Table 8-1 ordinary e2 = 1.5d",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "negative physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "0.086047263146895",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "negative physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "0.086047263146895",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "negative physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_EDGE_DISTANCE",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "7.913952736853105",
+        "required_distance": "0.75",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 8.2.5 / Table 8-1 ordinary e2 = 1.5d",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "7.913952736853105",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "7.913952736853105",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-b:WEB:0:OBSTRUCTION",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-b:WEB:0",
+        "actual_distance": "3.663952736853105",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Exact cylinder / represented physical section solid interference",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "clearance to member-b WEB",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      }
+    ],
+    "hole_radius": "0.2815",
+    "washer_radius": "0.5",
+    "limitations": [
+      "Nut/head envelope and unresolved heel/fillet geometry are not supplied; only represented holes, bolt shafts, washers and exact section solids are evaluated."
+    ]
+  },
+  "owner": {
+    "bolt_id": "B_R1_L1",
+    "component_id": "member-a",
+    "physical_element_id": "LEG_1",
+    "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+    "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+    "bolt_center_global": [
+      "-0.5",
+      "-2.570844603273713",
+      "0.2575825214724774"
+    ],
+    "bolt_center_member_local": [
+      "5",
+      "0.2500000000000002",
+      "0"
+    ],
+    "raw_bolt_center_member_local": [
+      "5",
+      "0.2500000000000002",
+      "0"
+    ],
+    "coordinate_canonicalization": "DIRECT_NATIVE_ROW_X_WITHIN_TEMPLATE_FRAME_PRECISION",
+    "normal_axis": 2,
+    "transverse_axis": 1,
+    "face_vertices_local": [
+      [
+        "0",
+        "-1.5",
+        "0"
+      ],
+      [
+        "8",
+        "-1.5",
+        "0"
+      ],
+      [
+        "8",
+        "2",
+        "0"
+      ],
+      [
+        "0",
+        "2",
+        "0"
+      ]
+    ],
+    "boundaries": [
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MIN",
+        "role": "PHYSICAL_UNLOADED_END",
+        "label": "unloaded physical member end",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "2.2021261697354833",
+          "2.5556795603287563"
+        ],
+        "end_global": [
+          "-1",
+          "-0.27274756441743264",
+          "5.030553294481673"
+        ],
+        "start_local": [
+          "0",
+          "-1.5",
+          "0"
+        ],
+        "end_local": [
+          "0",
+          "2",
+          "0"
+        ],
+        "dimension_end_local": [
+          "0",
+          "0.2500000000000002",
+          "0"
+        ],
+        "actual_distance": "5",
+        "raw_distance": "5",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "role": "PHYSICAL_LOADED_END",
+        "label": "loaded physical member end",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "-3.4547280797568973",
+          "-3.101174689163623"
+        ],
+        "end_global": [
+          "-1",
+          "-5.929601813909813",
+          "-0.626300955010707"
+        ],
+        "start_local": [
+          "8",
+          "-1.5",
+          "0"
+        ],
+        "end_local": [
+          "8",
+          "2",
+          "0"
+        ],
+        "dimension_end_local": [
+          "8",
+          "0.2500000000000002",
+          "0"
+        ],
+        "actual_distance": "3",
+        "raw_distance": "3",
+        "eligible_e1": true,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MIN",
+        "role": "INTERNAL_SECTION_JUNCTION",
+        "label": "angle heel / perpendicular-leg junction",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "2.2021261697354833",
+          "2.5556795603287563"
+        ],
+        "end_global": [
+          "-1",
+          "-3.4547280797568973",
+          "-3.101174689163623"
+        ],
+        "start_local": [
+          "0",
+          "-1.5",
+          "0"
+        ],
+        "end_local": [
+          "8",
+          "-1.5",
+          "0"
+        ],
+        "dimension_end_local": [
+          "5",
+          "-1.5",
+          "0"
+        ],
+        "actual_distance": "1.7500000000000002",
+        "raw_distance": "1.7500000000000002",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "role": "PHYSICAL_FREE_SIDE_EDGE",
+        "label": "positive physical free side edge",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "-0.27274756441743264",
+          "5.030553294481673"
+        ],
+        "end_global": [
+          "-1",
+          "-5.929601813909813",
+          "-0.626300955010707"
+        ],
+        "start_local": [
+          "0",
+          "2",
+          "0"
+        ],
+        "end_local": [
+          "8",
+          "2",
+          "0"
+        ],
+        "dimension_end_local": [
+          "5",
+          "2",
+          "0"
+        ],
+        "actual_distance": "1.7499999999999998",
+        "raw_distance": "1.7499999999999998",
+        "eligible_e1": false,
+        "eligible_e2": true,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_2:0:OBSTRUCTION",
+        "role": "INTERNAL_SECTION_JUNCTION",
+        "label": "clearance to member-a LEG_2",
+        "source_geometry_id": "MEMBER:member-a:LEG_2:0",
+        "start_global": [
+          "-1.051",
+          "2.2021261697354833",
+          "2.5556795603287563"
+        ],
+        "end_global": [
+          "-1.051",
+          "-3.4547280797568973",
+          "-3.101174689163623"
+        ],
+        "start_local": [
+          "0",
+          "-1.5",
+          "0.050999999999999934"
+        ],
+        "end_local": [
+          "8",
+          "-1.4999999999999998",
+          "0.050999999999999934"
+        ],
+        "dimension_end_local": [
+          "5",
+          "-1.5",
+          "0.050999999999999934"
+        ],
+        "actual_distance": "1.7500000000000002",
+        "raw_distance": "1.7500000000000002",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      }
+    ],
+    "checks": [
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "5",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "5",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_END_DISTANCE",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "3",
+        "required_distance": "1",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 Table 8-1 e1: tension one row 4d; two/three rows and compression 2d; no perpendicular-wall exemption assumed",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "3",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "3",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7500000000000002",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "angle heel / perpendicular-leg junction",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7500000000000002",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "angle heel / perpendicular-leg junction",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_EDGE_DISTANCE",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7499999999999998",
+        "required_distance": "0.75",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 8.2.5 / Table 8-1 ordinary e2 = 1.5d",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7499999999999998",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7499999999999998",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_2:0:OBSTRUCTION",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-a:LEG_2:0",
+        "actual_distance": "1.7500000000000002",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Exact cylinder / represented physical section solid interference",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "clearance to member-a LEG_2",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      }
+    ],
+    "hole_radius": "0.2815",
+    "washer_radius": "0.5",
+    "limitations": [
+      "Nut/head envelope and unresolved heel/fillet geometry are not supplied; only represented holes, bolt shafts, washers and exact section solids are evaluated."
+    ]
+  },
+  "web": {
+    "bolt_id": "B_R2_L1",
+    "component_id": "member-b",
+    "physical_element_id": "TOP_FLANGE",
+    "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+    "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+    "bolt_center_global": [
+      "-0.5",
+      "-0.44952425971406995",
+      "2.37890286503212"
+    ],
+    "bolt_center_member_local": [
+      "9.449747468305834",
+      "-0.5410533905932736",
+      "0.5"
+    ],
+    "raw_bolt_center_member_local": [
+      "9.449747468305834",
+      "-0.5410533905932736",
+      "0.5"
+    ],
+    "coordinate_canonicalization": "NONE",
+    "normal_axis": 2,
+    "transverse_axis": 1,
+    "face_vertices_local": [
+      [
+        "0",
+        "-4",
+        "0.5"
+      ],
+      [
+        "10.242640687119286",
+        "-4",
+        "0.5"
+      ],
+      [
+        "10.242640687119286",
+        "4",
+        "0.5"
+      ],
+      [
+        "0",
+        "4",
+        "0.5"
+      ]
+    ],
+    "boundaries": [
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "role": "PHYSICAL_LOADED_END",
+        "label": "loaded physical member end",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "-0.5",
+          "4.091529130879204",
+          "-7.070844603273713"
+        ],
+        "start_local": [
+          "0",
+          "-4",
+          "0.5"
+        ],
+        "end_local": [
+          "0",
+          "4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "0",
+          "-0.5410533905932736",
+          "0.5"
+        ],
+        "actual_distance": "9.449747468305834",
+        "raw_distance": "9.449747468305834",
+        "eligible_e1": true,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MAX",
+        "role": "PHYSICAL_UNLOADED_END",
+        "label": "unloaded physical member end",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "3.1717960838455728"
+        ],
+        "end_global": [
+          "-0.5",
+          "4.091529130879204",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "10.242640687119286",
+          "-4",
+          "0.5"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "10.242640687119286",
+          "-0.5410533905932736",
+          "0.5"
+        ],
+        "actual_distance": "0.792893218813452",
+        "raw_distance": "0.792893218813452",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "role": "PHYSICAL_FREE_SIDE_EDGE",
+        "label": "negative physical free side edge",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "-0.5",
+          "-3.908470869120796",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "0",
+          "-4",
+          "0.5"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "-4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "9.449747468305834",
+          "-4",
+          "0.5"
+        ],
+        "actual_distance": "3.4589466094067264",
+        "raw_distance": "3.4589466094067264",
+        "eligible_e1": false,
+        "eligible_e2": true,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "role": "PHYSICAL_FREE_SIDE_EDGE",
+        "label": "positive physical free side edge",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "start_global": [
+          "-0.5",
+          "4.091529130879204",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "-0.5",
+          "4.091529130879204",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "0",
+          "4",
+          "0.5"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "4",
+          "0.5"
+        ],
+        "dimension_end_local": [
+          "9.449747468305834",
+          "4",
+          "0.5"
+        ],
+        "actual_distance": "4.5410533905932736",
+        "raw_distance": "4.5410533905932736",
+        "eligible_e1": false,
+        "eligible_e2": true,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "boundary_id": "MEMBER:member-b:WEB:0:OBSTRUCTION",
+        "role": "INTERNAL_SECTION_JUNCTION",
+        "label": "clearance to member-b WEB",
+        "source_geometry_id": "MEMBER:member-b:WEB:0",
+        "start_global": [
+          "0",
+          "-0.15847086912079633",
+          "-7.070844603273713"
+        ],
+        "end_global": [
+          "0",
+          "-0.15847086912079633",
+          "3.1717960838455728"
+        ],
+        "start_local": [
+          "0",
+          "-0.25",
+          "0"
+        ],
+        "end_local": [
+          "10.242640687119286",
+          "-0.25",
+          "0"
+        ],
+        "dimension_end_local": [
+          "9.449747468305834",
+          "-0.25",
+          "0"
+        ],
+        "actual_distance": "0.2910533905932736",
+        "raw_distance": "0.2910533905932736",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      }
+    ],
+    "checks": [
+      {
+        "check_kind": "CHAPTER_8_END_DISTANCE",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "9.449747468305834",
+        "required_distance": "1",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 Table 8-1 e1: tension one row 4d; two/three rows and compression 2d; no perpendicular-wall exemption assumed",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "9.449747468305834",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "9.449747468305834",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "0.792893218813452",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "0.792893218813452",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_EDGE_DISTANCE",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "3.4589466094067264",
+        "required_distance": "0.75",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 8.2.5 / Table 8-1 ordinary e2 = 1.5d",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "negative physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "3.4589466094067264",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "negative physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "3.4589466094067264",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "negative physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_EDGE_DISTANCE",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "4.5410533905932736",
+        "required_distance": "0.75",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 8.2.5 / Table 8-1 ordinary e2 = 1.5d",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "4.5410533905932736",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:TOP_FLANGE:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-b:TOP_FLANGE:0",
+        "actual_distance": "4.5410533905932736",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-b",
+        "physical_element_id": "TOP_FLANGE",
+        "bolt_id": "B_R2_L1",
+        "engineering_boundary_id": "MEMBER:member-b:WEB:0:OBSTRUCTION",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-b:WEB:0",
+        "actual_distance": "0.2910533905932736",
+        "required_distance": "0.5",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "Exact cylinder / represented physical section solid interference",
+        "associated_contact_patch_id": "TOP_FLANGE:OUTER_NEGATIVE_CW_STRIP",
+        "boundary_label": "clearance to member-b WEB",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      }
+    ],
+    "hole_radius": "0.2815",
+    "washer_radius": "0.5",
+    "limitations": [
+      "Nut/head envelope and unresolved heel/fillet geometry are not supplied; only represented holes, bolt shafts, washers and exact section solids are evaluated."
+    ]
+  },
+  "heel": {
+    "bolt_id": "B_R1_L1",
+    "component_id": "member-a",
+    "physical_element_id": "LEG_1",
+    "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+    "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+    "bolt_center_global": [
+      "-0.5",
+      "-2.570844603273713",
+      "0.2575825214724774"
+    ],
+    "bolt_center_member_local": [
+      "5",
+      "0.2500000000000002",
+      "0"
+    ],
+    "raw_bolt_center_member_local": [
+      "5",
+      "0.2500000000000002",
+      "0"
+    ],
+    "coordinate_canonicalization": "DIRECT_NATIVE_ROW_X_WITHIN_TEMPLATE_FRAME_PRECISION",
+    "normal_axis": 2,
+    "transverse_axis": 1,
+    "face_vertices_local": [
+      [
+        "0",
+        "-1.5",
+        "0"
+      ],
+      [
+        "8",
+        "-1.5",
+        "0"
+      ],
+      [
+        "8",
+        "2",
+        "0"
+      ],
+      [
+        "0",
+        "2",
+        "0"
+      ]
+    ],
+    "boundaries": [
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MIN",
+        "role": "PHYSICAL_UNLOADED_END",
+        "label": "unloaded physical member end",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "2.2021261697354833",
+          "2.5556795603287563"
+        ],
+        "end_global": [
+          "-1",
+          "-0.27274756441743264",
+          "5.030553294481673"
+        ],
+        "start_local": [
+          "0",
+          "-1.5",
+          "0"
+        ],
+        "end_local": [
+          "0",
+          "2",
+          "0"
+        ],
+        "dimension_end_local": [
+          "0",
+          "0.2500000000000002",
+          "0"
+        ],
+        "actual_distance": "5",
+        "raw_distance": "5",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "role": "PHYSICAL_LOADED_END",
+        "label": "loaded physical member end",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "-3.4547280797568973",
+          "-3.101174689163623"
+        ],
+        "end_global": [
+          "-1",
+          "-5.929601813909813",
+          "-0.626300955010707"
+        ],
+        "start_local": [
+          "8",
+          "-1.5",
+          "0"
+        ],
+        "end_local": [
+          "8",
+          "2",
+          "0"
+        ],
+        "dimension_end_local": [
+          "8",
+          "0.2500000000000002",
+          "0"
+        ],
+        "actual_distance": "3",
+        "raw_distance": "3",
+        "eligible_e1": true,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MIN",
+        "role": "INTERNAL_SECTION_JUNCTION",
+        "label": "angle heel / perpendicular-leg junction",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "2.2021261697354833",
+          "2.5556795603287563"
+        ],
+        "end_global": [
+          "-1",
+          "-3.4547280797568973",
+          "-3.101174689163623"
+        ],
+        "start_local": [
+          "0",
+          "-1.5",
+          "0"
+        ],
+        "end_local": [
+          "8",
+          "-1.5",
+          "0"
+        ],
+        "dimension_end_local": [
+          "5",
+          "-1.5",
+          "0"
+        ],
+        "actual_distance": "1.7500000000000002",
+        "raw_distance": "1.7500000000000002",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "role": "PHYSICAL_FREE_SIDE_EDGE",
+        "label": "positive physical free side edge",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "start_global": [
+          "-1",
+          "-0.27274756441743264",
+          "5.030553294481673"
+        ],
+        "end_global": [
+          "-1",
+          "-5.929601813909813",
+          "-0.626300955010707"
+        ],
+        "start_local": [
+          "0",
+          "2",
+          "0"
+        ],
+        "end_local": [
+          "8",
+          "2",
+          "0"
+        ],
+        "dimension_end_local": [
+          "5",
+          "2",
+          "0"
+        ],
+        "actual_distance": "1.7499999999999998",
+        "raw_distance": "1.7499999999999998",
+        "eligible_e1": false,
+        "eligible_e2": true,
+        "hardware_eligible": true,
+        "computational_only": false
+      },
+      {
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "boundary_id": "MEMBER:member-a:LEG_2:0:OBSTRUCTION",
+        "role": "INTERNAL_SECTION_JUNCTION",
+        "label": "clearance to member-a LEG_2",
+        "source_geometry_id": "MEMBER:member-a:LEG_2:0",
+        "start_global": [
+          "-1.051",
+          "2.2021261697354833",
+          "2.5556795603287563"
+        ],
+        "end_global": [
+          "-1.051",
+          "-3.4547280797568973",
+          "-3.101174689163623"
+        ],
+        "start_local": [
+          "0",
+          "-1.5",
+          "0.050999999999999934"
+        ],
+        "end_local": [
+          "8",
+          "-1.4999999999999998",
+          "0.050999999999999934"
+        ],
+        "dimension_end_local": [
+          "5",
+          "-1.5",
+          "0.050999999999999934"
+        ],
+        "actual_distance": "1.7500000000000002",
+        "raw_distance": "1.7500000000000002",
+        "eligible_e1": false,
+        "eligible_e2": false,
+        "hardware_eligible": true,
+        "computational_only": false
+      }
+    ],
+    "checks": [
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "5",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MIN",
+        "engineering_boundary_role": "PHYSICAL_UNLOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "5",
+        "required_distance": "1.8",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "unloaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_END_DISTANCE",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "3",
+        "required_distance": "1",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 Table 8-1 e1: tension one row 4d; two/three rows and compression 2d; no perpendicular-wall exemption assumed",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "3",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:0:MAX",
+        "engineering_boundary_role": "PHYSICAL_LOADED_END",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "3",
+        "required_distance": "1.8",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "loaded physical member end",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7500000000000002",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "angle heel / perpendicular-leg junction",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MIN",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7500000000000002",
+        "required_distance": "1.8",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "angle heel / perpendicular-leg junction",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "CHAPTER_8_EDGE_DISTANCE",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7499999999999998",
+        "required_distance": "0.75",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "ASCE/SEI 74-23 8.2.5 / Table 8-1 ordinary e2 = 1.5d",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "HOLE_PHYSICAL_CONTAINMENT",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7499999999999998",
+        "required_distance": "0.2815",
+        "unit": "in",
+        "pass_fail": "PASS",
+        "source_rule": "Hole footprint inside exact penetrated element",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_1:0:PHYSICAL:1:MAX",
+        "engineering_boundary_role": "PHYSICAL_FREE_SIDE_EDGE",
+        "source_geometry_id": "MEMBER:member-a:LEG_1:0",
+        "actual_distance": "1.7499999999999998",
+        "required_distance": "1.8",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "Represented washer footprint on physical FRP face",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "positive physical free side edge",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      },
+      {
+        "check_kind": "WASHER_SEATING",
+        "component_id": "member-a",
+        "physical_element_id": "LEG_1",
+        "bolt_id": "B_R1_L1",
+        "engineering_boundary_id": "MEMBER:member-a:LEG_2:0:OBSTRUCTION",
+        "engineering_boundary_role": "INTERNAL_SECTION_JUNCTION",
+        "source_geometry_id": "MEMBER:member-a:LEG_2:0",
+        "actual_distance": "1.7500000000000002",
+        "required_distance": "1.8",
+        "unit": "in",
+        "pass_fail": "FAIL",
+        "source_rule": "Exact cylinder / represented physical section solid interference",
+        "associated_contact_patch_id": "LEG_1:EXTERIOR_TT_BROAD",
+        "boundary_label": "clearance to member-a LEG_2",
+        "contact_patch_boundary_used_as_engineering_edge": false
+      }
+    ],
+    "hole_radius": "0.2815",
+    "washer_radius": "1.8",
+    "limitations": [
+      "Nut/head envelope and unresolved heel/fillet geometry are not supplied; only represented holes, bolt shafts, washers and exact section solids are evaluated."
+    ]
+  }
+}

@@ -7,6 +7,7 @@ from typing import cast
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 
+from frp_master_connection.api.direct_status import input_direct_status
 from frp_master_connection.api.routes import build_router
 from frp_master_connection.config import ApplicationEnvironment, AppSettings
 from frp_master_connection.reporting.capture import reportable_route
@@ -76,6 +77,12 @@ def create_app(
     ) -> Response:
         """Seal the validated native response from this exact calculation call."""
 
+        if (
+            request.method == "POST"
+            and request.url.path.startswith("/api/v1/direct-two-bolt/")
+            and len(await request.body()) > 8_000_000
+        ):
+            return JSONResponse({"detail": "SAB2 request size limit exceeded"}, status_code=413)
         if request.method != "POST" or not request.url.path.startswith(
             ("/api/v1/calculations/", "/api/v1/frp-materials/")
         ):
@@ -118,6 +125,8 @@ def create_app(
             else native_response
         )
         identity = request.state.trusted_identity
+        if invalid_request and route[0] == "multi-row":
+            result = input_direct_status(result, report_request)
         opt_in = request.query_params.get("report_snapshot") == "1"
         safe_headers = {
             key: value for key, value in response.headers.items() if key.lower() != "content-length"
@@ -129,6 +138,7 @@ def create_app(
                 request=report_request,
                 result=result,
                 input_provenance={
+                    **getattr(request.state, "direct_qualification_provenance", {}),
                     "server_defaulted_fields": server_defaulted_fields(
                         request.scope.get("route"), parsed_request
                     )

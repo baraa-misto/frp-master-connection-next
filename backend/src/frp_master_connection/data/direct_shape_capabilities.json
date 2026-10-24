@@ -1,0 +1,19 @@
+{
+  "contract": "DIRECT-SHAPE-CAPABILITIES-OR2-F1",
+  "product": "Brace/beam connection — Direct",
+  "current_variant": "Direct angle-to-W connection",
+  "future_product_boundary": "MULTI_SHAPE_PLANAR_DIRECT",
+  "enabled": [
+    {
+      "state": "ENABLED",
+      "brace_shape": "ANGLE",
+      "support_shape": "WIDE_FLANGE",
+      "brace_element": "LEG_1",
+      "support_element": "TOP_FLANGE",
+      "support_face": "EXTERIOR",
+      "lap": "SINGLE_LAP",
+      "physical_frp_layers": 2
+    }
+  ],
+  "selection_rule": "Only reviewed pair/surface adapters may become selectable. I_SECTION is not an enabled alias. Roadmap entries are unavailable."
+}

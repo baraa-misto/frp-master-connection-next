@@ -1,0 +1,23 @@
+{
+  "contract": "SHEAR01-DIRECT-OR2-SAB2-P2",
+  "controlling_order_sha256": "5549819069DA13CD20D40018FA40993D3A87B0955C55CE6537FC3BC41DD8F89A",
+  "predecessor_candidate": "3127f2807ccc396a01a3883e81181872f99eaa79",
+  "workflow_sha256": "94EE0A2CF56CB55B8D4AE8AC8E77E510FC5AA701C80A465AA0A50118ED453129",
+  "workflow_changed": false,
+  "backend_tests": 8980,
+  "predecessor_frontend_tests": 1388,
+  "frontend_tests": 1397,
+  "scope": "Main Direct 2x1 native Bolt alignment radios; same controlled state and invalidation; collapsed details with retained current preview; frontend regressions only",
+  "backend_geometry_engine_snapshot_report_changed": false,
+  "protected_engineering_identities": 53,
+  "historical_control_identities": 173,
+  "dependencies": "All existing pins and locks unchanged",
+  "coverage": "Exact configured 100%; original source scopes and exclusions unchanged",
+  "new_resistance_or_demand_methods": false,
+  "support_structural_route_activated": false,
+  "qualification_activation": false,
+  "unchanged_c13_partial_rows": ["C13-05", "C13-06", "C13-07", "C13-08"],
+  "owner_acceptance_pending": true,
+  "protected_refs": "main and three annotated protected tags unchanged",
+  "historical_pdf_gates": "Entire accepted P1 workflow and every historical report gate unchanged"
+}

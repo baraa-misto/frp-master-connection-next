@@ -1,0 +1,626 @@
+{
+  "snapshotVersion": "HYB2-D3-P1-R3",
+  "unitSystem": "US_CUSTOMARY",
+  "lengthUnit": "in",
+  "boxes": [
+    {
+      "id": "I-flange",
+      "label": "Receiving I flange; top/bottom caps are view cuts",
+      "ownerId": "member-b",
+      "ownerLabel": "Receiving I flange; top/bottom caps are view cuts",
+      "ownerRole": "COLUMN",
+      "elementId": "TOP_FLANGE",
+      "materialRegionId": "FLANGES",
+      "center": {
+        "x": -1.0,
+        "y": 0.1875,
+        "z": 0.0
+      },
+      "size": {
+        "x": 4.0,
+        "y": 0.375,
+        "z": 12.0
+      },
+      "basis": [
+        {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+        }
+      ],
+      "deferred": false,
+      "interference": false
+    },
+    {
+      "id": "I-web",
+      "label": "I8 web; source nominal .375 thickness, roots unverified",
+      "ownerId": "member-b",
+      "ownerLabel": "I8 web; source nominal .375 thickness, roots unverified",
+      "ownerRole": "COLUMN",
+      "elementId": "WEB",
+      "materialRegionId": "WEB",
+      "center": {
+        "x": -1.0,
+        "y": 4.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 0.375,
+        "y": 7.25,
+        "z": 12.0
+      },
+      "basis": [
+        {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+        }
+      ],
+      "deferred": false,
+      "interference": false
+    },
+    {
+      "id": "I-back-flange",
+      "label": "I opposite flange; view context",
+      "ownerId": "member-b",
+      "ownerLabel": "I opposite flange; view context",
+      "ownerRole": "COLUMN",
+      "elementId": "BOTTOM_FLANGE",
+      "materialRegionId": "FLANGES",
+      "center": {
+        "x": -1.0,
+        "y": 7.8125,
+        "z": 0.0
+      },
+      "size": {
+        "x": 4.0,
+        "y": 0.375,
+        "z": 12.0
+      },
+      "basis": [
+        {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+        }
+      ],
+      "deferred": false,
+      "interference": false
+    },
+    {
+      "id": "angle-outstanding",
+      "label": "Angle outstanding leg; root/fillet unverified",
+      "ownerId": "member-a",
+      "ownerLabel": "Angle outstanding leg; root/fillet unverified",
+      "ownerRole": "BRACE",
+      "elementId": "LEG_2",
+      "materialRegionId": "LEG_2",
+      "center": {
+        "x": 2.9947596228945783,
+        "y": -2.0,
+        "z": 0.3730863449066567
+      },
+      "size": {
+        "x": 8.0,
+        "y": 4.0,
+        "z": 0.5
+      },
+      "basis": [
+        {
+          "x": 0.8580649057236446,
+          "y": 0.0,
+          "z": -0.5135412520581701
+        },
+        {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        {
+          "x": 0.5135412520581701,
+          "y": 0.0,
+          "z": 0.8580649057236446
+        }
+      ],
+      "deferred": false,
+      "interference": false
+    }
+  ],
+  "meshes": [
+    {
+      "id": "r3-angle-connected",
+      "label": "Angle connected leg; far cap is a view cut",
+      "ownerId": "member-a",
+      "ownerLabel": "Angle brace",
+      "ownerRole": "BRACE",
+      "elementId": "LEG_1",
+      "materialRegionId": "LEG_1",
+      "points": [
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": -2.234400665627962
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": 2.427251353139337
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": -2.234400665627962
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -6.342730682093323
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": -2.234400665627962
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": 2.427251353139337
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": -2.234400665627962
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -6.342730682093323
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": -2.234400665627962
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": -2.234400665627962
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": 2.427251353139337
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": -2.234400665627962
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": 2.427251353139337
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": 2.427251353139337
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": 2.427251353139337
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": 2.427251353139337
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": 2.427251353139337
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -6.342730682093323
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -1.6810786633260237
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -6.342730682093323
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -6.342730682093323
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -6.342730682093323
+        },
+        {
+          "x": 6.427019245789157,
+          "y": 0.0,
+          "z": -6.342730682093323
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": -2.234400665627962
+        },
+        {
+          "x": 6.427019245789157,
+          "y": -0.5,
+          "z": -6.342730682093323
+        },
+        {
+          "x": -0.4375,
+          "y": 0.0,
+          "z": -2.234400665627962
+        },
+        {
+          "x": -0.4375,
+          "y": -0.5,
+          "z": -2.234400665627962
+        }
+      ]
+    }
+  ],
+  "cylinders": [
+    {
+      "id": "B1BOLT",
+      "label": "B1 BOLT",
+      "start": {
+        "x": 0.0,
+        "y": -0.5,
+        "z": 1.0
+      },
+      "end": {
+        "x": 0.0,
+        "y": 0.375,
+        "z": 1.0
+      },
+      "diameter": 0.5,
+      "kind": "BOLT",
+      "hardwareLocation": null,
+      "ownerBoltId": "B1",
+      "rowId": "B1",
+      "boltLineId": "L1",
+      "penetratedLayerIds": [
+        "member-a",
+        "member-b"
+      ],
+      "interfaceId": "R3_SHARED_PAIR"
+    },
+    {
+      "id": "B1HOLE",
+      "label": "B1 HOLE",
+      "start": {
+        "x": 0.0,
+        "y": -0.5,
+        "z": 1.0
+      },
+      "end": {
+        "x": 0.0,
+        "y": 0.375,
+        "z": 1.0
+      },
+      "diameter": 0.563,
+      "kind": "HOLE",
+      "hardwareLocation": null,
+      "ownerBoltId": "B1",
+      "rowId": "B1",
+      "boltLineId": "L1",
+      "penetratedLayerIds": [
+        "member-a",
+        "member-b"
+      ],
+      "interfaceId": "R3_SHARED_PAIR"
+    },
+    {
+      "id": "B2BOLT",
+      "label": "B2 BOLT",
+      "start": {
+        "x": 0.0,
+        "y": -0.5,
+        "z": -1.0
+      },
+      "end": {
+        "x": 0.0,
+        "y": 0.375,
+        "z": -1.0
+      },
+      "diameter": 0.5,
+      "kind": "BOLT",
+      "hardwareLocation": null,
+      "ownerBoltId": "B2",
+      "rowId": "B2",
+      "boltLineId": "L1",
+      "penetratedLayerIds": [
+        "member-a",
+        "member-b"
+      ],
+      "interfaceId": "R3_SHARED_PAIR"
+    },
+    {
+      "id": "B2HOLE",
+      "label": "B2 HOLE",
+      "start": {
+        "x": 0.0,
+        "y": -0.5,
+        "z": -1.0
+      },
+      "end": {
+        "x": 0.0,
+        "y": 0.375,
+        "z": -1.0
+      },
+      "diameter": 0.563,
+      "kind": "HOLE",
+      "hardwareLocation": null,
+      "ownerBoltId": "B2",
+      "rowId": "B2",
+      "boltLineId": "L1",
+      "penetratedLayerIds": [
+        "member-a",
+        "member-b"
+      ],
+      "interfaceId": "R3_SHARED_PAIR"
+    }
+  ],
+  "frames": [],
+  "markers": [],
+  "positiveArrows": [],
+  "appliedArrows": [],
+  "connectionDemandArrows": [],
+  "perBoltDemandArrows": [],
+  "materialAxes": [
+    {
+      "id": "member-a:LEG_1:material-axes",
+      "componentId": "member-a",
+      "componentLabel": "Angle brace",
+      "sectionFamily": "ANGLE",
+      "elementId": "LEG_1",
+      "elementLabel": "Leg 1",
+      "materialRegionId": "LEG_1",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "presentation": null,
+      "lengthwise": {
+        "x": 0.8580649057236446,
+        "y": 0.0,
+        "z": -0.5135412520581701
+      },
+      "crosswise": {
+        "x": -0.5135412520581701,
+        "y": 0.0,
+        "z": -0.8580649057236446
+      },
+      "throughThickness": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "member-a:LEG_2:material-axes",
+      "componentId": "member-a",
+      "componentLabel": "Angle brace",
+      "sectionFamily": "ANGLE",
+      "elementId": "LEG_2",
+      "elementLabel": "Leg 2",
+      "materialRegionId": "LEG_2",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "presentation": null,
+      "lengthwise": {
+        "x": 0.8580649057236446,
+        "y": 0.0,
+        "z": -0.5135412520581701
+      },
+      "crosswise": {
+        "x": -0.0,
+        "y": -1.0,
+        "z": -0.0
+      },
+      "throughThickness": {
+        "x": -0.5135412520581701,
+        "y": 0.0,
+        "z": -0.8580649057236446
+      }
+    },
+    {
+      "id": "member-b:WEB:material-axes",
+      "componentId": "member-b",
+      "componentLabel": "Receiving I",
+      "sectionFamily": "I_SECTION",
+      "elementId": "WEB",
+      "elementLabel": "Web",
+      "materialRegionId": "WEB",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "presentation": null,
+      "lengthwise": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "crosswise": {
+        "x": -0.0,
+        "y": -1.0,
+        "z": -0.0
+      },
+      "throughThickness": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "member-b:TOP_FLANGE:material-axes",
+      "componentId": "member-b",
+      "componentLabel": "Receiving I",
+      "sectionFamily": "I_SECTION",
+      "elementId": "TOP_FLANGE",
+      "elementLabel": "Top Flange",
+      "materialRegionId": "FLANGES",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "presentation": null,
+      "lengthwise": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "crosswise": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "throughThickness": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "member-b:BOTTOM_FLANGE:material-axes",
+      "componentId": "member-b",
+      "componentLabel": "Receiving I",
+      "sectionFamily": "I_SECTION",
+      "elementId": "BOTTOM_FLANGE",
+      "elementLabel": "Bottom Flange",
+      "materialRegionId": "FLANGES",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "presentation": null,
+      "lengthwise": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "crosswise": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "throughThickness": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      }
+    }
+  ],
+  "zones": [],
+  "connectionOrientation": null,
+  "boundsCenter": {
+    "x": 1.0,
+    "y": 2.0,
+    "z": 0.0
+  },
+  "boundsRadius": 10,
+  "fitCenter": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "fitRadius": 7
+}

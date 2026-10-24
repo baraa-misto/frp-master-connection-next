@@ -1,0 +1,30 @@
+{
+  "contract": "DIRECT-OWNER-STARTER-OR2-F1",
+  "rows": 2,
+  "bolts_per_row": 1,
+  "hole_basis": "US_CUSTOMARY_PRINTED",
+  "orientation_degrees": "135",
+  "connected_leg": "LEG_1",
+  "outstanding_leg_side": "POSITIVE_INTERFACE_Z",
+  "support_face": "EXTERIOR",
+  "units": {
+    "US_CUSTOMARY": {
+      "length_unit": "in",
+      "example_axial_force": "0.7",
+      "brace": {"leg_y": "4", "leg_z": "4", "thickness": "0.5"},
+      "support": {"overall_depth": "8", "flange_width": "8", "web_thickness": "0.5", "flange_thickness": "0.5"},
+      "bolt_diameter": "0.5", "hole_diameter": "0.563",
+      "washer_diameter": "1", "washer_thickness": "0.051",
+      "e1": "3", "pitch": "2", "gauge": "2", "loaded_boundary": "3", "negative_side": "1", "positive_side": "1"
+    },
+    "SI": {
+      "length_unit": "mm",
+      "example_axial_force": "3.11375513068235",
+      "brace": {"leg_y": "101.6", "leg_z": "101.6", "thickness": "12.7"},
+      "support": {"overall_depth": "203.2", "flange_width": "203.2", "web_thickness": "12.7", "flange_thickness": "12.7"},
+      "bolt_diameter": "12.7", "hole_diameter": "14.3002",
+      "washer_diameter": "25.4", "washer_thickness": "1.2954",
+      "e1": "76.2", "pitch": "50.8", "gauge": "50.8", "loaded_boundary": "76.2", "negative_side": "25.4", "positive_side": "25.4"
+    }
+  }
+}

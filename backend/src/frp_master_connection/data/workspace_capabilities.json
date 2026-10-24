@@ -1,0 +1,70 @@
+{
+  "contract": "WORKSPACE-CAPABILITIES-OR1-RC1",
+  "feature_states": ["SUPPORTED", "DEFERRED", "NOT_APPLICABLE"],
+  "common": {
+    "frp_material_selection": "SUPPORTED",
+    "shared_design_conditions": "SUPPORTED",
+    "bolted_metallic_hardware": "SUPPORTED",
+    "custom_material": "SUPPORTED",
+    "report_engineer": "SUPPORTED",
+    "report_audit": "SUPPORTED"
+  },
+  "profiles": {
+    "direct": {
+      "automatic_physical_demand": "SUPPORTED",
+      "externally_resolved_demand": "SUPPORTED",
+      "force_only_shear": "SUPPORTED",
+      "independent_moment_input": "NOT_APPLICABLE",
+      "bolt_axis_prying_input": "NOT_APPLICABLE",
+      "multirow_physical_layout": "SUPPORTED",
+      "custom_fastener": "SUPPORTED"
+    },
+    "legacy_single_bolt": {
+      "automatic_physical_demand": "DEFERRED",
+      "externally_resolved_demand": "SUPPORTED",
+      "force_only_shear": "DEFERRED",
+      "independent_moment_input": "DEFERRED",
+      "bolt_axis_prying_input": "DEFERRED",
+      "multirow_physical_layout": "NOT_APPLICABLE",
+      "custom_fastener": "DEFERRED"
+    },
+    "shear_deferred": {
+      "automatic_physical_demand": "DEFERRED",
+      "externally_resolved_demand": "DEFERRED",
+      "force_only_shear": "DEFERRED",
+      "independent_moment_input": "DEFERRED",
+      "bolt_axis_prying_input": "DEFERRED",
+      "multirow_physical_layout": "DEFERRED",
+      "custom_fastener": "DEFERRED"
+    },
+    "moment_deferred": {
+      "automatic_physical_demand": "DEFERRED",
+      "externally_resolved_demand": "DEFERRED",
+      "force_only_shear": "NOT_APPLICABLE",
+      "independent_moment_input": "SUPPORTED",
+      "bolt_axis_prying_input": "DEFERRED",
+      "multirow_physical_layout": "DEFERRED",
+      "custom_fastener": "DEFERRED"
+    }
+  },
+  "families": [
+    {"route_id":"single-bolt","template_id":"DIRECT_REFERENCE","profile":"legacy_single_bolt","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"multi-row","template_id":"DIRECT_REFERENCE","profile":"direct","material_assignment_mode":"LINKED"},
+    {"route_id":"tee-connector","template_id":"FRP_TEE","profile":"shear_deferred","material_assignment_mode":"LINKED"},
+    {"route_id":"clip-angle","template_id":"SINGLE_CLIP_ANGLE","profile":"shear_deferred","material_assignment_mode":"LINKED"},
+    {"route_id":"paired-clip-angle","template_id":"SYMMETRIC_PAIRED_CLIP_ANGLES","profile":"shear_deferred","material_assignment_mode":"LINKED"},
+    {"route_id":"multi-member-tee","template_id":"MULTI_MEMBER_TEE","profile":"shear_deferred","material_assignment_mode":"LINKED"},
+    {"route_id":"beam-concrete-paired-angle","template_id":"BEAM_CONCRETE_PAIRED_ANGLE","profile":"shear_deferred","material_assignment_mode":"LINKED"},
+    {"route_id":"direct-side-lap-concrete","template_id":"DIRECT_SIDE_LAP_CONCRETE","profile":"shear_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"column-base-web-angles","template_id":"COLUMN_BASE_WEB_ANGLES_CONCRETE","profile":"shear_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"beam-web-splice","template_id":"SYMMETRIC_DOUBLE_WEB_SPLICE","profile":"shear_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"wi-major-axis-moment-splice","template_id":"WI_BEAM_MAJOR_AXIS_MOMENT_SPLICE","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"channel-major-axis-moment-splice","template_id":"CHANNEL_BEAM_MAJOR_AXIS_MOMENT_SPLICE","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"wi-beam-concrete-wall-moment","template_id":"WI_BEAM_CONCRETE_WALL_MAJOR_AXIS_MOMENT_CONNECTION","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"wi-beam-frp-support-moment","template_id":"WI_BEAM_FRP_SUPPORT_MAJOR_AXIS_MOMENT_CONNECTION","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"angle-column-two-leg-moment-base","template_id":"ANGLE_COLUMN_TWO_LEG_MOMENT_BASE_CONNECTION","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"wi-rhs-srs-column-moment-base","template_id":"WI_RHS_SRS_COLUMN_MOMENT_BASE_CONNECTION","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"double-channel-truss-node","template_id":"DOUBLE_CHANNEL_TRUSS_NODE_CONNECTION","profile":"shear_deferred","material_assignment_mode":"PER_COMPONENT"},
+    {"route_id":"stair-stringer-miter","template_id":"STAIR_STRINGER_MITER_CONNECTION","profile":"moment_deferred","material_assignment_mode":"PER_COMPONENT"}
+  ]
+}

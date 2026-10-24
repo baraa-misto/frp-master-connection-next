@@ -9,9 +9,16 @@ from dataclasses import asdict, replace
 from decimal import Decimal
 from typing import Annotated, Any, Literal, Self, cast
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
-from pydantic import Field, JsonValue, StrictStr, model_validator
+from pydantic import (
+    Field,
+    JsonValue,
+    SerializerFunctionWrapHandler,
+    StrictStr,
+    model_serializer,
+    model_validator,
+)
 
 from frp_master_connection.api.angle_column_moment_base import serialize_angle_base
 from frp_master_connection.api.beam_concrete_paired_angle_mapping import (
@@ -32,10 +39,25 @@ from frp_master_connection.api.column_moment_base import serialize_column_moment
 from frp_master_connection.api.connector_material_native import FAMILIES
 from frp_master_connection.api.dctn3b import dctn3b_response
 from frp_master_connection.api.dependencies import build_trusted_identity_dependency
+from frp_master_connection.api.direct_qualification import (
+    QualificationDesignContext,
+    attach_qualification,
+    qualification_catalog,
+    qualification_snapshot_provenance,
+)
 from frp_master_connection.api.direct_side_lap_concrete_mapping import (
     serialize_direct_side_lap_concrete_design,
 )
 from frp_master_connection.api.double_channel_truss_node import dctn_response
+from frp_master_connection.api.fasteners import (
+    F593_REVISION,
+    CatalogFastenerSelectionDTO,
+    DefaultFastenerSelectionDTO,
+    FastenerSelectionDTO,
+    fastener_source_record,
+    resolve_catalog_selection,
+    resolve_fastener_selection,
+)
 from frp_master_connection.api.multi_member_tee_mapping import (
     serialize_multi_member_tee_design,
 )
@@ -75,15 +97,29 @@ from frp_master_connection.application import (
     evaluate_multirow_connection,
     evaluate_single_bolt_connection,
 )
+from frp_master_connection.application.asce_shape_materials import (
+    is_shape_basis,
+    material_condition_basis,
+    production_shape_catalog,
+    shape_source_metadata,
+    shape_temperature_state,
+)
 from frp_master_connection.application.connector_material_assembly import (
     canonical_material_assembly,
 )
 from frp_master_connection.application.dctn3b import DCTN3BDesign
+from frp_master_connection.application.direct_material_conditions import (
+    conditions_audit,
+    gate_direct_temperature_result,
+    ledger_audit,
+)
 from frp_master_connection.application.mat1_materials import (
     DesignConditions,
+    DirectDesignConditions,
     MaterialRecord,
     PropertyLedger,
     Resin,
+    catalog_property_basis,
     catalog_record,
     decimal_input,
     predefined_catalog,
@@ -102,7 +138,7 @@ from frp_master_connection.application.ssmc_analytical import (
 )
 from frp_master_connection.application.tee_orchestration import design_check_tee_connector
 from frp_master_connection.calculation.inputs import TimeEffectCategory
-from frp_master_connection.calculation.quantities import PhysicalQuantity
+from frp_master_connection.calculation.quantities import PhysicalQuantity, canonical_decimal_string
 from frp_master_connection.domain.connector_materials import ComponentRole
 from frp_master_connection.security import TrustedIdentity, TrustedIdentityResolver
 
@@ -178,9 +214,65 @@ class MaterialConditionsDTO(_StrictModel):
     design_period: StrictStr = ""
     service_period: StrictStr = ""
     fatigue_cycles: StrictStr = ""
+    direct_policy: Literal["SHEAR01-DIRECT-MC1"] | None = None
+    design_temperature: MaterialTemperatureDTO | None = None
+    chemical_strength_factor: StrictStr | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_transport(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
+        result = cast(dict[str, Any], handler(self))
+        if self.direct_policy is None:
+            for key in ("direct_policy", "design_temperature", "chemical_strength_factor"):
+                result.pop(key)
+        return result
 
     @model_validator(mode="after")
     def validate_temperatures(self) -> Self:
+        canonical_updates: dict[str, Any] = {}
+        if self.direct_policy is None:
+            if self.design_temperature is not None or self.chemical_strength_factor is not None:
+                raise ValueError("MC1 inputs require the explicit Direct material policy.")
+        else:
+            if self.design_temperature is None:
+                raise ValueError("Enter one Design Temperature for the new Direct policy.")
+            design_f = temperature_fahrenheit(
+                self.design_temperature.value, self.design_temperature.unit
+            )
+            if any(
+                temperature_fahrenheit(t.value, t.unit) != design_f
+                for t in (self.sustained_temperature, self.maximum_temperature)
+            ):
+                raise ValueError(
+                    "Direct Design Temperature must govern both sustained and maximum temperatures."
+                )
+            canonical = MaterialTemperatureDTO(
+                value=canonical_decimal_string(design_f), unit="degF"
+            )
+            canonical_updates = {
+                "design_temperature": canonical,
+                "sustained_temperature": canonical,
+                "maximum_temperature": canonical,
+            }
+            if self.moisture not in {"REFERENCE", "SUSTAINED_MOISTURE"}:
+                raise ValueError("Select Dry or Sustained moisture for Direct.")
+            if self.chemical not in {"NONE_DECLARED", "SPECIFIED"}:
+                raise ValueError(
+                    "Select None or Custom adjustment for Direct chemical environment."
+                )
+            if self.chemical == "SPECIFIED":
+                if self.chemical_strength_factor is None:
+                    raise ValueError(
+                        "Enter a finite dimensionless chemical strength factor "
+                        "greater than 0 and at most 1.00."
+                    )
+                factor = decimal_input(self.chemical_strength_factor)
+                if not Decimal(0) < factor <= Decimal(1):
+                    raise ValueError(
+                        "Chemical strength factor must be greater than 0 and at most 1.00."
+                    )
+                canonical_updates["chemical_strength_factor"] = canonical_decimal_string(factor)
+            elif self.chemical_strength_factor is not None:
+                raise ValueError("Chemical environment None cannot carry a custom factor.")
         if temperature_fahrenheit(
             self.maximum_temperature.value, self.maximum_temperature.unit
         ) < temperature_fahrenheit(
@@ -189,7 +281,28 @@ class MaterialConditionsDTO(_StrictModel):
             raise ValueError("MAT1 maximum material temperature is below sustained temperature.")
         if not self.load_case_name.strip():
             raise ValueError("MAT1 load case name must be nonempty.")
-        return self
+        live_categories = {
+            TimeEffectCategory.IMPACT,
+            TimeEffectCategory.STORAGE,
+            TimeEffectCategory.LONG_TERM_OPERATING,
+            TimeEffectCategory.OTHER_LIVE,
+        }
+        if self.live_load_subtype and (
+            self.time_effect_category not in live_categories
+            or self.live_load_subtype != self.time_effect_category.value
+        ):
+            raise ValueError(
+                "MAT1 live-load classification conflicts with the selected load category."
+            )
+        if (
+            self.time_effect_category is TimeEffectCategory.LONG_TERM_OPERATING
+            and self.full_amplitude_duration != "MORE_THAN_ONE_YEAR"
+        ):
+            raise ValueError(
+                "Long-term operating classification requires documented full nominal "
+                "amplitude for more than one year."
+            )
+        return self.model_copy(update=canonical_updates) if canonical_updates else self
 
 
 class FactorRequestDTO(_StrictModel):
@@ -198,9 +311,12 @@ class FactorRequestDTO(_StrictModel):
     conditions: MaterialConditionsDTO
     component_id: StrictStr
     property_ids: tuple[StrictStr, ...]
+    family_id: Literal["multi-row"] | None = None
 
     @model_validator(mode="after")
     def validate_ids(self) -> Self:
+        if self.conditions.direct_policy is not None and self.family_id != "multi-row":
+            raise ValueError("MC1 factor inspection is restricted to Direct multi-row.")
         if not self.component_id.strip() or not self.property_ids:
             raise ValueError("MAT1 factor inspection needs a component and properties.")
         if len(set(self.property_ids)) != len(self.property_ids):
@@ -225,6 +341,28 @@ class MultiRowMAT1RequestDTO(_StrictModel):
     contract: Literal["MAT1-MULTI-ROW-RC0"]
     legacy_request: MultiRowConnectionRequestDTO
     assignments: MaterialAssignmentsDTO
+    qualification_record_id: StrictStr | None = None
+    qualification_context: QualificationDesignContext | None = None
+    fastener: FastenerSelectionDTO = Field(
+        default_factory=lambda: DefaultFastenerSelectionDTO(
+            kind="DEFAULT", contract="FASTENER-OR1-RC1", revision=F593_REVISION
+        )
+    )
+
+    @model_validator(mode="after")
+    def direct_policy_boundary(self) -> Self:
+        default = self.assignments.default_conditions
+        overrides = self.assignments.condition_overrides.values()
+        if not any(c.direct_policy is not None for c in (default, *overrides)):
+            return self
+        if self.legacy_request.direct_finalization_contract_version != "SHEAR01-DIRECT-F1":
+            raise ValueError("MC1 material policy requires the Direct finalization contract.")
+        if default.direct_policy is None or any(c != default for c in overrides):
+            raise ValueError(
+                "New Direct inputs require one shared set of connection conditions. "
+                "Use the connection default or matching MC1 component conditions."
+            )
+        return self
 
 
 class TeeMAT1RequestDTO(_StrictModel):
@@ -267,7 +405,7 @@ def resolve_material(selection: CatalogSelectionDTO | SessionSelectionDTO) -> Ma
 
 
 def resolve_conditions(dto: MaterialConditionsDTO) -> DesignConditions:
-    return DesignConditions(
+    legacy = DesignConditions(
         sustained_f=temperature_fahrenheit(
             dto.sustained_temperature.value, dto.sustained_temperature.unit
         ),
@@ -302,9 +440,20 @@ def resolve_conditions(dto: MaterialConditionsDTO) -> DesignConditions:
         service_period=dto.service_period,
         fatigue_cycles=dto.fatigue_cycles,
     )
+    return (
+        DirectDesignConditions(
+            **asdict(legacy),
+            chemical_strength_factor=None
+            if dto.chemical_strength_factor is None
+            else decimal_input(dto.chemical_strength_factor),
+        )
+        if dto.direct_policy is not None
+        else legacy
+    )
 
 
 def resolve_scope(dto: MaterialAssignmentsDTO, family_id: str = "") -> MAT1Scope:
+    require_legacy_policy(dto)
     default = (resolve_material(dto.default_material), resolve_conditions(dto.default_conditions))
     overrides = {
         owner_id: (
@@ -318,6 +467,14 @@ def resolve_scope(dto: MaterialAssignmentsDTO, family_id: str = "") -> MAT1Scope
     ):
         raise ValueError("MAT1_ONE_LOAD_CASE_CANNOT_HAVE_CONFLICTING_TIME_CATEGORIES")
     return MAT1Scope(default, overrides, family_id)
+
+
+def require_legacy_policy(dto: MaterialAssignmentsDTO) -> None:
+    if any(
+        c.direct_policy is not None
+        for c in (dto.default_conditions, *dto.condition_overrides.values())
+    ):
+        raise ValueError("MC1 material policy is restricted to Direct multi-row, not this family.")
 
 
 def bind_physical_owners(scope: MAT1Scope, family_id: str, preview: object) -> None:
@@ -351,6 +508,95 @@ def _json_value(value: object) -> object:
     return value
 
 
+def _material_source_snapshot(assignments: MaterialAssignmentsDTO) -> dict[str, object]:
+    """Keep resolved source records in the same response as the native result."""
+
+    return {
+        "default": _json_value(
+            {
+                **asdict(resolve_material(assignments.default_material)),
+                "specification": shape_source_metadata(
+                    resolve_material(assignments.default_material)
+                ),
+                "property_basis": catalog_property_basis(
+                    resolve_material(assignments.default_material)
+                ),
+            }
+        ),
+        "overrides": {
+            owner: _json_value(
+                {
+                    **asdict(resolve_material(selection)),
+                    "property_basis": catalog_property_basis(resolve_material(selection)),
+                    "specification": shape_source_metadata(resolve_material(selection)),
+                }
+            )
+            for owner, selection in assignments.material_overrides.items()
+        },
+        "temperature_applicability": {
+            "default": shape_temperature_state(
+                resolve_material(assignments.default_material),
+                resolve_conditions(assignments.default_conditions),
+            ),
+            "overrides": {
+                owner: shape_temperature_state(
+                    resolve_material(
+                        assignments.material_overrides.get(owner, assignments.default_material)
+                    ),
+                    resolve_conditions(conditions),
+                )
+                for owner, conditions in assignments.condition_overrides.items()
+            },
+            "tg_evidence": "PROJECT_CONFORMANCE_SPECIFICATION"
+            if is_shape_basis(resolve_material(assignments.default_material))
+            else "USER_SUPPLIED"
+            if assignments.default_conditions.glass_transition_temperature is not None
+            else "MISSING",
+        },
+        "condition_basis": {
+            "default": material_condition_basis(
+                resolve_material(assignments.default_material),
+                resolve_conditions(assignments.default_conditions),
+            ),
+            "overrides": {
+                owner: material_condition_basis(
+                    resolve_material(
+                        assignments.material_overrides.get(owner, assignments.default_material)
+                    ),
+                    resolve_conditions(conditions),
+                )
+                for owner, conditions in assignments.condition_overrides.items()
+            },
+        },
+        **(
+            {
+                "direct_input_policy": {
+                    "contract": "SHEAR01-DIRECT-MC1",
+                    "design_temperature": (
+                        assignments.default_conditions.design_temperature.model_dump(mode="json")
+                    ),
+                    "temperature_provenance": (
+                        "Highest service temperature conservatively assumed sustained "
+                        "for resistance adjustment"
+                    ),
+                    "chemical_strength_factor_origin": "ENGINEER_SPECIFIED_NOT_CERTIFIED_TEST_DATA"
+                    if assignments.default_conditions.chemical == "SPECIFIED"
+                    else "NO_CHEMICAL_ADJUSTMENT_DECLARED",
+                    "chemical_modulus_applicability": "UNEVALUATED"
+                    if assignments.default_conditions.chemical == "SPECIFIED"
+                    else "NO_CHEMICAL_ADJUSTMENT_DECLARED",
+                    "durability_scope": (
+                        "Routine ASCE shape product specification; unknown extraordinary service "
+                        "exposure is not proved absent; known declarations remain authoritative"
+                    ),
+                }
+            }
+            if assignments.default_conditions.design_temperature is not None
+            else {}
+        ),
+    }
+
+
 def _quantity(value: QuantityDTO) -> PhysicalQuantity:
     return PhysicalQuantity.of(value.value, value.unit)
 
@@ -360,6 +606,12 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
 
     router = APIRouter(prefix="/api/v1/frp-materials")
     identity = build_trusted_identity_dependency(identity_resolver)
+
+    @router.get("/direct-qualification/records")
+    async def read_direct_qualification_records(
+        _identity: Annotated[TrustedIdentity, Depends(identity)],
+    ) -> dict[str, Any]:
+        return qualification_catalog()
 
     @router.get("/catalog")
     async def catalog(
@@ -371,10 +623,14 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 _json_value(
                     {
                         **asdict(record),
-                        "qualification": "OWNER_OR_CATALOG_DATA_NOT_SERVER_QUALIFIED",
+                        "property_basis": catalog_property_basis(record),
+                        "qualification": "CODE_MATERIAL_SPECIFICATION_REQUIREMENT"
+                        if is_shape_basis(record)
+                        else "OWNER_OR_CATALOG_DATA_NOT_SERVER_QUALIFIED",
+                        "specification": shape_source_metadata(record),
                     }
                 )
-                for record in predefined_catalog()
+                for record in (*predefined_catalog(), *production_shape_catalog())
             ],
         }
 
@@ -394,12 +650,15 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             raise HTTPException(status_code=422, detail={"code": str(error)}) from error
         return {
             "contract": "MAT1-FACTOR-RC0",
-            "result_status": "SOURCE_REQUIRED",
+            "result_status": "CODE_MATERIAL_SPECIFICATION_REQUIREMENT"
+            if is_shape_basis(record)
+            else "SOURCE_REQUIRED",
             "record_id": record.id,
             "record_revision": record.revision,
             "content_digest": record.content_digest,
             "load_case_name": conditions.load_case_name,
-            "ledgers": [_json_value(asdict(item)) for item in ledgers],
+            "ledgers": [_json_value(ledger_audit(item, conditions)) for item in ledgers],
+            "condition_basis": material_condition_basis(record, conditions),
             "design_check_performed": False,
         }
 
@@ -478,6 +737,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
         ):
             raise HTTPException(status_code=422, detail={"code": "MAT1_DUAL_TIME_CATEGORY"})
         try:
+            require_legacy_policy(request.assignments)
             canonical = map_single_bolt_request(legacy)
             keys = {
                 ":".join((item.participant_id, item.physical_element_id, item.material_region_id))
@@ -522,6 +782,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "contract": "MAT1-SINGLE-BOLT-RC0",
             "overall_status": "SOURCE_REQUIRED",
             "native_design": serialized.model_dump(mode="json"),
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in ledgers],
             "material_issues": sorted(set(issues)),
             "design_check_performed": True,
@@ -530,6 +791,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
     @router.post("/multi-row/design-check")
     async def multirow_design(
         request: MultiRowMAT1RequestDTO,
+        http_request: Request,
         _identity: Annotated[TrustedIdentity, Depends(identity)],
     ) -> dict[str, object]:
         """Bind a common source where this native method assumes identical layers."""
@@ -585,27 +847,101 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             if len(identities) != 1:
                 raise ValueError("MAT1_MULTIROW_LINKED_LAYER_MATERIAL_OR_CONDITIONS_REQUIRED")
             adapters = [
-                adapt_native_material(layer_id, record, condition)
+                adapt_native_material(
+                    layer_id,
+                    record,
+                    condition,
+                    shape_binding_verified=(
+                        legacy.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
+                        and all(
+                            layer.element_classification.value == "SHAPE" for layer in legacy.layers
+                        )
+                    ),
+                )
                 for layer_id, record, condition in per_layer
             ]
-            canonical = bind_multirow_material(
-                map_multirow_request(legacy), adapters[0].adjusted_snapshot
+            catalog_binding = (
+                resolve_catalog_selection(request.fastener, legacy.bolt_diameter)
+                if isinstance(request.fastener, CatalogFastenerSelectionDTO)
+                else None
             )
-            native = serialize_multirow_design(evaluate_multirow_connection(canonical))
+            canonical = bind_multirow_material(
+                map_multirow_request(legacy),
+                adapters[0].adjusted_snapshot,
+                resolve_fastener_selection(request.fastener),
+                catalog_binding,
+                tuple(
+                    sorted({issue for adapter in adapters for issue in adapter.unresolved_issues})
+                ),
+            )
+            native = serialize_multirow_design(
+                evaluate_multirow_connection(canonical),
+                include_direct_clearance=canonical.direct_finalization_mode,
+            )
         except (ArithmeticError, KeyError, TypeError, ValueError) as error:
             raise HTTPException(status_code=422, detail={"code": str(error)}) from error
-        return {
+        integration = native.automatic_group_mode_integration
+        single_row = (
+            integration.get("direct_single_row_result") if integration is not None else None
+        )
+        numerical_fail = (
+            legacy.direct_finalization_contract_version == "SHEAR01-DIRECT-F1"
+            and integration is not None
+            and (
+                bool(integration.get("failed_check_ids"))
+                or (isinstance(single_row, dict) and bool(single_row.get("failed_check_ids")))
+            )
+        )
+        result = {
             "contract": "MAT1-MULTI-ROW-RC0",
-            "overall_status": "SOURCE_REQUIRED",
+            "overall_status": "FAIL"
+            if numerical_fail
+            or any(
+                shape_temperature_state(record, condition) == "FAIL"
+                for _, record, condition in per_layer
+            )
+            else "ENGINEERING_REVIEW_REQUIRED"
+            if all(is_shape_basis(record) for _, record, _ in per_layer)
+            else "SOURCE_REQUIRED",
             "native_design": native.model_dump(mode="json"),
+            "material_sources": _material_source_snapshot(request.assignments),
+            "fastener_source": (
+                catalog_binding.source_record
+                if catalog_binding is not None
+                else fastener_source_record(request.fastener)
+            ),
             "material_ledgers": [
-                _json_value(asdict(ledger)) for adapter in adapters for ledger in adapter.ledgers
+                _json_value(ledger_audit(ledger, condition))
+                for adapter, (_, _, condition) in zip(adapters, per_layer, strict=True)
+                for ledger in adapter.ledgers
             ],
             "material_issues": sorted(
                 {issue for adapter in adapters for issue in adapter.unresolved_issues}
             ),
             "design_check_performed": True,
         }
+
+        try:
+            qualified_result = attach_qualification(
+                gate_direct_temperature_result(result),
+                legacy.model_dump(mode="json"),
+                request.qualification_context,
+                request.qualification_record_id,
+                cast(dict[str, Any], _json_value(conditions_audit(per_layer[0][2]))),
+                [ledger for adapter in adapters for ledger in adapter.ledgers],
+            )
+            http_request.state.direct_qualification_provenance = qualification_snapshot_provenance(
+                qualified_result
+            )
+            from frp_master_connection.api.direct_status import attach_direct_status
+
+            return attach_direct_status(
+                qualified_result,
+                legacy.model_dump(mode="json"),
+                http_request.state.direct_qualification_provenance,
+            )
+        except ValueError as error:
+            raise HTTPException(status_code=422, detail={"code": str(error)}) from error
 
     @router.post("/tee-connector/design-check")
     async def tee_design(
@@ -637,6 +973,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "contract": "MAT1-TEE-RC0",
             "overall_status": "SOURCE_REQUIRED",
             "native_design": serialized.model_dump(mode="json"),
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in scope.ledgers],
             "material_issues": sorted(set(scope.issues)),
             "design_check_performed": True,
@@ -678,6 +1015,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
             "family_id": request.family_id,
             "overall_status": "SOURCE_REQUIRED",
             "client_design": client_design,
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in scope.ledgers],
             "material_issues": sorted(set(scope.issues)),
             "design_check_performed": True,
@@ -737,6 +1075,7 @@ def build_mat1_router(identity_resolver: TrustedIdentityResolver) -> APIRouter:
                 "whole_connection_status": native.whole_connection_status,
                 "result": serialize_ssmc_value(native),
             },
+            "material_sources": _material_source_snapshot(request.assignments),
             "material_ledgers": [_json_value(asdict(item)) for item in scope.ledgers],
             "material_issues": sorted(
                 {*scope.issues, "SSMC_EXACT_PLATE_AND_MEMBER_PATH_SOURCE_BINDINGS_REQUIRED"}

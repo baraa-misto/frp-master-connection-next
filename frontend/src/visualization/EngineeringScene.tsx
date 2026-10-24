@@ -185,6 +185,7 @@ function BoxPrimitive({ value, displayMode, selected, onSelect, selectionGesture
     >
       <boxGeometry args={[value.size.x, value.size.y, value.size.z]} />
       <meshStandardMaterial
+        key={displayMode}
         color={color}
         opacity={value.deferred ? 0.2 : xray ? 0.32 : 1}
         transparent={value.deferred || xray}
@@ -242,6 +243,7 @@ function TriangleMeshPrimitive({ value, displayMode, selected, onSelect, selecti
       }}
     >
       <meshStandardMaterial
+        key={displayMode}
         color={color}
         opacity={xray ? 0.32 : 1}
         transparent={xray}

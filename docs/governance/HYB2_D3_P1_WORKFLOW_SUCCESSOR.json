@@ -1,0 +1,20 @@
+{
+  "stage": "HYB2-D3-P1",
+  "predecessor_candidate": "47fa123a0e50897b4fffc8b8b9248531401ed597",
+  "controlling_order_sha256": "2a49b38ceb68f05d9b17a909fe102c7d353e1cacf7439902e1e5360c2a440f74",
+  "predecessor_workflow_sha256": "15DFD30D442FB3B303C43F858CC823B345806C00D2E61280400BE4124AA41C3F",
+  "workflow_sha256": "25E1F0D4276D6E9475B7CFB58CD998C843F20C0758974AF3B097DC93851467DE",
+  "backend_tests": 9430,
+  "frontend_tests": 1436,
+  "new_pdf_count_per_platform": 14,
+  "inherited_hyb1_pdf_count_per_platform": 27,
+  "protected_engineering_identities": 53,
+  "historical_controls": 173,
+  "workflow_available": true,
+  "structural_method_activation": false,
+  "qualification_installed": false,
+  "added_steps": "      - name: Generate live-input Hybrid workflow reports\n        run: python ../scripts/generate_hybrid_workflow_ci_pdfs.py --output hybrid-workflow-pdfs\n      - name: Upload authenticated Hybrid workflow report evidence\n        uses: actions/upload-artifact@v7\n        with:\n          name: hybrid-workflow-pdfs-${{ matrix.os }}\n          path: backend/hybrid-workflow-pdfs/\n          if-no-files-found: error\n",
+  "scope": "Live current-input candidate workflow; existing native/RHM equations and source factors unchanged; scoped outcomes, coverage, fit and qualification remain independent.",
+  "security_successor_sha256": "F4E1B80932AEB9DF8295C72E8BED4920F83B442525CF52B1B3CF7E9699078EA6",
+  "backend_security_successor_sha256": "755E66EC4F5184639801FAC867BF08B7545A9944D87523908D6636EE08822332"
+}

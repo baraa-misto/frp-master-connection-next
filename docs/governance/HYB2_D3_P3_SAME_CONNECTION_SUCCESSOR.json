@@ -1,0 +1,32 @@
+{
+  "stage": "HYB2-D3-P3",
+  "accepted_predecessor": "2367eaebd98a228658313d8fae6c9d73e3fdc4a7",
+  "predecessor_workflow_sha256": "4C9CE926758CB854BFC6DCBC36180BC3F1CD060E984D5E2FA4A675C9C414732E",
+  "workflow_sha256": "04D099B1EF545329D1AEEE6ACC70A85E463709505A76BC8D11FF10EDD4B99E58",
+  "backend_tests": 9495,
+  "predecessor_backend_tests": 9455,
+  "added_tests": 40,
+  "added_steps": "      - name: Generate same-connection Hybrid P3 reports\n        run: python ../scripts/generate_hybrid_same_connection_ci_pdfs.py --output hybrid-same-connection-pdfs\n      - name: Upload same-connection Hybrid P3 reports\n        uses: actions/upload-artifact@v7\n        with:\n          name: hybrid-same-connection-pdfs-${{ matrix.os }}\n          path: backend/hybrid-same-connection-pdfs/\n          if-no-files-found: error\n",
+  "protected_engineering_count": 53,
+  "historical_controls": 173,
+  "dependency_changes": [],
+  "coverage_thresholds": [
+    100,
+    100,
+    100,
+    100
+  ],
+  "method_approval_installed": false,
+  "qualification_installed": false,
+  "authority": "Existing ASCE component equations on current R3 geometry; RHM reference scope unchanged",
+  "engineering_specification": "docs/engineering/HYB2_D3_P3_SAME_CONNECTION_ASSESSMENT.md",
+  "reconstruction": "Remove only these exact additive steps, restore count 9455, then run unchanged predecessor guards.",
+  "inactive_boundary_guard": {
+    "path": "backend/tests/application/test_hyb1_inactive_boundary.py",
+    "before_sha256": "FEE3700DAE6E959126B18D3B3E6D7FF6C13B780247D5E939A859F950E3F343F5",
+    "after_sha256": "46BCB728E7B2D0A64A28C8BBC105C3D055705BEFCEFA4F890D629FFB4972D33E",
+    "exact_added_line": "        \"hybrid_same_connection.py\",\n",
+    "scope": "Only the new explicitly authorized hybrid adapter filename. Original public-module import prohibitions remain unchanged."
+  },
+  "frame_reference_correction": "P3 LRFD seam transforms the nonzero +n reference coordinate together with the legacy force alias; exact physical-wrench parity, raw signed declarations and unchanged legacy DTO behavior verified."
+}

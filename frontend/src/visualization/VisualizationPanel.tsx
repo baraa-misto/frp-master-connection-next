@@ -65,6 +65,9 @@ export interface SelectedBoltCheckSummary {
 
 interface VisualizationPanelProps {
   readonly model: SingleBoltSceneModel;
+  readonly materialAxesQuickAccess?: boolean;
+  readonly initialMaterialAxes?: boolean;
+  readonly onMaterialAxesChange?: (visible: boolean) => void;
   readonly results?: readonly CalculationResultDTO[];
   readonly resolvedLayers?: readonly ResolvedLayerDTO[];
   readonly selection: SceneSelection;
@@ -260,6 +263,9 @@ function UnityRatioOverlay() {
 }
 
 export function VisualizationPanel({
+  materialAxesQuickAccess = false,
+  initialMaterialAxes = false,
+  onMaterialAxesChange,
   model,
   results = [],
   resolvedLayers = [],
@@ -269,13 +275,13 @@ export function VisualizationPanel({
   onAppliedActionValueChange,
   actionSourceLabel = "Member",
   selectedBoltChecks = [],
-  title = "Brace-to-column connection",
-  contactSelectionLabel = "W Column Flange contact face",
+  title = "Connection model",
+  contactSelectionLabel = "Selected supporting flange contact face",
   interfaceHighlight = null,
 }: VisualizationPanelProps) {
   const [view, setView] = useState<SceneViewId>("3D");
   const [displayMode, setDisplayMode] = useState<SceneDisplayMode>("SOLID");
-  const [visibility, setVisibility] = useState<SceneVisibility>(INITIAL_VISIBILITY);
+  const [visibility, setVisibility] = useState<SceneVisibility>(() => ({ ...INITIAL_VISIBILITY, materialAxes: initialMaterialAxes }));
   const [resetNonce, setResetNonce] = useState(0);
   const [editingAction, setEditingAction] = useState<ActionComponent | null>(null);
   const [actionDraft, setActionDraft] = useState("");
@@ -320,6 +326,7 @@ export function VisualizationPanel({
     [],
   );
   const setFlag = <Key extends keyof SceneVisibility>(key: Key, value: SceneVisibility[Key]) => {
+    if (key === "materialAxes") onMaterialAxesChange?.(value as boolean);
     setVisibility((current) => ({ ...current, [key]: value }));
   };
   const describedMarkers = model.markers.filter(
@@ -382,10 +389,9 @@ export function VisualizationPanel({
     <section className="visualization-panel" aria-labelledby="visualization-title">
       <div className="viewer-title-row">
         <div>
-          <p className="eyebrow">Canonical connection view</p>
+          <p className="eyebrow">Connection view</p>
           <h3 id="visualization-title">{title}</h3>
         </div>
-        <span className="schema-chip">Snapshot {model.snapshotVersion}</span>
       </div>
       <p id="canvas-description" className="sr-description">
         Solid standard-shape members, selected bolt and round holes, with optional
@@ -427,6 +433,7 @@ export function VisualizationPanel({
             <option value="XRAY">X-ray</option>
           </select>
         </label>
+        {materialAxesQuickAccess ? <Toggle label="Material axes (LW/CW/TT)" checked={visibility.materialAxes} onChange={(value) => { setFlag("materialAxes", value); }} /> : null}
         <details className="overlay-menu">
           <summary>Overlays</summary>
           <div className="overlay-grid">
@@ -451,7 +458,7 @@ export function VisualizationPanel({
             <Toggle label="Connector local axes" checked={visibility.connectorAxes} onChange={(value) => { setFlag("connectorAxes", value); }} />
             <Toggle label="Interface-local axes" checked={visibility.interfaceAxes} onChange={(value) => { setFlag("interfaceAxes", value); }} />
             <Toggle label="Bolt-group axes" checked={visibility.boltGroupAxes} onChange={(value) => { setFlag("boltGroupAxes", value); }} />
-            <Toggle label="Material axes (LW / CW / TT)" checked={visibility.materialAxes} onChange={(value) => { setFlag("materialAxes", value); }} />
+            {materialAxesQuickAccess ? null : <Toggle label="Material axes (LW / CW / TT)" checked={visibility.materialAxes} onChange={(value) => { setFlag("materialAxes", value); }} />}
             <Toggle label="Reference points and START / END" checked={visibility.referencePoints} onChange={(value) => { setFlag("referencePoints", value); }} />
             <Toggle label="Bolt axis and round holes" checked={visibility.boltAxis} onChange={(value) => { setFlag("boltAxis", value); }} />
             <Toggle label="Positive sign-convention arrows" checked={visibility.positiveDirections} onChange={(value) => { setFlag("positiveDirections", value); }} />
@@ -587,7 +594,7 @@ export function VisualizationPanel({
         </div>
       </div>
 
-      <div className="inspector-grid">
+      <details className="viewer-engineering-diagnostics" open={selection.kind === "BOLT" || undefined}><summary>Advanced Engineering Diagnostics</summary><span className="schema-chip">Snapshot {model.snapshotVersion}</span><div className="inspector-grid">
         {selectedBolt === null ? null : (
           <details open>
             <summary>Selected-bolt inspector</summary>
@@ -671,7 +678,7 @@ export function VisualizationPanel({
             ))}
           </ul>
         </details>
-      </div>
+      </div></details>
     </section>
   );
 }
