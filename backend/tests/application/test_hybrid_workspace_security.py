@@ -2,6 +2,7 @@
 
 import pytest
 
+from tests.hybrid_security_successor import pre_s1_dependency
 from tests.hybrid_workspace_governance import ROOT, digest
 from tests.hybrid_workspace_security import authority, pre_p2_dependency
 
@@ -11,7 +12,7 @@ def test_exact_security_predecessors_and_bounded_version_changes() -> None:
     assert governed["other_backend_versions_unchanged"] == 54
     assert len(governed["changed_lock_records"]) == 10
     for path, row in governed["files"].items():
-        raw = (ROOT / path).read_bytes().replace(b"\r\n", b"\n")
+        raw = pre_s1_dependency(path, (ROOT / path).read_bytes()).replace(b"\r\n", b"\n")
         assert digest(raw) == row["after_sha256"]
         before = pre_p2_dependency(path, raw)
         assert digest(before) == row["before_sha256"]
@@ -33,7 +34,7 @@ def test_exact_security_predecessors_and_bounded_version_changes() -> None:
 def test_p2_security_reverse_delta_rejects_every_unapproved_identity(
     path: str, mutation: str
 ) -> None:
-    raw = (ROOT / path).read_bytes().replace(b"\r\n", b"\n")
+    raw = pre_s1_dependency(path, (ROOT / path).read_bytes()).replace(b"\r\n", b"\n")
     if mutation == "bytes":
         changed = raw + b" "
     else:

@@ -3,6 +3,7 @@
 import pytest
 
 from tests.hybrid_same_connection_governance import ROOT, authority, digest, pre_p3_workflow
+from tests.hybrid_security_successor import pre_s1_workflow
 from tests.hybrid_workspace_governance import authority as p2_authority
 from tests.hybrid_workspace_governance import pre_p2_workflow
 from tests.hybrid_workspace_security import pre_p2_dependency
@@ -43,7 +44,7 @@ def test_successor_manifest_is_exact() -> None:
 
 @pytest.mark.parametrize("mutation", ["count", "inherited_reports", "security"])
 def test_p3_successor_rejects_unapproved_workflow_drift(mutation: str) -> None:
-    raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
+    raw = pre_s1_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())
     before, after = {
         "count": (
             f"--expected-tests {authority()['backend_tests']}".encode(),

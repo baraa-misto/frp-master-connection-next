@@ -70,11 +70,19 @@ jobs:
         run: python -m mypy --strict src tests
       - name: Build source and wheel distributions
         run: python -m build --no-isolation --sdist --wheel --outdir dist
+      - name: Verify P4-S1 installed pins, publisher hashes, distributions and PDF compatibility
+        run: python ../scripts/verify_p4_s1_security.py --output p4-s1-security-qa
+      - name: Upload P4-S1 security compatibility evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: p4-s1-security-${{ matrix.os }}
+          path: backend/p4-s1-security-qa/
+          if-no-files-found: error
       - name: Run deterministic backend shards with combined coverage
         run: >-
           python ../scripts/run_backend_windows_shards.py
           --shards 4
-          --expected-tests 9495
+          --expected-tests 9535
       - name: Verify inactive Appendix RC3 numerical authority and Direct C3 parity
         run: python ../scripts/generate_appendix_rc3_ci_evidence.py --output appendix-rc3-qa
       - name: Upload Appendix RC3 numerical authority evidence

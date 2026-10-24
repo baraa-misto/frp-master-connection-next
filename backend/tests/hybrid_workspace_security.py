@@ -20,6 +20,9 @@ def authority(raw: bytes | None = None) -> dict[str, Any]:
 
 
 def pre_p2_dependency(path: str, raw: bytes) -> bytes:
+    from tests.hybrid_security_successor import pre_s1_dependency
+
+    raw = pre_s1_dependency(path, raw)
     raw = raw.replace(b"\r\n", b"\n")
     governed = authority()
     identity = governed["files"].get(path)

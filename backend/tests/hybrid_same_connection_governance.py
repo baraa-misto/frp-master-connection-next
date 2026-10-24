@@ -21,6 +21,9 @@ def authority(raw: bytes | None = None) -> dict[str, Any]:
 
 
 def pre_p3_workflow(raw: bytes, *, error_message: str = "P3_WORKFLOW_IDENTITY_INVALID") -> bytes:
+    from tests.hybrid_security_successor import pre_s1_workflow
+
+    raw = pre_s1_workflow(raw)
     raw = raw.replace(b"\r\n", b"\n")
     if b"hybrid-same-connection-pdfs" not in raw:
         return raw

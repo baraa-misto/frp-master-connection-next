@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools==83.0.0"]
+requires = ["setuptools==84.1.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -31,11 +31,11 @@ dev = [
   "ruff==0.16.1",
   "mypy==2.3.0",
   "types-reportlab==5.0.0.20260911",
-  "pypdf==6.21.1",
+  "pypdf==6.21.2",
 ]
 tooling = [
   "pip-tools==7.6.0",
-  "setuptools==83.0.0",
+  "setuptools==84.1.0",
   "wheel==0.47.0",
 ]
 
