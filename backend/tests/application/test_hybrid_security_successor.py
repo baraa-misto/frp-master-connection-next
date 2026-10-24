@@ -30,7 +30,7 @@ def test_four_package_scope_and_unchanged_parent_records() -> None:
         "node_modules/zod",
     }
     path = "backend/requirements/requirements-dev-py314.lock.txt"
-    current = (ROOT / path).read_bytes()
+    current = (ROOT / path).read_bytes().replace(b"\r\n", b"\n")
     previous = require_successor(path, current)
     assert len(package_blocks(current)) == len(package_blocks(previous)) == 55
     assert {
