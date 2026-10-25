@@ -557,6 +557,12 @@ describe("pure visualization snapshot to presentation scene mapping", () => {
     } as unknown as MultiRowVisualization;
 
     const model = buildMultiRowSceneModel(snapshot);
+    const supportModel = buildMultiRowSceneModel(snapshot, {
+      condition: "CONTINUOUS_THROUGH_CONNECTION", component_id: "member-b", length_unit: "in",
+      negative_end_distance: null, positive_end_distance: null,
+      negative_end_member_local_station: null, positive_end_member_local_station: null,
+    });
+    expect(supportModel.cylinders).toEqual(model.cylinders);
     const physicalBolts = model.cylinders.filter((value) => value.kind === "BOLT");
     const physicalHoles = model.cylinders.filter((value) => value.kind === "HOLE");
     expect(physicalBolts).toHaveLength(2);

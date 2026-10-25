@@ -48,6 +48,7 @@ export function ReportExportButton({ family, draft }: { readonly family: string;
   const [metadata, setMetadata] = useState<Metadata>(initial);
   const [paper, setPaper] = useState<"LETTER" | "A4">("LETTER");
   const [displayUnits, setDisplayUnits] = useState<"INHERIT" | "US_CUSTOMARY" | "SI">("INHERIT");
+  const [reportType, setReportType] = useState<"ENGINEER_REPORT" | "FULL_TECHNICAL_AUDIT">("ENGINEER_REPORT");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const activeExport = useRef<AbortController | null>(null);
@@ -97,7 +98,7 @@ export function ReportExportButton({ family, draft }: { readonly family: string;
       const response = await fetch("/api/v1/reports/export", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/pdf" },
-        body: JSON.stringify({ report_handle: handle, paper, display_units: displayUnits, ...metadata }),
+        body: JSON.stringify({ report_handle: handle, paper, display_units: displayUnits, mode: reportType, ...metadata }),
         credentials: "same-origin",
         signal: controller.signal,
       });
@@ -131,15 +132,20 @@ export function ReportExportButton({ family, draft }: { readonly family: string;
     }
   }
 
+  const directReport = family === "multi-row" && typeof draft === "object" && draft !== null &&
+    "direct_finalization_contract_version" in draft &&
+    draft.direct_finalization_contract_version === "SHEAR01-DIRECT-F1";
+  const currentDesign = snapshot.token !== null && !snapshot.dirty && snapshot.kind === "design";
   return <div className="report-export">
     <button type="button" onClick={() => {
       const current = currentReportSnapshot(family);
       setMode(current.token !== null && !current.dirty ? "design" : "draft");
       setOpen(true);
     }} disabled={(snapshot.token === null || snapshot.dirty) && draft === undefined}>
-      Export PDF Report
+      {currentDesign ? "Export Engineer Report" : "Export Input / Geometry Report"}
     </button>
-    {snapshot.dirty ? <span aria-live="polite">Inputs changed. Export submitted inputs only, or run Design Check for a current calculation report.</span> : null}
+    {snapshot.dirty ? <span aria-live="polite">Inputs changed. Export will document the current inputs and geometry.</span> : null}
+    {!snapshot.dirty && draft !== undefined ? <span aria-live="polite">{currentDesign ? "Engineer Report reflects the latest Design Check." : "No current design result. Export will document submitted inputs and geometry."}</span> : null}
     {snapshot.token === null && !snapshot.dirty && draft === undefined ? <span aria-live="polite">Run a preview or design check to create a report snapshot.</span> : null}
     {open ? <div role="dialog" aria-modal="true" aria-label="Export PDF Report" className="report-export-dialog">
       <h2>{mode === "draft" ? "Submitted inputs report" : snapshot.kind === "input_only" ? "Inputs and model report" : "Full calculation report"}</h2>
@@ -153,6 +159,9 @@ export function ReportExportButton({ family, draft }: { readonly family: string;
       <label>Display units <select value={displayUnits} onChange={event => { setDisplayUnits(event.target.value as "INHERIT" | "US_CUSTOMARY" | "SI"); }}>
         <option value="INHERIT">Calculation units</option><option value="US_CUSTOMARY">U.S. equivalents</option><option value="SI">S.I. equivalents</option>
       </select></label>
+      {directReport && mode === "design" ? <label>Report detail <select value={reportType} onChange={event => { setReportType(event.target.value as "ENGINEER_REPORT" | "FULL_TECHNICAL_AUDIT"); }}>
+        <option value="ENGINEER_REPORT">Engineer Report</option><option value="FULL_TECHNICAL_AUDIT">Full Technical Audit</option>
+      </select></label> : null}
       {error ? <p role="alert">{error}</p> : null}
       <button type="button" onClick={() => { void exportReport(); }} disabled={busy || (mode === "design" && snapshot.dirty)}>
         {busy ? "Creating PDF…" : "Download PDF"}

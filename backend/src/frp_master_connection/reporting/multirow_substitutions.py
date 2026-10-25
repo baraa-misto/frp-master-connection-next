@@ -89,6 +89,15 @@ def multirow_native_substitution(
     method = str(check.get("equation_method"))
     trace = _record(check, "equation_trace")
     nominal = _quantity(check, "equation_nominal_resistance", system)
+    if method == "BOLT_SHEAR":
+        area = _quantity(_record(trace, "area_trace"), "area", system)
+        stress = _quantity(trace, "nominal_stress", system)
+        return (
+            f"R_n = A_b({area}) x F_nv({stress}) = {nominal}; "
+            f"phi = {_scalar(trace, 'phi')}; "
+            f"lambda = {_scalar(trace, 'lambda_factor')}; "
+            f"R_d = {_quantity(check, 'design_resistance', system)}"
+        )
     if method == "PIN_BEARING":
         return (
             f"R_n = t({_layer_thickness(visual, check, system)}) x "

@@ -1,0 +1,19 @@
+{
+  "contract": "SHEAR01-DIRECT-OR2-F9",
+  "controlling_order_sha256": "583C58C974C9EF76D47508C5546E1F98A42FEBF699FEFA3E88689701DF8D90EB",
+  "accepted_candidate": "ce7db174d43bd87fe46b7ba842c1a8af1083afdd",
+  "scope": "Backend-authoritative Direct aggregate status and report presentation; no engineering freeze",
+  "backend_tests": 8658,
+  "frontend_tests": 1292,
+  "predecessor_workflow_sha256": "FA310105AFA01E48440E354D1324716E1DAC245A0BC8540185F272DA5FF02010",
+  "workflow_sha256": "6FAA4FB9A2432320435370CE5BA3AF893972F74675E32A61C762C44924E90C85",
+  "added_steps": "      - name: Generate authenticated Direct F9 status and report matrix\n        run: python ../scripts/generate_direct_f9_ci_pdfs.py --output direct-f9-review-pdfs\n      - name: Upload Direct F9 status and report evidence\n        uses: actions/upload-artifact@v7\n        with:\n          name: direct-f9-pdfs-${{ matrix.os }}\n          path: backend/direct-f9-review-pdfs/\n          if-no-files-found: error\n",
+  "backend_timeout_minutes": {
+    "before": 40,
+    "after": 60,
+    "reason": "Retain every historical gate and add twelve real F9 PDFs on each operating system"
+  },
+  "dependencies": "F8-G1 hash-locked pins and all security audit requirements unchanged",
+  "protected_refs": "main and all three protected annotated tags unchanged",
+  "frozen_engine_identities": 53
+}

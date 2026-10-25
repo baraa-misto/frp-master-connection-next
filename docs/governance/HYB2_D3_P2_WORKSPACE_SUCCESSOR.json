@@ -1,0 +1,2068 @@
+{
+  "stage": "HYB2-D3-P2",
+  "required_start_sha": "6dbac59869f7dc9042fdfe642ef1026acecad9b1",
+  "workflow_sha256": "4C9CE926758CB854BFC6DCBC36180BC3F1CD060E984D5E2FA4A675C9C414732E",
+  "predecessor_workflow_sha256": "25E1F0D4276D6E9475B7CFB58CD998C843F20C0758974AF3B097DC93851467DE",
+  "backend_tests": 9455,
+  "frontend_tests": 1444,
+  "coverage_thresholds": [
+    100,
+    100,
+    100,
+    100
+  ],
+  "structural_method_activation": false,
+  "dependency_changes": [
+    "Vitest 4.1.12 and seven matching internals",
+    "pypdf 6.21.1"
+  ],
+  "existing_live_pdf_count_per_platform": 14,
+  "inherited_pdf_count_per_platform": 27,
+  "protected_engineering": [
+    {
+      "path": "backend/src/frp_master_connection/calculation/__init__.py",
+      "sha256": "40656EC1ACEFACCCFB50456BF48FDDFCC2991204B7BB151DF923CCCBAC66E356",
+      "published_blob_oid": "fc9ddbcaff9abf97efa99c52bfa7196c804f867f",
+      "published_sha256": "40656EC1ACEFACCCFB50456BF48FDDFCC2991204B7BB151DF923CCCBAC66E356",
+      "accepted_checkout_sha256": [
+        "40656EC1ACEFACCCFB50456BF48FDDFCC2991204B7BB151DF923CCCBAC66E356"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_column_base_response.py",
+      "sha256": "47A2F4363741E270B3D4694E5B5EEE2C6208C2382EF698860ACED79BC168989C",
+      "published_blob_oid": "d4fe231aa3f1eeba1e08616bea1b41c619425e37",
+      "published_sha256": "47A2F4363741E270B3D4694E5B5EEE2C6208C2382EF698860ACED79BC168989C",
+      "accepted_checkout_sha256": [
+        "47A2F4363741E270B3D4694E5B5EEE2C6208C2382EF698860ACED79BC168989C"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_connector_core.py",
+      "sha256": "2B36DA06E44F50986D7A3078DB40D0AF66477BAEB289BE63C0F110F66BEF3BB7",
+      "published_blob_oid": "a455e5f2962a8157f56d6e9d2b94c69312dad733",
+      "published_sha256": "2B36DA06E44F50986D7A3078DB40D0AF66477BAEB289BE63C0F110F66BEF3BB7",
+      "accepted_checkout_sha256": [
+        "2B36DA06E44F50986D7A3078DB40D0AF66477BAEB289BE63C0F110F66BEF3BB7"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/angle_connector_providers.py",
+      "sha256": "F0A6FE18D2C178BFB964FA16711D8CA827F859B5F3DF5584CA2F8F6A9AF3BEDF",
+      "published_blob_oid": "961eea8280e8de091008704856a0f05d51ea5f37",
+      "published_sha256": "F0A6FE18D2C178BFB964FA16711D8CA827F859B5F3DF5584CA2F8F6A9AF3BEDF",
+      "accepted_checkout_sha256": [
+        "F0A6FE18D2C178BFB964FA16711D8CA827F859B5F3DF5584CA2F8F6A9AF3BEDF"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/applicability.py",
+      "sha256": "EBF83A63A52F68E22FC2911CB85602AB5EEE4D74079460786F7BB96FD51C5C41",
+      "published_blob_oid": "b9bd86f606b3bff44612667a92ceeb1ad074b446",
+      "published_sha256": "EBF83A63A52F68E22FC2911CB85602AB5EEE4D74079460786F7BB96FD51C5C41",
+      "accepted_checkout_sha256": [
+        "EBF83A63A52F68E22FC2911CB85602AB5EEE4D74079460786F7BB96FD51C5C41"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/block_shear_planning.py",
+      "sha256": "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022",
+      "published_blob_oid": "6d769c286ab767ffa68ff66897889627bd0fd374",
+      "published_sha256": "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022",
+      "accepted_checkout_sha256": [
+        "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/channel_moment_resultants.py",
+      "sha256": "75BCB593372563CCC93C5D138AF727E66A9A6A7AB7834DF69C5EE030E5228F4A",
+      "published_blob_oid": "f06c90b9ab4ea7dc5b22ab9c991f98596ddad4a6",
+      "published_sha256": "75BCB593372563CCC93C5D138AF727E66A9A6A7AB7834DF69C5EE030E5228F4A",
+      "accepted_checkout_sha256": [
+        "75BCB593372563CCC93C5D138AF727E66A9A6A7AB7834DF69C5EE030E5228F4A"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/channel_moment_splice_resistance.py",
+      "sha256": "FE3E11A7EC4D8CE7C58F396E7D522CE6731F6FAB9856DB08FA10898AF7F9994A",
+      "published_blob_oid": "cff98071bc581565e2f321adc667565e5fd7fe02",
+      "published_sha256": "FE3E11A7EC4D8CE7C58F396E7D522CE6731F6FAB9856DB08FA10898AF7F9994A",
+      "accepted_checkout_sha256": [
+        "FE3E11A7EC4D8CE7C58F396E7D522CE6731F6FAB9856DB08FA10898AF7F9994A"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/column_moment_base_response.py",
+      "sha256": "EAA3A15EC40472D386FD26FBC7FEC2B1BFDE94A815E2C4CE283C85D5B0885BCD",
+      "published_blob_oid": "5ccea5930c55e62c37cb156b7c6f64b3a0b26306",
+      "published_sha256": "EAA3A15EC40472D386FD26FBC7FEC2B1BFDE94A815E2C4CE283C85D5B0885BCD",
+      "accepted_checkout_sha256": [
+        "EAA3A15EC40472D386FD26FBC7FEC2B1BFDE94A815E2C4CE283C85D5B0885BCD"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/connector_material_plan.py",
+      "sha256": "451EE246588D86E1ABBAE8EEF0A5724754AA10291723AFD45969D69EDAEAD0E5",
+      "published_blob_oid": "4d6352de064c2d42a3d31f8720bb2b88fe91ef53",
+      "published_sha256": "451EE246588D86E1ABBAE8EEF0A5724754AA10291723AFD45969D69EDAEAD0E5",
+      "accepted_checkout_sha256": [
+        "451EE246588D86E1ABBAE8EEF0A5724754AA10291723AFD45969D69EDAEAD0E5"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/connector_material_provider.py",
+      "sha256": "9750111CE1A63224EBA1EC732B8F45046D31591695E59966F84032092F28981E",
+      "published_blob_oid": "e62f61e7fb205e76b0de81dfec163adaebd768e8",
+      "published_sha256": "9750111CE1A63224EBA1EC732B8F45046D31591695E59966F84032092F28981E",
+      "accepted_checkout_sha256": [
+        "9750111CE1A63224EBA1EC732B8F45046D31591695E59966F84032092F28981E"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/dctn3b_demand.py",
+      "sha256": "9730D39178096900730422DF08951194ED45B957BAE7C837C30B1E95F2F8C5BD",
+      "published_blob_oid": "0b718b0dcc99da7136c5a775c135f10f9de29d94",
+      "published_sha256": "9730D39178096900730422DF08951194ED45B957BAE7C837C30B1E95F2F8C5BD",
+      "accepted_checkout_sha256": [
+        "9730D39178096900730422DF08951194ED45B957BAE7C837C30B1E95F2F8C5BD"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/dctn3b_trusted_response.py",
+      "sha256": "07660B99EE7F4BE5E99932DA0B505CDA065458441CCDA906C01738A9FA77F6AA",
+      "published_blob_oid": "e8cebd4a3d14c97278f23fd8d862e29adbeb9700",
+      "published_sha256": "07660B99EE7F4BE5E99932DA0B505CDA065458441CCDA906C01738A9FA77F6AA",
+      "accepted_checkout_sha256": [
+        "07660B99EE7F4BE5E99932DA0B505CDA065458441CCDA906C01738A9FA77F6AA"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/dctn_fingerprint.py",
+      "sha256": "10150546C6F31606E79E02604B0A91348EE249839CD38D3B0CDD0DF8BEB51668",
+      "published_blob_oid": "4225d023317bf78a943ce0aca508e60726f37eb8",
+      "published_sha256": "10150546C6F31606E79E02604B0A91348EE249839CD38D3B0CDD0DF8BEB51668",
+      "accepted_checkout_sha256": [
+        "10150546C6F31606E79E02604B0A91348EE249839CD38D3B0CDD0DF8BEB51668"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/dctn_local_resistance.py",
+      "sha256": "CB9777E2087AE99CB618DFD00A1D5061A086E8BAC6592ED4B23CD374766CED50",
+      "published_blob_oid": "8b42ce717ba6fa3889c0c517f9b773cb30077d68",
+      "published_sha256": "CB9777E2087AE99CB618DFD00A1D5061A086E8BAC6592ED4B23CD374766CED50",
+      "accepted_checkout_sha256": [
+        "CB9777E2087AE99CB618DFD00A1D5061A086E8BAC6592ED4B23CD374766CED50"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/dctn_sources.py",
+      "sha256": "B27C57CF8E388A669E0561C83FF96EF2BFB1AB31BB911F16ADA81D58CFC307DE",
+      "published_blob_oid": "ac3645d1359e745b8d722598ec2aba231709bcba",
+      "published_sha256": "B27C57CF8E388A669E0561C83FF96EF2BFB1AB31BB911F16ADA81D58CFC307DE",
+      "accepted_checkout_sha256": [
+        "B27C57CF8E388A669E0561C83FF96EF2BFB1AB31BB911F16ADA81D58CFC307DE"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/deterministic_trigonometry.py",
+      "sha256": "018BA1FD3D0A515206F714FB8EFDA44F3C47201B700390E198B1E51A4895AB69",
+      "published_blob_oid": "7e2baf2fe3dfbc9092ff244902e6785c095a2d47",
+      "published_sha256": "018BA1FD3D0A515206F714FB8EFDA44F3C47201B700390E198B1E51A4895AB69",
+      "accepted_checkout_sha256": [
+        "018BA1FD3D0A515206F714FB8EFDA44F3C47201B700390E198B1E51A4895AB69"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/double_channel_truss_node.py",
+      "sha256": "F2854D7C21990A3D10E982B8554698F736DDA182483998BF071D6D0B9A64D9E2",
+      "published_blob_oid": "e07df28d25c8588e7b3244ae2b93bbc9c3f53c76",
+      "published_sha256": "F2854D7C21990A3D10E982B8554698F736DDA182483998BF071D6D0B9A64D9E2",
+      "accepted_checkout_sha256": [
+        "F2854D7C21990A3D10E982B8554698F736DDA182483998BF071D6D0B9A64D9E2"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/double_channel_truss_node_response.py",
+      "sha256": "F794F4F078DA3E4A6FE18CF5876A60806A6575821A987A3DE2ADA5DC9ED728CD",
+      "published_blob_oid": "f185c76151c6f7108fa23cf3364a81897c08247a",
+      "published_sha256": "F794F4F078DA3E4A6FE18CF5876A60806A6575821A987A3DE2ADA5DC9ED728CD",
+      "accepted_checkout_sha256": [
+        "F794F4F078DA3E4A6FE18CF5876A60806A6575821A987A3DE2ADA5DC9ED728CD"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/eccentric_demand.py",
+      "sha256": "B9A23CBE5A4635D940BB2B96C40DA81A87447A2E810D4E4C90C49F7C81485376",
+      "published_blob_oid": "2f55df68532c1818d4e1d6ce6757c6bc9f4fef97",
+      "published_sha256": "B9A23CBE5A4635D940BB2B96C40DA81A87447A2E810D4E4C90C49F7C81485376",
+      "accepted_checkout_sha256": [
+        "B9A23CBE5A4635D940BB2B96C40DA81A87447A2E810D4E4C90C49F7C81485376"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/eccentric_group_modes.py",
+      "sha256": "493D022A447E5F985AC6AF5B46FC10D2CB511D3CE1FE186903B402E480B2042E",
+      "published_blob_oid": "c29ce8ffba6fdab1684e0e3e08623bd373fb43c4",
+      "published_sha256": "493D022A447E5F985AC6AF5B46FC10D2CB511D3CE1FE186903B402E480B2042E",
+      "accepted_checkout_sha256": [
+        "493D022A447E5F985AC6AF5B46FC10D2CB511D3CE1FE186903B402E480B2042E"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/equations.py",
+      "sha256": "13EC9C0041C190D2DB47D4E8C316A3839E4657F8E186E9F58C22E83141128BF9",
+      "published_blob_oid": "9c15d174e65d9169f8e057f807fb9383a55436c3",
+      "published_sha256": "13EC9C0041C190D2DB47D4E8C316A3839E4657F8E186E9F58C22E83141128BF9",
+      "accepted_checkout_sha256": [
+        "13EC9C0041C190D2DB47D4E8C316A3839E4657F8E186E9F58C22E83141128BF9"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/evaluation.py",
+      "sha256": "73C7937C8599947B7B9134DA9ACFB31DB09E6A4327B3E409F51BAE7AF2BF113F",
+      "published_blob_oid": "127e69540876f5d3bffd0322651afca223b2a037",
+      "published_sha256": "73C7937C8599947B7B9134DA9ACFB31DB09E6A4327B3E409F51BAE7AF2BF113F",
+      "accepted_checkout_sha256": [
+        "73C7937C8599947B7B9134DA9ACFB31DB09E6A4327B3E409F51BAE7AF2BF113F"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/fingerprint.py",
+      "sha256": "B5827F740231B8447CE95FB31F2ABE06FCF7E3E50C8E56D8BCC330D76DDF32E0",
+      "published_blob_oid": "f2f6508fc13b24cec138b0ad7c1273660a20af82",
+      "published_sha256": "B5827F740231B8447CE95FB31F2ABE06FCF7E3E50C8E56D8BCC330D76DDF32E0",
+      "accepted_checkout_sha256": [
+        "B5827F740231B8447CE95FB31F2ABE06FCF7E3E50C8E56D8BCC330D76DDF32E0"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/frp_angle_connector_provider.py",
+      "sha256": "F7EB508C7253FBEECE2F202EAE0740C3574E5BE98D6C859A3D5AE43C3A408771",
+      "published_blob_oid": "a8d09444d9af219ba3a9e18754f770012c7b65a9",
+      "published_sha256": "F7EB508C7253FBEECE2F202EAE0740C3574E5BE98D6C859A3D5AE43C3A408771",
+      "accepted_checkout_sha256": [
+        "F7EB508C7253FBEECE2F202EAE0740C3574E5BE98D6C859A3D5AE43C3A408771"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/geometry_mapping.py",
+      "sha256": "59CE071BB08EE0F794B07BA388FA27791F1FC1DDD2EE324FB6A80E5A392FBDBE",
+      "published_blob_oid": "f5b1d9a540bf74f83f5bcc2a54513ef097c626bb",
+      "published_sha256": "59CE071BB08EE0F794B07BA388FA27791F1FC1DDD2EE324FB6A80E5A392FBDBE",
+      "accepted_checkout_sha256": [
+        "59CE071BB08EE0F794B07BA388FA27791F1FC1DDD2EE324FB6A80E5A392FBDBE"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/in_plane_wrench_demand.py",
+      "sha256": "1E01134F8DADA19E87E418EC05BFFD2118475FEAFB383CD667B6EAF941BE91C4",
+      "published_blob_oid": "4218f1f13326a40d96ddbff3b7f9d1c2a5b34f2b",
+      "published_sha256": "1E01134F8DADA19E87E418EC05BFFD2118475FEAFB383CD667B6EAF941BE91C4",
+      "accepted_checkout_sha256": [
+        "1E01134F8DADA19E87E418EC05BFFD2118475FEAFB383CD667B6EAF941BE91C4"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/inputs.py",
+      "sha256": "49D6E408A6DD0FA89A6512C7777FEDB2673724DA48EFB31C60059D09B93279D2",
+      "published_blob_oid": "6b85ec96f86808531cbfbeab2270723f64fec861",
+      "published_sha256": "49D6E408A6DD0FA89A6512C7777FEDB2673724DA48EFB31C60059D09B93279D2",
+      "accepted_checkout_sha256": [
+        "49D6E408A6DD0FA89A6512C7777FEDB2673724DA48EFB31C60059D09B93279D2"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/mat1_flange_body.py",
+      "sha256": "D1476426E2FB40278099BEA63AEC79FEF9471617CA5C228CADB1C0856C83D6A6",
+      "published_blob_oid": "9e57c166d4c581060151bb744804b98e41a0beba",
+      "published_sha256": "D1476426E2FB40278099BEA63AEC79FEF9471617CA5C228CADB1C0856C83D6A6",
+      "accepted_checkout_sha256": [
+        "D1476426E2FB40278099BEA63AEC79FEF9471617CA5C228CADB1C0856C83D6A6"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/material_compatibility.py",
+      "sha256": "61044CA0C33F602936C6B3D519EEE4A84E1626C6F5DBCB32A06B3A4BFF784E2C",
+      "published_blob_oid": "66c18600e76580315d051f8ffe8c46f1628eb854",
+      "published_sha256": "61044CA0C33F602936C6B3D519EEE4A84E1626C6F5DBCB32A06B3A4BFF784E2C",
+      "accepted_checkout_sha256": [
+        "61044CA0C33F602936C6B3D519EEE4A84E1626C6F5DBCB32A06B3A4BFF784E2C"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow.py",
+      "sha256": "1F8A5EDC1C05D88BF945EE864B5AD7431B2ADE4B2F7769BC1FD466F2742830E0",
+      "published_blob_oid": "5a927c924aaa1bce6f20af4d05cfa9d196d28101",
+      "published_sha256": "1F8A5EDC1C05D88BF945EE864B5AD7431B2ADE4B2F7769BC1FD466F2742830E0",
+      "accepted_checkout_sha256": [
+        "1F8A5EDC1C05D88BF945EE864B5AD7431B2ADE4B2F7769BC1FD466F2742830E0"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_engine.py",
+      "sha256": "E5FB704B0F2D984419DACCF5FFF6C42F9321DFA16900E7A62A4B1F7FC7D90580",
+      "published_blob_oid": "6322650fff28b0cebb61e98e1066e2b05de896df",
+      "published_sha256": "E5FB704B0F2D984419DACCF5FFF6C42F9321DFA16900E7A62A4B1F7FC7D90580",
+      "accepted_checkout_sha256": [
+        "E5FB704B0F2D984419DACCF5FFF6C42F9321DFA16900E7A62A4B1F7FC7D90580"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_equations.py",
+      "sha256": "73C8F081422F0629B319C2870F4B8F83752C555622DF8A38C0A1FC4C2558009D",
+      "published_blob_oid": "a922c1745bfe4490fde8f42f8812508f124bab3c",
+      "published_sha256": "73C8F081422F0629B319C2870F4B8F83752C555622DF8A38C0A1FC4C2558009D",
+      "accepted_checkout_sha256": [
+        "73C8F081422F0629B319C2870F4B8F83752C555622DF8A38C0A1FC4C2558009D"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/multirow_fingerprint.py",
+      "sha256": "2E555C9E8326BB762277C0D964E4017136BF1B5279A29F5DB710183A357434C9",
+      "published_blob_oid": "cac1a9882f855467f82e507dc5784e49eb14687e",
+      "published_sha256": "2E555C9E8326BB762277C0D964E4017136BF1B5279A29F5DB710183A357434C9",
+      "accepted_checkout_sha256": [
+        "2E555C9E8326BB762277C0D964E4017136BF1B5279A29F5DB710183A357434C9"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/native_connector_providers.py",
+      "sha256": "E1C00674B53224F85BFC909BC94281B0D25E7F223A88618D8DD0B1F77CE9EDB2",
+      "published_blob_oid": "b24ab9cecfbccdcb14fca2c5f9735e16af94db46",
+      "published_sha256": "E1C00674B53224F85BFC909BC94281B0D25E7F223A88618D8DD0B1F77CE9EDB2",
+      "accepted_checkout_sha256": [
+        "E1C00674B53224F85BFC909BC94281B0D25E7F223A88618D8DD0B1F77CE9EDB2"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/plate_strength.py",
+      "sha256": "45796D463CA22DA00145FC71547DF67AEE8D4D95A61B83303F8F06F03BCC1068",
+      "published_blob_oid": "9aa29fa2c1822c71f9bd9893f599489a52bee7b5",
+      "published_sha256": "45796D463CA22DA00145FC71547DF67AEE8D4D95A61B83303F8F06F03BCC1068",
+      "accepted_checkout_sha256": [
+        "45796D463CA22DA00145FC71547DF67AEE8D4D95A61B83303F8F06F03BCC1068"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/properties.py",
+      "sha256": "17A168DA22ACBE8E95B23D14411E9C6413973D504B9D24ACB495500F50E0448D",
+      "published_blob_oid": "232a6735327ba0da19b3c3a998322fb3d4a638ee",
+      "published_sha256": "17A168DA22ACBE8E95B23D14411E9C6413973D504B9D24ACB495500F50E0448D",
+      "accepted_checkout_sha256": [
+        "17A168DA22ACBE8E95B23D14411E9C6413973D504B9D24ACB495500F50E0448D"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/quantities.py",
+      "sha256": "E9C290F8239D1BD8B542D8D6B466ADACB36A7EE2EDB18DAF006C35DFEAB9D698",
+      "published_blob_oid": "37278099183183d5557d7859dcf2c0bec7e1febb",
+      "published_sha256": "E9C290F8239D1BD8B542D8D6B466ADACB36A7EE2EDB18DAF006C35DFEAB9D698",
+      "accepted_checkout_sha256": [
+        "E9C290F8239D1BD8B542D8D6B466ADACB36A7EE2EDB18DAF006C35DFEAB9D698"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/resistance_handoff.py",
+      "sha256": "38075566DB9F4D14AF5F3872A75825DACECE6D0A158C0484C283507CC02B7B23",
+      "published_blob_oid": "47642677249eb7216de658e10c19bbc386166302",
+      "published_sha256": "38075566DB9F4D14AF5F3872A75825DACECE6D0A158C0484C283507CC02B7B23",
+      "accepted_checkout_sha256": [
+        "38075566DB9F4D14AF5F3872A75825DACECE6D0A158C0484C283507CC02B7B23"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/results.py",
+      "sha256": "35BBE5A91E331E6687952A0D303088778D42324CDCC1DCBA680D8D4305B2E74D",
+      "published_blob_oid": "ee6c39352d88887837fe727431cc35c6a0d8c13e",
+      "published_sha256": "35BBE5A91E331E6687952A0D303088778D42324CDCC1DCBA680D8D4305B2E74D",
+      "accepted_checkout_sha256": [
+        "35BBE5A91E331E6687952A0D303088778D42324CDCC1DCBA680D8D4305B2E74D"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/sourced_bolt_interaction.py",
+      "sha256": "57A5F40DA721FEB7CCE4718AC526AB89F5F9B8A5CE16F70294AF19D072BE5FAC",
+      "published_blob_oid": "8b9b1cabdc8bc2532e50cecf7b566295b91b30bd",
+      "published_sha256": "57A5F40DA721FEB7CCE4718AC526AB89F5F9B8A5CE16F70294AF19D072BE5FAC",
+      "accepted_checkout_sha256": [
+        "57A5F40DA721FEB7CCE4718AC526AB89F5F9B8A5CE16F70294AF19D072BE5FAC"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/sources.py",
+      "sha256": "F73E8ED838249D7E0926926DDAA455C9A38DF569B9EAE5B5E4F52C8FAFDF31EA",
+      "published_blob_oid": "b31c8f85c62ab661a3f3b2732d97f51346868de6",
+      "published_sha256": "F73E8ED838249D7E0926926DDAA455C9A38DF569B9EAE5B5E4F52C8FAFDF31EA",
+      "accepted_checkout_sha256": [
+        "F73E8ED838249D7E0926926DDAA455C9A38DF569B9EAE5B5E4F52C8FAFDF31EA"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/ssmc_material.py",
+      "sha256": "9C4D92E5D5C9ADA8A942B121FD974940629D434BD333214FB8E036BCA376ACF5",
+      "published_blob_oid": "83724305f7fdd13a883bd6e0fa2d1a06ca7785dc",
+      "published_sha256": "9C4D92E5D5C9ADA8A942B121FD974940629D434BD333214FB8E036BCA376ACF5",
+      "accepted_checkout_sha256": [
+        "9C4D92E5D5C9ADA8A942B121FD974940629D434BD333214FB8E036BCA376ACF5"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/ssmc_response.py",
+      "sha256": "D7BE808CE89F7802DB549A08A2CC17BD1E4D90D171CB8C7C8F705620F81D0DE2",
+      "published_blob_oid": "db4e293480a00f14cef0f7300f8da8429da3e442",
+      "published_sha256": "D7BE808CE89F7802DB549A08A2CC17BD1E4D90D171CB8C7C8F705620F81D0DE2",
+      "accepted_checkout_sha256": [
+        "D7BE808CE89F7802DB549A08A2CC17BD1E4D90D171CB8C7C8F705620F81D0DE2"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/stainless_angle.py",
+      "sha256": "87F42E71BA0E40AA8B2FA76BBAB0AA12F497B2CCB15D287B6B06CADBED5483FB",
+      "published_blob_oid": "688756b528c55ee4bcc3808fa8f70b4e6a14bee6",
+      "published_sha256": "87F42E71BA0E40AA8B2FA76BBAB0AA12F497B2CCB15D287B6B06CADBED5483FB",
+      "accepted_checkout_sha256": [
+        "87F42E71BA0E40AA8B2FA76BBAB0AA12F497B2CCB15D287B6B06CADBED5483FB"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/stainless_plate.py",
+      "sha256": "4D65A75E4801DB59E9611EDA573C888773554446315A951498C0864E2A00D58C",
+      "published_blob_oid": "65b56f8b1e0454a6d52417a7f9c92347ca61da6f",
+      "published_sha256": "4D65A75E4801DB59E9611EDA573C888773554446315A951498C0864E2A00D58C",
+      "accepted_checkout_sha256": [
+        "4D65A75E4801DB59E9611EDA573C888773554446315A951498C0864E2A00D58C"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/stainless_plate_clear_body.py",
+      "sha256": "B005F3A783559E8C0761C872EE6A395D0A7053C211773A21138B5B8E95C78CC4",
+      "published_blob_oid": "03a67013e132d99611f08e198d19341470c3e31e",
+      "published_sha256": "B005F3A783559E8C0761C872EE6A395D0A7053C211773A21138B5B8E95C78CC4",
+      "accepted_checkout_sha256": [
+        "B005F3A783559E8C0761C872EE6A395D0A7053C211773A21138B5B8E95C78CC4"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/stainless_response.py",
+      "sha256": "4ECCCA043BA01AE984FC7F773FB85DC2A02105D53695F367AED9386D7DA3D35C",
+      "published_blob_oid": "b63d07c90afd955129068fe8a0509c176186c6d7",
+      "published_sha256": "4ECCCA043BA01AE984FC7F773FB85DC2A02105D53695F367AED9386D7DA3D35C",
+      "accepted_checkout_sha256": [
+        "4ECCCA043BA01AE984FC7F773FB85DC2A02105D53695F367AED9386D7DA3D35C"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/stainless_tee.py",
+      "sha256": "4676ADB8B27A5D30E6A4FD4114E5EBE5B0FEACA5F977E386ADD9D5CBC3838DD1",
+      "published_blob_oid": "46b24374f857f3188dd3bcad754da1e252f5bb7c",
+      "published_sha256": "4676ADB8B27A5D30E6A4FD4114E5EBE5B0FEACA5F977E386ADD9D5CBC3838DD1",
+      "accepted_checkout_sha256": [
+        "4676ADB8B27A5D30E6A4FD4114E5EBE5B0FEACA5F977E386ADD9D5CBC3838DD1"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/support_attachment_response.py",
+      "sha256": "465F5868C5A02818AC5516C850B5A34255D71EFDCB841C9C2DD537BAD065C025",
+      "published_blob_oid": "94d1795a36a42f28f5811fd304f79a2547fd69f7",
+      "published_sha256": "465F5868C5A02818AC5516C850B5A34255D71EFDCB841C9C2DD537BAD065C025",
+      "accepted_checkout_sha256": [
+        "465F5868C5A02818AC5516C850B5A34255D71EFDCB841C9C2DD537BAD065C025"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/web_splice_resistance.py",
+      "sha256": "42358FB7029E2FA2E003C058779EC5E918DB6A44851437CAABAFDF581B1F1918",
+      "published_blob_oid": "26ad5512601ecbf947f54bedf8d76a0b884c5a35",
+      "published_sha256": "42358FB7029E2FA2E003C058779EC5E918DB6A44851437CAABAFDF581B1F1918",
+      "accepted_checkout_sha256": [
+        "42358FB7029E2FA2E003C058779EC5E918DB6A44851437CAABAFDF581B1F1918"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/wi_moment_resultants.py",
+      "sha256": "028CF26C7614490C07A0F699BC66FAED83BABB175B6CE635332254A4F70C226B",
+      "published_blob_oid": "bc428cc260526fe5e020c5122f52e9f1c11c9d54",
+      "published_sha256": "028CF26C7614490C07A0F699BC66FAED83BABB175B6CE635332254A4F70C226B",
+      "accepted_checkout_sha256": [
+        "028CF26C7614490C07A0F699BC66FAED83BABB175B6CE635332254A4F70C226B"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/wi_moment_splice_resistance.py",
+      "sha256": "906137E13BBAC48831BA69E92EDDA14160C334B20BD1E26E12ED8995450199F0",
+      "published_blob_oid": "c54d1f8e87cb347ff593bbc958e1b1002d464466",
+      "published_sha256": "906137E13BBAC48831BA69E92EDDA14160C334B20BD1E26E12ED8995450199F0",
+      "accepted_checkout_sha256": [
+        "906137E13BBAC48831BA69E92EDDA14160C334B20BD1E26E12ED8995450199F0"
+      ]
+    }
+  ],
+  "historical_controls": [
+    {
+      "path": "HANDOFF_MANIFEST.json",
+      "sha256": "CC5F0675F6030BE634F1BF615D5DABB19CFA225B6C72449F8143E04851132DA2",
+      "published_blob_oid": "1f1738adcc6182db5f1bcec6adf1c7acca121db4",
+      "published_sha256": "CC5F0675F6030BE634F1BF615D5DABB19CFA225B6C72449F8143E04851132DA2",
+      "accepted_checkout_sha256": [
+        "CC5F0675F6030BE634F1BF615D5DABB19CFA225B6C72449F8143E04851132DA2"
+      ]
+    },
+    {
+      "path": "backend/requirements/README.md",
+      "sha256": "6C010A608E4D1076D3384F95A19E21A02B4A782B008046336084EA7D07E91BAD",
+      "published_blob_oid": "f91d715e0446ebd1598ed6accac32d7000fe1b9d",
+      "published_sha256": "6C010A608E4D1076D3384F95A19E21A02B4A782B008046336084EA7D07E91BAD",
+      "accepted_checkout_sha256": [
+        "6C010A608E4D1076D3384F95A19E21A02B4A782B008046336084EA7D07E91BAD"
+      ]
+    },
+    {
+      "path": "backend/requirements/requirements-dev-py314.lock.txt",
+      "sha256": "6CB25EFC7665C76CCDC819B5FB890359E0A61F570ECFE5958689F62AE31330F4",
+      "published_blob_oid": "c4ddd5288fa4ff685e10e03c5960649cdb037d9e",
+      "published_sha256": "6CB25EFC7665C76CCDC819B5FB890359E0A61F570ECFE5958689F62AE31330F4",
+      "accepted_checkout_sha256": [
+        "32EAEF7C2CA8FEDF0527EDFDBE9B3E0F1CE0E3ED31BD9FA95F9CCF318002932C",
+        "6CB25EFC7665C76CCDC819B5FB890359E0A61F570ECFE5958689F62AE31330F4"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/api/f593_catalog_source.py",
+      "sha256": "8E923885A47E7FD6C2A8EC4AE7DE08ABF833142FE33D79B4F3DE9319C6973A78",
+      "published_blob_oid": "fa19e90386613b998ef6cd3feca0f921cd501694",
+      "published_sha256": "8E923885A47E7FD6C2A8EC4AE7DE08ABF833142FE33D79B4F3DE9319C6973A78",
+      "accepted_checkout_sha256": [
+        "8E923885A47E7FD6C2A8EC4AE7DE08ABF833142FE33D79B4F3DE9319C6973A78"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/direct_angle_block.py",
+      "sha256": "890B94F837F0D5AD1315A31754F264C71BC21730528BD08FA2438A7171B4EDEF",
+      "published_blob_oid": "9f351c9e32505a892d02bbf608c66c966829ab10",
+      "published_sha256": "890B94F837F0D5AD1315A31754F264C71BC21730528BD08FA2438A7171B4EDEF",
+      "accepted_checkout_sha256": [
+        "890B94F837F0D5AD1315A31754F264C71BC21730528BD08FA2438A7171B4EDEF"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/application/f593_catalog.py",
+      "sha256": "8AC070725C561867DBE876E69CCCD267885C9FC8103C08000339615375E47CFB",
+      "published_blob_oid": "09a4894c7bf0b7f385687582a20be37af5f55a53",
+      "published_sha256": "8AC070725C561867DBE876E69CCCD267885C9FC8103C08000339615375E47CFB",
+      "accepted_checkout_sha256": [
+        "8AC070725C561867DBE876E69CCCD267885C9FC8103C08000339615375E47CFB"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/calculation/block_shear_planning.py",
+      "sha256": "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022",
+      "published_blob_oid": "6d769c286ab767ffa68ff66897889627bd0fd374",
+      "published_sha256": "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022",
+      "accepted_checkout_sha256": [
+        "46218F1692DFF014F6D864C92AFEAFE6BB104FA65ACE19470D134951372A1022"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/ICE_PREDEFINED_MATERIAL_SEED_INPUTS_RC0.json",
+      "sha256": "4F6EA6F26F407B2DD30510980E5BEDF34807F4DB0EE2978C061703CE47C171C1",
+      "published_blob_oid": "33ea1e1a0f611377a00e66b15240be65ec3e9eee",
+      "published_sha256": "4F6EA6F26F407B2DD30510980E5BEDF34807F4DB0EE2978C061703CE47C171C1",
+      "accepted_checkout_sha256": [
+        "4F6EA6F26F407B2DD30510980E5BEDF34807F4DB0EE2978C061703CE47C171C1"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/asce74_shape_minimum_rc1.json",
+      "sha256": "484CA802AFF6E53A8F5A0416AF2C2DB16615A65C7FCC53D40A19D579A7B0E246",
+      "published_blob_oid": "11d17e5f1b5ba425fe671c50a3256257056e720a",
+      "published_sha256": "EE668D085FC30F4AA4259344100F7723B4A67BE0725855FEED962CF39607ADFD",
+      "accepted_checkout_sha256": [
+        "484CA802AFF6E53A8F5A0416AF2C2DB16615A65C7FCC53D40A19D579A7B0E246",
+        "EE668D085FC30F4AA4259344100F7723B4A67BE0725855FEED962CF39607ADFD"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/astm_f593_group2_rc1.json",
+      "sha256": "28590AF00A0D07FF2E442C6C647F5A2AD2A127C1A31E3642A0118583EA1D0BFD",
+      "published_blob_oid": "458c0d5e5ef137e515033a51a8c1b4aa204657c2",
+      "published_sha256": "28590AF00A0D07FF2E442C6C647F5A2AD2A127C1A31E3642A0118583EA1D0BFD",
+      "accepted_checkout_sha256": [
+        "28590AF00A0D07FF2E442C6C647F5A2AD2A127C1A31E3642A0118583EA1D0BFD"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/direct_owner_starter.json",
+      "sha256": "E58FCD351A17F8DE63B31D88E79A6D85B5E662764BEC246CD57FA1AE4D3B7500",
+      "published_blob_oid": "181686c91de094b2b99954c19d9eb00953b6fcf0",
+      "published_sha256": "E58FCD351A17F8DE63B31D88E79A6D85B5E662764BEC246CD57FA1AE4D3B7500",
+      "accepted_checkout_sha256": [
+        "E58FCD351A17F8DE63B31D88E79A6D85B5E662764BEC246CD57FA1AE4D3B7500"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/direct_shape_capabilities.json",
+      "sha256": "4FDE859BFCC127E9BFF2AB023F41B5C4DDF6767D6F2935BB804677206DCFC3E7",
+      "published_blob_oid": "d899253117630c72dc3a829d6f76e178ce930f92",
+      "published_sha256": "4FDE859BFCC127E9BFF2AB023F41B5C4DDF6767D6F2935BB804677206DCFC3E7",
+      "accepted_checkout_sha256": [
+        "4FDE859BFCC127E9BFF2AB023F41B5C4DDF6767D6F2935BB804677206DCFC3E7"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/mat1_catalog_records.json",
+      "sha256": "ACC8E51CB8BB52928BBD2ABFC8AE90190783F1D11BFB98EDC30932DA2A629283",
+      "published_blob_oid": "8b6c3836f63c9a203de20c7433f17a9af27b2254",
+      "published_sha256": "ACC8E51CB8BB52928BBD2ABFC8AE90190783F1D11BFB98EDC30932DA2A629283",
+      "accepted_checkout_sha256": [
+        "ACC8E51CB8BB52928BBD2ABFC8AE90190783F1D11BFB98EDC30932DA2A629283"
+      ]
+    },
+    {
+      "path": "backend/src/frp_master_connection/data/workspace_capabilities.json",
+      "sha256": "A02CA2713989E3D3C7C1F1FA317A8C3D41B43D3E6BB8E0916CFCA792DE6DD920",
+      "published_blob_oid": "b996fefd5ea06a407deace814c4b47b5519b0d13",
+      "published_sha256": "A02CA2713989E3D3C7C1F1FA317A8C3D41B43D3E6BB8E0916CFCA792DE6DD920",
+      "accepted_checkout_sha256": [
+        "A02CA2713989E3D3C7C1F1FA317A8C3D41B43D3E6BB8E0916CFCA792DE6DD920"
+      ]
+    },
+    {
+      "path": "backend/tests/api/test_direct_f7_angle_block.py",
+      "sha256": "37D6EA9C3584F19C191C6AEF1A48A54EC21A763E75C8D783663B3A75E3B9B124",
+      "published_blob_oid": "4cb911e599741892ff7ffcc0d26749e44565ca1f",
+      "published_sha256": "37D6EA9C3584F19C191C6AEF1A48A54EC21A763E75C8D783663B3A75E3B9B124",
+      "accepted_checkout_sha256": [
+        "37D6EA9C3584F19C191C6AEF1A48A54EC21A763E75C8D783663B3A75E3B9B124"
+      ]
+    },
+    {
+      "path": "backend/tests/application/test_orchestration_golden.py",
+      "sha256": "6A9FE0C68BF80F56E341ED72E79A0EF764AA37EEF503FF0CB2B0B887C78192E2",
+      "published_blob_oid": "5ec6e8d2aeede4e1826acb8a2d8978e52d2fb015",
+      "published_sha256": "6A9FE0C68BF80F56E341ED72E79A0EF764AA37EEF503FF0CB2B0B887C78192E2",
+      "accepted_checkout_sha256": [
+        "6A9FE0C68BF80F56E341ED72E79A0EF764AA37EEF503FF0CB2B0B887C78192E2"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/golden_loader.py",
+      "sha256": "53645CB5FEA3F8C62A20414583D2D605B584FFF5490DD6C7668413FF683900C2",
+      "published_blob_oid": "b22099d0b1243a5ff679b5b7242566a6482283a4",
+      "published_sha256": "53645CB5FEA3F8C62A20414583D2D605B584FFF5490DD6C7668413FF683900C2",
+      "accepted_checkout_sha256": [
+        "53645CB5FEA3F8C62A20414583D2D605B584FFF5490DD6C7668413FF683900C2"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_block_shear_planning.py",
+      "sha256": "7ED16661E1D5169ED4CE72200F684384D9058413C63A808FC778306BD6FA22B6",
+      "published_blob_oid": "da5681b1bd6bf46b6fee0b2b589fdad12c87a74e",
+      "published_sha256": "7ED16661E1D5169ED4CE72200F684384D9058413C63A808FC778306BD6FA22B6",
+      "accepted_checkout_sha256": [
+        "7ED16661E1D5169ED4CE72200F684384D9058413C63A808FC778306BD6FA22B6"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_dctn_approved_goldens.py",
+      "sha256": "761177CF937AB37BDF8B72C11BB9FA8F8C71BD15FF18F192697CB87B11DCBE0B",
+      "published_blob_oid": "0ac17cf4e7ea181d51bf500da1a5ef2014fe3f3b",
+      "published_sha256": "761177CF937AB37BDF8B72C11BB9FA8F8C71BD15FF18F192697CB87B11DCBE0B",
+      "accepted_checkout_sha256": [
+        "761177CF937AB37BDF8B72C11BB9FA8F8C71BD15FF18F192697CB87B11DCBE0B"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_golden_fixtures.py",
+      "sha256": "69959C6EF1CA0E6E74BC0AEBA414B4C46925C14E504846169B405B56493DE25D",
+      "published_blob_oid": "bac5b796fc5054a24192497505bc24f1fb49c160",
+      "published_sha256": "69959C6EF1CA0E6E74BC0AEBA414B4C46925C14E504846169B405B56493DE25D",
+      "accepted_checkout_sha256": [
+        "69959C6EF1CA0E6E74BC0AEBA414B4C46925C14E504846169B405B56493DE25D"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_numerical_golden.py",
+      "sha256": "06612ACA5EF11A7C71F252BD20246AA634783556D21509533CDC330ACE377497",
+      "published_blob_oid": "efcd0467caaca3639d922f9e14123cff5cab1dfd",
+      "published_sha256": "06612ACA5EF11A7C71F252BD20246AA634783556D21509533CDC330ACE377497",
+      "accepted_checkout_sha256": [
+        "06612ACA5EF11A7C71F252BD20246AA634783556D21509533CDC330ACE377497"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_slice_2_golden_fixtures.py",
+      "sha256": "27590C70C08E2A1FF3EE86540F887812BEC555ED04A37D9EF7D47F88F68E894B",
+      "published_blob_oid": "4495874ac645e35550d85918b78a8379bbe0c591",
+      "published_sha256": "27590C70C08E2A1FF3EE86540F887812BEC555ED04A37D9EF7D47F88F68E894B",
+      "accepted_checkout_sha256": [
+        "27590C70C08E2A1FF3EE86540F887812BEC555ED04A37D9EF7D47F88F68E894B"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_slice_2_rc2_golden_fixtures.py",
+      "sha256": "D014B99F19E5A688B94571C8F60E7DDF05A00C2EED56203B6F695742F19B7D48",
+      "published_blob_oid": "a960aee727a159a1a8ec3869c35e02c2f105dafa",
+      "published_sha256": "D014B99F19E5A688B94571C8F60E7DDF05A00C2EED56203B6F695742F19B7D48",
+      "accepted_checkout_sha256": [
+        "D014B99F19E5A688B94571C8F60E7DDF05A00C2EED56203B6F695742F19B7D48"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_ssmc_golden.py",
+      "sha256": "0D1FA3A5F2287F2F8122CFF0118F644CFDA707E8F497A6B5C2519ABC37D2E6C8",
+      "published_blob_oid": "8395de804e2c5907872949885e3bb1736767bdab",
+      "published_sha256": "0D1FA3A5F2287F2F8122CFF0118F644CFDA707E8F497A6B5C2519ABC37D2E6C8",
+      "accepted_checkout_sha256": [
+        "0D1FA3A5F2287F2F8122CFF0118F644CFDA707E8F497A6B5C2519ABC37D2E6C8"
+      ]
+    },
+    {
+      "path": "backend/tests/calculation/test_tee_golden.py",
+      "sha256": "22224D51265DFC9A5FB70D7CAF9F6722BF734BC120FEF36CDCB19EEB255FD413",
+      "published_blob_oid": "2944de5630432af16cae731b8d7502875479e449",
+      "published_sha256": "22224D51265DFC9A5FB70D7CAF9F6722BF734BC120FEF36CDCB19EEB255FD413",
+      "accepted_checkout_sha256": [
+        "22224D51265DFC9A5FB70D7CAF9F6722BF734BC120FEF36CDCB19EEB255FD413"
+      ]
+    },
+    {
+      "path": "backend/tests/domain/test_angle_bolt_path_golden.py",
+      "sha256": "92B597FB67F3DF1480DE7ADE074759F4846D36A0561761642E62A5C4C0CBEA2E",
+      "published_blob_oid": "e2efbd3e1364bcbf5b7c324aeffcbb09a63c9b13",
+      "published_sha256": "92B597FB67F3DF1480DE7ADE074759F4846D36A0561761642E62A5C4C0CBEA2E",
+      "accepted_checkout_sha256": [
+        "92B597FB67F3DF1480DE7ADE074759F4846D36A0561761642E62A5C4C0CBEA2E"
+      ]
+    },
+    {
+      "path": "backend/tests/domain/test_member_profile_golden.py",
+      "sha256": "8809E241490625DD6BC2841F43B5B2BD33CDDD23D50D075DDFD0E8F2BE488BD4",
+      "published_blob_oid": "b9d7563253725d1c562801c30b1acc7e43ebb31d",
+      "published_sha256": "8809E241490625DD6BC2841F43B5B2BD33CDDD23D50D075DDFD0E8F2BE488BD4",
+      "accepted_checkout_sha256": [
+        "8809E241490625DD6BC2841F43B5B2BD33CDDD23D50D075DDFD0E8F2BE488BD4"
+      ]
+    },
+    {
+      "path": "backend/tests/domain/test_profile_wall_bolt_path_golden.py",
+      "sha256": "D1E26FD2AE0BF6DA2C007891069D68CC2543CFE85AA600817F723F4C2D650FA3",
+      "published_blob_oid": "9c388d963dd9165d74921d5f7f980b522764349f",
+      "published_sha256": "D1E26FD2AE0BF6DA2C007891069D68CC2543CFE85AA600817F723F4C2D650FA3",
+      "accepted_checkout_sha256": [
+        "D1E26FD2AE0BF6DA2C007891069D68CC2543CFE85AA600817F723F4C2D650FA3"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/FRP_MASTER_CONNECTION_CME_1_ACCEPTANCE_AND_REFERENCE_FIXTURES_RC1.json",
+      "sha256": "247B49CA529AB9F8C509025DBF8DFA3B832F5BE102C1464ED518DC370D2FD89A",
+      "published_blob_oid": "c08497cc48f69a8160fafb20640f2a9c3d092674",
+      "published_sha256": "247B49CA529AB9F8C509025DBF8DFA3B832F5BE102C1464ED518DC370D2FD89A",
+      "accepted_checkout_sha256": [
+        "247B49CA529AB9F8C509025DBF8DFA3B832F5BE102C1464ED518DC370D2FD89A"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/FRP_MASTER_CONNECTION_CME_2_C2_P1_GOLDEN_BENCHMARKS_RC1_R1.json",
+      "sha256": "C0A63BB1DD20CC3985671CCEC2406FD928AC0A1541EC91D4F2E8922937D5C492",
+      "published_blob_oid": "3bb533d7fe1810908b34eb2f891fbf586eeb28f4",
+      "published_sha256": "C0A63BB1DD20CC3985671CCEC2406FD928AC0A1541EC91D4F2E8922937D5C492",
+      "accepted_checkout_sha256": [
+        "C0A63BB1DD20CC3985671CCEC2406FD928AC0A1541EC91D4F2E8922937D5C492"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/FRP_MASTER_CONNECTION_CME_2_C2_P2_GOLDEN_BENCHMARKS_RC1.json",
+      "sha256": "2A7082F9D4E7B03A62B8E74B96D06F0C843437C2A02746DF3A0B1EBF78C8935B",
+      "published_blob_oid": "7097ace15151aca32a0edc92077b6486a565a4aa",
+      "published_sha256": "2A7082F9D4E7B03A62B8E74B96D06F0C843437C2A02746DF3A0B1EBF78C8935B",
+      "accepted_checkout_sha256": [
+        "2A7082F9D4E7B03A62B8E74B96D06F0C843437C2A02746DF3A0B1EBF78C8935B"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/FRP_MASTER_CONNECTION_CME_2_CORE_R_A_T_GOLDEN_BENCHMARKS_RC1.json",
+      "sha256": "E89748C24CB53E25C559A7BAD2C02E442FD8A05A72DE308CA14826698C6C1938",
+      "published_blob_oid": "bb2dcf13ee5bd412e8adfeebf7ab8858fcc2570b",
+      "published_sha256": "E89748C24CB53E25C559A7BAD2C02E442FD8A05A72DE308CA14826698C6C1938",
+      "accepted_checkout_sha256": [
+        "E89748C24CB53E25C559A7BAD2C02E442FD8A05A72DE308CA14826698C6C1938"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/FRP_MASTER_CONNECTION_CME_3_316SS_PUBLIC_ACTIVATION_GOLDEN_BENCHMARKS_RC1.json",
+      "sha256": "F0D1520638E8A0B5EE58C1F9F9A7A1B7AD2B6086FB7FD7D8394C6E7220F32EA4",
+      "published_blob_oid": "79a469d7d175d36cc2b1bdcadbf787ed6f84ead0",
+      "published_sha256": "F0D1520638E8A0B5EE58C1F9F9A7A1B7AD2B6086FB7FD7D8394C6E7220F32EA4",
+      "accepted_checkout_sha256": [
+        "F0D1520638E8A0B5EE58C1F9F9A7A1B7AD2B6086FB7FD7D8394C6E7220F32EA4"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/SSMC_2_GOLDEN_BENCHMARKS_RC1.json",
+      "sha256": "492D1FCCD21A4CFF6184174067865A6BDE24F85141299A7FD0381D701120CD3B",
+      "published_blob_oid": "ff6494600a4272e0835762bb6ca7e03b3c260d7c",
+      "published_sha256": "492D1FCCD21A4CFF6184174067865A6BDE24F85141299A7FD0381D701120CD3B",
+      "accepted_checkout_sha256": [
+        "492D1FCCD21A4CFF6184174067865A6BDE24F85141299A7FD0381D701120CD3B"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_1_rc2.json",
+      "sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392",
+      "published_blob_oid": "a913e6bd3fa1e4fa863a659cd802b8f7c2640dc4",
+      "published_sha256": "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392",
+      "accepted_checkout_sha256": [
+        "39051EDD6D345803AD7275EB33A26786B7094248E76B1B1A44B2FA82B70E6392"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_2_appendix_golden_benchmarks_rc3.json",
+      "sha256": "D291683CC8BCA2145984FB9613E8B5B0B11708C627B6A8551ECBFFBFD555F708",
+      "published_blob_oid": "a02c1eaabb64238f0d9562746207e8730959629c",
+      "published_sha256": "6A9B5222FA530EEB94833D57DB2A57E1FFAF81FCC57A7949ED5495ADE0A20E06",
+      "accepted_checkout_sha256": [
+        "6A9B5222FA530EEB94833D57DB2A57E1FFAF81FCC57A7949ED5495ADE0A20E06",
+        "D291683CC8BCA2145984FB9613E8B5B0B11708C627B6A8551ECBFFBFD555F708"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_2_rc1.json",
+      "sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610",
+      "published_blob_oid": "fb7cd364156672c4a5154997f5d9bf3436bc50d4",
+      "published_sha256": "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610",
+      "accepted_checkout_sha256": [
+        "C5E38841EC97538AB5BEAB2954905951BC67431AC0EC0BC847CA735038A2F610"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_2_rc2.json",
+      "sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B",
+      "published_blob_oid": "4caf42688e7c06fdce922db346bd0e59741a6c75",
+      "published_sha256": "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B",
+      "accepted_checkout_sha256": [
+        "B3A49FB44089E065F7B4659F52AB856288298247504423970C3D19B8FCEA7B0B"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_3_eccentric_group_modes_rc1.json",
+      "sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9",
+      "published_blob_oid": "b98cef8ca7211ff8e1a8b8657bebdc24c6ed2996",
+      "published_sha256": "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9",
+      "accepted_checkout_sha256": [
+        "F1E306C7648510E87CD258D433C0FA85AF131EA504D4F04A1B39FA1C1DB530D9"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_3_rc1.json",
+      "sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B",
+      "published_blob_oid": "dc8832c02177284ce42689dd6177282525f2fdef",
+      "published_sha256": "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B",
+      "accepted_checkout_sha256": [
+        "0B2999DE96F1C4C02A1B68D4E4F262E4BFE3FBD65F3D8D1A50DE7F9B65C01D7B"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_3_resistance_handoff_rc1.json",
+      "sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2",
+      "published_blob_oid": "2a8b5a4148b68917253c1480b762dc6b283ce8b7",
+      "published_sha256": "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2",
+      "accepted_checkout_sha256": [
+        "A2B0BF8D37F085739BD4A984A79A0406A3D0BBEF26D4E3ADF0BBFE761AA6FEE2"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_4_chapter_7_plate_strength_engine_golden_benchmarks_rc1.json",
+      "sha256": "E6F00A1421751386980321A5AA046A13C706D9D32E42AAC6242F0D89525AC4CD",
+      "published_blob_oid": "be8ac0e5bc5544dc462c243175200ef14885a321",
+      "published_sha256": "E6F00A1421751386980321A5AA046A13C706D9D32E42AAC6242F0D89525AC4CD",
+      "accepted_checkout_sha256": [
+        "E6F00A1421751386980321A5AA046A13C706D9D32E42AAC6242F0D89525AC4CD"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_5_wi_moment_component_resultants_golden_benchmarks_rc1.json",
+      "sha256": "8854FE7CB56B7D7CEE1FF30A5EA554B83D400386FAE4B1AFDCABC8DF7A1E3D82",
+      "published_blob_oid": "2ccf3782a26d0dea923cc211d63486ac7c3f2422",
+      "published_sha256": "8854FE7CB56B7D7CEE1FF30A5EA554B83D400386FAE4B1AFDCABC8DF7A1E3D82",
+      "accepted_checkout_sha256": [
+        "8854FE7CB56B7D7CEE1FF30A5EA554B83D400386FAE4B1AFDCABC8DF7A1E3D82"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_6_channel_moment_reference_and_component_resultants_golden_benchmarks_rc1.json",
+      "sha256": "616A8A1BE727DEE8EDAEF991B0741B07488123E1F8B0ADDB05912C514881894E",
+      "published_blob_oid": "78404946028d421751afd4dd90d660ba2f258a6f",
+      "published_sha256": "616A8A1BE727DEE8EDAEF991B0741B07488123E1F8B0ADDB05912C514881894E",
+      "accepted_checkout_sha256": [
+        "616A8A1BE727DEE8EDAEF991B0741B07488123E1F8B0ADDB05912C514881894E"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_7_angle_connector_core_and_frp_provider_golden_benchmarks_rc2.json",
+      "sha256": "74CC12CB079A3C8429BD7249E0DE4E16CE066B156D50AF824992000E27701722",
+      "published_blob_oid": "b660c2503a4596a65f635a7ac4c1ec8538adf3c1",
+      "published_sha256": "74CC12CB079A3C8429BD7249E0DE4E16CE066B156D50AF824992000E27701722",
+      "accepted_checkout_sha256": [
+        "74CC12CB079A3C8429BD7249E0DE4E16CE066B156D50AF824992000E27701722"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/calculation_slice_8_in_plane_bolt_group_wrench_demand_golden_benchmarks_rc1_r1.json",
+      "sha256": "E854CEDB44EC02115014A7139C81BCACA7531E6FE3E789DC509A21BA5B70C48C",
+      "published_blob_oid": "f5bdbbc0baa9dec092ddc1b51e71908b07df6bf8",
+      "published_sha256": "E854CEDB44EC02115014A7139C81BCACA7531E6FE3E789DC509A21BA5B70C48C",
+      "accepted_checkout_sha256": [
+        "E854CEDB44EC02115014A7139C81BCACA7531E6FE3E789DC509A21BA5B70C48C"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/cme1_tee_current_startup.json",
+      "sha256": "F4C13BBF549D93A804A82B02195A2D897F90BDD10E056CADF410D45839F6D363",
+      "published_blob_oid": "50ada7df41e574ddc4b8023ac5afc5c54deec700",
+      "published_sha256": "F4C13BBF549D93A804A82B02195A2D897F90BDD10E056CADF410D45839F6D363",
+      "accepted_checkout_sha256": [
+        "F4C13BBF549D93A804A82B02195A2D897F90BDD10E056CADF410D45839F6D363"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/cme1_tee_historical_startup.json",
+      "sha256": "E3D534451545A674A268B237F53AEE63E646EFD61E3BD794BEDD3AE7889073A8",
+      "published_blob_oid": "f549e5782870ce774d9a603b71ffdb470062bdfe",
+      "published_sha256": "E3D534451545A674A268B237F53AEE63E646EFD61E3BD794BEDD3AE7889073A8",
+      "accepted_checkout_sha256": [
+        "E3D534451545A674A268B237F53AEE63E646EFD61E3BD794BEDD3AE7889073A8"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/cme3_native_unit_parent_oracles.json",
+      "sha256": "E58D850304DE8608DC8072DF761EF9CA2393F91E661ABAC75D3AB8BD8E5AD779",
+      "published_blob_oid": "a6faf32d7f3193ac86599187f847a995b6a0260b",
+      "published_sha256": "E58D850304DE8608DC8072DF761EF9CA2393F91E661ABAC75D3AB8BD8E5AD779",
+      "accepted_checkout_sha256": [
+        "E58D850304DE8608DC8072DF761EF9CA2393F91E661ABAC75D3AB8BD8E5AD779"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/dctn_2_golden_benchmarks_rc1.json",
+      "sha256": "7770B2B8E25922D9131CD339F5EA52D45AB7D6E6A21B760BCCC46FC8FA88881D",
+      "published_blob_oid": "d8e58a36604909a981e076185eb07d64284be7d7",
+      "published_sha256": "7770B2B8E25922D9131CD339F5EA52D45AB7D6E6A21B760BCCC46FC8FA88881D",
+      "accepted_checkout_sha256": [
+        "7770B2B8E25922D9131CD339F5EA52D45AB7D6E6A21B760BCCC46FC8FA88881D"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/dctn_2_parent_response_identities.json",
+      "sha256": "D660B24E7D188FF991C570A78DEAAB92246F4C3CE2B56CDA54330A112072B57E",
+      "published_blob_oid": "a669964bbea01ac3214ff6865658a2562ac9e6fd",
+      "published_sha256": "D660B24E7D188FF991C570A78DEAAB92246F4C3CE2B56CDA54330A112072B57E",
+      "accepted_checkout_sha256": [
+        "D660B24E7D188FF991C570A78DEAAB92246F4C3CE2B56CDA54330A112072B57E"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/dctn_3b_golden_benchmarks_rc1.json",
+      "sha256": "6A4AECE4205107102C64B54DF95866C17D7D776DA289078918BB9F775D3637E5",
+      "published_blob_oid": "0eae6b3ae9572836250f4da6883f032ebd3fa888",
+      "published_sha256": "6A4AECE4205107102C64B54DF95866C17D7D776DA289078918BB9F775D3637E5",
+      "accepted_checkout_sha256": [
+        "6A4AECE4205107102C64B54DF95866C17D7D776DA289078918BB9F775D3637E5"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/direct_a3_r1_c3_numerical_parity.json",
+      "sha256": "C45CB1610619436661118640D7D0862F0F3478D4E3E8201CADC08CF8B2AAA81F",
+      "published_blob_oid": "1e571fad429bee40d2e632320dd5ddd43e0dca2e",
+      "published_sha256": "5668E22B99241EC815C01BAA806167152595D568D2713B13FEB32A7BE751DF31",
+      "accepted_checkout_sha256": [
+        "5668E22B99241EC815C01BAA806167152595D568D2713B13FEB32A7BE751DF31",
+        "C45CB1610619436661118640D7D0862F0F3478D4E3E8201CADC08CF8B2AAA81F"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r10_fixed_bolt_frame_positioning_golden_benchmarks_rc1.json",
+      "sha256": "9F9F628082EF39F5851146973D1695F99E6F1C2AA627CD54693FDCC4FC8653DF",
+      "published_blob_oid": "f67792df081f3a9eb0be9838ef1d6204a6caed2d",
+      "published_sha256": "9F9F628082EF39F5851146973D1695F99E6F1C2AA627CD54693FDCC4FC8653DF",
+      "accepted_checkout_sha256": [
+        "9F9F628082EF39F5851146973D1695F99E6F1C2AA627CD54693FDCC4FC8653DF"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r12_member_end_trim_golden_benchmarks_rc1.json",
+      "sha256": "55F54BBCB7A45D6AE1E7065278D65F0F1E3EFF8943171BE73BE3FCC9DAD765DE",
+      "published_blob_oid": "ddbd8a2809d3f473281dbcd753f3c1b2bb6d7ebd",
+      "published_sha256": "55F54BBCB7A45D6AE1E7065278D65F0F1E3EFF8943171BE73BE3FCC9DAD765DE",
+      "accepted_checkout_sha256": [
+        "55F54BBCB7A45D6AE1E7065278D65F0F1E3EFF8943171BE73BE3FCC9DAD765DE"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r13_tee_length_anchor_position_golden_benchmarks_rc1.json",
+      "sha256": "2859272F0C405D77DDBA4DB2C807A73033A8ED21B6C728D7123B376F63A2D1AC",
+      "published_blob_oid": "325edb153d24d3f3ba6e5d51c474e5a559cbca2c",
+      "published_sha256": "2859272F0C405D77DDBA4DB2C807A73033A8ED21B6C728D7123B376F63A2D1AC",
+      "accepted_checkout_sha256": [
+        "2859272F0C405D77DDBA4DB2C807A73033A8ED21B6C728D7123B376F63A2D1AC"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r14b_region_specific_material_basis_golden_benchmarks_rc1.json",
+      "sha256": "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236",
+      "published_blob_oid": "2ac38a7969827cd10707fa6602b658d7963fa0d3",
+      "published_sha256": "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236",
+      "accepted_checkout_sha256": [
+        "182516497CB9D789F5AA4ADF050641240DC106F1A30F5EBDCC6AF1D05C413236"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r2_member_profile_rc1.json",
+      "sha256": "A93CAA62946D076A1A2B09354437A5556C6CA6DAF6DD1778DDF2E0ECD0FDBD87",
+      "published_blob_oid": "1a1b22808be5ef25caafc90c5d06a22312722483",
+      "published_sha256": "A93CAA62946D076A1A2B09354437A5556C6CA6DAF6DD1778DDF2E0ECD0FDBD87",
+      "accepted_checkout_sha256": [
+        "A93CAA62946D076A1A2B09354437A5556C6CA6DAF6DD1778DDF2E0ECD0FDBD87"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r4_exact_unit_and_tee_benchmark_rc1.json",
+      "sha256": "86600A897FF557CF176027E34449000C8B43AE227318B854D0C0AD4904BFC381",
+      "published_blob_oid": "fe7afaf06adeef2f5efaf5f48c4f20bf8f2c9144",
+      "published_sha256": "86600A897FF557CF176027E34449000C8B43AE227318B854D0C0AD4904BFC381",
+      "accepted_checkout_sha256": [
+        "86600A897FF557CF176027E34449000C8B43AE227318B854D0C0AD4904BFC381"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r7_angle_bolt_path_golden_benchmarks_rc1.json",
+      "sha256": "99E1959875E178C806EC783F521C03862C48EC25C6F8A0F306BE34F4AFC531FE",
+      "published_blob_oid": "c3e982a64e46cc4e3d06586a380a2e6ef1b4773c",
+      "published_sha256": "99E1959875E178C806EC783F521C03862C48EC25C6F8A0F306BE34F4AFC531FE",
+      "accepted_checkout_sha256": [
+        "99E1959875E178C806EC783F521C03862C48EC25C6F8A0F306BE34F4AFC531FE"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r8_profile_wall_bolt_path_golden_benchmarks_rc1.json",
+      "sha256": "2C561803503E7870E39C00428EAEE9E9236291912F94131CFC57FA8DA3A93622",
+      "published_blob_oid": "9d960276a5e80984b4759129c05dce4e95362cb4",
+      "published_sha256": "2C561803503E7870E39C00428EAEE9E9236291912F94131CFC57FA8DA3A93622",
+      "accepted_checkout_sha256": [
+        "2C561803503E7870E39C00428EAEE9E9236291912F94131CFC57FA8DA3A93622"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_r9_tee_interface_brace_direction_golden_benchmarks_rc1.json",
+      "sha256": "7D888ACB32220049B3522BA19D0A9217E796E4F4E5A8294463B10C8D078E54B9",
+      "published_blob_oid": "49f8f1b2f83008c276a0f8e12e2dc60ce9233db9",
+      "published_sha256": "7D888ACB32220049B3522BA19D0A9217E796E4F4E5A8294463B10C8D078E54B9",
+      "accepted_checkout_sha256": [
+        "7D888ACB32220049B3522BA19D0A9217E796E4F4E5A8294463B10C8D078E54B9"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_2_tee_connector_rc1.json",
+      "sha256": "77FD574FC0EE55F565480E131FCDC3D334B8E7047D75FADC00C96979B31F1313",
+      "published_blob_oid": "3c559dd7487fbe6511103f7841a073a55d4716c0",
+      "published_sha256": "77FD574FC0EE55F565480E131FCDC3D334B8E7047D75FADC00C96979B31F1313",
+      "accepted_checkout_sha256": [
+        "77FD574FC0EE55F565480E131FCDC3D334B8E7047D75FADC00C96979B31F1313"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3a_single_clip_angle_golden_benchmarks_rc1.json",
+      "sha256": "C2FFE88CF80C474C39099D8C74682B116DAA8CACFCF29F42C54862C7AC577159",
+      "published_blob_oid": "862c0781d1c7ca2b707248ec4e318600ee46cabf",
+      "published_sha256": "C2FFE88CF80C474C39099D8C74682B116DAA8CACFCF29F42C54862C7AC577159",
+      "accepted_checkout_sha256": [
+        "C2FFE88CF80C474C39099D8C74682B116DAA8CACFCF29F42C54862C7AC577159"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3b_symmetric_paired_clip_angle_golden_benchmarks_rc1.json",
+      "sha256": "6C6BB25C31873AEBDC512AD50B669EB125FCF207118010A9C56D37C45E62FE99",
+      "published_blob_oid": "3c6974a671d1002f5a1b5163e0471ebab95c3cf6",
+      "published_sha256": "6C6BB25C31873AEBDC512AD50B669EB125FCF207118010A9C56D37C45E62FE99",
+      "accepted_checkout_sha256": [
+        "6C6BB25C31873AEBDC512AD50B669EB125FCF207118010A9C56D37C45E62FE99"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3c1_shared_rectangular_section_full_through_bolt_golden_benchmarks_rc1.json",
+      "sha256": "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5",
+      "published_blob_oid": "1599d23c83d68ee60ec992d0be90a1e7a42e3c86",
+      "published_sha256": "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5",
+      "accepted_checkout_sha256": [
+        "649070D1B4082D8FFC839262C586DC3B1FEAA6BAD12254F15186F85B39EA24D5"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3c2_tee_single_clip_support_rectangular_expansion_golden_benchmarks_rc1.json",
+      "sha256": "CD365FAF66AC004218DABD825C3A354BFD756F604D0583EFD309A93547B367BC",
+      "published_blob_oid": "e83469cec2624c8bdef6683e1406008e5ea51bec",
+      "published_sha256": "CD365FAF66AC004218DABD825C3A354BFD756F604D0583EFD309A93547B367BC",
+      "accepted_checkout_sha256": [
+        "CD365FAF66AC004218DABD825C3A354BFD756F604D0583EFD309A93547B367BC"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_3c3_paired_clip_angle_profile_support_expansion_golden_benchmarks_rc1.json",
+      "sha256": "DFBA62165C09DCC784A8EDD791BF9AD61BDEBE9AFC541CE7B3B06C8287FE1A3C",
+      "published_blob_oid": "464a0cbdc23f6eecb6de2af72310b7e8d2afcea4",
+      "published_sha256": "DFBA62165C09DCC784A8EDD791BF9AD61BDEBE9AFC541CE7B3B06C8287FE1A3C",
+      "accepted_checkout_sha256": [
+        "DFBA62165C09DCC784A8EDD791BF9AD61BDEBE9AFC541CE7B3B06C8287FE1A3C"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_4a_multi_member_tee_node_golden_benchmarks_rc1.json",
+      "sha256": "BF797EE78F7F7135EEA9BDA8CEB2B863E2FF31070A40ACEC1F8B6B34F6A94D26",
+      "published_blob_oid": "db2970ec896101eee182cabb769768f84ddb9685",
+      "published_sha256": "BF797EE78F7F7135EEA9BDA8CEB2B863E2FF31070A40ACEC1F8B6B34F6A94D26",
+      "accepted_checkout_sha256": [
+        "BF797EE78F7F7135EEA9BDA8CEB2B863E2FF31070A40ACEC1F8B6B34F6A94D26"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_4b_multi_member_tee_profile_support_expansion_golden_benchmarks_rc1.json",
+      "sha256": "ED98DD604A126B9A4B122A5569AC7CEAE3C3D0B4608422E2955246583B97FC36",
+      "published_blob_oid": "119e1912414beea11769c875ac43a4cfc6c9de64",
+      "published_sha256": "ED98DD604A126B9A4B122A5569AC7CEAE3C3D0B4608422E2955246583B97FC36",
+      "accepted_checkout_sha256": [
+        "ED98DD604A126B9A4B122A5569AC7CEAE3C3D0B4608422E2955246583B97FC36"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5a_beam_to_concrete_paired_clip_angle_golden_benchmarks_rc1.json",
+      "sha256": "B68F6323453497B90469D437BF1A8707EAB2808B4561B30256A1EE67FF6389BD",
+      "published_blob_oid": "b4c33d9258b6e9952d27dd34243e355f92f46990",
+      "published_sha256": "B68F6323453497B90469D437BF1A8707EAB2808B4561B30256A1EE67FF6389BD",
+      "accepted_checkout_sha256": [
+        "B68F6323453497B90469D437BF1A8707EAB2808B4561B30256A1EE67FF6389BD"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5a_r1_concrete_wall_paired_angle_completion_golden_benchmarks_rc1.json",
+      "sha256": "00391A534854D6A3C9EE03A3FA5D7545D47EFF1E17A9BCEA12DE736336BC7B62",
+      "published_blob_oid": "a0738b5311e388d16e578e99f9084e5c57bf6636",
+      "published_sha256": "00391A534854D6A3C9EE03A3FA5D7545D47EFF1E17A9BCEA12DE736336BC7B62",
+      "accepted_checkout_sha256": [
+        "00391A534854D6A3C9EE03A3FA5D7545D47EFF1E17A9BCEA12DE736336BC7B62"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5a_r2_material_axes_three_component_force_golden_benchmarks_rc1.json",
+      "sha256": "0A0C67715A73DFA02078E5F3BB7A5456775AAD9F9359EF5D66CF07B5CFF36078",
+      "published_blob_oid": "75fd5a5e7c5622977f37e12df3b9f81f385c8618",
+      "published_sha256": "0A0C67715A73DFA02078E5F3BB7A5456775AAD9F9359EF5D66CF07B5CFF36078",
+      "accepted_checkout_sha256": [
+        "0A0C67715A73DFA02078E5F3BB7A5456775AAD9F9359EF5D66CF07B5CFF36078"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5b_direct_side_lap_angle_channel_concrete_wall_golden_benchmarks_rc1.json",
+      "sha256": "860767C7A1246E19524DB77FBABD8754CBBB719011C0AE05AA5102310FBC3E1F",
+      "published_blob_oid": "acf4a4dc091abbdd712b276785316a86ec101ade",
+      "published_sha256": "860767C7A1246E19524DB77FBABD8754CBBB719011C0AE05AA5102310FBC3E1F",
+      "accepted_checkout_sha256": [
+        "860767C7A1246E19524DB77FBABD8754CBBB719011C0AE05AA5102310FBC3E1F"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5c_column_base_web_angles_concrete_golden_benchmarks_rc1.json",
+      "sha256": "E494165A965B75FD92F893E06F0828E965A075CD42A4F85B7175D05BE5B6D999",
+      "published_blob_oid": "26eea20efb8db9f56b18f971b3bdf2073a5a8411",
+      "published_sha256": "E494165A965B75FD92F893E06F0828E965A075CD42A4F85B7175D05BE5B6D999",
+      "accepted_checkout_sha256": [
+        "E494165A965B75FD92F893E06F0828E965A075CD42A4F85B7175D05BE5B6D999"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_5c_r2_signed_axial_uplift_expansion_golden_benchmarks_rc1.json",
+      "sha256": "91F88C06554F5006E69C2AA56FE396818583B2DE6AF227F83E7CD80DB382CD29",
+      "published_blob_oid": "2506d267d1108ab6edd437335454be38d9bcfd03",
+      "published_sha256": "91F88C06554F5006E69C2AA56FE396818583B2DE6AF227F83E7CD80DB382CD29",
+      "accepted_checkout_sha256": [
+        "91F88C06554F5006E69C2AA56FE396818583B2DE6AF227F83E7CD80DB382CD29"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_6a_symmetric_double_web_splice_golden_benchmarks_rc1.json",
+      "sha256": "D3CF8E452732E1DA187FF2BFCB2AB9CFF7BD30044945552230E3A23518476EDB",
+      "published_blob_oid": "f1f5bd373c88c7fab3e5d46d67250b7afe8ad804",
+      "published_sha256": "D3CF8E452732E1DA187FF2BFCB2AB9CFF7BD30044945552230E3A23518476EDB",
+      "accepted_checkout_sha256": [
+        "D3CF8E452732E1DA187FF2BFCB2AB9CFF7BD30044945552230E3A23518476EDB"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_6b_web_splice_resistance_authority_expansion_golden_benchmarks_rc2.json",
+      "sha256": "6A80263CF0A1632F009DC9952665197F4581B31018C2C98D076E36264FA94908",
+      "published_blob_oid": "6345aa3e83614d19843df7e42c804b55a40547cb",
+      "published_sha256": "6A80263CF0A1632F009DC9952665197F4581B31018C2C98D076E36264FA94908",
+      "accepted_checkout_sha256": [
+        "6A80263CF0A1632F009DC9952665197F4581B31018C2C98D076E36264FA94908"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_3_7a_column_base_profile_matrix_expansion_golden_benchmarks_rc1.json",
+      "sha256": "D07174B4C347C3CDF391DA1DBDAE11E5D8D996506651BFC2848548874F2E6DBF",
+      "published_blob_oid": "92e1ee42b4f6082f7ec251ff2ac9506ea1226e59",
+      "published_sha256": "D07174B4C347C3CDF391DA1DBDAE11E5D8D996506651BFC2848548874F2E6DBF",
+      "accepted_checkout_sha256": [
+        "D07174B4C347C3CDF391DA1DBDAE11E5D8D996506651BFC2848548874F2E6DBF"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_1a_wi_major_axis_moment_splice_golden_benchmarks_rc1.json",
+      "sha256": "386A6C7B3BEFCBABA8006C7421A30C3AF890E803CAF71F3A191F7CD33616D96C",
+      "published_blob_oid": "b8a60a02224e7c5140fa5a787e4f92b587756583",
+      "published_sha256": "386A6C7B3BEFCBABA8006C7421A30C3AF890E803CAF71F3A191F7CD33616D96C",
+      "accepted_checkout_sha256": [
+        "386A6C7B3BEFCBABA8006C7421A30C3AF890E803CAF71F3A191F7CD33616D96C"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_1b_channel_major_axis_moment_splice_golden_benchmarks_rc1.json",
+      "sha256": "ED636AE37A062768EC3A45D4ED234B9363D0CDD8A49DCCCEA02543ADC50D123A",
+      "published_blob_oid": "682449d39713dca96ff1bde0a3979ccce6be8c0d",
+      "published_sha256": "ED636AE37A062768EC3A45D4ED234B9363D0CDD8A49DCCCEA02543ADC50D123A",
+      "accepted_checkout_sha256": [
+        "ED636AE37A062768EC3A45D4ED234B9363D0CDD8A49DCCCEA02543ADC50D123A"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_2_wi_beam_concrete_wall_moment_connection_golden_benchmarks_rc1_r7.json",
+      "sha256": "6F8A22388BEEFFB1CE1B4EF9556261C63200C632E5D50F5447F4011D2C15EA2B",
+      "published_blob_oid": "189f18d563e5c1c4a3bf3f614a6993b2ab467891",
+      "published_sha256": "6F8A22388BEEFFB1CE1B4EF9556261C63200C632E5D50F5447F4011D2C15EA2B",
+      "accepted_checkout_sha256": [
+        "6F8A22388BEEFFB1CE1B4EF9556261C63200C632E5D50F5447F4011D2C15EA2B"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_3_acceptance_matrix_rc1.json",
+      "sha256": "3E277AF2388F15BA5C2CA2AA0B52ED9AAE7064F15DCFA354C8C233B174EB5043",
+      "published_blob_oid": "2c0b261b049faecbbda8f064e6e319248152e982",
+      "published_sha256": "3E277AF2388F15BA5C2CA2AA0B52ED9AAE7064F15DCFA354C8C233B174EB5043",
+      "accepted_checkout_sha256": [
+        "3E277AF2388F15BA5C2CA2AA0B52ED9AAE7064F15DCFA354C8C233B174EB5043"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_4_acceptance_matrix_rc1.json",
+      "sha256": "A09FB76C07AB12AB9C435CAD1B29806D4B4DB839B12191444BE4507DFE0D9BB8",
+      "published_blob_oid": "997218cf4307ecbc1c0b3c8463b01693723e61f2",
+      "published_sha256": "A09FB76C07AB12AB9C435CAD1B29806D4B4DB839B12191444BE4507DFE0D9BB8",
+      "accepted_checkout_sha256": [
+        "A09FB76C07AB12AB9C435CAD1B29806D4B4DB839B12191444BE4507DFE0D9BB8"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_4_historical_scope_evidence.json",
+      "sha256": "0A2CAC24EA9FA064097056E731CDFF9294D3CF872B8FE132850F9E51B5017540",
+      "published_blob_oid": "52c4d214f00a651c512cab8b1e4076d2b703a284",
+      "published_sha256": "0A2CAC24EA9FA064097056E731CDFF9294D3CF872B8FE132850F9E51B5017540",
+      "accepted_checkout_sha256": [
+        "0A2CAC24EA9FA064097056E731CDFF9294D3CF872B8FE132850F9E51B5017540"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_5_acceptance_matrix_rc1.json",
+      "sha256": "68695DFC75C51E85982ED07E76ED7A4D0B344F1CCE7AE4425A9842260967074D",
+      "published_blob_oid": "a57b7dd762efdc9019ecc85a4aa00428f80a7550",
+      "published_sha256": "68695DFC75C51E85982ED07E76ED7A4D0B344F1CCE7AE4425A9842260967074D",
+      "accepted_checkout_sha256": [
+        "68695DFC75C51E85982ED07E76ED7A4D0B344F1CCE7AE4425A9842260967074D"
+      ]
+    },
+    {
+      "path": "backend/tests/golden/stage_4_5_historical_scope_evidence.json",
+      "sha256": "228C2FED59159D1D673D343523EC068FA9793FF57FFBD81232B578AF1B462236",
+      "published_blob_oid": "0839380b60bd8a0fe078af8fdb56b004322360bd",
+      "published_sha256": "228C2FED59159D1D673D343523EC068FA9793FF57FFBD81232B578AF1B462236",
+      "accepted_checkout_sha256": [
+        "228C2FED59159D1D673D343523EC068FA9793FF57FFBD81232B578AF1B462236"
+      ]
+    },
+    {
+      "path": "docs/engineering/ASCE_74_23_SINGLE_BOLT_EQUATION_CATALOG.md",
+      "sha256": "DE64DF3BD56BB2779CA189DD2385F73320A402E0787E4B9E25375987E0EB56E8",
+      "published_blob_oid": "06a2177f03e3672736225fbce010b607099d520d",
+      "published_sha256": "DE64DF3BD56BB2779CA189DD2385F73320A402E0787E4B9E25375987E0EB56E8",
+      "accepted_checkout_sha256": [
+        "DE64DF3BD56BB2779CA189DD2385F73320A402E0787E4B9E25375987E0EB56E8"
+      ]
+    },
+    {
+      "path": "docs/engineering/SHEAR01_DIRECT_OR2_F7_ANGLE_BLOCK.md",
+      "sha256": "8862FC8525B4141A4568049832B7EDBC5DBD07EAECA1B0FBF3D8EE4EB9445857",
+      "published_blob_oid": "83fffec22f7c580df4d4f92fbcce76663d0f29dc",
+      "published_sha256": "8862FC8525B4141A4568049832B7EDBC5DBD07EAECA1B0FBF3D8EE4EB9445857",
+      "accepted_checkout_sha256": [
+        "8862FC8525B4141A4568049832B7EDBC5DBD07EAECA1B0FBF3D8EE4EB9445857"
+      ]
+    },
+    {
+      "path": "docs/governance/ARTIFACT_AND_VERSION_REGISTER.md",
+      "sha256": "80B48E68436FF17B41DFDA097CA5C5979E5DC73FB27A22068316D1C04BCEB0DA",
+      "published_blob_oid": "a2bf12278979db2078b6cf88cab6a95dcc63f69e",
+      "published_sha256": "80B48E68436FF17B41DFDA097CA5C5979E5DC73FB27A22068316D1C04BCEB0DA",
+      "accepted_checkout_sha256": [
+        "80B48E68436FF17B41DFDA097CA5C5979E5DC73FB27A22068316D1C04BCEB0DA"
+      ]
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_2_APPENDIX_RC3_ARTIFACT_REGISTER.md",
+      "sha256": "E3972D3585C929E04EEA60E7A06C69376B0890267899D5390B47FA230E70484F",
+      "published_blob_oid": "67a0b46be145e302d546ba900d9e46185a599932",
+      "published_sha256": "4E0260316A5FB8742C7DDD769679BC1BE12C5A48DABD9FF81AC475083480DDF5",
+      "accepted_checkout_sha256": [
+        "4E0260316A5FB8742C7DDD769679BC1BE12C5A48DABD9FF81AC475083480DDF5",
+        "E3972D3585C929E04EEA60E7A06C69376B0890267899D5390B47FA230E70484F"
+      ]
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_4_CHAPTER_7_PLATE_STRENGTH_ENGINE_DECISION.md",
+      "sha256": "C1FF10672CC98A832932DCBD010DCF280F0D866123280AC68565767F14093E28",
+      "published_blob_oid": "fa986c4de77bff0824c76293fdb709c5b1c50023",
+      "published_sha256": "C1FF10672CC98A832932DCBD010DCF280F0D866123280AC68565767F14093E28",
+      "accepted_checkout_sha256": [
+        "C1FF10672CC98A832932DCBD010DCF280F0D866123280AC68565767F14093E28"
+      ]
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_5_WI_MOMENT_COMPONENT_RESULTANTS_DECISION.md",
+      "sha256": "1E3DFA8727953087C883F5E8627778960CBD6AFECCDC357A35C89D99A6139DC9",
+      "published_blob_oid": "a1ce94f0e7750c722d25fe2b1ae12f6ebca52989",
+      "published_sha256": "1E3DFA8727953087C883F5E8627778960CBD6AFECCDC357A35C89D99A6139DC9",
+      "accepted_checkout_sha256": [
+        "1E3DFA8727953087C883F5E8627778960CBD6AFECCDC357A35C89D99A6139DC9"
+      ]
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_6_CHANNEL_MOMENT_REFERENCE_AND_COMPONENT_RESULTANTS_DECISION.md",
+      "sha256": "A3C5DEE839115F6EC856693E8680579798A8B6012594099CA99ED39777AFDAD9",
+      "published_blob_oid": "6165c64a49d4a99ba708c1679454053d0eda6f6d",
+      "published_sha256": "A3C5DEE839115F6EC856693E8680579798A8B6012594099CA99ED39777AFDAD9",
+      "accepted_checkout_sha256": [
+        "A3C5DEE839115F6EC856693E8680579798A8B6012594099CA99ED39777AFDAD9"
+      ]
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_7_ANGLE_CONNECTOR_CORE_AND_FRP_PROVIDER_DECISION_RC2.md",
+      "sha256": "930517D8198A553206BCBC18CA4435D04DA98E7922186DDDEDBA8F4CAAB8CFC2",
+      "published_blob_oid": "87bf7ee54f89d1af556a4b7019b5e52a7b9e2dc1",
+      "published_sha256": "930517D8198A553206BCBC18CA4435D04DA98E7922186DDDEDBA8F4CAAB8CFC2",
+      "accepted_checkout_sha256": [
+        "930517D8198A553206BCBC18CA4435D04DA98E7922186DDDEDBA8F4CAAB8CFC2"
+      ]
+    },
+    {
+      "path": "docs/governance/CALCULATION_SLICE_8_IN_PLANE_BOLT_GROUP_WRENCH_DEMAND_DECISION_RC1.md",
+      "sha256": "DBA6F3EE9B753A29AE6930E9D2FCBEE08E8D0E6CA2523329D828114FCFAA443D",
+      "published_blob_oid": "31a66ed7f28c63fada8a90eb3d197072d9abc58a",
+      "published_sha256": "DBA6F3EE9B753A29AE6930E9D2FCBEE08E8D0E6CA2523329D828114FCFAA443D",
+      "accepted_checkout_sha256": [
+        "DBA6F3EE9B753A29AE6930E9D2FCBEE08E8D0E6CA2523329D828114FCFAA443D"
+      ]
+    },
+    {
+      "path": "docs/governance/CME_1_CONNECTOR_MATERIAL_EXTENSION_FREEZE.md",
+      "sha256": "BB58293ECC5F7AAA71D3AC2B2A2854D0EE380C264C553DEFE0A171F848CFF5C8",
+      "published_blob_oid": "1071a4dbdb5b2103bf88c0cd07a992fa8126303c",
+      "published_sha256": "BB58293ECC5F7AAA71D3AC2B2A2854D0EE380C264C553DEFE0A171F848CFF5C8",
+      "accepted_checkout_sha256": [
+        "BB58293ECC5F7AAA71D3AC2B2A2854D0EE380C264C553DEFE0A171F848CFF5C8"
+      ]
+    },
+    {
+      "path": "docs/governance/CME_2B_C2_M_C2_P1_FREEZE.md",
+      "sha256": "B23F29A3DFA1F659F0638E052151CE2775553065F41171B1830A90C44DF0054B",
+      "published_blob_oid": "3062bbead83cbf8c4817d7874682db9b4d8d6cb9",
+      "published_sha256": "B23F29A3DFA1F659F0638E052151CE2775553065F41171B1830A90C44DF0054B",
+      "accepted_checkout_sha256": [
+        "B23F29A3DFA1F659F0638E052151CE2775553065F41171B1830A90C44DF0054B"
+      ]
+    },
+    {
+      "path": "docs/governance/CME_2C_C2_P2_FREEZE.md",
+      "sha256": "00B7800056E38EABCF3C50D98C51DF2756D027CA7559F55E7E2296CF53BCEC62",
+      "published_blob_oid": "adc9853bfe97686c0cd2d03dd4d9576c33d078dd",
+      "published_sha256": "00B7800056E38EABCF3C50D98C51DF2756D027CA7559F55E7E2296CF53BCEC62",
+      "accepted_checkout_sha256": [
+        "00B7800056E38EABCF3C50D98C51DF2756D027CA7559F55E7E2296CF53BCEC62"
+      ]
+    },
+    {
+      "path": "docs/governance/CME_2_CORE_R_A_T_FREEZE.md",
+      "sha256": "E5DC47D45009B276F21DB553627CBF839EC732EBBD91A9C48E43BEB122DA9C14",
+      "published_blob_oid": "a5df9a0464f5b0fa85349a78e6ad4b9146d43af5",
+      "published_sha256": "E5DC47D45009B276F21DB553627CBF839EC732EBBD91A9C48E43BEB122DA9C14",
+      "accepted_checkout_sha256": [
+        "E5DC47D45009B276F21DB553627CBF839EC732EBBD91A9C48E43BEB122DA9C14"
+      ]
+    },
+    {
+      "path": "docs/governance/CME_3_316SS_PUBLIC_ACTIVATION_FREEZE.md",
+      "sha256": "663037B83114EF7FE9CB11A4DAC94E678F70E97DBD182527C37B245E36270CB0",
+      "published_blob_oid": "615c170a8017245a94cb3667efa5378f8cae482f",
+      "published_sha256": "663037B83114EF7FE9CB11A4DAC94E678F70E97DBD182527C37B245E36270CB0",
+      "accepted_checkout_sha256": [
+        "663037B83114EF7FE9CB11A4DAC94E678F70E97DBD182527C37B245E36270CB0"
+      ]
+    },
+    {
+      "path": "docs/governance/DCTN_3B_CONTINUATION_FREEZE.md",
+      "sha256": "8A4CCD484B265FFCD84ED014015540FE22317EEF2ECE27DEAE7B9F1DFD013C21",
+      "published_blob_oid": "ff2dacd7eab8102e6c446d371e598bbefce424a7",
+      "published_sha256": "8A4CCD484B265FFCD84ED014015540FE22317EEF2ECE27DEAE7B9F1DFD013C21",
+      "accepted_checkout_sha256": [
+        "8A4CCD484B265FFCD84ED014015540FE22317EEF2ECE27DEAE7B9F1DFD013C21"
+      ]
+    },
+    {
+      "path": "docs/governance/DECISION_REGISTER.md",
+      "sha256": "06CD968BFF0C7E96CEABF41A5DD070EEDAAA4553F0BB1C96A962A786C61F68FA",
+      "published_blob_oid": "3a1d027adf6ed3cdfe67d5cbe3af36afd2d7eb90",
+      "published_sha256": "06CD968BFF0C7E96CEABF41A5DD070EEDAAA4553F0BB1C96A962A786C61F68FA",
+      "accepted_checkout_sha256": [
+        "06CD968BFF0C7E96CEABF41A5DD070EEDAAA4553F0BB1C96A962A786C61F68FA"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CME1_TEE_HISTORICAL_LIMITATION_BROWSER_GATE_CLARIFICATION_R1.md",
+      "sha256": "752322414CEBC4C7A1DEF0DDA21B9E912023FE8476CF7F54AAB2C7DB1E215631",
+      "published_blob_oid": "649cd946f36856297de268c191661fdc712b8cb2",
+      "published_sha256": "752322414CEBC4C7A1DEF0DDA21B9E912023FE8476CF7F54AAB2C7DB1E215631",
+      "accepted_checkout_sha256": [
+        "752322414CEBC4C7A1DEF0DDA21B9E912023FE8476CF7F54AAB2C7DB1E215631"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CME_1_CONNECTOR_MATERIAL_FOUNDATION_CODEX_ORDER_RC1.md",
+      "sha256": "B6AB97AE19EA7CE1EFAF733D07D6A83422B9BD1CD2F7138DC8299ADC56EC5E22",
+      "published_blob_oid": "c7416edaa859eae29bd299c981030c30efc8c52a",
+      "published_sha256": "B6AB97AE19EA7CE1EFAF733D07D6A83422B9BD1CD2F7138DC8299ADC56EC5E22",
+      "accepted_checkout_sha256": [
+        "B6AB97AE19EA7CE1EFAF733D07D6A83422B9BD1CD2F7138DC8299ADC56EC5E22"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CME_2_C2_OWNER_APPROVAL_RECORD_2026-09-12.md",
+      "sha256": "5BAD9131E6052DA30FC1BF9729F3D4FADC88E2FCCAC570770D5C63CA8D5DF5C1",
+      "published_blob_oid": "c4165b3c03e813baacfdb31530b6fcb0a8a30ffc",
+      "published_sha256": "5BAD9131E6052DA30FC1BF9729F3D4FADC88E2FCCAC570770D5C63CA8D5DF5C1",
+      "accepted_checkout_sha256": [
+        "5BAD9131E6052DA30FC1BF9729F3D4FADC88E2FCCAC570770D5C63CA8D5DF5C1"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CME_2_C2_P2_OWNER_APPROVAL_RECORD_2026-09-12.md",
+      "sha256": "610660FCCFF74C63C368D3E77F43C5298FF40F17C32EAF60A84139014D2DBFA1",
+      "published_blob_oid": "289f6959147d20ef82c865f5d7fc9932ecfbac63",
+      "published_sha256": "610660FCCFF74C63C368D3E77F43C5298FF40F17C32EAF60A84139014D2DBFA1",
+      "accepted_checkout_sha256": [
+        "610660FCCFF74C63C368D3E77F43C5298FF40F17C32EAF60A84139014D2DBFA1"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CME_2_CORE_R_A_T_OWNER_APPROVAL_RECORD_2026-09-12.md",
+      "sha256": "1A0738114280E0F84BB31E23FC604763A2AA4005FA93EABF269371011EB6CA08",
+      "published_blob_oid": "f0ee818f5de36b852adc6ccb544b1e2d1c37dc89",
+      "published_sha256": "1A0738114280E0F84BB31E23FC604763A2AA4005FA93EABF269371011EB6CA08",
+      "accepted_checkout_sha256": [
+        "1A0738114280E0F84BB31E23FC604763A2AA4005FA93EABF269371011EB6CA08"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CME_3_316SS_PUBLIC_ACTIVATION_OWNER_APPROVAL_RECORD_2026-09-13.md",
+      "sha256": "1FEFF81C0BD2C1353303D8D89B6D5A1F2F3EC5CE85C9C1A094BBD75A1C692DE8",
+      "published_blob_oid": "af3e042de41d108add7272e45bc0cdfc68e5f51d",
+      "published_sha256": "1FEFF81C0BD2C1353303D8D89B6D5A1F2F3EC5CE85C9C1A094BBD75A1C692DE8",
+      "accepted_checkout_sha256": [
+        "1FEFF81C0BD2C1353303D8D89B6D5A1F2F3EC5CE85C9C1A094BBD75A1C692DE8"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_CONTINUATION_BASELINE_PROVENANCE.md",
+      "sha256": "E397EEE1218E80330B195E8EDAC85AC9BE53ADF52AD7AD1178BD909E33DDBABA",
+      "published_blob_oid": "9fcebae07ffb24de775441a2123884b73130e2f1",
+      "published_sha256": "E397EEE1218E80330B195E8EDAC85AC9BE53ADF52AD7AD1178BD909E33DDBABA",
+      "accepted_checkout_sha256": [
+        "E397EEE1218E80330B195E8EDAC85AC9BE53ADF52AD7AD1178BD909E33DDBABA"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_4_ANGLE_COLUMN_TWO_LEG_MOMENT_BASE_CODEX_ORDER_RC1.md",
+      "sha256": "71C62369A68ED8CB61BB04539FF9F2C13D2B9B237C6B10449C3CBE5340487009",
+      "published_blob_oid": "9e95158af6c492c7699e3b61e9d85be142f75b55",
+      "published_sha256": "71C62369A68ED8CB61BB04539FF9F2C13D2B9B237C6B10449C3CBE5340487009",
+      "accepted_checkout_sha256": [
+        "71C62369A68ED8CB61BB04539FF9F2C13D2B9B237C6B10449C3CBE5340487009"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_4_FREEZE_CODEX_ORDER.md",
+      "sha256": "21FA8D17DCBBDE6ED6BA2C93892D5343347E5FE521EB2ACB98578E89F86A8836",
+      "published_blob_oid": "11d845f0757d9fc5fade8cdb4553a9660e990dd1",
+      "published_sha256": "21FA8D17DCBBDE6ED6BA2C93892D5343347E5FE521EB2ACB98578E89F86A8836",
+      "accepted_checkout_sha256": [
+        "21FA8D17DCBBDE6ED6BA2C93892D5343347E5FE521EB2ACB98578E89F86A8836"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_5_CENTERED_ANGLES_AND_TWO_BOLT_DEFAULT_CORRECTION_ORDER_R2.md",
+      "sha256": "4E9663E11EE3654FC5B46FC1D28BD68D10ACEA4F30418DF41906911C4A024D58",
+      "published_blob_oid": "4d807b5d7190600ec918afc5259309018fb69997",
+      "published_sha256": "4E9663E11EE3654FC5B46FC1D28BD68D10ACEA4F30418DF41906911C4A024D58",
+      "accepted_checkout_sha256": [
+        "4E9663E11EE3654FC5B46FC1D28BD68D10ACEA4F30418DF41906911C4A024D58"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_5_FREEZE_CODEX_ORDER.md",
+      "sha256": "3296113BA1AEC00F13811401A4B81A1CD1AA8A807644C027CEFC912A7A8DCFA3",
+      "published_blob_oid": "ca7cdafb1d2efc57609c59bd78f64533819a2f82",
+      "published_sha256": "3296113BA1AEC00F13811401A4B81A1CD1AA8A807644C027CEFC912A7A8DCFA3",
+      "accepted_checkout_sha256": [
+        "3296113BA1AEC00F13811401A4B81A1CD1AA8A807644C027CEFC912A7A8DCFA3"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_5_UI_DEFAULTS_AND_ACTION_RENDERING_CORRECTION_ORDER_R1.md",
+      "sha256": "06EEA4B207E55763C522622F148938EA5F006C51124B33CD8A532A06C07B693C",
+      "published_blob_oid": "c0f55e7b875e1fa26da5dea817843d700032109d",
+      "published_sha256": "06EEA4B207E55763C522622F148938EA5F006C51124B33CD8A532A06C07B693C",
+      "accepted_checkout_sha256": [
+        "06EEA4B207E55763C522622F148938EA5F006C51124B33CD8A532A06C07B693C"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_5_WINDOWS_FRONTEND_TIMING_CORRECTION_ORDER_R3.md",
+      "sha256": "59B466EFB3621AC442B3FC926FD1D2035BBCD7C2B6AF513D5B42A29DEF19288D",
+      "published_blob_oid": "42717197293f25e8d32f703458a7691e6d990ef9",
+      "published_sha256": "59B466EFB3621AC442B3FC926FD1D2035BBCD7C2B6AF513D5B42A29DEF19288D",
+      "accepted_checkout_sha256": [
+        "59B466EFB3621AC442B3FC926FD1D2035BBCD7C2B6AF513D5B42A29DEF19288D"
+      ]
+    },
+    {
+      "path": "docs/governance/FRP_MASTER_CONNECTION_STAGE_4_5_WI_RHS_SRS_COLUMN_MOMENT_BASES_CODEX_ORDER_RC1.md",
+      "sha256": "6D6CCA01C8AE979BF00F369D6D36317AE98E41BC8BF0F2DA4020F429B1614135",
+      "published_blob_oid": "6751028c2ba87f0a6e2708a027650c0dc1dad1a0",
+      "published_sha256": "6D6CCA01C8AE979BF00F369D6D36317AE98E41BC8BF0F2DA4020F429B1614135",
+      "accepted_checkout_sha256": [
+        "6D6CCA01C8AE979BF00F369D6D36317AE98E41BC8BF0F2DA4020F429B1614135"
+      ]
+    },
+    {
+      "path": "docs/governance/PROJECT_BASELINE.md",
+      "sha256": "B886A65222974F1864FE1F5DCEF4CE3B42D88E02F65F448AC3ED6AC4B3A52B07",
+      "published_blob_oid": "258b5937fe38d05089638fb7e363990c75833a34",
+      "published_sha256": "B886A65222974F1864FE1F5DCEF4CE3B42D88E02F65F448AC3ED6AC4B3A52B07",
+      "accepted_checkout_sha256": [
+        "B886A65222974F1864FE1F5DCEF4CE3B42D88E02F65F448AC3ED6AC4B3A52B07"
+      ]
+    },
+    {
+      "path": "docs/governance/SHEAR01_DIRECT_OR2_F8_DEPENDENCY_SUCCESSOR.json",
+      "sha256": "FA85C43240EF214E2E46B7F5C93D2DF91D13F5BF1B92CF01569D898DCD239B23",
+      "published_blob_oid": "a304ad1ef5afc05c4d46bf85daba602ea4da3a02",
+      "published_sha256": "FA85C43240EF214E2E46B7F5C93D2DF91D13F5BF1B92CF01569D898DCD239B23",
+      "accepted_checkout_sha256": [
+        "FA85C43240EF214E2E46B7F5C93D2DF91D13F5BF1B92CF01569D898DCD239B23"
+      ]
+    },
+    {
+      "path": "docs/governance/SHEAR01_DIRECT_OR2_F9_MC1_SUCCESSOR.json",
+      "sha256": "96B35AA0ED001EE5EF39C7BD472DDCCD1EC6662DA0F5492BBB6205280F78FA17",
+      "published_blob_oid": "f38731ede23f41e11b7d6703ff46ac81453ac8c2",
+      "published_sha256": "D18F2759ACE671A26B04D3AB805067346DF085549AFBA3035367261311A32714",
+      "accepted_checkout_sha256": [
+        "96B35AA0ED001EE5EF39C7BD472DDCCD1EC6662DA0F5492BBB6205280F78FA17",
+        "D18F2759ACE671A26B04D3AB805067346DF085549AFBA3035367261311A32714"
+      ]
+    },
+    {
+      "path": "docs/governance/SHEAR01_DIRECT_OR2_F9_STATUS_SUCCESSOR.json",
+      "sha256": "3941F15C9EC609088DC511318201560AF4CE5B6E50C25CBF69BE662634E6D07F",
+      "published_blob_oid": "6c02ab3f9b450ee48832d371b344a23ab00ad7e1",
+      "published_sha256": "3941F15C9EC609088DC511318201560AF4CE5B6E50C25CBF69BE662634E6D07F",
+      "accepted_checkout_sha256": [
+        "3941F15C9EC609088DC511318201560AF4CE5B6E50C25CBF69BE662634E6D07F"
+      ]
+    },
+    {
+      "path": "docs/governance/SSMC_2_STAIR_STRINGER_MITER_DEMAND_FREEZE.md",
+      "sha256": "7B0F557C61F3BEAEF6A2E3654113E8354BEE5BA96EB3E3B6723F46FEF1AE23EF",
+      "published_blob_oid": "2006575697ce6ff64304696f0a4b2ff33551fd5a",
+      "published_sha256": "7B0F557C61F3BEAEF6A2E3654113E8354BEE5BA96EB3E3B6723F46FEF1AE23EF",
+      "accepted_checkout_sha256": [
+        "7B0F557C61F3BEAEF6A2E3654113E8354BEE5BA96EB3E3B6723F46FEF1AE23EF"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_2_3_DEPENDENCY_SECURITY_FREEZE_CHANGE.md",
+      "sha256": "EBF9E3028D266D9E07393CD8A87A5283E1CC50964AD42A113B43E839362BF81A",
+      "published_blob_oid": "0d7d7652e5dce8fee4b1f612ba29dc5cb0b296cf",
+      "published_sha256": "EBF9E3028D266D9E07393CD8A87A5283E1CC50964AD42A113B43E839362BF81A",
+      "accepted_checkout_sha256": [
+        "EBF9E3028D266D9E07393CD8A87A5283E1CC50964AD42A113B43E839362BF81A"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_2_3_INTERFACE_GEOMETRY_FREEZE.md",
+      "sha256": "5901DCC3F7FB05932A9841BA4D1FF63FF7A147BE871E67D89D4B46229641D9AB",
+      "published_blob_oid": "6405e8f8be6b6f54dde0e146bd9cdf69403f9c09",
+      "published_sha256": "5901DCC3F7FB05932A9841BA4D1FF63FF7A147BE871E67D89D4B46229641D9AB",
+      "accepted_checkout_sha256": [
+        "5901DCC3F7FB05932A9841BA4D1FF63FF7A147BE871E67D89D4B46229641D9AB"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_2_4C_MULTIROW_FRONTEND_FREEZE_CHANGE.md",
+      "sha256": "213AB0C42DDDC716EFEA7A94E9E2E653AC4B07A17A09E90AD2539549DFF7ACA5",
+      "published_blob_oid": "d17d5f8455c558aaebedabcfb02db5b55bd0661b",
+      "published_sha256": "213AB0C42DDDC716EFEA7A94E9E2E653AC4B07A17A09E90AD2539549DFF7ACA5",
+      "accepted_checkout_sha256": [
+        "213AB0C42DDDC716EFEA7A94E9E2E653AC4B07A17A09E90AD2539549DFF7ACA5"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_2_5C_AUTOMATIC_DEMAND_FRONTEND_FREEZE_CHANGE.md",
+      "sha256": "B3DCCEC9A8CA07A53FB560A9064881A308D42C5A24B25B9360A5C39FB62A665F",
+      "published_blob_oid": "d5db216f4b9e937b8d9da42ad1e14833d4516a37",
+      "published_sha256": "B3DCCEC9A8CA07A53FB560A9064881A308D42C5A24B25B9360A5C39FB62A665F",
+      "accepted_checkout_sha256": [
+        "B3DCCEC9A8CA07A53FB560A9064881A308D42C5A24B25B9360A5C39FB62A665F"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_2_5C_R2_LOADED_BOUNDARY_FRONTEND_FREEZE_CHANGE.md",
+      "sha256": "C262C0B1421678B9FA2769A5919A1ECD506FBA8AE6060009D7B2B30E3DA31536",
+      "published_blob_oid": "6140da972a0ce9e9fa8d8316a634b608e1224067",
+      "published_sha256": "C262C0B1421678B9FA2769A5919A1ECD506FBA8AE6060009D7B2B30E3DA31536",
+      "accepted_checkout_sha256": [
+        "C262C0B1421678B9FA2769A5919A1ECD506FBA8AE6060009D7B2B30E3DA31536"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_2_6B_GROUP_MODE_FRONTEND_FREEZE_CHANGE.md",
+      "sha256": "33FBB01F526D64EAC750C2F4F1C96DB42CD766147BE3FEBD18279AA47EECE6BC",
+      "published_blob_oid": "43976e6814fa7975811ca3db84362d6e2f50e4ad",
+      "published_sha256": "33FBB01F526D64EAC750C2F4F1C96DB42CD766147BE3FEBD18279AA47EECE6BC",
+      "accepted_checkout_sha256": [
+        "33FBB01F526D64EAC750C2F4F1C96DB42CD766147BE3FEBD18279AA47EECE6BC"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_2_TEE_CONNECTION_FREEZE_MANIFEST.json",
+      "sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E",
+      "published_blob_oid": "6d75d5c80fd2ae067d6c830d3e93310fefd13c26",
+      "published_sha256": "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E",
+      "accepted_checkout_sha256": [
+        "25A244EBFBC3AC7990B45657025FD6A1FD0C59544BE2ECB13738DFBCC34C9E7E"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_3A_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md",
+      "sha256": "1FDA76A86891FBD871647ABB7A29187B1FD75E82B523A4D97073A8F65CA2B230",
+      "published_blob_oid": "9d64f0238203dc319366d1c8e6dc226a1fba6011",
+      "published_sha256": "1FDA76A86891FBD871647ABB7A29187B1FD75E82B523A4D97073A8F65CA2B230",
+      "accepted_checkout_sha256": [
+        "1FDA76A86891FBD871647ABB7A29187B1FD75E82B523A4D97073A8F65CA2B230"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_3B_SHARED_PLATFORM_STAGE_3_3A_ACCEPTED_BASELINE_CHANGE.md",
+      "sha256": "CDB20C36289635FA2BD61E43A60B1026AE3ACD9992B81EAD7F28F8D70709E48A",
+      "published_blob_oid": "0e046a100532d8ce77f915876d9751881a642ad9",
+      "published_sha256": "CDB20C36289635FA2BD61E43A60B1026AE3ACD9992B81EAD7F28F8D70709E48A",
+      "accepted_checkout_sha256": [
+        "CDB20C36289635FA2BD61E43A60B1026AE3ACD9992B81EAD7F28F8D70709E48A"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_3C1_SHARED_PLATFORM_STAGE_3_2_FREEZE_CHANGE.md",
+      "sha256": "065E160CED57F204F4F1DBF710B62DBBC682D31E98D12AD0223C3AE4246007DB",
+      "published_blob_oid": "2c44b3da89538e753d6c5b3bcaa26ad766c0c984",
+      "published_sha256": "065E160CED57F204F4F1DBF710B62DBBC682D31E98D12AD0223C3AE4246007DB",
+      "accepted_checkout_sha256": [
+        "065E160CED57F204F4F1DBF710B62DBBC682D31E98D12AD0223C3AE4246007DB"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_3C2_STAGE_3_2_TEE_RHS_FULL_THROUGH_SUCCESSOR.md",
+      "sha256": "EEB183648C63BD339F0D699DEDBB5E921276AC2CE09D2ABE24D7E0A015880618",
+      "published_blob_oid": "2de19e17c14a90061515c237451a03d3c54c84bc",
+      "published_sha256": "EEB183648C63BD339F0D699DEDBB5E921276AC2CE09D2ABE24D7E0A015880618",
+      "accepted_checkout_sha256": [
+        "EEB183648C63BD339F0D699DEDBB5E921276AC2CE09D2ABE24D7E0A015880618"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_3C2_STAGE_3_3A_SINGLE_ANGLE_RHS_FULL_THROUGH_SUCCESSOR.md",
+      "sha256": "D5AED8E8544F544A303EDDE3C58B542ED53F789324E3744EAA9CB7C4FE5BE042",
+      "published_blob_oid": "7a575d9ae44e8bfea29acc349d52bce5892ab58c",
+      "published_sha256": "D5AED8E8544F544A303EDDE3C58B542ED53F789324E3744EAA9CB7C4FE5BE042",
+      "accepted_checkout_sha256": [
+        "D5AED8E8544F544A303EDDE3C58B542ED53F789324E3744EAA9CB7C4FE5BE042"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_3_CLIP_ANGLE_FAMILY_FREEZE_MANIFEST.json",
+      "sha256": "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4",
+      "published_blob_oid": "4e1ec40d6171461e794587f9ddbdf788ec85a1fa",
+      "published_sha256": "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4",
+      "accepted_checkout_sha256": [
+        "74E7180E37E223E8EC6550A46F316A344FF29C6496C25D0A01916AC5B4174CC4"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_4A_MULTI_MEMBER_TEE_NODE_FAMILY_SELECTION_DECISION.md",
+      "sha256": "EDDAA92E3483AB408E7FA9E0003FC830D2A21D0E7EB0F50CB5244145D09DEC63",
+      "published_blob_oid": "d48529ed31bdd21bb0375b4b3012cd617c92accf",
+      "published_sha256": "EDDAA92E3483AB408E7FA9E0003FC830D2A21D0E7EB0F50CB5244145D09DEC63",
+      "accepted_checkout_sha256": [
+        "EDDAA92E3483AB408E7FA9E0003FC830D2A21D0E7EB0F50CB5244145D09DEC63"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_4A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "2553A11688B1102902D9653029A44F2E086D96F3362DE5107507EBC11DF99519",
+      "published_blob_oid": "b8b3d75d20874ad91d32fafdc1184facf1c61bad",
+      "published_sha256": "2553A11688B1102902D9653029A44F2E086D96F3362DE5107507EBC11DF99519",
+      "accepted_checkout_sha256": [
+        "2553A11688B1102902D9653029A44F2E086D96F3362DE5107507EBC11DF99519"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_4B_MULTI_MEMBER_TEE_PROFILE_SUPPORT_EXPANSION_DECISION.md",
+      "sha256": "2300908F7CC45E6385A7C55C180A5946A96278D82067AA60C2ED1C44DB2C564A",
+      "published_blob_oid": "fa0351604f5f6474f2978972cc8c9355e59f981f",
+      "published_sha256": "2300908F7CC45E6385A7C55C180A5946A96278D82067AA60C2ED1C44DB2C564A",
+      "accepted_checkout_sha256": [
+        "2300908F7CC45E6385A7C55C180A5946A96278D82067AA60C2ED1C44DB2C564A"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_4B_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "0912CAEF183F77ED6BA5E0FA8FDF850B43CD2BBAC29598B1E51B5F63A4941839",
+      "published_blob_oid": "4e33e4b8da8d6c90b5d9bb937df23dbfd9fa93a1",
+      "published_sha256": "0912CAEF183F77ED6BA5E0FA8FDF850B43CD2BBAC29598B1E51B5F63A4941839",
+      "accepted_checkout_sha256": [
+        "0912CAEF183F77ED6BA5E0FA8FDF850B43CD2BBAC29598B1E51B5F63A4941839"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_4_MULTI_MEMBER_TEE_FAMILY_FREEZE_MANIFEST.json",
+      "sha256": "EE4BADFE145B9FA5815D547C079A371C8C907613CB7253E4A12F922CBF9833DD",
+      "published_blob_oid": "f0ba2c50e978d4d8679e66330ae510e90ab3bea9",
+      "published_sha256": "EE4BADFE145B9FA5815D547C079A371C8C907613CB7253E4A12F922CBF9833DD",
+      "accepted_checkout_sha256": [
+        "EE4BADFE145B9FA5815D547C079A371C8C907613CB7253E4A12F922CBF9833DD"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_BEAM_TO_CONCRETE_PAIRED_CLIP_ANGLE_SELECTION_DECISION.md",
+      "sha256": "2288823909D7C5057C3627232665DAE8E41AB906AE03E38BD55055EEA8B87614",
+      "published_blob_oid": "e6633ca1a0e868dee9ea572fee42333f19b7b240",
+      "published_sha256": "2288823909D7C5057C3627232665DAE8E41AB906AE03E38BD55055EEA8B87614",
+      "accepted_checkout_sha256": [
+        "2288823909D7C5057C3627232665DAE8E41AB906AE03E38BD55055EEA8B87614"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_R1_CONCRETE_WALL_PAIRED_ANGLE_COMPLETION_DECISION.md",
+      "sha256": "655B768C83F7B07C30908950323E9D5CA30F33F42167D0D9E9E7CF9511AAA29B",
+      "published_blob_oid": "96331f81be65858dc848b5e4810abb9b9f1a7258",
+      "published_sha256": "655B768C83F7B07C30908950323E9D5CA30F33F42167D0D9E9E7CF9511AAA29B",
+      "accepted_checkout_sha256": [
+        "655B768C83F7B07C30908950323E9D5CA30F33F42167D0D9E9E7CF9511AAA29B"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_R2_MATERIAL_AXES_THREE_COMPONENT_FORCE_DECISION.md",
+      "sha256": "8436AB8B453DC586A48524044AD45163C5A00E3FBFB321ED198D4F54AF298E50",
+      "published_blob_oid": "9f05fc914d0bed59abf2d140ada6dfe9c26dc5d6",
+      "published_sha256": "8436AB8B453DC586A48524044AD45163C5A00E3FBFB321ED198D4F54AF298E50",
+      "accepted_checkout_sha256": [
+        "8436AB8B453DC586A48524044AD45163C5A00E3FBFB321ED198D4F54AF298E50"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "12FCFECDCCB6E12EA93549B5D4C91380910CAF8A4F792B2CAA5DB96C29DE3B2F",
+      "published_blob_oid": "e7eb747945689504b8669033654a39fa392613ab",
+      "published_sha256": "12FCFECDCCB6E12EA93549B5D4C91380910CAF8A4F792B2CAA5DB96C29DE3B2F",
+      "accepted_checkout_sha256": [
+        "12FCFECDCCB6E12EA93549B5D4C91380910CAF8A4F792B2CAA5DB96C29DE3B2F"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5B_DIRECT_SIDE_LAP_ANGLE_CHANNEL_CONCRETE_WALL_SELECTION_DECISION.md",
+      "sha256": "E68557B1918129786D8728D17AE340B1DF1C9B3F4DFE58CAC71AFA4745AE2B3A",
+      "published_blob_oid": "b071dcbebe9b37506a9ab5081902fa6b2659af15",
+      "published_sha256": "E68557B1918129786D8728D17AE340B1DF1C9B3F4DFE58CAC71AFA4745AE2B3A",
+      "accepted_checkout_sha256": [
+        "E68557B1918129786D8728D17AE340B1DF1C9B3F4DFE58CAC71AFA4745AE2B3A"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5C_COLUMN_BASE_WEB_ANGLES_CONCRETE_SELECTION_DECISION.md",
+      "sha256": "3E5F46CFDECA4C475D95F55A98E65244524FE8C8AE800021B1FE8898C81A6B45",
+      "published_blob_oid": "d300e41f410429b07e7a89f2e930c575702a0f24",
+      "published_sha256": "3E5F46CFDECA4C475D95F55A98E65244524FE8C8AE800021B1FE8898C81A6B45",
+      "accepted_checkout_sha256": [
+        "3E5F46CFDECA4C475D95F55A98E65244524FE8C8AE800021B1FE8898C81A6B45"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5C_R2_SIGNED_AXIAL_UPLIFT_EXPANSION_DECISION.md",
+      "sha256": "8143BBC59A5EE9D38918B0280CA4D09A762B9F2DC92B5660F10951107FD24689",
+      "published_blob_oid": "b2ff3a3744aba0734e4a334f484f59ddfff74245",
+      "published_sha256": "8143BBC59A5EE9D38918B0280CA4D09A762B9F2DC92B5660F10951107FD24689",
+      "accepted_checkout_sha256": [
+        "8143BBC59A5EE9D38918B0280CA4D09A762B9F2DC92B5660F10951107FD24689"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5C_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "3CE53B582B45E6E8A320D9A1FBBF9A47F60ED96E5CCC245C9D9045F1217B77D5",
+      "published_blob_oid": "cf1c86cfe53daa6daf9cbc2f1c1876e941641c75",
+      "published_sha256": "3CE53B582B45E6E8A320D9A1FBBF9A47F60ED96E5CCC245C9D9045F1217B77D5",
+      "accepted_checkout_sha256": [
+        "3CE53B582B45E6E8A320D9A1FBBF9A47F60ED96E5CCC245C9D9045F1217B77D5"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_5_CONCRETE_SUPPORT_SHEAR_FAMILY_FREEZE_MANIFEST.json",
+      "sha256": "671DF6992BC35AFED3C7CE9CB0230F7778C74CE8E7F412C16A9467F080AB7258",
+      "published_blob_oid": "ef299af1473498974b6d24188b7dddf4acf8b197",
+      "published_sha256": "671DF6992BC35AFED3C7CE9CB0230F7778C74CE8E7F412C16A9467F080AB7258",
+      "accepted_checkout_sha256": [
+        "671DF6992BC35AFED3C7CE9CB0230F7778C74CE8E7F412C16A9467F080AB7258"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_6A_SHARED_PLATFORM_FREEZE_CHANGE.md",
+      "sha256": "77AD7CAE8479C1E148011EAE7FED1C9C259BE85C3037304C429B82FD98F7C289",
+      "published_blob_oid": "a8d26092510fd372d661dcb9b6ef94c3c8b10846",
+      "published_sha256": "77AD7CAE8479C1E148011EAE7FED1C9C259BE85C3037304C429B82FD98F7C289",
+      "accepted_checkout_sha256": [
+        "77AD7CAE8479C1E148011EAE7FED1C9C259BE85C3037304C429B82FD98F7C289"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_6A_SYMMETRIC_DOUBLE_WEB_SPLICE_SELECTION_DECISION.md",
+      "sha256": "0A1E2AEC21C9946B3FAC4A2803FDA43BAE39C85273E77199C0D40DEE0F0CFBB7",
+      "published_blob_oid": "ec37289d1b9dc675942997def5641d72526c2277",
+      "published_sha256": "0A1E2AEC21C9946B3FAC4A2803FDA43BAE39C85273E77199C0D40DEE0F0CFBB7",
+      "accepted_checkout_sha256": [
+        "0A1E2AEC21C9946B3FAC4A2803FDA43BAE39C85273E77199C0D40DEE0F0CFBB7"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_6B_WEB_SPLICE_RESISTANCE_AUTHORITY_EXPANSION_DECISION.md",
+      "sha256": "1F4151F9FAB0359B5B455D11265A46C68CBE8C305A7A874628593989871CC716",
+      "published_blob_oid": "e54bf02029a2f5941153a495a57bc68ee837228d",
+      "published_sha256": "1F4151F9FAB0359B5B455D11265A46C68CBE8C305A7A874628593989871CC716",
+      "accepted_checkout_sha256": [
+        "1F4151F9FAB0359B5B455D11265A46C68CBE8C305A7A874628593989871CC716"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_6_WI_WEB_SPLICE_FAMILY_FREEZE_MANIFEST.json",
+      "sha256": "58AA05F545984EAAC0EDED666B4BA086BA05ADE40E59C39D3B7821BFFEB60658",
+      "published_blob_oid": "6507aa6f886f00f0d25df8071f408b572353d455",
+      "published_sha256": "58AA05F545984EAAC0EDED666B4BA086BA05ADE40E59C39D3B7821BFFEB60658",
+      "accepted_checkout_sha256": [
+        "58AA05F545984EAAC0EDED666B4BA086BA05ADE40E59C39D3B7821BFFEB60658"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_7A_COLUMN_BASE_PROFILE_MATRIX_EXPANSION_DECISION.md",
+      "sha256": "D2B435F19D2F3F89035EB98B92A8F0D984C16595D1AA413D88CA5BA03F7854B1",
+      "published_blob_oid": "b90bc16bd8997cd66298d56525bc4c2ba2e64725",
+      "published_sha256": "D2B435F19D2F3F89035EB98B92A8F0D984C16595D1AA413D88CA5BA03F7854B1",
+      "accepted_checkout_sha256": [
+        "D2B435F19D2F3F89035EB98B92A8F0D984C16595D1AA413D88CA5BA03F7854B1"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_7A_STAGE_3_5_FREEZE_SUCCESSOR_CHANGE.md",
+      "sha256": "94AF653C4B62D1D56225B4CE6C56914820C7CDE705DB5FC023F5DF3FF5A12BEC",
+      "published_blob_oid": "89a625a82ef38e6fcef1667ca732b0a34d89e89a",
+      "published_sha256": "94AF653C4B62D1D56225B4CE6C56914820C7CDE705DB5FC023F5DF3FF5A12BEC",
+      "accepted_checkout_sha256": [
+        "94AF653C4B62D1D56225B4CE6C56914820C7CDE705DB5FC023F5DF3FF5A12BEC"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_3_7_COLUMN_BASE_SHEAR_FAMILY_FREEZE_MANIFEST.json",
+      "sha256": "8C7CD0238C7A95E54E4B6DC987E4A558AE2910DA80342137C7772B7FCF6EC9AE",
+      "published_blob_oid": "3f52a211e16b5748375e1c03f32a6f7bc228a637",
+      "published_sha256": "8C7CD0238C7A95E54E4B6DC987E4A558AE2910DA80342137C7772B7FCF6EC9AE",
+      "accepted_checkout_sha256": [
+        "8C7CD0238C7A95E54E4B6DC987E4A558AE2910DA80342137C7772B7FCF6EC9AE"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_DECISION.md",
+      "sha256": "D60A4F95340E70632E8EB277E9F7353151A2C35D80BA66BF2F71D98A6A06FD05",
+      "published_blob_oid": "6d3b5a80c07bfd4d9d7d9f7dac8202d93d8a391d",
+      "published_sha256": "D60A4F95340E70632E8EB277E9F7353151A2C35D80BA66BF2F71D98A6A06FD05",
+      "accepted_checkout_sha256": [
+        "D60A4F95340E70632E8EB277E9F7353151A2C35D80BA66BF2F71D98A6A06FD05"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_1A_WI_MAJOR_AXIS_MOMENT_SPLICE_FREEZE_MANIFEST.json",
+      "sha256": "A77FACD1A05F60E947F3F394FCFB3FC5D28120922BF6EA9841E4EC9C80D4061F",
+      "published_blob_oid": "2bb1bcec5ac30ab652ff87800377b748991869a3",
+      "published_sha256": "A77FACD1A05F60E947F3F394FCFB3FC5D28120922BF6EA9841E4EC9C80D4061F",
+      "accepted_checkout_sha256": [
+        "A77FACD1A05F60E947F3F394FCFB3FC5D28120922BF6EA9841E4EC9C80D4061F"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_1B_CHANNEL_MAJOR_AXIS_MOMENT_SPLICE_DECISION.md",
+      "sha256": "3DD77B42FDB3A9799B7C1E380AA2116F6CC1DBBFABCEE9BBF7E9DFB295C0E83E",
+      "published_blob_oid": "e05dbb04e9c378651c3fc18171e72f599ab97ba8",
+      "published_sha256": "3DD77B42FDB3A9799B7C1E380AA2116F6CC1DBBFABCEE9BBF7E9DFB295C0E83E",
+      "accepted_checkout_sha256": [
+        "3DD77B42FDB3A9799B7C1E380AA2116F6CC1DBBFABCEE9BBF7E9DFB295C0E83E"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_1_BEAM_MOMENT_SPLICE_FAMILY_FREEZE_MANIFEST.json",
+      "sha256": "2C79F811EECFD89C04862359E583A240284872C10A0603E3D6CA276D657CED77",
+      "published_blob_oid": "63568e107b3effa718786e05388f9be946139639",
+      "published_sha256": "2C79F811EECFD89C04862359E583A240284872C10A0603E3D6CA276D657CED77",
+      "accepted_checkout_sha256": [
+        "2C79F811EECFD89C04862359E583A240284872C10A0603E3D6CA276D657CED77"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_DECISION.md",
+      "sha256": "5C681E9F0CA6D40F02BB3523CE4CE811EAEF189B77C67993900D23D6F6787067",
+      "published_blob_oid": "6afa58e7d690034957d7c425b1f38eb283fe96b6",
+      "published_sha256": "5C681E9F0CA6D40F02BB3523CE4CE811EAEF189B77C67993900D23D6F6787067",
+      "accepted_checkout_sha256": [
+        "5C681E9F0CA6D40F02BB3523CE4CE811EAEF189B77C67993900D23D6F6787067"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_2_WI_BEAM_CONCRETE_WALL_MOMENT_CONNECTION_FREEZE_MANIFEST.json",
+      "sha256": "71A73CF5599B9A2540FC3DD22D024D99565E3D5A9FCF07FACC027D523257F997",
+      "published_blob_oid": "91dcdac60dfae04da95529cee9e80dc33ea201ad",
+      "published_sha256": "71A73CF5599B9A2540FC3DD22D024D99565E3D5A9FCF07FACC027D523257F997",
+      "accepted_checkout_sha256": [
+        "71A73CF5599B9A2540FC3DD22D024D99565E3D5A9FCF07FACC027D523257F997"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_3_WI_BEAM_FRP_SUPPORT_MOMENT_CONNECTION_FREEZE_MANIFEST.json",
+      "sha256": "F120A681C4F85B36EA7519F46E16567F4913C5A181D1BDD6AF07F6CA1E6CC7F0",
+      "published_blob_oid": "a381a5bc7f1d847c7918798185bb5839b27f7e97",
+      "published_sha256": "F120A681C4F85B36EA7519F46E16567F4913C5A181D1BDD6AF07F6CA1E6CC7F0",
+      "accepted_checkout_sha256": [
+        "F120A681C4F85B36EA7519F46E16567F4913C5A181D1BDD6AF07F6CA1E6CC7F0"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_4_ANGLE_COLUMN_TWO_LEG_MOMENT_BASE_FREEZE_MANIFEST.json",
+      "sha256": "2035E881712086643440D67A4F78D142886F749F90BCEA285B01A2E7E37C9443",
+      "published_blob_oid": "25154f339f62aeb0573572d8ac8775532f2d0831",
+      "published_sha256": "2035E881712086643440D67A4F78D142886F749F90BCEA285B01A2E7E37C9443",
+      "accepted_checkout_sha256": [
+        "2035E881712086643440D67A4F78D142886F749F90BCEA285B01A2E7E37C9443"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_5_FREEZE_ARTIFACT_REGISTER.md",
+      "sha256": "63E1F7DB84C131A3B629182947129271C504CA6AF710F1A3D010BC70D57705B1",
+      "published_blob_oid": "4c045c24533c725c181e1b047963e13c17ddc9de",
+      "published_sha256": "63E1F7DB84C131A3B629182947129271C504CA6AF710F1A3D010BC70D57705B1",
+      "accepted_checkout_sha256": [
+        "63E1F7DB84C131A3B629182947129271C504CA6AF710F1A3D010BC70D57705B1"
+      ]
+    },
+    {
+      "path": "docs/governance/STAGE_4_5_WI_RHS_SRS_COLUMN_MOMENT_BASES_FREEZE_MANIFEST.json",
+      "sha256": "4ACF09E480FF843E7700FD580EFFF347611DCD523E93C523381E8D51A5EB1B4E",
+      "published_blob_oid": "1d91839091e80c17d9335016c3034fb8945683e9",
+      "published_sha256": "4ACF09E480FF843E7700FD580EFFF347611DCD523E93C523381E8D51A5EB1B4E",
+      "accepted_checkout_sha256": [
+        "4ACF09E480FF843E7700FD580EFFF347611DCD523E93C523381E8D51A5EB1B4E"
+      ]
+    },
+    {
+      "path": "docs/governance/TERMINOLOGY_REGISTER.md",
+      "sha256": "246EEA5946FF83C811D763B29785C5B425C46F642F5FF6DB82DDD812DC52B928",
+      "published_blob_oid": "8a2af97b8042e577a874dc58b570d9c303f6d4c9",
+      "published_sha256": "246EEA5946FF83C811D763B29785C5B425C46F642F5FF6DB82DDD812DC52B928",
+      "accepted_checkout_sha256": [
+        "246EEA5946FF83C811D763B29785C5B425C46F642F5FF6DB82DDD812DC52B928"
+      ]
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_1_GOLDEN_FIXTURES.md",
+      "sha256": "555D52BB75B801C3B9AAEA52216D692C5F67C70314F013AE42E3E53CCC02E249",
+      "published_blob_oid": "95040aa64d06d42688c5c935e75f3810960849b3",
+      "published_sha256": "555D52BB75B801C3B9AAEA52216D692C5F67C70314F013AE42E3E53CCC02E249",
+      "accepted_checkout_sha256": [
+        "555D52BB75B801C3B9AAEA52216D692C5F67C70314F013AE42E3E53CCC02E249"
+      ]
+    },
+    {
+      "path": "docs/qa/CALCULATION_SLICE_2_GOLDEN_BENCHMARKS.md",
+      "sha256": "CB73FBDD5210854FA2C1DFD07462B4C577A9723A0D1EF2FD41817901B82F2542",
+      "published_blob_oid": "1e4ca95fbc0c6bb5589d76d2e2ac163f4263a979",
+      "published_sha256": "CB73FBDD5210854FA2C1DFD07462B4C577A9723A0D1EF2FD41817901B82F2542",
+      "accepted_checkout_sha256": [
+        "CB73FBDD5210854FA2C1DFD07462B4C577A9723A0D1EF2FD41817901B82F2542"
+      ]
+    },
+    {
+      "path": "docs/qa/STAGE_4_3_NATIVE_FIXTURE_CATALOGUE.json",
+      "sha256": "F8A15BEBD6351045C311341D40A4F97331DB31BE59F49BE9C005F2796A981D8E",
+      "published_blob_oid": "42dde6c132136090176657967a372da46f14ddaa",
+      "published_sha256": "F8A15BEBD6351045C311341D40A4F97331DB31BE59F49BE9C005F2796A981D8E",
+      "accepted_checkout_sha256": [
+        "F8A15BEBD6351045C311341D40A4F97331DB31BE59F49BE9C005F2796A981D8E"
+      ]
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256": "F69F35BEF6D8A9E9D9CAD0E8EBCE5F13186418C42C7D6BD4337E80C17E83D7B9",
+      "published_blob_oid": "e646cd21384b37c076456bb6934f8bde837e6d6e",
+      "published_sha256": "F69F35BEF6D8A9E9D9CAD0E8EBCE5F13186418C42C7D6BD4337E80C17E83D7B9",
+      "accepted_checkout_sha256": [
+        "F69F35BEF6D8A9E9D9CAD0E8EBCE5F13186418C42C7D6BD4337E80C17E83D7B9"
+      ]
+    },
+    {
+      "path": "frontend/src/features/F593CatalogSummary.tsx",
+      "sha256": "57E402BB9A84C53877CC16A86E662E5EC3466B6E295984866F63EFFD4FBF4FD6",
+      "published_blob_oid": "104df669cddd629800d918983362819389679af1",
+      "published_sha256": "57E402BB9A84C53877CC16A86E662E5EC3466B6E295984866F63EFFD4FBF4FD6",
+      "accepted_checkout_sha256": [
+        "57E402BB9A84C53877CC16A86E662E5EC3466B6E295984866F63EFFD4FBF4FD6"
+      ]
+    },
+    {
+      "path": "frontend/tests/f593Catalog.test.tsx",
+      "sha256": "16A9106EE96F04B7082F5124A10557ABF2F71DA4949BFB1F8668C3E7EA54FAC4",
+      "published_blob_oid": "961762a599254995c5521b5f5ae0bcc183f4f2f4",
+      "published_sha256": "16A9106EE96F04B7082F5124A10557ABF2F71DA4949BFB1F8668C3E7EA54FAC4",
+      "accepted_checkout_sha256": [
+        "16A9106EE96F04B7082F5124A10557ABF2F71DA4949BFB1F8668C3E7EA54FAC4"
+      ]
+    }
+  ],
+  "authority": "P2 authorizes workspace/presentation/axes integration only. All existing material, geometry, calculation and qualification authorities remain in force.",
+  "checkout_representations": "Exact accepted P1 working bytes, exact published P1 Git blob, and (only for Git auto-text without explicit eol) its CRLF checkout. No data or engineering change is accepted. Final external QA separately requires all 53/173 raw working identities and published blob OIDs unchanged.",
+  "security_successor_sha256": "0EBDBA12FE00A9CF857575E1542F7C222B30FC9AA573EB2AFEC56DF135DB525B"
+}

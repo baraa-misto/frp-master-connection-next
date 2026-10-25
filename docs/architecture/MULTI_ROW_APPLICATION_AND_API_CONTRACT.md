@@ -97,3 +97,72 @@ Preview returns no Stage 2.6A result and executes zero Stage 2.6A or Stage 2.4B
 resistance. The explicit resolved-demand design path remains byte-for-byte separate and
 returns no automatic integration object. The API maps application objects only; it
 contains no engineering reduction or calculation entry-point import.
+
+## Direct OR2 F3 physical engineering geometry extension
+
+The Direct Angle-to-W adapter adds server-authored `direct_engineering_geometry`
+to Direct previews and their authenticated design snapshots. Each bolt and
+penetrated element records physical ends, free side edges, internal junctions,
+represented obstructions, exact coordinates, physical-source identities,
+eligibility, separate evaluated checks and explicit model limitations. The
+ordinary Chapter 8 e2 minimum remains 1.5d. Hole and washer radii are separate
+physical checks. Selected contact patches retain interface/penetration identity;
+their subdivision boundaries supply no engineering limit without a physical
+mapping. Raw patch witnesses remain under `direct_clearance_provenance` and are
+explicitly computational diagnostics.
+
+The owner-authorized Direct reconciliation rebuilds the Angle's physical length
+from its existing native bolt-layout boundary rule while retaining the exact
+frame and bolt anchors. The owner 135-degree 2 × 1 case has submitted, native,
+physical and Chapter 8 loaded-end distance 3 in / 76.2 mm. Presentation extents
+remain separate. The additional application metadata uses a Direct-only preview
+subclass; other families keep their original serialization and fingerprints.
+Clients cannot submit physical-check results. The report renderer reads the
+signed snapshot and supplies no geometry or resistance authority.
+
+See `docs/qa/SHEAR01_DIRECT_OR2_F3.md` for the bounded cases and QA gates. This
+successor activates no engineering source, qualification or missing method.
+
+## Direct OR2 F3 R1 supporting-W longitudinal ends
+
+Direct requests add `supporting_w_longitudinal_ends`, with `condition` equal to
+`UNSPECIFIED`, `CONTINUOUS_THROUGH_CONNECTION`, `FINITE_BOTH_ENDS`,
+`FINITE_NEGATIVE_END_ONLY`, or `FINITE_POSITIVE_END_ONLY`. Only selected finite
+ends accept `negative_end_distance` / `positive_end_distance` quantities in in/mm;
+they must be positive. Omission on the Direct route means UNSPECIFIED and blocks
+design readiness with INPUT NEEDED. Other families reject this declaration.
+
+The backend emits `direct_support_end_authority`: stable projected interface
+reference, real end coordinates/null, raw/canonical per-bolt station witnesses,
+force-selected existing end, separately labeled presentation crop coordinates,
+and source applicability. Clients cannot submit resolved authority or results.
+The owner examples explicitly declare continuous support. Legacy extrusion
+lengths survive only as display context or explicitly declared historical test
+geometry. W end-dependent paths lacking an independent method remain unevaluated;
+pin bearing and unaffected Angle mechanics retain exact authority.
+
+Direct preview identity excludes presentation view extents/extension primitives,
+while end condition and real-end distances remain design-affecting. UI/report
+rendering reads signed authority to place visible real end caps; rendering creates
+no engineering result or check. Other family fingerprints/serialization remain
+unchanged. See `docs/qa/SHEAR01_DIRECT_OR2_F3_R1.md`.
+# Direct ASTM F593 catalog selector — F4 RC1
+
+Direct MAT1 design requests may select `CATALOG / FASTENER-F4-RC1` with controlled revision, alloy group, alloy, condition and shear-thread status. Nominal diameter comes from the physical request; the backend resolves the table row and lower Fnt before calling the existing engine. The authenticated `/api/v1/fasteners/resolve` route exposes the same current source resolution for UI presentation. Client strength/result fields are forbidden. Historical DEFAULT/FASTENER-OR1-RC1 and SESSION contracts remain available; non-Direct catalog binding is deferred. See [F4 source and verification record](../qa/SHEAR01_DIRECT_OR2_F4.md).
+# Direct F9 final-status successor
+
+The current API inventory has 64 paths / 64 operations. MAT1 Direct design results
+now include one backend-authoritative final decision, retaining every native and F8
+engineering result. See [Direct F9 final status](DIRECT_F9_FINAL_STATUS.md).
+## Direct MC1 material-input extension
+
+New Direct MAT1 requests may declare the explicit SHEAR01-DIRECT-MC1 policy, one
+design_temperature and an optional chemical_strength_factor. The backend validates
+physical equality to both existing sustained/maximum temperature fields. Custom
+chemical factors must be exact finite decimal strings in (0, 1]; they apply only
+to applicable FRP strength. Modulus retains independently supported CM/CT candidate
+values with chemical applicability UNEVALUATED, never an assumed chemical factor.
+Unmarked historical requests retain their original schema and calculations.
+See [the MC1 specification](DIRECT_MC1_MATERIAL_CONDITIONS.md). Route inventory,
+authentication, geometry, demand, F9 precedence and F8 qualification authority
+are unchanged. No other family accepts this calculation-policy marker.

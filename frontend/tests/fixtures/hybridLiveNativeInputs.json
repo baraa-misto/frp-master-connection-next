@@ -1,0 +1,1291 @@
+{
+  "contract": "SHEAR01-DIRECT-SAB2-GEOMETRY-V1",
+  "revision": "SAB2-TEST-CURRENT",
+  "legacy": {
+    "automatic_action_source_id": "action-1",
+    "bolt_axis_tension_required": false,
+    "bolt_axis_tensions": [],
+    "bolt_diameter": {
+      "unit": "in",
+      "value": ".5"
+    },
+    "bolts_per_row": 1,
+    "connection_id": "CONNECTION-MR-API",
+    "demand_source": "AUTOMATIC_MEMBER_END_FORCE",
+    "direct_finalization_contract_version": "SHEAR01-DIRECT-F1",
+    "display_unit_system": "US_CUSTOMARY",
+    "eccentricity_tolerance": {
+      "unit": "in",
+      "value": ".000001"
+    },
+    "engineer_allocations": [],
+    "engineer_distribution_kind": null,
+    "first_row_method": "ASCE_STANDARD_SIMPLIFIED",
+    "force_line_offset": {
+      "unit": "in",
+      "value": "0"
+    },
+    "gauge": {
+      "unit": "in",
+      "value": "2"
+    },
+    "geometry_tolerance": {
+      "unit": "in",
+      "value": ".000001"
+    },
+    "hole_basis": "US_CUSTOMARY_PRINTED",
+    "interface_id": "interface-1",
+    "lap_configuration": "SINGLE_LAP",
+    "layers": [
+      {
+        "bearing_thread_status": "EXCLUDED",
+        "component_id": "member-a",
+        "element_classification": "SHAPE",
+        "end_use_factors": {
+          "approval_metadata": [
+            "approved"
+          ],
+          "cch": "1",
+          "cm": "1",
+          "ct": "1",
+          "source_reference": "engineer input"
+        },
+        "layer_id": "layer-A",
+        "material_axis_angle_degrees": "0",
+        "material_id": "ICE_LOCKED_PULTRUDED_FRP",
+        "thickness": {
+          "unit": "in",
+          "value": ".5"
+        }
+      },
+      {
+        "bearing_thread_status": "EXCLUDED",
+        "component_id": "member-b",
+        "element_classification": "SHAPE",
+        "end_use_factors": {
+          "approval_metadata": [
+            "approved"
+          ],
+          "cch": "1",
+          "cm": "1",
+          "ct": "1",
+          "source_reference": "engineer input"
+        },
+        "layer_id": "layer-B",
+        "material_axis_angle_degrees": "0",
+        "material_id": "ICE_LOCKED_PULTRUDED_FRP",
+        "thickness": {
+          "unit": "in",
+          "value": ".5"
+        }
+      }
+    ],
+    "load_combination_id": "LC-1",
+    "loaded_boundary_to_row_1_distance": {
+      "unit": "in",
+      "value": "3"
+    },
+    "material_pair": "FRP_FRP",
+    "negative_side_distance": {
+      "unit": "in",
+      "value": "1"
+    },
+    "orchestration_contract_version": "2.5C-RC1",
+    "physical_connection": {
+      "bolt_diameter": {
+        "unit": "in",
+        "value": "0.5"
+      },
+      "bolt_group_id": "bolt-group-1",
+      "bolt_location_id": "bolt-1",
+      "calculation_id": "benchmark-assembly:calculation",
+      "explicit_resolved_demand": null,
+      "fastener_snapshot": {
+        "id": "ASTM_F593_17_GROUP_2_316_316L",
+        "washer_geometry": {
+          "outside_diameter": {
+            "unit": "in",
+            "value": "1"
+          },
+          "thickness": {
+            "unit": "in",
+            "value": "0.051"
+          },
+          "under_head": true,
+          "under_nut": true
+        }
+      },
+      "geometry_template": {
+        "angle_connected_leg": "LEG_1",
+        "bolt_to_brace_end_distance": {
+          "unit": "in",
+          "value": "3"
+        },
+        "brace_to_column_directed_angle_deg": "135",
+        "column_flange_connection_side": "EXTERIOR",
+        "hole_diameter": {
+          "unit": "in",
+          "value": "0.563"
+        },
+        "kind": "BRACE_TO_COLUMN_FLANGE",
+        "outstanding_leg_side": "POSITIVE_INTERFACE_Z"
+      },
+      "interface_id": "interface-1",
+      "joint_assembly": {
+        "design_category": "SHEAR",
+        "id": "benchmark-assembly",
+        "label": "Canonical orchestration benchmark",
+        "load_combinations": [
+          {
+            "id": "LC-1",
+            "input_basis": "FACTORED_STRENGTH",
+            "label": "Factored benchmark"
+          }
+        ],
+        "member_end_actions": [
+          {
+            "convention": "MEMBER_ON_JOINT",
+            "coordinate_frame_kind": "MEMBER_LOCAL",
+            "coordinate_frame_owner_id": "member-a",
+            "force": {
+              "unit": "kip",
+              "x": "0.7",
+              "y": "0",
+              "z": "0"
+            },
+            "id": "action-1",
+            "load_combination_id": "LC-1",
+            "member_end": "START",
+            "member_id": "member-a",
+            "moment": {
+              "unit": "kip-in",
+              "x": "0",
+              "y": "0",
+              "z": "0"
+            },
+            "reference_point": {
+              "kind": "MEMBER_CONNECTED_END",
+              "owner_id": "member-a",
+              "position": null
+            }
+          }
+        ],
+        "members": [
+          {
+            "connected_end": "START",
+            "id": "member-a",
+            "label": "Pultruded FRP angle brace",
+            "material_kind": "PULTRUDED_FRP",
+            "material_orientation": {
+              "crosswise_axis": "Y",
+              "lengthwise_axis": "X",
+              "through_thickness_axis": "Z"
+            },
+            "role": "BRACE",
+            "section": {
+              "kind": "ANGLE",
+              "leg_y": {
+                "unit": "in",
+                "value": "4"
+              },
+              "leg_z": {
+                "unit": "in",
+                "value": "4"
+              },
+              "thickness": {
+                "unit": "in",
+                "value": ".5"
+              }
+            }
+          },
+          {
+            "connected_end": "START",
+            "id": "member-b",
+            "label": "Pultruded FRP W column",
+            "material_kind": "PULTRUDED_FRP",
+            "material_orientation": {
+              "crosswise_axis": "Y",
+              "lengthwise_axis": "X",
+              "through_thickness_axis": "Z"
+            },
+            "role": "COLUMN",
+            "section": {
+              "flange_thickness": {
+                "unit": "in",
+                "value": ".5"
+              },
+              "flange_width": {
+                "unit": "in",
+                "value": "8"
+              },
+              "kind": "WIDE_FLANGE",
+              "overall_depth": {
+                "unit": "in",
+                "value": "8"
+              },
+              "web_thickness": {
+                "unit": "in",
+                "value": ".5"
+              }
+            }
+          }
+        ],
+        "unit_system": "US_CUSTOMARY"
+      },
+      "lap_configuration": "SINGLE_LAP",
+      "load_combination_id": "LC-1",
+      "material_assignments": [
+        {
+          "bearing_thread_status": "EXCLUDED",
+          "element_form": "SHAPE_ELEMENT",
+          "material_region_id": "LEG_1",
+          "material_snapshot_id": "ICE_LOCKED_PULTRUDED_FRP",
+          "participant_id": "member-a",
+          "physical_element_id": "LEG_1",
+          "potential_perpendicular_element_exemption": false
+        },
+        {
+          "bearing_thread_status": "EXCLUDED",
+          "element_form": "SHAPE_ELEMENT",
+          "material_region_id": "FLANGES",
+          "material_snapshot_id": "ICE_LOCKED_PULTRUDED_FRP",
+          "participant_id": "member-b",
+          "physical_element_id": "TOP_FLANGE",
+          "potential_perpendicular_element_exemption": true
+        }
+      ],
+      "material_snapshots": [
+        {
+          "basis": "ENGINEER_APPROVED_DEVELOPMENT",
+          "display_name": "ICE Locked Pultruded FRP",
+          "explicitly_missing": [
+            "FC_T"
+          ],
+          "id": "ICE_LOCKED_PULTRUDED_FRP",
+          "locked": true,
+          "properties": [
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "LONGITUDINAL",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "EC_L",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "3000"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "TRANSVERSE",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "EC_T",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "1000"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "LONGITUDINAL",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "ET_L",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "3000"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "TRANSVERSE",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "ET_T",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "800"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "LONGITUDINAL",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FBR_L",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "30"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "TRANSVERSE",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FBR_T",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "18"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "LONGITUDINAL",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FC_L",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "33"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "INTERLAMINAR",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FSH_INT",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "4.5"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "IN_PLANE_SHEAR",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FSH_LT",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "8"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "LONGITUDINAL",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FT_L",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "33"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "TRANSVERSE",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "FT_T",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "7.5"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "IN_PLANE_SHEAR",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "G_LT",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "ksi",
+                "value": "420"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "DIMENSIONLESS_RATIO",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "NU_LT",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": true,
+              "value": {
+                "unit": "1",
+                "value": "0.3"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "DISCRETE_PULL_THROUGH",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "PULL_THROUGH_1_2",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": false,
+              "value": {
+                "unit": "kip",
+                "value": "0.9"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "DISCRETE_PULL_THROUGH",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "PULL_THROUGH_3_4",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": false,
+              "value": {
+                "unit": "kip",
+                "value": "1.25"
+              }
+            },
+            {
+              "applicability_metadata": [
+                "STAGE_2_1A_DEVELOPMENT_DATA"
+              ],
+              "behavior": "DISCRETE_PULL_THROUGH",
+              "engineer_notes": [
+                "Independent characteristic-basis verification remains required."
+              ],
+              "kind": "PULL_THROUGH_3_8",
+              "qualification_status": "DEVELOPMENT_ONLY",
+              "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+              "source_document": "First Calculation Slice Engineering Specification - RC2",
+              "source_revision": "RC2",
+              "use_in_chapter_8_equations": false,
+              "value": {
+                "unit": "kip",
+                "value": "0.65"
+              }
+            }
+          ],
+          "qualification_statuses": [
+            "DEVELOPMENT_ONLY",
+            "ENGINEERING_REVIEW_REQUIRED"
+          ]
+        }
+      ],
+      "source_action_id": "action-1",
+      "view_extents": {
+        "brace_view_length": {
+          "unit": "in",
+          "value": "4"
+        },
+        "column_view_extent_above": {
+          "unit": "in",
+          "value": "1.5"
+        },
+        "column_view_extent_below": {
+          "unit": "in",
+          "value": "8.7426406871192848"
+        }
+      }
+    },
+    "pitch": {
+      "unit": "in",
+      "value": "2"
+    },
+    "positive_side_distance": {
+      "unit": "in",
+      "value": "1"
+    },
+    "prescribed_lbr": ".5",
+    "provenance": {
+      "clearance_or_contact_modeled": true,
+      "engineer_confirmed": false,
+      "load_combination": "LC-API",
+      "reference_point": "CONNECTION_CENTROID",
+      "revision": "1",
+      "source_document_or_calculation": "engineer calculation",
+      "source_method": "EXTERNALLY_RESOLVED_CONNECTION_DEMAND"
+    },
+    "request_id": "OR2-F1-OWNER",
+    "row_count": 2,
+    "row_distribution_basis": "ASCE_PRESCRIBED",
+    "source_length_unit": "in",
+    "source_reference": "Owner-approved OR2-F1 starter; explicit QA action only",
+    "supporting_w_longitudinal_ends": {
+      "condition": "CONTINUOUS_THROUGH_CONNECTION"
+    },
+    "time_effect_category": "WIND_TORNADO_SEISMIC",
+    "unloaded_end_e1": {
+      "unit": "in",
+      "value": "3"
+    }
+  },
+  "material_request": {
+    "assignments": {
+      "default_conditions": {
+        "chemical": "NONE_DECLARED",
+        "freeze_thaw": "UNKNOWN",
+        "glass_transition_temperature": null,
+        "load_case_name": "DIRECT-FACTORED-ACTION",
+        "maximum_temperature": {
+          "value": "100",
+          "unit": "degF"
+        },
+        "moisture": "REFERENCE",
+        "source_reference_condition": "UNKNOWN",
+        "sustained_temperature": {
+          "value": "100",
+          "unit": "degF"
+        },
+        "time_effect_category": "WIND_TORNADO_SEISMIC",
+        "uv_weathering": "UNKNOWN",
+        "direct_policy": "SHEAR01-DIRECT-MC1",
+        "design_temperature": {
+          "value": "100",
+          "unit": "degF"
+        },
+        "live_load_subtype": "",
+        "full_amplitude_duration": ""
+      },
+      "default_material": {
+        "content_digest": "B47C62635E22B3E0E21D56B42255AD8F1A589477555141E4A182F6B076FF618E",
+        "id": "ICE_ISOPHTHALIC_POLYESTER_ASCE74_23_MIN_SHAPE_RC1",
+        "kind": "CATALOG",
+        "revision": "RC1"
+      }
+    },
+    "contract": "MAT1-MULTI-ROW-RC0",
+    "fastener": {
+      "contract": "FASTENER-F4-RC1",
+      "kind": "CATALOG",
+      "revision": "ASTM_F593_17_GROUP_2_316_316L_RC1",
+      "shear_thread_status": "EXCLUDED"
+    },
+    "legacy_request": {
+      "automatic_action_source_id": "action-1",
+      "bolt_axis_tension_required": false,
+      "bolt_axis_tensions": [],
+      "bolt_diameter": {
+        "unit": "in",
+        "value": ".5"
+      },
+      "bolts_per_row": 1,
+      "connection_id": "CONNECTION-MR-API",
+      "demand_source": "AUTOMATIC_MEMBER_END_FORCE",
+      "direct_finalization_contract_version": "SHEAR01-DIRECT-F1",
+      "display_unit_system": "US_CUSTOMARY",
+      "eccentricity_tolerance": {
+        "unit": "in",
+        "value": ".000001"
+      },
+      "engineer_allocations": [],
+      "engineer_distribution_kind": null,
+      "first_row_method": "ASCE_STANDARD_SIMPLIFIED",
+      "force_line_offset": {
+        "unit": "in",
+        "value": "0"
+      },
+      "gauge": {
+        "unit": "in",
+        "value": "2"
+      },
+      "geometry_tolerance": {
+        "unit": "in",
+        "value": ".000001"
+      },
+      "hole_basis": "US_CUSTOMARY_PRINTED",
+      "interface_id": "interface-1",
+      "lap_configuration": "SINGLE_LAP",
+      "layers": [
+        {
+          "bearing_thread_status": "EXCLUDED",
+          "component_id": "member-a",
+          "element_classification": "SHAPE",
+          "end_use_factors": {
+            "approval_metadata": [
+              "approved"
+            ],
+            "cch": "1",
+            "cm": "1",
+            "ct": "1",
+            "source_reference": "engineer input"
+          },
+          "layer_id": "layer-A",
+          "material_axis_angle_degrees": "0",
+          "material_id": "ICE_LOCKED_PULTRUDED_FRP",
+          "thickness": {
+            "unit": "in",
+            "value": ".5"
+          }
+        },
+        {
+          "bearing_thread_status": "EXCLUDED",
+          "component_id": "member-b",
+          "element_classification": "SHAPE",
+          "end_use_factors": {
+            "approval_metadata": [
+              "approved"
+            ],
+            "cch": "1",
+            "cm": "1",
+            "ct": "1",
+            "source_reference": "engineer input"
+          },
+          "layer_id": "layer-B",
+          "material_axis_angle_degrees": "0",
+          "material_id": "ICE_LOCKED_PULTRUDED_FRP",
+          "thickness": {
+            "unit": "in",
+            "value": ".5"
+          }
+        }
+      ],
+      "load_combination_id": "LC-1",
+      "loaded_boundary_to_row_1_distance": {
+        "unit": "in",
+        "value": "3"
+      },
+      "material_pair": "FRP_FRP",
+      "negative_side_distance": {
+        "unit": "in",
+        "value": "1"
+      },
+      "orchestration_contract_version": "2.5C-RC1",
+      "physical_connection": {
+        "bolt_diameter": {
+          "unit": "in",
+          "value": "0.5"
+        },
+        "bolt_group_id": "bolt-group-1",
+        "bolt_location_id": "bolt-1",
+        "calculation_id": "benchmark-assembly:calculation",
+        "explicit_resolved_demand": null,
+        "fastener_snapshot": {
+          "id": "ASTM_F593_17_GROUP_2_316_316L",
+          "washer_geometry": {
+            "outside_diameter": {
+              "unit": "in",
+              "value": "1"
+            },
+            "thickness": {
+              "unit": "in",
+              "value": "0.051"
+            },
+            "under_head": true,
+            "under_nut": true
+          }
+        },
+        "geometry_template": {
+          "angle_connected_leg": "LEG_1",
+          "bolt_to_brace_end_distance": {
+            "unit": "in",
+            "value": "3"
+          },
+          "brace_to_column_directed_angle_deg": "135",
+          "column_flange_connection_side": "EXTERIOR",
+          "hole_diameter": {
+            "unit": "in",
+            "value": "0.563"
+          },
+          "kind": "BRACE_TO_COLUMN_FLANGE",
+          "outstanding_leg_side": "POSITIVE_INTERFACE_Z"
+        },
+        "interface_id": "interface-1",
+        "joint_assembly": {
+          "design_category": "SHEAR",
+          "id": "benchmark-assembly",
+          "label": "Canonical orchestration benchmark",
+          "load_combinations": [
+            {
+              "id": "LC-1",
+              "input_basis": "FACTORED_STRENGTH",
+              "label": "Factored benchmark"
+            }
+          ],
+          "member_end_actions": [
+            {
+              "convention": "MEMBER_ON_JOINT",
+              "coordinate_frame_kind": "MEMBER_LOCAL",
+              "coordinate_frame_owner_id": "member-a",
+              "force": {
+                "unit": "kip",
+                "x": "0.7",
+                "y": "0",
+                "z": "0"
+              },
+              "id": "action-1",
+              "load_combination_id": "LC-1",
+              "member_end": "START",
+              "member_id": "member-a",
+              "moment": {
+                "unit": "kip-in",
+                "x": "0",
+                "y": "0",
+                "z": "0"
+              },
+              "reference_point": {
+                "kind": "MEMBER_CONNECTED_END",
+                "owner_id": "member-a",
+                "position": null
+              }
+            }
+          ],
+          "members": [
+            {
+              "connected_end": "START",
+              "id": "member-a",
+              "label": "Pultruded FRP angle brace",
+              "material_kind": "PULTRUDED_FRP",
+              "material_orientation": {
+                "crosswise_axis": "Y",
+                "lengthwise_axis": "X",
+                "through_thickness_axis": "Z"
+              },
+              "role": "BRACE",
+              "section": {
+                "kind": "ANGLE",
+                "leg_y": {
+                  "unit": "in",
+                  "value": "4"
+                },
+                "leg_z": {
+                  "unit": "in",
+                  "value": "4"
+                },
+                "thickness": {
+                  "unit": "in",
+                  "value": ".5"
+                }
+              }
+            },
+            {
+              "connected_end": "START",
+              "id": "member-b",
+              "label": "Pultruded FRP W column",
+              "material_kind": "PULTRUDED_FRP",
+              "material_orientation": {
+                "crosswise_axis": "Y",
+                "lengthwise_axis": "X",
+                "through_thickness_axis": "Z"
+              },
+              "role": "COLUMN",
+              "section": {
+                "flange_thickness": {
+                  "unit": "in",
+                  "value": ".5"
+                },
+                "flange_width": {
+                  "unit": "in",
+                  "value": "8"
+                },
+                "kind": "WIDE_FLANGE",
+                "overall_depth": {
+                  "unit": "in",
+                  "value": "8"
+                },
+                "web_thickness": {
+                  "unit": "in",
+                  "value": ".5"
+                }
+              }
+            }
+          ],
+          "unit_system": "US_CUSTOMARY"
+        },
+        "lap_configuration": "SINGLE_LAP",
+        "load_combination_id": "LC-1",
+        "material_assignments": [
+          {
+            "bearing_thread_status": "EXCLUDED",
+            "element_form": "SHAPE_ELEMENT",
+            "material_region_id": "LEG_1",
+            "material_snapshot_id": "ICE_LOCKED_PULTRUDED_FRP",
+            "participant_id": "member-a",
+            "physical_element_id": "LEG_1",
+            "potential_perpendicular_element_exemption": false
+          },
+          {
+            "bearing_thread_status": "EXCLUDED",
+            "element_form": "SHAPE_ELEMENT",
+            "material_region_id": "FLANGES",
+            "material_snapshot_id": "ICE_LOCKED_PULTRUDED_FRP",
+            "participant_id": "member-b",
+            "physical_element_id": "TOP_FLANGE",
+            "potential_perpendicular_element_exemption": true
+          }
+        ],
+        "material_snapshots": [
+          {
+            "basis": "ENGINEER_APPROVED_DEVELOPMENT",
+            "display_name": "ICE Locked Pultruded FRP",
+            "explicitly_missing": [
+              "FC_T"
+            ],
+            "id": "ICE_LOCKED_PULTRUDED_FRP",
+            "locked": true,
+            "properties": [
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "EC_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "3000"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "EC_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "1000"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "ET_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "3000"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "ET_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "800"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FBR_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "30"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FBR_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "18"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FC_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "33"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "INTERLAMINAR",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FSH_INT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "4.5"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "IN_PLANE_SHEAR",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FSH_LT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "8"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "LONGITUDINAL",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FT_L",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "33"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "TRANSVERSE",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "FT_T",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "7.5"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "IN_PLANE_SHEAR",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "G_LT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "ksi",
+                  "value": "420"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DIMENSIONLESS_RATIO",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "NU_LT",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": true,
+                "value": {
+                  "unit": "1",
+                  "value": "0.3"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DISCRETE_PULL_THROUGH",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "PULL_THROUGH_1_2",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": false,
+                "value": {
+                  "unit": "kip",
+                  "value": "0.9"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DISCRETE_PULL_THROUGH",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "PULL_THROUGH_3_4",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": false,
+                "value": {
+                  "unit": "kip",
+                  "value": "1.25"
+                }
+              },
+              {
+                "applicability_metadata": [
+                  "STAGE_2_1A_DEVELOPMENT_DATA"
+                ],
+                "behavior": "DISCRETE_PULL_THROUGH",
+                "engineer_notes": [
+                  "Independent characteristic-basis verification remains required."
+                ],
+                "kind": "PULL_THROUGH_3_8",
+                "qualification_status": "DEVELOPMENT_ONLY",
+                "source_classification": "ENGINEER_APPROVED_DEVELOPMENT",
+                "source_document": "First Calculation Slice Engineering Specification - RC2",
+                "source_revision": "RC2",
+                "use_in_chapter_8_equations": false,
+                "value": {
+                  "unit": "kip",
+                  "value": "0.65"
+                }
+              }
+            ],
+            "qualification_statuses": [
+              "DEVELOPMENT_ONLY",
+              "ENGINEERING_REVIEW_REQUIRED"
+            ]
+          }
+        ],
+        "source_action_id": "action-1",
+        "view_extents": {
+          "brace_view_length": {
+            "unit": "in",
+            "value": "4"
+          },
+          "column_view_extent_above": {
+            "unit": "in",
+            "value": "1.5"
+          },
+          "column_view_extent_below": {
+            "unit": "in",
+            "value": "8.7426406871192848"
+          }
+        }
+      },
+      "pitch": {
+        "unit": "in",
+        "value": "2"
+      },
+      "positive_side_distance": {
+        "unit": "in",
+        "value": "1"
+      },
+      "prescribed_lbr": ".5",
+      "provenance": {
+        "clearance_or_contact_modeled": true,
+        "engineer_confirmed": false,
+        "load_combination": "LC-API",
+        "reference_point": "CONNECTION_CENTROID",
+        "revision": "1",
+        "source_document_or_calculation": "engineer calculation",
+        "source_method": "EXTERNALLY_RESOLVED_CONNECTION_DEMAND"
+      },
+      "request_id": "OR2-F1-OWNER",
+      "row_count": 2,
+      "row_distribution_basis": "ASCE_PRESCRIBED",
+      "source_length_unit": "in",
+      "source_reference": "Owner-approved OR2-F1 starter; explicit QA action only",
+      "supporting_w_longitudinal_ends": {
+        "condition": "CONTINUOUS_THROUGH_CONNECTION"
+      },
+      "time_effect_category": "WIND_TORNADO_SEISMIC",
+      "unloaded_end_e1": {
+        "unit": "in",
+        "value": "3"
+      }
+    }
+  },
+  "alignment": "BRACE"
+}

@@ -1660,3 +1660,35 @@ This governance commit changes no production, engineering, tests, dependencies, 
 ## CME-2C C2-P2 isolated implementation
 
 Additive internal clear-plate E3/F9/H2 provider from baseline `20fabefa90247dd3470d4698edda1b22d017e7c6` (128). See `docs/architecture/CME_2C_ISOLATED_CLEAR_PLATE_PROVIDER.md` for trusted pre-resolved frozen C2-M/P1 snapshots, the owner-approved raw-traced E3 Fy cap, native numerical authority, fail-closed boundaries and publication gates. Frozen production/tests and all fifteen tags remain unchanged; no public API, frontend, hardware or family material activation. One implementation commit is expected at count 129; exact-SHA hosted four-job verification is recorded externally after normal push. No new freeze tag or later-stage work.
+
+## Direct Owner Round 2 F1 candidate
+
+The bounded Angle/W owner starter, run-versus-completeness blockers, Direct-only governed axial-frame representation correction, and publication gates are recorded in [the OR2 F1 QA contract](docs/qa/SHEAR01_DIRECT_OR2_F1.md). Current capabilities are available at GET /api/v1/workspaces/direct-shapes. Only Angle to WIDE_FLANGE is enabled; source and qualification requirements remain open.
+
+## Direct Owner Round 2 F9 candidate
+
+[Direct F9 final status](docs/architecture/DIRECT_F9_FINAL_STATUS.md) documents the
+backend-authoritative decision, authenticated currency endpoint and concise Engineer
+Report. The production owner case remains YELLOW: 8 evaluated / 6 unresolved,
+1 bounded N/A and 2 neutral entries. No real approved qualification record is
+installed. GREEN capability is verified only with isolated pure decision inputs.
+No main merge, qualification activation or Direct freeze is part of this candidate.
+
+## Direct MC1 material and condition candidate
+
+[Direct MC1](docs/architecture/DIRECT_MC1_MATERIAL_CONDITIONS.md) records the compact
+new input policy and owner R1 Option B: custom C_CH applies to strength only;
+chemical-modulus applicability remains unresolved. Legacy signed two-temperature
+requests are preserved. No new resistance method, qualification activation, main
+merge or freeze is authorized. The governed successor adds 14 actual PDFs per OS
+while retaining all historical gates.
+
+## Direct SAB2 shared constructability candidate
+
+[Direct SAB2](docs/architecture/DIRECT_SAB2_SHARED_CONSTRUCTABILITY.md) adds
+brace-aligned and support-aligned two-bolt geometry through one backend workflow.
+The default brace calculation remains unchanged. An identical eligible layout
+can be freshly checked; unmapped layouts remain explicitly geometry-only.
+Actual installation dimensions and new structural method mapping remain open.
+The governed successor preserves historical gates and adds eight geometry review
+PDFs on each platform. This candidate is not a Direct freeze or qualification.

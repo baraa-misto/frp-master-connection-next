@@ -1,0 +1,67 @@
+{
+  "id": "ASTM_F593_17_GROUP_2_316_316L_RC1",
+  "specification": "ASTM F593",
+  "edition": "17",
+  "alloy_group": "2",
+  "alloys": [
+    "316",
+    "316L"
+  ],
+  "alloy_type": "Austenitic",
+  "source_classification": "OWNER_APPROVED_ASTMF593_TABLE_TRANSCRIPTION_RC1",
+  "source_revision": "SHEAR01-DIRECT-OR2-F4",
+  "owner_approval": "Owner supplied and approved in the controlling F4 order; transcription, not an ASTM-issued original.",
+  "catalog_revision": "RC1",
+  "diameter_unit": "in",
+  "stress_unit": "ksi",
+  "rows": [
+    {
+      "row_id": "G2-AF",
+      "condition": "AF",
+      "marking": "F593E",
+      "diameter_min": ".250",
+      "diameter_max": "1.500",
+      "tensile_min": "65",
+      "tensile_max": "85",
+      "design_fnt": "65",
+      "yield_min": "20",
+      "hardness_basis": "B85 max"
+    },
+    {
+      "row_id": "G2-A",
+      "condition": "A",
+      "marking": "F593F",
+      "diameter_min": ".250",
+      "diameter_max": "1.500",
+      "tensile_min": "75",
+      "tensile_max": "100",
+      "design_fnt": "75",
+      "yield_min": "30",
+      "hardness_basis": "B65 to 95"
+    },
+    {
+      "row_id": "G2-CW1",
+      "condition": "CW1",
+      "marking": "F593G",
+      "diameter_min": ".250",
+      "diameter_max": ".625",
+      "tensile_min": "100",
+      "tensile_max": "150",
+      "design_fnt": "100",
+      "yield_min": "65",
+      "hardness_basis": "B95 to C32"
+    },
+    {
+      "row_id": "G2-CW2",
+      "condition": "CW2",
+      "marking": "F593H",
+      "diameter_min": ".750",
+      "diameter_max": "1.500",
+      "tensile_min": "85",
+      "tensile_max": "140",
+      "design_fnt": "85",
+      "yield_min": "45",
+      "hardness_basis": "B80 to C32"
+    }
+  ]
+}
