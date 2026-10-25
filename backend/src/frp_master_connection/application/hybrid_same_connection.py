@@ -4,6 +4,8 @@ This is a scoped in-plane component assessment. It does not resolve FRP stress
 transfer, single-lap prying, physical release laws or Section 2.3.2 qualification.
 """
 
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass, replace
 from decimal import Decimal, localcontext
 from hashlib import sha256
@@ -17,6 +19,11 @@ from frp_master_connection.application.hyb1_contract import (
 )
 from frp_master_connection.application.hyb1_review import ComparisonRow
 from frp_master_connection.application.hyb2_d2 import D2Assessment
+from frp_master_connection.application.hybrid_physical_geometry import (
+    RECEIVING_FRAME,
+    R3SceneGeometry,
+    r3_scene_geometry,
+)
 from frp_master_connection.application.mat1_native import NativeMaterialAdapter
 from frp_master_connection.calculation.equations import (
     adjust_frp_property,
@@ -25,6 +32,7 @@ from frp_master_connection.calculation.equations import (
 )
 from frp_master_connection.calculation.in_plane_wrench_demand import (
     InPlaneWrenchRequest,
+    InPlaneWrenchResult,
     WrenchBolt,
     calculate_in_plane_wrench_demand,
 )
@@ -47,7 +55,6 @@ from frp_master_connection.calculation.resistance_handoff import (
 )
 from frp_master_connection.calculation.rhm_direct_r3 import (
     R3Geometry,
-    execute_r3,
     geometry_digest,
     intersect_edge,
 )
@@ -83,6 +90,17 @@ class SameConnectionResult:
     withheld: tuple[tuple[str, str], ...]
     trace: dict[str, Any]
     detailing: tuple[dict[str, Any], ...]
+    demands: tuple[SameConnectionDemand, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class SameConnectionDemand:
+    case: ActionCase
+    source_force: tuple[Decimal, Decimal]
+    source_reference: tuple[Decimal, Decimal]
+    source_moment: Decimal
+    wrench: InPlaneWrenchResult
+    geometry_identity: str
 
 
 def canonicalize_same_connection_reference(case: ActionCase, declared_frame: str) -> ActionCase:
@@ -141,25 +159,44 @@ def _comparison(
 
 
 def calculate_same_connection(
-    actions: PairedActions, g: R3Geometry, materials: SameConnectionMaterials
+    actions: PairedActions,
+    g: R3Geometry,
+    materials: SameConnectionMaterials,
+    *,
+    geometry_model: R3SceneGeometry | None = None,
+    allow_receiving_frame: bool = False,
+    nominal_hole: PhysicalQuantity | None = None,
+    minimum_thickness: PhysicalQuantity | None = None,
+    minimum_diameter: PhysicalQuantity | None = None,
+    bearing_source_known: bool = True,
+    contact_supported: bool = True,
 ) -> SameConnectionResult:
     """Fresh full-vector demand, exact R3 centers/thicknesses, unchanged resistance code."""
     if actions.identity.geometry != geometry_digest(g):
         raise ValueError("Same-connection ASCE geometry identity mismatch.")
-    model = execute_r3(
-        geometry=g, axial=PhysicalQuantity.of(0, Unit.KIP), shear=PhysicalQuantity.of(0, Unit.KIP)
-    )
+    model = r3_scene_geometry(g) if geometry_model is None else geometry_model
+    if model.geometry != g:
+        raise ValueError("A different physical geometry cannot supply this demand.")
     rows: list[ComparisonRow] = []
     withheld: list[tuple[str, str]] = []
     cases: list[dict[str, Any]] = []
     detailing: list[dict[str, Any]] = []
+    demands: list[SameConnectionDemand] = []
     if not actions.lrfd:
         withheld.append(("LRFD", "Enter independent LRFD combinations; no ASD conversion."))
     for case in actions.lrfd:
         if (
             actions.identity.alignment is not Alignment.SUPPORT
             or not model.hole_fit
-            or not Decimal(".375") <= g.diameter.to(Unit.IN).magnitude <= 1
+            or not (
+                (
+                    PhysicalQuantity.of(".375", Unit.IN)
+                    if minimum_diameter is None
+                    else minimum_diameter
+                ).canonical_magnitude
+                <= g.diameter.canonical_magnitude
+                <= PhysicalQuantity.of("1", Unit.IN).canonical_magnitude
+            )
         ):
             withheld.append(
                 (
@@ -172,15 +209,23 @@ def calculate_same_connection(
             continue
         if (
             not case.complete
-            or case.frame != "DIRECT_P_SKETCH_V_CENTROID"
+            or not (
+                case.frame == "DIRECT_P_SKETCH_V_CENTROID"
+                or (allow_receiving_frame and case.frame == RECEIVING_FRAME)
+            )
             or any(q is not None and q.magnitude != 0 for q in case.components[2:5])
             or case.reference[2].magnitude != 0
         ):
             withheld.append(
                 (
                     case.case_id,
-                    "Complete P/sketch V six-action input required; "
-                    "out-of-plane force/moments/reference need a separate 3D model.",
+                    (
+                        "Complete supported-frame six-action input required; "
+                        "out-of-plane force/moments/reference need a separate 3D model."
+                        if allow_receiving_frame
+                        else "Complete P/sketch V six-action input required; "
+                        "out-of-plane force/moments/reference need a separate 3D model."
+                    ),
                 )
             )
             continue
@@ -191,9 +236,17 @@ def calculate_same_connection(
                 for i, u in ((0, Unit.KIP), (1, Unit.KIP), (5, Unit.KIP_IN))
             )
             pa, n = model.p_axis, model.n_axis
-            force = (p * pa[0] - v * n[0], p * pa[1] - v * n[1])
+            force = (
+                (v, p)
+                if case.frame == RECEIVING_FRAME
+                else (p * pa[0] - v * n[0], p * pa[1] - v * n[1])
+            )
             ref = tuple(q.to(Unit.IN).magnitude for q in case.reference)
-            reference = (ref[0] * pa[0] - ref[1] * n[0], ref[0] * pa[1] - ref[1] * n[1])
+            reference = (
+                (ref[1], ref[0])
+                if case.frame == RECEIVING_FRAME
+                else (ref[0] * pa[0] - ref[1] * n[0], ref[0] * pa[1] - ref[1] * n[1])
+            )
             demand = calculate_in_plane_wrench_demand(
                 InPlaneWrenchRequest(
                     tuple(WrenchBolt(name, x, y) for name, (x, y) in model.bolt_centers),
@@ -203,6 +256,16 @@ def calculate_same_connection(
                     Unit.IN,
                     Unit.KIP,
                     Unit.KIP_IN,
+                )
+            )
+            demands.append(
+                SameConnectionDemand(
+                    case,
+                    force,
+                    reference,
+                    -mz,
+                    demand,
+                    actions.identity.geometry,
                 )
             )
             force_mag = (force[0] ** 2 + force[1] ** 2).sqrt()
@@ -306,15 +369,36 @@ def calculate_same_connection(
                 ):
                     thickness = thickness.to(Unit.IN)
                     key = "PIN_BEARING:" + owner + ":" + name
-                    if thickness.to(Unit.IN).magnitude < Decimal(".188") or g.hole.to(
-                        Unit.IN
-                    ).magnitude != g.diameter.to(Unit.IN).magnitude + Decimal(".063"):
+                    threshold = (
+                        PhysicalQuantity.of(".188", Unit.IN)
+                        if minimum_thickness is None
+                        else minimum_thickness
+                    )
+                    hole_matches = (
+                        g.hole.to(Unit.IN).magnitude
+                        == g.diameter.to(Unit.IN).magnitude + Decimal(".063")
+                        if nominal_hole is None
+                        else g.hole.canonical_magnitude == nominal_hole.canonical_magnitude
+                    )
+                    if (
+                        thickness.canonical_magnitude < threshold.canonical_magnitude
+                        or not hole_matches
+                        or not contact_supported
+                        or not bearing_source_known
+                    ):
                         withheld.append(
                             (
                                 key,
-                                "ASCE bearing scope requires FRP thickness at least "
-                                ".188 in and the declared nominal hole d + .063 in; "
-                                "independent bolt calculations remain available.",
+                                (
+                                    "ASCE bearing scope requires the selected source thickness "
+                                    "minimum, its actual nominal hole and supported interface "
+                                    "contact; missing source or a standoff is not assumed valid. "
+                                    "Independent bolt calculations remain available."
+                                    if allow_receiving_frame
+                                    else "ASCE bearing scope requires FRP thickness at least "
+                                    ".188 in and the declared nominal hole d + .063 in; "
+                                    "independent bolt calculations remain available."
+                                ),
                             )
                         )
                         continue
@@ -397,6 +481,7 @@ def calculate_same_connection(
             "authority": "COMPONENT_CALCULATION_ONLY_NO_CONNECTION_ADOPTION_OR_QUALIFICATION",
         },
         tuple(detailing),
+        tuple(demands),
     )
 
 

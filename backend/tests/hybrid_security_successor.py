@@ -77,6 +77,9 @@ def pre_s1_dependency(path: str, raw: bytes) -> bytes:
 
 
 def pre_s1_workflow(raw: bytes) -> bytes:
+    from tests.hybrid_physical_governance import pre_p4_workflow
+
+    raw = pre_p4_workflow(raw)
     governed = authority()["workflow"]
     raw = raw.replace(b"\r\n", b"\n")
     if digest(raw) != governed["after_sha256"]:

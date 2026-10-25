@@ -6,6 +6,12 @@ from typing import Any, cast
 
 from frp_master_connection.application.hyb1_contract import Alignment
 from frp_master_connection.application.hyb2_d2 import D2Assessment, FitReview
+from frp_master_connection.application.hybrid_physical_geometry import (
+    EndCondition,
+    R3SceneGeometry,
+    ReceivingEnds,
+    receiving_end_failures,
+)
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
 from frp_master_connection.calculation.rhm_direct_r3 import R3Geometry, R3Record
 
@@ -86,7 +92,14 @@ def declared_fit(
     return replace(assessment, fit=fit)
 
 
-def source_scene(g: R3Geometry, r: R3Record, alignment: Alignment) -> dict[str, Any]:
+def source_scene(
+    g: R3Geometry,
+    r: R3Record | R3SceneGeometry,
+    alignment: Alignment,
+    *,
+    receiving_ends: ReceivingEnds | None = None,
+    interface_gap: PhysicalQuantity | None = None,
+) -> dict[str, Any]:
     """Backend-authored R3 surfaces in the existing viewer's scene transport.
 
     Source x/y becomes global X/Z; +Y is the bolt/stack direction. Display crops
@@ -154,7 +167,7 @@ def source_scene(g: R3Geometry, r: R3Record, alignment: Alignment) -> dict[str, 
         4,
         0,
     ]
-    meshes = [
+    meshes: list[dict[str, Any]] = [
         {
             "id": "r3-angle-connected",
             "label": "Angle connected leg; far cap is a view cut",
@@ -235,7 +248,7 @@ def source_scene(g: R3Geometry, r: R3Record, alignment: Alignment) -> dict[str, 
         )
     )
     centers = r.bolt_centers if alignment is Alignment.SUPPORT else r.rotation_centers
-    cylinders = []
+    cylinders: list[dict[str, Any]] = []
     for name, (x, z) in centers:
         for kind, diam, start, end_y in [
             ("BOLT", g.diameter.to(Unit.IN).magnitude, -t, ct),
@@ -257,6 +270,43 @@ def source_scene(g: R3Geometry, r: R3Record, alignment: Alignment) -> dict[str, 
                     "interfaceId": "R3_SHARED_PAIR",
                 }
             )
+    if receiving_ends is not None:
+        bounds = []
+        labels = []
+        for sign, end in ((-1, receiving_ends.negative), (1, receiving_ends.positive)):
+            distance = None if end.distance is None else end.distance.to(Unit.IN).magnitude
+            shown = Decimal(6) if distance is None else min(distance, Decimal(6))
+            bounds.append(sign * shown)
+            labels.append(
+                ("+LW" if sign > 0 else "-LW")
+                + ": "
+                + (
+                    "actual free end "
+                    + str(distance)
+                    + " in"
+                    + (" beyond view crop" if distance is not None and distance > 6 else "")
+                    if end.condition is EndCondition.FREE
+                    else "continuous; view crop"
+                    if end.condition is EndCondition.CONTINUOUS
+                    else "end unknown; view crop"
+                )
+            )
+        if bounds[1] <= bounds[0]:
+            raise ValueError("The declared receiving member has no positive longitudinal extent.")
+        end_failure = bool(receiving_end_failures(g, centers, receiving_ends))
+        for item in boxes[:3]:
+            item["size"]["z"] = float(bounds[1] - bounds[0])
+            item["center"]["z"] = float((bounds[0] + bounds[1]) / 2)
+            item["label"] += "; " + "; ".join(labels)
+            item["interference"] = end_failure
+    if interface_gap is not None:
+        gap = interface_gap.to(Unit.IN).magnitude
+        meshes[0]["points"] = [
+            {**point, "y": point["y"] - float(gap)} for point in meshes[0]["points"]
+        ]
+        boxes[3]["center"]["y"] -= float(gap)
+        for cylinder in cylinders:
+            cylinder["start"]["y"] -= float(gap)
     from frp_master_connection.application.hybrid_material_axes import source_material_axes
 
     for item, element, region in zip(

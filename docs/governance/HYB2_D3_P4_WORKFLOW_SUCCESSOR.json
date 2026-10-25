@@ -1,0 +1,37 @@
+{
+  "stage": "HYB2-D3-P4",
+  "starting_sha": "a3c2f0933db9daab9f332848cf17d9ec5fe5766a",
+  "before_sha256": "1ABCC47D5D95B0711F8E0DCAB542A5A463F555C712DE982377EFFC231D5A67FE",
+  "after_sha256": "DD2D79E545116084DC412DBABFF4A0D43DCEC0943684E3705C8199C24BFA2D56",
+  "added_steps": "      - name: Generate current physical Hybrid P4 reports\n        run: python ../scripts/generate_hybrid_physical_ci_pdfs.py --output hybrid-physical-pdfs\n      - name: Upload current physical Hybrid P4 reports\n        uses: actions/upload-artifact@v7\n        with:\n          name: hybrid-physical-pdfs-${{ matrix.os }}\n          path: backend/hybrid-physical-pdfs/\n          if-no-files-found: error\n",
+  "backend_tests": 9669,
+  "frontend_tests": 1452,
+  "test_count_basis": "Actual collected tests; full execution is a separate mandatory gate.",
+  "protected_engineering": 53,
+  "historical_controls": 173,
+  "dependency_changes": [],
+  "coverage_thresholds": [
+    100,
+    100,
+    100,
+    100
+  ],
+  "preserved_security_successor_sha256": "45D1B472F8645439DB43F19A5894CB78201592AB431857FD35F323B7CBF45243",
+  "qualified_whole_connection": false,
+  "engineering_adoption": "PENDING_OWNER_REVIEW",
+  "inactive_boundary_guard": {
+    "path": "backend/tests/application/test_hyb1_inactive_boundary.py",
+    "owner_authorization": "2026-10-25 exact bounded two-path P4 exception",
+    "before_sha256": "46BCB728E7B2D0A64A28C8BBC105C3D055705BEFCEFA4F890D629FFB4972D33E",
+    "after_sha256": "165E1E626D2597BD69C510F1A385AF4B7F11F8FA5D487D12463223A96946E13B",
+    "approved_application_paths": [
+      "application/hybrid_physical.py",
+      "application/hybrid_physical_geometry.py"
+    ],
+    "exact_added_block": "    # P4 candidate-only adapters; all native public-module import checks remain.\n    approved_p4_paths = {\n        root / \"application/hybrid_physical.py\",\n        root / \"application/hybrid_physical_geometry.py\",\n    }\n",
+    "old_condition": "        if path.name not in new_names:\n",
+    "new_condition": "        if path.name not in new_names and path not in approved_p4_paths:\n",
+    "scope": "Existing HYB1 contracts and R3 geometry helpers only; no RHM reference capacity borrowing or other module import permission.",
+    "original_prohibited_assertions_retained": true
+  }
+}

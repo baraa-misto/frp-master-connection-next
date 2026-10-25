@@ -7,6 +7,7 @@ from importlib.metadata import version
 import pytest
 
 from tests.direct_f8_g1_governance import f7_lock, package_blocks
+from tests.hybrid_physical_governance import pre_p4_workflow
 from tests.hybrid_same_connection_governance import pre_p3_workflow
 from tests.hybrid_security_successor import (
     DEPENDENCIES,
@@ -156,7 +157,7 @@ def test_exact_workflow_restores_all_previous_gates_and_count() -> None:
 
 @pytest.mark.parametrize("mutation", ["count", "security", "pdf", "upload"])
 def test_workflow_mutation_cannot_bypass_previous_authority(mutation: str) -> None:
-    raw = (ROOT / ".github/workflows/ci.yml").read_bytes()
+    raw = pre_p4_workflow((ROOT / ".github/workflows/ci.yml").read_bytes())
     before, after = {
         "count": (b"--expected-tests 9535", b"--expected-tests 1"),
         "security": (b"full security audit", b"missing security audit"),

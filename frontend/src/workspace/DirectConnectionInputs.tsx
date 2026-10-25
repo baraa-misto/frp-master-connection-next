@@ -2,6 +2,7 @@ import type { HybridGeometry, HybridInputs, HybridQuantity } from "../api/hybrid
 import type { TwoBoltRequest } from "../api/directTwoBolt";
 import type { MultiRowConnectionRequest } from "../api/multirowContracts";
 import { DirectSupportEnds } from "../features/DirectSupportEnds";
+import { DirectPhysicalInputs } from "./DirectPhysicalInputs";
 
 interface Field { label: string; quantity: HybridQuantity; change: (q: HybridQuantity) => HybridInputs }
 const sourceLabels: Record<Exclude<keyof HybridGeometry, "phi">, string> = {
@@ -47,6 +48,7 @@ export function DirectConnectionInputs({ value, onChange }: { readonly value: Hy
     <p>Current physical end definition: {g === null ? "native engineering end and physical side boundaries" : "source oblique brace cut and receiving flange free edge"}. Calculation basis does not change this geometry.</p>
     <div className="field-grid">{fields.map((field) => <label key={field.label} className="field-control"><span>{field.label}</span><div className="hybrid-quantity"><input aria-label={field.label} inputMode="decimal" value={field.quantity.value} onChange={(event) => { onChange(field.change({ ...field.quantity, value: event.currentTarget.value })); }} /><span>{field.quantity.unit}</span></div></label>)}</div>
     {g === null ? null : <p>Equal-leg source Angle; receiving I depth 8 in and web thickness 0.375 in are nominal display context, not additional established resistance operands.</p>}
+    <DirectPhysicalInputs value={value} onChange={onChange} />
     <details><summary>Geometry and constructability details</summary><p>Physical free edges, internal junction clearances and view crops remain separate. Root fillets, tool access and fabrication details require actual project evidence. Changed geometry is evaluated freshly only where its method contract permits it.</p></details>
     {native === null ? null : <DirectSupportEnds value={native.legacy.supporting_w_longitudinal_ends ?? { condition: "UNSPECIFIED" }} unit={native.legacy.bolt_diameter.unit as "in" | "mm"} onChange={(ends) => {
       const legacy = { ...native.legacy, supporting_w_longitudinal_ends: ends };

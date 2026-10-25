@@ -2,6 +2,7 @@
 
 import pytest
 
+from tests.hybrid_physical_governance import pre_p4_inactive_boundary
 from tests.hybrid_same_connection_governance import ROOT, authority, digest, pre_p3_workflow
 from tests.hybrid_security_successor import pre_s1_workflow
 from tests.hybrid_workspace_governance import authority as p2_authority
@@ -29,7 +30,7 @@ def test_exact_p2_predecessor_and_all_preserved_engineering_identities() -> None
     assert governed["dependency_changes"] == []
     assert governed["coverage_thresholds"] == [100, 100, 100, 100]
     guard = governed["inactive_boundary_guard"]
-    current = (ROOT / guard["path"]).read_bytes().replace(b"\r\n", b"\n")
+    current = pre_p4_inactive_boundary((ROOT / guard["path"]).read_bytes())
     assert digest(current) == guard["after_sha256"]
     added = guard["exact_added_line"].encode()
     assert current.count(added) == 1

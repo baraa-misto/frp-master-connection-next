@@ -36,6 +36,71 @@ beforeEach(() => {
 });
 afterEach(() => { vi.restoreAllMocks(); });
 
+it("separates physical red from scoped numerical PASS and preserves receiving actions when a case is renamed", async () => {
+  mocks.calculate.mockImplementation((_path: string, draft: HybridInputs) => {
+    const r = response(draft);
+    if (draft.geometry !== null && r.record !== undefined) r.record.physical_design = {
+      geometry_failures: [{ case_id: null, reasons: ["An actual hole crosses the declared receiving end."] }],
+      status_axes: { scoped_numerical: "SCOPED_NUMERICAL_PASS", detailing: "DETAILING_FAIL", required_coverage: "REQUIRED_COVERAGE_PARTIAL", material_method: "SCOPED_COMPONENTS_WITH_UNRESOLVED_COUPLED_METHODS", qualification: "NOT_ESTABLISHED_SECTION_2_3_2", whole_connection: "FAIL_DETAILING", viewer_tone: "red" },
+      mechanism_matrix: [{ mechanism: "Receiving I flange shear-out", disposition: "EXECUTED", source: "Current physical Eq.8-12", remaining_evidence: "First-row and prying remain required." }],
+    };
+    return Promise.resolve(r);
+  });
+  mount(); loadSource();
+  fireEvent.click(screen.getByRole("button", { name: "Add LRFD case" }));
+  change("LRFD action frame", "DIRECT_RECEIVING_LW_CW_TT");
+  change("LRFD Receiving LW force", ".1");
+  change("LRFD-1 Additional LW force", "0");
+  change("LRFD case ID", "current-longitudinal");
+  expect(lastDraft().physical_context?.receiving_actions[0]).toEqual({ case_id: "current-longitudinal", components: [{ value: "0", unit: "kip" }, null, null, null, null, null] });
+  await run();
+  const summary = screen.getByRole("region", { name: "Hybrid calculation summary" });
+  expect(summary).toHaveClass("hybrid-red");
+  expect(summary).toHaveTextContent("PASS — evaluated numerical checks");
+  expect(summary).toHaveTextContent("An actual hole crosses the declared receiving end.");
+  expect(summary).toHaveTextContent("Whole connection: FAIL — detailing");
+  expect(screen.getByRole("region", { name: "Physical mechanism coverage" })).toHaveTextContent("Receiving I flange shear-out — Executed");
+  fireEvent.click(screen.getByRole("button", { name: "Remove LRFD case" }));
+  expect(lastDraft().physical_context?.receiving_actions).toEqual([]);
+  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeDisabled();
+});
+
+it("renames or removes only the selected receiving action set in a multi-case connection", () => {
+  mount(); loadSource();
+  fireEvent.click(screen.getByRole("button", { name: "Add LRFD case" }));
+  change("LRFD-1 Additional LW force", "1");
+  fireEvent.click(screen.getByRole("button", { name: "Add LRFD case" }));
+  change("LRFD-2 Additional LW force", "2");
+  const first = screen.getAllByLabelText("LRFD case ID")[0];
+  if (first === undefined) throw new Error("First declared LRFD case required");
+  fireEvent.change(first, { target: { value: "renamed-first" } });
+  const actions = lastDraft().physical_context?.receiving_actions;
+  expect(actions?.map((item) => item.case_id)).toEqual(["renamed-first", "LRFD-2"]);
+  expect(actions?.[1]?.components[0]?.value).toBe("2");
+  const remove = screen.getAllByRole("button", { name: "Remove LRFD case" })[0];
+  if (remove === undefined) throw new Error("First removal control required");
+  fireEvent.click(remove);
+  expect(lastDraft().physical_context?.receiving_actions.map((item) => item.case_id)).toEqual(["LRFD-2"]);
+});
+
+it("ignores an older unit response at the same engineering revision", async () => {
+  const pending: ((value: HybridInputs) => void)[] = [];
+  mount(); loadSource(); await run();
+  const original = structuredClone(lastDraft());
+  mocks.post.mockImplementation((path: string) => path === "units" ? new Promise<HybridInputs>((resolve) => { pending.push(resolve); }) : Promise.resolve({ invalidated: true }));
+  change("Hybrid unit system", "mm");
+  change("Hybrid unit system", "mm");
+  const newest = structuredClone(original);
+  if (newest.geometry === null) throw new Error("Current source geometry required");
+  newest.geometry.vertical_bolt_pitch = { value: "50.8", unit: "mm" };
+  await act(async () => { pending[1]?.(newest); await Promise.resolve(); });
+  expect(screen.getByLabelText("Hybrid unit system")).toHaveValue("mm");
+  await act(async () => { pending[0]?.(original); await Promise.resolve(); });
+  expect(screen.getByLabelText("Hybrid unit system")).toHaveValue("mm");
+  expect(lastDraft().revision).toBe(original.revision);
+  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeEnabled();
+});
+
 it("binds selected MAT1 data to the same source geometry and shows the larger scoped basis with physical gaps", async () => {
   const selection = native().material_request as { assignments: object; fastener: object };
   mocks.envelope.mockImplementation((_family: string, legacy: string) => ({ request: { ...selection, legacy_request: JSON.parse(legacy) as unknown } }));
@@ -255,7 +320,10 @@ it("converts current units only, ignores a late conversion and retains explicitl
   await screen.findByRole("button", { name: "Current backend viewer" });
   const original = lastDraft();
   mocks.post.mockImplementation((path: string) => path === "units" ? Promise.resolve(original) : Promise.resolve({ invalidated: true }));
-  change("Hybrid unit system", "mm"); await waitFor(() => { expect(lastDraft().revision).toBeGreaterThan(original.revision); });
+  await run();
+  change("Hybrid unit system", "mm"); await act(async () => { await Promise.resolve(); });
+  expect(lastDraft().revision).toBe(original.revision);
+  expect(screen.getByRole("button", { name: "Hybrid Calculation Report" })).toBeEnabled();
   mocks.post.mockImplementation((path: string) => path === "units" ? new Promise<HybridInputs>((yes) => { deliver = yes; }) : Promise.resolve({ invalidated: true }));
   change("Hybrid unit system", "mm"); change("Brace free-edge to bolt centerline (Xb)", ".7");
   await act(async () => { deliver?.(original); await Promise.resolve(); });

@@ -38,8 +38,13 @@ def test_no_existing_public_module_imports_hyb1_or_rhm() -> None:
         "hyb2_d2_service.py",
         "hyb2_d2_review.py",
     }
+    # P4 candidate-only adapters; all native public-module import checks remain.
+    approved_p4_paths = {
+        root / "application/hybrid_physical.py",
+        root / "application/hybrid_physical_geometry.py",
+    }
     for path in root.rglob("*.py"):
-        if path.name not in new_names:
+        if path.name not in new_names and path not in approved_p4_paths:
             source = path.read_text(encoding="utf-8")
             assert "hyb1" not in source.lower(), str(path)
             assert "rhm_reference" not in source, str(path)

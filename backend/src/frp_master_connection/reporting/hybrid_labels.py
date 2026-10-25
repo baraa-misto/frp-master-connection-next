@@ -18,6 +18,11 @@ LABELS = {
     "UNCHANGED_NATIVE_ASCE": "Existing ASCE calculation",
     "HYB2_DIRECT_REFERENCE": "RHM reference calculation",
     "ASCE_SAME_CONNECTION_COMPONENT_CALCULATION": "ASCE component - current connection",
+    "ASCE_CURRENT_PHYSICAL_RECEIVING_COMPONENT": (
+        "ASCE physical component - current receiving flange"
+    ),
+    "RECEIVING_INTERROW_SHEAR_OUT": "Receiving I flange - longitudinal inter-row shear-out",
+    "DIRECT_RECEIVING_LW_CW_TT": "Receiving member LW / CW / TT",
     "BRACE_END_DISTANCE_MINIMUM_LOWER_BOUND": "Angle end distance (minimum 2d screen)",
     "DIRECT_SHARED_BOLTS": "Shared bolts - shear",
     "DIRECT_BRACE_BEARING": "Angle connected leg - bearing",

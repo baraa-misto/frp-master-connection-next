@@ -6,9 +6,18 @@ export interface SameConnectionLRFD { assignments: ReturnType<typeof buildMAT1De
 export interface HybridQuantity { value: string; unit: string }
 export type HybridGeometry = Record<"vertical_bolt_pitch" | "xb" | "xc" | "brace_near_v_edge_distance" | "brace_leg" | "column_flange" | "brace_thickness" | "column_thickness" | "diameter" | "hole", HybridQuantity> & { phi: string };
 export interface HybridCase {
-  case_id: string; frame: "DIRECT_P_SKETCH_V_CENTROID" | "DIRECT_P_POSITIVE_N_CENTROID" | "GLOBAL";
+  case_id: string; frame: "DIRECT_P_SKETCH_V_CENTROID" | "DIRECT_P_POSITIVE_N_CENTROID" | "DIRECT_RECEIVING_LW_CW_TT" | "GLOBAL";
   reference: [HybridQuantity, HybridQuantity, HybridQuantity];
   components: [HybridQuantity | null, HybridQuantity | null, HybridQuantity | null, HybridQuantity | null, HybridQuantity | null, HybridQuantity | null];
+}
+export interface DirectPhysicalInputs {
+  contract: "HYB2-D3-P4-PHYSICAL/1";
+  positive_end: { condition: "UNKNOWN" | "CONTINUOUS" | "FREE"; distance: HybridQuantity | null };
+  negative_end: { condition: "UNKNOWN" | "CONTINUOUS" | "FREE"; distance: HybridQuantity | null };
+  hole_source: "US_CUSTOMARY_PRINTED" | "SI_PRINTED" | null;
+  clear_flat_outstand: HybridQuantity | null;
+  interface_gap: HybridQuantity | null;
+  receiving_actions: { case_id: string; components: HybridCase["components"] }[];
 }
 export interface HybridInputs {
   // These are physical boundary representations of the one current connection,
@@ -22,6 +31,7 @@ export interface HybridInputs {
   bearing_face: "UNKNOWN" | "DECLARED_STRAIGHT_FREE_EDGE";
   washer_od: HybridQuantity | null; native_edge_distance: HybridQuantity | null;
   same_connection_lrfd?: SameConnectionLRFD;
+  physical_context?: DirectPhysicalInputs;
 }
 export interface HybridComparison { mechanism: string; case_id: string; basis: "LRFD" | "ASD"; ratio: string | null; outcome: string; evidence_scope: string; equation: string; resistance_trace: string }
 export interface HybridRecord {
@@ -31,6 +41,11 @@ export interface HybridRecord {
   same_connection_lrfd?: { assumptions: string[] };
   numerical_governing?: HybridComparison | null;
   physical_mechanisms?: { mechanism: string; executed_comparisons: { basis: string; case_id: string; check_id: string; scope: string; outcome: string }[]; evidence: string; remaining_evidence: string }[];
+  physical_design?: {
+    geometry_failures: { case_id: string | null; reasons: string[] }[];
+    status_axes: { scoped_numerical: string; detailing: string; required_coverage: string; material_method: string; qualification: string; whole_connection: string; viewer_tone: "red" | "gray" };
+    mechanism_matrix: { mechanism: string; disposition: string; source: string; remaining_evidence: string }[];
+  };
   detailing_failures: { check_kind: string; actual_distance: string; required_distance: string; unit: string; boundary_label: string; source_rule: string; bolt_id?: string; case_id?: string }[];
   assessment: {
     evaluated_outcome: "PASS" | "FAIL" | "NOT_EVALUATED"; tone: "green" | "red" | "neutral";
@@ -83,5 +98,6 @@ export function sourceExample(current: HybridInputs): HybridInputs {
   const q = (value: string): HybridQuantity => ({ value, unit: "in" });
   return { ...current, connection: "RHM_R3", native_request: null, alignment: "SUPPORT", include_native_lrfd: true,
     geometry: { vertical_bolt_pitch: q("2"), phi: "30.9", xb: q(".4375"), xc: q("1"), brace_near_v_edge_distance: q("1"), brace_leg: q("4"), column_flange: q("4"), brace_thickness: q(".5"), column_thickness: q(".375"), diameter: q(".5"), hole: q(".563") },
-    asd_cases: [enteredCase("RHM-source-ASD-example", ".09155", ".0134")], lrfd_cases: [], source_profile: "RHM_POLYESTER_100F_SF4", bearing_face: "UNKNOWN", washer_od: null, native_edge_distance: null };
+    asd_cases: [enteredCase("RHM-source-ASD-example", ".09155", ".0134")], lrfd_cases: [], source_profile: "RHM_POLYESTER_100F_SF4", bearing_face: "UNKNOWN", washer_od: null, native_edge_distance: null,
+    physical_context: { contract: "HYB2-D3-P4-PHYSICAL/1", positive_end: { condition: "UNKNOWN", distance: null }, negative_end: { condition: "UNKNOWN", distance: null }, hole_source: "US_CUSTOMARY_PRINTED", clear_flat_outstand: null, interface_gap: null, receiving_actions: [] } };
 }

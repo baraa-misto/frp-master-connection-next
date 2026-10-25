@@ -13,6 +13,7 @@ from reportlab.platypus import Flowable, Paragraph, SimpleDocTemplate, Spacer, T
 
 from frp_master_connection.reporting.hyb2_d2_review import path_drawing, render_d2
 from frp_master_connection.reporting.hybrid_labels import label, utilization
+from frp_master_connection.reporting.hybrid_physical import physical_flowables
 from frp_master_connection.reporting.pdf import (
     ReportOptions,
     _font_setup,
@@ -25,13 +26,14 @@ from frp_master_connection.reporting.snapshot import ReportSnapshot
 def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
     """No engineering recomputation, applicability inference or status repainting."""
     a = record["assessment"]
+    physical = record.get("physical_design")
     same = record.get("same_connection_lrfd")
     out = io.BytesIO()
     styles = getSampleStyleSheet()
     styles["BodyText"].fontSize = 9
     styles["BodyText"].leading = 12
     styles["BodyText"].wordWrap = "CJK"
-    styles["BodyText"].spaceAfter = 6
+    styles["BodyText"].spaceAfter = 4 if physical is not None and not technical else 6
     styles["Heading3"].keepWithNext = True
     if same is not None:
         styles["Heading1"].keepWithNext = True
@@ -66,6 +68,15 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
         "RHM ASD calculations retain separate bases."
     )
     p("Evaluated checks: " + a["evaluated_outcome"] + " - scoped to calculated methods", "Heading2")
+    if physical is not None:
+        for key in [
+            "whole_connection",
+            "detailing",
+            "required_coverage",
+            "material_method",
+            "qualification",
+        ]:
+            p(label(key) + ": " + label(physical["status_axes"][key]))
     if a["r3_records"]:
         p(
             "RHM calculations are reference/conditional method calculations; "
@@ -269,7 +280,8 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
         + " requested RHM comparisons and "
         + str(c["native_checks_executed"])
         + (
-            " native numerical checks executed. This is computation scope, not"
+            (" native" if same is None else " same-connection ASCE component")
+            + " numerical checks executed. This is computation scope, not"
             " complete structural coverage."
         )
     )
@@ -378,7 +390,9 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
             )
         )
     p("Detailing and coverage limitations", "Heading2")
-    for mechanism in record.get("physical_mechanisms", []):
+    if physical is not None:
+        story.extend(physical_flowables(record, technical=technical))
+    for mechanism in record.get("physical_mechanisms", []) if physical is None else []:
         p(mechanism["mechanism"], "Heading3")
         p(mechanism["evidence"])
         p("Remaining evidence: " + mechanism["remaining_evidence"])
@@ -387,16 +401,23 @@ def render_hybrid(record: dict[str, Any], *, technical: bool = False) -> bytes:
         p(text)
     p(record["coverage_summary"])
     p(record["field_use_note"])
-    p(
-        "OWNER_FIELD_USE_REPORTED. User declarations and programmatic "
-        "input hashes are not laboratory, survey or professional-adoption "
-        "evidence."
-    )
-    story.append(Spacer(1, 8))
-    p(
-        "No full connection qualification or unqualified installation "
-        "approval is asserted. C13 and Section 2.3.2 remain open."
-    )
+    if physical is not None and not technical:
+        p(
+            "User declarations and programmatic input hashes are not laboratory, survey or "
+            "professional-adoption evidence. No full connection qualification or unqualified "
+            "installation approval is asserted. C13 and Section 2.3.2 remain open."
+        )
+    else:
+        p(
+            "OWNER_FIELD_USE_REPORTED. User declarations and programmatic "
+            "input hashes are not laboratory, survey or professional-adoption "
+            "evidence."
+        )
+        story.append(Spacer(1, 8))
+        p(
+            "No full connection qualification or unqualified installation "
+            "approval is asserted. C13 and Section 2.3.2 remain open."
+        )
     if technical:
         p("All current native detailing rule comparisons: " + str(record["detailing_checks"]))
         if same is not None:

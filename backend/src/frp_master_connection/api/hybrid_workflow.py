@@ -20,6 +20,7 @@ from frp_master_connection.api.direct_two_bolt import (
     geometry_response,
     resolve_geometry,
 )
+from frp_master_connection.api.hybrid_physical import PhysicalInputsDTO, physical_fingerprint_inputs
 from frp_master_connection.api.hybrid_same_connection import SameConnectionLRFD
 from frp_master_connection.api.schemas import Identifier, QuantityDTO, _StrictModel
 from frp_master_connection.application.hyb1_contract import (
@@ -32,7 +33,20 @@ from frp_master_connection.application.hyb1_contract import (
 )
 from frp_master_connection.application.hyb1_review import NativeCapture
 from frp_master_connection.application.hyb2_d2 import SourceConditions, assess_d2
+from frp_master_connection.application.hybrid_physical import (
+    CONTRACT as PHYSICAL_CONTRACT,
+)
+from frp_master_connection.application.hybrid_physical import (
+    evaluate_physical,
+    mechanism_matrix,
+    physical_status_axes,
+)
+from frp_master_connection.application.hybrid_physical_geometry import (
+    RECEIVING_FRAME,
+    r3_scene_geometry,
+)
 from frp_master_connection.application.hybrid_same_connection import (
+    SameConnectionResult,
     calculate_same_connection,
     canonicalize_same_connection_reference,
     integrate_same_connection,
@@ -45,7 +59,7 @@ from frp_master_connection.application.hybrid_workflow import (
     source_scene,
 )
 from frp_master_connection.calculation.quantities import PhysicalQuantity, Unit
-from frp_master_connection.calculation.rhm_direct_r3 import R3Geometry, execute_r3, geometry_digest
+from frp_master_connection.calculation.rhm_direct_r3 import R3Geometry, geometry_digest
 from frp_master_connection.calculation.rhm_direct_reference import SOURCE_SHA256
 from frp_master_connection.reporting.hyb1_review import (
     canonical_record,
@@ -111,7 +125,12 @@ class R3Inputs(_StrictModel):
 
 class ASDCase(_StrictModel):
     case_id: Identifier
-    frame: Literal["DIRECT_P_SKETCH_V_CENTROID", "DIRECT_P_POSITIVE_N_CENTROID", "GLOBAL"]
+    frame: Literal[
+        "DIRECT_P_SKETCH_V_CENTROID",
+        "DIRECT_P_POSITIVE_N_CENTROID",
+        "GLOBAL",
+        "DIRECT_RECEIVING_LW_CW_TT",
+    ]
     reference: tuple[QuantityDTO, QuantityDTO, QuantityDTO]
     components: tuple[
         QuantityDTO | None,
@@ -177,9 +196,28 @@ class HybridInputs(Revision):
     same_connection_lrfd: SameConnectionLRFD | None = Field(
         default=None, exclude_if=lambda v: v is None
     )
+    physical_context: PhysicalInputsDTO | None = Field(default=None, exclude_if=lambda v: v is None)
 
     @model_validator(mode="after")
     def physical_scope(self) -> HybridInputs:
+        if self.physical_context is not None:
+            if self.connection != "RHM_R3":
+                raise ValueError(
+                    "Source physical end/contact data cannot be grafted onto native geometry."
+                )
+            lrfd_ids = {case.case_id for case in self.lrfd_cases}
+            if not {case.case_id for case in self.physical_context.receiving_actions} <= lrfd_ids:
+                raise ValueError("Additional receiving actions must identify an entered LRFD case.")
+        if any(case.frame == RECEIVING_FRAME for case in self.asd_cases):
+            raise ValueError(
+                "RHM ASD retains its source P/sketch-V frames; receiving-frame design "
+                "is an ASCE LRFD scope."
+            )
+        if (
+            any(case.frame == RECEIVING_FRAME for case in self.lrfd_cases)
+            and self.physical_context is None
+        ):
+            raise ValueError("The receiving material frame requires the current physical contract.")
         if self.same_connection_lrfd is not None and self.connection != "RHM_R3":
             raise ValueError("R3 ASCE materials cannot accompany a different native geometry.")
         if self.connection == "RHM_R3":
@@ -302,6 +340,19 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
                     None if q is None else converted(q, force if i < 3 else moment)
                     for i, q in enumerate(case["components"])
                 ]
+        physical = data.get("physical_context")
+        if physical is not None:
+            for end in ["positive_end", "negative_end"]:
+                if physical[end]["distance"] is not None:
+                    physical[end]["distance"] = converted(physical[end]["distance"], length)
+            for field in ["clear_flat_outstand", "interface_gap"]:
+                if physical[field] is not None:
+                    physical[field] = converted(physical[field], length)
+            for case in physical["receiving_actions"]:
+                case["components"] = [
+                    None if q is None else converted(q, force if i < 3 else moment)
+                    for i, q in enumerate(case["components"])
+                ]
         return data
 
     @router.post("/invalidate")
@@ -319,18 +370,26 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
     ) -> dict[str, Any]:
         account = identity.account_id
         inputs = dto.model_dump(mode="json")
-        fingerprint = store.register(account, dto.workspace_id, dto.revision, inputs)
+        fingerprint = store.register(
+            account,
+            dto.workspace_id,
+            dto.revision,
+            inputs if dto.physical_context is None else physical_fingerprint_inputs(inputs),
+        )
+        physical_data = None if dto.physical_context is None else dto.physical_context.resolved()
         g = None if dto.geometry is None else dto.geometry.geometry()
         native_geometry = None
         detail_checks: list[dict[str, Any]] = []
         scene = None
         if g is not None:
-            model = execute_r3(
-                geometry=g,
-                axial=PhysicalQuantity.of(0, Unit.KIP),
-                shear=PhysicalQuantity.of(0, Unit.KIP),
+            model = r3_scene_geometry(g, None if physical_data is None else physical_data.ends)
+            scene = source_scene(
+                g,
+                model,
+                Alignment(dto.alignment),
+                receiving_ends=None if physical_data is None else physical_data.ends,
+                interface_gap=None if physical_data is None else physical_data.interface_gap,
             )
-            scene = source_scene(g, model, Alignment(dto.alignment))
         else:
             native_geometry = geometry_response(cast(TwoBoltRequestDTO, dto.native_request))
             _, original_preview = resolve_geometry(cast(TwoBoltRequestDTO, dto.native_request))
@@ -457,11 +516,47 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
             today=datetime.now(UTC).date(),
         )
         same_connection = None
+        integrated = None
+        resolved_materials = None
         same_detailing: tuple[dict[str, Any], ...] = ()
         if g is not None and dto.include_native_lrfd and dto.same_connection_lrfd is not None:
-            integrated = await asyncio.to_thread(
-                calculate_same_connection, actions, g, dto.same_connection_lrfd.resolve(g)
-            )
+            resolved_materials = dto.same_connection_lrfd.resolve(g)
+            definition = None if physical_data is None else physical_data.standard_hole(g.diameter)
+            if physical_data is None:
+                integrated = await asyncio.to_thread(
+                    calculate_same_connection,
+                    actions,
+                    g,
+                    resolved_materials,
+                )
+            else:
+                integrated = await asyncio.to_thread(
+                    calculate_same_connection,
+                    actions,
+                    g,
+                    resolved_materials,
+                    geometry_model=model,
+                    allow_receiving_frame=True,
+                    bearing_source_known=physical_data.hole_source is not None,
+                    minimum_diameter=(
+                        PhysicalQuantity.of("9.53", Unit.MM)
+                        if physical_data.hole_source is not None
+                        and physical_data.hole_source.value == "SI_PRINTED"
+                        else None
+                    ),
+                    nominal_hole=None if definition is None else definition.hole_diameter,
+                    minimum_thickness=(
+                        None
+                        if physical_data.hole_source is None
+                        else PhysicalQuantity.of("4.8", Unit.MM)
+                        if physical_data.hole_source.value == "SI_PRINTED"
+                        else PhysicalQuantity.of(".188", Unit.IN)
+                    ),
+                    contact_supported=(
+                        physical_data.interface_gap is None
+                        or physical_data.interface_gap.magnitude == 0
+                    ),
+                )
             assessment = integrate_same_connection(assessment, integrated)
             same_connection = integrated.trace
             same_detailing = integrated.detailing
@@ -521,7 +616,28 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
                     "Resolve the stated containment/seating failure before installation.",
                 ),
             )
-        assessment = replace(assessment, scope="LIVE_WORKFLOW_NO_STRUCTURAL_METHOD_ACTIVATION")
+        physical_assessment = None
+        if g is not None and physical_data is not None:
+            physical_assessment = await asyncio.to_thread(
+                evaluate_physical,
+                actions,
+                g,
+                resolved_materials,
+                () if integrated is None else integrated.demands,
+                physical_data,
+                requested=dto.include_native_lrfd,
+            )
+            assessment = integrate_same_connection(
+                assessment, SameConnectionResult(physical_assessment.rows, (), {}, ())
+            )
+        assessment = replace(
+            assessment,
+            scope=(
+                "LIVE_WORKFLOW_NO_STRUCTURAL_METHOD_ACTIVATION"
+                if physical_assessment is None
+                else "CURRENT_PHYSICAL_COMPONENT_CANDIDATE"
+            ),
+        )
         source = ReviewSource(actions, geometry=g, conditions=conditions)
         record = assessment_record(assessment, source, native.immutable_payload)
         withheld = list(assessment.withheld)
@@ -599,6 +715,53 @@ def build_hybrid_router(resolver: TrustedIdentityResolver) -> APIRouter:
                 None
                 if governing is None
                 else json.loads(json.dumps(asdict(governing), default=str))
+            )
+        if physical_assessment is not None:
+            physical_record = {
+                "contract": PHYSICAL_CONTRACT,
+                "input_provenance": "USER_DECLARED_ACTUAL_PHYSICAL_DATA",
+                "cases": physical_assessment.cases,
+                "geometry_failures": physical_assessment.geometry_failures,
+                "mechanism_matrix": mechanism_matrix(assessment.comparisons, physical_assessment),
+                "status_axes": physical_status_axes(assessment, physical_assessment, detail_checks),
+                "current_physical_model_identity": request_digest(
+                    physical_fingerprint_inputs(
+                        {
+                            "geometry": inputs["geometry"],
+                            "alignment": inputs["alignment"],
+                            "physical_context": {
+                                key: value
+                                for key, value in inputs["physical_context"].items()
+                                if key != "receiving_actions"
+                            },
+                            "washer_od": inputs["washer_od"],
+                            "bearing_face": inputs["bearing_face"],
+                        }
+                    )
+                ),
+                "adoption": "PENDING_OWNER_ENGINEERING_REVIEW",
+                "receiving_frame": {
+                    "definition": RECEIVING_FRAME,
+                    "LW_in_viewer": [0, 0, 1],
+                    "CW_in_viewer": [1, 0, 0],
+                    "TT_in_viewer": [0, 1, 0],
+                    "source_force_mapping": "(CW,LW); source normal moment=-M_TT",
+                    "source_reference_mapping": "(reference_CW,reference_LW)",
+                    "authority": "Existing backend receiving TOP_FLANGE material axes",
+                },
+            }
+            record["physical_design"] = json.loads(json.dumps(physical_record, default=str))
+            record["authority"] = "CURRENT_PHYSICAL_COMPONENT_CALCULATION_OWNER_REVIEW_PENDING"
+            record["title"] = "Direct Connection Calculation Report"
+            record["coverage_summary"] = (
+                "Required structural coverage remains partial. The receiving longitudinal "
+                "shear-out check executes only for cases meeting its explicit physical/source "
+                "domain. First-row stress transfer, global releases, heel/junction transfer "
+                "and contact/prying remain independent required mechanisms. See each "
+                "physical mechanism disposition. Whole-connection qualification is not established."
+            )
+            record["requested_computation"]["physical_component_checks_executed"] = len(
+                physical_assessment.rows
             )
         handle = store.seal(account, dto.workspace_id, dto.revision, fingerprint, record)
         return dict(**preview, record=record, report_handle=handle)
